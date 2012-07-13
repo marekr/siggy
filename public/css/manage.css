@@ -1,0 +1,720 @@
+/** Css reset: except table{border-collapse:collapse;border-spacing:0;} **/
+html{color:#000;background:#FFF;}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0;padding:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var,optgroup{font-style:inherit;font-weight:inherit;}del,ins{text-decoration:none;}li{list-style:none;}caption,th{text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym{border:0;font-variant:normal;}sup{vertical-align:baseline;}sub{vertical-align:baseline;}legend{color:#000;}input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;}input,button,textarea,select{font-size:100%;}
+
+/* Global styles: body, paragraphs, lists etc */
+
+html {
+   background-color: #E5E5E5;
+}
+body {
+   font-family: Arial,Helvetica,Sans-serif;
+   margin: 0px;
+}
+
+/* Page */
+
+/* Header */
+
+#header-logo {
+    border: 0pt none;
+    padding: 0px;
+    margin: 0px;
+    background-color: transparent;
+  }
+
+/* Content */
+#content {
+    padding-left: 20px;
+}
+
+
+p {
+   margin-bottom:0.7em;
+   margin-top:0.3em;
+}
+
+/* Menus */
+
+   /** Nice looking "new" menu style. **/
+   ul.menu {
+      background:none repeat scroll 0 0 #356AA0;
+      border-bottom:2px solid #204061;
+      border-top:2px solid #356AA0;
+
+      font-family:Arial,sans-serif;
+      font-size:15px;
+      font-weight:bold;
+      height:40px;
+      list-style-type:none;
+      padding:0;
+   }
+
+   ul.menu li{
+      float:left;
+      margin:0;
+   }
+
+   ul.menu li a {
+      color:#FFFFFF;
+      display:block;
+      line-height:40px;
+      padding:0 20px;
+      text-decoration:none;
+   }
+
+   ul.menu li.active a, ul.menu li a:hover {
+      background:none repeat scroll 0 0 #3D7BBB;
+      border-bottom:2px solid #356AA0;
+   }
+
+   /** Nice looking "new" submenu style. **/
+   ul.submenu {
+      background:none repeat scroll 0 0 #333333;
+      border-bottom:2px solid #000000;
+      border-top:2px solid #333333;
+
+      font-family:Arial,sans-serif;
+      font-size:13px;
+      height:25px;
+      list-style-type:none;
+      padding:0;
+   }
+
+   ul.submenu li{
+      float:left;
+      margin:0;
+   }
+
+   ul.submenu li a {
+      color:#FFFFFF;
+      display:block;
+      line-height:25px;
+      padding:0 10px;
+      text-decoration:none;
+   }
+
+   ul.submenu li a:hover {
+      background:none repeat scroll 0 0 #555555;
+      border-bottom:2px solid #444444;
+   }
+
+
+/* Forms */
+
+   /* Simple way to create labels-on-top */
+   label {
+      display: block;
+   }
+   /** Error color **/
+   input.error {
+     color:#CC0000;
+     border:solid 1px #de888a; background:#ffdddd;
+   }
+   /** When IE6 dies, replace with element-specifics. This is supposed to apply to only text, password and file. **/
+   input.text, input.password, input.file {
+      border:1px solid #DEDEDE;
+      color:#525151;
+      padding:2px 0 0 5px;
+      margin-bottom:10px;
+      width: 200px;
+   }
+   select {
+      margin-bottom:10px;
+   }
+   /** Again, without IE6 these would be element type selectors. We need a small margin. **/
+   input.radio, input.checkbox {
+      margin:0 0.4em 0 0;
+   }
+   textarea {
+      border:1px solid #DEDEDE;
+      color:#525151;
+      font-size:12pt;
+      padding:2px 0 0 5px;
+      width:100%;
+      margin-bottom: 10px;
+   }
+
+   
+/** Error and info spans **/
+span.error {
+  padding: 5px;
+  color:#CC0000;
+  border:solid 2px #de888a; background:#ffdddd;
+  margin-top: 0px; margin-bottom: 0px;
+  margin-left: 4px;
+  display: inline-block;
+  vertical-align: top;
+  font-size: smaller;
+  max-width: 465px;
+  /* IE7: haslayout to get inline-block */
+  zoom: 1;
+  *display: inline;
+}
+
+span.info {
+  padding: 5px;
+  color:#5C5C5C;
+  border:solid 2px #CBDFE7; background:#DEF1F8;
+  margin-top: 0px; margin-bottom: 0px;
+  margin-left: 4px; 
+  display: inline-block;
+  vertical-align: top;
+  font-size: smaller;
+  max-width: 465px;
+  /* IE7: haslayout to get inline-block */
+  zoom: 1;
+  *display: inline;
+}
+
+span.block {
+   display: block;
+   margin-left: 0px;
+   margin-bottom: 4px;
+}
+
+/* Messages */
+
+div.info, div.success, div.error {
+   -moz-border-radius: 6px;
+   -webkit-border-radius: 6px;
+   border-radius: 6px;
+   border-top-left-radius: 6px 6px;
+   border-top-right-radius: 6px 6px;
+   border-bottom-right-radius: 6px 6px;
+   border-bottom-left-radius: 6px 6px;
+}
+
+div.info {
+  padding: 6px;
+  color:#5C5C5C;
+  border:solid 1px #CBDFE7; background:#DEF1F8;  margin-top: 4px; margin-bottom: 4px;
+  margin-right: 6px;
+}
+
+div.success {
+  padding: 6px;
+  color:#008000;
+  border:solid 1px #349534; background:#C9FFCA; margin-top: 4px; margin-bottom: 4px;
+}
+
+div.error {
+  padding: 6px;
+  color: black;
+  border:solid 1px #FBB; background: #FDD; margin-top: 4px; margin-bottom: 4px;
+}
+
+
+#content {
+   padding: 20px 20px;
+}
+
+#header {
+   background-color: black;
+   padding-left: 20px;
+}
+
+ul.menu {
+     background-color: #f4f4f4;
+  background-image: url("../../img/menubar-background.png");
+  background-repeat: repeat-x;
+  border: 0px none;
+}
+   ul.menu li a {
+      color: black;
+      font-weight: normal;
+   }
+
+   ul.menu li.active a, ul.menu li a:hover {
+      background:none repeat scroll 0 0 #EAEAEA;
+      border-bottom: 0px none;
+   }
+   
+
+#header h1 {
+   padding: 15px 0;
+   font-size: 32px;
+   font-style: normal;
+   font-weight: bold;
+   text-transform: none;
+   letter-spacing: -1px;
+   line-height: 1.2em;
+   color: white;
+   text-shadow: black 1px 1px 2px;
+}
+/* tables */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 15px;
+}
+
+.table th {
+  padding: 10px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.table th.first {
+  width: 30px;
+}
+
+.table th.last {
+  width: 200px;
+}
+
+.table .checkbox {
+  margin-left: 10px;
+}
+
+.table td {
+  padding: 10px;
+}
+
+.table td.last {
+  text-align: right;
+}
+
+
+.table th {
+  background: #eaeaea;
+  color: #222;
+  font-weight: normal;
+}
+
+.table td {
+  border-bottom: 1px solid #eaeaea;
+}
+
+.table tr.even {
+  background: #f8f8f8;
+}
+
+a:link, a:visited, a:hover, a:active, h1, h2, h3 { color: #111; }
+a { -moz-outline: none; }
+
+.submenu {
+  -moz-border-radius-topleft: 9px;
+  -webkit-border-top-left-radius: 9px;
+  -moz-border-radius-topright: 9px;
+  -webkit-border-top-right-radius: 9px;
+  background-color: #f2f1ee;
+  border-bottom: none;
+  border-bottom-width: 5px;
+  background-image: url("../../img/boxbar-background.png");
+  font-size: 13px;
+}
+
+.submenu li.first a, .submenu ul li.first {
+  -moz-border-radius-topleft: 9px;
+  -webkit-border-top-left-radius: 9px;
+}
+
+.submenu ul li.first {
+  -moz-border-radius-topleft: 9px;
+  -webkit-border-top-left-radius: 9px;
+}
+
+ .submenu ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.submenu ul li {
+  float: left;
+}
+
+.submenu ul li a:link, .submenu ul li a:visited, .submenu ul li a:hover, .submenu ul li a:active {
+  text-decoration: none;
+}
+
+.submenu ul li a:hover, .submenu ul li a:active {
+  text-decoration: underline;
+}
+
+.submenu ul li.active, .submenu ul li.active a:hover {
+  background-color: #fff;
+}
+
+
+.submenu ul li a {
+  display: block;
+  padding: 10px 15px;
+}
+
+.block {
+   -moz-border-radius: 9px;
+   -webkit-border-radius: 9px;
+   border-radius: 9px;
+   -moz-border-radius-bottomleft: 9px;
+   -webkit-border-bottom-left-radius: 9px;
+   -moz-border-radius-bottomright: 9px;
+   -webkit-border-bottom-right-radius: 9px;
+   -moz-border-radius-topleft: 9px;
+   -webkit-border-top-left-radius: 9px;
+   -moz-border-radius-topright: 9px;
+   -webkit-border-top-right-radius: 9px;
+   padding-top: 0px;
+   background: #fff;
+
+   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+   -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+   margin-bottom: 20px;
+}
+
+.block .content {
+   padding: 0 15px 15px;
+}
+.block h1 {
+   margin-left: 15px;
+   font-size: 22px;
+   font-style: normal;
+   font-weight: bold;
+   text-transform: none;
+   letter-spacing: -1px;
+   line-height: 1.2em;
+   padding: 15px 0;
+}
+
+/** FRONT PAGE BOX **/
+#box {
+
+   width: 330px;
+   margin: 0 auto;
+}
+/* box */
+
+#box .block {
+  -webkit-border-radius: 0;
+  -moz-border-radius:0;
+  border-radius:0;
+
+  background: #fff;
+}
+
+#box .block h1 {
+  -webkit-border-radius: 0;
+  -moz-border-radius:0;
+  border-radius:0;
+
+  background: #1D3652;
+  color: #fff;
+
+  padding: 10px 23px;
+  margin: 0;
+  
+  border-bottom: 3px solid #D5E0E8;
+
+}
+
+#box .block .content {
+  padding: 10px 20px;
+}
+
+#box .block label {
+	font-weight:bold;
+}
+
+input.twothirds {
+   width: 280px;
+}
+
+input.half {
+   width: 210px;
+}
+
+/* pagination */
+
+.pagination {
+   padding-bottom: 5px;
+}
+
+.pagination a, .pagination span {
+  background-color: #f4f4f4;
+  background-image: url("../../img/button-background.png");
+  color: #111;
+  text-align: center;
+  min-width: 15px;
+  margin-right: 5px;
+  padding: 6px;
+  border: 1px solid #c3c4ba;
+}
+
+.pagination em {
+  background: #002134;
+  color: #fff;
+  border: 1px solid #002134;
+  font-weight: bold;
+}
+
+.pagination a {
+  color: #1a1a1a;
+  text-decoration: none;
+}
+
+.pagination a:hover {
+  border: 1px solid #818171;
+  -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
+.pagination a:active {
+/*  background-image: url("/img/button-background-active.png"); */
+  outline: none;
+}
+/* pagination */
+
+.pagination a, .pagination span, .pagination em {
+  padding: 2px 5px;
+  margin-right: 5px;
+  display: block;
+  float: left;
+  border-style: solid;
+  border-width: 1px;
+}
+
+
+.pagination a.disabled, .pagination span.disabled {
+   color: #818171;
+}
+
+p.info
+{
+	font-size: 0.8em;
+}
+
+
+
+/* NEW */
+
+body {
+	font-size:13px;
+		font-family: Arial, sans-serif;
+}
+
+html,body,#page {
+height: 100%;
+min-height:100%;
+}
+
+#page {
+	position:relative;
+	background: #fff;
+}
+
+#page_centered {
+	background: transparent !important;
+	margin:0 auto; 
+	position:relative;
+	top: 150px;
+	width:500px;
+}
+#left {
+	position: fixed;
+	background: #EEEEEE;
+	left:0;
+	min-height:100%;
+	width:200px;
+	border-right: 3px solid #D5E0E8;
+}
+
+#right {
+	margin-left: 200px;
+	background: #fff;
+	padding-left: 30px;
+	padding-top:20px;
+	padding-right: 10px;
+}
+
+#header {
+	font-size: 1.5em;
+	color: #fff;
+	padding: 15px 0 15px 15px;
+	font-weight:bold;
+	/*2e2e2e*/
+	background-color: #1D3652;
+}
+
+#logoutBox {
+	font-size: 0.8em;
+	text-align:center;
+	background: #fff;
+	padding-top: 6px;
+	padding-bottom:6px;
+	font-weight:bold;
+}
+
+#nav > li
+{
+	margin-bottom: 20px;
+}
+
+#nav > li > h3
+{
+	background: #fff;
+	width: 182px;
+	padding:10px;
+	font-weight: bold;
+	cursor:pointer;
+	border: 2px solid #D5E0E8;
+	border-right:0;
+}
+
+
+#nav > li > ul
+{
+	display:none;
+	background:#F1F4F7;
+	padding: 5px 10px 5px 10px;
+	width: 90%;
+	font-size: 0.9em;
+	border-bottom: 1px solid #ADADAD;
+}
+
+#nav > li.selected > ul
+{
+	display:block;
+}
+
+#nav > li > ul > li
+{
+	margin-left:15px;
+}
+
+#nav a
+{
+	text-decoration:none;
+}
+
+#right h1
+{
+	font-size: 1.1em;
+	font-weight:bold;
+	margin-bottom:10px;
+	border-bottom: 2px solid #B0B0B0;
+}
+
+div.info,span.info
+{
+	background-color: #F9F7E0;
+	border: 1px solid #EADCA0;
+	-moz-border-radius: 0px;
+}
+
+
+input.submit {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+
+table.settings {
+	width:100%;
+	border-collapse: collapse;
+	border-bottom: 6px solid #D5DDE5;
+}
+
+table.settings td {
+	padding: 10px;
+	background-color: #F1F4F7;
+	border-bottom: 1px solid #D9D9D9;
+}
+
+table.settings p.desc {
+	color: #666666;
+	font-size: 0.8em;
+}
+
+table.settings tr.header th {
+	background-color: #1D3652;
+	padding: 5px;
+	color: #fff;
+	font-weight:bold;
+}
+
+table.settings tr.odd td {
+	background-color: #FAFBFC;
+}
+
+table.settings tr.buttonrow td {
+	background-color: #E5ECF3;
+	text-align:center;
+}
+
+label.yes,
+label.no
+{
+	display:inline;
+	color: #fff;
+	font-weight:bold;
+  padding: 4px 10px 4px 10px;
+}
+
+label.yes{
+    -moz-border-radius: 5px 0 0 5px;
+    -webkit-border-radius: 5px 0 0 5px;
+    border-radius: 5px 0 0 5px;
+    background-color: #21600C;
+    width: auto;
+}
+
+label.no {
+    -moz-border-radius: 0 5px 5px 0;
+    -webkit-border-radius: 0 5px 5px 0;
+    border-radius: 0 5px 5px 0;
+    background-color: #A70000;
+    width: auto;
+}
+
+
+/* Content tables  */
+ table.content, table.content th, table.content td {
+		border-collapse: collapse;
+		color: #555;
+		border-bottom: 1px solid #eeeeee;
+ }
+ table.content td.caption {
+	 text-align: right;
+ }
+
+ /* Can use either tr.heading and td, or thead and th to create a heading..*/
+ table.content tr.heading td, table.content thead th {
+	 border-top:1px solid #CCCCCC;
+	 border-bottom:1px solid #CCCCCC;
+	 padding-top: 6px;
+	 color: #000000;
+ }
+ 
+ table.content td, table.content th {
+	 padding-bottom:5px;
+	 padding-top:5px;
+	 padding-left:4px;
+	 padding-right:4px;
+ }
+ 
+ table.content th {
+	background-color: #1D3652;
+	color: #fff;
+	font-weight:bold;
+ }
+
+ /* Table cells containing a caption have this class */
+ table.content td.caption {
+		text-align:right;
+ }
+
+ /* Row colors */
+
+ table.content tr { background: #F1F4F7; }
+
+ /* Can use TR.odd or TD.odd for odd rows/columns */
+ table.content tr.odd, table.content td.odd { background: #eeeeee; }
+ 
+ h2.tableHeader {
+	font-size: 1.1em;
+	font-weight:bold;
+	margin-top: 10px;
+}
+ 

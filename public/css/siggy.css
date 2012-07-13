@@ -1,0 +1,922 @@
+ /*reset*/
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { 
+	margin:0;
+	padding:0;
+}
+table {
+	border-collapse:collapse;
+	border-spacing:0;
+}
+fieldset,img { 
+	border:0;
+}
+address,caption,cite,code,dfn,em,strong,th,var {
+	font-style:normal;
+	font-weight:normal;
+}
+ol,ul {
+	list-style:none;
+}
+caption,th {
+	text-align:left;
+}
+h1,h2,h3,h4,h5,h6 {
+	font-size:100%;
+	font-weight:normal;
+}
+q:before,q:after {
+	content:'';
+}
+abbr,acronym { border:0;
+}
+
+body {
+	background: #111111 url(../../public/images/bg.jpg) repeat-x;
+	font-family: Arial;
+	font-size:13px;
+	color: white;
+}
+
+input {
+	background-color: #fff;
+	border: 1px solid #000;
+}
+
+#wrapper {
+	padding: 20px;
+	margin-top:	40px;
+}
+
+
+#sigs table,
+#notesTable{
+	width:100%;
+	background: #092665;
+	color: #FFFFFF;
+	border: 1px solid #000;
+}
+
+table.siggyTable th,
+h2.header{
+	background-color: #1C1C1C;
+	border: 1px solid #000000;
+	color: #DADADA;
+	font-weight: bold;
+	padding: 3px;
+	text-align: center;
+}
+
+#systemTable th.header,
+h2.header{
+	text-align: left;
+}
+#systemTable th.header p{
+	float:right;
+	height: 16px;
+}
+
+#sigs table td,
+#notesTable td,
+#sigCalculator table td,
+table.stats td{
+	border: 1px solid #000;
+	padding:2px;
+}
+
+table.siggyTable tr.alt{
+	background-color: #00279A;
+}
+
+.center{
+	text-align:center;
+}
+
+td.name,
+td.pad{
+	padding-left:5px;
+}
+
+td.smallLeft{
+	font-size:0.9em;
+}
+
+p.desc {
+	font-size:0.8em;
+	font-style:italic;
+}
+
+table.siggyTable{
+	width:100%;
+	background: #092665;
+	color: #FFFFFF;
+}
+
+table td.title {
+	width: 6%;
+	padding:4px;
+	border: 1px solid #000;
+	font-weight: bold;
+}
+
+table td.content {
+	border: 1px solid #000;
+	width:39%;
+	padding-left: 4px;
+}
+
+#systemOptions td.content {
+	padding: 5px;
+	width:15%;
+}
+
+#systemOptions td.content label input
+{
+	margin-left:4px;
+	margin-right:4px;
+}
+
+table td.desc p{
+	font-size: 0.85em;
+	font-style: italic;
+}
+
+#sigAddBox {
+	background-color: #252525;
+	border: 1px solid #333333;
+	padding: 5px;
+	min-width: 280px;
+	width: auto;
+	height: 40px;
+	position:relative;
+	display: inline-block;
+}
+
+#sigAddBox form {
+	position:relative;
+}
+
+#notesTable {
+	width:100%;
+}
+
+table.tablesorter thead tr .headerSortUp {
+	background-image: url(../../public/images/asc.gif) !important;
+	background-repeat: no-repeat;
+	background-position: right center;
+}
+table.tablesorter thead tr .headerSortDown {
+	background-image: url(../../public/images/desc.gif) !important;
+	background-repeat: no-repeat;
+	background-position: right center;
+}      
+
+#topBar {
+	width: 100%;
+	height:32px;
+	padding: 7px 0 7px 0;
+	background-color: #1C1C1C;
+	color: white;
+	position:relative;
+}
+
+#topBar > div
+{
+	margin-left:7px;
+}
+
+#topBar p.name {
+	left: 83px;
+	position: absolute;
+	top: 8px;
+	font-weight:bold;
+}
+
+#topBar div.centerBar
+{
+	width: 122px;
+	margin: -29px auto 0;
+	font-size: 0.8em;
+}
+
+#topBar div.centerBar button
+{
+	width: 122px;
+	font-size: 1em;
+	background: #fff;
+	border: 1px solid #000;
+}
+
+#floatingHeader
+{
+	position: fixed;
+	top:0;
+	width: 100%;
+	z-index: 99999;
+}
+
+a {
+	text-decoration: none;
+	color: #FF7F00;
+}
+
+#updateTime
+{    
+	position: absolute;
+	right: 12px;
+	top: 7px;
+	text-align:right;
+}
+
+
+input.sigEdit
+{
+width:50px;
+}
+
+#loading {
+left: -28px;
+position: absolute;
+top: -4px;
+}
+
+#systemList {
+height: 50px;
+margin-bottom: -29px;
+margin-left: 28px;
+margin-top: 62px;
+float:left;
+}
+
+#systemList ul
+{
+       width: 80px;
+       height: 100%;
+       border-left: 5px solid #1c1c1c;
+       border-top: 4px solid #1C1C1C;
+      -moz-transform: rotate(-90deg);
+      -webkit-transform: rotate(-90deg);
+      -moz-transform-origin: left center;
+      -webkit-transform-origin: left center;
+}
+
+#systemList ul li {
+    background-color: #02143C;
+    padding: 1px;
+    width: 80px;
+    font-weight:bold;
+    border: 1px solid #000;
+    cursor: pointer;
+    overflow: hidden;
+}    
+
+#systemList ul li:hover {
+  background-color: #092665;
+}
+
+#systemList ul li.inUse{
+  border-left:4px solid #00FF27;
+}
+
+#systemList ul li.notInUse{
+  border-left:4px solid #FF0000;
+}
+
+span.sysClass
+{
+  font-weight:normal;
+  padding-left:2px;
+}
+
+
+.classDangerous{
+  color: #FF9308;
+}
+.classUnknown{
+  color: #C4AC1C;
+}
+.classDeadly{
+  color: #FF0D0D;
+}
+
+.classHigh{
+  color: #259900;
+}
+.classLow{
+  color: #FF9308;
+}
+.classNull{
+  color: #FF0D0D;
+}
+
+
+.sysSelected {
+  background-color: #092665 !important;
+  cursor: auto !important;
+}
+
+#systemOptions {
+display:none;
+}
+
+#systemInfo {
+  clear: both;
+}
+
+/* collasped style */
+#systemInfo-collasped {
+	padding:8px;
+	border: 1px solid #000;
+	background-color: #092665;
+	clear:both;
+}
+
+#systemInfo-collasped h2 {
+	font-weight:bold;
+}
+
+#systemInfo-collasped p.systemName {
+	display:inline-block;
+}
+
+#collaspedInfoEffectStatic {
+	display:inline-block;
+}
+
+#systemInfo-collasped p.systemButtons {
+	display:inline-block;
+	float:right;
+}
+
+#systemInfo-collasped p.spacer {
+	display:inline-block;
+	margin-left:5px;
+	margin-right:5px;
+	font-weight:bold;
+}
+
+#systemInfo-expand,
+#systemInfo-collaspe {
+	margin-left:8px;
+}
+
+
+#systemInfoButton,
+#systemOptionsButton {
+  position:absolute;
+  bottom:0;
+  right:0;
+  padding: 4px;
+  width:50px;
+  background-color: #AB5907;
+  height:14px;
+  border:1px solid #000;
+  text-align:center;
+}
+
+#systemInfoButton{
+  right: 60px;
+}
+
+#systemInfoButton:hover,
+#systemOptionsButton:hover {
+  background-color: #FF8308;
+  cursor: pointer;
+}
+
+.selected {
+  background-color: #FF8308 !important;
+  cursor: auto !important;
+}
+
+#systemAdvanced {
+  position:relative;
+  width: 100%;
+  overflow:hidden;
+}
+
+.clear {
+  clear:both;
+}
+
+
+table td.buttonRow {
+  text-align:center;
+  background-color: #000000;
+}
+
+#globalNotesButton
+{
+  width: 100px;
+  height:14px;
+  text-align:center;
+  background-color: #1C1C1C;
+  padding:4px;
+  margin: 0 auto 0 auto;
+  -moz-border-radius: 0 0 4px 4px;
+  -webkit-border-radius: 0 0 4px 4px;
+  border-radius: 0 0 4px 4px;
+  border: 1px solid #032AB3;
+  border-top: 0;
+  cursor: pointer;
+}
+
+#globalNotesContainer
+{
+  clear:both;
+}
+
+#globalNotes h2 {
+  font-weight:bold;
+  font-size:1.03em;
+  margin-bottom:4px;
+  border-bottom: 1px solid #fff;
+  padding-bottom:3px;
+}
+
+#globalNotes {
+  -moz-border-radius: 0 0 9px 9px;
+  border-radius: 0 0 9px 9px;
+  -webkit-border-radius: 0 0 9px 9px;
+  padding: 10px;
+  background-color: #092665;
+  display:none;
+}
+
+#globalNotes p
+{
+  font-size:0.8em;
+}
+
+.tooltip
+{
+  display: none;
+  position: absolute;
+  background-color: #262626;
+  padding: 10px;
+  z-index: 999;
+  font-size: 0.9em;
+  text-align:left;
+  font-weight:normal;
+}
+
+#sigCalculator
+{
+  background-color: #262626;
+  padding: 10px;
+  margin: 0 auto;
+  border: 5px solid #1C1C1C;
+  display:none;
+}
+
+#sigCalculator h2,
+.box h2
+{
+    font-size: 1.05em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.box
+{
+  background-color: #262626;
+  padding: 5px;
+  margin: 0 auto;
+  border: 5px solid #1C1C1C;
+}
+
+.box h3
+{
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+.box p
+{
+	margin: 4px 0 4px 0;
+}
+
+fieldset
+{
+    background-color: #545454;
+    padding: 10px;
+}
+
+fieldset label
+{
+  float:left;
+  display: block;
+  width:200px;
+  margin: 5px 0 0;
+}
+
+fieldset legend
+{
+  font-weight:bold;
+}
+
+
+label.yes{
+    -moz-border-radius: 5px 0 0 5px;
+    -webkit-border-radius: 5px 0 0 5px;
+    border-radius: 5px 0 0 5px;
+    background-color: #21600C;
+    padding: 2px;
+    width: auto;
+}
+
+label.no {
+    -moz-border-radius: 0 5px 5px 0;
+    -webkit-border-radius: 0 5px 5px 0;
+    border-radius: 0 5px 5px 0;
+    background-color: #A70000;
+    padding: 2px;
+    width: auto;
+}
+
+#profileInfo {
+  position:absolute;
+  right: 0;
+  top: 0;
+  display: none;
+}
+
+#strengthCalcButton{
+    background-color: #1c1c1c;
+    float: right;
+    height: 15px;
+    padding: 5px;
+    width: 100px;
+    text-align:center;
+    cursor:pointer;
+  -moz-border-radius: 0 0 4px 4px;
+  -webkit-border-radius: 0 0 4px 4px;
+  border-radius: 0 0 4px 4px;
+  border: 1px solid #032AB3;
+  border-top: 0;
+}
+
+#strengthTable {
+  display:none;
+}
+
+#bearClassLinks a.active{
+	font-weight:bold;
+	color: #FFF;
+}
+
+#carebear
+{
+	cursor:pointer;
+}
+
+#carebearBox
+{
+	width: 250px;
+}
+
+td.moreinfo
+{
+	border-left:0 !important;
+}
+
+td.desc
+{
+	border-right:0 !important;
+}
+
+#chainMapContainer
+{
+	position:relative;
+}
+
+#chainMapContainer h2
+{
+	text-align:center;
+}
+
+#chainMapContainer p.left
+{
+	display:inline-block;
+	position:absolute;
+	left:3px;'
+}
+
+#chainMapInner
+{
+	border: 1px solid #000;
+}
+
+#chainMap
+{
+	width: 100%;
+	height: 400px;
+	background-color: #2d2d2d;
+}
+
+#chainMapContainer p.loading
+{
+	position:absolute;
+	font-size:3em;
+	display:none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	cursor: default;
+}
+
+#chainMapContainer p.editing
+{
+	position:absolute;
+	font-size:1.4em;
+	display:none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	cursor: default;
+}
+
+#chainMapContainer p.deleting
+{
+	position:absolute;
+	font-size:1.4em;
+	display:none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	cursor: default;
+}
+
+#chainMapContainer p.buttons
+{
+	position:absolute;
+}
+
+#wormholePopup
+{
+	width:300px;
+	display:none;
+	padding:0px;
+}
+
+button.centered
+{
+	display:block;
+	margin:0 auto;
+}
+
+/* siggy Menu "generic" css */
+.dropUp,
+.dropDown {
+	height: 92%;
+	padding:0 15px 0 15px;
+	vertical-align: middle;
+	background-color: #092665;
+	font-weight: bold;
+}
+
+.dropUp span,
+.dropDown span
+{
+	vertical-align:middle;
+}
+
+.dropUp ul,
+.dropDown ul
+{
+	display:none;
+	background: #02143C;
+	border: 1px solid #000;
+	
+	position:absolute;
+	top: 0;
+	left: 0;
+	
+	z-index: 9999;
+}
+
+.dropUp ul li,
+.dropDown ul li
+{
+	padding: 6px;
+	width: 150px;
+	border-bottom: 1px solid #000;
+	font-size: 0.9em;
+}
+
+.dropUp ul li:hover,
+.dropDown ul li:hover
+{
+	background-color: #092665;
+}
+
+.dropUp:hover,
+.dropDown:hover
+{
+	background-color: #FF8308;
+	cursor: pointer;
+}
+
+/* accessMenu specific sexiness */
+#accessMenu
+{
+	background: none;
+	padding: 0;
+	height: auto;
+}
+
+#accessMenu ul li
+{
+	padding: 3px;
+	width: 200px;
+}
+
+.opened
+{
+	background-color: #AB5907 !important;
+}
+
+ul.errors
+{
+	background-color: #910E0E;
+	padding: 4px;
+	list-style: disc inside none;
+	display: none;
+}
+
+#chainPanTrackX
+{
+	display:none;
+	height: 16px;
+	background-color:#000;
+	padding-top:2px;
+	padding-bottom:2px;
+}
+
+#chainPanBarX
+{
+	background-color: #A46D00; 
+	width:40px;
+	height: 16px;
+	cursor: pointer;
+	position:relative;
+}
+
+#chainPanBarX p.left
+{
+	float:left;
+	cursor:inherit;
+	margin-left:10px;
+	font-weight:bold;
+}
+
+#chainPanBarX p.right
+{
+	float:right;
+	cursor:inherit;
+	margin-right:10px;
+	font-weight:bold;
+}
+
+/* AUTOCOMPLETE */
+
+.acInput {
+	width: 115px;
+	background-color: #fff;
+}
+.acResults {
+	padding: 0px;
+	border: 1px solid #000;
+	background-color: #fff;
+	overflow: hidden;
+	color: #000;
+	max-height: 100px;
+	overflow-y: auto;
+	overflow-x: none;
+	z-index: 1005;
+}
+
+.acResults ul {
+	width: 100%;
+	list-style-position: outside;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.acResults li {
+	margin: 0px;
+	padding: 2px 5px;
+	cursor: pointer;
+	display: block;
+	width: 100%;
+	font: menu;
+	font-size: 12px;
+	overflow: hidden;
+}
+
+.acLoading {
+	background: #fff url('indicator.gif') right center no-repeat;
+}
+
+.acSelect {
+	background-color: Highlight;
+	color: HighlightText;
+}
+
+div.fauxTable
+{
+	background-color: #2D2D2D;
+	text-align:center;
+	border:1px solid #000;
+}
+
+div.fauxTable > div
+{
+	padding: 5px;
+}
+
+div.fauxTable h3
+{
+	background-color: #1C1C1C;
+	padding:3px;
+	border-bottom:1px solid #000;
+	text-align:left;
+}
+
+.clickMe
+{
+	cursor:pointer;
+}
+
+div.fauxTable h3,h4
+{
+	font-weight:bold;
+}
+
+.statColor
+{
+	border: 1px solid #fff;
+	width:16px;
+	height:10px;
+	display:inline-block;
+}
+
+input:focus,
+select:focus
+{
+	outline:#FF8308 solid 2px;
+}
+
+.evekill
+{
+	margin-right:4px;
+}
+
+/*****
+whpopup tabs
+*******/
+#wormholeTabs
+{
+	background-color: #1f1f1f;
+}
+
+#wormholeTabs div
+{
+	display: inline-block;
+	background-color: #0E0E0E;
+	padding:5px;
+	margin:0;
+	font-size:1.1em;
+	font-weight:bold;
+}
+
+#wormholeTabs div:hover
+{
+	background-color: #AB5907;
+}
+
+#wormholePopup div.tabcontent
+{
+	padding:5px;
+}
+
+#jumpLogList li
+{
+	border-bottom:1px solid #FEA800;
+	height: 58px;
+	padding:4px;
+	font-size: 0.75em;
+	background-color: #121212;
+}
+
+#jumpLogList
+{
+	border: 1px solid #000;
+}
