@@ -39,8 +39,8 @@ class access
 		{
 			Cookie::$salt = 'y[$e.swbDs@|Gd(ndtUSy^';
 			
-			$this->trusted = miscUtils::isIGB();
-			$this->igb = miscUtils::getTrust();
+			$this->trusted = miscUtils::getTrust();
+			$this->igb = miscUtils::isIGB();
 		}
 
 		public function authenticate()
@@ -50,6 +50,7 @@ class access
 						// Start a new benchmark
 						$benchmark = Profiler::start('access', __FUNCTION__);
 				}			
+				
 				if( $this->igb )
 				{
 						$this->authPassword = Cookie::get('authPassword', '');
@@ -65,6 +66,7 @@ class access
 								{
 											if( $this->accessData['authMode'] == 1 )
 											{
+											
 													if( (!empty($this->accessData['sgAuthPassword']) && $this->authPassword == $this->accessData['sgAuthPassword'] )	 
 															|| ( empty($this->accessData['sgAuthPassword']) && $this->authPassword == $this->accessData['authPassword']) 
 														) 

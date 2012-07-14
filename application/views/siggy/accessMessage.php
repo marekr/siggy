@@ -45,13 +45,35 @@ abbr,acronym { border:0;
       {
         width: 30%;
         margin: 200px auto 0;
+        border: 1px solid #2B2A2A;
       }
       
       #message h1
       {
         font-weight:bold;
-        font-size:1.3em;
+        font-size:1.1em;
+        padding: 8px;
+        background: #171717;
       }
+      
+
+      #authBox
+      {
+				background: #000;
+				text-align:center;
+				padding:20px;
+      }
+      .fauxButton
+      {
+				background: #ED7D00;
+				color: #fff;
+				border: 2px solid #D0D0D0;
+				text-decoration: none;
+				padding:5px;
+				margin-top:10px;
+				display:inline-block;
+				font-weight:bold;
+      }            
       </style>
       <script type='text/javascript'>
         if( typeof(CCPEVE) != "undefined" )
@@ -64,8 +86,9 @@ abbr,acronym { border:0;
   <body>
     <div id="message">
     <h1>Welcome to siggy!</h1>
+			<div id="authBox">
     <?php if( strpos($_SERVER['HTTP_USER_AGENT'], 'EVE-IGB') ): ?>
-      <?php if( $groupData['groupID'] == 0 && $trusted ): ?>
+      <?php if( (isset($groupData['groupID']) && $groupData['groupID'] == 0) && $trusted ): ?>
         Sorry, but you currently do not have access to siggy. <br />
         <?php if( isset($_SERVER['HTTP_EVE_CORPID']) ): ?>
 				<br />Corporation ID: <?php echo $_SERVER['HTTP_EVE_CORPID']; ?><br />
@@ -73,11 +96,25 @@ abbr,acronym { border:0;
         <?php endif; ?>
       <?php else: ?>
         Please accept the trust request and refresh the page afterwards to continue.
+        <br />
+        <br />
+        <br />
+        <a href="http://siggy.borkedlabs.com" target="_blank">
+        <div class='fauxButton'>
+					Site trusted? CCP BEING TERRIBLE? Try this button.
+				</div>
+				</a>
       <?php endif; ?>
+		</div>
+	</div>
       
     <?php else: ?>
       Sorry, you must be using the EVE in game browser to continue.
     <?php endif; ?>
-    </div>
+    <?php if( defined('MESSDEBUG') ): ?>
+        <pre>
+        <?php print_r($_SERVER); ?>
+				</pre>
+		<?php endif; ?>
   </body>
 </html>

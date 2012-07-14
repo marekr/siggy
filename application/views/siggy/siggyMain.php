@@ -12,6 +12,7 @@
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery.autocomplete.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery.color.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery.flot.js'></script>
+    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery.contextMenu.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/raphael-1.5.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.js?2'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggycalc.js?2'></script>
@@ -73,7 +74,7 @@
 			</div>
 			<div id="headerTools">
 				<div id="headerToolsButtonBar">
-					<div id="globalNotesButton" class="headerToolButton">Show Notes &#x25BC;</div>
+					<div id="globalNotesButton" class="headerToolButton">Notes &#x25BC;</div>
 					<div id="strengthCalcButton" class="headerToolButton">Strength Calc. &#x25BC;</div>
 				</div>
 				<div id="globalNotes">
