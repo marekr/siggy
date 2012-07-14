@@ -285,7 +285,7 @@ siggyCalc.prototype.initialize = function ()
 		if ($('#sigCalculator').is(":visible"))
 		{
 			$('#sigCalculator').hide();
-			$(this).html('Strength Calc. &darr;');
+			$(this).html('Strength Calc. &#x25BC;');
 		}
 		else
 		{
@@ -294,7 +294,7 @@ siggyCalc.prototype.initialize = function ()
 				that.loadData();
 			}
 			$('#sigCalculator').show();
-			$(this).html('Strength Calc. &uarr;');
+			$(this).html('Strength Calc. &#x25B2;');
 		}
 	}); /* make dialog draggable, assign handle to title */
 }
