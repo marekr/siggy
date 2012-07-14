@@ -1,2 +1,0 @@
-Object.size=function(b){var a=0,c;for(c in b)b.hasOwnProperty(c)&&a++;return a};jQuery.d.c=function(b,a){typeof this.data("flashing")=="undefined"&&this.data("flashing",!1);if(this.data("flashing")!=!0){var c=this.b("background-color");this.data("flashing",!0);this.a({backgroundColor:b},a/2);var d=this;this.a({backgroundColor:c},a/2,function(){d.data("flashing",!1)})}};typeof CCPEVE!="undefined"&&CCPEVE.e("http://siggy.borkedlabs.com/*");
-jQuery.extend({scope:function(b,a){return function(){return b.apply(a,arguments)}}});
