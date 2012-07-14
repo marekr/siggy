@@ -1318,15 +1318,7 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 	
 	$('a.dotlan').attr('href', 'http://evemaps.dotlan.net/system/'+systemData.name);
 	
-	/*if( systemData.id >= 31000000 )
-	{
-			var ekID = (systemData.id -31000001+2)
-	}
-	else
-	{
-			var ekID = (systemData.id -30000001+2);
-	}*/
-	$('a.evekill').attr('href','http://eve.battleclinic.com/killboard/recent_activity.php?searchTerms='+systemData.name);
+	$('a.evekill').attr('href','http://whkills.info/?a=system_detail&sys_id='+systemData.id);
 	this.setSystemID(systemData.id);
 	this.setSystemClass(systemData.sysClass);
 	this.systemName = systemData.name;
@@ -2213,12 +2205,12 @@ siggymain.prototype.initializeGNotes = function()
 		if ( that.globalNotesEle.is(":visible") )
 		{
 			that.globalNotesEle.hide();
-			$('#globalNotesButton').html('Show Notes &#x25BC;');
+			$('#globalNotesButton').html('Notes &#x25BC;');
 		}
 		else
 		{
 			that.globalNotesEle.show();
-			$('#globalNotesButton').html('Hide Notes &#x25B2;');
+			$('#globalNotesButton').html('Notes &#x25B2;');
 			that.stopBlinkingNotes();
 		}
 	});
