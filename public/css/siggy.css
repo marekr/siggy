@@ -211,7 +211,7 @@ table.tablesorter thead tr .headerSortDown {
 	position: fixed;
 	top:0;
 	width: 100%;
-	z-index: 99999;
+	z-index: 999;
 }
 
 a {
@@ -406,23 +406,36 @@ table td.buttonRow {
 
 #globalNotesButton
 {
-  width: 100px;
-  height:14px;
-  text-align:center;
-  background-color: #1C1C1C;
-  padding:4px;
-  margin: 0 auto 0 auto;
-  -moz-border-radius: 0 0 4px 4px;
-  -webkit-border-radius: 0 0 4px 4px;
-  border-radius: 0 0 4px 4px;
-  border: 1px solid #032AB3;
-  border-top: 0;
-  cursor: pointer;
+
 }
 
-#globalNotesContainer
+
+#strengthCalcButton
+{
+
+}
+
+.headerToolButton
+{
+	display:inline-block;
+    background-color: #3A3535;
+    height: 15px;
+    padding: 5px;
+    width: 100px;
+    text-align:center;
+    cursor:pointer;
+}
+
+#headerToolsButtonBar
+{
+	text-align:center;
+}
+
+#headerTools
 {
   clear:both;
+  background-color: #262626;
+  
 }
 
 #globalNotes h2 {
@@ -541,20 +554,6 @@ label.no {
   display: none;
 }
 
-#strengthCalcButton{
-    background-color: #1c1c1c;
-    float: right;
-    height: 15px;
-    padding: 5px;
-    width: 100px;
-    text-align:center;
-    cursor:pointer;
-  -moz-border-radius: 0 0 4px 4px;
-  -webkit-border-radius: 0 0 4px 4px;
-  border-radius: 0 0 4px 4px;
-  border: 1px solid #032AB3;
-  border-top: 0;
-}
 
 #strengthTable {
   display:none;

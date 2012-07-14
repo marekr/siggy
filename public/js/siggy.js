@@ -150,99 +150,6 @@ CountUp.prototype.calculate = function ()
 	currDate = null;
 }
 			
-			
-
-/**
-* @constructor
-*//*
-function CountUp(initDate, selector)
-{
-	this.beginDate = new Date(initDate);
-	this.numOfDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-	this.borrowed = 0, this.years = 0, this.months = 0, this.days = 0;
-	this.hours = 0, this.minutes = 0, this.seconds = 0;
-	this.updateNumOfDays();
-	this.container = $(selector);
-	this.calculate();
-}
-
-CountUp.prototype.updateNumOfDays = function ()
-{
-	var dateNow = new Date();
-	var currYear = dateNow.getFullYear();
-	if ((currYear % 4 == 0 && currYear % 100 != 0) || currYear % 400 == 0)
-	{
-		this.numOfDays[1] = 29;
-	}
-	var self = this;
-
-	setTimeout(function ()
-	{
-		self.updateNumOfDays();
-	}, (new Date((currYear + 1), 1, 1) - dateNow));
-
-	//memory management LOL
-	dateNow = null;
-	delete dateNow;
-}
-
-CountUp.prototype.datePartDiff = function (then, now, MAX)
-{
-	var diff = now - then - this.borrowed;
-	this.borrowed = 0;
-	if (diff > -1) return diff;
-	this.borrowed = 1;
-	return (MAX + diff);
-}
-
-CountUp.prototype.formatTime = function ()
-{
-	this.seconds = this.addLeadingZero(this.seconds);
-	this.minutes = this.addLeadingZero(this.minutes);
-	this.hours = this.addLeadingZero(this.hours);
-}
-
-CountUp.prototype.addLeadingZero = function (value)
-{
-	return value < 10 ? ('0' + value) : value;
-}
-
-CountUp.prototype.calculate = function ()
-{
-	var currDate = new Date();
-	var prevDate = this.beginDate;
-
-	this.seconds = this.datePartDiff(prevDate.getSeconds(), currDate.getSeconds(), 60);
-	this.minutes = this.datePartDiff(prevDate.getMinutes(), currDate.getMinutes(), 60);
-	this.hours = this.datePartDiff(prevDate.getHours(), currDate.getHours(), 24);
-	this.days = this.datePartDiff(prevDate.getDate(), currDate.getDate(), this.numOfDays[prevDate.getMonth()]);
-
-	//this.months = this.datePartDiff(prevDate.getMonth(), currDate.getMonth(), 12);
-	//this.years = this.datePartDiff(prevDate.getFullYear(), currDate.getFullYear(),0);
-	if (this.days == 1)
-	{
-		this.hours += 24;
-	}
-	this.formatTime();
-
-	if (this.days <= 1)
-	{
-		this.container.text(this.hours + ":" + this.minutes + ":" + this.seconds);
-	}
-	else
-	{
-		this.container.text(this.days + "d " + this.hours+"h");
-	}
-
-	var self = this;
-	setTimeout(function ()
-	{
-		self.calculate();
-	}, 1000);
-
-	delete currDate;
-	currDate = null;
-}*/
 
 function pad(number, length)
 {
@@ -827,6 +734,9 @@ jQuery.extend(
 */
 function siggymain( options )
 {
+	this.fatalError = false;
+
+
 	this.systemID = 0;
 	this.systemClass = 9;
 	this.systemName = '';
@@ -866,7 +776,7 @@ function siggymain( options )
 			map: {}
 	};
 	
-  this.settings = $.extend(this.defaults, options);
+	this.settings = $.extend(this.defaults, options);
 }
 
 siggymain.prototype.getCurrentTime = function ()
@@ -895,7 +805,6 @@ siggymain.prototype.update = function ()
 {
 	if( this.idleTimeout >= this.idleMax )
 	{
-	//	$.blockUI('hi');
 		if( !this.afked )
 		{
 			$.blockUI({message: "Please move your mouse to reactivate siggy."});
@@ -907,17 +816,29 @@ siggymain.prototype.update = function ()
 			acsname: this.acsname 
 		}
 		var that = this;
-		$.get(this.baseUrl + 'updateSilent', silentRequest, function (data)
-		{
-			if( parseInt( data.acsid ) != 0 )
+		$.ajax({
+			url: this.baseUrl + 'updateSilent',
+			data: silentRequest,
+			beforeSend : function(xhr, opts){
+				if(that.fatalError == true) //just an example
+				{
+					xhr.abort();
+				}
+			},
+			success: function (data)
 			{
-				that.acsid = data.acsid;
-			}
-			if( data.acsname != '' )
-			{
-				that.acsname = data.acsname;
-			}
-		} );
+				if( parseInt( data.acsid ) != 0 )
+				{
+					that.acsid = data.acsid;
+				}
+				if( data.acsname != '' )
+				{
+					that.acsname = data.acsname;
+				}
+			},
+			dataType: 'json'
+			});
+		
 		this._updateTimeout = setTimeout(function (thisObj)
 		{
 			thisObj.update(0)
@@ -939,77 +860,90 @@ siggymain.prototype.update = function ()
 	request['forceUpdate'] = this.forceUpdate;
 
 	var that = this;
-	$.get(this.baseUrl + 'update', request, function (data)
-	{
-		if( parseInt( data.acsid ) != 0 )
-		{
-			that.acsid = data.acsid;
-		}
-		if( data.acsname != '' )
-		{
-			that.acsname = data.acsname;
-			$('#acsname b').text(that.acsname);
-		}
-		if (data.systemUpdate)
-		{
-			that.updateSystemInfo(data.systemData);
-			that.updateSystemOptionsForm(data.systemData);
-		}
-		if (data.sigUpdate)
-		{
-			var flashSigs = ( data.systemUpdate ? false : true );
-			that.updateSigs(data.sigData, flashSigs);
-		}
-		if (data.systemListUpdate)
-		{
-			that.systemList = data.systemList;
-			that.updateSystemList(that.systemList);
-		}
-		if (data.globalNotesUpdate)
-		{
-			if (!that.editingGlobalNotes)
+	$.ajax({
+		url: this.baseUrl + 'update',
+		data: request,
+		dataType: 'json',
+		beforeSend : function(xhr, opts){
+			if(that.fatalError == true) //just an example
 			{
-				
-				if( getCookie('notesUpdate') != null )
+				xhr.abort();
+			}
+		},
+		success: function (data)
+			{
+				if( parseInt( data.acsid ) != 0 )
 				{
-					var nlu = parseInt(getCookie('notesUpdate'));
-				}				
-				else
+					that.acsid = data.acsid;
+				}
+				if( data.acsname != '' )
 				{
-					var nlu = that.lastGlobalNotesUpdate;
+					that.acsname = data.acsname;
+					$('#acsname b').text(that.acsname);
+				}
+				if (data.systemUpdate)
+				{
+					that.updateSystemInfo(data.systemData);
+					that.updateSystemOptionsForm(data.systemData);
+				}
+				if (data.sigUpdate)
+				{
+					var flashSigs = ( data.systemUpdate ? false : true );
+					that.updateSigs(data.sigData, flashSigs);
+				}
+				if (data.systemListUpdate)
+				{
+					that.systemList = data.systemList;
+					that.updateSystemList(that.systemList);
+				}
+				if (data.globalNotesUpdate)
+				{
+					if (!that.editingGlobalNotes)
+					{
+						
+						if( getCookie('notesUpdate') != null )
+						{
+							var nlu = parseInt(getCookie('notesUpdate'));
+						}				
+						else
+						{
+							var nlu = that.lastGlobalNotesUpdate;
+						}
+						
+						//console.log('nlu:'+nlu);
+						if( !that.globalNotesEle.is(':visible') && data.lastGlobalNotesUpdate > nlu && nlu != 0 )
+						{
+							that.blinkNotes();
+						}
+						
+						that.lastGlobalNotesUpdate = data.lastGlobalNotesUpdate;
+						
+						setCookie('notesUpdate', data.lastGlobalNotesUpdate, 365);
+						
+						that.globalNotes = data.globalNotes;
+						$('#thegnotes').html(that.globalNotes.replace(/\n/g, '<br />'));
+						$('#gNotesTime').text( siggymain.displayTimeStamp(that.lastGlobalNotesUpdate) );
+					}
 				}
 				
-				//console.log('nlu:'+nlu);
-				if( !that.globalNotesEle.is(':visible') && data.lastGlobalNotesUpdate > nlu && nlu != 0 )
+				if( that.map.isMapOpen()  )
 				{
-					that.blinkNotes();
+					if( data.mapUpdate )
+					{
+						that.map.update(data.chainMap.lastUpdate, data.chainMap.systems, data.chainMap.wormholes);
+					}
+					if( typeof(data.chainMap) != 'undefined' && typeof(data.chainMap.actives) != '' )
+					{
+						that.map.updateActives(data.chainMap.actives);
+					}
 				}
-				
-				that.lastGlobalNotesUpdate = data.lastGlobalNotesUpdate;
-				
-				setCookie('notesUpdate', data.lastGlobalNotesUpdate, 365);
-				
-				that.globalNotes = data.globalNotes;
-				$('#thegnotes').html(that.globalNotes.replace(/\n/g, '<br />'));
-				$('#gNotesTime').text( siggymain.displayTimeStamp(that.lastGlobalNotesUpdate) );
-			}
-		}
-		
-		if( that.map.isMapOpen()  )
-		{
-			if( data.mapUpdate )
-			{
-				that.map.update(data.chainMap.lastUpdate, data.chainMap.systems, data.chainMap.wormholes);
-			}
-			if( typeof(data.chainMap) != 'undefined' && typeof(data.chainMap.actives) != '' )
-			{
-				that.map.updateActives(data.chainMap.actives);
-			}
-		}
 
-		that.lastUpdate = data.lastUpdate;
-		//  $.unblockUI();
-	}, 'json');
+				that.lastUpdate = data.lastUpdate;
+				//  $.unblockUI();
+			}
+		});
+	
+
 
 	this.forceUpdate = false;
 	$('span.updateTime').text(this.getCurrentTime());
@@ -1969,8 +1903,58 @@ siggymain.prototype.addBoxEnterHandler = function(e)
 			}
 }
 
+siggymain.prototype.displayFatalError = function(message)
+{
+
+		$('#fatalErrorMessage').html(message);
+
+		$.blockUI({ 
+				message: $('#fatalError'),
+				css: { 
+				border: 'none', 
+				padding: '15px', 
+				background: 'transparent', 
+				color: 'inherit',
+				cursor: 'auto',
+				textAlign: 'left',
+				top: '20%',
+				width: 'auto',
+				centerX: true,
+				centerY: true
+        },
+        overlayCSS: {
+            cursor: 'auto'
+        },
+		fadeIn:  0, 
+		fadeOut:  0
+		}); 
+}
+
+siggymain.prototype.setupFatalErrorHandler = function()
+{
+	var that = this;
+	
+	$(document).ajaxError( function() {
+		that.displayFatalError('Communication error. <br />Siggy may be down.');
+		that.fatalError = true;
+	} );
+	
+	$('#refreshFromFatal').click( function() {
+		location.reload(true);
+	} );
+}
+
 siggymain.prototype.initialize = function ()
 {
+	var that = this;
+	this.setupFatalErrorHandler();
+	
+
+
+	sigCalc = new siggyCalc();
+	sigCalc.baseUrl = this.baseUrl;
+	sigCalc.initialize();
+
 	if( getCookie('sysInfoCollasped') != null )
 	{
 		this.sysInfoCollasped = parseInt( getCookie('sysInfoCollasped') );
@@ -2025,7 +2009,6 @@ siggymain.prototype.initialize = function ()
 		headers: tableSorterHeaders
 	});
 	
-	var that = this;
 	$('#sigTable').bind('sortEnd', function() {
 		that.colorizeSigRows();
 	});
@@ -2216,6 +2199,10 @@ siggymain.prototype.initializeSystemExpandCollaspe = function()
 	});	
 }
 
+siggymain.prototype.registerHeaderToolButton = function( button, callback, shownText, hiddenText  )
+{
+}
+
 siggymain.prototype.initializeGNotes = function()
 {
 	var that = this;
@@ -2226,12 +2213,12 @@ siggymain.prototype.initializeGNotes = function()
 		if ( that.globalNotesEle.is(":visible") )
 		{
 			that.globalNotesEle.hide();
-			$('#globalNotesButton').html('Show Notes &darr;');
+			$('#globalNotesButton').html('Show Notes &#x25BC;');
 		}
 		else
 		{
 			that.globalNotesEle.show();
-			$('#globalNotesButton').html('Hide Notes &uarr;');
+			$('#globalNotesButton').html('Hide Notes &#x25B2;');
 			that.stopBlinkingNotes();
 		}
 	});

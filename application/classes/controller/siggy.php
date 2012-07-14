@@ -852,7 +852,7 @@ class Controller_Siggy extends Controller
 					{
 							DB::query(Database::INSERT, 'INSERT INTO stats (`charID`,`charName`,`groupID`,`subGroupID`,`dayStamp`,`wormholes`) VALUES(:charID, :charName, :groupID, :subGroupID, :dayStamp, 1) ON DUPLICATE KEY UPDATE wormholes=wormholes+1')
 												->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
-												->param(':groupID', $this->groupData['groupID'] )->param(':subGroupID', $this->groupData['subGroupID'] )->param(':dayStamp', $this->__getDayStamp() )->execute();
+												->param(':groupID', $this->groupData['groupID'] )->param(':subGroupID', $this->groupData['subGroupID'] )->param(':dayStamp', miscUtils::getDayStamp() )->execute();
 				
 					}								
 			}
@@ -1121,7 +1121,7 @@ class Controller_Siggy extends Controller
 			$update['sgNotes'] = $notes;
 			$update['sgNotesTime'] = time();
 			DB::update('subgroups')->set( $update )->where('subGroupID', '=', $this->groupData['subGroupID'])->execute();
-			$this->access->__recacheSubGroup($this->groupData['groupID']);
+			groupUtils::recacheSubGroup($this->groupData['groupID']);
 			
 			echo json_encode($update['sgNotesTime']);
 		}
@@ -1130,7 +1130,7 @@ class Controller_Siggy extends Controller
 			$update['groupNotes'] = $notes;
 			$update['lastNotesUpdate'] = time();
 			DB::update('groups')->set( $update )->where('groupID', '=', $this->groupData['groupID'])->execute();
-			$this->access->__recacheGroup($this->groupData['groupID']);
+			groupUtils::recacheGroup($this->groupData['groupID']);
 			
 			echo json_encode($update['lastNotesUpdate']);
 		}
@@ -1196,7 +1196,7 @@ class Controller_Siggy extends Controller
 			{
 				DB::query(Database::INSERT, 'INSERT INTO stats (`charID`,`charName`,`groupID`,`subGroupID`,`dayStamp`,`adds`) VALUES(:charID, :charName, :groupID, :subGroupID, :dayStamp, 1) ON DUPLICATE KEY UPDATE adds=adds+1')
 									->param(':charID',  $this->groupData['charID'])->param(':charName', $this->groupData['charName'] )
-									->param(':groupID', $this->groupData['groupID'] )->param(':subGroupID', $this->groupData['subGroupID'] )->param(':dayStamp', $this->__getDayStamp() )->execute();
+									->param(':groupID', $this->groupData['groupID'] )->param(':subGroupID', $this->groupData['subGroupID'] )->param(':dayStamp', miscUtils::getDayStamp() )->execute();
 	
 			}
 			$insert['sigID'] = $sigID[0];
@@ -1240,7 +1240,7 @@ class Controller_Siggy extends Controller
 			{
 				DB::query(Database::INSERT, 'INSERT INTO stats (`charID`,`charName`,`groupID`,`subGroupID`,`dayStamp`,`updates`) VALUES(:charID, :charName, :groupID, :subGroupID, :dayStamp, 1) ON DUPLICATE KEY UPDATE updates=updates+1')
 									->param(':charID',  $this->groupData['charID'] )->param(':charName', $this->groupData['charName'] )
-									->param(':groupID', $this->groupData['groupID'] )->param(':subGroupID', $this->groupData['subGroupID'] )->param(':dayStamp', $this->__getDayStamp() )->execute();			
+									->param(':groupID', $this->groupData['groupID'] )->param(':subGroupID', $this->groupData['subGroupID'] )->param(':dayStamp', miscUtils::getDayStamp() )->execute();			
 			}
 			echo json_encode('1');
 		}
