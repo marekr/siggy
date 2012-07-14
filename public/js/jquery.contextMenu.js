@@ -20,6 +20,7 @@ if(jQuery)( function() {
 			if( o.menu == undefined ) return false;
 			if( o.inSpeed == undefined ) o.inSpeed = 150;
 			if( o.outSpeed == undefined ) o.outSpeed = 75;
+			if( o.offsetPageY == undefined ) o.offsetPageY = 0;
 			// 0 needs to be -1 for expected results (no fade)
 			if( o.inSpeed == 0 ) o.inSpeed = -1;
 			if( o.outSpeed == 0 ) o.outSpeed = -1;
@@ -32,12 +33,12 @@ if(jQuery)( function() {
 				// Simulate a true right click
 				$(this).mousedown( function(e) {
 					var evt = e;
-					evt.stopPropagation();
 					$(this).mouseup( function(e) {
-						e.stopPropagation();
 						var srcElement = $(this);
 						$(this).unbind('mouseup');
 						if( evt.button == 2 ) {
+							evt.stopPropagation();
+							e.stopPropagation();
 							// Hide context menus that may be showing
 							$(".contextMenu").hide();
 							// Get this context menu
@@ -65,7 +66,7 @@ if(jQuery)( function() {
 								d.innerWidth = document.body.clientWidth;
 							}
 							(e.pageX) ? x = e.pageX : x = e.clientX + d.scrollLeft;
-							(e.pageY) ? y = e.pageY : y = e.clientY + d.scrollTop;
+							(e.pageY) ? y = e.pageY + o.offsetPageY : y = e.clientY + d.scrollTop;
 							
 							
 							// Show the menu
