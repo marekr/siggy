@@ -2763,15 +2763,18 @@
     elproto.drag = function (onmove, onstart, onend, move_scope, start_scope, end_scope) {
         this._drag = {};
         this.mousedown(function (e) {
-            (e.originalEvent || e).preventDefault();
-            var scrollY = doc.documentElement.scrollTop || doc.body.scrollTop,
-                scrollX = doc.documentElement.scrollLeft || doc.body.scrollLeft;
-            this._drag.x = e.clientX + scrollX;
-            this._drag.y = e.clientY + scrollY;
-            this._drag.id = e.identifier;
-            onstart && onstart.call(start_scope || move_scope || this, e.clientX + scrollX, e.clientY + scrollY, e);
-            !drag.length && R.mousemove(dragMove).mouseup(dragUp);
-            drag.push({el: this, move: onmove, end: onend, move_scope: move_scope, start_scope: start_scope, end_scope: end_scope});
+			if( e.which==1 )
+			{
+				(e.originalEvent || e).preventDefault();
+				var scrollY = doc.documentElement.scrollTop || doc.body.scrollTop,
+					scrollX = doc.documentElement.scrollLeft || doc.body.scrollLeft;
+				this._drag.x = e.clientX + scrollX;
+				this._drag.y = e.clientY + scrollY;
+				this._drag.id = e.identifier;
+				onstart && onstart.call(start_scope || move_scope || this, e.clientX + scrollX, e.clientY + scrollY, e);
+				!drag.length && R.mousemove(dragMove).mouseup(dragUp);
+				drag.push({el: this, move: onmove, end: onend, move_scope: move_scope, start_scope: start_scope, end_scope: end_scope});
+			}
         });
         return this;
     };
