@@ -51,7 +51,11 @@ $.growlUI = function(title, message, timeout, onClose) {
 $.fn.block = function(opts) {
 	return this.unblock({ fadeOut: 0 }).each(function() {
 		if ($.css(this,'position') == 'static')
+		{
+			$(this).data('blockUI.originalPosition', $.css(this,'position'));
 			this.style.position = 'relative';
+			
+		}
 		if ($.browser.msie)
 			this.style.zoom = 1; // force 'hasLayout'
 		install(this, opts);
@@ -62,6 +66,10 @@ $.fn.block = function(opts) {
 $.fn.unblock = function(opts) {
 	return this.each(function() {
 		remove(this, opts);
+		if( $(this).data('blockUI.originalPosition') != undefined )
+		{
+			this.style.position = $(this).data('blockUI.originalPosition');
+		}
 	});
 };
 

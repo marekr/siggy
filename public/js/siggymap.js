@@ -178,13 +178,16 @@ function siggyMap(options)
 	this.selectedSystemRect = null;
 	this.selectedSystemID = 0;
 	this.infoicon = null;
+	
+	//systemeditor
+	this.editingSystem = 0;
 }
 
 siggyMap.prototype.showMessage = function(what)
 {
 	if( what == 'loading' )
 	{
-		this.loadingMessage.css({'top': this.container.height()/2 - this.loadingMessage.height()/2, left: this.container.width()/2 - this.loadingMessage.width()/2});
+		this.loadingMessage.css({'top': this.container.height()/2, left: this.container.width()/2 - this.loadingMessage.width()/2});
 		this.loadingMessage.show();
 	}
 	else if( what == 'editing' )
@@ -241,7 +244,6 @@ siggyMap.prototype.centerButtons = function()
 		{
 			bottomOffset += 20;
 		}
-		this.buttonsContainer.css({left: this.container.width()/2 - this.buttonsContainer.width()/2, bottom: bottomOffset+'px'});
 	}
 }
 
@@ -371,7 +373,7 @@ siggyMap.prototype.initialize = function()
 		this.editingMessage = this.container.find('p.editing');
 		this.deletingMessage = this.container.find('p.deleting');
 		
-		this.buttonsContainer = this.container.find('p.buttons');
+		this.buttonsContainer = this.container.find('div.buttons');
 		
 		this.showMessage('loading');
 		
@@ -556,6 +558,28 @@ siggyMap.prototype.initialize = function()
 				that.setSelectedSystem( systemID );
 				e.stopPropagation();
 		});
+		
+		
+		this.setupSystemEditor();
+}
+
+siggyMap.prototype.setupSystemEditor = function()
+{
+	var that = this;
+	$('#systemEditorCancel').click( function() {
+		$('#chainMapContainer').unblock();
+		that.editingSystem = 0;
+	});	
+	
+	$('#systemEditorSave').click( function() {
+		var label = $('#systemEditor input[name=label]').val();
+		var inUse = $('#systemEditor input[name=inUse]:checked').val();
+		var activity = $('#systemEditor select[name=activity]').val();
+
+
+		that.siggymain.saveSystemOptions(that.editingSystem, label, inUse, activity);
+		$('#chainMapContainer').unblock();
+	});	
 }
 
 siggyMap.prototype.initializeTabs = function()
@@ -1116,13 +1140,13 @@ siggyMap.prototype.draw = function()
 				}
 				else if( $.browser.mozilla)
 				{
-						var infoX = 55;
+						var infoX = 50;
 						var infoY = -25;
 				}
 				else
 				{
-						var infoX = 65;
-						var infoY = -1;
+						var infoX = 10;
+						var infoY = -10;
 				}
 				this.infoicon = this.r.image(this.baseUrl+'/public/images/information.png',infoX,infoY,16,16);
 		}
@@ -1244,7 +1268,6 @@ siggyMap.prototype.draw = function()
 			this.drawnSystems[ this.systems[i].systemID ].systemID = this.systems[i].systemID;
 			this.drawnSystems[ this.systems[i].systemID ].systemName = this.systems[i].name;
 			this.drawnSystems[ this.systems[i].systemID ].displayName = this.systems[i].displayName;
-			
 
 			systemBlob.click( function() {
 				if( that.editing || that.massDelete )
@@ -1253,6 +1276,15 @@ siggyMap.prototype.draw = function()
 				}
 				that.siggymain.switchSystem(this.systemID, this.systemName);
 			} );
+			
+			$(systemBlob.node).contextMenu( { menu: 'systemMenu' },
+				function(action, el, pos) {
+					if( action == "edit" )
+					{
+						console.log(el);
+						that.openSystemEdit( el[0].raphael.systemID );
+					}
+			});
 		}
 		
 		for( var w in this.wormholes )
@@ -1303,6 +1335,36 @@ siggyMap.prototype.draw = function()
 		}
 		
 		that.updatePan();
+}
+
+siggyMap.prototype.openSystemEdit = function( sysID )
+{
+	this.editingSystem = sysID;
+	
+	$('#chainMapContainer').block({
+		message: $('#systemOptionsPopup'),
+		css: { 
+				border: 'none', 
+				padding: '15px', 
+				background: 'transparent', 
+				color: 'inherit',
+				cursor: 'auto',
+				textAlign: 'left',
+				width: 'auto'
+		},
+		overlayCSS: {
+				cursor: 'auto'
+		},
+		centerX: true,
+		fadeIn:  0, 
+		fadeOut:  0
+	});
+	$('#editingSystemName').text(this.systems[ sysID ].name);
+	
+	$('#systemEditor input[name=label]').val( this.systems[ sysID ].displayName );
+	$('#systemEditor select[name=activity]').val(this.systems[ sysID ].activity);
+	$('#systemEditor input[name=inUse]').filter('[value=' + this.systems[ sysID ].inUse + ']').attr('checked', true);
+	
 }
 
 siggyMap.prototype.populateBlobTitle = function( blob, sysName, dispName, sysClass, sysID, effect, homeSys )

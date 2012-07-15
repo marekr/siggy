@@ -43,8 +43,7 @@ input {
 }
 
 #wrapper {
-	padding: 20px;
-	margin-top:	40px;
+	padding: 0 20px 0 20px;
 }
 
 
@@ -502,6 +501,8 @@ table td.buttonRow {
 {
 	font-weight: bold;
 	font-size: 1.1em;
+	background-color: #1C1C1C;
+	padding: 5px;
 }
 
 .box p
@@ -511,7 +512,7 @@ table td.buttonRow {
 
 fieldset
 {
-    background-color: #545454;
+    background-color: #2D2D2D;
     padding: 10px;
 }
 
@@ -584,9 +585,10 @@ td.desc
 	border-right:0 !important;
 }
 
+
+/* CHAIN MAP */
 #chainMapContainer
 {
-	position:relative;
 }
 
 #chainMapContainer h2
@@ -652,12 +654,14 @@ td.desc
 	cursor: default;
 }
 
-#chainMapContainer p.buttons
+#chainMapContainer div.buttons
 {
-	position:absolute;
+	position:relative;
+	text-align:center;
 }
 
-#wormholePopup
+#wormholePopup,
+#systemOptionsPopup
 {
 	width:300px;
 	display:none;
@@ -668,6 +672,42 @@ button.centered
 {
 	display:block;
 	margin:0 auto;
+}
+
+
+
+#chainPanTrackX
+{
+	display:none;
+	height: 16px;
+	background-color:#000;
+	padding-top:2px;
+	padding-bottom:2px;
+}
+
+#chainPanBarX
+{
+	background-color: #A46D00; 
+	width:40px;
+	height: 16px;
+	cursor: pointer;
+	position:relative;
+}
+
+#chainPanBarX p.left
+{
+	float:left;
+	cursor:inherit;
+	margin-left:10px;
+	font-weight:bold;
+}
+
+#chainPanBarX p.right
+{
+	float:right;
+	cursor:inherit;
+	margin-right:10px;
+	font-weight:bold;
 }
 
 /* siggy Menu "generic" css */
@@ -747,40 +787,6 @@ ul.errors
 	padding: 4px;
 	list-style: disc inside none;
 	display: none;
-}
-
-#chainPanTrackX
-{
-	display:none;
-	height: 16px;
-	background-color:#000;
-	padding-top:2px;
-	padding-bottom:2px;
-}
-
-#chainPanBarX
-{
-	background-color: #A46D00; 
-	width:40px;
-	height: 16px;
-	cursor: pointer;
-	position:relative;
-}
-
-#chainPanBarX p.left
-{
-	float:left;
-	cursor:inherit;
-	margin-left:10px;
-	font-weight:bold;
-}
-
-#chainPanBarX p.right
-{
-	float:right;
-	cursor:inherit;
-	margin-right:10px;
-	font-weight:bold;
 }
 
 /* AUTOCOMPLETE */
@@ -925,7 +931,7 @@ whpopup tabs
 .contextMenu {
 	position: absolute;
 	width: 120px;
-	z-index: 99999;
+	z-index: 998;
 	border: solid 1px #CCC;
 	background: #EEE;
 	padding: 0px;

@@ -3,7 +3,7 @@
   <head>
     <title>siggy</title>
        <style type='text/css'></style>
-     <link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/siggy.css?24" rel="stylesheet" media="screen" /> 
+     <link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/siggy.css?25" rel="stylesheet" media="screen" /> 
     <?php if( Kohana::$environment == Kohana::DEVELOPMENT ): ?>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery-1.7.1.min.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery.tablesorter.js'></script>
@@ -18,8 +18,8 @@
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggycalc.js?2'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggymap.js?2'></script>
     <?php else: ?>
-    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/thirdparty.compiled.js?12'></script>
-    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.compiled.js?49'></script>
+    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/thirdparty.compiled.js?13'></script>
+    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.compiled.js?50'></script>
     <?php endif; ?>
   </head>
   <body>
@@ -236,6 +236,8 @@
 		<br />
 		<?php endif; ?>
     <div id="wrapper">
+	  <div style="height:70px; width: 100%"></div>
+    
       <!--- chain map -->
       <div id="chainMapContainer">
 				<h2 class="header" style="position:relative;"><p class='left'>Chain map</p><p id="chainMapec" style="display:inline-block;" class="center"><?php echo ( !$mapOpen ? "Click to show" : 'Click to hide' ); ?></p></h2>
@@ -246,9 +248,9 @@
 					<div id="chainMap">
 					</div>
 					<!-- magic buttons -->
-					<p class="buttons">
+					<div class="buttons">
 						<button id="chainMapSave" style="display:none;">Save Map Changes</button><button id="chainMapMassDeleteConfirm" style="display:none;">Confirm Mass Delete</button><button id="chainMapMassDeleteCancel" style="display:none;">Cancel</button>
-					</p>
+					</div>
 					<!-- magic buttons -->
 					<div id='chainPanTrackX'>
 						<div id='chainPanBarX'>
@@ -307,7 +309,6 @@
 						<p class='center'><span id="whEditFrom"></span> to <span id="whEditTo"></span></p>
 							<button class="centered" id="wormholeEditorDisconnect">Close Wormhole</button>
 						</div>
-						<br />
 						<ul class="errors">
 						</ul>
 						<br />
@@ -327,6 +328,47 @@
 					</div>
 				</div>
 				<!-- end wh editor -->
+				
+
+				<div id="systemOptionsPopup" class="box">
+					<div id="systemEditor" class="tabcontent">
+						<h3>Editing System: <span id="editingSystemName">System</span></h3>
+						<div style="padding:10px;">
+							<ul class="errors">
+							</ul>
+								<b>System label/display name</b><br />
+								<input type="text" name="label" />
+								
+								<br /><br />
+								<b>Is currently connected/used hole?</b><br />
+								<label class="yes" style="display:inline;float:none;">Yes<input type="radio" name="inUse" value="1" /></label><label class="no" style="display:inline;float:none;">No<input type="radio" name="inUse" value="0" /></label>
+								<br /><br />
+								<b>Activity Level</b><br />
+								<select name='activity'>
+												<option value='0'>Don't Know</option>
+												<option value='1'>Empty</option>
+												<option value='2'>Occupied</option>
+												<option value='3'>Active</option>
+								</select><br /><br />
+								
+								
+								<div class="center"><button id="systemEditorSave">Save</button><button id='systemEditorCancel'>Cancel</button><br />
+								</div>
+							</div>							
+							
+							
+					</div>
+				</div>
+				<!-- end wh editor -->				
+				
+			<!--- system context -->
+				
+				<ul id="systemMenu" class="contextMenu">
+					<li class="edit">
+						<a href="#edit">Edit</a>
+					</li>
+				</ul>
+			<!--- system context -->
       </div>
       <!--- end chain map -->
       <br />
