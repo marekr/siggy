@@ -1,2 +1,2 @@
-"C:\Program Files (x86)\Java\jre6\bin\java.exe" -jar compiler.jar --js=jquery-1.7.1.js --js=jquery.ezpz_tooltip.js --js=jquery.blockUI.js --js=jquery.color.js --js=jquery.autocomplete.js --js=jquery.tablesorter.js --js=raphael-1.5.js --js=jquery.flot.js --js_output_file=thirdparty.compiled.js
+"C:\Program Files (x86)\Java\jre6\bin\java.exe" -jar compiler.jar --js=jquery-1.7.1.js --js=jquery.ezpz_tooltip.js --js=jquery.blockUI.js --js=jquery.color.js --js=jquery.autocomplete.js --js=jquery.tablesorter.js --js=raphael-1.5.js --js=jquery.flot.js --js=jquery.contextMenu.js --js_output_file=thirdparty.compiled.js
 @pause

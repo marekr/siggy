@@ -166,7 +166,7 @@ function pad(number, length)
 var magsLookup = {
 	1: {
 		0: "",
-		1: "Forgotten Perimeter Amplifier",
+		1: "Forgotten Perimeter Coronation Platform",
 		2: "Forgotten Perimeter Power Array"
 	},
 	2: {
@@ -2036,23 +2036,10 @@ siggymain.prototype.initialize = function ()
 		var label = $('#systemOptions input[name=label]').val();
 		var inUse = $('#systemOptions input[name=inUse]:checked').val();
 		var activity = $('#systemOptions select[name=activity]').val();
-
-		$.post(that.baseUrl + 'dosaveSystemOptions', {
-			systemID: that.systemID,
-			label: label,
-			inUse: inUse,
-			activity: activity
-		}, function (data)
-		{
-			if (that.systemList[that.systemID])
-			{
-				that.systemList[that.systemID].displayName = label;
-				that.systemList[that.systemID].inUse = inUse;
-				that.systemList[that.systemID].activity = activity;
-				that.updateSystemList(that.systemList);
-			}
-		});
+		
+		that.saveSystemOptions(that.systemID, label, inUse, activity);
 	});
+
 	
 
 	$('#systemOptions button.reset').click(function ()
@@ -2150,6 +2137,26 @@ siggymain.prototype.initialize = function ()
 	}, 1000 );	
 	
 	this.initializeSystemExpandCollaspe();
+}
+
+siggymain.prototype.saveSystemOptions = function(systemID, label, inUse, activity)
+{
+		var that = this;
+		$.post(that.baseUrl + 'dosaveSystemOptions', {
+			systemID: systemID,
+			label: label,
+			inUse: inUse,
+			activity: activity
+		}, function (data)
+		{
+			if (that.systemList[systemID])
+			{
+				that.systemList[systemID].displayName = label;
+				that.systemList[systemID].inUse = inUse;
+				that.systemList[systemID].activity = activity;
+				that.updateSystemList(that.systemList);
+			}
+		});
 }
 
 siggymain.prototype.initializeSystemExpandCollaspe = function()
