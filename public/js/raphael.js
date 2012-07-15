@@ -2108,20 +2108,23 @@
     };
     var draggable = [];
     
-    elproto.drag = function (onmove, onstart, onend, move_scope, start_scope, end_scope) {
+    elproto.drag = function (onmove, onstart, onend, move_scope, start_scope, end_scope, which) {
         function start(e) {
-            (e.originalEvent || e).preventDefault();
-            var scrollY = g.doc.documentElement.scrollTop || g.doc.body.scrollTop,
-                scrollX = g.doc.documentElement.scrollLeft || g.doc.body.scrollLeft;
-            this._drag.x = e.clientX + scrollX;
-            this._drag.y = e.clientY + scrollY;
-            this._drag.id = e.identifier;
-            !drag.length && R.mousemove(dragMove).mouseup(dragUp);
-            drag.push({el: this, move_scope: move_scope, start_scope: start_scope, end_scope: end_scope});
-            onstart && eve.on("drag.start." + this.id, onstart);
-            onmove && eve.on("drag.move." + this.id, onmove);
-            onend && eve.on("drag.end." + this.id, onend);
-            eve("drag.start." + this.id, start_scope || move_scope || this, e.clientX + scrollX, e.clientY + scrollY, e);
+			if( e.which==1 )
+			{
+				(e.originalEvent || e).preventDefault();
+				var scrollY = g.doc.documentElement.scrollTop || g.doc.body.scrollTop,
+					scrollX = g.doc.documentElement.scrollLeft || g.doc.body.scrollLeft;
+				this._drag.x = e.clientX + scrollX;
+				this._drag.y = e.clientY + scrollY;
+				this._drag.id = e.identifier;
+				!drag.length && R.mousemove(dragMove).mouseup(dragUp);
+				drag.push({el: this, move_scope: move_scope, start_scope: start_scope, end_scope: end_scope});
+				onstart && eve.on("drag.start." + this.id, onstart);
+				onmove && eve.on("drag.move." + this.id, onmove);
+				onend && eve.on("drag.end." + this.id, onend);
+				eve("drag.start." + this.id, start_scope || move_scope || this, e.clientX + scrollX, e.clientY + scrollY, e);
+            }
         }
         this._drag = {};
         draggable.push({el: this, start: start});
