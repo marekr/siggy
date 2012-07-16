@@ -103,7 +103,15 @@ function CountUp(initDate,selector)
 	this.beginDate = new Date(initDate);
 	this.container = $(selector);
 	this.calculate();
+	this.timeout = null;
 }			
+
+CountUp.prototype.destroy = function()
+{
+	clearTimeout(this.timeout);
+	this.container = null;
+	delete this.beginDate;
+}
 
 
 CountUp.prototype.addLeadingZero = function (value)
@@ -141,7 +149,7 @@ CountUp.prototype.calculate = function ()
 	if( this.days < 2 )
 	{
 		var self = this;
-		setTimeout(function ()
+		this.timeout = setTimeout(function ()
 		{
 			self.calculate();
 		}, 1000);
@@ -784,7 +792,6 @@ siggymain.prototype.getCurrentTime = function ()
 	var date = new Date();
 	var time = pad(date.getUTCHours(), 2) + ':' + pad(date.getUTCMinutes(), 2) + ':' + pad(date.getUTCSeconds(), 2);
 
-	date = null;
 	delete date;
 
 	return time;
@@ -795,7 +802,6 @@ siggymain.displayTimeStamp = function (unixTimestamp)
 	var date = new Date(unixTimestamp * 1000);
 	var time = pad(date.getUTCDate(), 2) + '/' + pad(date.getUTCMonth() + 1, 2) + ' ' + pad(date.getUTCHours(), 2) + ':' + pad(date.getUTCMinutes(), 2) + ':' + pad(date.getUTCSeconds(), 2);
 
-	date = null;
 	delete date;
 
 	return time;
@@ -940,6 +946,8 @@ siggymain.prototype.update = function ()
 
 				that.lastUpdate = data.lastUpdate;
 				//  $.unblockUI();
+				
+				delete data;
 			}
 		});
 	
@@ -947,6 +955,7 @@ siggymain.prototype.update = function ()
 
 	this.forceUpdate = false;
 	$('span.updateTime').text(this.getCurrentTime());
+	
 	this._updateTimeout = setTimeout(function (thisObj)
 	{
 		thisObj.update(0)
@@ -1104,6 +1113,11 @@ siggymain.prototype.switchSystem = function(systemID, systemName)
 	this.forceUpdate = true;
 	this.freeze();
 	clearTimeout(this._updateTimeout);
+	for(var i in this.sigClocks)
+	{
+		this.sigClocks[i].destroy();
+		delete clock;
+	}
 	$("#sigTable tbody").empty();
 	this.editingSig = false;
 	this.sigData = {};
@@ -1140,7 +1154,6 @@ siggymain.prototype.updateSigs = function (sigData, flashSigs)
 			}
 			this.removeSigRow(this.sigData[i]);
 			delete this.sigData[i];
-			delete this.sigClocks[i];
 		}
 	}
 
@@ -1455,6 +1468,8 @@ siggymain.prototype.updateSigRow = function (sigData, flashSig)
 
 siggymain.prototype.removeSigRow = function (sigData)
 {
+	this.sigClocks[sigData.sigID].destroy();
+	delete this.sigClocks[sigData.sigID];
 	$('#sig-' + sigData.sigID).remove();
 	this.colorizeSigRows();
 }
@@ -1739,7 +1754,6 @@ siggymain.prototype.generateSelect = function (options, select)
 
 siggymain.prototype.removeSig = function (sigID)
 {
-	delete this.sigClocks[sigID];
 	this.removeSigRow(
 	{
 		sigID: sigID
