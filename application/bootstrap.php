@@ -1,6 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 define('WIN_DEV', true);
+define('NEWFRONT', true);
 define('CACHE_METHOD', 'file');
 // -- Environment setup --------------------------------------------------------
 

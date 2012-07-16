@@ -1470,6 +1470,10 @@ siggyMap.prototype.populateBlobTitle = function( blob, sysName, dispName, sysCla
 					}
 				} );
 				
+				this.passAllMouseEvents( blob.nameText.node, blob.node );
+				$(blob.nameText.node).bind('contextmenu', function() { return false; })
+
+				
 				requiredWidth += blob.nameText.getBBox().width;
 		}
 		
@@ -1514,9 +1518,11 @@ siggyMap.prototype.populateBlobTitle = function( blob, sysName, dispName, sysCla
 				this.setUpBoxedToolTip( blob.effectIndicator,  effText )
 		}
 		
-				
-		blob.nameText.tooltip(this.infoicon);	
-	
+		if( blob.nameText.infoIconSet == undefined )
+		{
+			blob.nameText.tooltip(this.infoicon);	
+			blob.nameText.infoIconSet = true;
+		}
 		if( requiredWidth > blob.getBBox().width-7 )
 		{
 					blob.attr({'width': requiredWidth+10});
@@ -1538,6 +1544,7 @@ siggyMap.prototype.populateBlobBody = function( blob, sysID, body )
 		{
 				return;
 		}
+		var that = this;
 		
 		//console.log("generating blob body for sysID:"+sysID);
 		//console.log("body is:"+body);
@@ -1567,6 +1574,11 @@ siggyMap.prototype.populateBlobBody = function( blob, sysID, body )
 				
 				blob.charText.attr({'text': bodyText});
 				blob.charText.attr({y: (blob.attr("y")+(blob.charText.getBBox(true).height/2)+15) });
+				
+				this.passAllMouseEvents( blob.charText.node, blob.node );
+
+				$(blob.charText.node).bind('contextmenu', function() { return false; })
+
 				
 				blob.attr({'height':30+heightBonus});
 				if( blob.charText.getBBox().width > bb.width-4 )
@@ -1615,8 +1627,47 @@ siggyMap.prototype.populateBlobBody = function( blob, sysID, body )
 				this.selectedSystemRect.attr({stroke: "#fff", "fill-opacity": 0, "stroke-width": 1, "stroke-dasharray": "."});
 				this.selectedSystemRect.toBack();
 		}		
-		
 }
+
+siggyMap.prototype.passAllMouseEvents = function(el, targetEl)
+{
+	var that = this;
+	$(el).mousedown(function (e) {
+		return that.passMouseEvent(targetEl, e, 'mousedown');
+	});
+	$(el).mouseup(function (e) {
+		return that.passMouseEvent(targetEl, e, 'mouseup');
+	});
+	$(el).mousemove(function (e) {
+		return that.passMouseEvent(targetEl, e, 'mousemove');
+	});
+}
+
+siggyMap.prototype.passMouseEvent = function(targetEl, e, type)
+{
+	if( $.browser.msie && parseInt($.browser.version) < 9)
+	{
+		//e.stopPropagation();
+		// base this new event on the existing event object, e
+		var myEvt = document.createEventObject(e);
+
+		targetEl.fireEvent('on' + type, myEvt);
+		
+		return false;
+	}
+	else
+	{
+	//	e.stopPropagation();
+		var myEvt = document.createEvent('MouseEvents');
+		myEvt.initMouseEvent(e.type, e.bubbles, e.cancelable, window, e.detail,
+		  e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey,
+		  e.metaKey, e.button, e.relatedTarget);
+
+		targetEl.dispatchEvent(myEvt);
+		return false;
+	}
+}
+
 
 
 siggyMap.prototype.setUpBoxedToolTip = function(trigger, displayText)
