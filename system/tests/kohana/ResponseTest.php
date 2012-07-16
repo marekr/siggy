@@ -15,32 +15,6 @@
 class Kohana_ResponseTest extends Unittest_TestCase
 {
 	/**
-	 * Ensures that Kohana::$expose adds the x-powered-by header and
-	 * makes sure it's set to the correct Kohana Framework string
-	 *
-	 * @test
-	 */
-	public function test_expose()
-	{
-		$this->markTestSkipped('send_headers() can only be executed once, test will never pass in current API');
-
-		Kohana::$expose = TRUE;
-		$response = new Response;
-		$headers = $response->send_headers()->headers();
-		$this->assertArrayHasKey('x-powered-by', (array) $headers);
-
-		if (isset($headers['x-powered-by']))
-		{
-			$this->assertSame($headers['x-powered-by']->value, 'Kohana Framework '.Kohana::VERSION.' ('.Kohana::CODENAME.')');
-		}
-
-		Kohana::$expose = FALSE;
-		$response = new Response;
-		$headers = $response->send_headers()->headers();
-		$this->assertArrayNotHasKey('x-powered-by', (array) $headers);
-	}
-
-	/**
 	 * Provider for test_body
 	 *
 	 * @return array
@@ -74,6 +48,37 @@ class Kohana_ResponseTest extends Unittest_TestCase
 
 		$response = (string) $response;
 		$this->assertSame($response, $expected);
+	}
+
+	/**
+	 * Provides data for test_body_string_zero()
+	 *
+	 * @return array
+	 */
+	public function provider_body_string_zero()
+	{
+		return array(
+			array('0', '0'),
+			array("0", '0'),
+			array(0, '0')
+		);
+	}
+
+	/**
+	 * Test that Response::body() handles numerics correctly
+	 *
+	 * @test
+	 * @dataProvider provider_body_string_zero
+	 * @param string $string 
+	 * @param string $expected 
+	 * @return void
+	 */
+	public function test_body_string_zero($string, $expected)
+	{
+		$response = new Response;
+		$response->body($string);
+
+		$this->assertSame($expected, $response->body());
 	}
 
 	/**
@@ -166,32 +171,41 @@ class Kohana_ResponseTest extends Unittest_TestCase
 	}
 
 	/**
+	 * Tests that the headers are not sent by PHP in CLI mode
+	 *
+	 * @return void
+	 */
+	public function test_send_headers_cli()
+	{
+		if (headers_sent())
+			$this->markTestSkipped('Cannot test this feature as headers have already been sent!');
+
+		if (Kohana::$is_cli)
+		{
+			$content_type = 'application/json';
+			$response = new Response;
+			$response->headers('content-type', $content_type)
+				->send_headers();
+
+			$this->assertFalse(headers_sent());
+		}
+		else
+		{
+			$this->markTestSkipped('Unable to perform test outside of CLI mode');
+		}
+	}
+
+	/**
 	 * Test the content type is sent when set
 	 * 
 	 * @test
 	 */
 	public function test_content_type_when_set()
 	{
-		$this->markTestSkipped('send_headers() can only be executed once, test will never pass in current API');
-
 		$content_type = 'application/json';
 		$response = new Response;
 		$response->headers('content-type', $content_type);
 		$headers  = $response->send_headers()->headers();
 		$this->assertSame($content_type, (string) $headers['content-type']);
-	}
-
-	/**
-	 * Tests that the default content type is sent if not set
-	 * 
-	 * @test
-	 */
-	public function test_default_content_type_when_not_set()
-	{
-		$this->markTestSkipped('send_headers() can only be executed once, test will never pass in current API');
-
-		$response = new Response;
-		$headers = $response->send_headers()->headers();
-		$this->assertSame(Kohana::$content_type.'; charset='.Kohana::$charset, (string) $headers['content-type']);
 	}
 }

@@ -39,12 +39,8 @@ class Kohana_Request_Client_Internal extends Request_Client {
 	 * @deprecated passing $params to controller methods deprecated since version 3.1
 	 *             will be removed in 3.2
 	 */
-	public function execute(Request $request)
+	public function execute_request(Request $request)
 	{
-		// Check for cache existance
-		if ($this->_cache instanceof Cache AND ($response = $this->cache_response($request)) instanceof Response)
-			return $response;
-
 		// Create the class prefix
 		$prefix = 'controller_';
 
@@ -86,12 +82,9 @@ class Kohana_Request_Client_Internal extends Request_Client {
 
 		try
 		{
-			// Initiate response time
-			$this->_response_time = time();
-
 			if ( ! class_exists($prefix.$controller))
 			{
-				throw new Http_Exception_404('The requested URL :uri was not found on this server.',
+				throw new HTTP_Exception_404('The requested URL :uri was not found on this server.',
 													array(':uri' => $request->uri()));
 			}
 
@@ -117,36 +110,23 @@ class Kohana_Request_Client_Internal extends Request_Client {
 			// If the action doesn't exist, it's a 404
 			if ( ! $class->hasMethod('action_'.$action))
 			{
-				throw new Http_Exception_404('The requested URL :uri was not found on this server.',
+				throw new HTTP_Exception_404('The requested URL :uri was not found on this server.',
 													array(':uri' => $request->uri()));
 			}
 
 			$method = $class->getMethod('action_'.$action);
-
-			/**
-			 * Execute the main action with the parameters
-			 *
-			 * @deprecated $params passing is deprecated since version 3.1
-			 *             will be removed in 3.2.
-			 */
-			$method->invokeArgs($controller, $params);
+			$method->invoke($controller);
 
 			// Execute the "after action" method
 			$class->getMethod('after')->invoke($controller);
-
-			// Stop response time
-			$this->_response_time = (time() - $this->_response_time);
-
-			// Add the default Content-Type header to initial request if not present
-			if ($initial_request AND ! $request->headers('content-type'))
-			{
-				$request->headers('content-type', Kohana::$content_type.'; charset='.Kohana::$charset);
-			}
 		}
 		catch (Exception $e)
 		{
 			// Restore the previous request
-			Request::$current = $previous;
+			if ($previous instanceof Request)
+			{
+				Request::$current = $previous;
+			}
 
 			if (isset($benchmark))
 			{
@@ -165,12 +145,6 @@ class Kohana_Request_Client_Internal extends Request_Client {
 		{
 			// Stop the benchmark
 			Profiler::stop($benchmark);
-		}
-
-		// Cache the response if cache is available
-		if ($this->_cache instanceof Cache)
-		{
-			$this->cache_response($request, $request->response());
 		}
 
 		// Return the response

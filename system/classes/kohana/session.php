@@ -18,7 +18,7 @@ abstract class Kohana_Session {
 	/**
 	 * @var  array  session instances
 	 */
-	protected static $instances = array();
+	public static $instances = array();
 
 	/**
 	 * Creates a singleton session of the given type. Some session types
@@ -32,7 +32,7 @@ abstract class Kohana_Session {
 	 * @param   string   type of session (native, cookie, etc)
 	 * @param   string   session identifier
 	 * @return  Session
-	 * @uses    Kohana::config
+	 * @uses    Kohana::$config
 	 */
 	public static function instance($type = NULL, $id = NULL)
 	{
@@ -45,7 +45,7 @@ abstract class Kohana_Session {
 		if ( ! isset(Session::$instances[$type]))
 		{
 			// Load the configuration for this type
-			$config = Kohana::config('session')->get($type);
+			$config = Kohana::$config->load('session')->get($type);
 
 			// Set the session class name
 			$class = 'Session_'.ucfirst($type);
@@ -294,9 +294,11 @@ abstract class Kohana_Session {
 	 */
 	public function read($id = NULL)
 	{
-		if (is_string($data = $this->_read($id)))
+		$data = NULL;
+
+		try
 		{
-			try
+			if (is_string($data = $this->_read($id)))
 			{
 				if ($this->_encrypted)
 				{
@@ -312,10 +314,16 @@ abstract class Kohana_Session {
 				// Unserialize the data
 				$data = unserialize($data);
 			}
-			catch (Exception $e)
+			else
 			{
-				// Ignore all reading errors
+				// Ignore these, session is valid, likely no data though.
 			}
+		}
+		catch (Exception $e)
+		{
+			// Error reading the session, usually
+			// a corrupt session.
+			throw new Session_Exception('Error reading session data.', NULL, Session_Exception::SESSION_CORRUPT);
 		}
 
 		if (is_array($data))
@@ -396,6 +404,27 @@ abstract class Kohana_Session {
 	}
 
 	/**
+	 * Restart the session.
+	 *
+	 *     $success = $session->restart();
+	 *
+	 * @return  boolean
+	 */
+	public function restart()
+	{
+		if ($this->_destroyed === FALSE)
+		{
+			// Wipe out the current session.
+			$this->destroy();
+		}
+
+		// Allow the new session to be saved
+		$this->_destroyed = FALSE;
+
+		return $this->_restart();
+	}
+
+	/**
 	 * Loads the raw session data string and returns it.
 	 *
 	 * @param   string   session id
@@ -423,5 +452,12 @@ abstract class Kohana_Session {
 	 * @return  boolean
 	 */
 	abstract protected function _destroy();
+
+	/**
+	 * Restarts the current session.
+	 *
+	 * @return  boolean
+	 */
+	abstract protected function _restart();
 
 } // End Session

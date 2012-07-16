@@ -332,7 +332,7 @@ class Kohana_Arr {
 	 * Adds a value to the beginning of an associative array.
 	 *
 	 *     // Add an empty value to the start of a select list
-	 *     Arr::unshift_assoc($array, 'none', 'Select a value');
+	 *     Arr::unshift($array, 'none', 'Select a value');
 	 *
 	 * @param   array   array to modify
 	 * @param   string  array key name
@@ -360,19 +360,30 @@ class Kohana_Arr {
 	 *
 	 * @param   mixed   callback applied to every element in the array
 	 * @param   array   array to map
+	 * @param   array   array of keys to apply to
 	 * @return  array
 	 */
-	public static function map($callback, $array)
+	public static function map($callback, $array, $keys = NULL)
 	{
 		foreach ($array as $key => $val)
 		{
 			if (is_array($val))
 			{
-				$array[$key] = Arr::map($callback, $val);
+				$array[$key] = Arr::map($callback, $array[$key]);
 			}
-			else
+			elseif ( ! is_array($keys) or in_array($key, $keys))
 			{
-				$array[$key] = call_user_func($callback, $val);
+				if (is_array($callback))
+				{
+					foreach ($callback as $cb)
+					{
+						$array[$key] = call_user_func($cb, $array[$key]);
+					}
+				}
+				else
+				{
+					$array[$key] = call_user_func($callback, $array[$key]);
+				}
 			}
 		}
 
@@ -464,7 +475,7 @@ class Kohana_Arr {
 	 *     $array = Arr::overwrite($a1, $a2);
 	 *
 	 *     // The output of $array will now be:
-	 *     array('name' => 'jack', 'mood' => 'happy', 'food' => 'bacon')
+	 *     array('name' => 'jack', 'mood' => 'happy', 'food' => 'tacos')
 	 *
 	 * @param   array   master array
 	 * @param   array   input arrays that will overwrite existing values

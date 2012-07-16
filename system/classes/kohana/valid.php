@@ -67,11 +67,21 @@ class Kohana_Valid {
 	 * Checks that a field is exactly the right length.
 	 *
 	 * @param   string   value
-	 * @param   integer  exact length required
+	 * @param   integer|array  exact length required, or array of valid lengths
 	 * @return  boolean
 	 */
 	public static function exact_length($value, $length)
 	{
+		if (is_array($length))
+		{
+			foreach($length as $strlen)
+			{
+				if (UTF8::strlen($value) === $strlen)
+					return TRUE;
+			}
+			return FALSE;
+		}
+
 		return UTF8::strlen($value) === $length;
 	}
 
@@ -99,6 +109,11 @@ class Kohana_Valid {
 	 */
 	public static function email($email, $strict = FALSE)
 	{
+		if (UTF8::strlen($email) > 254)
+		{
+			return FALSE;
+		}
+
 		if ($strict === TRUE)
 		{
 			$qtext = '[^\\x0d\\x22\\x5c\\x80-\\xff]';
@@ -117,7 +132,7 @@ class Kohana_Valid {
 		}
 		else
 		{
-			$expression = '/^[-_a-z0-9\'+*$^&%=~!?{}]++(?:\.[-_a-z0-9\'+*$^&%=~!?{}]+)*+@(?:(?![-.])[-a-z0-9.]+(?<![-.])\.[a-z]{2,6}|\d{1,3}(?:\.\d{1,3}){3})(?::\d++)?$/iD';
+			$expression = '/^[-_a-z0-9\'+*$^&%=~!?{}]++(?:\.[-_a-z0-9\'+*$^&%=~!?{}]+)*+@(?:(?![-.])[-a-z0-9.]+(?<![-.])\.[a-z]{2,6}|\d{1,3}(?:\.\d{1,3}){3})$/iD';
 		}
 
 		return (bool) preg_match($expression, (string) $email);
@@ -134,6 +149,9 @@ class Kohana_Valid {
 	 */
 	public static function email_domain($email)
 	{
+		if ( ! Valid::not_empty($email))
+			return FALSE; // Empty fields cause issues with checkdnsrr()
+
 		// Check if the email domain has a valid MX record
 		return (bool) checkdnsrr(preg_replace('/^[^@]++@/', '', $email), 'MX');
 	}
@@ -224,7 +242,7 @@ class Kohana_Valid {
 	 * @param   integer       credit card number
 	 * @param   string|array  card type, or an array of card types
 	 * @return  boolean
-	 * @uses    Validate::luhn
+	 * @uses    Valid::luhn
 	 */
 	public static function credit_card($number, $type = NULL)
 	{
@@ -249,7 +267,7 @@ class Kohana_Valid {
 			return FALSE;
 		}
 
-		$cards = Kohana::config('credit_cards');
+		$cards = Kohana::$config->load('credit_cards');
 
 		// Check card type
 		$type = strtolower($type);
@@ -486,7 +504,7 @@ class Kohana_Valid {
 		// Get the decimal point for the current locale
 		list($decimal) = array_values(localeconv());
 
-		return (bool) preg_match('/^[0-9]'.$digits.preg_quote($decimal).'[0-9]{'.( (int) $places).'}$/D', $str);
+		return (bool) preg_match('/^[+-]?[0-9]'.$digits.preg_quote($decimal).'[0-9]{'.( (int) $places).'}$/D', $str);
 	}
 
 	/**

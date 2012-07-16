@@ -8,37 +8,32 @@
  * - Variable and path debugging
  *
  * @package    Kohana
- * @category   Http
+ * @category   HTTP
  * @author     Kohana Team
  * @since      3.1.0
  * @copyright  (c) 2008-2011 Kohana Team
  * @license    http://kohanaphp.com/license
  */
-abstract class Kohana_Http {
+abstract class Kohana_HTTP {
 
 	/**
 	 * @var  The default protocol to use if it cannot be detected
 	 */
-	public static $protocol = 'http';
-
-	/**
-	 * @var  The default protocol version to use if cannot be detected
-	 */
-	public static $version = '1.1';
+	public static $protocol = 'HTTP/1.1';
 
 	/**
 	 * Parses a HTTP header string into an associative array
 	 *
 	 * @param   string   $header_string  Header string to parse
-	 * @return  Http_Header
+	 * @return  HTTP_Header
 	 */
 	public static function parse_header_string($header_string)
 	{
-		// If the PECL Http extension is loaded
+		// If the PECL HTTP extension is loaded
 		if (extension_loaded('http'))
 		{
 			// Use the fast method to parse header string
-			return new Http_Header(http_parse_headers($header_string));
+			return new HTTP_Header(http_parse_headers($header_string));
 		}
 
 		// Otherwise we use the slower PHP parsing
@@ -78,7 +73,7 @@ abstract class Kohana_Http {
 		}
 
 		// Return the headers
-		return new Http_Header($headers);
+		return new HTTP_Header($headers);
 	}
 
 	/**
@@ -87,9 +82,9 @@ abstract class Kohana_Http {
 	 * representation of the HTTP request.
 	 *
 	 *      // Get http headers into the request
-	 *      $request->headers = Http::request_headers();
+	 *      $request->headers = HTTP::request_headers();
 	 *
-	 * @return  Http_Header
+	 * @return  HTTP_Header
 	 */
 	public static function request_headers()
 	{
@@ -97,13 +92,13 @@ abstract class Kohana_Http {
 		if (function_exists('apache_request_headers'))
 		{
 			// Return the much faster method
-			return new Http_Header(apache_request_headers());
+			return new HTTP_Header(apache_request_headers());
 		}
 		// If the PECL HTTP tools are installed
 		elseif (extension_loaded('http'))
 		{
 			// Return the much faster method
-			return new Http_Header(http_get_request_headers());
+			return new HTTP_Header(http_get_request_headers());
 		}
 
 		// Setup the output
@@ -133,7 +128,7 @@ abstract class Kohana_Http {
 			$headers[str_replace(array('HTTP_', '_'), array('', '-'), $key)] = $value;
 		}
 
-		return new Http_Header($headers);
+		return new HTTP_Header($headers);
 	}
 
 	/**
@@ -157,4 +152,4 @@ abstract class Kohana_Http {
 
 		return implode('&', $encoded);
 	}
-} // End Kohana_Http
+} // End Kohana_HTTP

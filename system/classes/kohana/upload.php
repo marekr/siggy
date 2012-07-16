@@ -39,7 +39,7 @@ class Kohana_Upload {
 	 *     if ($array->check())
 	 *     {
 	 *         // Upload is valid, save it
-	 *         Upload::save($_FILES['file']);
+	 *         Upload::save($array['file']);
 	 *     }
 	 *
 	 * @param   array    uploaded file data
@@ -137,7 +137,7 @@ class Kohana_Upload {
 	/**
 	 * Test if an uploaded file is an allowed file type, by extension.
 	 *
-	 *     $array->rule('file', 'Upload::type', array(array('jpg', 'png', 'gif')));
+	 *     $array->rule('file', 'Upload::type', array(':value', array('jpg', 'png', 'gif')));
 	 *
 	 * @param   array    $_FILES item
 	 * @param   array    allowed file extensions
@@ -159,8 +159,8 @@ class Kohana_Upload {
 	 * and B is the byte unit (K, MiB, GB, etc.). All valid byte units are
 	 * defined in Num::$byte_units
 	 *
-	 *     $array->rule('file', 'Upload::size', array('1M'))
-	 *     $array->rule('file', 'Upload::size', array('2.5KiB'))
+	 *     $array->rule('file', 'Upload::size', array(':value', '1M'))
+	 *     $array->rule('file', 'Upload::size', array(':value', '2.5KiB'))
 	 *
 	 * @param   array    $_FILES item
 	 * @param   string   maximum file size allowed
@@ -185,6 +185,72 @@ class Kohana_Upload {
 
 		// Test that the file is under or equal to the max size
 		return ($file['size'] <= $size);
+	}
+
+	/**
+	 * Validation rule to test if an upload is an image and, optionally, is the correct size.
+	 *
+	 *     // The "image" file must be an image
+	 *     $array->rule('image', 'Upload::image')
+	 *
+	 *     // The "photo" file has a maximum size of 640x480 pixels
+	 *     $array->rule('photo', 'Upload::image', array(640, 480));
+	 *
+	 *     // The "image" file must be exactly 100x100 pixels
+	 *     $array->rule('image', 'Upload::image', array(100, 100, TRUE));
+	 *
+	 *
+	 * @param   array    $_FILES item
+	 * @param   integer  maximum width of image
+	 * @param   integer  maximum height of image
+	 * @param   boolean  match width and height exactly?
+	 * @return  boolean
+	 */
+	public static function image(array $file, $max_width = NULL, $max_height = NULL, $exact = FALSE)
+	{
+		if (Upload::not_empty($file))
+		{
+			try
+			{
+				// Get the width and height from the uploaded image
+				list($width, $height) = getimagesize($file['tmp_name']);
+			}
+			catch (ErrorException $e)
+			{
+				// Ignore read errors
+			}
+
+			if (empty($width) OR empty($height))
+			{
+				// Cannot get image size, cannot validate
+				return FALSE;
+			}
+
+			if ( ! $max_width)
+			{
+				// No limit, use the image width
+				$max_width = $width;
+			}
+
+			if ( ! $max_height)
+			{
+				// No limit, use the image height
+				$max_height = $height;
+			}
+
+			if ($exact)
+			{
+				// Check if dimensions match exactly
+				return ($width === $max_width AND $height === $max_height);
+			}
+			else
+			{
+				// Check if size is within maximum dimensions
+				return ($width <= $max_width AND $height <= $max_height);
+			}
+		}
+
+		return FALSE;
 	}
 
 } // End upload

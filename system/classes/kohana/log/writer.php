@@ -16,12 +16,14 @@ abstract class Kohana_Log_Writer {
 	 */
 	protected $_log_levels = array(
 		LOG_EMERG   => 'EMERGENCY',
+		LOG_ALERT   => 'ALERT',
 		LOG_CRIT    => 'CRITICAL',
 		LOG_ERR     => 'ERROR',
 		LOG_WARNING => 'WARNING',
 		LOG_NOTICE  => 'NOTICE',
 		LOG_INFO    => 'INFO',
 		LOG_DEBUG   => 'DEBUG',
+		8           => 'STRACE',
 	);
 
 	/**
