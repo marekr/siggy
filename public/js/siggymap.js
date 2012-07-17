@@ -931,12 +931,30 @@ siggyMap.prototype.update = function(timestamp, systems, wormholes)
 	
 	this.systems = systems;
 	this.wormholes = wormholes;
-	this.r.clear();
 	this.selectedSystemRect = null;
 	this.selectedSystem = 0;
 	this.drawnConnections = [];
+	for( var i in this.drawnConnections )
+	{
+		delete this.drawnConnections[i];
+	}
+	
 	this.drawnSystems = {};
+	for( var i in this.drawnSystems )
+	{
+		this.drawnSystems[i].charText = null;
+		this.cleanupJqueryEvents(this.drawnSystems[i].charText);
+		this.drawnSystems[i].nameText = null;
+		this.cleanupJqueryEvents(this.drawnSystems[i].nameText);
+		this.drawnSystems[i].classText = null;
+		this.drawnSystems[i].test = null;
+		this.cleanupJqueryEvents(this.drawnSystems[i]);
+		delete this.drawnSystems[i];
+	}
+	
 	this.infoicon = null;
+	//clear r after we nuke the js objects
+	this.r.clear();
 	this.draw();
 	this.updated = true;
 	
@@ -949,19 +967,19 @@ siggyMap.prototype.updateActives = function( activesData )
 	{
 			return;
 	}
+
 	
 	for( var i in this.drawnSystems )
 	{
 		if( typeof( activesData[i] ) != 'undefined' )
 		{
 				this.populateBlobBody( this.drawnSystems[i], i, activesData[i] );
-				this.populateBlobTitle( this.drawnSystems[i],  this.systems[i].name, this.systems[i].displayName, this.systems[i].sysClass,this.systems[i].systemID, this.systems[i].effect, this.systems[i].special );
 		}
 		else
 		{
 				this.populateBlobBody( this.drawnSystems[i], i, '' );
-				this.populateBlobTitle( this.drawnSystems[i],  this.systems[i].name, this.systems[i].displayName, this.systems[i].sysClass,this.systems[i].systemID, this.systems[i].effect, this.systems[i].special );
 		}
+		this.populateBlobTitle( this.drawnSystems[i],  this.systems[i].name, this.systems[i].displayName, this.systems[i].sysClass,this.systems[i].systemID, this.systems[i].effect, this.systems[i].special );
 	}
 	
 	for (var i = this.drawnConnections.length; i--;) {
@@ -1281,7 +1299,6 @@ siggyMap.prototype.draw = function()
 				function(action, el, pos) {
 					if( action == "edit" )
 					{
-						console.log(el);
 						that.openSystemEdit( el[0].raphael.systemID );
 					}
 			});
@@ -1332,6 +1349,7 @@ siggyMap.prototype.draw = function()
 			}
 			
 			this.drawnConnections.push(connection);
+			
 		}
 		
 		that.updatePan();
@@ -1544,6 +1562,7 @@ siggyMap.prototype.populateBlobBody = function( blob, sysID, body )
 		{
 				return;
 		}
+
 		var that = this;
 		
 		//console.log("generating blob body for sysID:"+sysID);
@@ -1605,6 +1624,8 @@ siggyMap.prototype.populateBlobBody = function( blob, sysID, body )
 				else
 				{
 						//blob.charText.attr({'text':''});
+						this.cleanupJqueryEvents(blob.charText.node);
+						
 						blob.charText.remove();
 						delete blob.charText;			/*ensures the actual charText reference is undefined because :CCP:*/
 						//console.log(blob.charText);
@@ -1627,6 +1648,11 @@ siggyMap.prototype.populateBlobBody = function( blob, sysID, body )
 				this.selectedSystemRect.attr({stroke: "#fff", "fill-opacity": 0, "stroke-width": 1, "stroke-dasharray": "."});
 				this.selectedSystemRect.toBack();
 		}		
+}
+
+siggyMap.prototype.clearMouseEvents = function(el)
+{
+	$(el).off();
 }
 
 siggyMap.prototype.passAllMouseEvents = function(el, targetEl)
