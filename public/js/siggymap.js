@@ -937,17 +937,21 @@ siggyMap.prototype.update = function(timestamp, systems, wormholes)
 	for( var i in this.drawnConnections )
 	{
 		delete this.drawnConnections[i];
+		this.drawnConnections[i].line.bgref = null;
 	}
 	
 	this.drawnSystems = {};
 	for( var i in this.drawnSystems )
 	{
-		this.drawnSystems[i].charText = null;
 		this.cleanupJqueryEvents(this.drawnSystems[i].charText);
-		this.drawnSystems[i].nameText = null;
+		delete this.drawnSystems[i].charText
+		this.drawnSystems[i].charText =  null;
 		this.cleanupJqueryEvents(this.drawnSystems[i].nameText);
-		this.drawnSystems[i].classText = null;
-		this.drawnSystems[i].test = null;
+		delete this.drawnSystems[i].nameText
+		this.drawnSystems[i].nameText = null;
+		delete this.drawnSystems[i].classText
+		delete this.drawnSystems[i].test
+		 this.drawnSystems[i].classText = null;
 		this.cleanupJqueryEvents(this.drawnSystems[i]);
 		delete this.drawnSystems[i];
 	}
