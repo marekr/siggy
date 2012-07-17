@@ -3,27 +3,26 @@
 	$.fn.ezpz_tooltip = function(options){
 		var settings = $.extend({}, $.fn.ezpz_tooltip.defaults, options);
 		
-		return this.each(function(){
-			var	content = $("#" + getContentId(this.id));
+		return this.each(function(){;
 			var targetMousedOver = $(this).mouseover(function(){
-				settings.beforeShow(content, $(this));
+				settings.beforeShow($("#" + getContentId(this.id)), $(this));
 			}).mousemove(function(e){
 				contentInfo = getElementDimensionsAndPosition(content);
 				targetInfo = getElementDimensionsAndPosition($(this));
 				contentInfo = $.fn.ezpz_tooltip.positions[settings.contentPosition](contentInfo, e.pageX, e.pageY, settings.offset, targetInfo);
 				contentInfo = keepInWindow(contentInfo);
 				
-				content.css('top', contentInfo['top']);
-				content.css('left', contentInfo['left']);
+				$("#" + getContentId(this.id)).css('top', contentInfo['top']);
+				$("#" + getContentId(this.id)).css('left', contentInfo['left']);
 				
-				settings.showContent(content);
+				settings.showContent($("#" + getContentId(this.id)));
 			});
 			
 			if (settings.stayOnContent && this.id != "") {
 				$("#" + this.id + ", #" + getContentId(this.id)).mouseover(function(){
-					content.css('display', 'block');
+					$("#" + getContentId(this.id)).css('display', 'block');
 				}).mouseout(function(){
-					content.css('display', 'none');
+					$("#" + getContentId(this.id)).css('display', 'none');
 					settings.afterHide();
 				});
 			}
@@ -85,6 +84,7 @@
 			return output;
 		};
 	};
+	
 	
 	$.fn.ezpz_tooltip.positionContent = function(contentInfo, mouseX, mouseY, offset, targetInfo) {
 		contentInfo['top'] = mouseY - offset - contentInfo['height'];
