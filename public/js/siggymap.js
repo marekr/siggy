@@ -91,6 +91,7 @@ Raphael.el.tooltip = function (tp) {
             this.tp.hide();
             this.unmousemove();
             });
+   
     return this;
 }
 
@@ -181,6 +182,7 @@ function siggyMap(options)
 	
 	//systemeditor
 	this.editingSystem = 0;
+
 }
 
 siggyMap.prototype.showMessage = function(what)
@@ -933,30 +935,80 @@ siggyMap.prototype.update = function(timestamp, systems, wormholes)
 	this.wormholes = wormholes;
 	this.selectedSystemRect = null;
 	this.selectedSystem = 0;
-	this.drawnConnections = [];
 	for( var i in this.drawnConnections )
 	{
+		if( this.drawnConnections[i].line.bgref != undefined )
+		{
+			this.drawnConnections[i].line.bgref = null;
+		}
+		
+		if( this.drawnConnections[i].line != undefined )
+		{
+			this.drawnConnections[i].line.remove();
+		}
+		
+		if( this.drawnConnections[i].bg != undefined )
+		{
+			this.drawnConnections[i].bg.remove();
+		}
 		delete this.drawnConnections[i];
-		this.drawnConnections[i].line.bgref = null;
 	}
+	this.drawnConnections = [];
 	
-	this.drawnSystems = {};
 	for( var i in this.drawnSystems )
 	{
-		this.cleanupJqueryEvents(this.drawnSystems[i].charText);
-		delete this.drawnSystems[i].charText
-		this.drawnSystems[i].charText =  null;
-		this.cleanupJqueryEvents(this.drawnSystems[i].nameText);
-		delete this.drawnSystems[i].nameText
-		this.drawnSystems[i].nameText = null;
-		delete this.drawnSystems[i].classText
-		delete this.drawnSystems[i].test
-		 this.drawnSystems[i].classText = null;
-		this.cleanupJqueryEvents(this.drawnSystems[i]);
-		delete this.drawnSystems[i];
+		if( this.drawnSystems[i].charText != undefined )
+		{
+			this.cleanupJqueryEvents(this.drawnSystems[i].charText);
+			this.drawnSystems[i].charText.remove();
+			delete this.drawnSystems[i].charText;
+			this.drawnSystems[i].charText =  null;
+		}
+		
+		if( this.drawnSystems[i].nameText != undefined )
+		{		
+			this.cleanupJqueryEvents(this.drawnSystems[i].nameText);
+			this.drawnSystems[i].nameText.remove();
+			this.drawnSystems[i].nameText = null;
+		}
+		
+		if( this.drawnSystems[i].classText != undefined )
+		{
+			this.drawnSystems[i].classText.remove();
+			delete this.drawnSystems[i].classText
+			this.drawnSystems[i].classText = null;
+		}
+		
+		if( this.drawnSystems[i].effectIndicator != undefined )
+		{
+			this.drawnSystems[i].effectIndicator.remove();
+			delete this.drawnSystems[i].effectIndicator
+			this.drawnSystems[i].effectIndicator = null;
+		}
+		
+		if( this.drawnSystems[i].test != undefined )
+		{
+			this.drawnSystems[i].test.remove();
+			delete this.drawnSystems[i].test
+		}
+		
+		if( this.drawnSystems[i] != undefined )
+		{
+			this.cleanupJqueryEvents(this.drawnSystems[i]);
+		//	this.drawnSystems[i].undrag();
+			this.drawnSystems[i].remove();
+			delete this.drawnSystems[i];
+		}
+		
+		
 	}
+	this.drawnSystems = {};
 	
-	this.infoicon = null;
+	if( this.infoicon != undefined )
+	{
+		this.infoicon.remove();
+		this.infoicon = null;
+	}
 	//clear r after we nuke the js objects
 	this.r.clear();
 	this.draw();
@@ -1174,6 +1226,8 @@ siggyMap.prototype.draw = function()
 		}
 
 		var that = this;
+		
+		
 		var dragger = function () {
 				if( !that.editing )
 				{
@@ -1247,7 +1301,7 @@ siggyMap.prototype.draw = function()
 				that.updatePan();
 				this.animate({"fill-opacity": 1}, 500);
 		};
-						
+		
 		for( var i in this.systems )
 		{
 			var x = this.originX+parseInt(this.systems[i].x);
@@ -1267,6 +1321,7 @@ siggyMap.prototype.draw = function()
 			this.populateBlobTitle( systemBlob,  this.systems[i].name, this.systems[i].displayName, this.systems[i].sysClass,this.systems[i].systemID, this.systems[i].effect, this.systems[i].special );
 			
 			systemBlob.drag(move, dragger, up);
+			
 			//var color = Raphael.getColor();
 			var color = '#676767';
 			if( parseInt(this.systems[i].activity) == 1 )
@@ -1654,7 +1709,7 @@ siggyMap.prototype.populateBlobBody = function( blob, sysID, body )
 		}		
 }
 
-siggyMap.prototype.clearMouseEvents = function(el)
+siggyMap.prototype.cleanupJqueryEvents = function(el)
 {
 	$(el).off();
 }
