@@ -121,6 +121,11 @@ CountUp.prototype.addLeadingZero = function (value)
 
 CountUp.prototype.calculate = function ()
 {
+	if( this.container == null )
+	{
+		return;
+	}
+
 	var currDate = new Date();
 	var prevDate = this.beginDate;
 	
@@ -743,6 +748,7 @@ jQuery.extend(
 function siggymain( options )
 {
 	this.fatalError = false;
+	this.ajaxErrors = 0;
 
 
 	this.systemID = 0;
@@ -1468,8 +1474,11 @@ siggymain.prototype.updateSigRow = function (sigData, flashSig)
 
 siggymain.prototype.removeSigRow = function (sigData)
 {
-	this.sigClocks[sigData.sigID].destroy();
-	delete this.sigClocks[sigData.sigID];
+	if(this.sigClocks[sigData.sigID] != undefined )
+	{
+		this.sigClocks[sigData.sigID].destroy();
+		delete this.sigClocks[sigData.sigID];
+	}
 	$('#sig-' + sigData.sigID).remove();
 	this.colorizeSigRows();
 }
@@ -1941,9 +1950,17 @@ siggymain.prototype.setupFatalErrorHandler = function()
 	var that = this;
 	
 	$(document).ajaxError( function() {
-		that.displayFatalError('Communication error. <br />Siggy may be down.');
-		that.fatalError = true;
+		that.ajaxErrors += 1;
+		if( that.ajaxErrors >= 5 )
+		{
+			that.displayFatalError('Communication error. ');
+			that.fatalError = true;
+		}
 	} );
+	$(document).ajaxSuccess( function() {
+		that.ajaxErrors += 0;
+	} );	
+	
 	
 	$('#refreshFromFatal').click( function() {
 		location.reload(true);
