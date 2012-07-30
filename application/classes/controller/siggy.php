@@ -1006,7 +1006,7 @@ class Controller_Siggy extends Controller
 					{
 						$broadcast = (isset($_COOKIE['broadcast']) ? intval($_COOKIE['broadcast']) : 1);
 						
-						DB::query(Database::INSERT, 'INSERT INTO charTracker (`charID`, `charName`, `currentSystemID`,`groupID`,`subGroupID`,`lastBeep`, `broadcast`) VALUES(:charID, :charName, :systemID, :groupID, :subGroupID, :lastBeep, :broadcast) ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, currentSystemID = :systemID, broadcast = :broadcast')
+						DB::query(Database::INSERT, 'INSERT INTO charTracker (`charID`, `charName`, `currentSystemID`,`groupID`,`subGroupID`,`lastBeep`, `broadcast`) VALUES(:charID, :charName, :systemID, :groupID, :subGroupID, :lastBeep, :broadcast) ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, currentSystemID = :systemID, broadcast = :broadcast, groupID = :groupID, subGroupID = :subGroupID')
 													->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
 													->param(':broadcast', $broadcast )
 													->param(':systemID', $actualCurrentSystemID )->param(':groupID', $this->groupData['groupID'] )
