@@ -815,6 +815,7 @@ siggymain.displayTimeStamp = function (unixTimestamp)
 
 siggymain.prototype.update = function ()
 {
+/*
 	if( this.idleTimeout >= this.idleMax )
 	{
 		if( !this.afked )
@@ -839,13 +840,16 @@ siggymain.prototype.update = function ()
 			},
 			success: function (data)
 			{
-				if( parseInt( data.acsid ) != 0 )
+				if( data != null )
 				{
-					that.acsid = data.acsid;
-				}
-				if( data.acsname != '' )
-				{
-					that.acsname = data.acsname;
+					if( parseInt( data.acsid ) != 0 )
+					{
+						that.acsid = data.acsid;
+					}
+					if( data.acsname != '' )
+					{
+						that.acsname = data.acsname;
+					}
 				}
 			},
 			dataType: 'json'
@@ -856,7 +860,7 @@ siggymain.prototype.update = function ()
 			thisObj.update(0)
 		}, 20000, this);
 		return;
-	}
+	}*/
 
 	var request = {
 		systemID: this.systemID,
@@ -2146,7 +2150,7 @@ siggymain.prototype.initialize = function ()
 	
 	//default to class 1
 //	this.setBearTab(1);
-	
+	/*
 	$(window).mousemove( function() {
 		//console.log('hi');
 		that.idleTimeout = 0;
@@ -2157,15 +2161,15 @@ siggymain.prototype.initialize = function ()
 			that.updateNow();
 		}
 	} );
-	
-	setInterval( function() {
-		if( that.idleTimeout >= that.idleMax || that.afked )
-		{
-			return;
-		}
-		that.idleTimeout += 1;
+	*/
+	//setInterval( function() {
+		//if( that.idleTimeout >= that.idleMax || that.afked )
+		//{
+		//	return;
+		//}
+		//that.idleTimeout += 1;
 	//	console.log(that.idleTimeout);
-	}, 1000 );	
+	//}, 1000 );	
 	
 	this.initializeSystemExpandCollaspe();
 }
