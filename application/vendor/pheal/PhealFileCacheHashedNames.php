@@ -1,7 +1,7 @@
 <?php
 /*
  MIT License
- Copyright (c) 2010 Peter Petermann
+ Copyright (c) 2011 Peter Petermann
 
  Permission is hereby granted, free of charge, to any person
  obtaining a copy of this software and associated documentation
@@ -27,7 +27,7 @@
 /**
  * Simple filecache for the xml
  */
-class PhealFileCache implements PhealCacheInterface
+class PhealFileCacheHashedNames implements PhealCacheInterface
 {
     /**
      * path where to store the xml
@@ -92,7 +92,7 @@ class PhealFileCache implements PhealCacheInterface
                 $argstr .= preg_replace($regexp,'_',$key) . $this->options['delimiter'] . preg_replace($regexp,'_',$val) . $this->options['delimiter'];
         }
         $argstr = substr($argstr, 0, -1);
-        $filename = "Request" . ($argstr ? "_" . $argstr : "") . ".xml";
+        $filename = "Request" . ($argstr ? "_" . md5($argstr) : "") . ".xml";
         $filepath = $this->basepath . ($userid ? "$userid/$apikey/$scope/$name/" : "public/public/$scope/$name/");
         
         if(!file_exists($filepath)) {

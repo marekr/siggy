@@ -25,18 +25,9 @@
  OTHER DEALINGS IN THE SOFTWARE.
 */
 /**
- * Filecache which always validates a cached file to be valid
- * for example and for tests 
+ * Pheal Access Exception. Should be thrown when Pheal dedects a not allowed API Call based on accessMask
  */
-class PhealFileCacheForced extends PhealFileCache
+class PhealAccessException extends PhealException
 {
-    /**
-     * always returns true since we assume that the file always exists
-     * @param string $xml
-     * @return boolean
-     */
-    public function validate_cache($xml)
-    {
-        return true;
-    }
+
 }

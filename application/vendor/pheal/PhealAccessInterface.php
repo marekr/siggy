@@ -25,18 +25,17 @@
  OTHER DEALINGS IN THE SOFTWARE.
 */
 /**
- * Filecache which always validates a cached file to be valid
- * for example and for tests 
+ * Interface that should be implemented by the access handlers
  */
-class PhealFileCacheForced extends PhealFileCache
+interface PhealAccessInterface
 {
     /**
-     * always returns true since we assume that the file always exists
-     * @param string $xml
-     * @return boolean
+     * Check if the api key is allowed to make this api call
+     * @param string $scope
+     * @param string $name
+     * @param string $keyType
+     * @param int $accessMask
      */
-    public function validate_cache($xml)
-    {
-        return true;
-    }
+    public function check($scope, $name, $keyType, $accessMask);
+
 }

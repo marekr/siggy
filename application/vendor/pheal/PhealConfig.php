@@ -45,18 +45,25 @@ class PhealConfig
     public $archive;
 
     /**
+     * Access Object to validate and check an API with a given keyType+accessMask
+     * defaults to PhealNullAccess Object
+     * @var PhealAccessInterface
+     */
+    public $access;
+
+    /**
      * usually this points to the EVE API directly, however if you use a API
      * proxy you might want to modify this.
      * use https://api.eveonline.com/ if you like to have ssl support
      * @var String
      */
-    public $api_base = "http://api.eveonline.com/";
+    public $api_base = "https://api.eveonline.com/";
 
     /**
      * enable the new customize key system (use keyID instead of userID, etc)
      * @var bool
      */
-    public $api_customkeys = false;
+    public $api_customkeys = true;
 
     /**
      * associative array with additional parameters that should be passed
@@ -125,6 +132,7 @@ class PhealConfig
         $this->cache = new PhealNullCache();
         $this->archive = new PhealNullArchive();
         $this->log = new PhealNullLog();
+        $this->access = new PhealNullAccess();
     }
 
     /**

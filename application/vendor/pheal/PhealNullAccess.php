@@ -1,7 +1,7 @@
 <?php
 /*
  MIT License
- Copyright (c) 2010 Peter Petermann
+ Copyright (c) 2010 Peter Petermann, Daniel Hoffend
 
  Permission is hereby granted, free of charge, to any person
  obtaining a copy of this software and associated documentation
@@ -24,18 +24,20 @@
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
 */
+
 /**
- * Filecache which always validates a cached file to be valid
- * for example and for tests 
+ * null access, as a placeholder if no access verification is used
  */
-class PhealFileCacheForced extends PhealFileCache
+class PhealNullAccess implements PhealAccessInterface
 {
     /**
-     * always returns true since we assume that the file always exists
-     * @param string $xml
-     * @return boolean
+     * Check if the api key is allowed to make this api call
+     * @param string $scope
+     * @param string $name
+     * @param string $keyType
+     * @param int $accessMask
      */
-    public function validate_cache($xml)
+    public function check($scope, $name, $keyType, $accessMask)
     {
         return true;
     }
