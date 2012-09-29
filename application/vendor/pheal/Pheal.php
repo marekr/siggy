@@ -292,8 +292,9 @@ class Pheal
             
             // attach url parameters
             if(count($opts))
-            $url .= "?" . http_build_query($opts);
+            $url .= "?" . http_build_query($opts,'','&');
         }
+        
         
         // additional headers
         $headers = array();
