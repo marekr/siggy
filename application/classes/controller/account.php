@@ -516,22 +516,20 @@ class Controller_Account extends Controller_Template
 				require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
 				spl_autoload_register( "Pheal::classload" );
 				PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
-				PhealConfig::getInstance()->api_base = 'http://api.eveonline.com/';
-				PhealConfig::getInstance()->api_customkeys = true;
 				PhealConfig::getInstance()->http_ssl_verifypeer = false;
-				//PhealConfig::getInstance()->http_keepalive = 115;
-				//PhealConfig::getInstance()->http_user_agent = '';
 				$pheal = new Pheal( $this->user->apiID, $this->user->apiKey );
 				
 				$corpList = $this->getCorpList();
 				$charList = $this->getCharList();				
 				
+				$apiError = FALSE;
 				try
 				{
 						//$result = $pheal->eveScope->CharacterInfo( array( 'characterID' => 460256976 )  );
 					//	print_r($result);
 						$chars = array();
 						$result = $pheal->accountScope->Characters();
+						
 						foreach($result->characters as $char )
 						{
 								if( in_array($char->corporationID, $corpList) || in_array($char->characterID, $charList) )
@@ -543,6 +541,7 @@ class Controller_Account extends Controller_Template
 				}
 				catch(PhealAPIException $e)
 				{
+					$apiError = true;
 				}
 				
 				

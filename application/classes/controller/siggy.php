@@ -1,189 +1,62 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-require_once APPPATH.'classes/access.php';
-require_once APPPATH.'classes/groupUtils.php';
-require_once APPPATH.'classes/mapUtils.php';
-require_once APPPATH.'classes/miscUtils.php';
+require_once APPPATH.'classes/FrontController.php';
 
-class Controller_Siggy extends Controller 
+class Controller_Siggy extends FrontController 
 {
-		private $access=null;
-		
-		private $groupData = array();
-	//	private $authPassword = '';
-		private $trusted = false;
-		private $igb = false;
-		
-		//new 
-		private $authStatus = false;
-		
-		private $charID = 0;
-		private $corpID = 0;
-		private $charName = '';
-		
-		private $apiCharInfo = array();
-		
-		function __construct(Kohana_Request $request, Kohana_Response $response)
-		{
-			$this->igb = miscUtils::isIGB();
-			$this->trusted = miscUtils::getTrust();	
-			
-			$this->access = new access();
-			
-			
-			Cookie::$salt = 'y[$e.swbDs@|Gd(ndtUSy^';
-			
-			$this->authStatus = $this->access->authenticate();
-			$this->groupData =& $this->access->accessData;			
-			
-			parent::__construct($request, $response);
-		}
-		
-		public function action_index( $ssname = '' )
-		{
-				header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-				$mapOpen = ( isset($_COOKIE['mapOpen'] ) ? intval($_COOKIE['mapOpen']) : 0 );
-				if( $this->igb )
-				{
-						if( $this->authStatus == AuthStatus::GPASSWRONG )
-						{
-								$view = View::factory('siggy/groupPassword');
-								$view->groupData = $this->groupData;
-								$view->trusted = $this->trusted;
-								$view->wrongPass = false;
-								$this->response->body($view);
-						}
-						elseif( $this->authStatus == AuthStatus::APILOGINNOACCESS )
-						{
-								$this->request->redirect('/account/noAPIAccess');
-						}
-						elseif( $this->authStatus == AuthStatus::APILOGINREQUIRED )
-						{
-								$this->request->redirect('/account/login');
-						}
-						else
-						{
-								if( $this->authStatus == AuthStatus::ACCEPTED )
-								{
-										if( !empty($ssname) )
-										{
-												$ssname = preg_replace("/[^a-zA-Z0-9]/", "", $ssname);
-												$requested = true;
-										}
-										else
-										{
-												$ssname = $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'];
-												$requested = false;
-										}
+	public $groupData = array();
 
-										$view = View::factory('siggy/siggyMain');
-										//$this->getSystemList();
-										$view->initialSystem = false;
-										if( $ssname )
-										{
-												$sysData = $this->getSystemData($ssname);
-												if( $sysData )
-												{
-														$view->systemData = $sysData;
-														$view->initialSystem = true;
-												}
-												else
-												{
-														$requested = false;
-														$view->systemData = array('id' => 30000142, 'name' => 'Jita');
-														$view->initialSystem = true;
-												}
-										}
-									
-										$view->trusted = $this->trusted;
-										$view->group = $this->groupData;
-										$view->mapOpen = $mapOpen;
-										$view->requested = $requested;
-										$view->charID = $this->groupData['charID'];
-										$view->corpID = $this->groupData['corpID'];
-										$view->charName = $this->groupData['charName'];
-										$view->igb = true;
-										$view->apilogin = ( $this->groupData['authMode'] == 2 ? true : false);
-										
-										$this->response->body($view);
-								}
-								else
-								{
-										$view = View::factory('siggy/accessMessage');
-										$view->groupData = $this->groupData;
-										$view->trusted = $this->trusted;
-										$view->set('offlineMode', false);
-										$this->response->body($view);
-								}
-						}
+	public function action_index( $ssname = '' )
+	{
+		$mapOpen = ( isset($_COOKIE['mapOpen'] ) ? intval($_COOKIE['mapOpen']) : 0 );
+		if( !empty($ssname) )
+		{
+				$ssname = preg_replace("/[^a-zA-Z0-9]/", "", $ssname);
+				$requested = true;
+		}
+		else
+		{
+				$ssname = ($this->igb ? $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] : 'Jita');
+				$requested = false;
+		}
+
+		$view = View::factory('siggy/siggyMain');
+		//$this->getSystemList();
+		$view->initialSystem = false;
+		if( $ssname )
+		{
+				$sysData = $this->getSystemData($ssname);
+				if( $sysData )
+				{
+						$view->systemData = $sysData;
+						$view->initialSystem = true;
 				}
 				else
 				{
-						if( $this->authStatus == AuthStatus::ACCEPTED )
-						{
-								if( !empty($ssname) )
-								{
-										$ssname = preg_replace("/[^a-zA-Z0-9]/", "", $ssname);
-								}
-								else
-								{
-										$ssname ='Jita';
-								}
-								$requested = true;
-
-								$view = View::factory('siggy/siggyMain');
-								//$this->getSystemList();
-								$view->initialSystem = false;
-								if( $ssname )
-								{
-										$sysData = $this->getSystemData($ssname);
-										if( $sysData )
-										{
-												$view->systemData = $sysData;
-												$view->initialSystem = true;
-										}
-										else
-										{
-												$view->systemData = array('id' => 30000142, 'name' => 'Jita');
-												$view->initialSystem = true;
-										}
-								}
-							
-								$view->trusted = $this->trusted;
-								$view->group = $this->groupData;
-								$view->mapOpen = $mapOpen;
-								$view->requested = $requested;
-								$view->charID = $this->groupData['charID'];
-								$view->corpID = $this->groupData['corpID'];
-								$view->charName = $this->groupData['charName'];
-								$view->igb = false;
-								$view->apilogin = true;
-								
-								$this->response->body($view);
-						}
-						else
-						{
-								$auth = simpleauth::instance();
-								$user = $auth->get_user();
-								if( $this->authStatus == AuthStatus::APILOGINREQUIRED )
-								{
-									//	$view = View::factory('siggy/userLogin');
-									//	$view->invalidLogin = false;
-									//	$this->response->body($view);
-										$this->request->redirect('/account/login');
-								}
-								elseif ( $this->authStatus == AuthStatus::APILOGININVALID )
-								{
-										$this->request->redirect('/account/noAPIAccess');
-										
-								}
-								else
-								{
-										$this->request->redirect('/account/noAPIAccess');
-								}
-						}
+						$requested = false;
+						$view->systemData = array('id' => 30000142, 'name' => 'Jita');
+						$view->initialSystem = true;
 				}
 		}
+	
+		$view->trusted = $this->trusted;
+		$view->group = $this->groupData;
+		$view->mapOpen = $mapOpen;
+		$view->requested = $requested;
+		$view->charID = $this->groupData['charID'];
+		$view->corpID = $this->groupData['corpID'];
+		$view->charName = $this->groupData['charName'];
+		$view->igb = $this->igb;
+		if( $this->igb )
+		{
+			$view->apilogin = ( $this->groupData['authMode'] == 2 ? true : false);
+		}
+		else
+		{
+			$view->apilogin = true;
+		}
+		$this->response->body($view);
+	}
 	
 	public function action_stats()
 	{

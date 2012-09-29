@@ -44,6 +44,7 @@ final class miscUtils
 		
 		static function isIGB() 
 		{
+		
 				if ( isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'],'EVE-IGB') !== false ) 
 				{
 					return TRUE;

@@ -42,7 +42,7 @@ class Model_Auth_Users extends authmodeler {
 	{
 		parent::__construct($id);
 		
-		$auth_config =  Kohana::config('simpleauth');
+		$auth_config =  Kohana::$config->load('simpleauth');
 		
 		$this->unique = $auth_config['unique'];
 		$this->second =  $auth_config['unique_second'];

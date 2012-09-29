@@ -30,7 +30,7 @@ class simpleauth_Core {
 	public function __construct($config = 'simpleauth')
 	{
 		// Save the config in the object
-		$this->config = Kohana::config($config);
+		$this->config = Kohana::$config->load($config);
 		$this->session = Session::instance();
 	}
 	
