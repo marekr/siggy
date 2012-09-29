@@ -319,6 +319,13 @@ class Pheal
         curl_setopt(self::$curl, CURLOPT_HTTPHEADER, $headers);
         curl_setopt(self::$curl, CURLOPT_RETURNTRANSFER, true);
         
+        if( defined('WIN_DEV') )
+        {
+						$cabundle_path = dirname(__FILE__) . "/share/cacert.pem";        
+						curl_setopt(self::$curl, CURLOPT_SSL_VERIFYPEER, false);
+						curl_setopt(self::$curl, CURLOPT_CAINFO, $cabundle_path);
+        }
+        
         // call
         $result	= curl_exec(self::$curl);
         $errno = curl_errno(self::$curl);
