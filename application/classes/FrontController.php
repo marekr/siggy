@@ -22,6 +22,10 @@ class FrontController extends Controller
 	
 	protected $apiCharInfo = array();
 	
+	protected $ajaxRequest = false;
+	
+	public $template = '';
+	
 	function __construct(Kohana_Request $request, Kohana_Response $response)
 	{
 		$this->igb = miscUtils::isIGB();
@@ -34,13 +38,18 @@ class FrontController extends Controller
 		$this->authStatus = $this->access->authenticate();
 		$this->groupData =& $this->access->accessData;			
 		
+		
+		if( isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' )
+		{
+			$this->ajaxRequest = true;
+		}
+		
 		parent::__construct($request, $response);
 	}
 	
 	public function siggyredirect($url)
 	{
-		
-		if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
+		if( $this->ajaxRequest )
 		{
 			echo json_encode(array('redirect' => $url));
 			die();
@@ -98,11 +107,43 @@ class FrontController extends Controller
 					$this->siggyredirect('/account/noAPIAccess');
 			}
 			else
+			
 			{
 				//	$this->siggyredirect('/account/noAPIAccess');
 			}
 		}
+		
+		
+		if( !$this->ajaxRequest && $this->template != '' )
+		{
+			$this->template = View::factory( $this->template );
+			
+			
+			$this->template->igb = $this->igb;
+			$this->template->trusted = $this->trusted;
+			$this->template->charID = $this->groupData['charID'];
+			$this->template->corpID = $this->groupData['corpID'];
+			$this->template->charName = $this->groupData['charName'];
+			$this->template->group = $this->groupData;		
+			if( $this->igb )
+			{
+				$this->template->apilogin = ( $this->groupData['authMode'] == 2 ? true : false);
+			}
+			else
+			{
+				$this->template->apilogin = true;
+			}
+		}
     }
+    
+    
+	public function after()
+	{
+		if( !$this->ajaxRequest && $this->template != '' )
+		{
+			$this->response->body($this->template->render());
+		}
+	}
 	
 }
 ?>

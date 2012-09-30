@@ -5,6 +5,9 @@ require_once APPPATH.'classes/FrontController.php';
 class Controller_Siggy extends FrontController 
 {
 	public $groupData = array();
+	public $trusted = false;
+	
+	public $template = 'template/main';
 
 	public function action_index( $ssname = '' )
 	{
@@ -21,8 +24,10 @@ class Controller_Siggy extends FrontController
 		}
 
 		$view = View::factory('siggy/siggyMain');
-		//$this->getSystemList();
+		
 		$view->initialSystem = false;
+		$view->group = $this->groupData;
+		$view->requested = $requested;
 		if( $ssname )
 		{
 				$sysData = $this->getSystemData($ssname);
@@ -39,23 +44,16 @@ class Controller_Siggy extends FrontController
 				}
 		}
 	
-		$view->trusted = $this->trusted;
-		$view->group = $this->groupData;
-		$view->mapOpen = $mapOpen;
-		$view->requested = $requested;
-		$view->charID = $this->groupData['charID'];
-		$view->corpID = $this->groupData['corpID'];
-		$view->charName = $this->groupData['charName'];
-		$view->igb = $this->igb;
-		if( $this->igb )
-		{
-			$view->apilogin = ( $this->groupData['authMode'] == 2 ? true : false);
-		}
-		else
-		{
-			$view->apilogin = true;
-		}
-		$this->response->body($view);
+		$this->template->content = $view;
+		
+		//load chain map html
+		$chainMapHTML = View::factory('/templatebits/chainMap');
+		$chainMapHTML->mapOpen = $mapOpen;
+		$view->chainMap = $chainMapHTML;
+		
+		//load header tools
+		$headerToolsHTML = View::factory('/templatebits/headerTools');
+		$this->template->headerTools = $headerToolsHTML;
 	}
 	
 	public function action_stats()
@@ -170,8 +168,21 @@ class Controller_Siggy extends FrontController
 		$view->groupTop10WHsLastWeekTotal = $groupTop10WHsLastWeekTotal;
 		
 		
+		$view->trusted = $this->trusted;
+		$view->group = $this->groupData;
+		$view->charID = $this->groupData['charID'];
+		$view->corpID = $this->groupData['corpID'];
+		$view->charName = $this->groupData['charName'];
+		$view->igb = $this->igb;
 		
-		
+		if( $this->igb )
+		{
+			$view->apilogin = ( $this->groupData['authMode'] == 2 ? true : false);
+		}
+		else
+		{
+			$view->apilogin = true;
+		}
 		
 	//	$view->groupAllTimeTop10 = $groupAllTimeTop10;
 	//	$view->groupAllTimeTop10Total = $groupAllTimeTop10Total;
@@ -860,7 +871,7 @@ class Controller_Siggy extends FrontController
 									}
 							}
 							//if specific system is picked, we have a forced update
-							elseif( $freeze && $forceUpdate )
+							elseif( $freeze  || $forceUpdate )
 							{
 									$update['systemData'] = $this->getSystemData( $_GET['systemName'] );
 									if( count( $update['systemData'] ) > 0 )

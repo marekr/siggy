@@ -77,7 +77,7 @@ I18n::lang('en-us');
 
 Kohana::$environment = ($_SERVER['SERVER_NAME'] !== 'localhost') ? Kohana::PRODUCTION : Kohana::DEVELOPMENT;
 
-
+/*
 if( Kohana::$environment == Kohana::DEVELOPMENT && strpos($_SERVER['HTTP_USER_AGENT'],'EVE-IGB') === false )
 {
   $_SERVER['HTTP_EVE_CORPID'] = 389326446;
@@ -86,18 +86,25 @@ if( Kohana::$environment == Kohana::DEVELOPMENT && strpos($_SERVER['HTTP_USER_AG
   $_SERVER['HTTP_EVE_TRUSTED'] = 'Yes';
   //$_SERVER['HTTP_EVE_TRUSTED'] = 'No';
   $_SERVER['HTTP_USER_AGENT'] = 'Boo EVE-IGB';
- // $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] = 'Fricoure';
- // $_SERVER['HTTP_EVE_SOLARSYSTEMID'] = 30002734;
+  $lol = false;
+	if( $lol )
+	{
+		$_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] = 'Fricoure';
+		$_SERVER['HTTP_EVE_SOLARSYSTEMID'] = 30002734;
+	}
+	else
+	{
   $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] = 'J100549';
   $_SERVER['HTTP_EVE_SOLARSYSTEMID'] = 31002016;
+	}
 }
-
-
 if( !isset($_SERVER['HTTP_EVE_SOLARSYSTEMID']) && isset($_SERVER['HTTP_EVE_SOLARSYSTEMNAME']) )
 {
 	require 'systemReference.php';
 	$_SERVER['HTTP_EVE_SOLARSYSTEMID'] = $systems[ $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] ];
 }
+
+*/
 
 
 /**

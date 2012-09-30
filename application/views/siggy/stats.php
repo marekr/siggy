@@ -22,14 +22,45 @@
   </head>
   <body>
     <div id="wrapper">
-      <?php if( $trusted==true || Kohana::$environment == Kohana::DEVELOPMENT): ?>
-      <div id="topBar">
-        <div>
-          <img src="http://image.eveonline.com/Corporation/<?php echo $_SERVER['HTTP_EVE_CORPID']; ?>_64.png" height="32px" />
-          <img src="http://image.eveonline.com/Character/<?php echo $_SERVER['HTTP_EVE_CHARID']; ?>_64.jpg" height="32px"/>
-          <p class="name"><?php echo $_SERVER['HTTP_EVE_CHARNAME']; ?> <?php if(isset($group['groupTicker']) ) { print('<br /><span style="font-size:0.8em;font-style:italic;font-weight: normal;">Accessing as '.$group['accessName'].' as part of the '.$group['groupTicker'].' group </span>'); } ?></p>
-        </div>
-      </div> 
+      <?php if( $loggedIn = true || Kohana::$environment == Kohana::DEVELOPMENT): ?>
+	<div id="floatingHeader">
+			<div id="topBar">
+				<div>
+					<img src="http://image.eveonline.com/Corporation/<?php echo $corpID; ?>_64.png" height="32px" />
+					<img src="http://image.eveonline.com/Character/<?php echo $charID; ?>_64.jpg" height="32px"/>
+					<p class="name"><?php echo $charName; ?> <?php if( $apilogin ): ?>[<a href='<?php echo URL::base(TRUE, TRUE);?>account/logout'>Logout</a>]<?php endif;?>
+					<br />
+					<?php if( ( count( $group['groups']) > 1  ) || (count( current( $group['groups'] ) ) > 1 ) ):?>							
+									<div class='dropDown' id='accessMenu' style='position:absolute;left:83px;top:25px;'>
+											<span style="font-size:0.9em;font-style:italic;font-weight: normal;padding:3px 6px;background-color: #092665;"><?php echo $group['accessName']; ?> - <?php echo ($group['subGroupID'] != 0 ) ? $group['sgName'].' - ' : '' ?><?php echo $group['groupTicker'] ?>&nbsp;&nbsp;&nbsp;<span style='font-style:normal;font-weight:bold;'>&#x25BC;</span></span>
+											<ul class='menu'>
+												<?php foreach( $group['groups'] as $g => $sgs ): ?>
+													<?php foreach( $sgs as $sg ): ?>
+														<?php if( $sg == 0 ): ?>
+																<li id='<?php echo md5($g.'-'.$sg); ?>'><?php echo $group['groupDetails']['group'][ $g ]['groupName'] ?></li>
+														<?php else: ?>
+																<li id='<?php echo md5($g.'-'.$sg); ?>'><?php echo $group['groupDetails']['subgroup'][ $sg ]['accessName']; ?> - <?php echo $group['groupDetails']['subgroup'][ $sg ]['subGroupName'] ?> - <?php echo $group['groupDetails']['group'][ $g ]['groupName'] ?></li>										
+														<?php endif; ?>
+													<?php endforeach; ?>
+												<?php endforeach; ?>
+												
+											</ul>
+											<br clear='all' />
+									</div>
+							<?php else: ?>
+									<span style="font-size:0.9em;font-style:italic;font-weight: normal;" title="Current access"><?php echo $group['accessName']; ?> - <?php echo $group['groupTicker'] ?></span>
+							<?php endif; ?>
+					</p>
+				</div>
+				<div id="updateTime">
+					<span id="loading" style="display:none;"><img src="<?php echo URL::base(TRUE, TRUE);?>public/images/ajax-loader.gif" />&nbsp;</span>
+					Selected System: <span id="currentsystem"><b>System</b></span><br />
+					<?php if( $igb ): ?>
+						Your Location: <span id="acsname" title='Your current location'><b>System</b></span>
+					<?php endif; ?>
+				</div>
+			</div>
+		</div>
       <br />
       <div style='width:520px;margin: 0 auto;'>
 				<h1 style='font-size:1.5em;font-weight:bold;'>Stats for all of <?php echo $group['groupTicker']; ?></h1>
