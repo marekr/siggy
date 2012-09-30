@@ -888,6 +888,13 @@ siggymain.prototype.update = function ()
 		},
 		success: function (data)
 			{
+				if( data.redirect != undefined )
+				{
+					window.location = this.baseUrl + data.redirect;
+					return;
+				}
+			
+			
 				if( parseInt( data.acsid ) != 0 )
 				{
 					that.acsid = data.acsid;
