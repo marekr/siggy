@@ -871,9 +871,9 @@ siggymain.prototype.update = function ()
 		acsid: this.acsid,
 		acsname: this.acsname,
 		mapOpen: this.map.isMapOpen(),
-		mapLastUpdate: this.map.lastUpdate
+		mapLastUpdate: this.map.lastUpdate,
+		forceUpdate: this.forceUpdate
 	};
-	request['forceUpdate'] = this.forceUpdate;
 
 	var that = this;
 	$.ajax({
