@@ -19,6 +19,94 @@ final class groupUtils
 					return $mapData;			
 				}
 		}
+		
+		static function createNewGroup($data)
+		{
+				$homeSysData = self::parseHomeSystems($data['homeSystems']);
+				
+				$salt = miscUtils::generateSalt(10);
+				$password = "";
+				if( $data['groupPassword'] != "" && $data['authMode'] == 1 )
+				{
+					$password = hashGroupPassword( $data['groupPassword'], $salt );
+				}
+		
+				$insert = array(
+									'groupName' => $data['groupName'],
+									'groupTicker' => $data['groupTicker'],
+									'billingContact' => $data['ingameContact'],
+									'authMode' => $data['authMode'],
+									'authSalt' => $salt,
+									'authPassword' => $password,
+									'homeSystems' => $homeSysData['homeSystems'],
+									'homeSystemIDs' => $homeSysData['homeSystemIDs'],
+									'dateCreated' => time()
+								);
+				$result = DB::insert('groups', array_keys($insert) )->values( array_values($insert) )->execute();
+				$groupID = $result[0];
+				self::createGroupActiveSystems( $groupID );
+				
+				return $groupID;
+		}
+		
+		static function hashGroupPassword( $password, $salt )
+		{
+			return sha1($password . $salt);
+		}
+		
+		static function parseHomeSystems( $homeSystems )
+		{
+			$return = array();
+		
+			$homeSystems = trim($homeSystems);
+			if( !empty($homeSystems) )
+			{
+					$homeSystems = explode(',', $homeSystems);
+					$homeSystemIDs = array();
+					if( is_array( $homeSystems ) )
+					{
+							foreach($homeSystems as $k => $v)
+							{
+									if( trim($v) != '' )
+									{
+											$id = miscUtils::findSystemByName(trim($v));
+											if( $id != 0 )
+											{
+													$homeSystemIDs[] = $id;
+											}
+											else
+											{
+													unset($homeSystems[ $k ] );
+											}
+									}
+									else
+									{
+											unset($homeSystems[ $k ] );
+									}
+							}
+					}
+					$return['homeSystemIDs'] = implode(',', $homeSystemIDs);
+					$return['homeSystems'] = implode(',', $homeSystems);
+			}
+			else
+			{
+				$return['homeSystems'] = '';
+				$return['homeSystemIDs'] = '';
+			}	
+			
+			return $return;	
+		}
+		
+		static function createGroupActiveSystems($groupID, $subGroup = 0)
+		{
+			$systems = DB::select('id')->from('solarsystems')->order_by('id', 'ASC')->execute()->as_array();
+			
+			foreach($systems as $system)
+			{		
+				DB::query(Database::INSERT, 'INSERT INTO activesystems (`systemID`,`groupID`,`subGroupID`) VALUES(:systemID, :groupID, :subGroupID) ON DUPLICATE KEY UPDATE systemID=systemID')
+														->param(':systemID', $system['id'] )->param(':groupID', $groupID )->param(':subGroupID', $subGroup )->execute();
+			}
+		}
 
 
 		static function rebuildMapCache($groupID, $subGroupID = 0)
@@ -32,6 +120,60 @@ final class groupUtils
 				$cache->set($cacheName, $mapData);		 
 				
 				return $mapData;
+		}
+		
+		static function bookKeeping($groupID, $amount)
+		{
+			//$amount = (float)$amount;
+			
+			
+			$payments = DB::query(Database::SELECT, "SELECT paymentID, paymentAmount FROM billing_payments WHERE groupID=:groupID AND usageStatus != 'used' ORDER BY paymentProcessedTime ASC")
+						->param(':groupID', $groupID)
+						  ->execute()->as_array();  
+						  
+			//oldest bills first sorted and not paid yet
+			$bills = DB::query(Database::SELECT, "SELECT billID, appliedPayment, paid, charge FROM billing_bills WHERE groupID=:groupID AND paid != 1 ORDER BY dateCreated ASC")
+						->param(':groupID', $groupID)
+						  ->execute()->as_array();  
+			
+			if( count( $bills ) > 0 )
+			{
+				foreach($bills as $bill)
+				{
+				
+					foreach( $payments as $payment )
+					{
+						$toPay = $bill['charge'] - $bill['paid'];
+						
+						if( $payment['paymentAmount'] > $toPay )
+						{
+						}
+						else
+						{
+							
+						}
+					}
+					
+					
+					DB::update('billing_bills')->set( $bill )->where('billID', '=',  $bill['billID'])->execute();
+					
+					//stop when we run out of isk!
+					if( $amount <= 0 )
+					{
+						break;
+					}
+				}
+			}
+			else
+			{
+			}
+			
+			
+			
+			
+			
+			DB::update('groups')->set( array( 'iskBalance' => DB::expr('iskBalance + :amount') ) )->param(':amount', $amount)->where('groupID', '=',  $groupID)->execute();
+		
 		}
 	
 	

@@ -2,6 +2,17 @@
 
 final class miscUtils
 {
+
+		static function findSystemByName($name)
+		{
+				$systemID = DB::query(Database::SELECT, 'SELECT id,name FROM solarsystems WHERE LOWER(name) = :name')
+																	->param(':name', $name )->execute()->get('id', 0);
+																	
+				
+				return $systemID;
+		}   
+   
+
 		static function getDayStamp()
 		{
 				date_default_timezone_set('UTC');
@@ -50,6 +61,17 @@ final class miscUtils
 					return TRUE;
 				}
 				return FALSE;
+		}
+		
+		static function generateSalt($length = 10) 
+		{
+			$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()';
+			$randomString = '';
+			for ($i = 0; $i < $length; $i++) 
+			{
+				$randomString .= $characters[rand(0, strlen($characters) - 1)];
+			}
+			return $randomString;
 		}
 			
 		static function getTrust() 

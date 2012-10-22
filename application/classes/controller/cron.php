@@ -1,50 +1,144 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+class eveAPIWalletJournalTypes
+{
+	const playerTrading = 1;
+	const marketTransaction = 2;
+	const playerDonation = 10;
+	const bountyPrizes = 17;
+	const insurance = 19;
+	const CSPA = 35;
+	const corpAccountWithdrawal = 37;
+	const brokerFee = 46;
+	const manufacturing = 56;
+	const bountyPrize = 85;
+	
+	// etc.
+}
+	
 class Controller_Cron extends Controller 
 {
-  
 
-	public function action_clearOldSigs()
+	public function action_billingTransactions()
 	{
-			$this->profiler = NULL;
-			$this->auto_render = FALSE;
-			//two days?
-			$cutoff = time()-60*60*24*2;
-      //DB::delete('systemsigs')->where('created', '<=', $cutoff)->where('sig', '!=', 'POS')->execute();
-      
-			$groups = DB::query(Database::SELECT, "SELECT groupID,skipPurgeHomeSigs,homeSystemIDs FROM groups")->execute()->as_array();	 
-			foreach( $groups as $group )
+		
+		require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
+		spl_autoload_register( "Pheal::classload" );
+		PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
+		PhealConfig::getInstance()->http_ssl_verifypeer = false;
+		$pheal = new Pheal( "1368854", "EzmkgBrhVjksl2KbzDY8IIa0thRRoPVE26HD7r0cqRcJLQqSYN2wtqYkwIpO28fT", "corp" );
+		
+		$fromID = (float)0;
+		$transactions = $pheal->WalletJournal( array('fromID' => $fromID, 'rowCount' => 100) )->entries;
+		
+		
+		$lastID = (float)0;	//store the 64 bit integer as a string lololol
+		foreach($transactions as $trans )
+		{
+			print "Processing: ";
+			print_r($trans);
+			print "<br />";
+			if( $lastID < (float)$trans->refID )	//first transaction should be the latest
 			{
-				$ignoreSys = '';
-				
-				if( $group['skipPurgeHomeSigs'] && !empty($group['homeSystemIDs']) )
+				$lastID = (float)$trans->refID;
+			}
+		
+			if( $trans->refTypeID == eveAPIWalletJournalTypes::playerDonation )
+			{
+				$entryCode = trim(str_replace('DESC:','',$trans->reason));
+				if( !empty($entryCode) )
 				{
-					$ignoreSys = $group['homeSystemIDs'];
-				}
-			
-				$subGroupsQuery = DB::query(Database::SELECT, "SELECT subGroupID, sgSkipPurgeHomeSigs,sgHomeSystemIDs FROM subgroups WHERE groupID = :groupID")->param(':groupID', $group['groupID'])->execute();	 
-				$subGroups = $subGroupsQuery->as_array();
-				if(	$subGroupsQuery->count() > 0 )
-				{
-					foreach( $subGroups as $subGroup )
+					preg_match('/^siggy-([a-zA-Z0-9]{14,})/', $entryCode, $matches);
+					if( count($matches) > 0 && isset($matches[1]) )
 					{
-						if( $subGroup['sgSkipPurgeHomeSigs'] && !empty($subGroup['sgHomeSystemIDs']) )
+						$res = DB::query(Database::SELECT, 'SELECT eveRefID FROM billing_payments WHERE eveRefID=:refID')->param(':refID', $trans->refID)->execute()->current();
+						
+						//if( !isset($res['eveRefID']) )
+						if( true )
 						{
-							$ignoreSys .= ( empty($ignoreSys) ? $subGroup['sgHomeSystemIDs'] : ','.$subGroup['sgHomeSystemIDs'] );
+							$paymentCode = strtolower($matches[1]);	//get 14 char "account code"
+							$group = DB::query(Database::SELECT, 'SELECT * FROM	groups WHERE paymentCode=:paymentCode')->param(':paymentCode', $paymentCode)->execute()->current();
+							
+							if( isset( $group['groupID'] ) )
+							{
+								$insert = array( 'groupID' => $group['groupID'],
+												 'eveRefID' => $trans->refID,
+												 'paymentTime' => 0,
+												 'paymentProcessedTime' => time(),
+												 'paymentAmount' => (float)$trans->amount,
+												 'payeeID' => $trans->ownerID1,
+												 'payeeName' => $trans->ownerName1
+												);
+								//DB::insert( 'billing_payments', array_keys($insert) )->values( array_values($insert) )->execute();
+					
+								groupUtils::applyISKPayment($group['groupID'], (float)$trans->amount);
+								
+								//
+								//(float)$trans->amount
+							}
+							else
+							{
+								//free money!
+							}
 						}
+						else
+						{
+							//processed already!
+							//do nothing
+							print "Payment already processed";
+						}
+						
 					}
-				}
-				
-				if( !empty($ignoreSys) )
-				{
-					DB::query(Database::DELETE, "DELETE FROM systemsigs WHERE sig != 'POS' AND groupID=:groupID AND systemID NOT IN(".$ignoreSys.") AND created <= :cutoff")->param(':cutoff',$cutoff)->param(':groupID', $group['groupID'])->execute();
 				}
 				else
 				{
-					DB::query(Database::DELETE, "DELETE FROM systemsigs WHERE sig != 'POS' AND groupID=:groupID AND created <= :cutoff")->param(':cutoff',$cutoff)->param(':groupID', $group['groupID'])->execute();
+					//noope
 				}
 			}
-      print 'done!';
+		}
+	}
+
+	public function action_clearOldSigs()
+	{
+		$this->profiler = NULL;
+		$this->auto_render = FALSE;
+		//two days?
+		$cutoff = time()-60*60*24*2;
+  //DB::delete('systemsigs')->where('created', '<=', $cutoff)->where('sig', '!=', 'POS')->execute();
+  
+		$groups = DB::query(Database::SELECT, "SELECT groupID,skipPurgeHomeSigs,homeSystemIDs FROM groups")->execute()->as_array();	 
+		foreach( $groups as $group )
+		{
+			$ignoreSys = '';
+			
+			if( $group['skipPurgeHomeSigs'] && !empty($group['homeSystemIDs']) )
+			{
+				$ignoreSys = $group['homeSystemIDs'];
+			}
+		
+			$subGroupsQuery = DB::query(Database::SELECT, "SELECT subGroupID, sgSkipPurgeHomeSigs,sgHomeSystemIDs FROM subgroups WHERE groupID = :groupID")->param(':groupID', $group['groupID'])->execute();	 
+			$subGroups = $subGroupsQuery->as_array();
+			if(	$subGroupsQuery->count() > 0 )
+			{
+				foreach( $subGroups as $subGroup )
+				{
+					if( $subGroup['sgSkipPurgeHomeSigs'] && !empty($subGroup['sgHomeSystemIDs']) )
+					{
+						$ignoreSys .= ( empty($ignoreSys) ? $subGroup['sgHomeSystemIDs'] : ','.$subGroup['sgHomeSystemIDs'] );
+					}
+				}
+			}
+			
+			if( !empty($ignoreSys) )
+			{
+				DB::query(Database::DELETE, "DELETE FROM systemsigs WHERE sig != 'POS' AND groupID=:groupID AND systemID NOT IN(".$ignoreSys.") AND created <= :cutoff")->param(':cutoff',$cutoff)->param(':groupID', $group['groupID'])->execute();
+			}
+			else
+			{
+				DB::query(Database::DELETE, "DELETE FROM systemsigs WHERE sig != 'POS' AND groupID=:groupID AND created <= :cutoff")->param(':cutoff',$cutoff)->param(':groupID', $group['groupID'])->execute();
+			}
+		}
+	
 	}
 
 	public function action_resetStuff()
@@ -64,8 +158,8 @@ class Controller_Cron extends Controller
 	{
 		$cutoff = time()-(3600*24*2);
 		
-    DB::delete('apiHourlyMapData')->where('hourStamp', '<=', $cutoff)->execute();
-    DB::delete('jumpsTracker')->where('hourStamp', '<=', $cutoff)->execute();
+		DB::delete('apiHourlyMapData')->where('hourStamp', '<=', $cutoff)->execute();
+		DB::delete('jumpsTracker')->where('hourStamp', '<=', $cutoff)->execute();
       
 		$systems = DB::select('id')->from('solarsystems')->order_by('id', 'ASC')->execute()->as_array('id');
 		foreach($systems as &$system)

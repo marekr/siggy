@@ -24,6 +24,8 @@ class FrontController extends Controller
 	
 	protected $ajaxRequest = false;
 	
+	protected $noAutoAuthRedirects = false;
+	
 	public $template = '';
 	
 	function __construct(Kohana_Request $request, Kohana_Response $response)
@@ -72,7 +74,39 @@ class FrontController extends Controller
 				$this->siggyredirect('/offline');
 		}
 
+		if( !$this->noAutoAuthRedirects )
+		{
+			$this->authCheckAndRedirect();
+		}
 		
+		
+		if( !$this->ajaxRequest && $this->template != '' )
+		{
+			$this->template = View::factory( $this->template );
+			
+			
+			$this->template->igb = $this->igb;
+			$this->template->trusted = $this->trusted;
+			
+			$this->template->charID = isset($this->groupData['charID']) ? $this->groupData['charID'] : 0;
+			$this->template->corpID = isset($this->groupData['corpID']) ?  $this->groupData['corpID'] : 0;
+			$this->template->charName = isset($this->groupData['charName']) ? $this->groupData['charName'] : '';
+			$this->template->group = $this->groupData;		
+			
+			if( $this->igb )
+			{
+				$this->template->apilogin = ( $this->groupData['authMode'] == 2 ? true : false);
+			}
+			else
+			{
+				$this->template->apilogin = true;
+			}
+		}
+    }
+    
+    public function authCheckAndRedirect()
+    {
+    
 		if( $this->igb )
 		{
 				if( $this->authStatus == AuthStatus::GPASSWRONG )
@@ -100,7 +134,7 @@ class FrontController extends Controller
 		{
 			if( $this->authStatus == AuthStatus::APILOGINREQUIRED )
 			{
-					$this->siggyredirect('/account/login');
+					$this->siggyredirect('/pages/welcome');
 			}
 			elseif ( $this->authStatus == AuthStatus::APILOGININVALID )
 			{
@@ -110,28 +144,6 @@ class FrontController extends Controller
 			
 			{
 				//	$this->siggyredirect('/account/noAPIAccess');
-			}
-		}
-		
-		
-		if( !$this->ajaxRequest && $this->template != '' )
-		{
-			$this->template = View::factory( $this->template );
-			
-			
-			$this->template->igb = $this->igb;
-			$this->template->trusted = $this->trusted;
-			$this->template->charID = $this->groupData['charID'];
-			$this->template->corpID = $this->groupData['corpID'];
-			$this->template->charName = $this->groupData['charName'];
-			$this->template->group = $this->groupData;		
-			if( $this->igb )
-			{
-				$this->template->apilogin = ( $this->groupData['authMode'] == 2 ? true : false);
-			}
-			else
-			{
-				$this->template->apilogin = true;
 			}
 		}
     }

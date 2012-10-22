@@ -1,61 +1,112 @@
 <?php
 
+require_once APPPATH.'classes/FrontController.php';
 require_once APPPATH.'classes/access.php';
 
-class Controller_Account extends Controller_Template
+class Controller_Account extends FrontController
 {
 		private $auth;
 		private $user;
-		public $template = 'template/account';
+		public $template = 'template/public';
+		protected $noAutoAuthRedirects = true;
 
 		function __construct(Kohana_Request $request, Kohana_Response $response)
 		{
-		
-			Cookie::$salt = 'y[$e.swbDs@|Gd(ndtUSy^';
-			$this->igb = $this->isIGB();
-			$this->trusted = $this->getTrust();	
 			
 			$this->auth = simpleauth::instance();
 			$this->user = $this->auth->get_user();
 			
 			parent::__construct($request, $response);
 		}
-
+		
+		public function before()
+		{
+			switch( $this->request->action() )
+			{
+				case 'login':
+				case 'register':
+				case 'forgotPassword':
+				case 'completePasswordReset':
+					break;
+				default:
+					if( !$this->auth->logged_in() )
+					{
+						$this->request->redirect('/account/login');
+					}
+					break;
+			}
+			parent::before();
+		}
+		
+		public function after()
+		{
+			switch( $this->request->action() )
+			{
+				case 'login':
+				case 'forgotPassword':
+				case 'completePasswordReset':
+					$this->template->selectedTab = 'login';
+					$this->template->layoutMode = 'blank';
+					break;
+				case 'register':
+					$this->template->selectedTab = 'register';
+					$this->template->layoutMode = 'blank';
+					break;
+				default: 
+					$this->template->layoutMode = 'leftMenu';
+					$this->template->selectedTab = 'account';
+					$view = View::factory('templatebits/accountMenu');
+					$this->template->leftMenu = $view;
+					break;
+			}
+			
+			$this->template->loggedIn = $this->auth->logged_in();
+			$this->template->user = $this->user;
+			
+		
+			parent::after();
+		}
+		
+		public function action_overview()
+		{
+			$this->template->title = "Account overview";
+			
+			$view = View::factory('account/overview');
+			$view->user = $this->user;
+			
+			$this->template->content = $view;
+		}
+		
+		public function action_changeEmailAddress()
+		{
+				$this->template->title = __('Change Email Address');
+				
+				$this->template->content = View::factory('account/changeEmail');
+		}
 		
 		public function action_register()
 		{
-				$this->template->title = __('siggy: register a new account');
+				$this->template->title = __('Register a new account');
 				
-				if( isset( $_POST['register'] ) )
+				if( $this->auth->logged_in() )
 				{
-							$errors = array();
-							
-							if( empty( $_POST['username'] ) )
-							{
-									$errors['username'] = 'Username must not be empty.';
-							}
-							if( empty( $_POST['email'] ) )
-							{
-									$errors['email'] = 'A valid email address is required.';
-							}
-							if( empty( $_POST['password'] ) )
-							{
-									$errors['password'] = 'You must enter a password.';
-							}
-							if( empty( $_POST['password_confirm'] ) )
-							{
-									$errors['password_confirm'] = 'You must confirm your selected password.';
-							}
-							
-							if( strlen( $_POST['password'] ) <= 6 )
-							{
-									$errors['password'] = 'Password must be at least 6 characters long';
-							}
-							
-							if( $_POST['password'] != $_POST['password_confirm'] )
-							{
-									$errors['password_confirm'] = 'The password did not match the one above.';
-							}
+					$this->request->redirect('/account');
+				}
+				
+				$errors = array();
+				
+				if ($this->request->method() == "POST") 
+				{
+					$validator = Validation::factory($_POST)
+								->rule('username', 'not_empty')
+								->rule('email', 'not_empty')
+								->rule('password', 'not_empty')
+								->rule('password', 'min_length', array(':value', '6'))
+								->rule('password_confirm',  'matches', array(':validation', 'password_confirm', 'password'));
+								
+								
+					if ($validator->check())
+					{
 							
 							if( $this->auth->username_exists( $_POST['username'] ) )
 							{
@@ -66,20 +117,8 @@ class Controller_Account extends Controller_Template
 							{
 									$errors['username'] = 'Username is already in use.';
 							}
-							
-							if( count($errors) > 0 )
-							{
-									$view = View::factory('siggy/register');
-									// Get errors for display in view
-									// Note how the first param is the path to the message file (e.g. /messages/register.php)
-									// Move external errors to main array, for post helper compatibility
-									$view->set('errors', $errors);
-									// Pass on the old form values
-									$_POST['password'] = $_POST['password_confirm'] = '';
-									$view->set('defaults', $_POST);
-									$this->template->content = $view;
-							}
-							else
+					
+							if( empty( $error ) )
 							{
 									$userData = array(
 																	 'username' => $_POST['username'],
@@ -89,14 +128,12 @@ class Controller_Account extends Controller_Template
 																	 );
 									if( $this->auth->create_user( $userData, TRUE ) )
 									{
-									// sign the user in
-										$this->auth->login($_POST['username'], $_POST['password']);
-										$this->request->redirect('account/setAPI');
-									// redirect to the user account
+											$this->auth->login($_POST['username'], $_POST['password']);
+											$this->request->redirect('account/setAPI');
 									}
 									else
 									{
-											$view = View::factory('siggy/register');
+											$view = View::factory('account/register');
 											$errors['username'] = 'Unknown error has occured.';
 											$view->set('errors', $errors);
 											// Pass on the old form values
@@ -106,12 +143,15 @@ class Controller_Account extends Controller_Template
 									}
 							}
 
-				}
-				else
-				{
-						$view = View::factory('siggy/register');
-						$this->template->content = $view;
-				}
+							
+					}
+					else
+					{
+							$errors = $validator->errors('account/register');
+					}
+				}				
+				
+				$this->template->content =  View::Factory('account/register')->bind('errors', $errors);
 		}
 		
 		public function action_setAPI()
@@ -195,36 +235,18 @@ class Controller_Account extends Controller_Template
 											else
 											{
 													$errors['apiKey'] = 'The API key does not provide the proper access to CharacterInfo(private) and CharacterInfo(Public).';
-													$view = View::factory('siggy/setAPI');
-													$view->set('status', $status);
-													$view->set('errors', $errors);
-													$this->template->content = $view;
 											}
 									}
 									else
 									{
 											$errors['apiKey'] = 'The API key is invalid.';
-											$view = View::factory('siggy/setAPI');
-											$view->set('status', $status);
-											$view->set('errors', $errors);
-											$this->template->content = $view;
 									}
 							}
-							else
-							{
-									$view = View::factory('siggy/setAPI');
-									$view->set('status', $status);
-									$view->set('errors', $errors);
-									$this->template->content = $view;
-							}
 				}
-				else
-				{							
-							$view = View::factory('siggy/setAPI');
-							$view->set('status', $status);
-							$view->set('errors', $errors);
-							$this->template->content = $view;
-				}
+				$view = View::factory('account/setAPI');
+				$view->set('status', $status);
+				$view->set('errors', $errors);
+				$this->template->content = $view;
 		}
 
 		function bitMask($mask = 0) {
@@ -249,7 +271,7 @@ class Controller_Account extends Controller_Template
 				}		
 				
 				$this->template->title = __('siggy: change password');
-				$view = $this->template->content = View::factory('siggy/changePassword');
+				$view = $this->template->content = View::factory('account/changePassword');
 				
 				$errors = array();
 				if( isset($_POST['confirm']) )
@@ -308,20 +330,15 @@ class Controller_Account extends Controller_Template
 				
 				$this->template->title = __('siggy: forgot password');
 				
-				if( isset( $_POST['send'] ) )
+				$errors = array();
+				if ($this->request->method() == "POST") 
 				{
-						$errors = array();
 						if( empty( $_POST['reset_email'] ) )
 						{
 								$errors['reset_email'] = 'You must enter a valid email address.';
 						}
 						
-						if( count( $errors ) ) 
-						{
-								$view = $this->template->content = View::factory('siggy/forgotPassword');
-								$view->errors = $errors;
-						}
-						else
+						if( !count( $errors ) ) 
 						{
 								$user = new Model_Auth_Users;
 								$user->getUserByEmail($_POST['reset_email']);
@@ -330,7 +347,6 @@ class Controller_Account extends Controller_Template
 										// send an email with the account reset token
 										$user->reset_token = $this->auth->generatePassword(32);
 										$user->save();
-										
 
 										$message = "You have requested a password reset for your siggy account. To confirm the password reset, please the follow the proceeding url:\n\n"
 										.":reset_token_link\n\n"
@@ -372,10 +388,9 @@ class Controller_Account extends Controller_Template
 						
 				
 				}
-				else
-				{
-						$view = $this->template->content = View::factory('siggy/forgotPassword');
-				}
+				
+				$this->template->content = $view = View::factory('account/forgotPassword');
+				$view->errors = $errors;
 				
 		}
 		
@@ -405,7 +420,7 @@ class Controller_Account extends Controller_Template
 				
 						if( count( $errors ) ) 
 						{
-								$view = $this->template->content = View::factory('siggy/completePasswordReset');
+								$view = $this->template->content = View::factory('account/completePasswordReset');
 								$view->errors = $errors;
 						}
 						else
@@ -417,7 +432,7 @@ class Controller_Account extends Controller_Template
 								if( $user->reset_token != $_REQUEST['reset_token'] )
 								{
 										$errors['reset_token'] = 'The reset token you have entered is invalid';
-										$view = $this->template->content = View::factory('siggy/completePasswordReset');
+										$view = $this->template->content = View::factory('account/completePasswordReset');
 										$view->errors = $errors;
 								}
 								else if ( is_numeric($user->id) && ($user->reset_token == $_REQUEST['reset_token']) ) 
@@ -460,7 +475,7 @@ class Controller_Account extends Controller_Template
 				}
 				else
 				{
-						$view = $this->template->content = View::factory('siggy/completePasswordReset');
+						$view = $this->template->content = View::factory('account/completePasswordReset');
 				}
 				
 		}
@@ -511,7 +526,10 @@ class Controller_Account extends Controller_Template
 						$this->request->redirect('/account/setAPI');
 				}
 				
+				
 				$this->template->title = __('siggy: character selection');
+				
+				$charID = $this->user->apiCharID;
 				
 				require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
 				spl_autoload_register( "Pheal::classload" );
@@ -556,19 +574,13 @@ class Controller_Account extends Controller_Template
 							
 							$this->request->redirect('/');
 					}
-					else
-					{
-							$view = View::factory('siggy/characterSelect');
-							$view->chars = $chars;
-							$this->template->content = $view;
-					}
 				}
-				else
-				{
-						$view = View::factory('siggy/characterSelect');
-						$view->chars = $chars;
-						$this->template->content = $view;
-				}
+				
+				$view = View::factory('account/characterSelect');
+				$view->chars = $chars;
+				$view->selectedCharID = $charID;
+				$view->apiError = $apiError;
+				$this->template->content = $view;
 		}
 		
 		public function action_login()
@@ -578,7 +590,7 @@ class Controller_Account extends Controller_Template
 				
 				if( $this->auth->logged_in() )
 				{
-					return;
+					$this->request->redirect('/');
 				}
 				
 				if( isset($_POST['login']) )
@@ -589,7 +601,7 @@ class Controller_Account extends Controller_Template
 						}
 						else
 						{
-								$view = View::factory('siggy/userLogin');
+								$view = View::factory('account/login');
 								$view->invalidLogin = true;
 								$view->set('username', $_POST['username']);
 								 $this->template->content = $view;
@@ -597,7 +609,7 @@ class Controller_Account extends Controller_Template
 				}
 				else
 				{
-						$view = View::factory('siggy/userLogin');
+						$view = View::factory('account/login');
 						$view->invalidLogin = false;
 						 $this->template->content =$view;
 				}
@@ -670,31 +682,6 @@ class Controller_Account extends Controller_Template
 		}			
 
 
-		private function isIGB() 
-		{
-				if ( isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'],'EVE-IGB') !== false ) 
-				{
-						return TRUE;
-				}
-				return FALSE;
-		}
-			
-		private function getTrust() 
-		{
-				if ( $this->isIGB() ) 
-				{
-					 //because CCP cant use integers.
-					 if (strtolower($_SERVER['HTTP_EVE_TRUSTED'])=='no') 
-					 {
-							return false;
-					 } 
-					 else 
-					 {
-							return true;
-					 }
-				}
-				return false;
-		}
 	
 
 }
