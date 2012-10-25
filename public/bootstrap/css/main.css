@@ -46,8 +46,10 @@ legend
 
 .siggy-hero-unit {
 	background-image: url(../img/siggyraw.png);
+	padding-top: 34px;
 	background-repeat: no-repeat;
-	height:400px;
+	height: 358px;
+	background-position: bottom left;
 }
 
 /* Other css */

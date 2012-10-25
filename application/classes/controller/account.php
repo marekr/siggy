@@ -124,7 +124,8 @@ class Controller_Account extends FrontController
 																	 'username' => $_POST['username'],
 																	 'password' => $_POST['password'],
 																	 'email' => $_POST['email'],
-																	 'active' => 1 
+																	 'active' => 1,
+																	 'registrationDate' => time()
 																	 );
 									if( $this->auth->create_user( $userData, TRUE ) )
 									{
@@ -597,12 +598,20 @@ class Controller_Account extends FrontController
 				{
 						if( $this->auth->login($_POST['username'], $_POST['password']) )
 						{
-								$this->request->redirect('/');
+								if( isset($_REQUEST['bounce'] ) )
+								{
+									$this->request->redirect(URL::base(TRUE, TRUE) . $_REQUEST['bounce']);
+								}
+								else
+								{
+									$this->request->redirect('/');
+								}
 						}
 						else
 						{
 								$view = View::factory('account/login');
 								$view->invalidLogin = true;
+						$view->bounce = isset($_REQUEST['bounce']) ? $_REQUEST['bounce'] : '';
 								$view->set('username', $_POST['username']);
 								 $this->template->content = $view;
 						}
@@ -611,7 +620,8 @@ class Controller_Account extends FrontController
 				{
 						$view = View::factory('account/login');
 						$view->invalidLogin = false;
-						 $this->template->content =$view;
+						$view->bounce = isset($_REQUEST['bounce']) ? $_REQUEST['bounce'] : '';
+						$this->template->content =$view;
 				}
 		}
 	

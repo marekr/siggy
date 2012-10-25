@@ -4,6 +4,7 @@
 
 
 		<form class="form-horizontal" action='<?php echo URL::base(TRUE, TRUE);?>/account/login' method='POST'>
+			<input type="hidden" name="bounce" value="<?php echo $bounce; ?>" />
 			<legend>Login</legend>
 			
 			

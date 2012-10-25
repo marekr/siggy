@@ -54,7 +54,7 @@ class Controller_Manage_Group extends Controller_App {
          $this->request->redirect('manage/group/members');
       } else 
       {
-         $this->request->redirect('user/profile');
+         $this->request->redirect('account/overview');
       }
    }
 

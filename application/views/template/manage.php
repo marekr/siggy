@@ -28,7 +28,7 @@
 				 <div id='header'>
 						siggy
 				 </div>
-				<div id='logoutBox'>Logged in as <?php echo simpleauth::instance()->get_user()->username; ?> (<?php echo Html::anchor('user/logout', 'Log out'); ?>)
+				<div id='logoutBox'>Logged in as <?php echo simpleauth::instance()->get_user()->username; ?> (<?php echo Html::anchor('account/logout', 'Log out'); ?>)
 				 <?php if(simpleauth::instance()->isAdmin()): ?><br />
 				 <form action='<?php echo URL::base(TRUE, TRUE);?>manage/admin/changeGroup' method='post'>
 				<select name='group' onchange='submit();'>
@@ -57,6 +57,13 @@
 						<!--	<li><?php echo Html::anchor('manage/group/settings', __('Chain Map')); ?></li> -->
 						 </ul>
 					 </li>
+					 <li class='menu selected'>
+						 <h3 style="">Financial</h3>
+						 <ul>
+							<li><?php echo Html::anchor('manage/billing/overview', __('Balance Overview')); ?></li>
+							<li><?php echo Html::anchor('manage/billing/transactions', __('Transactions')); ?></li>
+						 </ul>
+					 </li>
 					 <!--
 					 <li class='menu selected'>
 						 <h3 style="">Group Data</h3>
@@ -75,14 +82,7 @@
 							<li><?php echo Html::anchor('manage/admin/groups', __('Groups')); ?></li>
 						 </ul>
 					 </li>
-				<?php endif; ?>				
-					 <li class='menu selected'>
-						 <h3 style="">Account</h3>
-						 <ul>
-							<li><?php echo Html::anchor('user/profile', __('Details')); ?></li>
-							<li><?php echo Html::anchor('user/profile_edit', __('Edit account')); ?></li>
-						 </ul>
-					 </li>			 
+				<?php endif; ?>				 
 				 </ul> 
      </div>
      <div id='right'>

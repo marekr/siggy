@@ -28,11 +28,6 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
           <a class="brand" href="<?php echo URL::base(TRUE, TRUE);?>">siggy</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
@@ -41,10 +36,11 @@
               <li><a href="http://siggy.borkedlabs.com/info">Guide</a></li>
             <?php if( $loggedIn ): ?>
               <li <?php echo ($selectedTab == 'account' ? 'class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>account/overview">Account</a></li>
-				<li><a href="<?php echo URL::base(TRUE, TRUE);?>pages/createGroup">Create Siggy Group</a></li>
               <?php if( $user->gadmin ): ?>
 				<li <?php echo ($selectedTab == 'admin' ? 'class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>manage">Admin</a></li>
 			  <?php else: ?>
+			  
+				<li><a href="<?php echo URL::base(TRUE, TRUE);?>pages/createGroup">Create Siggy Group</a></li>
               <?php endif; ?>
             <?php else: ?>
               <li  <?php echo ($selectedTab == 'register' ? 'class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>account/register">Register</a></li>

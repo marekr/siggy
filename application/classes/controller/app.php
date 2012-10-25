@@ -59,7 +59,7 @@ class Controller_App extends Controller {
     * Override this in your own Controller / Controller_App.
     */
    public function login_required() {
-      Request::current()->redirect('user/login');
+      Request::current()->redirect('account/login?bounce=manage');
    }
 
    /**
