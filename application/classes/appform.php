@@ -39,8 +39,10 @@ class Appform {
     * @param string $class
     * @return array
     */
-   private static function add_class($attributes, $class) {
-      if(isset($attributes['class'])) {
+   private static function add_class($attributes, $class) 
+   {
+      if(isset($attributes['class'])) 
+      {
          $attributes['class'] .= ' '.$class;
       } else {
          $attributes['class'] = $class;
@@ -95,12 +97,14 @@ class Appform {
 	 * @param   array   html attributes
 	 * @return  string
 	 */
-	public function input($name, $value = NULL, array $attributes = NULL) {
+	public function input($name, $value = NULL, array $attributes = NULL) 
+	{
       $attributes = Appform::add_class($attributes, 'text');
       $this->load_values($name, $value, $attributes);
       $result = Kohana_Form::input($name, $value, $attributes);
       // add error span
-      if (isset($this->errors[$name])) {
+      if (isset($this->errors[$name]))
+      {
          $result .= '<span class="error">'.ucfirst($this->errors[$name]).'</span>';
       } else if (isset($attributes['info'])) {
          // else add info span
@@ -254,7 +258,8 @@ class Appform {
 	 * @param   array    html attributes
 	 * @return  string
 	 */
-	public function select($name, array $options = NULL, $selected = NULL, array $attributes = NULL) {
+	public function select($name, array $options = NULL, $selected = NULL, array $attributes = NULL) 
+	{
       $this->load_values($name, $selected, $attributes);
       $result = Kohana_Form::select($name, $options, $selected, $attributes);
       // add error span
@@ -275,7 +280,8 @@ class Appform {
 	 * @param   array   html attributes
 	 * @return  string
 	 */
-	public function submit($name, $value, array $attributes = NULL) {
+	public function submit($name, $value, array $attributes = NULL) 
+	{
 		return Kohana_Form::submit($name, $value, Appform::add_class($attributes, 'submit'));
 	}
 

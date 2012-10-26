@@ -4,6 +4,7 @@ require_once APPPATH.'classes/access.php';
 require_once APPPATH.'classes/groupUtils.php';
 require_once APPPATH.'classes/mapUtils.php';
 require_once APPPATH.'classes/miscUtils.php';
+require_once APPPATH.'classes/formRenderer.php';
 
 class FrontController extends Controller 
 {

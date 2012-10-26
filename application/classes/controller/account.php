@@ -272,10 +272,10 @@ class Controller_Account extends FrontController
 				}		
 				
 				$this->template->title = __('siggy: change password');
-				$view = $this->template->content = View::factory('account/changePassword');
+				$view = View::factory('account/changePassword');
 				
 				$errors = array();
-				if( isset($_POST['confirm']) )
+				if ($this->request->method() == "POST") 
 				{						
 							
 							if( empty( $_POST['current_password'] ) || ($this->auth->hash($_POST['current_password']) != $this->user->password)  )
@@ -303,11 +303,10 @@ class Controller_Account extends FrontController
 								 
 								 $this->request->redirect('/');
 							}
-							else
-							{
-									$view->errors = $errors;
-							}
-				}		
+				}
+				
+				$view->bind('errors',$errors);
+				$this->template->content = $view;
 		}
 		
 		public function action_changeEmail()
