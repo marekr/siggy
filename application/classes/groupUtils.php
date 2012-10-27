@@ -28,7 +28,7 @@ final class groupUtils
 				$password = "";
 				if( $data['groupPassword'] != "" && $data['authMode'] == 1 )
 				{
-					$password = hashGroupPassword( $data['groupPassword'], $salt );
+					$password = self::hashGroupPassword( $data['groupPassword'], $salt );
 				}
 		
 				$insert = array(
