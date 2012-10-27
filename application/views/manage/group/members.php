@@ -8,15 +8,14 @@ if( count( $subgroups->as_array() ) > 0 )
 }
 
 ?>
-   <h1><?php echo __('Group Members') ?></h1>
-   <div class="content">
-			<div class="info">The EVEID listed on this page are the ids that eve uses in game to reference your corp. You may find these from either your API info or sites such as http://evemaps.dotlan.net</div>
-			<?php echo Html::anchor('manage/group/addMember', __('Add New Member')); ?>
-			
+   <h2><?php echo __('Group Members') ?></h2>
+			<p>The EVEID listed on this page are the ids that eve uses in game to reference your corp. You may find these from either your API info or sites such as http://evemaps.dotlan.net</p>
+			<?php echo Html::anchor('manage/group/addMember', __('<i class="icon-plus-sign"></i>&nbsp;Add New Member'), array('class' => 'btn btn-primary pull-right') ); ?>
+			<div class="clearfix"></div>
 			<?php if( $hasSubgroups ): ?>
 				 <?php foreach( $subgroups as $s ): ?>
 					<h2 class="tableHeader"><?php echo $s->sgName ?></h2>
-					<table class="content" width="100%">
+					<table class="table table-striped" width="100%">
 						<tr>
 							<th width="5%">Type</th>
 							<th width="10%">EVE ID</th>
@@ -31,7 +30,7 @@ if( count( $subgroups->as_array() ) > 0 )
 							<td><?php echo ucfirst($m->memberType) ?></td>
 							<td><?php echo $m->eveID ?></td>
 							<td><?php echo $m->accessName ?></td>
-							<td><?php echo Html::anchor('manage/group/editMember/'.$m->id, __('Edit')); ?> <?php echo Html::anchor('manage/group/removeMember/'.$m->id, __('Remove')); ?></td>
+							<td><?php echo Html::anchor('manage/group/editMember/'.$m->id, __('<i class="icon-edit"></i>&nbsp;Edit')); ?> <?php echo Html::anchor('manage/group/removeMember/'.$m->id, __('<i class="icon-trash"></i>&nbsp;Remove')); ?></td>
 						</tr>
 						<?php endforeach ?>
 						<?php else: ?>
@@ -42,7 +41,7 @@ if( count( $subgroups->as_array() ) > 0 )
 					</table>					
 				<?php endforeach; ?>
 					<h2 class='tableHeader'>Default</h2>
-					<table class="content" width="100%">
+					<table class="table table-striped" width="100%">
 						<tr>
 							<th width="5%">Type</th>
 							<th width="10%">EVE ID</th>
@@ -57,7 +56,7 @@ if( count( $subgroups->as_array() ) > 0 )
 								<td><?php echo ucfirst($m->memberType) ?></td>
 								<td><?php echo $m->eveID ?></td>
 								<td><?php echo $m->accessName ?></td>
-								<td><?php echo Html::anchor('manage/group/editMember/'.$m->id, __('Edit')); ?> <?php echo Html::anchor('manage/group/removeMember/'.$m->id, __('Remove')); ?></td>
+								<td><?php echo Html::anchor('manage/group/editMember/'.$m->id, __('<i class="icon-edit"></i>&nbsp;Edit')); ?> <?php echo Html::anchor('manage/group/removeMember/'.$m->id, __('<i class="icon-trash"></i>&nbsp;Remove')); ?></td>
 							</tr>
 						<?php endforeach ?>
 						<?php else: ?>
@@ -68,7 +67,7 @@ if( count( $subgroups->as_array() ) > 0 )
 					</table>									
 				
 			<?php else: ?>
-					<table class="content" width="100%">
+					<table class="table table-striped" width="100%">
 						<tr>
 							<th width="5%">Type</th>
 							<th width="10%">EVE ID</th>
@@ -80,10 +79,8 @@ if( count( $subgroups->as_array() ) > 0 )
 							<td><?php echo ucfirst($m->memberType) ?></td>
 							<td><?php echo $m->eveID ?></td>
 							<td><?php echo $m->accessName ?></td>
-							<td><?php echo Html::anchor('manage/group/editMember/'.$m->id, __('Edit')); ?> <?php echo Html::anchor('manage/group/removeMember/'.$m->id, __('Remove')); ?></td>
+							<td><?php echo Html::anchor('manage/group/editMember/'.$m->id, __('<i class="icon-edit"></i>&nbsp;Edit')); ?> <?php echo Html::anchor('manage/group/removeMember/'.$m->id, __('<i class="icon-trash"></i>&nbsp;Remove')); ?></td>
 						</tr>
 					<?php endforeach ?>
 					</table>
       <?php endif; ?>
-<?php // echo View::factory('profiler/stats'); ?>
-   </div>

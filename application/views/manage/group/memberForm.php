@@ -1,19 +1,12 @@
 <?php
-$form = new Appform();
-if(isset($errors)) {
-   $form->errors = $errors;
-}
-if(isset($data)) {
-   $form->values = $data;
-}
 
 if( $mode == 'edit' )
 {
-	echo $form->open('manage/group/editMember/'.$id);
+	$formUrl = URL::base(TRUE,TRUE).'manage/group/editMember/'.$id;
 }
 else
 {
-	echo $form->open('manage/group/addMember');
+	$formUrl =  URL::base(TRUE,TRUE).'manage/group/addMember';
 }
 
 $select = array();
@@ -27,52 +20,26 @@ foreach($subgroups as $s )
 $type = array('corp' => 'Corp', 'char' => 'Character');
 
 ?>
-   <h1><?php echo ($mode == 'edit' ?  __('Edit Group Member') : __('Add Group Member') ); ?></h1>
-   <div class="content">
-	 <table class='settings'>
-		<tr class='header'>
-			<th colspan='2'>General</th>
-		</tr>
-    <tr>
-			<td style='width:50%'><b><?php echo __('Member Type'); ?></b></td>
-			<td style='width:50%'><?php echo $form->select('memberType', $type); ?></td>
-    </tr>
-		<tr class='odd'>
-			<td style='width:50%'><b><?php echo __('EVE/Corp ID'); ?></b>
-				<p class='desc'>
-				This is EVE's ingame ID for the corp OR character, it can be found by trying to access http://siggy.borkedlabs.com with a character in a corporation with no access or at DOTLAN(if the corp is in an alliance) or in the corp's api info. 
-				</p>
-			</td>
-			<td style='width:50%'><?php echo $form->input('eveID', null); ?></td>
-		</tr>
-		<tr>
-			<td style='width:50%'><b><?php echo __('Access Name/Corp Ticker'); ?></b>
-			</td>
-			<td style='width:50%'><?php echo $form->input('accessName') ?></td>
-		</tr>
-      <?php if( count($subgroups) > 0 ): ?>
-		<tr class='odd'>
-			<td style='width:50%'><b><?php echo __('Subgroup'); ?></b></td>
-			<td style='width:50%'><?php echo $form->select('subGroupID', $select); ?></td>
-		</tr>		
-      <?php endif; ?>
-      <tr class='buttonrow'>
-			<td colspan='2'>
-<?php 
-if( $mode == 'edit' )
-{
-	echo $form->submit(NULL, __('Edit'));
-}
-else
-{
-	echo $form->submit(NULL, __('Add'));
-}
-?>
-			</td>
-      </tr>
-	 </table>
-   <br>
-<?php 
-echo $form->close();
-?>
-   </div>
+   <form class="form-horizontal" action="<?php echo $formUrl; ?>" method="post">
+   <h2><?php echo ($mode == 'edit' ?  __('Edit Group Member') : __('Add Group Member') ); ?></h2>
+		<?php echo formRenderer::select('Member Type', 'memberType', $type, $data['memberType'], '', $errors); ?>
+		<?php echo formRenderer::input('EVE/Corp ID', 'eveID', $data['eveID'], 'ID Number from EVE for the character or corp', $errors); ?>
+		<?php echo formRenderer::input('Access Name/Corp Ticker', 'accessName', $data['accessName'], '', $errors); ?>
+		<?php if( count($subgroups) > 0 ): ?>
+			<?php echo formRenderer::select('Subgroup', 'subGroupID', $select, $data['subGroupID'], '', $errors); ?>
+		<?php endif; ?>
+
+		<div class="form-actions">
+			<?php 
+			if( $mode == 'edit' ):
+			?>
+			<button type="submit" class="btn btn-primary">Edit member</button>
+			<?php
+			else: 
+			?>
+			<button type="submit" class="btn btn-primary">Add member</button>
+			<?php endif; ?>
+			
+			<button type="button" class="btn" onclick="history.go(-1);return false;">Cancel</button>
+		</div>
+   </form>

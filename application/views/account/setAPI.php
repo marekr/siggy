@@ -29,8 +29,8 @@
 			</div>
 			<form class="form-horizontal" action='<?php echo URL::base(TRUE, TRUE);?>account/setAPI' method='POST'>
 				<legend>New API Key Entry</legend>
-				<?php echo formRenderer::input('API ID', 'apiID', '', $errors); ?>
-				<?php echo formRenderer::input('API Key', 'apiKey', '', $errors); ?>
+				<?php echo formRenderer::input('API ID', 'apiID', '', '', $errors); ?>
+				<?php echo formRenderer::input('API Key', 'apiKey', '', '', $errors); ?>
 				<div class="form-actions">
 					<button type="submit" name='set' class="btn btn-primary">Save changes</button>
 				</div>

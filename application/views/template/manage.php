@@ -1,106 +1,184 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" dir="ltr" lang="en-US">
-<head>
-   <title><?php echo $title ?></title>
-   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-   <?php foreach ($styles as $file => $type) echo HTML::style($file, array('media' => $type)), "\n" ?>
-   <?php foreach ($scripts as $file) echo HTML::script($file), "\n" ?>
-   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+<html lang="en">
+ <head>
+    <meta charset="utf-8">
+    <title><?php echo $title; ?></title>
+
+    <!-- Le styles -->
+    <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/css/admin.css" rel="stylesheet">
+    <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/js/google-code-prettify/prettify.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/ico/apple-touch-icon-57-precomposed.png">
+
+
+	<style type="text/css">
+	body
+	{
+	}
+	
+	#sidemenu
+	{
+		display: block;
+		float: left;
+		position: fixed;
+		width: 280px;
+		z-index: 16;
+	}	
+	
+	#content
+	{
+		background: none repeat scroll 0 0 transparent;
+		margin-left: 280px;
+		margin-right: 0;
+		padding-bottom: 25px;
+		position: relative;
+		min-height: 500px;
+		width: auto;
+		color: #fff;
+	}
+	
+	.sideMenuFixed
+	{
+		display: inline-block;
+		overflow: hidden;
+	}
+	
+
+	label.yes,
+	label.no
+	{
+		margin-left:0px !important;
+		width: auto;
+		padding:5px 10px;
+	}
+	
+	label.yes{
+		-moz-border-radius: 5px 0 0 5px;
+		-webkit-border-radius: 5px 0 0 5px;
+		border-radius: 5px 0 0 5px;
+		background-color: #21600C;
+	}
+
+	label.no {
+		-moz-border-radius: 0 5px 5px 0;
+		-webkit-border-radius: 0 5px 5px 0;
+		border-radius: 0 5px 5px 0;
+		background-color: #A70000;
+	}	
+	
+	label.yes input[type=radio],
+	label.no input[type=radio]
+	{
+		margin-left:0 !important;
+	}
+	.table-striped tbody tr:nth-child(odd) td, 
+	.table-striped tbody tr:nth-child(odd) th
+	{
+	   background-color: #242424;
+	}	
+	
+	.table th,
+	.table td
+	{
+		border-top: 1px solid #3C3C3C;
+	}
+	</style>
+
 </head>
 <body>
-     <?php if( !simpleauth::instance()->logged_in()): ?>
-   <div id="page_centered">
-   
-    <?php
-     // output messages
-     if(Message::count() > 0) {
-       echo '<div class="content">';
-       echo Message::output();
-       echo '</div>';
-     }
-     ?>
-     
-     <?php echo $content; ?>
-     <?php else: ?>
-   <div id="page">
-     
-     <div id='left'>
-				 <div id='header'>
-						siggy
-				 </div>
-				<div id='logoutBox'>Logged in as <?php echo simpleauth::instance()->get_user()->username; ?> (<?php echo Html::anchor('account/logout', 'Log out'); ?>)
-				 <?php if(simpleauth::instance()->isAdmin()): ?><br />
-				 <form action='<?php echo URL::base(TRUE, TRUE);?>manage/admin/changeGroup' method='post'>
-				<select name='group' onchange='submit();'>
-					<?php 
-					$groups = ORM::factory('group')->find_all();
-					$selected = simpleauth::instance()->get_user()->groupID;
-					foreach( $groups as $m ): ?>
-					<option value="<?php echo $m->groupID; ?>" <?php echo ( ($selected == $m->groupID) ? "selected='seleced'" : ''); ?>><?php echo $m->groupName; ?></option>
-					<?php endforeach; ?>
-				</select>
-				</form>
-				 <?php endif; ?></div>
-				 <ul id='nav'>
-				 <?php if(simpleauth::instance()->isGroupAdmin()): ?>
-					 <li class='menu selected'>
-						 <h3 style="">Group Members</h3>
-						 <ul>
+
+		<div class="navbar navbar-inverse navbar-fixed-top" style="margin: -1px -1px 0;">
+		  <div class="navbar-inner">
+			<div class="container" style="width: auto; padding: 0 20px;">
+			  <a class="brand" href="#">siggy</a>
+			  <ul class="nav">
+				<li class="active"><a href="<?php echo URL::base(TRUE,TRUE); ?>manage">Admin</a></li>
+			  </ul>
+			  <p class="navbar-text pull-right">
+				<a href="<?php echo URL::base(TRUE,TRUE); ?>">Back to scanning!</a>
+			  </p>
+			</div>
+		  </div>
+		</div>
+		<div id='sidemenu'>
+				<div class='well'>
+						<div id='logoutBox'><strong>Logged in as <?php echo simpleauth::instance()->get_user()->username; ?> (<?php echo Html::anchor('account/logout', 'Log out'); ?>)</strong><br />
+								<?php if(simpleauth::instance()->isAdmin()): ?><br />
+								<form action='<?php echo URL::base(TRUE, TRUE);?>manage/admin/changeGroup' method='post'>
+										<select name='group' onchange='submit();'>
+										<?php 
+										$groups = ORM::factory('group')->find_all();
+										$selected = simpleauth::instance()->get_user()->groupID;
+										foreach( $groups as $m ): ?>
+										<option value="<?php echo $m->groupID; ?>" <?php echo ( ($selected == $m->groupID) ? "selected='seleced'" : ''); ?>><?php echo $m->groupName; ?></option>
+										<?php endforeach; ?>
+										</select>
+								</form>
+								<?php endif; ?>
+						</div>
+						<ul class="nav nav-list">
+							<?php if(simpleauth::instance()->isGroupAdmin()): ?>
+							<li class="nav-header">Group Members</li>
 							<li><?php echo Html::anchor('manage/group', __('Group Members')); ?></li>
 							<li><?php echo Html::anchor('manage/group/subgroups', __('Subgroups')); ?></li>
-						 </ul>
-					 </li>
-					 <li class='menu selected'>
-						 <h3 style="">Group Settings</h3>
-						 <ul>
+							
+							<li class="nav-header">Group Settings</li>
 							<li><?php echo Html::anchor('manage/group/settings', __('General')); ?></li>
-						<!--	<li><?php echo Html::anchor('manage/group/settings', __('Chain Map')); ?></li> -->
-						 </ul>
-					 </li>
-					 <li class='menu selected'>
-						 <h3 style="">Financial</h3>
-						 <ul>
+							<!--	<li><?php echo Html::anchor('manage/group/settings', __('Chain Map')); ?></li> -->
+									
+							<li class="nav-header">Financial</li>
 							<li><?php echo Html::anchor('manage/billing/overview', __('Balance Overview')); ?></li>
 							<li><?php echo Html::anchor('manage/billing/transactions', __('Transactions')); ?></li>
-						 </ul>
-					 </li>
-					 <!--
-					 <li class='menu selected'>
-						 <h3 style="">Group Data</h3>
-						 <ul>
+							
+							<!--
+							<li class='menu selected'>
+							<h3 style="">Group Data</h3>
+							<ul>
 							<li><?php echo Html::anchor('manage/group/settings', __('Logs')); ?></li>
 							<li><?php echo Html::anchor('manage/group/settings', __('Statistics')); ?></li>
-						 </ul>
-					 </li>
-					 -->
-				<?php endif; ?>
+							</ul>
+							</li>
+							-->
+							<?php endif; ?>
 
-				 <?php if(simpleauth::instance()->isAdmin()): ?>
-					 <li class='menu selected'>
-						 <h3 style="">Admin</h3>
-						 <ul>
+							<?php if(simpleauth::instance()->isAdmin()): ?>
+							<li class="nav-header">Admin</li>
 							<li><?php echo Html::anchor('manage/admin/groups', __('Groups')); ?></li>
-						 </ul>
-					 </li>
-				<?php endif; ?>				 
-				 </ul> 
-     </div>
-     <div id='right'>
+							<?php endif; ?>				 
+						</ul> 
+				</div>
+		</div>
+     
+     
+     
+     <div id='content'>
+	  <div class="container-fluid">
+
+		<div class="row-fluid">
     <?php
      // output messages
      if(Message::count() > 0) {
-       echo '<div class="content">';
+       echo '<div class="alert alert-info">';
        echo Message::output();
        echo '</div>';
      }
      ?>
 				<?php echo $content; ?>
+		</div>
+		</div>
      </div>
-     <?php endif; ?>
-</div>
    
-<?php 
-// echo '<div id="kohana-profiler">'.View::factory('profiler/stats').'</div>';
-?>
 </body>
 </html>

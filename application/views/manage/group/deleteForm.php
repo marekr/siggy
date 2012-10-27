@@ -1,15 +1,8 @@
 
-		<h1>Confirm deletion</h1>
-   <div class="content">
-<?php
-$form = new Appform();
-
-echo $form->open('manage/group/removeMember/'.$id);
-echo $form->hidden('confirm', '1');
-?>
+<h2>Confirm deletion</h2>
+<form action="<?php echo URL::base(true,true);?>manage/group/removeMember/<?php echo $id; ?>" method="POST">
+	<input type="hidden" value="1" name="confirm" />
    <p>Are you sure you want to remove '<?php echo $data['accessName']; ?>' from the group access?</p>
-<?php 
-	echo $form->submit(NULL, __('Confirm'));
-echo $form->close();
-?>
-   </div>
+  <button type="submit" class="btn">Confirm Deletion</button>
+  <button type="button" class="btn" onclick="history.go(-1);return false;">Cancel</button>
+</form>

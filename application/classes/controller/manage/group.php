@@ -99,10 +99,19 @@ class Controller_Manage_Group extends Controller_App {
 	{
 			$this->template->title = __('Group management');
 			$user = simpleauth::instance()->get_user();
-      
+			$errors = array();
+			$data = array('eveID' => '',
+						'accessName' => '',
+						'subGroupID' => 0,
+						'memberType' => 'corp');
       
 			$view = View::factory('manage/group/memberForm');
 			$view->set('mode', 'add');
+			$view->bind('errors', $errors);
+			$view->bind('data', $data);
+			
+			
+			
 			if ( !empty($_POST)  ) 
 			{
 					try 
@@ -141,7 +150,6 @@ class Controller_Manage_Group extends Controller_App {
 							Message::add('error', __('Error: Values could not be saved.'));
 							$errors = $e->errors('addMember');
 							$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
-							$view->set('errors', $errors);
 							// Pass on the old form values
 
 							$view->set('data', array('eveID' => $_POST['eveID'], 'accessName' => $_POST['accessName']) );
@@ -162,8 +170,12 @@ class Controller_Manage_Group extends Controller_App {
 
 		$group = ORM::factory('group', $user->groupID);
 
+		$errors = array();
 		$view = $this->template->content = View::factory('manage/group/settings');
-		if ( !empty($_POST)  ) 
+		
+		$view->bind('errors', $errors);
+					
+		if ($this->request->method() == "POST") 
 		{
 				try 
 				{
@@ -240,7 +252,6 @@ class Controller_Manage_Group extends Controller_App {
 					Message::add('error', __('Error: Values could not be saved.'));
 					$errors = $e->errors('editSubGroup');
 					$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
-					$view->set('errors', $errors);
 					// Pass on the old form values
 
 					$view->set('data', array( 'groupName' => $_POST['groupName'],
@@ -278,9 +289,20 @@ class Controller_Manage_Group extends Controller_App {
 
 			$group = ORM::factory('group', $user->groupID);
 
+			$errors = array();
+			$data = array('sgName' => '',
+							'sgHomeSystems' => '',
+							'sgSysListShowReds' => 1,
+							'sgSkipPurgeHomeSigs' => 0,
+							);
 			$view = View::factory('manage/group/subGroupForm');
+			$view->bind('errors', $errors);
+			$view->bind('data', $data);
+			
+			
 			$view->set('mode', 'add');
-			if ( !empty($_POST)  ) 
+			
+			if ($this->request->method() == "POST") 
 			{
 					try 
 					{
@@ -376,20 +398,14 @@ class Controller_Manage_Group extends Controller_App {
 									);
 					}
 			}
-			else
-			{
-				$view->set('data', array(
-																				'sgSysListShowReds' => 1,
-																				'sgSkipPurgeHomeSigs' => 0,
-																			) 
-												);      
-			}
 		  
 			$this->template->content = $view;
    }
    
-   public function action_editMember( $id )
+   public function action_editMember()
    {
+			$id = $this->request->param('id');
+			
 			$this->template->title = __('Group management');
 			$user = simpleauth::instance()->get_user();
 
@@ -400,10 +416,14 @@ class Controller_Manage_Group extends Controller_App {
 					$this->request->redirect('manage/group/members');
 			}
 
+			$errors = array();
+
 			$view = View::factory('manage/group/memberForm');
+			$view->bind('errors', $errors);
 			$view->set('mode', 'edit');
 			$view->set('id', $id);
-			if ( !empty($_POST)  ) 
+			
+			if ($this->request->method() == "POST") 
 			{
 					try 
 					{
@@ -467,8 +487,10 @@ class Controller_Manage_Group extends Controller_App {
 			$this->template->content = $view;
    }   
    
-		public function action_editSubGroup( $id )
+		public function action_editSubGroup()
 		{
+				$id = intval($this->request->param('id'));
+					
 				$this->template->title = __('Editing sub group');
 				$user = simpleauth::instance()->get_user();
 
@@ -480,7 +502,10 @@ class Controller_Manage_Group extends Controller_App {
 				}
 				$group = ORM::factory('group', $user->groupID);
 
+				$errors = array();
+
 				$view = View::factory('manage/group/subGroupForm');
+				$view->bind('errors', $errors);
 				$view->set('mode', 'edit');
 				$view->set('id', $id);
 				if ( !empty($_POST)  ) 
@@ -571,8 +596,10 @@ class Controller_Manage_Group extends Controller_App {
 			$this->template->content = $view;
 	}   
    
-	public function action_removeMember( $id )
+	public function action_removeMember()
 	{
+		$id = intval($this->request->param('id'));
+	
 		$this->template->title = __('Group management');
 		$user = simpleauth::instance()->get_user();
 
@@ -616,8 +643,10 @@ class Controller_Manage_Group extends Controller_App {
 		$this->template->content = $view;
 	}
    
-	public function action_removeSubGroup( $id )
+	public function action_removeSubGroup()
 	{
+		$id = intval($this->request->param('id'));
+		
 			$this->template->title = __('Removing sub group');
 			$user = simpleauth::instance()->get_user();
 

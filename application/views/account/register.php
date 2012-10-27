@@ -7,10 +7,10 @@
 				<form action='<?php echo URL::base(TRUE, TRUE);?>account/register' class="form-horizontal" method='POST'>		
 							<?php echo print_r($errors);?>
 					<legend>Account Details</legend>
-					<?php echo formRenderer::input('Username', 'username', '', $errors); ?>
-					<?php echo formRenderer::input('Email', 'email', '', $errors); ?>
-					<?php echo formRenderer::password('Password', 'password', '', $errors); ?>
-					<?php echo formRenderer::password('Confirm Password', 'password_confirm', '', $errors); ?>
+					<?php echo formRenderer::input('Username', 'username', '', '', $errors); ?>
+					<?php echo formRenderer::input('Email', 'email', '', '', $errors); ?>
+					<?php echo formRenderer::password('Password', 'password', '', '', $errors); ?>
+					<?php echo formRenderer::password('Confirm Password', 'password_confirm', '', '', $errors); ?>
 					
 					<div class="form-actions">
 						<button type="submit" name="register" class="btn">Register</button>

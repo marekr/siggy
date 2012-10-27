@@ -4,7 +4,7 @@
 			<div class="info">The EVEID listed on this page are the ids that eve uses in game to reference your corp. You may find these from either your API info or sites such as http://evemaps.dotlan.net</div>
 			<?php echo Html::anchor('manage/admin/addGroup', __('Add New Group')); ?>
 			
-					<table class="content" width="100%">
+					<table class="table table-striped" width="100%">
 						<tr>
 							<th width="10%">Ticker</th>
 							<th width="75%">Name</th>
