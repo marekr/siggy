@@ -5,7 +5,6 @@
 				  You will be asked for an API key on a different page.</p>
 				  
 				<form action='<?php echo URL::base(TRUE, TRUE);?>account/register' class="form-horizontal" method='POST'>		
-							<?php echo print_r($errors);?>
 					<legend>Account Details</legend>
 					<?php echo formRenderer::input('Username', 'username', '', '', $errors); ?>
 					<?php echo formRenderer::input('Email', 'email', '', '', $errors); ?>
