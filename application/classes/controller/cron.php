@@ -173,8 +173,10 @@ class Controller_Cron extends Controller
 	
 		require_once(Kohana::find_file('vendor', 'pheal/Pheal'));
 		spl_autoload_register("Pheal::classload");
+		PhealConfig::getInstance()->http_ssl_verifypeer = false;
 		$pheal = new Pheal('','');
 		$pheal->scope = 'map';
+		
 		$jumpsData = $pheal->Jumps();
 		foreach($jumpsData->solarSystems as $ss )
 		{
