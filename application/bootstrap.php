@@ -77,7 +77,7 @@ I18n::lang('en-us');
 
 Kohana::$environment = ($_SERVER['SERVER_NAME'] !== 'localhost') ? Kohana::PRODUCTION : Kohana::DEVELOPMENT;
 
-/*
+
 if( Kohana::$environment == Kohana::DEVELOPMENT && strpos($_SERVER['HTTP_USER_AGENT'],'EVE-IGB') === false )
 {
   $_SERVER['HTTP_EVE_CORPID'] = 389326446;
@@ -104,7 +104,7 @@ if( !isset($_SERVER['HTTP_EVE_SOLARSYSTEMID']) && isset($_SERVER['HTTP_EVE_SOLAR
 	$_SERVER['HTTP_EVE_SOLARSYSTEMID'] = $systems[ $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] ];
 }
 
-*/
+
 
 
 /**

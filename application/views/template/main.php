@@ -53,13 +53,15 @@
 							<?php endif; ?>
 					</p>
 				</div>
-				<div id="updateTime">
-					<span id="loading" style="display:none;"><img src="<?php echo URL::base(TRUE, TRUE);?>public/images/ajax-loader.gif" />&nbsp;</span>
-					Selected System: <span id="currentsystem"><b>System</b></span><br />
-					<?php if( $igb ): ?>
-						Your Location: <span id="acsname" title='Your current location'><b>System</b></span>
-					<?php endif; ?>
-				</div>
+				<?php if( $siggyMode ): ?>
+					<div id="updateTime">
+						<span id="loading" style="display:none;"><img src="<?php echo URL::base(TRUE, TRUE);?>public/images/ajax-loader.gif" />&nbsp;</span>
+						Selected System: <span id="currentsystem"><b>System</b></span><br />
+						<?php if( $igb ): ?>
+							Your Location: <span id="acsname" title='Your current location'><b>System</b></span>
+						<?php endif; ?>
+					</div>
+				<?php endif; ?>
 			</div>
 			<div id="headerTools">
 				<?php echo $headerTools; ?>
@@ -82,7 +84,9 @@
 					<a href="<?php echo URL::base(TRUE, TRUE);?>account/changePassword">Change Password</a>
 					<?php endif; ?>
 					<br />
+					<?php if( $siggyMode ): ?>
 					Last Update: <span class="updateTime" title='Last update recieved'>00:00:00</span><br />
+					<?php endif; ?>
 			</div>    
 		</div>
 		<?php if( defined('MESSMODE') ) { echo View::factory('profiler/stats'); } ?>

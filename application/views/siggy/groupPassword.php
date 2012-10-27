@@ -1,6 +1,4 @@
-<html>
-  <head>
-    <title>siggy</title>
+
        <style type='text/css'>
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { 
 	margin:0;
@@ -67,15 +65,7 @@ abbr,acronym { border:0;
 				padding: 4px;
       }
       </style>
-      <script type='text/javascript'>
-        if( typeof(CCPEVE) != "undefined" )
-        {
-          CCPEVE.requestTrust('http://siggy.borkedlabs.com/*');
-        }      
-      </script>
-  </head>
 
-  <body>
     <div id="message">
     <h1>Authenication Required</h1>
     <?php if( $two=1 ): ?>
@@ -84,17 +74,13 @@ abbr,acronym { border:0;
 				<?php if($groupData['groupID'] != 0 ): ?>
 					<div id="authBox">
 						<p style='font-weight:bold'>
-						<?php if( $groupData['memberType'] == 'corp' ): ?>
-						<img src="http://image.eveonline.com/Corporation/<?php echo $_SERVER['HTTP_EVE_CORPID']; ?>_64.png" height="32px" style='vertical-align:middle' /><?php echo $groupData['accessName']; ?>&nbsp;&nbsp;
-						<?php endif; ?>
-						<img src="http://image.eveonline.com/Character/<?php echo $_SERVER['HTTP_EVE_CHARID']; ?>_64.jpg" height="32px" style='vertical-align:middle' /> <?php echo $_SERVER['HTTP_EVE_CHARNAME']; ?></p><br />
 						In order to continue, please enter your group's access password below. This password should have been provided by your group in a bulletin,mail,w/e.<br /><br />
 						<?php if( $wrongPass == true ): ?>
 							<p id="passError">You have entered an incorrect password!</p>
 						<?php endif; ?>
 						<form action='<?php echo URL::base(TRUE, TRUE);?>/doGroupAuth' method='POST'>
 							<input type='password' name='authPassword' /><br /><br />
-							<input type='submit' value='Submit' />
+							<input type='submit' value='Submit' style="padding:10px" />
 						</form>
           </div>
 				<?php else: ?>
@@ -108,5 +94,17 @@ abbr,acronym { border:0;
       Sorry, you must be using the EVE in game browser to continue.
     <?php endif; ?>
     </div>
-  </body>
-</html>
+    <script type='text/javascript'>
+    	accessMenu = new siggyMenu(
+	{	 
+			ele: 'accessMenu', 
+			dir: 'down',
+			callback: function( id )
+			{
+				window.location.replace(  '<?php echo URL::base(true,true); ?>doswitchMembership/?k=' + id );
+			},
+			callbackMode: 'wildcard'
+	});
+	
+	accessMenu.initialize();
+	</script>

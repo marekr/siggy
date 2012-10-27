@@ -433,6 +433,7 @@ table td.buttonRow {
 {
   clear:both;
   background-color: #262626;
+  min-height: 20px;
   
 }
 

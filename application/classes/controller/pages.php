@@ -31,6 +31,24 @@ class Controller_Pages extends FrontController
 		}
 
 
+		public function action_accessMessage()
+		{
+			$this->template->title = "Trust required";
+			$this->template->layoutMode = 'blank';
+			$this->template->selectedTab = 'home';
+			$this->template->loggedIn = $this->auth->logged_in();
+			print($this->template->loggedIn);
+			$this->template->user = $this->user;
+			
+			$this->template->content = $view = View::factory('siggy/accessMessage');
+			$view->bind('groupData', $this->groupData);
+			$view->trusted = $this->trusted;
+			$view->igb = $this->igb;
+			$view->set('offlineMode', false);
+			$this->response->body($view);
+		}
+
+
 		public function action_createGroup()
 		{
 			$this->template->title = 'Create siggy group';

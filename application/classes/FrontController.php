@@ -74,8 +74,8 @@ class FrontController extends Controller
 		{
 				$this->siggyredirect('/offline');
 		}
-
-		if( !$this->noAutoAuthRedirects )
+		
+		if( !$this->noAutoAuthRedirects  )
 		{
 			$this->authCheckAndRedirect();
 		}
@@ -94,7 +94,7 @@ class FrontController extends Controller
 			$this->template->charName = isset($this->groupData['charName']) ? $this->groupData['charName'] : '';
 			$this->template->group = $this->groupData;		
 			
-			if( $this->igb )
+			if( $this->igb && isset($this->groupData['authMode']) )
 			{
 				$this->template->apilogin = ( $this->groupData['authMode'] == 2 ? true : false);
 			}
@@ -122,13 +122,9 @@ class FrontController extends Controller
 				{
 						$this->siggyredirect('/account/login');
 				}
-				else
+				elseif( $this->authStatus != AuthStatus::ACCEPTED )
 				{
-								$view = View::factory('siggy/accessMessage');
-								$view->groupData = $this->groupData;
-								$view->trusted = $this->trusted;
-								$view->set('offlineMode', false);
-								$this->response->body($view);
+						$this->siggyredirect('/pages/accessMessage');
 				}
 		}
 		else

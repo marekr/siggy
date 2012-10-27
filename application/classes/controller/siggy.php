@@ -56,6 +56,7 @@ class Controller_Siggy extends FrontController
 		$this->template->headerTools = $headerToolsHTML;
 	}
 	
+	
 	public function action_stats()
 	{
 		if(	 !$this->isAuthed() )
@@ -190,6 +191,30 @@ class Controller_Siggy extends FrontController
 		
 	}
 	
+	public function before()
+	{
+		if( $this->request->action() == 'GroupAuth' || $this->request->action() == "switchMembership" )
+		{
+			$this->noAutoAuthRedirects = TRUE;
+		}
+	
+		parent::before();
+	}
+	
+	public function after()
+	{
+		if( $this->request->action() == 'GroupAuth' )
+		{
+			$this->template->siggyMode = false;
+		}
+		else
+		{
+			$this->template->siggyMode = true;
+		}
+	
+		parent::after();
+	}
+	
 	public function action_groupAuth()
 	{
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
@@ -197,6 +222,15 @@ class Controller_Siggy extends FrontController
 		{
 			return;
 		}
+		
+		$view = View::factory('siggy/groupPassword');
+		$view->groupData = $this->groupData;
+		$view->trusted = $this->trusted;
+		$view->wrongPass = false;
+		$this->template->siggyMode = false;
+
+		//load header tools
+		$this->template->headerTools = '';		
 		
 		if( isset($_POST['authPassword']) )
 		{
@@ -210,11 +244,7 @@ class Controller_Siggy extends FrontController
 				}
 				else
 				{
-					$view = View::factory('siggy/groupPassword');
-					$view->groupData = $this->groupData;
-					$view->trusted = $this->trusted;
 					$view->wrongPass = true;
-					$this->response->body($view);
 				}
 			}
 			elseif( !empty($this->groupData['authPassword']) )
@@ -226,18 +256,13 @@ class Controller_Siggy extends FrontController
 				}
 				else
 				{
-					$view = View::factory('siggy/groupPassword');
-					$view->groupData = $this->groupData;
-					$view->trusted = $this->trusted;
 					$view->wrongPass = true;
-					$this->response->body($view);
 				}
 			}
-			else
-			{
-				echo 'No group password set, why are you here?';
-			}
 		}
+		
+		
+		$this->template->content = $view;
 	}
 	
 	public function action_systemData($name='')
@@ -370,8 +395,10 @@ class Controller_Siggy extends FrontController
 		{
 				$k = $_GET['k'];
 				
-				if( $this->isAuthed() )
-				{
+
+				
+				//if( $this->isAuthed() )
+				//{
 						if( count( $this->groupData['groups'] ) > 1 || count( current($this->groupData['groups']) > 1) )
 						{
 								foreach( $this->groupData['groups'] as $g => $sgs )
@@ -386,7 +413,7 @@ class Controller_Siggy extends FrontController
 										}
 								}
 						}
-				}
+				//}
 				
 				$this->request->redirect('/');
 		}
