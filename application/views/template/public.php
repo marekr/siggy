@@ -40,7 +40,7 @@
 				<li <?php echo ($selectedTab == 'admin' ? 'class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>manage">Admin</a></li>
 			  <?php else: ?>
 			  
-				<li><a href="<?php echo URL::base(TRUE, TRUE);?>pages/createGroup">Create Siggy Group</a></li>
+				<!-- <li><a href="<?php echo URL::base(TRUE, TRUE);?>pages/createGroup">Create Siggy Group</a></li> -->
               <?php endif; ?>
             <?php else: ?>
               <li  <?php echo ($selectedTab == 'register' ? 'class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>account/register">Register</a></li>
