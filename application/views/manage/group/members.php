@@ -19,8 +19,8 @@ if( count( $subgroups->as_array() ) > 0 )
 						<tr>
 							<th width="5%">Type</th>
 							<th width="10%">EVE ID</th>
-							<th width="70%">Access Name</th>
-							<th width="15%">Options</th>
+							<th width="60%">Access Name</th>
+							<th width="25%">Options</th>
 						</tr>
 					<?php 
 						$members = $group->groupmembers->where('subGroupID', '=', $s->subGroupID)->find_all();
@@ -45,8 +45,8 @@ if( count( $subgroups->as_array() ) > 0 )
 						<tr>
 							<th width="5%">Type</th>
 							<th width="10%">EVE ID</th>
-							<th width="70%">Access Name</th>
-							<th width="15%">Options</th>
+							<th width="60%">Access Name</th>
+							<th width="25%">Options</th>
 						</tr>
 					<?php 
 						$members = $group->groupmembers->where('subGroupID', '=', 0)->find_all();
@@ -71,8 +71,8 @@ if( count( $subgroups->as_array() ) > 0 )
 						<tr>
 							<th width="5%">Type</th>
 							<th width="10%">EVE ID</th>
-							<th width="70%">Access Name</th>
-							<th width="15%">Options</th>
+							<th width="60%">Access Name</th>
+							<th width="25%">Options</th>
 						</tr>
 					<?php foreach( $group->groupmembers->find_all() as $m ): ?>
 						<tr>

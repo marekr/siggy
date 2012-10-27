@@ -202,8 +202,6 @@ class Controller_Account extends FrontController
 									require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
 									spl_autoload_register( "Pheal::classload" );
 									PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
-									PhealConfig::getInstance()->api_base = 'http://api.eveonline.com/';
-									PhealConfig::getInstance()->api_customkeys = true;
 									PhealConfig::getInstance()->http_ssl_verifypeer = false;
 									$pheal = new Pheal( $_POST['apiID'], $_POST['apiKey'] );
 									
@@ -360,7 +358,7 @@ class Controller_Account extends FrontController
 										$subject = __('siggy: Account password reset');
 										
 										$to = $_POST['reset_email'];
-										$from = Kohana::config('useradmin')->email_address;
+										$from = Kohana::$config->load('useradmin')->email_address;
 										
 										$body =  __($message, array(
 												':reset_token_link' => URL::site('account/completePasswordReset?reset_token='.$user->reset_token.'&reset_email='.$_POST['reset_email'], TRUE),
@@ -384,6 +382,7 @@ class Controller_Account extends FrontController
 								
 								$view = $this->template->content = View::factory('messages/forgotPasswordSent');
 								$view->email = $_POST['reset_email'];
+								return;
 						}
 						
 				
@@ -451,7 +450,7 @@ class Controller_Account extends FrontController
 										$subject = __('siggy: Your new password');
 										
 										$to = $_REQUEST['reset_email'];
-										$from = Kohana::config('useradmin')->email_address;
+										$from = Kohana::$config->load('useradmin')->email_address;
 										
 										$body =  __($message, array(
 												':url' => URL::site('', TRUE),

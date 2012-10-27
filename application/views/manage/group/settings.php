@@ -27,37 +27,6 @@
   			
 	 <div class="form-actions">
 		<button type="submit" class="btn btn-primary">Save changes</button>
-			<button type="button" class="btn" onclick="history.go(-1);return false;">Cancel</button>
+		<button type="button" class="btn" onclick="history.go(-1);return false;">Cancel</button>
 	</div> 			
-  	
-	
-		<!--
-		<tr  class='odd'>
-			<td style='width:50%'><b><?php echo __('Record scan activity?'); ?></b>
-			<p class='desc'>If yes, siggy tally the scanning activity entered into siggy per character per day. </p>
-			</td>
-			<td style='width:50%'><?php echo $form->yes_no('recordScanning', null) ?></td>
-		</tr>		
-		<tr class='header'>
-			<th colspan='2'>Logging</th>
-		</tr>
-		<tr>
-			<td style='width:50%'><b><?php echo __('Log sig deletions?'); ?></b>
-			<p class='desc'>If yes, siggy will record who, where and when a sig was deleted in a system along with what it was.</p>
-			</td>
-			<td style='width:50%'><?php echo $form->yes_no('logSigDel', null) ?></td>
-		</tr>
-		<tr class='odd'>
-			<td style='width:50%'><b><?php echo __('Log sig edits?'); ?></b>
-			<p class='desc'>If yes, siggy will record who, where and when a sig was edited.</p>
-			</td>
-			<td style='width:50%'><?php echo $form->yes_no('logSigEdits', null) ?></td>
-		</tr>
-		<tr>
-			<td style='width:50%'><b><?php echo __('Prune after X days'); ?></b>
-			<p class='desc'>By default these logs will be deleted after 7 days, otherwise set a different time, you are limited to 30 days at most.</p>
-			</td>
-			<td style='width:50%'>NUMERIC</td>
-		</tr>
-		-->
 </form>

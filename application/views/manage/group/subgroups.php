@@ -11,9 +11,9 @@
 <?php if( count( $subgroups->as_array() ) > 0 ): ?>
 			<table class="table table-striped" width="100%">
 				<tr>
-					<th width="70%">Subgroup</th>
+					<th width="60%">Subgroup</th>
 					<th width="15%"># Members</th>
-					<th width="15%">Options</th>
+					<th width="25%">Options</th>
 				</tr>
       <?php foreach( $subgroups as $s ): ?>
 				<tr>
