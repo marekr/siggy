@@ -8,7 +8,6 @@
     <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
     <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/css/main.css" rel="stylesheet">
-    <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/js/google-code-prettify/prettify.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -50,7 +49,7 @@
             
             <?php if( $loggedIn ): ?>
             <p class="navbar-text pull-right">
-              Logged in as <a href="#" class="navbar-link"><?php echo $charName; ?></a> <a href="<?php echo URL::base(TRUE, TRUE);?>account/logout" />Logout</a>
+              Logged in as <a href="#" class="navbar-link"><?php echo $user->username; ?></a> <a href="<?php echo URL::base(TRUE, TRUE);?>account/logout" />Logout</a>
             </p>
             <?php endif; ?>
           </div>

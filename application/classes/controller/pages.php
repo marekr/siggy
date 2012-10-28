@@ -37,7 +37,6 @@ class Controller_Pages extends FrontController
 			$this->template->layoutMode = 'blank';
 			$this->template->selectedTab = 'home';
 			$this->template->loggedIn = $this->auth->logged_in();
-			print($this->template->loggedIn);
 			$this->template->user = $this->user;
 			
 			$this->template->content = $view = View::factory('siggy/accessMessage');
@@ -51,6 +50,11 @@ class Controller_Pages extends FrontController
 
 		public function action_createGroup()
 		{
+			if( $this->igb || !$this->auth->logged_in() )
+			{
+				$this->request->redirect('/');
+			}
+		
 			$this->template->title = 'Create siggy group';
 			$this->template->selectedTab = 'createGroup';
 			$this->template->layoutMode = 'blank';

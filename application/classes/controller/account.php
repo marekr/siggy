@@ -15,7 +15,6 @@ class Controller_Account extends FrontController
 			
 			$this->auth = simpleauth::instance();
 			$this->user = $this->auth->get_user();
-			
 			parent::__construct($request, $response);
 		}
 		
