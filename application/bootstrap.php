@@ -26,7 +26,7 @@ else
  * @see  http://kohanaframework.org/guide/using.configuration
  * @see  http://php.net/timezones
  */
-date_default_timezone_set('America/Chicago');
+date_default_timezone_set('UTC');
 
 /**
  * Set the default locale.
@@ -159,11 +159,6 @@ Kohana::modules(array(
  */
 //if ( ! Route::cache())
 //{
-  Route::set('system', 'system(/<name>)')
-    ->defaults(array(
-      'controller' => 'systems',
-      'action'     => 'view',
-    ));
    Route::set('siggyUpdate', 'update')
     ->defaults(array(
         'controller' => 'siggy',
@@ -207,12 +202,6 @@ Kohana::modules(array(
         'action' => 'buildStatics',
     )); 
     
-   Route::set('siggyStats', 'stats')
-    ->defaults(array(
-        'controller' => 'siggy',
-        'action' => 'stats',
-    )); 
-
 
    Route::set('siggySigs', 'do(<action>)')
     ->defaults(array(
@@ -252,16 +241,22 @@ Kohana::modules(array(
     )); 
     
     
-   Route::set('siggyMain', '(<name>)')
+   Route::set('siggyMain', 'system(/<name>)')
     ->defaults(array(
         'controller' => 'siggy',
         'action' => 'index',
     )); 
 
+   Route::set('stats', 'stats(/year/<year>/week/<week>)')
+    ->defaults(array(
+        'controller' => 'stats',
+        'action' => 'index',
+    ));     
+    
 
   Route::set('default', '(<controller>(/<action>(/<id>)))')
     ->defaults(array(
-      'controller' => 'welcome',
+      'controller' => 'siggy',
       'action'     => 'index',
     ));
     

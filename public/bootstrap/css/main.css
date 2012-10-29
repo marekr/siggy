@@ -40,6 +40,20 @@ legend
 	text-align:center;
 }
 
+
+
+.table-striped tbody tr:nth-child(odd) td, 
+.table-striped tbody tr:nth-child(odd) th
+{
+   background-color: #242424;
+}	
+
+.table th,
+.table td
+{
+	border-top: 1px solid #3C3C3C;
+}
+
 .hero-unit {
 	background-color: #2C2C2C;
 }
