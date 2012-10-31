@@ -20,6 +20,24 @@ final class groupUtils
 				}
 		}
 		
+		static function getCharacterUsageCount( $groupID )
+		{
+				$numCorps = DB::query(Database::SELECT, "SELECT SUM(c.memberCount) as total FROM groupmembers gm
+												LEFT JOIN corporations c ON(gm.eveID = c.corporationID)
+												WHERE gm.groupID=:group AND gm.memberType='corp'")
+												->param(':group', $groupID)->execute()->current();
+												
+				$numCorps = $numCorps['total'];
+				
+				$numChars = DB::query(Database::SELECT, "SELECT COUNT(*) as total FROM groupmembers
+												WHERE groupID=:group AND memberType ='char' ")
+												->param(':group', $groupID)->execute()->current();
+				$numChars = $numChars['total'];
+				$numUsers = $numCorps + $numChars;		
+				
+				return $numUsers;
+		}
+		
 		static function createNewGroup($data)
 		{
 				$homeSysData = self::parseHomeSystems($data['homeSystems']);
@@ -40,7 +58,8 @@ final class groupUtils
 									'authPassword' => $password,
 									'homeSystems' => $homeSysData['homeSystems'],
 									'homeSystemIDs' => $homeSysData['homeSystemIDs'],
-									'dateCreated' => time()
+									'dateCreated' => time(),
+									'paymentCode' => miscUtils::generateString(14)
 								);
 				$result = DB::insert('groups', array_keys($insert) )->values( array_values($insert) )->execute();
 				$groupID = $result[0];
@@ -122,58 +141,14 @@ final class groupUtils
 				return $mapData;
 		}
 		
-		static function bookKeeping($groupID, $amount)
+		static function applyISKCharge($groupID, $amount)
 		{
-			//$amount = (float)$amount;
-			
-			
-			$payments = DB::query(Database::SELECT, "SELECT paymentID, paymentAmount FROM billing_payments WHERE groupID=:groupID AND usageStatus != 'used' ORDER BY paymentProcessedTime ASC")
-						->param(':groupID', $groupID)
-						  ->execute()->as_array();  
-						  
-			//oldest bills first sorted and not paid yet
-			$bills = DB::query(Database::SELECT, "SELECT billID, appliedPayment, paid, charge FROM billing_bills WHERE groupID=:groupID AND paid != 1 ORDER BY dateCreated ASC")
-						->param(':groupID', $groupID)
-						  ->execute()->as_array();  
-			
-			if( count( $bills ) > 0 )
-			{
-				foreach($bills as $bill)
-				{
-				
-					foreach( $payments as $payment )
-					{
-						$toPay = $bill['charge'] - $bill['paid'];
-						
-						if( $payment['paymentAmount'] > $toPay )
-						{
-						}
-						else
-						{
-							
-						}
-					}
-					
-					
-					DB::update('billing_bills')->set( $bill )->where('billID', '=',  $bill['billID'])->execute();
-					
-					//stop when we run out of isk!
-					if( $amount <= 0 )
-					{
-						break;
-					}
-				}
-			}
-			else
-			{
-			}
-			
-			
-			
-			
-			
+			DB::update('groups')->set( array( 'iskBalance' => DB::expr('iskBalance - :amount') ) )->param(':amount', $amount)->where('groupID', '=',  $groupID)->execute();
+		}
+	
+		static function applyISKPayment($groupID, $amount)
+		{
 			DB::update('groups')->set( array( 'iskBalance' => DB::expr('iskBalance + :amount') ) )->param(':amount', $amount)->where('groupID', '=',  $groupID)->execute();
-		
 		}
 	
 	

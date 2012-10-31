@@ -64,11 +64,10 @@
 							<li><?php echo Html::anchor('manage/group/settings', __('General')); ?></li>
 							<!--	<li><?php echo Html::anchor('manage/group/settings', __('Chain Map')); ?></li> -->
 									
-							<!--
 							<li class="nav-header">Financial</li>
-							<li><?php echo Html::anchor('manage/billing/overview', __('Balance Overview')); ?></li>
-							<li><?php echo Html::anchor('manage/billing/transactions', __('Transactions')); ?></li>
+							<li><?php echo Html::anchor('manage/billing/overview', __('Billing Overview')); ?></li>
 							
+							<!--
 							<li class='menu selected'>
 							<h3 style="">Group Data</h3>
 							<ul>

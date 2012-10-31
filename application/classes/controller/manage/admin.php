@@ -103,15 +103,15 @@ class Controller_Manage_Admin extends Controller_App {
    
    public function action_groupBilling( $id )
    {
-      if( !simpleauth::instance()->isAdmin() ) 
-      {
-         $this->request->redirect('manage/admin/noaccess');
-      }
-      
+		if( !simpleauth::instance()->isAdmin() ) 
+		{
+			$this->request->redirect('manage/admin/noaccess');
+		}
+
 		$this->template->title = __('Group billing');
 
 		$view = $this->template->content = View::factory('manage/admin/groupBilling');
-      
+
 		$group = ORM::factory('group', intval($id) );
 		$view->set('group', $group );
       
@@ -136,8 +136,6 @@ class Controller_Manage_Admin extends Controller_App {
 		require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
 		spl_autoload_register( "Pheal::classload" );
 		PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
-		PhealConfig::getInstance()->api_base = 'http://api.eveonline.com/';
-		PhealConfig::getInstance()->api_customkeys = true;
 		PhealConfig::getInstance()->http_ssl_verifypeer = false;
 		$pheal = new Pheal(null,null,'corp');      
 

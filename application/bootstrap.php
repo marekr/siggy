@@ -247,7 +247,7 @@ Kohana::modules(array(
         'action' => 'index',
     )); 
 
-   Route::set('stats', 'stats(/year/<year>/week/<week>)')
+   Route::set('stats', 'stats(/year/<year>(/month(/<month>))(/week/<week>))')
     ->defaults(array(
         'controller' => 'stats',
         'action' => 'index',

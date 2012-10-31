@@ -1,5 +1,9 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+require_once APPPATH.'classes/groupUtils.php';
+require_once APPPATH.'classes/mapUtils.php';
+require_once APPPATH.'classes/miscUtils.php';
+
 class Controller_Special extends Controller {
 	
 	private $groupData = array();
@@ -10,6 +14,20 @@ class Controller_Special extends Controller {
 	{
 		
 		parent::__construct($request, $response);
+	}
+	
+	public function action_makePaymentCodes()
+	{
+		
+		
+		$groups = DB::select()->from('groups')->where('paymentCode','=','')->execute()->as_array();
+		foreach($groups as $group)
+		{
+			$code = miscUtils::generateString();
+			DB::update('groups')->set( array('paymentCode' => $code) )->where('groupID', '=',  $group['groupID'])->execute();
+			
+		
+		}
 	}
 	
 	public function action_rebuildShipsTable()

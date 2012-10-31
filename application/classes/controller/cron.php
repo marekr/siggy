@@ -1,5 +1,4 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-
 class eveAPIWalletJournalTypes
 {
 	const playerTrading = 1;
@@ -19,8 +18,84 @@ class eveAPIWalletJournalTypes
 class Controller_Cron extends Controller 
 {
 
+	private function processBillingTransactionsResult( $transactions, $previousID, &$maxID, &$fromID )
+	{
+		$stop = FALSE;
+		$transactions = $transactions->toArray();
+		if( count( $transactions ) > 0 )
+		{
+			foreach( $transactions as $trans )
+			{
+				$maxID = max($maxID, $trans['refID']);
+				$fromID = min($fromID, $trans['refID']);
+				
+				if( $previousID == $trans['refID'] )	//we hit the last processed entry
+				{
+					$stop = TRUE;
+				}
+			
+				if( $trans['refTypeID'] == eveAPIWalletJournalTypes::playerDonation )
+				{
+					$entryCode = trim(str_replace('DESC:','',$trans['reason']));
+					if( !empty($entryCode) )
+					{
+						preg_match('/^siggy-([a-zA-Z0-9]{14,})/', $entryCode, $matches);
+						if( count($matches) > 0 && isset($matches[1]) )
+						{
+							$res = DB::query(Database::SELECT, 'SELECT eveRefID FROM billing_payments WHERE eveRefID=:refID')->param(':refID', $trans['refID'])->execute()->current();
+							
+							if( !isset($res['eveRefID']) )
+							{
+								$paymentCode = strtolower($matches[1]);	//get 14 char "account code"
+								$group = DB::query(Database::SELECT, 'SELECT * FROM	groups WHERE paymentCode=:paymentCode')->param(':paymentCode', $paymentCode)->execute()->current();
+								
+								if( isset( $group['groupID'] ) )
+								{
+									$insert = array( 'groupID' => $group['groupID'],
+													 'eveRefID' => $trans['refID'],
+													 'paymentTime' => strtotime($trans['date']),
+													 'paymentProcessedTime' => time(),
+													 'paymentAmount' => (float)$trans['amount'],
+													 'payeeID' => $trans['ownerID1'],
+													 'payeeName' => $trans['ownerName1']
+													);
+									DB::insert( 'billing_payments', array_keys($insert) )->values( array_values($insert) )->execute();
+						
+									groupUtils::applyISKPayment($group['groupID'], (float)$trans['amount']);
+								}
+								else
+								{
+									//free money!
+								}
+							}
+							else
+							{
+								//processed already!
+								//do nothing
+								print "Payment already processed";
+							}
+							
+						}
+					}
+					else
+					{
+						//noope
+						//free money!
+					}
+				}
+			}
+		}
+		else
+		{
+			$stop = TRUE;
+		}
+		return $stop;	
+	}
+
 	public function action_billingTransactions()
 	{
+		
+		set_time_limit(600);
 		
 		require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
 		spl_autoload_register( "Pheal::classload" );
@@ -28,72 +103,102 @@ class Controller_Cron extends Controller
 		PhealConfig::getInstance()->http_ssl_verifypeer = false;
 		$pheal = new Pheal( "1368854", "EzmkgBrhVjksl2KbzDY8IIa0thRRoPVE26HD7r0cqRcJLQqSYN2wtqYkwIpO28fT", "corp" );
 		
-		$fromID = (float)0;
-		$transactions = $pheal->WalletJournal( array('fromID' => $fromID, 'rowCount' => 100) )->entries;
+		$previousID = (float)miscUtils::getDBCacheItem( 'lastProcessedJournalRefID' );
+		$transactions = $pheal->WalletJournal( array( 'rowCount' => 100) )->entries;
+
+		$maxID = 0;
+		$fromID = 0;
+		$stop = $this->processBillingTransactionsResult($transactions, $previousID, $maxID, $fromID );
 		
-		
-		$lastID = (float)0;	//store the 64 bit integer as a string lololol
-		foreach($transactions as $trans )
+		if( !$stop )
 		{
-			print "Processing: ";
-			print_r($trans);
-			print "<br />";
-			if( $lastID < (float)$trans->refID )	//first transaction should be the latest
+			while( !$stop )
 			{
-				$lastID = (float)$trans->refID;
+				$transactions = $pheal->WalletJournal( array('fromID' => $fromID, 'rowCount' => 100) )->entries;
+				$stop = $this->processBillingTransactionsResult($transactions, $previousID, $maxID, $fromID );
 			}
-		
-			if( $trans->refTypeID == eveAPIWalletJournalTypes::playerDonation )
+		}
+
+		//$lastID = substr($lastID, 0, strpos($lastID, '.'
+		$maxID = (string)$maxID;
+		miscUtils::storeDBCacheItem( 'lastProcessedJournalRefID', $maxID );
+	}
+	
+	public function action_billingCharges()
+	{
+		$groups = DB::select()->from('groups')->where('billable','=',1)->execute()->as_array();
+		foreach($groups as $group)
+		{
+			$numUsers = groupUtils::getCharacterUsageCount($group['groupID']);
+			if( $numUsers == 0 )
 			{
-				$entryCode = trim(str_replace('DESC:','',$trans->reason));
-				if( !empty($entryCode) )
-				{
-					preg_match('/^siggy-([a-zA-Z0-9]{14,})/', $entryCode, $matches);
-					if( count($matches) > 0 && isset($matches[1]) )
-					{
-						$res = DB::query(Database::SELECT, 'SELECT eveRefID FROM billing_payments WHERE eveRefID=:refID')->param(':refID', $trans->refID)->execute()->current();
-						
-						//if( !isset($res['eveRefID']) )
-						if( true )
-						{
-							$paymentCode = strtolower($matches[1]);	//get 14 char "account code"
-							$group = DB::query(Database::SELECT, 'SELECT * FROM	groups WHERE paymentCode=:paymentCode')->param(':paymentCode', $paymentCode)->execute()->current();
-							
-							if( isset( $group['groupID'] ) )
-							{
-								$insert = array( 'groupID' => $group['groupID'],
-												 'eveRefID' => $trans->refID,
-												 'paymentTime' => 0,
-												 'paymentProcessedTime' => time(),
-												 'paymentAmount' => (float)$trans->amount,
-												 'payeeID' => $trans->ownerID1,
-												 'payeeName' => $trans->ownerName1
-												);
-								//DB::insert( 'billing_payments', array_keys($insert) )->values( array_values($insert) )->execute();
-					
-								groupUtils::applyISKPayment($group['groupID'], (float)$trans->amount);
-								
-								//
-								//(float)$trans->amount
-							}
-							else
-							{
-								//free money!
-							}
-						}
-						else
-						{
-							//processed already!
-							//do nothing
-							print "Payment already processed";
-						}
-						
-					}
-				}
-				else
-				{
-					//noope
-				}
+				continue;
+			}
+			
+			$cost = miscUtils::computeCostPerDays($numUsers, 1);
+			
+			$message = 'Daily usage cost - ' . $numUsers . ' characters';
+			
+			$insert = array(
+								'amount' => $cost,
+								'date' => time(),
+								'groupID' => $group['groupID'],
+								'memberCount' => $numUsers,
+								'message' => $message
+							);
+			$result = DB::insert('billing_charges', array_keys($insert) )->values( array_values($insert) )->execute();
+			
+			groupUtils::applyISKCharge( $group['groupID'], $cost );
+		
+		}	
+	}
+	
+	public function action_apiUpdateCorpData()
+	{
+		set_time_limit(600);
+		
+		require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
+		spl_autoload_register( "Pheal::classload" );
+		PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
+		PhealConfig::getInstance()->http_ssl_verifypeer = false;
+		$pheal = new Pheal(null,null,'corp');      
+		
+		
+		$select = date('G');
+		if( $select > 9 )
+		{
+			$select -= 9;
+			if( $select > 9 )
+			{
+				$select -= 9;
+			}
+		}
+		
+		
+		$corpsToUpdate = array();
+		$corpsToUpdate = DB::query(Database::SELECT, "SELECT * FROM groupmembers WHERE memberType='corp' AND SUBSTR(id,LENGTH(id),1) = :select")
+							->param(':select', $select)
+							->execute()->as_array();	 
+		
+		foreach($corpsToUpdate as $gm)
+		{
+			try
+			{
+					$result = $pheal->CorporationSheet( array( 'corporationID' => (int)$gm['eveID'] ) );
+									
+					DB::query(Database::INSERT, 'INSERT INTO corporations (`corporationID`, `corporationName`, `memberCount`, `ticker`, `description`, `lastUpdate`) VALUES(:corporationID, :corporationName, :memberCount, :ticker, :description, :lastUpdate)'
+											   .' ON DUPLICATE KEY UPDATE description = :description, memberCount = :memberCount, lastUpdate = :lastUpdate')
+											->param(':memberCount', $result->memberCount )
+											->param(':corporationID', $gm['eveID'] )
+											->param(':corporationName', $result->corporationName )
+											->param(':description', $result->description )
+											->param(':ticker', $result->ticker )
+											->param(':lastUpdate', time() )
+											->execute();	
+			}
+			catch( Exception $e )
+			{
+				echo $e->getMessage();
 			}
 		}
 	}

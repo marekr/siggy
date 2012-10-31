@@ -2,6 +2,42 @@
 
 final class miscUtils
 {
+		static function computeCostPerDays( $memberCount, $days )
+		{
+			$total = 0;
+			
+			if( $memberCount > 100 )
+			{
+				$memberCount -= 100;
+				$total = $memberCount * 25000;
+				$total += 100*25000;
+			}
+			else
+			{
+				$total = $memberCount * 30000;
+			}
+			
+			return $total*$days;
+		}
+
+		static function getDBCacheItem( $key )
+		{
+				$cache = DB::query(Database::SELECT, "SELECT * FROM cache_store WHERE cacheKey = :key")
+													->param(':key', $key)
+							  ->execute()->current();
+							  
+				return $cache['cacheValue'];
+		}
+		
+		static function storeDBCacheItem( $key, $value )
+		{
+				DB::query(null, "INSERT INTO cache_store (`cacheKey`,`cacheValue`) VALUES (:key, :value)  ON DUPLICATE KEY UPDATE cacheValue=:value")
+					->param(':key', $key )
+					->param(':value', $value )
+					->execute();
+			
+		}
+
 
 		static function findSystemByName($name)
 		{
@@ -11,6 +47,19 @@ final class miscUtils
 				
 				return $systemID;
 		}   
+		
+		static function apiFetchCorp( $corpID )
+		{
+			require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
+			spl_autoload_register( "Pheal::classload" );
+			PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
+			PhealConfig::getInstance()->http_ssl_verifypeer = false;
+			$pheal = new Pheal(null,null,'corp');      
+				
+			$result = $pheal->CorporationSheet( array( 'corporationID' => (int)$gm->eveID ) );
+			$count = $result->memberCount;
+			
+		}
    
 
 		static function getDayStamp()
@@ -61,6 +110,17 @@ final class miscUtils
 					return TRUE;
 				}
 				return FALSE;
+		}
+		
+		static function generateString($length = 14) 
+		{
+			$characters = '0123456789abcdefghijklmnopqrstuvwxyz';
+			$randomString = '';
+			for ($i = 0; $i < $length; $i++) 
+			{
+				$randomString .= $characters[rand(0, strlen($characters) - 1)];
+			}
+			return $randomString;
 		}
 		
 		static function generateSalt($length = 10) 
