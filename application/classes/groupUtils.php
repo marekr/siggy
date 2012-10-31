@@ -22,14 +22,14 @@ final class groupUtils
 		
 		static function getCharacterUsageCount( $groupID )
 		{
-				$numCorps = DB::query(Database::SELECT, "SELECT SUM(c.memberCount) as total FROM groupmembers gm
+				$numCorps = DB::query(Database::SELECT, "SELECT DISTINCT(eveID),SUM(c.memberCount) as total FROM groupmembers gm
 												LEFT JOIN corporations c ON(gm.eveID = c.corporationID)
 												WHERE gm.groupID=:group AND gm.memberType='corp'")
 												->param(':group', $groupID)->execute()->current();
 												
 				$numCorps = $numCorps['total'];
 				
-				$numChars = DB::query(Database::SELECT, "SELECT COUNT(*) as total FROM groupmembers
+				$numChars = DB::query(Database::SELECT, "SELECT DISTINCT(eveID),COUNT(*) as total FROM groupmembers
 												WHERE groupID=:group AND memberType ='char' ")
 												->param(':group', $groupID)->execute()->current();
 				$numChars = $numChars['total'];
@@ -148,7 +148,7 @@ final class groupUtils
 	
 		static function applyISKPayment($groupID, $amount)
 		{
-			DB::update('groups')->set( array( 'iskBalance' => DB::expr('iskBalance + :amount') ) )->param(':amount', $amount)->where('groupID', '=',  $groupID)->execute();
+			DB::update('groups')->set( array( 'iskBalance' => DB::expr('iskBalance + :amount'), 'billable' => 1 ) )->param(':amount', $amount)->where('groupID', '=',  $groupID)->execute();
 		}
 	
 	

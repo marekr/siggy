@@ -2,20 +2,39 @@
 
 final class miscUtils
 {
+
+		const TIER1COST = 38000;
+		const TIER2COST = 35000;
+		const TIER3COST = 30000;
+
 		static function computeCostPerDays( $memberCount, $days )
 		{
 			$total = 0;
+			$membersInTier = 0;
 			
-			if( $memberCount > 100 )
+			if ( $memberCount > 200 )
 			{
-				$memberCount -= 100;
-				$total = $memberCount * 25000;
-				$total += 100*25000;
+				$membersInTier = $memberCount - 200;
+				$memberCount -= $membersInTier;
+				
+				$total += $membersInTier * self::TIER3COST;
+				//print "tier3count: ". $membersInTier ."<br />"; 
+				//print "tier3cost: ". $membersInTier * self::TIER3COST ."<br />"; 
 			}
-			else
+			
+			if ( $memberCount > 100 )
 			{
-				$total = $memberCount * 30000;
+				$membersInTier = $memberCount - 100;
+				$memberCount -= $membersInTier;
+				
+				$total += $membersInTier * self::TIER2COST;
+			//	print "tier2count: ". $membersInTier ."<br />"; 
+				//print "tier2cost: ". $membersInTier * self::TIER2COST ."<br />"; 
 			}
+			
+			$total += $memberCount * self::TIER1COST;
+			//	print "tier1count: ". $memberCount ."<br />"; 
+				//print "tier1cost: ". $memberCount * self::TIER1COST ."<br />"; 
 			
 			return $total*$days;
 		}
