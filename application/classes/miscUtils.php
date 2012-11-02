@@ -32,12 +32,86 @@ final class miscUtils
 				//print "tier2cost: ". $membersInTier * self::TIER2COST ."<br />"; 
 			}
 			
+			//jack the member count to cost more isk for tiny groups
+			if( $memberCount < 15 )
+			{
+				$memberCount = 15;
+			}
+			
 			$total += $memberCount * self::TIER1COST;
 			//	print "tier1count: ". $memberCount ."<br />"; 
 				//print "tier1cost: ". $memberCount * self::TIER1COST ."<br />"; 
 			
 			return $total*$days;
 		}
+		
+
+		static function searchEVEEntityByName( $names, $type = 'corp' )
+		{
+			if( $type == 'corp' )
+			{
+					$nameArray = explode(',', $names);
+					$queryArray = array();
+					foreach($nameArray as $name)
+					{
+						$name = trim($name);
+						if(!empty($name))
+						{
+							$queryArray[] = "corporationName LIKE ".Database::instance()->escape($name);
+						}
+					}
+					$querySQL = implode(" OR ", $queryArray);
+					$results = DB::query(Database::SELECT, 'SELECT * FROM corporations WHERE '.$querySQL)->execute()->as_array();
+					
+					if( count( $results ) )
+					{
+						return $results;
+					}
+			}
+		
+			require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
+			spl_autoload_register( "Pheal::classload" );
+			PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
+			PhealConfig::getInstance()->http_ssl_verifypeer = false;
+			$pheal = new Pheal(null,null,'eve');      
+			
+			$result = $pheal->CharacterID( array( 'names' => $names ) )->toArray();
+			$potentialCorps = $result['result']['characters'];
+			
+			$pheal->scope = 'corp';
+			
+			$resultArray = array();
+			foreach( $potentialCorps as $corp )
+			{
+					try
+					{
+							$result = $pheal->CorporationSheet( array( 'corporationID' => (int)$corp['characterID'] ) )->toArray();
+							print 'found corp, storing locally!';
+							$result = $result['result'];
+							DB::query(Database::INSERT, 'INSERT INTO corporations (`corporationID`, `corporationName`, `memberCount`, `ticker`, `description`, `lastUpdate`) VALUES(:corporationID, :corporationName, :memberCount, :ticker, :description, :lastUpdate)'
+													   .' ON DUPLICATE KEY UPDATE description = :description, memberCount = :memberCount, lastUpdate = :lastUpdate')
+													->param(':memberCount', $result['memberCount'] )
+													->param(':corporationID', $result['corporationID'] )
+													->param(':corporationName', $result['corporationName'] )
+													->param(':description', $result['description'] )
+													->param(':ticker', $result['ticker'] )
+													->param(':lastUpdate', time() )
+													->execute();	
+							$resultArray[] = $result;					
+						
+						
+					}
+					catch( PhealAPIException $e )
+					{
+							if( $e->code == 523 )	//not a corp error
+							{
+								continue;
+							}
+					}
+			}
+			
+			return $resultArray;
+		}		
 
 		static function getDBCacheItem( $key )
 		{

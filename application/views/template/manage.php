@@ -6,8 +6,8 @@
 
     <!-- Le styles -->
     <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
     <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/css/admin.css" rel="stylesheet">
+    <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>

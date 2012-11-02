@@ -22,14 +22,14 @@ final class groupUtils
 		
 		static function getCharacterUsageCount( $groupID )
 		{
-				$numCorps = DB::query(Database::SELECT, "SELECT DISTINCT(eveID),SUM(c.memberCount) as total FROM groupmembers gm
+				$numCorps = DB::query(Database::SELECT, "SELECT SUM(DISTINCT c.memberCount) as total FROM groupmembers gm
 												LEFT JOIN corporations c ON(gm.eveID = c.corporationID)
 												WHERE gm.groupID=:group AND gm.memberType='corp'")
 												->param(':group', $groupID)->execute()->current();
 												
 				$numCorps = $numCorps['total'];
 				
-				$numChars = DB::query(Database::SELECT, "SELECT DISTINCT(eveID),COUNT(*) as total FROM groupmembers
+				$numChars = DB::query(Database::SELECT, "SELECT COUNT(DISTINCT eveID) as total FROM groupmembers
 												WHERE groupID=:group AND memberType ='char' ")
 												->param(':group', $groupID)->execute()->current();
 				$numChars = $numChars['total'];
@@ -59,7 +59,8 @@ final class groupUtils
 									'homeSystems' => $homeSysData['homeSystems'],
 									'homeSystemIDs' => $homeSysData['homeSystemIDs'],
 									'dateCreated' => time(),
-									'paymentCode' => miscUtils::generateString(14)
+									'paymentCode' => miscUtils::generateString(14),
+									'billable' => 1
 								);
 				$result = DB::insert('groups', array_keys($insert) )->values( array_values($insert) )->execute();
 				$groupID = $result[0];

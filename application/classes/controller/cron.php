@@ -34,7 +34,7 @@ class Controller_Cron extends Controller
 					$stop = TRUE;
 				}
 			
-				if( $trans['refTypeID'] == eveAPIWalletJournalTypes::playerDonation )
+				if( $trans['refTypeID'] == eveAPIWalletJournalTypes::playerDonation || $trans['refTypeID'] == eveAPIWalletJournalTypes::corpAccountWithdrawal)
 				{
 					$entryCode = trim(str_replace('DESC:','',$trans['reason']));
 					if( !empty($entryCode) )
@@ -51,13 +51,17 @@ class Controller_Cron extends Controller
 								
 								if( isset( $group['groupID'] ) )
 								{
+								
 									$insert = array( 'groupID' => $group['groupID'],
 													 'eveRefID' => $trans['refID'],
 													 'paymentTime' => strtotime($trans['date']),
 													 'paymentProcessedTime' => time(),
 													 'paymentAmount' => (float)$trans['amount'],
 													 'payeeID' => $trans['ownerID1'],
-													 'payeeName' => $trans['ownerName1']
+													 'payeeName' => $trans['ownerName1'],
+													 'payeeType' => ($trans['refTypeID'] == eveAPIWalletJournalTypes::corpAccountWithdrawal ? 'corp' : 'char'),
+													 'argID' => $trans['argID1'],
+													 'argName' => $trans['argName1']
 													);
 									DB::insert( 'billing_payments', array_keys($insert) )->values( array_values($insert) )->execute();
 						
