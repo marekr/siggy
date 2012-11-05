@@ -15,7 +15,7 @@
     <![endif]-->
 
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/ico/favicon.ico">
+    <link rel="shortcut icon" href="<?php echo URL::base(TRUE, TRUE);?>favicon.ico">
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/ico/apple-touch-icon-72-precomposed.png">
@@ -56,8 +56,12 @@
 						</div>
 						<ul class="nav nav-list">
 							<?php if(simpleauth::instance()->isGroupAdmin()): ?>
-							<li class="nav-header">Group Members</li>
-							<li><?php echo Html::anchor('manage/group', __('Group Members')); ?></li>
+							<li class="nav-header">Information</li>
+							<li><?php echo Html::anchor('manage/group/dashboard', __('Announcements')); ?></li>
+							<li><?php echo Html::anchor('manage/logs/activity', __('Activity Logs')); ?></li>
+							
+							<li class="nav-header">Group Access</li>
+							<li><?php echo Html::anchor('manage/group/members', __('Group Members')); ?></li>
 							<li><?php echo Html::anchor('manage/group/subgroups', __('Subgroups')); ?></li>
 							
 							<li class="nav-header">Group Settings</li>

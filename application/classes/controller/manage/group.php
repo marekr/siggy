@@ -51,11 +51,25 @@ class Controller_Manage_Group extends Controller_App {
    {
       if( simpleauth::instance()->isGroupAdmin() ) 
       {
-         $this->request->redirect('manage/group/members');
+         $this->request->redirect('manage/group/dashboard');
       } else 
       {
          $this->request->redirect('account/overview');
       }
+   }
+   
+   public function action_dashboard()
+   {
+      $this->template->title = __('Manage');
+      $view = View::factory('manage/group/dashboard');
+      
+      
+		$news = DB::query(Database::SELECT, "SELECT * FROM announcements WHERE visibility = 'manage' OR visibility = 'all' ORDER BY datePublished DESC LIMIT 0,3")
+										->execute()->as_array();
+		
+      $view->bind('news', $news);
+      
+      $this->template->content = $view;
    }
 
    /**
@@ -99,68 +113,183 @@ class Controller_Manage_Group extends Controller_App {
 	{
 			$this->template->title = __('Group management');
 			$user = simpleauth::instance()->get_user();
-			$errors = array();
-			$data = array('eveID' => '',
-						'accessName' => '',
-						'subGroupID' => 0,
-						'memberType' => 'corp');
-      
-			$view = View::factory('manage/group/memberForm');
-			$view->set('mode', 'add');
-			$view->bind('errors', $errors);
-			$view->bind('data', $data);
+			
+			$id = intval($this->request->param('id'));
 			
 			
-			
-			if ( !empty($_POST)  ) 
+			if( $id == 0 || $id == 1 )
 			{
-					try 
+					$results = array();
+					$errors = array();
+					$data = array('memberType' => 'corp');
+					$view = View::factory('manage/group/addMemberSimple');
+					
+					if ($this->request->method() == "POST") 
 					{
-							$member = ORM::factory('groupmember');
-							$member->eveID = $_POST['eveID'];
-							$member->accessName = $_POST['accessName'];
-							$member->groupID = $user->groupID;
-							$member->memberType = $_POST['memberType'];
-							if( isset( $_POST['subGroupID'] ) )
-							{
-									$member->subGroupID = $_POST['subGroupID'];
-							}
-							else
-							{
-									$member->subGroupID = 0;
-							}
-							$member->save();
-							if( $member->memberType == 'corp' )
-							{
-									groupUtils::recacheCorpList();
-									groupUtils::recacheCorp($member->eveID);
-							}
-							elseif( $member->memberType == 'char' )
-							{
-									groupUtils::recacheCharList();
-									groupUtils::recacheChar($member->eveID);
-							}
-							$this->request->redirect('manage/group/members');
-							return;
-					} 
-					catch (ORM_Validation_Exception $e) 
-					{
-							// Get errors for display in view
-							// Note how the first param is the path to the message file (e.g. /messages/register.php)
-							Message::add('error', __('Error: Values could not be saved.'));
-							$errors = $e->errors('addMember');
-							$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
-							// Pass on the old form values
+						$errors = array();
+						if( empty($_POST['searchName']) )
+						{
+							$errors['searchName'] = 'Name cannot be empty';
+						}
+						
+						if( !count($errors) )
+						{
+							$results = miscUtils::searchEVEEntityByName( $_POST['searchName'], $_POST['memberType'] );
+							$view->bind('memberType', $_POST['memberType'] );
 
-							$view->set('data', array('eveID' => $_POST['eveID'], 'accessName' => $_POST['accessName']) );
+						}
+					}
+					
+					
+					$group = ORM::factory('group', $user->groupID);
+					$view->set('group', $group );
+					$view->bind('data', $data);
+					$view->bind('errors', $errors);
+					$view->bind('results', $results);
+
+					$this->template->content = $view;
+			}
+			else if( $id == 2 )
+			{
+					if ($this->request->method() == "POST") 
+					{
+						$action = $_POST['act'];
+						
+						if( $action == 'doAdd' )
+						{
+							try 
+							{
+									$member = ORM::factory('groupmember');
+									$member->eveID = $_POST['eveID'];
+									$member->accessName = $_POST['accessName'];
+									$member->groupID = $user->groupID;
+									$member->memberType = $_POST['memberType'];
+									if( isset( $_POST['subGroupID'] ) )
+									{
+											$member->subGroupID = $_POST['subGroupID'];
+									}
+									else
+									{
+											$member->subGroupID = 0;
+									}
+									$member->save();
+									if( $member->memberType == 'corp' )
+									{
+											groupUtils::recacheCorpList();
+											groupUtils::recacheCorp($member->eveID);
+									}
+									elseif( $member->memberType == 'char' )
+									{
+											groupUtils::recacheCharList();
+											groupUtils::recacheChar($member->eveID);
+									}
+									
+									Message::add('sucess', 'Group member added');
+									$this->request->redirect('manage/group/members');
+									return;
+							} 
+							catch (ORM_Validation_Exception $e) 
+							{
+								//something broke, restart because our form is currently idiot proof anyway
+								$this->request->redirect('manage/group/addMember');
+							}
+						}
+						else if ( $action == 'doForm' )
+						{
+							if( empty($_POST['eveID']) || empty($_POST['accessName']) || empty($_POST['memberType']) )
+							{
+								//bad request
+								$this->request->redirect('manage/group/addMember');
+							}
+							
+							$view = View::factory('manage/group/addMemberSimpleSelected');
+							$group = ORM::factory('group', $user->groupID);
+							$view->set('group', $group );
+						
+							$view->set('eveID', intval($_POST['eveID']) );
+							$view->set('accessName', $_POST['accessName'] );
+							$view->set('memberType', $_POST['memberType'] );
+							$this->template->content = $view;
+						}
+						else
+						{
+							//invalid
+							$this->request->redirect('manage/group/addMember');
+						}
+						
+					}
+					else
+					{
+						//invalid
+						$this->request->redirect('manage/group/addMember');
 					}
 			}
-			$view->set('user', $user);
+			else
+			{
+			
+					$errors = array();
+					$data = array('eveID' => '',
+								'accessName' => '',
+								'subGroupID' => 0,
+								'memberType' => 'corp');
+			  
+					$view = View::factory('manage/group/memberForm');
+					$view->set('mode', 'add');
+					$view->bind('errors', $errors);
+					$view->bind('data', $data);
+					
+					
+					
+					if ($this->request->method() == "POST") 
+					{
+							try 
+							{
+									$member = ORM::factory('groupmember');
+									$member->eveID = $_POST['eveID'];
+									$member->accessName = $_POST['accessName'];
+									$member->groupID = $user->groupID;
+									$member->memberType = $_POST['memberType'];
+									if( isset( $_POST['subGroupID'] ) )
+									{
+											$member->subGroupID = $_POST['subGroupID'];
+									}
+									else
+									{
+											$member->subGroupID = 0;
+									}
+									$member->save();
+									if( $member->memberType == 'corp' )
+									{
+											groupUtils::recacheCorpList();
+											groupUtils::recacheCorp($member->eveID);
+									}
+									elseif( $member->memberType == 'char' )
+									{
+											groupUtils::recacheCharList();
+											groupUtils::recacheChar($member->eveID);
+									}
+									$this->request->redirect('manage/group/members');
+									return;
+							} 
+							catch (ORM_Validation_Exception $e) 
+							{
+									// Get errors for display in view
+									// Note how the first param is the path to the message file (e.g. /messages/register.php)
+									Message::add('error', __('Error: Values could not be saved.'));
+									$errors = $e->errors('addMember');
+									$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
+									// Pass on the old form values
 
-			$group = ORM::factory('group', $user->groupID);
-			$view->set('group', $group );
+									$view->set('data', array('eveID' => $_POST['eveID'], 'accessName' => $_POST['accessName']) );
+							}
+					}
+					$view->set('user', $user);
 
-			$this->template->content = $view;
+					$group = ORM::factory('group', $user->groupID);
+					$view->set('group', $group );
+
+					$this->template->content = $view;
+			}
 	}
    
 	public function action_settings()
