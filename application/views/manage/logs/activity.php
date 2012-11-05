@@ -18,9 +18,9 @@
 <?php echo $pagination; ?>
 <table class="table table-striped">
 	<tr>
-		<th width="15%">Log Date</th>
+		<th width="20%">Log Date</th>
 		<th width="10%">Event Type</th>
-		<th width="75%">Log Message</th>
+		<th width="70%">Log Message</th>
 	</tr>
 	
 	<?php if( count($logs) > 0 ): ?>
@@ -28,7 +28,7 @@
 	<tr>
 		<td><?php echo date("d/m/y @ h:m:s",$log['entryTime']); ?></td>
 		<td><?php echo $log['type']; ?></td>
-		<td><?php echo $log['message']; ?></td>
+		<td style="word-break: break-all; word-wrap: break-word;"><?php echo $log['message']; ?></td>
 	</tr>
 	<?php endforeach; ?>
 	<?php endif; ?>
