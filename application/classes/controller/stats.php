@@ -38,8 +38,11 @@ class Controller_Stats extends FrontController
 		}
 		else
 		{
-			$year = date("Y");
-			$week = date("W");
+			if( empty($week) && empty($year) )
+			{
+				$year = date("Y");
+				$week = date("W");
+			}
 			$dateRange = $this->weekTimestamps($week, $year);
 		}
 		
