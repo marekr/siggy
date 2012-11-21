@@ -51,7 +51,6 @@ class Controller_Siggy extends FrontController
 		$chainMapHTML->mapOpen = $mapOpen;
 		$view->chainMap = $chainMapHTML;
 		
-		miscUtils::parseIngameSigExport();
 		
 		//load header tools
 		$headerToolsHTML = View::factory('/templatebits/headerTools');
@@ -393,32 +392,32 @@ class Controller_Siggy extends FrontController
 			return $systemData;
 	}
 	
-		public function action_switchMembership()
-		{
-				$k = $_GET['k'];
-				
+	public function action_switchMembership()
+	{
+			$k = $_GET['k'];
+			
 
-				
-				//if( $this->isAuthed() )
-				//{
-						if( count( $this->groupData['groups'] ) > 1 || count( current($this->groupData['groups']) > 1) )
-						{
-								foreach( $this->groupData['groups'] as $g => $sgs )
-								{
-										foreach( $sgs as $sg )
-										{
-												if( md5($g.'-'.$sg) == $k )
-												{
-														Cookie::set('membershipChoice', $g.'-'.$sg, 365*60*60*24);
-														break;
-												}
-										}
-								}
-						}
-				//}
-				
-				$this->request->redirect('/');
-		}
+			
+			//if( $this->isAuthed() )
+			//{
+					if( count( $this->groupData['groups'] ) > 1 || count( current($this->groupData['groups']) > 1) )
+					{
+							foreach( $this->groupData['groups'] as $g => $sgs )
+							{
+									foreach( $sgs as $sg )
+									{
+											if( md5($g.'-'.$sg) == $k )
+											{
+													Cookie::set('membershipChoice', $g.'-'.$sg, 365*60*60*24);
+													break;
+											}
+									}
+							}
+					}
+			//}
+			
+			$this->request->redirect('/');
+	}
 	
 	private function getMapCache()
 	{
@@ -1115,6 +1114,69 @@ class Controller_Siggy extends FrontController
 			$insert['sigID'] = $sigID[0];
 			echo json_encode(array($sigID[0] => $insert ));
 		}
+		exit();
+	}
+	
+	public function action_massSigs()
+	{
+		$this->profiler = NULL;
+		$this->auto_render = FALSE;
+		header('content-type: application/json');
+		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+		
+		if(	 !$this->isAuthed() )
+		{
+			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
+			exit();
+		}			 
+		
+		
+		if( isset($_POST['systemID']) && isset($_POST['blob']) && !empty($_POST['blob']) )
+		{
+			$sigs = miscUtils::parseIngameSigExport( $_POST['blob'] );
+			$systemID = intval($_POST['systemID']);
+			
+			$addedSigs = array();
+			
+			if( count($sigs) > 0 && count($sigs) < 200 )	//200 is safety limit to prevent attacks, no system should have this many sigs
+			{
+				foreach( $sigs as $sig )
+				{
+					$sigData = DB::query(Database::SELECT, "SELECT sigID,sig, type, siteID, description, created FROM systemsigs WHERE systemID=:id AND groupID=:group AND sig=:sig")
+												->param(':id', $systemID)->param(':group',$this->groupData['groupID'])->param(':sig', $sig['sig'] )->execute()->current();	 
+												
+					if( isset($sigData['sigID']) )
+					{
+						$update = array(
+										'updated' => time(),
+										'siteID' => $sig['siteID'],
+										'type' => $sig['type']
+										);
+						DB::update('systemsigs')->set( $update )->where('sigID', '=', $sigData['sigID'])->execute();
+					}
+					else
+					{
+						$insert = array();
+						$insert['systemID'] = intval($systemID);
+						$insert['sig'] = strtoupper($sig['sig']);
+						$insert['description'] = "";
+						$insert['created'] = time();
+						$insert['siteID'] = intval($sig['siteID']);
+						$insert['type'] = $sig['type'];
+						$insert['groupID'] = $this->groupData['groupID'];
+						$insert['sigSize'] = "";	//need to return this value for JS to fail gracefully
+								
+						$sigID = DB::insert('systemsigs', array_keys($insert) )->values(array_values($insert))->execute();
+			
+						
+						$insert['sigID'] = $sigID[0];
+						
+						$addedSigs[ $sigID[0] ] = $insert;
+					}
+				}
+				echo json_encode($addedSigs);
+			}
+		}		
 		exit();
 	}
 	

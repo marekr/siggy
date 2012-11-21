@@ -1835,6 +1835,60 @@ siggymain.prototype.colorizeSigRows = function()
 
 siggymain.prototype.setupAddBox = function ()
 {
+	var massAddBlob = $('#massAddSigBox textarea[name=blob]');
+	massAddBlob.val('');
+	$('#massAddSigBox form').submit( function() 
+	{
+		var postData = {
+			systemID: that.systemID,
+			blob: massAddBlob.val()
+		};
+		
+		$.post(that.baseUrl + 'domassSigs', postData, function (newSig)
+		{
+			for (var i in newSig)
+			{
+				that.addSigRow(newSig[i]);
+			}
+			$.extend(that.sigData, newSig);
+			$('#sigTable').trigger('update');
+
+		}, 'json');
+		
+		massAddBlob.val('');
+		
+		
+		$.unblockUI();
+		return false;
+	} );
+	
+	$('#massAddSigs').click(function ()
+	{
+		$.blockUI({ 
+				message: $('#massAddSigBox'),
+				css: { 
+            border: 'none', 
+            padding: '15px', 
+            background: 'transparent', 
+            color: 'inherit',
+            cursor: 'auto',
+            textAlign: 'left',
+            top: '20%',
+						width: 'auto',
+						centerX: true,
+						centerY: false
+        },
+        overlayCSS: {
+            cursor: 'auto'
+        },
+        fadeIn:  0, 
+        fadeOut:  0
+		}); 
+		$('.blockOverlay').attr('title','Click to unblock').click($.unblockUI); 
+	});
+
+
+
 	//override potential form memory
 	$('#sigAddBox select[name=type]').val('none');
 
@@ -1861,7 +1915,7 @@ siggymain.prototype.setupAddBox = function ()
 			var type = typeEle.val();
 		}
 		
-		postData = {
+		var postData = {
 			systemID: that.systemID,
 			sig: sigEle.val(),
 			type: type,

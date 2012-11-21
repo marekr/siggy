@@ -3,6 +3,97 @@
 final class miscUtils
 {
 
+		public static $magsLookup = array( 	1 => array( 0 => "",
+											 1 => "Forgotten Perimeter Coronation Platform",
+											 2 => "Forgotten Perimeter Power Array"
+											),
+								2 => array( 
+									0  => "",
+									1  => "Forgotten Perimeter Gateway",
+									2  => "Forgoten Perimeter Habitation Coils"
+											),
+								3 => array( 
+									0  => "",
+									1  => "Forgotten Frontier Quarantine Outpost",
+									2  => "Forgotten Frontier Recursive Depot"
+											),
+								4 => array( 
+									0  => "",
+									1  => "Forgotten Frontier Conversion Module",
+									2  => "Forgotten Frontier Evacuation Center"
+											),
+								5 => array( 
+									0  => "",
+									1  => "Forgotten Core Data Field",
+									2  => "Forgotten Core Information Pen"
+											),
+								6 => array( 
+									0  => "",
+									1  => "Forgotten Core Assembly Hall",
+									2  => "Forgotten Circuitry Disassembler"
+											)
+							);
+
+		public static $radarsLookup = array( 	1 => array( 0 => "",
+													 1 => "Forgotten Perimeter Coronation Platform",
+													 2 => "Forgotten Perimeter Power Array"
+													),
+												2 => array( 
+													0  => "",
+													1  => "Forgotten Perimeter Gateway",
+													2  => "Forgoten Perimeter Habitation Coils"
+															),
+												3 => array( 
+													0  => "",
+													1  => "Forgotten Frontier Quarantine Outpost",
+													2  => "Forgotten Frontier Recursive Depot"
+															),
+												4 => array( 
+													0  => "",
+													1  => "Forgotten Frontier Conversion Module",
+													2  => "Forgotten Frontier Evacuation Center"
+															),
+												5 => array( 
+													0  => "",
+													1  => "Forgotten Core Data Field",
+													2  => "Forgotten Core Information Pen"
+															),
+												6 => array( 
+													0  => "",
+													1  => "Forgotten Core Assembly Hall",
+													2  => "Forgotten Circuitry Disassembler"
+															)
+							);
+								
+						
+		public static $gravsLookup = array( 	
+			0 => "",
+			1 => "Average Frontier Deposit",
+			2 => "Unexceptional Frontier Deposit",
+			3 => "Common Perimeter Deposit",
+			4 => "Exceptional Core Deposit",
+			5 => "Infrequent Core Deposit",
+			6 => "Unusual Core Deposit",
+			7 => "Rarified Core Deposit",
+			8 => "Ordinary Perimeter Deposit",
+			9 => "Uncommon Core Deposit",
+			10 => "Isolated Core Deposit"
+		);
+
+		public static $ladarsLookup = array( 	
+			0 => "",
+			1 => "Barren Perimeter Reservoir",
+			2 => "Minor Perimeter Reservoir",
+			3 => "Ordinary Perimeter Reservoir",
+			4 => "Sizable Perimeter Reservoir",
+			5 => "Token Perimeter Reservoir",
+			6 => "Bountiful Frontier Reservoir",
+			7 => "Vast Frontier Reservoir",
+			8 => "Instrumental Core Reservoir",
+			9 => "Vital Core Reservoir"
+		);
+
+
 		const TIER1COST = 38000;
 		const TIER2COST = 35000;
 		const TIER3COST = 30000;
@@ -45,6 +136,131 @@ final class miscUtils
 			return $total*$days;
 		}
 		
+		
+		static function parseIngameSigExport( $string )
+		{
+
+			$resultingSigs = array();
+	
+			$lines = explode("\n", $string);
+			foreach( $lines as $line )
+			{
+				$data = explode("\t", $line);
+				
+				$sigData = array();
+				
+				
+				$matches = array();
+				
+				
+				preg_match("/^(Cosmic Signature)$/", $data[1], $matches );
+				if( !count($matches) )
+				{
+					continue;	//skip
+				}
+				
+				preg_match("/^([a-zA-Z]{3})-([0-9]{3})$/", $data[0], $matches );
+				if( count($matches) == 3 )	//SIG-NUM, SIG, NUM
+				{
+					$sigData['sig'] = $matches[1];
+				}
+				else
+				{
+					continue;	//skip
+				}
+				
+				preg_match("/^(Unknown|Radar|Ladar|Magnetometric|Gravimetric)$/", $data[2], $matches );
+				if( count($matches) == 2 )	
+				{
+					switch( $matches[1] )
+					{
+						case 'Unknown':
+							if( $data[3] == 'Unstable Wormhole' )
+							{
+								$sigData['type'] = 'wh';
+							}
+							break;
+						case 'Radar':
+							$sigData['type'] = 'radar';
+							$sigData['siteID'] = self::siteIDLookupByName( $data[3], 'radar' );
+							break;
+						case 'Ladar':
+							$sigData['type'] = 'ladar';
+							$sigData['siteID'] = self::siteIDLookupByName( $data[3], 'ladar' );
+							break;
+						case 'Magnetometric':
+							$sigData['type'] = 'mag';
+							$sigData['siteID'] = self::siteIDLookupByName( $data[3], 'mag' );
+							break;
+						case 'Gravimetric':
+							$sigData['type'] = 'grav';
+							$sigData['siteID'] = self::siteIDLookupByName( $data[3], 'grav' );
+							break;
+					}
+				}
+				else
+				{
+					continue;	//skip
+				}
+			
+				$resultingSigs[] = $sigData;
+			}
+			return $resultingSigs;
+		}
+		
+		static function siteIDLookupByName( $name, $type )
+		{
+			if( $type == 'grav' )
+			{
+				foreach( self::$gravsLookup as $k => $grav )
+				{
+					if( $grav == $name )
+					{
+						return $k;
+					}
+				}
+			}
+			else if( $type == 'ladar' )
+			{
+				foreach( self::$ladarsLookup as $k => $ladar )
+				{
+					if( $ladar == $name )
+					{
+						return $k;
+					}
+				}
+				
+			}
+			else if( $type == 'radar' )
+			{
+				foreach( self::$radarsLookup as $c  )
+				{
+					foreach( $c as $k => $radar )
+					{
+						if( $radar == $name )
+						{
+							return $k;
+						}
+					}
+				}
+			}
+			else if( $type == 'mag' )
+			{
+				foreach( self::$magsLookup as $c  )
+				{
+					foreach( $c as $k => $mag )
+					{
+						if( $mag == $name )
+						{
+							return $k;
+						}
+					}
+				}
+			}
+				
+			return 0;
+		
+		}
 
 		static function searchEVEEntityByName( $names, $type = 'corp' )
 		{
