@@ -179,6 +179,10 @@ final class miscUtils
 							{
 								$sigData['type'] = 'wh';
 							}
+							else
+							{
+								$sigData['type'] = 'none';	//TODO lookup if we are scanning in wormhole system or not, cannot assume for kspace
+							}
 							break;
 						case 'Radar':
 							$sigData['type'] = 'radar';

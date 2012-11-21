@@ -1153,9 +1153,14 @@ class Controller_Siggy extends FrontController
 							$doingUpdate = TRUE;
 							$update = array(
 											'updated' => time(),
-											'siteID' => $sig['siteID'],
+											'siteID' => ( $sig['siteID'] != 0 ) ? $sig['siteID'] : $sigData['siteID'],
 											'type' => $sig['type']
 											);
+											
+							if( !empty( $this->groupData['charName']) )
+							{
+								$update['lastUpdater'] = $this->groupData['charName'];
+							}
 							DB::update('systemsigs')->set( $update )->where('sigID', '=', $sigData['sigID'])->execute();
 						}
 					}
@@ -1171,6 +1176,10 @@ class Controller_Siggy extends FrontController
 						$insert['groupID'] = $this->groupData['groupID'];
 						$insert['sigSize'] = "";	//need to return this value for JS to fail gracefully
 								
+						if( !empty( $this->groupData['charName'] ) )
+						{
+							$insert['creator'] = $this->groupData['charName'];
+						}
 						$sigID = DB::insert('systemsigs', array_keys($insert) )->values(array_values($insert))->execute();
 			
 						

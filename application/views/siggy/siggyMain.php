@@ -172,6 +172,7 @@
 		<div id="massAddSigBox" class="box" style="display:none;width:300px;">
 			<div>
 				<h2 class="jqDrag">Mass Add Sigs</h2>
+				<p>This is for copy pasted signatures from your scanner window.</p>
 				<form>
 					<textarea name="blob" rows="12" style="width:100%;font-size:11px;"></textarea>
 					<div style="text-align:center;">
