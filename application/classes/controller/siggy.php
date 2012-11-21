@@ -51,6 +51,8 @@ class Controller_Siggy extends FrontController
 		$chainMapHTML->mapOpen = $mapOpen;
 		$view->chainMap = $chainMapHTML;
 		
+		miscUtils::parseIngameSigExport();
+		
 		//load header tools
 		$headerToolsHTML = View::factory('/templatebits/headerTools');
 		$this->template->headerTools = $headerToolsHTML;

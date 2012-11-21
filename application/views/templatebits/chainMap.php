@@ -109,6 +109,7 @@
 												<option value='1'>Empty</option>
 												<option value='2'>Occupied</option>
 												<option value='3'>Active</option>
+												<option value='4'>Friendly</option>
 								</select><br /><br />
 								
 								
