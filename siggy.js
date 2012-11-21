@@ -498,7 +498,7 @@ var blackHoleEffects = {
 		['Targeting Range', '-50%'],
 		['Falloff', '-50%'],
 		['Missile Velocity', '-50%'],
-		['Ship Velocity', '+66%'],
+		['Ship Velocity', '+100%'],
 		['Drone control Range', '-50%']
 	]
 };
