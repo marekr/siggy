@@ -1140,6 +1140,7 @@ class Controller_Siggy extends FrontController
 			
 			if( count($sigs) > 0 && count($sigs) < 200 )	//200 is safety limit to prevent attacks, no system should have this many sigs
 			{
+				$doingUpdate = FALSE;
 				foreach( $sigs as $sig )
 				{
 					$sigData = DB::query(Database::SELECT, "SELECT sigID,sig, type, siteID, description, created FROM systemsigs WHERE systemID=:id AND groupID=:group AND sig=:sig")
@@ -1147,12 +1148,16 @@ class Controller_Siggy extends FrontController
 												
 					if( isset($sigData['sigID']) )
 					{
-						$update = array(
-										'updated' => time(),
-										'siteID' => $sig['siteID'],
-										'type' => $sig['type']
-										);
-						DB::update('systemsigs')->set( $update )->where('sigID', '=', $sigData['sigID'])->execute();
+						if(  $sig['type'] != 'none' || $sig['siteID'] != 0 )
+						{
+							$doingUpdate = TRUE;
+							$update = array(
+											'updated' => time(),
+											'siteID' => $sig['siteID'],
+											'type' => $sig['type']
+											);
+							DB::update('systemsigs')->set( $update )->where('sigID', '=', $sigData['sigID'])->execute();
+						}
 					}
 					else
 					{
@@ -1174,6 +1179,12 @@ class Controller_Siggy extends FrontController
 						$addedSigs[ $sigID[0] ] = $insert;
 					}
 				}
+				
+				if( $doingUpdate )
+				{
+					DB::update('activesystems')->set( array('lastUpdate' => time(),'lastActive' => time() ) )->where('systemID', '=', $systemID)->where('groupID', '=', $this->groupData['groupID'])->where('subGroupID', '=', $this->groupData['subGroupID'])->execute();
+				}
+				
 				echo json_encode($addedSigs);
 			}
 		}		

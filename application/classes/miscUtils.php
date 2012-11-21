@@ -198,6 +198,11 @@ final class miscUtils
 							break;
 					}
 				}
+				else if( $data[2] == "" )
+				{
+					$sigData['type'] = 'none';
+					$sigData['siteID'] = 0;
+				}
 				else
 				{
 					continue;	//skip
