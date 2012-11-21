@@ -1323,19 +1323,8 @@ siggyMap.prototype.draw = function()
 			systemBlob.drag(move, dragger, up);
 			
 			//var color = Raphael.getColor();
-			var color = '#676767';
-			if( parseInt(this.systems[i].activity) == 1 )
-			{
-				color = '#03B807';
-			}
-			else if( parseInt(this.systems[i].activity) == 2 )
-			{
-				color = '#FFE205';
-			}
-			else if( parseInt(this.systems[i].activity) == 3 )
-			{
-				color = '#DE4444';
-			}
+			
+			var color = this.getActivityColor( parseInt(this.systems[i].activity) );
 			
 			systemBlob.attr({fill: '#fff', stroke: color, "fill-opacity": 1, "stroke-width": 3, cursor: "pointer"});
 				
@@ -1793,6 +1782,35 @@ siggyMap.prototype.setUpWHToolTip = function(connection, eolAt )
 				//st.push( box, text );
 				//connection.line.tooltip(st);
 				this.setUpBoxedToolTip( connection.line,  'EOL set at: '+ siggymain.displayTimeStamp(eolAt) )
+}
+
+siggyMap.prototype.getActivityColor = function(activity)
+{
+		var color = '';
+		
+		
+		switch( activity )
+		{
+			case 1:
+				color = '#03B807';
+			break;
+			case 2:
+				color = '#FFE205';
+			break;
+			case 3:
+				color = '#DE4444';
+			break;
+			case 4:
+				color = '#092665';
+			break;
+			default:
+				color = '#676767';
+			break;
+			
+		}
+		
+		
+		return color;
 }
 
 siggyMap.prototype.getMassColor = function(mass)
