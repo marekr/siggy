@@ -108,41 +108,41 @@ class FrontController extends Controller
     public function authCheckAndRedirect()
     {
     
-		if( $this->igb )
-		{
-				if( $this->authStatus == AuthStatus::GPASSWRONG )
-				{
-						$this->siggyredirect('/doGroupAuth');
-				}
-				elseif( $this->authStatus == AuthStatus::APILOGINNOACCESS )
-				{
-						$this->siggyredirect('/account/noAPIAccess');
-				}
-				elseif( $this->authStatus == AuthStatus::APILOGINREQUIRED )
-				{
-						$this->siggyredirect('/account/login');
-				}
-				elseif( $this->authStatus != AuthStatus::ACCEPTED )
-				{
-						$this->siggyredirect('/pages/accessMessage');
-				}
-		}
-		else
-		{
-			if( $this->authStatus == AuthStatus::APILOGINREQUIRED )
-			{
-					$this->siggyredirect('/pages/welcome');
-			}
-			elseif ( $this->authStatus == AuthStatus::APILOGININVALID )
-			{
-					$this->siggyredirect('/account/noAPIAccess');
-			}
-			else
-			
-			{
-				//	$this->siggyredirect('/account/noAPIAccess');
-			}
-		}
+      if( $this->igb )
+      {
+          if( $this->authStatus == AuthStatus::GPASSWRONG )
+          {
+              $this->siggyredirect('/doGroupAuth');
+          }
+          elseif( $this->authStatus == AuthStatus::APILOGINNOACCESS )
+          {
+              $this->siggyredirect('/account/noAPIAccess');
+          }
+          elseif( $this->authStatus == AuthStatus::APILOGINREQUIRED )
+          {
+              $this->siggyredirect('/account/login');
+          }
+          elseif( $this->authStatus != AuthStatus::ACCEPTED )
+          {
+              $this->siggyredirect('/pages/accessMessage');
+          }
+      }
+      else
+      {
+        if( $this->authStatus == AuthStatus::APILOGINREQUIRED )
+        {
+            $this->siggyredirect('/pages/welcome');
+        }
+        elseif ( $this->authStatus == AuthStatus::APILOGININVALID )
+        {
+            $this->siggyredirect('/account/noAPIAccess');
+        }
+        else
+        
+        {
+          //	$this->siggyredirect('/account/noAPIAccess');
+        }
+      }
     }
     
     

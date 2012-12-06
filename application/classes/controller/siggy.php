@@ -204,13 +204,16 @@ class Controller_Siggy extends FrontController
 	
 	public function after()
 	{
-		if( $this->request->action() == 'GroupAuth' )
+    if( is_object($this->template)  )
 		{
-			$this->template->siggyMode = false;
-		}
-		else
-		{
-			$this->template->siggyMode = true;
+      if( $this->request->action() == 'GroupAuth' )
+      {
+        $this->template->siggyMode = false;
+      }
+      else
+      {
+        $this->template->siggyMode = true;
+      }
 		}
 	
 		parent::after();
@@ -1186,6 +1189,15 @@ class Controller_Siggy extends FrontController
 						$insert['sigID'] = $sigID[0];
 						
 						$addedSigs[ $sigID[0] ] = $insert;
+									
+						if( $this->groupData['statsEnabled'] )
+						{
+							DB::query(Database::INSERT, 'INSERT INTO stats (`charID`,`charName`,`groupID`,`subGroupID`,`dayStamp`,`adds`) VALUES(:charID, :charName, :groupID, :subGroupID, :dayStamp, 1) ON DUPLICATE KEY UPDATE adds=adds+1')
+												->param(':charID',  $this->groupData['charID'])->param(':charName', $this->groupData['charName'] )
+												->param(':groupID', $this->groupData['groupID'] )->param(':subGroupID', $this->groupData['subGroupID'] )->param(':dayStamp', miscUtils::getDayStamp() )->execute();
+				
+						}						
+						
 					}
 				}
 				
