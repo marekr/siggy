@@ -9,8 +9,10 @@ class Controller_Siggy extends FrontController
 	
 	public $template = 'template/main';
 
-	public function action_index( $ssname = '' )
+	public function action_index()
 	{
+		$ssname = $this->request->param('ssname', '');
+	
 		$mapOpen = ( isset($_COOKIE['mapOpen'] ) ? intval($_COOKIE['mapOpen']) : 0 );
 		if( !empty($ssname) )
 		{
@@ -692,11 +694,15 @@ class Controller_Siggy extends FrontController
 					{
 						$broadcast = (isset($_COOKIE['broadcast']) ? intval($_COOKIE['broadcast']) : 1);
 						
-						DB::query(Database::INSERT, 'INSERT INTO charTracker (`charID`, `charName`, `currentSystemID`,`groupID`,`subGroupID`,`lastBeep`, `broadcast`) VALUES(:charID, :charName, :systemID, :groupID, :subGroupID, :lastBeep, :broadcast) ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, currentSystemID = :systemID, broadcast = :broadcast, groupID = :groupID, subGroupID = :subGroupID')
+						DB::query(Database::INSERT, 'INSERT INTO charTracker (`charID`, `charName`, `currentSystemID`,`groupID`,`subGroupID`,`lastBeep`, `broadcast`,`shipType`) VALUES(:charID, :charName, :systemID, :groupID, :subGroupID, :lastBeep, :broadcast, :shipType)'
+													. 'ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, currentSystemID = :systemID, broadcast = :broadcast, groupID = :groupID, subGroupID = :subGroupID, shipType = :shipType')
 													->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
 													->param(':broadcast', $broadcast )
-													->param(':systemID', $actualCurrentSystemID )->param(':groupID', $this->groupData['groupID'] )
-													->param(':subGroupID', $this->groupData['subGroupID'] )->param(':lastBeep', time() )->execute();		
+													->param(':systemID', $actualCurrentSystemID )
+													->param(':groupID', $this->groupData['groupID'] )
+													->param(':shipType', isset($_SERVER['HTTP_EVE_SHIPTYPEID']) ? $_SERVER['HTTP_EVE_SHIPTYPEID'] : 0 )
+													->param(':subGroupID', $this->groupData['subGroupID'] )
+													->param(':lastBeep', time() )->execute();		
 		 
 					}
 						
@@ -921,11 +927,16 @@ class Controller_Siggy extends FrontController
 					{
 						$broadcast = (isset($_COOKIE['broadcast']) ? intval($_COOKIE['broadcast']) : 1);
 						
-						DB::query(Database::INSERT, 'INSERT INTO charTracker (`charID`, `charName`, `currentSystemID`,`groupID`,`subGroupID`,`lastBeep`, `broadcast`) VALUES(:charID, :charName, :systemID, :groupID, :subGroupID, :lastBeep, :broadcast) ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, currentSystemID = :systemID, broadcast = :broadcast, groupID = :groupID, subGroupID = :subGroupID')
+						DB::query(Database::INSERT, 'INSERT INTO charTracker (`charID`, `charName`, `currentSystemID`,`groupID`,`subGroupID`,`lastBeep`, `broadcast`,`shipType`, `shipName`) VALUES(:charID, :charName, :systemID, :groupID, :subGroupID, :lastBeep, :broadcast, :shipType, :shipName)'
+													. 'ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, currentSystemID = :systemID, broadcast = :broadcast, groupID = :groupID, subGroupID = :subGroupID, shipType = :shipType, shipName = :shipName')
 													->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
 													->param(':broadcast', $broadcast )
-													->param(':systemID', $actualCurrentSystemID )->param(':groupID', $this->groupData['groupID'] )
-													->param(':subGroupID', $this->groupData['subGroupID'] )->param(':lastBeep', time() )->execute();		
+													->param(':systemID', $actualCurrentSystemID )
+													->param(':groupID', $this->groupData['groupID'] )
+													->param(':shipType', isset($_SERVER['HTTP_EVE_SHIPTYPEID']) ? $_SERVER['HTTP_EVE_SHIPTYPEID'] : 0 )
+													->param(':shipName', isset($_SERVER['HTTP_EVE_SHIPNAME']) ? $_SERVER['HTTP_EVE_SHIPNAME'] : '' )
+													->param(':subGroupID', $this->groupData['subGroupID'] )
+													->param(':lastBeep', time() )->execute();			
 		 
 					}
 					
