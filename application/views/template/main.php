@@ -2,8 +2,8 @@
 <html>
   <head>
     <title>siggy</title>
-       <style type='text/css'></style>
-     <link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/siggy.css?25" rel="stylesheet" media="screen" /> 
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/siggy.css?25" rel="stylesheet" media="screen" /> 
     <?php if( Kohana::$environment == Kohana::DEVELOPMENT ): ?>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery-1.7.1.min.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery.tablesorter.js'></script>
@@ -19,7 +19,7 @@
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggymap.js?2'></script>
     <?php else: ?>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/thirdparty.compiled.js?13'></script>
-    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.compiled.js?51'></script>
+    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.compiled.js?52'></script>
     <?php endif; ?>
   </head>
   <body>

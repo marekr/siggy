@@ -736,7 +736,7 @@ class Controller_Siggy extends FrontController
 									->param(':groupID', $this->groupData['groupID'] )
 									->param(':subGroupID', $this->groupData['subGroupID'] )
 									->param(':time', $jumpTime )
-									->param(':shipTypeID',  $_SERVER['HTTP_EVE_SHIPTYPEID'])
+									->param(':shipTypeID',  htmlentities($_SERVER['HTTP_EVE_SHIPTYPEID']) )
 									->param(':charID', $charID)
 									->param(':charName', $charName)
 									->execute();
@@ -934,7 +934,7 @@ class Controller_Siggy extends FrontController
 													->param(':systemID', $actualCurrentSystemID )
 													->param(':groupID', $this->groupData['groupID'] )
 													->param(':shipType', isset($_SERVER['HTTP_EVE_SHIPTYPEID']) ? $_SERVER['HTTP_EVE_SHIPTYPEID'] : 0 )
-													->param(':shipName', isset($_SERVER['HTTP_EVE_SHIPNAME']) ? $_SERVER['HTTP_EVE_SHIPNAME'] : '' )
+													->param(':shipName', isset($_SERVER['HTTP_EVE_SHIPNAME']) ? htmlentities($_SERVER['HTTP_EVE_SHIPNAME']) : '' )
 													->param(':subGroupID', $this->groupData['subGroupID'] )
 													->param(':lastBeep', time() )->execute();			
 		 
@@ -1422,6 +1422,8 @@ class Controller_Siggy extends FrontController
 				
 		DB::query(Database::DELETE, 'DELETE FROM wormholes WHERE hash=:hash AND groupID=:groupID AND subGroupID=:subGroupID')->param(':hash',$hash)->param(':groupID', $this->groupData['groupID'])->param(':subGroupID', $this->groupData['subGroupID'])->execute();
 		
+		DB::query(Database::DELETE, 'DELETE FROM wormholetracker WHERE whHash=:hash AND groupID=:groupID AND subGroupID=:subGroupID')->param(':hash',$hash)->param(':groupID', $this->groupData['groupID'])->param(':subGroupID', $this->groupData['subGroupID'])->execute();
+			
 		$message = $this->groupData['charName'].' deleted wormhole between system IDs: '.implode(',', array($wormhole['to'], $wormhole['from']) );
 		$this->__logAction('delwh', $message );			
 			
