@@ -100,9 +100,9 @@ function siggyMap(options)
 {
 
 	this.defaults = {
-			jumpLog: true,
-			jumpLogCharNames: true,
-			jumpLogTimes: true
+			jumpTrackerEnabled: true,
+			jumpTrackerShowNames: true,
+			jumpTrackerShowTime: true
 	};
 
 
@@ -551,10 +551,13 @@ siggyMap.prototype.initialize = function()
 		
 		this.initializeTabs();
 		
-		$('#refreshJumpLog').click( function() {
-			that.updateJumpLog(that.editingHash);
-		} );
 		
+		if( this.settings.jumpTrackerEnabled )
+		{
+      $('#refreshJumpLog').click( function() {
+        that.updateJumpLog(that.editingHash);
+      } );
+		}
 		
 		$(document).bind('siggy.switchSystem', function(e, systemID) {
 				that.setSelectedSystem( systemID );
@@ -588,13 +591,16 @@ siggyMap.prototype.initializeTabs = function()
 {
 	var that = this;
 	$('#whEdit').click( function() {
-		that.setWHPopupTab('editor');
-	} );
-	$('#jumpLog').click( function() {
-		that.setWHPopupTab('jumpLog');
-		that.updateJumpLog(that.editingHash);
+      that.setWHPopupTab('editor');
 	} );
 	
+	if( this.settings.jumpTrackerEnabled )
+	{
+      $('#jumpLog').click( function() {
+        that.setWHPopupTab('jumpLog');
+        that.updateJumpLog(that.editingHash);
+      } );
+	}
 	
 }
 
@@ -1053,6 +1059,11 @@ siggyMap.prototype.updateJumpLog = function( hash )
 		var logList = $('#jumpLogList');
 		logList.empty();
 		
+		if( !this.settings.jumpTrackerEnabled )
+		{
+      return;
+		}
+		
 		var request = {
 			whHash: hash
 		}
@@ -1073,13 +1084,13 @@ siggyMap.prototype.updateJumpLog = function( hash )
 					var mass = roundNumber(parseInt(item.mass)/1000000,2);
 			
 					var charName = '';
-					if( that.settings.jumpLogCharNames )
+					if( that.settings.jumpTrackerShowNames )
 					{
 						charName = ' - '+item.charName;
 					}
 					
 					var time = '';
-					if( that.settings.jumpLogTimes )
+					if( that.settings.jumpTrackerShowTime )
 					{
 						time =  siggymain.displayTimeStamp(item.time);
 					}
@@ -1098,6 +1109,7 @@ siggyMap.prototype.updateJumpLog = function( hash )
 						toDName = ' ('+that.drawnSystems[item.destination].displayName+')';
 					}
 					direction += that.drawnSystems[item.destination].systemName+toDName;					
+					
 					
 					
 					var s = $('<li><p style="float:left"><b>' + item.shipName +'</b>' + charName + '<br />' +
