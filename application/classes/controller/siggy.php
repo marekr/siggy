@@ -51,6 +51,7 @@ class Controller_Siggy extends FrontController
 		//load chain map html
 		$chainMapHTML = View::factory('/templatebits/chainMap');
 		$chainMapHTML->mapOpen = $mapOpen;
+		$chainMapHTML->group = $this->groupData;
 		$view->chainMap = $chainMapHTML;
 		
 		
@@ -60,139 +61,6 @@ class Controller_Siggy extends FrontController
 	}
 	
 	
-	public function action_stats()
-	{
-		if(	 !$this->isAuthed() )
-		{
-			$view = View::factory('siggy/groupPassword');
-			$view->groupData = $this->groupData;
-			$view->trusted = $this->trusted;
-			$view->wrongPass = false;
-			$this->response->body($view);
-			return;
-		}			 
-
-		date_default_timezone_set('UTC');
-		
-		$start = strtotime( date('Y').'W'.date('W') );
-		$end = strtotime( date('Y').'W'.date('W')+1 );
-		
-		//adds
-		$groupTop10 = DB::query(Database::SELECT, "SELECT charID, charName, sum(adds) as adds FROM stats WHERE groupID=:group AND dayStamp >= :start AND dayStamp < :end AND adds != 0 GROUP BY charID  ORDER BY adds DESC LIMIT 0,10")
-										->param(':group', $this->groupData['groupID'])->param(':start', $start)->param(':end', $end)->execute()->as_array();	 
-		
-		$groupTop10Max = 0;
-		foreach( $groupTop10 as &$p )
-		{
-			if( $groupTop10Max < $p['adds'] )
-			{
-				$groupTop10Max = $p['adds'];
-			}
-		}
-		
-		//edits
-		$groupTop10Edits = DB::query(Database::SELECT, "SELECT charID, charName, sum(updates) as edits FROM stats WHERE groupID=:group AND dayStamp >= :start AND dayStamp < :end AND updates != 0 GROUP BY charID  ORDER BY edits DESC LIMIT 0,10")
-										->param(':group', $this->groupData['groupID'])->param(':start', $start)->param(':end', $end)->execute()->as_array();	 
-		
-		$groupTop10EditsTotal = 0;
-		foreach( $groupTop10Edits as &$p )
-		{
-			$groupTop10EditsTotal += $p['edits'];
-		}		
-		
-		
-		//wormholes
-		$groupTop10WHs = DB::query(Database::SELECT, "SELECT charID, charName, sum(wormholes) as wormholes FROM stats WHERE groupID=:group AND dayStamp >= :start AND dayStamp < :end AND wormholes != 0 GROUP BY charID  ORDER BY wormholes DESC LIMIT 0,10")
-										->param(':group', $this->groupData['groupID'])->param(':start', $start)->param(':end', $end)->execute()->as_array();	 
-		
-		$groupTop10WHsTotal = 0;
-		foreach( $groupTop10WHs as &$p )
-		{
-			$groupTop10WHsTotal += $p['wormholes'];
-		}		
-		
-		
-		//last week
-		$lastwstart = strtotime(date('Y').'W'.(date('W')-1) );
-		$lastwend = strtotime(date('Y').'W'.date('W') );
-		
-		//adds
-		$groupTop10LastWeek = DB::query(Database::SELECT, "SELECT charID, charName, sum(adds) as adds FROM stats WHERE groupID=:group AND dayStamp >= :start AND dayStamp < :end AND adds != 0 GROUP BY charID  ORDER BY adds DESC LIMIT 0,10")
-										->param(':group', $this->groupData['groupID'])->param(':start', $lastwstart)->param(':end', $lastwend)->execute()->as_array();	 
-		
-		$groupTop10LastWeekMax  = 0;
-		foreach( $groupTop10LastWeek as &$p )
-		{
-			if( $groupTop10LastWeekMax < $p['adds'] )
-			{
-				$groupTop10LastWeekMax = $p['adds'];
-			}
-		}
-		
-		//edits
-		$groupTop10EditsLastWeek = DB::query(Database::SELECT, "SELECT charID, charName, sum(updates) as edits FROM stats WHERE groupID=:group AND dayStamp >= :start AND dayStamp < :end AND updates != 0 GROUP BY charID  ORDER BY edits DESC LIMIT 0,10")
-										->param(':group', $this->groupData['groupID'])->param(':start', $lastwstart)->param(':end', $lastwend)->execute()->as_array();	 
-		
-		$groupTop10EditsLastWeekTotal = 0;
-		foreach( $groupTop10EditsLastWeek as &$p )
-		{
-			$groupTop10EditsLastWeekTotal += $p['edits'];
-		}				
-		
-		//wormholes
-		$groupTop10WHsLastWeek = DB::query(Database::SELECT, "SELECT charID, charName, sum(wormholes) as wormholes FROM stats WHERE groupID=:group AND dayStamp >= :start AND dayStamp < :end AND wormholes != 0 GROUP BY charID  ORDER BY wormholes DESC LIMIT 0,10")
-										->param(':group', $this->groupData['groupID'])->param(':start', $lastwstart)->param(':end', $lastwend)->execute()->as_array();	 
-		
-		$groupTop10WHsLastWeekTotal = 0;
-		foreach( $groupTop10WHsLastWeek as &$p )
-		{
-			$groupTop10WHsLastWeekTotal += $p['wormholes'];
-		}				
-		
-		$view = View::factory('siggy/stats');
-		$view->group = $this->groupData;
-		$view->trusted = $this->trusted;
-		
-		$view->groupTop10 = $groupTop10;
-		$view->groupTop10Max = $groupTop10Max;
-
-		$view->groupTop10Edits = $groupTop10Edits;
-		$view->groupTop10EditsTotal = $groupTop10EditsTotal;		
-		
-		$view->groupTop10WHs = $groupTop10WHs;
-		$view->groupTop10WHsTotal = $groupTop10WHsTotal;
-		
-		$view->groupTop10LastWeek = $groupTop10LastWeek;
-		$view->groupTop10LastWeekMax = $groupTop10LastWeekMax;
-		
-		$view->groupTop10EditsLastWeek = $groupTop10EditsLastWeek;
-		$view->groupTop10EditsLastWeekTotal = $groupTop10EditsLastWeekTotal;
-		
-		$view->groupTop10WHsLastWeek = $groupTop10WHsLastWeek;
-		$view->groupTop10WHsLastWeekTotal = $groupTop10WHsLastWeekTotal;
-		
-		
-		$view->trusted = $this->trusted;
-		$view->group = $this->groupData;
-		$view->charID = $this->groupData['charID'];
-		$view->corpID = $this->groupData['corpID'];
-		$view->charName = $this->groupData['charName'];
-		$view->igb = $this->igb;
-		
-		if( $this->igb )
-		{
-			$view->apilogin = ( $this->groupData['authMode'] == 2 ? true : false);
-		}
-		else
-		{
-			$view->apilogin = true;
-		}
-		
-	//	$view->groupAllTimeTop10 = $groupAllTimeTop10;
-	//	$view->groupAllTimeTop10Total = $groupAllTimeTop10Total;
-		$this->response->body($view);
-		
-	}
 	
 	public function before()
 	{
@@ -695,7 +563,7 @@ class Controller_Siggy extends FrontController
 						$broadcast = (isset($_COOKIE['broadcast']) ? intval($_COOKIE['broadcast']) : 1);
 						
 						DB::query(Database::INSERT, 'INSERT INTO charTracker (`charID`, `charName`, `currentSystemID`,`groupID`,`subGroupID`,`lastBeep`, `broadcast`,`shipType`) VALUES(:charID, :charName, :systemID, :groupID, :subGroupID, :lastBeep, :broadcast, :shipType)'
-													. 'ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, currentSystemID = :systemID, broadcast = :broadcast, groupID = :groupID, subGroupID = :subGroupID, shipType = :shipType')
+													. 'ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, currentSystemID = :systemID, broadcast = :broadcast, shipType = :shipType')
 													->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
 													->param(':broadcast', $broadcast )
 													->param(':systemID', $actualCurrentSystemID )
@@ -724,22 +592,22 @@ class Controller_Siggy extends FrontController
 								->param(':lastJump', time() )->execute();
 								
 			
-			if( $this->groupData['recordWHJumpActivity']  && !empty( $_SERVER['HTTP_EVE_SHIPTYPEID'] ) )
+			if( $this->groupData['jumpLogEnabled']  && !empty( $_SERVER['HTTP_EVE_SHIPTYPEID'] ) )
 			{
-				$charID = ( $this->groupData['recordWHJumpNames'] ? $_SERVER['HTTP_EVE_CHARID'] : 0 );
-				$charName = ( $this->groupData['recordWHJumpNames'] ? $_SERVER['HTTP_EVE_CHARNAME'] : '' );
-				$jumpTime = ( $this->groupData['recordWHJumpTime'] ? time() : 0 );
-				DB::query(Database::INSERT, 'INSERT INTO wormholetracker (`whHash`, `origin`, `destination`, `groupID`, `subGroupID`, `time`, `shipTypeID`,`charID`, `charName`) VALUES(:hash, :origin, :dest, :groupID, :subGroupID, :time,:shipTypeID,:charID,:charName)')
-									->param(':hash', $whHash )
-									->param(':dest', $dest)
-									->param(':origin', $origin )
-									->param(':groupID', $this->groupData['groupID'] )
-									->param(':subGroupID', $this->groupData['subGroupID'] )
-									->param(':time', $jumpTime )
-									->param(':shipTypeID',  htmlentities($_SERVER['HTTP_EVE_SHIPTYPEID']) )
-									->param(':charID', $charID)
-									->param(':charName', $charName)
-									->execute();
+          $charID = ( $this->groupData['jumpLogRecordNames'] ? $_SERVER['HTTP_EVE_CHARID'] : 0 );
+          $charName = ( $this->groupData['jumpLogRecordNames'] ? $_SERVER['HTTP_EVE_CHARNAME'] : '' );
+          $jumpTime = ( $this->groupData['jumpLogRecordTime'] ? time() : 0 );
+          DB::query(Database::INSERT, 'INSERT INTO wormholetracker (`whHash`, `origin`, `destination`, `groupID`, `subGroupID`, `time`, `shipTypeID`,`charID`, `charName`) VALUES(:hash, :origin, :dest, :groupID, :subGroupID, :time,:shipTypeID,:charID,:charName)')
+                    ->param(':hash', $whHash )
+                    ->param(':dest', $dest)
+                    ->param(':origin', $origin )
+                    ->param(':groupID', $this->groupData['groupID'] )
+                    ->param(':subGroupID', $this->groupData['subGroupID'] )
+                    ->param(':time', $jumpTime )
+                    ->param(':shipTypeID',  $_SERVER['HTTP_EVE_SHIPTYPEID'] )
+                    ->param(':charID', $charID)
+                    ->param(':charName', $charName)
+                    ->execute();
 			}
 			
 			if( !in_array($whHash, $this->mapData['wormholeHashes']) )
@@ -925,18 +793,18 @@ class Controller_Siggy extends FrontController
 					//location tracking!
 					if( $this->igb && isset($_SERVER['HTTP_EVE_CHARID']) && isset($_SERVER['HTTP_EVE_CHARNAME']) && $actualCurrentSystemID != 0 )
 					{
-						$broadcast = (isset($_COOKIE['broadcast']) ? intval($_COOKIE['broadcast']) : 1);
-						
-						DB::query(Database::INSERT, 'INSERT INTO charTracker (`charID`, `charName`, `currentSystemID`,`groupID`,`subGroupID`,`lastBeep`, `broadcast`,`shipType`, `shipName`) VALUES(:charID, :charName, :systemID, :groupID, :subGroupID, :lastBeep, :broadcast, :shipType, :shipName)'
-													. 'ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, currentSystemID = :systemID, broadcast = :broadcast, groupID = :groupID, subGroupID = :subGroupID, shipType = :shipType, shipName = :shipName')
-													->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
-													->param(':broadcast', $broadcast )
-													->param(':systemID', $actualCurrentSystemID )
-													->param(':groupID', $this->groupData['groupID'] )
-													->param(':shipType', isset($_SERVER['HTTP_EVE_SHIPTYPEID']) ? $_SERVER['HTTP_EVE_SHIPTYPEID'] : 0 )
-													->param(':shipName', isset($_SERVER['HTTP_EVE_SHIPNAME']) ? htmlentities($_SERVER['HTTP_EVE_SHIPNAME']) : '' )
-													->param(':subGroupID', $this->groupData['subGroupID'] )
-													->param(':lastBeep', time() )->execute();			
+              $broadcast = (isset($_COOKIE['broadcast']) ? intval($_COOKIE['broadcast']) : 1);
+              
+              DB::query(Database::INSERT, 'INSERT INTO charTracker (`charID`, `charName`, `currentSystemID`,`groupID`,`subGroupID`,`lastBeep`, `broadcast`,`shipType`, `shipName`) VALUES(:charID, :charName, :systemID, :groupID, :subGroupID, :lastBeep, :broadcast, :shipType, :shipName)'
+                            . 'ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, currentSystemID = :systemID, broadcast = :broadcast, shipType = :shipType, shipName = :shipName')
+                            ->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
+                            ->param(':broadcast', $broadcast )
+                            ->param(':systemID', $actualCurrentSystemID )
+                            ->param(':groupID', $this->groupData['groupID'] )
+                            ->param(':shipType', isset($_SERVER['HTTP_EVE_SHIPTYPEID']) ? $_SERVER['HTTP_EVE_SHIPTYPEID'] : 0 )
+                            ->param(':shipName', isset($_SERVER['HTTP_EVE_SHIPNAME']) ? htmlentities($_SERVER['HTTP_EVE_SHIPNAME']) : '' )
+                            ->param(':subGroupID', $this->groupData['subGroupID'] )
+                            ->param(':lastBeep', time() )->execute();			
 		 
 					}
 					

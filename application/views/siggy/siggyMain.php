@@ -297,27 +297,28 @@
 			<script type='text/javascript'>
 			$(document).ready(function() { 
 				  
-				  $('#loading').ajaxStart( function() {
-					$(this).show();
-				  });
-				  
-				  $('#loading').ajaxStop( function() {
-					$(this).hide();
-				  } );
-				  
 				  var options = {
-										showSigSizeCol: <?php echo ( $group['showSigSizeCol'] ? 'true' : 'false' ); ?>
+                    baseUrl: '<?php echo URL::base(TRUE, TRUE);?>',
+                    <?php if( $initialSystem ): ?>
+                    initialSystemID: <?php echo $systemData['id']; ?>,
+                    initialSystemName: '<?php echo $systemData['name']; ?>',
+                    <?php endif; ?>
+										showSigSizeCol: <?php echo ( $group['showSigSizeCol'] ? 'true' : 'false' ); ?>,
+										map: {
+                      jumpTrackerEnabled: <?php echo ( $group['jumpLogEnabled'] ? 'true' : 'false' ); ?>,
+                      jumpTrackerShowNames:  <?php echo ( $group['jumpLogRecordNames'] ? 'true' : 'false' ); ?>,
+                      jumpTrackerShowTime:  <?php echo ( $group['jumpLogRecordTime'] ? 'true' : 'false' ); ?>
+										}
 				  };
 				  
 				  siggy = new siggymain( options );
-				  siggy.baseUrl = '<?php echo URL::base(TRUE, TRUE);?>';
-				  <?php if( $initialSystem ): ?>
-				  siggy.setSystemID(<?php echo $systemData['id']; ?>);
-				  siggy.systemName = '<?php echo $systemData['name']; ?>';
-					<?php if( $requested): ?>
-				  siggy.freeze();
-					<?php endif; ?>
-				  <?php endif; ?>
+          <?php if( $initialSystem ): ?>
+              siggy.setSystemID(<?php echo $systemData['id']; ?>);
+              siggy.systemName = '<?php echo $systemData['name']; ?>';
+              <?php if( $requested): ?>
+              siggy.freeze();
+              <?php endif; ?>
+          <?php endif; ?>
 				  
 				  
 				  siggy.initialize();

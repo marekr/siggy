@@ -42,9 +42,11 @@
 				<div id="wormholePopup" class="box">
 					<div id="wormholeTabs">
 						<div id="whEdit">Edit</div>
-						<div id="jumpLog">Jump Log
-						<span style='color: #FF4C00;font-weight:bold;font-size:0.8em;'>BETA</span></div>
+            <?php if( $group['jumpLogEnabled'] ): ?>
+						<div id="jumpLog">Jump Log</div>
+            <?php endif; ?>
 					</div>
+					<?php if( $group['jumpLogEnabled'] ): ?>
 					<div id="jumpLogViewer" class="tabcontent">
 						<div style='text-align:center;margin-bottom: 10px;'><span id='refreshJumpLog' style='font-weight:bold;color: #FF4C00;'>X Refresh Log</span></div>
 						<b>Recorded and Approximate Mass:</b> <span id='totalJumpedMass'>0.00</span>mil<br /><br />
@@ -56,6 +58,7 @@
 						</div>
 						<div class="center"><button id='jumpLogClose'>Close</button></div>
 					</div>
+					<?php endif; ?>
 					<div id="wormholeEditor" class="tabcontent">
 						<div id="whEditorAdd">
 							<h3>Create a wormhole link</h3>

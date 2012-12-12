@@ -763,7 +763,6 @@ function siggymain( options )
 	this.systemList = {};
 	this.forceUpdate = true;
 	this._updateTimeout = null;
-	this.baseUrl = '';
 	this.publicMode = false;
 	this.map = null;
 	this.acsid = 0;
@@ -786,8 +785,13 @@ function siggymain( options )
 	this.editingGlobalNotes = false;
 	
 	this.defaults = {
+      baseUrl: '',
+      initialSystemID: 0,
+      initialSystemName: '',
 			showSigSizeCol: false,
-			map: {}
+			map: {
+              jumpTrackerEnabled: true
+            }
 	};
 	
 	this.settings = $.extend(this.defaults, options);
@@ -877,7 +881,7 @@ siggymain.prototype.update = function ()
 
 	var that = this;
 	$.ajax({
-		url: this.baseUrl + 'update',
+		url: this.settings.baseUrl + 'update',
 		data: request,
 		dataType: 'json',
 		beforeSend : function(xhr, opts){
@@ -890,7 +894,7 @@ siggymain.prototype.update = function ()
 			{
 				if( data.redirect != undefined )
 				{
-					window.location = this.baseUrl + data.redirect;
+					window.location = this.settings.baseUrl + data.redirect;
 					return;
 				}
 			
@@ -1511,7 +1515,7 @@ siggymain.prototype.addSigRow = function (sigData, flashSig)
 	}
 	
 	var row = $('<tr>').attr('id', 'sig-' + sigData.sigID)
-	.append($('<td>').addClass('center').addClass('edit') .append($('<img>').attr('src', this.baseUrl + 'public/images/pencil.png').click(function (e)
+	.append($('<td>').addClass('center').addClass('edit') .append($('<img>').attr('src', this.settings.baseUrl + 'public/images/pencil.png').click(function (e)
 		{
 			that.editSigForm(sigData.sigID)
 		})
@@ -1526,11 +1530,11 @@ siggymain.prototype.addSigRow = function (sigData, flashSig)
 	row.append($('<td>').addClass('center').addClass('type').text(this.convertType(sigData.type)))
 	.append(descTD)
 	.append($('<td>').addClass('center').addClass('moreinfo')
-			.append($('<img>').attr('src', this.baseUrl + 'public/images/information.png'))
+			.append($('<img>').attr('src', this.settings.baseUrl + 'public/images/information.png'))
 			.append($("<div>").addClass('tooltip').attr('id', 'creation-info-' + sigData.sigID).html(creationInfo))
 			)
 	.append($('<td>').addClass('center').addClass('age').append($("<span>").text("--")).append($("<div>").addClass('tooltip').attr('id', 'age-timestamp-' + sigData.sigID).text(siggymain.displayTimeStamp(sigData.created))))
-	.append($('<td>').addClass('center').addClass('remove').append($('<img>').attr('src', this.baseUrl + 'public/images/delete.png')).click(function (e)
+	.append($('<td>').addClass('center').addClass('remove').append($('<img>').attr('src', this.settings.baseUrl + 'public/images/delete.png')).click(function (e)
 	{
 		that.removeSig(sigData.sigID)
 	}));
@@ -1570,7 +1574,7 @@ siggymain.prototype.editSigForm = function (sigID)
 	controlEle.text('');
 
 	var that = this;
-	controlEle.append($('<img>').attr('src', this.baseUrl + 'public/images/accept.png').click(function (e)
+	controlEle.append($('<img>').attr('src', this.settings.baseUrl + 'public/images/accept.png').click(function (e)
 	{
 		that.editSig(sigID)
 	}));
@@ -1666,7 +1670,7 @@ siggymain.prototype.editSig = function (sigID)
 
 	
 	var that = this;
-	$.post(this.baseUrl + 'dosigEdit', postData, function ()
+	$.post(this.settings.baseUrl + 'dosigEdit', postData, function ()
 	{
 
 		that.editingSig = false;
@@ -1687,7 +1691,7 @@ siggymain.prototype.editSig = function (sigID)
 
 	var controlEle = $("#sig-" + sigID + " td.edit");
 	controlEle.text('');
-	controlEle.append($('<img>').attr('src', this.baseUrl + 'public/images/pencil.png').click(function (e)
+	controlEle.append($('<img>').attr('src', this.settings.baseUrl + 'public/images/pencil.png').click(function (e)
 	{
 		that.editSigForm(sigID)
 	}));
@@ -1780,7 +1784,7 @@ siggymain.prototype.removeSig = function (sigID)
 	});
 	$('#sigTable').trigger('update');
 
-	$.post(this.baseUrl + 'dosigRemove', {
+	$.post(this.settings.baseUrl + 'dosigRemove', {
 		systemID: this.systemID,
 		sigID: sigID
 	});
@@ -1844,7 +1848,7 @@ siggymain.prototype.setupAddBox = function ()
 			blob: massAddBlob.val()
 		};
 		
-		$.post(that.baseUrl + 'domassSigs', postData, function (newSig)
+		$.post(that.settings.baseUrl + 'domassSigs', postData, function (newSig)
 		{
 			for (var i in newSig)
 			{
@@ -1860,6 +1864,12 @@ siggymain.prototype.setupAddBox = function ()
 		
 		$.unblockUI();
 		return false;
+	} );
+	
+	$('#massAddSigBox button[name=cancel]').click( function() 
+	{
+      $.unblockUI();
+      return false;
 	} );
 	
 	$('#massAddSigs').click(function ()
@@ -1885,6 +1895,7 @@ siggymain.prototype.setupAddBox = function ()
         fadeOut:  0
 		}); 
 		$('.blockOverlay').attr('title','Click to unblock').click($.unblockUI); 
+		return false;
 	});
 
 
@@ -1929,7 +1940,7 @@ siggymain.prototype.setupAddBox = function ()
 				postData.sigSize = sizeEle.val();
 		}
 
-		$.post(that.baseUrl + 'dosigAdd', postData, function (newSig)
+		$.post(that.settings.baseUrl + 'dosigAdd', postData, function (newSig)
 		{
 			for (var i in newSig)
 			{
@@ -2037,10 +2048,17 @@ siggymain.prototype.initialize = function ()
 	var that = this;
 	this.setupFatalErrorHandler();
 	
+  $('#loading').ajaxStart( function() {
+    $(this).show();
+  });
+  
+  $('#loading').ajaxStop( function() {
+    $(this).hide();
+  } );	
 
 
 	sigCalc = new siggyCalc();
-	sigCalc.baseUrl = this.baseUrl;
+	sigCalc.baseUrl = this.settings.baseUrl;
 	sigCalc.initialize();
 
 	if( getCookie('sysInfoCollasped') != null )
@@ -2054,7 +2072,7 @@ siggymain.prototype.initialize = function ()
 	}		
 
 	this.map = new siggyMap(this.settings.map);
-	this.map.baseUrl = this.baseUrl;
+	this.map.baseUrl = this.settings.baseUrl;
 	this.map.siggymain = this;
 	this.map.initialize();
 	
@@ -2144,7 +2162,7 @@ siggymain.prototype.initialize = function ()
 		$('#systemOptions input[name=inUse]').filter('[value=0]').attr('checked', true);
 		$('#systemOptions select[name=activity]').val(0);
 
-		$.post(that.baseUrl + 'dosaveSystemOptions', {
+		$.post(that.settings.baseUrl + 'dosaveSystemOptions', {
 			systemID: that.systemID,
 			label: '',
 			inUse: 0,
@@ -2202,7 +2220,7 @@ siggymain.prototype.initialize = function ()
 			dir: 'down',
 			callback: function( id )
 			{
-				window.location.replace( that.baseUrl + 'doswitchMembership/?k=' + id );
+				window.location.replace( that.settings.baseUrl + 'doswitchMembership/?k=' + id );
 			},
 			callbackMode: 'wildcard'
 	});
@@ -2238,7 +2256,7 @@ siggymain.prototype.initialize = function ()
 siggymain.prototype.saveSystemOptions = function(systemID, label, inUse, activity)
 {
 		var that = this;
-		$.post(that.baseUrl + 'dosaveSystemOptions', {
+		$.post(that.settings.baseUrl + 'dosaveSystemOptions', {
 			systemID: systemID,
 			label: label,
 			inUse: inUse,
@@ -2330,7 +2348,7 @@ siggymain.prototype.initializeGNotes = function()
 	$('#gNotesSave').click(function ()
 	{
 		that.globalNotes = $('#gNotesEditBox').val();
-		$.post(that.baseUrl + 'doglobalNotesSave', {
+		$.post(that.settings.baseUrl + 'doglobalNotesSave', {
 			notes: that.globalNotes
 		}, function (data)
 		{
