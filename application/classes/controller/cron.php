@@ -95,6 +95,17 @@ class Controller_Cron extends Controller
 		}
 		return $stop;	
 	}
+	
+	public function action_pruneSiggySessions()
+	{
+			$this->profiler = NULL;
+			$this->auto_render = FALSE;
+			
+			//30 minute cutoff
+			$cutoff = time()-60*30; 
+      
+      DB::delete('siggysessions')->where('lastBeep', '<=', $cutoff)->execute();
+	}
 
 	public function action_billingTransactions()
 	{

@@ -45,6 +45,9 @@ class Controller_Siggy extends FrontController
 						$view->initialSystem = true;
 				}
 		}
+		
+		$sessionID = $this->__generateSession();
+    $view->sessionID = $sessionID;
 	
 		$this->template->content = $view;
 		
@@ -60,7 +63,39 @@ class Controller_Siggy extends FrontController
 		$this->template->headerTools = $headerToolsHTML;
 	}
 	
+	private function __generateSession()
+	{
+      $sessionID = md5(uniqid(microtime()) . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
+      
+      $insert = array( 'sessionID' => $sessionID,
+                        'charID' => $this->groupData['charID'],
+                        'charName' => $this->groupData['charName'],
+                        'created' => time(),
+                        'ipAddress' => Request::$client_ip,
+                        'userAgent' => Request::$user_agent,
+                        'sessionType' => ( $this->igb ? 'igb' : 'oog' ),
+                        'userID' => ( simpleauth::instance()->logged_in() ? simpleauth::instance()->get_user()->id : 0 ),
+                        'groupID' => $this->groupData['groupID'],
+                        'subGroupID' => $this->groupData['subGroupID']
+                      );
+                                
+			DB::insert('siggysessions', array_keys($insert) )->values(array_values($insert))->execute();
+			
+			return $sessionID;
+	}
 	
+	private function __updateSession( $sessionID )
+	{
+      if( empty($sessionID) )
+      {
+          return;
+      }
+      
+      
+			$update = array( 'lastBeep' => time() );
+			
+      DB::update('siggysessions')->set( $update )->where('sessionID', '=',  $sessionID)->execute();
+	}
 	
 	public function before()
 	{
@@ -707,6 +742,12 @@ class Controller_Siggy extends FrontController
 				echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
 				exit();
 			}			 
+			
+			if( isset($_GET['sessionID']) && !empty($_GET['sessionID']) )
+			{
+          $this->__updateSession( $_GET['sessionID'] );
+			}
+			
 			
 			$chainMapOpen = ( isset($_GET['mapOpen']) ? intval($_GET['mapOpen']) : 0 );
 			

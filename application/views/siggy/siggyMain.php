@@ -110,7 +110,7 @@
 		
 		
 		<br clear='all' />
-		<a href="#" id="massAddSigs">[+] Mass Add Sigs</a>
+		<a href="#" id="massAddSigs">[+] Mass Sig Reader</a>
 		<br clear='all' />
 		<div id="sigAddBox">
 			<form>
@@ -171,12 +171,13 @@
 		
 		<div id="massAddSigBox" class="box" style="display:none;width:300px;">
 			<div>
-				<h2 class="jqDrag">Mass Add Sigs</h2>
-				<p>This is for copy pasted signatures from your scanner window.</p>
+				<h2>Mass Sig Reader</h2>
+				<p>This is for copy pasted signatures from your scanner window. Simply select a signature, hit CTRL+A, then CTRL-C, then paste into the box below. This tool can add AND update signatures.</p>
 				<form>
 					<textarea name="blob" rows="12" style="width:100%;font-size:11px;"></textarea>
 					<div style="text-align:center;">
-						<input name='add' type="submit" value="Add" style="width:40px;height:20px;" />
+						<button name='add' type="submit">Submit</button>
+            <button name='cancel'>Cancel</button>
 					</div>
 				</form>
 			</div>
@@ -303,6 +304,7 @@
                     initialSystemID: <?php echo $systemData['id']; ?>,
                     initialSystemName: '<?php echo $systemData['name']; ?>',
                     <?php endif; ?>
+                    sessionID: '<?php echo $sessionID; ?>',
 										showSigSizeCol: <?php echo ( $group['showSigSizeCol'] ? 'true' : 'false' ); ?>,
 										map: {
                       jumpTrackerEnabled: <?php echo ( $group['jumpLogEnabled'] ? 'true' : 'false' ); ?>,

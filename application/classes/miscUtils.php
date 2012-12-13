@@ -474,7 +474,7 @@ final class miscUtils
 				if ( self::isIGB() ) 
 				{
 					 //because CCP cant use integers.
-					 if (strtolower($_SERVER['HTTP_EVE_TRUSTED'])=='no') 
+					 if (!isset($_SERVER['HTTP_EVE_TRUSTED']) || strtolower($_SERVER['HTTP_EVE_TRUSTED']) == 'no') 
 					 {
 							return false;
 					 } 
