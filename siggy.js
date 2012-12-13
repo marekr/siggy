@@ -789,6 +789,7 @@ function siggymain( options )
       initialSystemID: 0,
       initialSystemName: '',
 			showSigSizeCol: false,
+			sessionID: '',
 			map: {
               jumpTrackerEnabled: true
             }
@@ -876,7 +877,8 @@ siggymain.prototype.update = function ()
 		acsname: this.acsname,
 		mapOpen: this.map.isMapOpen(),
 		mapLastUpdate: this.map.lastUpdate,
-		forceUpdate: this.forceUpdate
+		forceUpdate: this.forceUpdate,
+		sessionID: this.settings.sessionID
 	};
 
 	var that = this;
