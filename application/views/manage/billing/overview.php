@@ -38,7 +38,7 @@ You <strong>must</strong> enter the following text as the reason:
 	</tr>
 <?php foreach( $charges as $c ): ?>
 	<tr>
-		<td><?php echo date("d/m/y @ h:m:s",$c['date']); ?></td>
+		<td><?php echo date("d/m/y @ h:i:s",$c['date']); ?></td>
 		<td>-<?php echo number_format($c['amount']); ?></td>
 		<td><?php echo $c['message']; ?></td>
 	</tr>
@@ -55,8 +55,8 @@ You <strong>must</strong> enter the following text as the reason:
 	</tr>
 <?php foreach( $payments as $p ): ?>
 	<tr>
-		<td><?php echo date("d/m/y @ h:m:s",$p['paymentProcessedTime']); ?></td>
-		<td><?php echo date("d/m/y @ h:m:s",$p['paymentTime']); ?></td>
+		<td><?php echo date("d/m/y @ h:i:s",$p['paymentProcessedTime']); ?></td>
+		<td><?php echo date("d/m/y @ h:i:s",$p['paymentTime']); ?></td>
 		<td><?php echo number_format($p['paymentAmount']); ?></td>
 		<td><?php echo $p['payeeName']; ?></td>
 		

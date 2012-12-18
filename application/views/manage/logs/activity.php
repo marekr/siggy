@@ -26,7 +26,7 @@
 	<?php if( count($logs) > 0 ): ?>
 	<?php foreach($logs as $log): ?>
 	<tr>
-		<td><?php echo date("d/m/y @ h:m:s",$log['entryTime']); ?></td>
+		<td><?php echo date("d/m/y @ h:i:s",$log['entryTime']); ?></td>
 		<td><?php echo $log['type']; ?></td>
 		<td style="word-break: break-all; word-wrap: break-word;"><?php echo $log['message']; ?></td>
 	</tr>

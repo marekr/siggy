@@ -58,7 +58,8 @@
 							<?php if(simpleauth::instance()->isGroupAdmin()): ?>
 							<li class="nav-header">Information</li>
 							<li><?php echo Html::anchor('manage/group/dashboard', __('Announcements')); ?></li>
-							<li><?php echo Html::anchor('manage/logs/activity', __('Activity Logs')); ?></li>
+							<li><?php echo Html::anchor('manage/logs/activity', __('Usage Logs')); ?></li>
+							<li><?php echo Html::anchor('manage/logs/sessions', __('Active Sessions')); ?></li>
 							
 							<li class="nav-header">Group Access</li>
 							<li><?php echo Html::anchor('manage/group/members', __('Group Members')); ?></li>
@@ -66,7 +67,7 @@
 							
 							<li class="nav-header">Group Settings</li>
 							<li><?php echo Html::anchor('manage/group/settings', __('General')); ?></li>
-							<li><?php echo Html::anchor('manage/group/chainMapSettings', __('Chain Map')); ?></li>
+							<!--- <li><?php echo Html::anchor('manage/group/chainMapSettings', __('Chain Map')); ?></li> -->
 									
 							<li class="nav-header">Financial</li>
 							<li><?php echo Html::anchor('manage/billing/overview', __('Billing Overview')); ?></li>
