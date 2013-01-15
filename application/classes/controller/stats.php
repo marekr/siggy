@@ -221,15 +221,16 @@ class Controller_Stats extends FrontController
 	}
 	function monthTimestamps($month, $year)
 	{
-		$start = strtotime('first day of '.$month.'.1.'.$year);
-		return array( $start, strtotime('last day of '.$month.'.1.'.$year));
+		$start = strtotime('first day of 1.'.$month.'.'.$year.' +1 day');
+		return array( $start, strtotime('last day of 1.'.$month.'.'.$year));
 	}	
 	
 	function weekTimestamps($week, $year)
 	{
-		$start = strtotime("1.1.".$year." +".($week-1)." weeks");
+		$start = strtotime("+".($week-1)." weeks -1 day", strtotime("1.1.".$year));
 		return array( $start, strtotime('next monday', $start)-1 );
 	}	
+	
 	function getIsoWeeksInYear($year) {
 		$date = new DateTime;
 		$date->setISODate($year, 53);
