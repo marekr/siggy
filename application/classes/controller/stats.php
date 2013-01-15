@@ -227,7 +227,7 @@ class Controller_Stats extends FrontController
 	
 	function weekTimestamps($week, $year)
 	{
-		$start = strtotime("1.1.".$year." +".($week-1)." weeks +1 day");
+		$start = strtotime("1.1.".$year." +".($week-1)." weeks");
 		return array( $start, strtotime('next monday', $start)-1 );
 	}	
 	function getIsoWeeksInYear($year) {
