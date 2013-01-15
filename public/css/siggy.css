@@ -424,6 +424,12 @@ table td.buttonRow {
     cursor:pointer;
 }
 
+
+.headerToolButton a
+{
+	color: inherit;
+}
+
 #headerToolsButtonBar
 {
 	text-align:center;
