@@ -291,6 +291,61 @@ class Controller_Manage_Group extends Controller_App {
 					$this->template->content = $view;
 			}
 	}
+	
+	
+	public function action_chainMapSettings()
+	{
+		$this->template->title = __('Chain Map settings');
+		$user = simpleauth::instance()->get_user();
+
+		$group = ORM::factory('group', $user->groupID);
+
+		$errors = array();
+		$view = $this->template->content = View::factory('manage/group/chainMapSettings');
+		
+		$view->bind('errors', $errors);
+					
+		if ($this->request->method() == "POST") 
+		{
+				try 
+				{
+							$group->jumpLogEnabled = intval($_POST['jumpLogEnabled']);
+							$group->jumpLogRecordNames = intval($_POST['jumpLogRecordNames']);
+							$group->jumpLogRecordTime = intval($_POST['jumpLogRecordTime']);
+							$group->jumpLogDisplayShipType = intval($_POST['jumpLogDisplayShipType']);
+							$group->alwaysBroadcast = intval($_POST['alwaysBroadcast']);
+							
+							$group->save();
+							
+						Message::add('success', __('Chain map settings saved.'));
+						
+						groupUtils::recacheGroup( $user->groupID );
+						
+						$this->request->redirect('manage/group/chainMapSettings');
+						return;
+				} 
+				catch (ORM_Validation_Exception $e) 
+				{
+					Message::add('error', __('Error: Values could not be saved.'));
+					$errors = $e->errors('chainMapSettings');
+					$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
+
+					$view->set('data', array( 'jumpLogEnabled' => $_POST['jumpLogEnabled'],
+																			'jumpLogRecordNames' => $_POST['jumpLogRecordNames'], 
+																			'jumpLogRecordTime' => $_POST['jumpLogRecordTime'], 
+																			'jumpLogDisplayShipType' => $_POST['jumpLogDisplayShipType'], 
+																			'alwaysBroadcast' => $_POST['alwaysBroadcast']
+																		 ) 
+
+					);
+				}
+			}
+
+			$view->set('data', $group->as_array() );
+
+			$this->template->content = $view;      
+	  
+	}	
    
 	public function action_settings()
 	{

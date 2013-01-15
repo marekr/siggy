@@ -122,7 +122,7 @@ if( !isset($_SERVER['HTTP_EVE_SOLARSYSTEMID']) && isset($_SERVER['HTTP_EVE_SOLAR
  * - boolean  caching     enable or disable internal caching                 FALSE
  */
 Kohana::init(array(
-  'base_url'   => '/evetel',
+  'base_url'   => 'http://localhost/evetel',
   'index_file' => FALSE,  
   'profile'    => Kohana::$environment !== Kohana::PRODUCTION,
   'caching'    => Kohana::$environment === Kohana::PRODUCTION,	

@@ -27,14 +27,62 @@ class Controller_Stats extends FrontController
 		$this->template->user = $this->user;
 		$this->template->layoutMode = 'blank';
 		
+		$view = View::factory('stats/stats');
+		
+		
 		$week = intval($this->request->param('week'));
+		$month = intval($this->request->param('month'));
 		$year = intval($this->request->param('year'));
 		
-		if( empty($week) && !empty($year) )
+		if( empty($week) && !empty($year) && empty($month) )
 		{
 			$dateRange = array( 0 => strtotime("1.1.".$year),
 								1 => strtotime("1.1.".($year+1))-1
 								);
+								
+			$statsMode = 'yearly';
+			
+			$yearlyPrevYear = $year - 1;
+			$yearlyNextYear = $year + 1;
+			
+			$view->yearlyPrevYear = $yearlyPrevYear;
+			$view->yearlyNextYear = $yearlyNextYear;
+			
+		}
+		else if( !empty($year) && !empty($month) )
+		{
+			$dateRange = $this->monthTimestamps($month, $year);
+		
+			if( $month - 1 == 0 )
+			{
+				$monthlyPrevMonth = 12;
+				$monthlyPrevYear = $year-1;
+			}
+			else
+			{
+				$monthlyPrevMonth = $month - 1;
+				$monthlyPrevYear = $year;
+			}
+			$view->monthlyPrevMonth = $monthlyPrevMonth;
+			$view->monthlyPrevMonthName = date("F", mktime(0, 0, 0, $monthlyPrevMonth, 10));
+			$view->monthlyPrevYear = $monthlyPrevYear;
+		
+			if( $month + 1 == 13 )
+			{
+				$monthlyNextMonth = 1;
+				$monthlyNextYear = $year+1;
+			}
+			else
+			{
+				$monthlyNextMonth = $month + 1;
+				$monthlyNextYear = $year;
+			}
+			
+			$view->monthlyNextMonth = $monthlyNextMonth;
+			$view->monthlyNextMonthName = date("F", mktime(0, 0, 0, $monthlyNextMonth, 10));
+			$view->monthlyNextYear = $monthlyNextYear;
+		
+			$statsMode = 'monthly';	
 		}
 		else
 		{
@@ -43,7 +91,36 @@ class Controller_Stats extends FrontController
 				$year = date("Y");
 				$week = date("W");
 			}
+			
+			$statsMode = 'weekly';
+			
 			$dateRange = $this->weekTimestamps($week, $year);
+			
+			if( $week-1 == 0 )
+			{
+				$weeklyPrevWeek = $this->getIsoWeeksInYear($year-1);
+				$weeklyPrevYear = $year-1;
+			}
+			else
+			{
+				$weeklyPrevWeek = $week-1;
+				$weeklyPrevYear = $year;
+			}
+			$view->weeklyPrevWeek = $weeklyPrevWeek;
+			$view->weeklyPrevYear = $weeklyPrevYear;
+			
+			if( $week+1 >= $this->getIsoWeeksInYear($year) )
+			{
+				$weeklyNextWeek = 1;
+				$weeklyNextYear = $year+1;
+			}
+			else
+			{
+				$weeklyNextWeek = $week+1;
+				$weeklyNextYear = $year;
+			}
+			$view->weeklyNextWeek = $weeklyNextWeek;
+			$view->weeklyNextYear = $weeklyNextYear;
 		}
 		
 		$top10Adds = $this->getTop10Adds($dateRange[0],$dateRange[1]);
@@ -67,12 +144,14 @@ class Controller_Stats extends FrontController
 		$whsHTML->title = "Wormholes mapped";
 		
 		
-		$view = View::factory('stats/weeklyBody');
 		$view->addsHTML = $addsHTML;
 		$view->editsHTML = $editsHTML;
 		$view->whsHTML = $whsHTML;
 		$view->week = $week;
+		$view->month = $month;
+		$view->monthName = date("F", mktime(0, 0, 0, $month, 10));
 		$view->year = $year;
+		$view->statsMode = $statsMode;
 		$this->template->content = $view;	
 	}
 	
@@ -140,13 +219,22 @@ class Controller_Stats extends FrontController
 		
 		return array( 'max' => $max, 'top10' => $groupTop10 );
 	}
+	function monthTimestamps($month, $year)
+	{
+		$start = strtotime('first day of '.$month.'.1.'.$year);
+		return array( $start, strtotime('last day of '.$month.'.1.'.$year));
+	}	
 	
 	function weekTimestamps($week, $year)
 	{
 		$start = strtotime("1.1.".$year." +".($week-1)." weeks +1 day");
 		return array( $start, strtotime('next monday', $start)-1 );
 	}	
-
+	function getIsoWeeksInYear($year) {
+		$date = new DateTime;
+		$date->setISODate($year, 53);
+		return ($date->format("W") === "53" ? 53 : 52);
+	}
 }
 
 ?>

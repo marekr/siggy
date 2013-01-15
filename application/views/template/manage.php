@@ -67,7 +67,7 @@
 							
 							<li class="nav-header">Group Settings</li>
 							<li><?php echo Html::anchor('manage/group/settings', __('General')); ?></li>
-							<!--- <li><?php echo Html::anchor('manage/group/chainMapSettings', __('Chain Map')); ?></li> -->
+							<li><?php echo Html::anchor('manage/group/chainMapSettings', __('Chain Map')); ?></li>
 									
 							<li class="nav-header">Financial</li>
 							<li><?php echo Html::anchor('manage/billing/overview', __('Billing Overview')); ?></li>

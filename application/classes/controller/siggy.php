@@ -47,7 +47,7 @@ class Controller_Siggy extends FrontController
 		}
 		
 		$sessionID = $this->__generateSession();
-    $view->sessionID = $sessionID;
+		$view->sessionID = $sessionID;
 	
 		$this->template->content = $view;
 		
@@ -60,6 +60,7 @@ class Controller_Siggy extends FrontController
 		
 		//load header tools
 		$headerToolsHTML = View::factory('/templatebits/headerTools');
+		$headerToolsHTML->group = $this->groupData;
 		$this->template->headerTools = $headerToolsHTML;
 	}
 	
@@ -595,7 +596,14 @@ class Controller_Siggy extends FrontController
 					//location tracking!
 					if( isset($_SERVER['HTTP_EVE_CHARID']) && isset($_SERVER['HTTP_EVE_CHARNAME']) && $actualCurrentSystemID != 0 )
 					{
-						$broadcast = (isset($_COOKIE['broadcast']) ? intval($_COOKIE['broadcast']) : 1);
+						if( ! $this->groupData['alwaysBroadcast'] )
+						{
+							$broadcast = (isset($_COOKIE['broadcast']) ? intval($_COOKIE['broadcast']) : 1);
+						}
+						else
+						{
+							$broadcast = 1;
+						}
 						
 						DB::query(Database::INSERT, 'INSERT INTO charTracker (`charID`, `charName`, `currentSystemID`,`groupID`,`subGroupID`,`lastBeep`, `broadcast`,`shipType`) VALUES(:charID, :charName, :systemID, :groupID, :subGroupID, :lastBeep, :broadcast, :shipType)'
 													. 'ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, currentSystemID = :systemID, broadcast = :broadcast, shipType = :shipType')
@@ -834,10 +842,17 @@ class Controller_Siggy extends FrontController
 					//location tracking!
 					if( $this->igb && isset($_SERVER['HTTP_EVE_CHARID']) && isset($_SERVER['HTTP_EVE_CHARNAME']) && $actualCurrentSystemID != 0 )
 					{
-              $broadcast = (isset($_COOKIE['broadcast']) ? intval($_COOKIE['broadcast']) : 1);
+						if( ! $this->groupData['alwaysBroadcast'] )
+						{
+							$broadcast = (isset($_COOKIE['broadcast']) ? intval($_COOKIE['broadcast']) : 1);
+						}
+						else
+						{
+							$broadcast = 1;
+						}
               
-              DB::query(Database::INSERT, 'INSERT INTO charTracker (`charID`, `charName`, `currentSystemID`,`groupID`,`subGroupID`,`lastBeep`, `broadcast`,`shipType`, `shipName`) VALUES(:charID, :charName, :systemID, :groupID, :subGroupID, :lastBeep, :broadcast, :shipType, :shipName)'
-                            . 'ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, currentSystemID = :systemID, broadcast = :broadcast, shipType = :shipType, shipName = :shipName')
+							  DB::query(Database::INSERT, 'INSERT INTO charTracker (`charID`, `charName`, `currentSystemID`,`groupID`,`subGroupID`,`lastBeep`, `broadcast`,`shipType`, `shipName`) VALUES(:charID, :charName, :systemID, :groupID, :subGroupID, :lastBeep, :broadcast, :shipType, :shipName)'
+											. 'ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, currentSystemID = :systemID, broadcast = :broadcast, shipType = :shipType, shipName = :shipName')
                             ->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
                             ->param(':broadcast', $broadcast )
                             ->param(':systemID', $actualCurrentSystemID )

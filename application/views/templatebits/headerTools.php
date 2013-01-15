@@ -2,7 +2,9 @@
 	<div id="globalNotesButton" class="headerToolButton">Notes &#x25BC;</div>
 	
 	<div id="strengthCalcButton" class="headerToolButton">Strength Calc. &#x25BC;</div>
-	
+	<?php if( $group['statsEnabled'] ): ?>
+		<div id="statsButton" class="headerToolButton"><a href="<?php echo URL::base(); ?>stats">Stats</a></div>
+	<?php endif; ?>
 </div>
 <div id="globalNotes">
 	<h2>Notes <a href="#" id="gNotesEdit" >[edit]</a></h2>

@@ -18,7 +18,7 @@
 							<p class='right'> &gt; </p>
 						</div>
 					</div>
-					<div style='position:relative;'>
+					<div style='position:relative;height:25px;'>
 						<!-- options -->
 						<div class='dropUp' id='chainMapOptions' style='position:absolute;'>
 							<span>Options</span>
@@ -29,10 +29,13 @@
 							</ul>
 							<br clear='all' />
 						</div>
+						<div class="clear"></div>
 						<!--- end options -->
 						<!--- broadcast -->
 						<p style='float:right;'>
+							<?php if( !$group['alwaysBroadcast'] ): ?>
 							<?php echo ( ( isset($_COOKIE['broadcast']) && $_COOKIE['broadcast'] == 0 ) ? "<span id='broadcastText'>Location broadcasting is disabled.</span> <button id='chainMapBroadcast'>Enable</button>" : "<span id='broadcastText'>Location broadcasting is enabled.</span> <button id='chainMapBroadcast'>Disable</button>" ); ?>
+							<?php endif; ?>
 						</p>
 						<!-- end broadcast -->
 						<br clear="all" />
