@@ -110,16 +110,16 @@ class Controller_Siggy extends FrontController
 	
 	public function after()
 	{
-    if( is_object($this->template)  )
+		if( is_object($this->template)  )
 		{
-      if( $this->request->action() == 'GroupAuth' )
-      {
-        $this->template->siggyMode = false;
-      }
-      else
-      {
-        $this->template->siggyMode = true;
-      }
+			if( $this->request->action() == 'GroupAuth' )
+			{
+				$this->template->siggyMode = false;
+			}
+			else
+			{
+				$this->template->siggyMode = true;
+			}
 		}
 	
 		parent::after();
