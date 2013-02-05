@@ -1125,7 +1125,7 @@ class Controller_Siggy extends FrontController
 						
 						$addedSigs[ $sigID[0] ] = $insert;
 									
-						if( $this->groupData['statsEnabled'] )
+						if( $this->groupData['statsEnabled'] && $insert['type'] != 'none' )
 						{
 							DB::query(Database::INSERT, 'INSERT INTO stats (`charID`,`charName`,`groupID`,`subGroupID`,`dayStamp`,`adds`) VALUES(:charID, :charName, :groupID, :subGroupID, :dayStamp, 1) ON DUPLICATE KEY UPDATE adds=adds+1')
 												->param(':charID',  $this->groupData['charID'])->param(':charName', $this->groupData['charName'] )
