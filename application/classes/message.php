@@ -14,18 +14,25 @@ class Message {
       // append to messages
       $messages[$type][] = $message;
       // set messages
-      Session::instance()->set('messages', $messages);
-
+	  $_SESSION['messages'] = $messages;
    }
 
-   public static function count() {
-      return count(Session::instance()->get('messages'));
-   }
+	public static function count()
+	{
+		$count = 0;
+	
+		if( isset($_SESSION['messages']) )
+		{
+			$count = count($_SESSION['messages']);
+		}
+		
+		return $count;
+	}
 
    public static function output() {
       $str = '';
-      $messages = Session::instance()->get('messages');
-      Session::instance()->delete('messages');
+      $messages = $_SESSION['messages'];
+      unset($_SESSION['messages']);
 
       if(!empty($messages)) {
          foreach($messages as $type => $messages) {

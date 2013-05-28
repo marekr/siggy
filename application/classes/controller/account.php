@@ -12,9 +12,6 @@ class Controller_Account extends FrontController
 
 		function __construct(Kohana_Request $request, Kohana_Response $response)
 		{
-			
-			$this->auth = simpleauth::instance();
-			$this->user = $this->auth->get_user();
 			parent::__construct($request, $response);
 		}
 		
@@ -28,7 +25,7 @@ class Controller_Account extends FrontController
 				case 'completePasswordReset':
 					break;
 				default:
-					if( !$this->auth->logged_in() )
+					if( !Auth::loggedIn() )
 					{
 						$this->request->redirect('/account/login');
 					}
@@ -59,8 +56,8 @@ class Controller_Account extends FrontController
 					break;
 			}
 			
-			$this->template->loggedIn = $this->auth->logged_in();
-			$this->template->user = $this->user;
+			$this->template->loggedIn = Auth::loggedIn();
+			$this->template->user = Auth::$user->data;
 			
 		
 			parent::after();
@@ -71,7 +68,7 @@ class Controller_Account extends FrontController
 			$this->template->title = "Account overview";
 			
 			$view = View::factory('account/overview');
-			$view->user = $this->user;
+			$view->user = Auth::$user->data;
 			
 			$this->template->content = $view;
 		}
@@ -87,7 +84,7 @@ class Controller_Account extends FrontController
 		{
 				$this->template->title = __('Register a new account');
 				
-				if( $this->auth->logged_in() )
+				if( Auth::loggedIn() )
 				{
 					$this->request->redirect('/account');
 				}
@@ -107,17 +104,18 @@ class Controller_Account extends FrontController
 					if ($validator->check())
 					{
 							
-							if( $this->auth->username_exists( $_POST['username'] ) )
+							if( Auth::usernameExists( $_POST['username'] ) )
 							{
 									$errors['username'] = 'Username is already in use.';
 							}
 							
-							if( $this->auth->email_exists( $_POST['email'] ) )
+							if( Auth::emailExists( $_POST['email'] ) )
 							{
-									$errors['username'] = 'Username is already in use.';
+									$errors['email'] = 'Email is already in use.';
 							}
+							
 					
-							if( empty( $error ) )
+							if( empty( $errors ) )
 							{
 									$userData = array(
 																	 'username' => $_POST['username'],
@@ -126,20 +124,14 @@ class Controller_Account extends FrontController
 																	 'active' => 1,
 																	 'registrationDate' => time()
 																	 );
-									if( $this->auth->create_user( $userData, TRUE ) )
+									if( Auth::createUser( $userData ) )
 									{
-											$this->auth->login($_POST['username'], $_POST['password']);
+											Auth::processLogin($_POST['username'], $_POST['password']);
 											$this->request->redirect('account/setAPI');
 									}
 									else
 									{
-											$view = View::factory('account/register');
 											$errors['username'] = 'Unknown error has occured.';
-											$view->set('errors', $errors);
-											// Pass on the old form values
-											$_POST['password'] = $_POST['password_confirm'] = '';
-											$view->set('defaults', $_POST);
-											$this->template->content = $view;
 									}
 							}
 
@@ -156,7 +148,7 @@ class Controller_Account extends FrontController
 		
 		public function action_setAPI()
 		{
-				if( !$this->auth->logged_in() )
+				if( !Auth::loggedIn() )
 				{
 						$this->request->redirect('/');
 						return;
@@ -165,15 +157,15 @@ class Controller_Account extends FrontController
 				$this->template->title = __('siggy: set api key');
 		
 		
-				if( $this->user->apiID == 0 || $this->user->apiKey == '' )
+				if( Auth::$user->data['apiID'] == 0 || Auth::$user->data['apiKey'] == '' )
 				{
 						$status = 'missing';
 				}
-				elseif( $this->user->apiFailures > 3 )
+				elseif( Auth::$user->data['apiFailures'] > 3 )
 				{
 						$status = 'failed';
 				}
-				elseif ( $this->user->apiInvalid )
+				elseif ( Auth::$user->data['apiInvalid'] )
 				{
 						$status = 'invalid';
 				}
@@ -225,7 +217,7 @@ class Controller_Account extends FrontController
 											$accessMask = $this->bitMask($result->key->accessMask);
 											if( in_array( CHARINFO_PRIV, $accessMask ) && in_array( CHARINFO_PUB, $accessMask ) )
 											{
-													$this->auth->update_user( $this->user->id, array('apiID' => intval($_POST['apiID']), 'apiKey' => $_POST['apiKey'], 'apiLastCheck' => 0,'apiInvalid' => 0, 'apiFailures' => 0 ) );
+													$this->auth->update_user( Auth::$user['id'], array('apiID' => intval($_POST['apiID']), 'apiKey' => $_POST['apiKey'], 'apiLastCheck' => 0,'apiInvalid' => 0, 'apiFailures' => 0 ) );
 													$this->auth->reload_user();
 													
 													$this->request->redirect('/account/characterSelect');
@@ -247,7 +239,8 @@ class Controller_Account extends FrontController
 				$this->template->content = $view;
 		}
 
-		function bitMask($mask = 0) {
+		function bitMask($mask = 0)
+		{
 				$return = array();
 				while ($mask > 0) {
 						for($i = 0, $n = 0; $i <= $mask; $i = 1 * pow(2, $n), $n++) {
@@ -262,7 +255,7 @@ class Controller_Account extends FrontController
 		
 		public function action_changePassword()
 		{
-				if( !$this->auth->logged_in() )
+				if( !Auth::loggedIn() )
 				{
 						$this->request->redirect('/');
 						return;
@@ -275,7 +268,7 @@ class Controller_Account extends FrontController
 				if ($this->request->method() == "POST") 
 				{						
 							
-							if( empty( $_POST['current_password'] ) || ($this->auth->hash($_POST['current_password']) != $this->user->password)  )
+							if( empty( $_POST['current_password'] ) || (Auth::hash($_POST['current_password']) != Auth::$user->data['password'])  )
 							{
 									$errors['current_password'] = 'This is not current password.';
 							}
@@ -295,8 +288,7 @@ class Controller_Account extends FrontController
 							
 							if( !count( $errors ) )
 							{
-								 $this->auth->update_user( $this->user->id, array('password' => $_POST['password'] ) );
-								 $this->auth->reload_user();
+								 Auth::$user->updatePassword($_POST['password']);
 								 
 								 $this->request->redirect('/');
 							}
@@ -308,7 +300,7 @@ class Controller_Account extends FrontController
 		
 		public function action_changeEmail()
 		{
-				if( !$this->auth->logged_in() )
+				if( !Auth::loggedIn() )
 				{
 						$this->request->redirect('/');
 						return;
@@ -319,7 +311,7 @@ class Controller_Account extends FrontController
 		
 		public function action_forgotPassword()
 		{
-				if( $this->auth->logged_in() )
+				if( Auth::loggedIn() )
 				{
 						$this->request->redirect('/');
 						return;
@@ -337,12 +329,12 @@ class Controller_Account extends FrontController
 						
 						if( !count( $errors ) ) 
 						{
-								$user = new Model_Auth_Users;
-								$user->getUserByEmail($_POST['reset_email']);
+								$user = new User();
+								$user->loadByEmail($_POST['reset_email']);
 								if ( is_numeric( $user->id ) ) 
 								{
 										// send an email with the account reset token
-										$user->reset_token = $this->auth->generatePassword(32);
+										$user->data['reset_token'] = Auth::generatePassword(32);
 										$user->save();
 
 										$message = "You have requested a password reset for your siggy account. To confirm the password reset, please the follow the proceeding url:\n\n"
@@ -480,7 +472,7 @@ class Controller_Account extends FrontController
 		
 		public function action_noAPIAccess()
 		{
-				if( !$this->auth->logged_in() )
+				if( !Auth::loggedIn() )
 				{
 						$this->request->redirect('/');
 						return;
@@ -489,16 +481,16 @@ class Controller_Account extends FrontController
 						
 				$view = View::factory('siggy/noAPIAccess');
 				
-				if( $this->user->apiID > 0 && ( $this->user->apiCharID == 0 || $this->user->apiCorpID == 0 ) )
+				if( Auth::$user->data['apiID'] > 0 && ( Auth::$user->data['apiCharID'] == 0 || Auth::$user->data['apiCorpID'] == 0 ) )
 				{
 						//char select
 						$view->messageType = 'selectChar';
 				}
-				elseif ( $this->user->apiID == 0 )
+				elseif ( Auth::$user->data['apiID'] == 0 )
 				{
 						$view->messageType = 'missingAPI';
 				}
-				elseif( $this->user->apiInvalid == 1 )
+				elseif( Auth::$user->data['apiInvalid'] == 1 )
 				{
 						$view->messageType = 'badAPI';
 				}
@@ -513,13 +505,13 @@ class Controller_Account extends FrontController
 		
 		public function action_characterSelect()
 		{
-				if( !$this->auth->logged_in() )
+				if( !Auth::loggedIn() )
 				{
 						$this->request->redirect('/');
 						return;
 				}		
 		
-				if( !($this->user->apiID > 0) || $this->user->apiKey == '' )
+				if( !( Auth::$user->data['apiID'] > 0) ||  Auth::$user->data['apiKey'] == '' )
 				{
 						$this->request->redirect('/account/setAPI');
 				}
@@ -527,13 +519,13 @@ class Controller_Account extends FrontController
 				
 				$this->template->title = __('siggy: character selection');
 				
-				$charID = $this->user->apiCharID;
+				$charID =  Auth::$user->data['apiCharID'];
 				
 				require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
 				spl_autoload_register( "Pheal::classload" );
 				PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
 				PhealConfig::getInstance()->http_ssl_verifypeer = false;
-				$pheal = new Pheal( $this->user->apiID, $this->user->apiKey );
+				$pheal = new Pheal( Auth::$user->data['apiID'],  Auth::$user->data['apiKey']);
 				
 				$corpList = $this->getCorpList();
 				$charList = $this->getCharList();				
@@ -567,8 +559,14 @@ class Controller_Account extends FrontController
 					
 					if( $charID && isset( $chars[ $charID ] ) )
 					{
-							$this->auth->update_user( $this->user->id, array('apiCorpID' => $chars[ $charID ]['corpID'], 'apiCharName' => $chars[ $charID ]['name'], 'apiCharID' => $charID, 'apiLastCheck' => 0,'apiInvalid' => 0, 'apiFailures' => 0 ) );
-							$this->auth->reload_user();
+							Auth::$user->data['apiCorpID'] = $chars[ $charID ]['corpID'];
+							Auth::$user->data['apiCharName'] = $chars[ $charID ]['name'];
+							Auth::$user->data['apiCharID'] = $charID;
+							Auth::$user->data['apiLastCheck'] = 0;
+							Auth::$user->data['apiInvalid'] = 0;
+							Auth::$user->data['apiFailures'] = 0;
+					
+							Auth::$user->save();
 							
 							$this->request->redirect('/');
 					}
@@ -586,14 +584,15 @@ class Controller_Account extends FrontController
 				header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 				$this->template->title = __('siggy: login required');
 				
-				if( $this->auth->logged_in() )
+				if( Auth::loggedIn() )
 				{
 					$this->request->redirect('/');
 				}
 				
 				if( isset($_POST['login']) )
 				{
-						if( $this->auth->login($_POST['username'], $_POST['password']) )
+						$rememberMe = (isset($_POST['rememberMe']) ? TRUE : FALSE);
+						if( Auth::processLogin($_POST['username'], $_POST['password'], $rememberMe) === Auth::LOGIN_SUCCESS )
 						{
 								if( isset($_REQUEST['bounce'] ) )
 								{
@@ -608,7 +607,7 @@ class Controller_Account extends FrontController
 						{
 								$view = View::factory('account/login');
 								$view->invalidLogin = true;
-						$view->bounce = isset($_REQUEST['bounce']) ? $_REQUEST['bounce'] : '';
+								$view->bounce = isset($_REQUEST['bounce']) ? $_REQUEST['bounce'] : '';
 								$view->set('username', $_POST['username']);
 								 $this->template->content = $view;
 						}
@@ -626,7 +625,7 @@ class Controller_Account extends FrontController
 		public function action_logout()
 		{
 				// Sign out the user
-				$this->auth->logout();
+				Auth::processLogout();
 
 				$this->request->redirect('/');
 		}			

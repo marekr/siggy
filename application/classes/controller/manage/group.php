@@ -49,7 +49,7 @@ class Controller_Manage_Group extends Controller_App {
     */
    public function action_index() 
    {
-      if( simpleauth::instance()->isGroupAdmin() ) 
+      if( Auth::$user->isGroupAdmin() ) 
       {
          $this->request->redirect('manage/group/dashboard');
       } else 
@@ -86,11 +86,10 @@ class Controller_Manage_Group extends Controller_App {
       $this->template->title = __('Group management');
       
       $view = $this->template->content = View::factory('manage/group/members');
-      $user = simpleauth::instance()->get_user();
       
-      $view->set('user', $user );
+      $view->set('user', Auth::$user->data );
       
-      $group = ORM::factory('group', $user->groupID);
+      $group = ORM::factory('group', Auth::$user->data['groupID']);
       $view->set('group', $group );
    }
    
@@ -99,11 +98,10 @@ class Controller_Manage_Group extends Controller_App {
       $this->template->title = __('Group management');
       
       $view = $this->template->content = View::factory('manage/group/subgroups');
-      $user = simpleauth::instance()->get_user();
       
-      $view->set('user', $user);
+      $view->set('user', Auth::$user->data);
       
-      $group = ORM::factory('group', $user->groupID);
+      $group = ORM::factory('group', Auth::$user->data['groupID']);
       $view->set('group', $group );
    }
    
@@ -112,7 +110,6 @@ class Controller_Manage_Group extends Controller_App {
 	public function action_addMember()
 	{
 			$this->template->title = __('Group management');
-			$user = simpleauth::instance()->get_user();
 			
 			$id = intval($this->request->param('id'));
 			
@@ -141,7 +138,7 @@ class Controller_Manage_Group extends Controller_App {
 					}
 					
 					
-					$group = ORM::factory('group', $user->groupID);
+					$group = ORM::factory('group', Auth::$user->data['groupID']);
 					$view->set('group', $group );
 					$view->bind('data', $data);
 					$view->bind('errors', $errors);
@@ -162,7 +159,7 @@ class Controller_Manage_Group extends Controller_App {
 									$member = ORM::factory('groupmember');
 									$member->eveID = $_POST['eveID'];
 									$member->accessName = $_POST['accessName'];
-									$member->groupID = $user->groupID;
+									$member->groupID = Auth::$user->data['groupID'];
 									$member->memberType = $_POST['memberType'];
 									if( isset( $_POST['subGroupID'] ) )
 									{
@@ -203,7 +200,7 @@ class Controller_Manage_Group extends Controller_App {
 							}
 							
 							$view = View::factory('manage/group/addMemberSimpleSelected');
-							$group = ORM::factory('group', $user->groupID);
+							$group = ORM::factory('group', Auth::$user->data['groupID']);
 							$view->set('group', $group );
 						
 							$view->set('eveID', intval($_POST['eveID']) );
@@ -247,7 +244,7 @@ class Controller_Manage_Group extends Controller_App {
 									$member = ORM::factory('groupmember');
 									$member->eveID = $_POST['eveID'];
 									$member->accessName = $_POST['accessName'];
-									$member->groupID = $user->groupID;
+									$member->groupID = Auth::$user->data['groupID'];
 									$member->memberType = $_POST['memberType'];
 									if( isset( $_POST['subGroupID'] ) )
 									{
@@ -283,9 +280,9 @@ class Controller_Manage_Group extends Controller_App {
 									$view->set('data', array('eveID' => $_POST['eveID'], 'accessName' => $_POST['accessName']) );
 							}
 					}
-					$view->set('user', $user);
+					$view->set('user', Auth::$user->data);
 
-					$group = ORM::factory('group', $user->groupID);
+					$group = ORM::factory('group', Auth::$user->data['groupID']);
 					$view->set('group', $group );
 
 					$this->template->content = $view;
@@ -296,9 +293,8 @@ class Controller_Manage_Group extends Controller_App {
 	public function action_chainMapSettings()
 	{
 		$this->template->title = __('Chain Map settings');
-		$user = simpleauth::instance()->get_user();
 
-		$group = ORM::factory('group', $user->groupID);
+		$group = ORM::factory('group', Auth::$user->data['groupID']);
 
 		$errors = array();
 		$view = $this->template->content = View::factory('manage/group/chainMapSettings');
@@ -319,7 +315,7 @@ class Controller_Manage_Group extends Controller_App {
 							
 						Message::add('success', __('Chain map settings saved.'));
 						
-						groupUtils::recacheGroup( $user->groupID );
+						groupUtils::recacheGroup( Auth::$user->data['groupID'] );
 						
 						$this->request->redirect('manage/group/chainMapSettings');
 						return;
@@ -350,9 +346,8 @@ class Controller_Manage_Group extends Controller_App {
 	public function action_settings()
 	{
 		$this->template->title = __('Group settings');
-		$user = simpleauth::instance()->get_user();
 
-		$group = ORM::factory('group', $user->groupID);
+		$group = ORM::factory('group', Auth::$user->data['groupID']);
 
 		$errors = array();
 		$view = $this->template->content = View::factory('manage/group/settings');
@@ -425,7 +420,7 @@ class Controller_Manage_Group extends Controller_App {
 							
 						Message::add('success', __('Settings saved.'));
 						//$this->__recacheCorpMembers();
-						groupUtils::recacheGroup( $user->groupID );
+						groupUtils::recacheGroup( Auth::$user->data['groupID'] );
 						$this->request->redirect('manage/group/settings');
 						return;
 				} 
@@ -469,9 +464,8 @@ class Controller_Manage_Group extends Controller_App {
    public function action_addSubGroup()
    {
 			$this->template->title = __('Subgroup management');
-			$user = simpleauth::instance()->get_user();
 
-			$group = ORM::factory('group', $user->groupID);
+			$group = ORM::factory('group', Auth::$user->data['groupID']);
 
 			$errors = array();
 			$data = array('sgName' => '',
@@ -492,7 +486,7 @@ class Controller_Manage_Group extends Controller_App {
 					{
 							$sg = ORM::factory('subgroup');
 							$sg->sgName = $_POST['sgName'];
-							$sg->groupID = $user->groupID;
+							$sg->groupID = Auth::$user->data['groupID'];
 
 
 							if( !empty($_POST['password']) && !empty($_POST['password_confirm']) )
@@ -591,10 +585,9 @@ class Controller_Manage_Group extends Controller_App {
 			$id = $this->request->param('id');
 			
 			$this->template->title = __('Group management');
-			$user = simpleauth::instance()->get_user();
 
 			$member = ORM::factory('groupmember', $id);
-			if( $member->groupID != $user->groupID )
+			if( $member->groupID != Auth::$user->data['groupID'] )
 			{
 					Message::add('error', __('Error: You do not have permission to edit that group member.'));
 					$this->request->redirect('manage/group/members');
@@ -623,7 +616,7 @@ class Controller_Manage_Group extends Controller_App {
 
 						$member->eveID = $_POST['eveID'];
 						$member->accessName = $_POST['accessName'];
-						$member->groupID = $user->groupID;
+						$member->groupID = Auth::$user->data['groupID'];
 						$member->memberType = $_POST['memberType'];
 						if( isset( $_POST['subGroupID'] ) )
 						{
@@ -663,9 +656,9 @@ class Controller_Manage_Group extends Controller_App {
 
 			$view->set('data', $member->as_array() );
 
-			$view->set('user', $user);
+			$view->set('user', Auth::$user->data);
 
-			$group = ORM::factory('group', $user->groupID);
+			$group = ORM::factory('group', Auth::$user->data['groupID']);
 			$view->set('group', $group );
 
 			$this->template->content = $view;
@@ -676,15 +669,14 @@ class Controller_Manage_Group extends Controller_App {
 				$id = intval($this->request->param('id'));
 					
 				$this->template->title = __('Editing sub group');
-				$user = simpleauth::instance()->get_user();
 
 				$sg = ORM::factory('subgroup', $id);
-				if( $sg->groupID != $user->groupID )
+				if( $sg->groupID != Auth::$user->data['groupID'] )
 				{
 				 Message::add('error', __('Error: You do not have permission to edit that subgroup.'));
 				 $this->request->redirect('manage/group/subgroups');
 				}
-				$group = ORM::factory('group', $user->groupID);
+				$group = ORM::factory('group', Auth::$user->data['groupID']);
 
 				$errors = array();
 
@@ -785,10 +777,9 @@ class Controller_Manage_Group extends Controller_App {
 		$id = intval($this->request->param('id'));
 	
 		$this->template->title = __('Group management');
-		$user = simpleauth::instance()->get_user();
 
 		$member = ORM::factory('groupmember', $id);
-		if( $member->groupID != $user->groupID )
+		if( $member->groupID != Auth::$user->data['groupID'] )
 		{
 				Message::add('error', __('Error: You do not have permission to remove that group member.'));
 				$this->request->redirect('manage/group/members');
@@ -832,10 +823,9 @@ class Controller_Manage_Group extends Controller_App {
 		$id = intval($this->request->param('id'));
 		
 			$this->template->title = __('Removing sub group');
-			$user = simpleauth::instance()->get_user();
 
 			$sg = ORM::factory('subgroup', $id);
-			if( $sg->groupID != $user->groupID )
+			if( $sg->groupID != Auth::$user->data['groupID'] )
 			{
 					Message::add('error', __('Error: You do not have permission to remove that subgroup.'));
 					$this->request->redirect('manage/group/subgroups');

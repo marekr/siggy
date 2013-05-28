@@ -5,6 +5,7 @@ require_once APPPATH.'classes/groupUtils.php';
 require_once APPPATH.'classes/mapUtils.php';
 require_once APPPATH.'classes/miscUtils.php';
 require_once APPPATH.'classes/formRenderer.php';
+require_once APPPATH.'classes/authsystem.php';
 
 class FrontController extends Controller 
 {
@@ -36,7 +37,7 @@ class FrontController extends Controller
 		
 		$this->access = new access();
 		
-		Cookie::$salt = 'y[$e.swbDs@|Gd(ndtUSy^';
+		Auth::initialize();
 		
 		$this->authStatus = $this->access->authenticate();
 		$this->groupData =& $this->access->accessData;			

@@ -14,7 +14,6 @@ class Controller_Stats extends FrontController
 	function __construct(Kohana_Request $request, Kohana_Response $response)
 	{
 		$this->auth = simpleauth::instance();
-		$this->user = $this->auth->get_user();
 		
 		parent::__construct($request, $response);
 	}
@@ -24,7 +23,7 @@ class Controller_Stats extends FrontController
 		$this->template->title = "siggy: stats";
 		$this->template->selectedTab = 'home';
 		$this->template->loggedIn = $this->auth->logged_in();
-		$this->template->user = $this->user;
+		$this->template->user = Auth::$user->data;
 		$this->template->layoutMode = 'blank';
 		
 		$view = View::factory('stats/stats');

@@ -35,7 +35,7 @@
               <li><a href="http://siggy.borkedlabs.com/info">Guide</a></li>
             <?php if( $loggedIn ): ?>
               <li <?php echo ($selectedTab == 'account' ? 'class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>account/overview">Account</a></li>
-              <?php if( $user->gadmin ): ?>
+              <?php if( $user['gadmin'] ): ?>
 				<li <?php echo ($selectedTab == 'admin' ? 'class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>manage">Admin</a></li>
 			  <?php elseif( !$igb): ?>
 			  
@@ -49,7 +49,7 @@
             
             <?php if( $loggedIn ): ?>
             <p class="navbar-text pull-right">
-              Logged in as <a href="#" class="navbar-link"><?php echo $user->username; ?></a> <a href="<?php echo URL::base(TRUE, TRUE);?>account/logout" />Logout</a>
+              Logged in as <a href="#" class="navbar-link"><?php echo $user['username']; ?></a> <a href="<?php echo URL::base(TRUE, TRUE);?>account/logout" />Logout</a>
             </p>
             <?php endif; ?>
           </div>

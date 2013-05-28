@@ -1,5 +1,9 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+
+require_once APPPATH.'classes/authsystem.php';
+
+
 /**
  * App controller class.
  *
@@ -62,6 +66,14 @@ class Controller_App extends Controller {
       Request::current()->redirect('account/login?bounce=manage');
    }
 
+   public function __construct(Kohana_Request $request, Kohana_Response $response)
+   {
+   
+		Auth::initialize();
+				
+		parent::__construct($request, $response);
+	}
+   
    /**
     * The before() method is called before your controller action.
     * In our template controller we override this method so that we can
@@ -70,29 +82,17 @@ class Controller_App extends Controller {
     *
     * @return  void
     */
-   public function before() {
-      // This codeblock is very useful in development sites:
-      // What it does is get rid of invalid sessions which cause exceptions, which may happen
-      // 1) when you make errors in your code.
-      // 2) when the session expires!
-      try {
-         $this->session = Session::instance();
-      } catch(ErrorException $e) {
-         session_destroy();
-      }
+   public function before()
+   {
       // Execute parent::before first
       parent::before();
-      // Open session
-      $this->session = Session::instance();
 
       // Check user auth and role
       $action_name = Request::current()->action();
       
-      $auth = simpleauth::instance();
-		
-      if (($this->auth_required !== FALSE && ($this->auth_required == 'admin' && $auth->isAdmin() === FALSE || $this->auth_required == 'gadmin' && $auth->isGroupAdmin() === FALSE) ) )
+      if (($this->auth_required !== FALSE && ($this->auth_required == 'admin' && Auth::$user->isAdmin() === FALSE || $this->auth_required == 'gadmin' && Auth::$user->isGroupAdmin() === FALSE) ) )
        {
-         if ($auth->logged_in()){
+         if (Auth::loggedIn()){
             // user is logged in but not on the secure_actions list
             $this->access_required();
          } else {

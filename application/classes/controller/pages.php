@@ -13,7 +13,6 @@ class Controller_Pages extends FrontController
 		function __construct(Kohana_Request $request, Kohana_Response $response)
 		{
 			$this->auth = simpleauth::instance();
-			$this->user = $this->auth->get_user();
 			
 			parent::__construct($request, $response);
 		}
@@ -26,8 +25,8 @@ class Controller_Pages extends FrontController
 			$this->template->layoutMode = 'blank';
 			$this->template->content = View::factory('pages/home');
 			
-			$this->template->loggedIn = $this->auth->logged_in();
-			$this->template->user = $this->user;
+			$this->template->loggedIn = Auth::loggedIn();
+			$this->template->user = Auth::$user->data;
 		}
 
 
@@ -37,7 +36,7 @@ class Controller_Pages extends FrontController
 			$this->template->layoutMode = 'blank';
 			$this->template->selectedTab = 'home';
 			$this->template->loggedIn = $this->auth->logged_in();
-			$this->template->user = $this->user;
+			$this->template->user = Auth::$user->data;
 			
 			$this->template->content = $view = View::factory('siggy/accessMessage');
 			$view->bind('groupData', $this->groupData);
@@ -60,7 +59,7 @@ class Controller_Pages extends FrontController
 			$this->template->layoutMode = 'blank';
 		
 			$this->template->loggedIn = $this->auth->logged_in();
-			$this->template->user = $this->user;
+			$this->template->user = Auth::$user->data;
 			
 			$id = intval($this->request->param('id'));
 			
@@ -97,9 +96,9 @@ class Controller_Pages extends FrontController
 														
 							if( $groupID )
 							{
-		
-								$this->auth->update_user( $this->user->id, array('gadmin' => 1, 'groupID' => $groupID ) );
-								$this->auth->reload_user();				
+								Auth::$user->data['gadmin'] = 1;
+								Auth::$user->data['groupID'] = $groupID;
+								Auth::$user->save();
 								
 								$this->request->redirect('pages/createGroup/3');
 							}

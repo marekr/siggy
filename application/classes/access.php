@@ -190,12 +190,10 @@ class access
 		}
 		
 		private function __checkAccountAuth()
-		{
-					$auth = simpleauth::instance();
-					
-					if ( $auth->logged_in() )
+		{			
+					if ( Auth::loggedIn() )
 					{
-							if( $this->apiCharInfo = $auth->apiCharInfo() )
+							if( $this->apiCharInfo = Auth::$user->apiCharCheck() )
 							{
 									$this->accessData = $this->getAccessData( $this->apiCharInfo['corpID'], $this->apiCharInfo['charID'] );
 									$this->accessData['charID'] = $this->apiCharInfo['charID'];

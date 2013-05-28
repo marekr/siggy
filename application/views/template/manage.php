@@ -40,13 +40,13 @@
 		</div>
 		<div id='sidemenu'>
 				<div class='well'>
-						<div id='logoutBox'><strong>Logged in as <?php echo simpleauth::instance()->get_user()->username; ?> (<?php echo Html::anchor('account/logout', 'Log out'); ?>)</strong><br />
-								<?php if(simpleauth::instance()->isAdmin()): ?><br />
+						<div id='logoutBox'><strong>Logged in as <?php echo Auth::$user->data['username']; ?> (<?php echo Html::anchor('account/logout', 'Log out'); ?>)</strong><br />
+								<?php if(Auth::$user->isAdmin()): ?><br />
 								<form action='<?php echo URL::base(TRUE, TRUE);?>manage/admin/changeGroup' method='post'>
 										<select name='group' onchange='submit();'>
 										<?php 
 										$groups = ORM::factory('group')->find_all();
-										$selected = simpleauth::instance()->get_user()->groupID;
+										$selected = Auth::$user->data['groupID'];
 										foreach( $groups as $m ): ?>
 										<option value="<?php echo $m->groupID; ?>" <?php echo ( ($selected == $m->groupID) ? "selected='seleced'" : ''); ?>><?php echo $m->groupName; ?></option>
 										<?php endforeach; ?>
@@ -55,7 +55,7 @@
 								<?php endif; ?>
 						</div>
 						<ul class="nav nav-list">
-							<?php if(simpleauth::instance()->isGroupAdmin()): ?>
+							<?php if(Auth::$user->isGroupAdmin()): ?>
 							<li class="nav-header">Information</li>
 							<li><?php echo Html::anchor('manage/group/dashboard', __('Announcements')); ?></li>
 							<li><?php echo Html::anchor('manage/logs/activity', __('Usage Logs')); ?></li>
@@ -83,7 +83,7 @@
 							-->
 							<?php endif; ?>
 
-							<?php if(simpleauth::instance()->isAdmin()): ?>
+							<?php if(Auth::$user->isAdmin()): ?>
 							<li class="nav-header">Admin</li>
 							<li><?php echo Html::anchor('manage/admin/groups', __('Groups')); ?></li>
 							<?php endif; ?>				 
