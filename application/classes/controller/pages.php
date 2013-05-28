@@ -17,6 +17,11 @@ class Controller_Pages extends FrontController
 		
 		public function action_welcome()
 		{
+			if( Auth::loggedIn() )
+			{
+				$this->request->redirect('/');
+			}
+			
 			$this->template->title = 'siggy - EVE WH Tool';
 			
 			$this->template->selectedTab = 'home';

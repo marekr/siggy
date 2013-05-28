@@ -61,17 +61,19 @@ class UserSession
 			{
 				$userData = Auth::getUser($memberID);
 				
-				if( $userData['password_hash'] == $passHash )
+				if( $userData['password'] == $passHash )
 				{
 					Auth::$user->data &= $userData;
 				}
 				
 				$_SESSION['userData'] = $userData;
+				
 			}
 			
 			
 			$this->__generateSession($this->sessionID);
 		}
+		
 	}
 	
 	public function destroy()
