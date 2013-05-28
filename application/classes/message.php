@@ -3,18 +3,22 @@
 class Message {
 
 
-   public static function add($type, $message) {
+   public static function add($type, $message)
+   {
 
-      // get session messages
-      $messages = Session::instance()->get('messages');
-      // initialize if necessary
-      if(!is_array($messages)) {
-         $messages = array();
-      }
-      // append to messages
-      $messages[$type][] = $message;
-      // set messages
-	  $_SESSION['messages'] = $messages;
+		// get session messages
+		if( isset($_SESSION['messages']) )
+		{
+			$messages = $_SESSION['messages'];
+		}
+		else
+		{
+			$messages = array();
+		}
+		// append to messages
+		$messages[$type][] = $message;
+		// set messages
+		$_SESSION['messages'] = $messages;
    }
 
 	public static function count()

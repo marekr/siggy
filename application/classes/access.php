@@ -97,10 +97,9 @@ class access
 											}
 											else if( $this->accessData['authMode'] == 2 )
 											{
-													$auth = simpleauth::instance();
-													if ( $auth->logged_in() )
+													if ( Auth::loggedIn() )
 													{
-															if( $this->apiCharInfo = $auth->apiCharInfo() )
+															if( $this->apiCharInfo = Auth::$user->apiCharCheck() )
 															{
 															
 																	if( ( $this->accessData['charID'] == $this->apiCharInfo['charID'] ) && ( $this->accessData['corpID'] == $this->apiCharInfo['corpID'] ) )

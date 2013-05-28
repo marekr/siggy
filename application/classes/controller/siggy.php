@@ -718,12 +718,6 @@ class Controller_Siggy extends FrontController
 				exit();
 			}			 
 			
-			if( isset($_GET['sessionID']) && !empty($_GET['sessionID']) )
-			{
-          $this->__updateSession( $_GET['sessionID'] );
-			}
-			
-			
 			$chainMapOpen = ( isset($_GET['mapOpen']) ? intval($_GET['mapOpen']) : 0 );
 			
 			$update = array('systemUpdate' => 0, 'sigUpdate' => 0, 'systemListUpdate' => 0, 'globalNotesUpdate' => 0, 'mapUpdate' => 0, 'acsid' => 0, 'acsname' =>'');

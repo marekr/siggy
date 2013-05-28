@@ -46,7 +46,7 @@ class Controller_Manage_Admin extends Controller_App {
     */
    public function action_index() 
    {
-      if( simpleauth::instance()->isAdmin() ) 
+      if( Auth::$user->isAdmin() ) 
       {
          $this->request->redirect('manage/admin/groups');
       } 
@@ -67,20 +67,15 @@ class Controller_Manage_Admin extends Controller_App {
    
 	public function action_changeGroup()
 	{
-		if( !simpleauth::instance()->isAdmin() ) 
+		if( !Auth::$user->isAdmin() ) 
 		{
 			$this->request->redirect('manage/admin/noaccess');
 		}
       
 		if( isset( $_POST['group'] ) )
 		{
-			$auth = simpleauth::instance();
-			$user = $auth->get_user();
-			
-			
-            $auth->update_user($user->id, array('groupID' => intval($_POST['group']) ) );
-            $auth->reload_user();
-      
+			Auth::$user->data['groupID'] = intval($_POST['group']);
+			Auth::$user->save();
 		}
       
 	  $this->request->redirect('/manage');
@@ -89,7 +84,7 @@ class Controller_Manage_Admin extends Controller_App {
 
    public function action_groups() 
    {
-      if( !simpleauth::instance()->isAdmin() ) 
+      if( !Auth::$user->isAdmin() ) 
       {
          $this->request->redirect('manage/admin/noaccess');
       }
@@ -103,7 +98,7 @@ class Controller_Manage_Admin extends Controller_App {
    
    public function action_groupBilling( $id )
    {
-		if( !simpleauth::instance()->isAdmin() ) 
+		if( !Auth::$user->isAdmin() ) 
 		{
 			$this->request->redirect('manage/admin/noaccess');
 		}
@@ -120,7 +115,7 @@ class Controller_Manage_Admin extends Controller_App {
    
    public function action_groupBill( $id ) 
    {
-		if( !simpleauth::instance()->isAdmin() ) 
+		if( !Auth::$user->isAdmin() ) 
 		{
 			$this->request->redirect('manage/admin/noaccess');
 		}

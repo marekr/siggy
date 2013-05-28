@@ -11,9 +11,7 @@ class Controller_Pages extends FrontController
 		protected $noAutoAuthRedirects = true;
 		
 		function __construct(Kohana_Request $request, Kohana_Response $response)
-		{
-			$this->auth = simpleauth::instance();
-			
+		{	
 			parent::__construct($request, $response);
 		}
 		
@@ -35,7 +33,7 @@ class Controller_Pages extends FrontController
 			$this->template->title = "Trust required";
 			$this->template->layoutMode = 'blank';
 			$this->template->selectedTab = 'home';
-			$this->template->loggedIn = $this->auth->logged_in();
+			$this->template->loggedIn = Auth::loggedIn();
 			$this->template->user = Auth::$user->data;
 			
 			$this->template->content = $view = View::factory('siggy/accessMessage');
@@ -49,7 +47,7 @@ class Controller_Pages extends FrontController
 
 		public function action_createGroup()
 		{
-			if( $this->igb || !$this->auth->logged_in() )
+			if( $this->igb || !Auth::loggedIn() )
 			{
 				$this->request->redirect('/');
 			}
@@ -58,7 +56,7 @@ class Controller_Pages extends FrontController
 			$this->template->selectedTab = 'createGroup';
 			$this->template->layoutMode = 'blank';
 		
-			$this->template->loggedIn = $this->auth->logged_in();
+			$this->template->loggedIn = Auth::loggedIn();
 			$this->template->user = Auth::$user->data;
 			
 			$id = intval($this->request->param('id'));

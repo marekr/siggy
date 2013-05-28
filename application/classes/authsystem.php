@@ -52,12 +52,12 @@ class User
 	
 	public function isAdmin()
 	{
-		return ( $this->data['admin'] ? TRUE : FALSE);
+		return ( (isset($this->data['admin']) && $this->data['admin'] ) ? TRUE : FALSE);
 	}
 	
 	public function isGroupAdmin()
 	{
-		return ( $this->data['gadmin'] ? TRUE : FALSE);
+		return ( (isset($this->data['gadmin']) && $this->data['gadmin']) ? TRUE : FALSE);
 	}
 	
     public function apiCharCheck()

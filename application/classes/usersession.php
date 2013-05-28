@@ -31,15 +31,25 @@ class UserSession
 		session_id($this->sessionID);
 		session_start();
 		
+		$initialized = FALSE;
 		if( !empty($_SESSION['init']) )
 		{
-			$this->__updateSession( $this->sessionID );
-			if( isset($_SESSION['userData']) )
+			
+			$sess = DB::query(Database::SELECT, 'SELECT * FROM siggysessions WHERE sessionID=:id')->param(':id', $this->sessionID)->execute()->current();
+			
+			if( isset($sess['sessionID']) )
 			{
-				Auth::$user->data = $_SESSION['userData'];
+				$this->__updateSession( $this->sessionID );
+				if( isset($_SESSION['userData']) )
+				{
+					Auth::$user->data = $_SESSION['userData'];
+				}
+				$initialized = TRUE;
 			}
 		}
-		else
+		
+		
+		if( !$initialized )
 		{
 			$userData = array();
 			

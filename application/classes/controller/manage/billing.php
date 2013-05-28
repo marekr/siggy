@@ -49,7 +49,7 @@ class Controller_Manage_Billing extends Controller_App {
     */
    public function action_index() 
    {
-      if( simpleauth::instance()->isGroupAdmin() ) 
+      if( Auth::$user->isGroupAdmin() ) 
       {
          $this->request->redirect('manage/billing/overview');
       } else 
@@ -60,25 +60,25 @@ class Controller_Manage_Billing extends Controller_App {
    
    public function action_overview()
    {
-		$user = simpleauth::instance()->get_user();
+		$user = Auth::$user->data;
 		
 										
-		$numUsers = groupUtils::getCharacterUsageCount($user->groupID);
+		$numUsers = groupUtils::getCharacterUsageCount(Auth::$user->data['groupID']);
 		
 		
 		$payments = array();
 		$payments = DB::query(Database::SELECT, "SELECT * FROM billing_payments WHERE groupID=:group ORDER BY paymentID DESC LIMIT 0,10")
-										->param(':group', $user->groupID)->execute()->as_array();
+										->param(':group', Auth::$user->data['groupID'])->execute()->as_array();
 		
 		$charges = array();
 		$charges = DB::query(Database::SELECT, "SELECT * FROM billing_charges WHERE groupID=:group ORDER BY chargeID DESC LIMIT 0,10")
-										->param(':group', $user->groupID)->execute()->as_array();
+										->param(':group', Auth::$user->data['groupID'])->execute()->as_array();
       
 		$view = View::factory('manage/billing/overview');
 		$view->bind('payments', $payments);
 		$view->bind('charges', $charges);
 		
-		$group = ORM::factory('group', $user->groupID);
+		$group = ORM::factory('group', Auth::$user->data['groupID']);
 		$view->set('group', $group );
 		
 		$view->set('numUsers', $numUsers);
