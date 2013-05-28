@@ -50,7 +50,7 @@ class Controller_Manage_Logs extends Controller_App {
 	*/
 	public function action_index() 
 	{
-		if( simpleauth::instance()->isGroupAdmin() ) 
+		if( Auth::$user->isGroupAdmin() ) 
 		{
 		 $this->request->redirect('manage/logs/activity');
 		} 
@@ -63,13 +63,11 @@ class Controller_Manage_Logs extends Controller_App {
 	     
 	public function action_sessions()
 	{
-		$user = simpleauth::instance()->get_user();
-
 		$sessions = array();
 		$sessions = DB::query(Database::SELECT, "SELECT ss.*,sg.sgName FROM siggysessions ss
 		LEFT JOIN subGroups sg ON(sg.subGroupID = ss.subGroupID)
 		WHERE ss.groupID=:group ORDER BY ss.lastBeep DESC")
-					  ->param(':group', $user->groupID)->execute()->as_array();
+					  ->param(':group', Auth::$user->data['groupID'])->execute()->as_array();
 
 		$view = View::factory('manage/logs/sessions');
 		
@@ -95,7 +93,7 @@ class Controller_Manage_Logs extends Controller_App {
 
 		$view->bind('sessions', $sessData);
 
-		$group = ORM::factory('group', $user->groupID);
+		$group = ORM::factory('group', Auth::$user->data['groupID']);
 
 		$this->template->content = $view;
 		$this->template->title = "Active Sessions";
@@ -103,8 +101,6 @@ class Controller_Manage_Logs extends Controller_App {
      
 	public function action_activity()
 	{
-		$user = simpleauth::instance()->get_user();
-
 		$extraSQL = "";
 		$filterType = 'all';
 		if( isset($_GET['filter_type']) )
@@ -139,7 +135,7 @@ class Controller_Manage_Logs extends Controller_App {
 
 
 		$logsTotal = DB::query(Database::SELECT, "SELECT COUNT(*) as total FROM logs WHERE groupID=:group " . $extraSQL . " ORDER BY logID DESC")
-					  ->param(':group', $user->groupID)->execute()->current();
+					  ->param(':group', Auth::$user->data['groupID'])->execute()->current();
 
 		$logsTotal = $logsTotal['total'];
 
@@ -154,14 +150,14 @@ class Controller_Manage_Logs extends Controller_App {
 		  
 		$logs = array();
 		$logs = DB::query(Database::SELECT, "SELECT * FROM logs WHERE groupID=:group " . $extraSQL . " ORDER BY logID DESC LIMIT ".$offset.",20")
-					  ->param(':group', $user->groupID)->execute()->as_array();
+					  ->param(':group', Auth::$user->data['groupID'])->execute()->as_array();
 
 		$view = View::factory('manage/logs/activity');
 		$view->bind('logs', $logs);
 		$view->bind('pagination', $paginationHTML);
 		$view->set('filterType', $filterType);
 
-		$group = ORM::factory('group', $user->groupID);
+		$group = ORM::factory('group', Auth::$user->data['groupID']);
 
 		$this->template->content = $view;
 		$this->template->title = "Activity Logs";
