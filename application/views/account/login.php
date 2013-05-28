@@ -28,7 +28,7 @@
 			<div class="control-group">
 				<div class="controls">
 					<label class="checkbox">
-						<input type="checkbox"> Remember me?
+						<input name="rememberMe" type="checkbox"> Remember me?
 					</label>
 					<br />
 					<button type="submit" name="login" class="btn">Sign in</button>
