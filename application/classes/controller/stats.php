@@ -12,9 +12,7 @@ class Controller_Stats extends FrontController
 	public $template = 'template/public';
 
 	function __construct(Kohana_Request $request, Kohana_Response $response)
-	{
-		$this->auth = simpleauth::instance();
-		
+	{	
 		parent::__construct($request, $response);
 	}
 		

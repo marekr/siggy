@@ -122,7 +122,7 @@ class Controller_Account extends FrontController
 																	 'password' => $_POST['password'],
 																	 'email' => $_POST['email'],
 																	 'active' => 1,
-																	 'registrationDate' => time()
+																	 'created' => time()
 																	 );
 									if( Auth::createUser( $userData ) )
 									{
@@ -217,8 +217,16 @@ class Controller_Account extends FrontController
 											$accessMask = $this->bitMask($result->key->accessMask);
 											if( in_array( CHARINFO_PRIV, $accessMask ) && in_array( CHARINFO_PUB, $accessMask ) )
 											{
-													$this->auth->update_user( Auth::$user['id'], array('apiID' => intval($_POST['apiID']), 'apiKey' => $_POST['apiKey'], 'apiLastCheck' => 0,'apiInvalid' => 0, 'apiFailures' => 0 ) );
-													$this->auth->reload_user();
+													//$this->auth->update_user( Auth::$user['id'], array('apiID' => intval($_POST['apiID']), 'apiKey' => $_POST['apiKey'], 'apiLastCheck' => 0,'apiInvalid' => 0, 'apiFailures' => 0 ) );
+													//$this->auth->reload_user();
+													
+													Auth::$user->data['apiID'] = intval($_POST['apiID']);
+													Auth::$user->data['apiKey'] = $_POST['apiKey'];
+													Auth::$user->data['apiLastCheck'] = 0;
+													Auth::$user->data['apiInvalid'] = 0;
+													Auth::$user->data['apiFailures'] = 0;
+													
+													Auth::$user->save();
 													
 													$this->request->redirect('/account/characterSelect');
 											}
@@ -386,7 +394,7 @@ class Controller_Account extends FrontController
 		
 		public function action_completePasswordReset()
 		{
-				if( $this->auth->logged_in() )
+				if( Auth::loggedIn() )
 				{
 						$this->request->redirect('/');
 						return;
@@ -427,8 +435,10 @@ class Controller_Account extends FrontController
 								}
 								else if ( is_numeric($user->id) && ($user->reset_token == $_REQUEST['reset_token']) ) 
 								{
-										$password = $this->auth->generatePassword();
-										$this->auth->update_user( $user->id, array('password' => $password,'reset_token' => '' ) );
+										$password = Auth::generatePassword();
+										Auth::$user->data['password'] = $password;
+										Auth::$user->data['reset_token'] = $password;
+										Auth::$user->save();
 
 										$message = "You have completed the password reset process. Please use the following randomly generated password to login upon which you may change it to anything you desire\n\n"
 										.":password\n\n"
