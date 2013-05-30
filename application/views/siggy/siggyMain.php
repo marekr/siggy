@@ -28,14 +28,14 @@
 			<tr>
 				<td class="title">Region</td>
 				<td class="content" id="region"></td>
-				<td class="title">Planets/Moons</td>
-				<td class="content" id="planetsmoons"></td>
-			</tr>
-			<tr>
 				<td class="title">Constellation</td>
 				<td class="content" id="constellation"></td>
-				<td class="title">Belts</td>
-				<td class="content" id="belts"></td>
+			</tr>
+			<tr>
+				<td class="title">Planets/Moons/Belts</td>
+				<td class="content" id="planetsmoons"></td>
+				<td class="title">Radius</td>
+				<td class="content" id="radius"></td>
 			</tr>
 			<tr>
 				<td class="title">True Sec</td>
@@ -44,8 +44,8 @@
 				<td class="content" id="systemEffect"></td>
 			</tr>
 			<tr>
-				<td class="title">Radius</td>
-				<td class="content" id="radius"></td>
+				<td class="title">Hub Jumps</td>
+				<td class="content" id="hubJumps"></td>
 				<td class="title">Statics</td>
 				<td class="content" id="staticInfo"></td>
 			</tr>

@@ -194,7 +194,7 @@ class Controller_Siggy extends FrontController
 			{
 				//system potentially lacking activesystems entry
 				//do this the long way :(
-				$system = DB::query(Database::SELECT, 'SELECT * FROM	solarsystems WHERE name=:name')->param(':name', $name)->execute()->current();
+				$system = DB::query(Database::SELECT, 'SELECT * FROM solarsystems WHERE name=:name')->param(':name', $name)->execute()->current();
 				if( isset( $system['id'] ) )
 				{
 					$activeSystemQuery = DB::query(Database::SELECT, 'SELECT * FROM activesystems WHERE systemID=:id AND groupID=:group AND subGroupID=:subgroup')->param(':id', $system['id'])->param(':group',$this->groupData['groupID'])->param(':subgroup', $this->groupData['subGroupID'])->execute();
@@ -264,6 +264,14 @@ class Controller_Siggy extends FrontController
 				$siggyJumps = ( isset($trackedJumps[ $hourStamp ]) ? $trackedJumps[ $hourStamp ]['jumps'] : 0);
 				$systemData['stats'][] = array( $hourStamp*1000, $apiJumps, $apiKills, $apiNPC, $siggyJumps);
 			}
+			
+			$hubJumps = DB::query(Database::SELECT, " SELECT pr.num_jumps,ss.name as destination_name FROM precomputedroutes pr
+														INNER JOIN solarsystems ss ON ss.id = pr.destination_system
+														 WHERE pr.origin_system=:system AND pr.destination_system != :system
+														 ORDER BY pr.num_jumps ASC")
+											->param(':system', $systemData['id'])->execute()->as_array();
+			
+			$systemData['hubJumps'] = $hubJumps;
 			
 			return $systemData;
 	}

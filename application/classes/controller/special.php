@@ -24,6 +24,140 @@ class Controller_Special extends Controller {
 		
 	}
 	
+	public function action_generateHubJumps()
+	{
+	
+		if( !isset($_GET['key']) || $_GET['key'] != 'PIZZAMOFO' )
+		{
+			exit('GTFO');
+		}
+		
+		
+		$data = DB::select()->from('mapsolarsystemjumps')->order_by('fromSolarSystemID', 'ASC')->execute()->as_array();
+		
+		$jumps = array();
+		foreach($data as $j)
+		{
+			$jumps[ $j['fromSolarSystemID'] ][] = $j['toSolarSystemID'];
+		}
+		
+		
+		$systems = DB::select('solarSystemID')->from('mapsolarsystems')->where('solarSystemID', '<', 31000000)->order_by('solarSystemID', 'ASC')->execute()->as_array();
+		
+		
+		//targets
+		$targets = array( '30000142',	//jita
+						   '30002187',	//amarr
+							'30002659',		//dodixie
+							'30002510',		//rens
+							'30002053'		//hek
+						);
+		
+		
+		foreach($systems as $origin)
+		{
+			foreach($targets as $target)
+			{
+				$jumpResult = $this->shortestRoute($origin['solarSystemID'], $target, $jumps);
+				
+				$insert = array( 'origin_system' => $jumpResult['origin'],
+								 'destination_system' => $jumpResult['destination'],
+								 'num_jumps' => $jumpResult['distance'],
+								 'route' => $jumpResult['jumps'],
+								 'type' => 'shortest'
+								 );
+				DB::insert('precomputedroutes', array_keys($insert) )->values(array_values($insert))->execute();
+				print_r($jumpResult);
+			}
+		}
+		
+	}
+	
+	private function shortestRoute($origin, $target, $jumps)
+	{
+		$jumpResult = array(
+			'origin' => $origin,
+			'destination' => $target,
+			'jumps' => 'N/A',
+			'distance' => -1
+		);
+		
+		if (isset($jumps[$origin]) && isset($jumps[$target])) {
+		 
+			// Target and origin the same, no distance
+			if ($target == $origin) { 
+				$jumpResult['jumps'] = $origin;
+				$jumpResult['distance'] = 0;
+			}
+		 
+			// Target is a neigbour system of origin
+			elseif (in_array($target, $jumps[$origin])) {
+				$jumpResult['jumps'] = $origin . ',' . $target;
+				$jumpResult['distance'] = 1;
+			}
+		 
+			// Lets start the fun
+			else {
+				// Will contain the system IDs
+				$resultPath = array();
+				// Already visited system
+				$visitedSystems = array();
+				// Limit the number of iterations
+				$remainingJumps = 9000;
+				// Systems we can reach from here
+				$withinReach = array($origin);
+		 
+				while (count($withinReach) > 0 && $remainingJumps > 0 && count($resultPath) < 1) {
+					$remainingJumps--;
+		 
+					// Jump to the first system within reach
+					$currentSystem = array_shift($withinReach);
+		 
+					// Get the IDs of the systems, connected to the current
+					$links = $jumps[$currentSystem];
+					$linksCount = count($links);
+		 
+					// Test all connected systems
+					for($i = 0; $i < $linksCount; $i++) {
+						$neighborSystem = $links[$i];
+		 
+						// If neighbour system is the target,
+						// Build an array of ordered system IDs we need to
+						// visit to get from thhe origin system to the 
+						// target system
+						if ($neighborSystem == $target) {
+							$resultPath[] = $neighborSystem;
+							$resultPath[] = $currentSystem;
+							while ($visitedSystems[$currentSystem] != $origin) {
+								$currentSystem = $visitedSystems[$currentSystem];
+								$resultPath[] = $currentSystem;
+							}
+							$resultPath[] = $origin;
+							$resultPath = array_reverse($resultPath);
+							break;
+						}
+		 
+						// Otherwise, store the current - neighbour
+						// Connection in the visited systems and add the
+						// neighbour to the systems within reach
+						else if (!isset($visitedSystems[$neighborSystem])) {
+							$visitedSystems[$neighborSystem] = $currentSystem;
+							array_push($withinReach, $neighborSystem);
+						}
+					}
+				}
+		 
+				// If the result path is filled, we have a connection
+				if (count($resultPath) > 1) {
+					$jumpResult['distance'] = count($resultPath) - 1;
+					$jumpResult['jumps'] = implode(',', $resultPath);
+				}
+			}
+		}
+		
+		return $jumpResult;
+	}
+	
 	private function searchEVEEntityByName( $names, $type = 'corp' )
 	{
 		if( $type == 'corp' )
