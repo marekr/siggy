@@ -1197,10 +1197,26 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 {
 	$('#region').text(systemData.regionName);
 	$('#constellation').text(systemData.constellationName);
-	$('#planetsmoons').text(systemData.planets + "/" + systemData.moons);
+	$('#planetsmoons').text(systemData.planets + "/" + systemData.moons + "/" + systemData.belts);
 	$('#truesec').text(systemData.truesec.substr(0,8));
 	$('#radius').text(systemData.radius + ' AU');
-	$('#belts').text(systemData.belts);
+	
+	console.log(systemData.hubJumps);
+	
+	var hubJumpsStr = '';
+	var count = 0;
+	for(var index in systemData.hubJumps)
+	{
+        var hub = systemData.hubJumps[index];
+        hubJumpsStr += hub.destination_name + " (" + hub.num_jumps + " jumps) &nbsp;&nbsp&nbsp;&nbsp;";
+        
+        if( ++count > 1 )
+        {
+            count = 0;
+            hubJumpsStr += "<br />";
+        }
+	}
+	$('#hubJumps').html(hubJumpsStr);
 
 	var collaspedInfoEffectStatic = $('#collaspedInfoEffectStatic');
 	collaspedInfoEffectStatic.empty();

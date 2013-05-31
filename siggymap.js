@@ -1815,6 +1815,12 @@ siggyMap.prototype.getActivityColor = function(activity)
 			case 4:
 				color = '#092665';
 			break;
+			case 5:
+                color = '#FF7C0A';
+            break;
+            case 99:
+                color = '#FFB3CC';
+                break;
 			default:
 				color = '#676767';
 			break;
