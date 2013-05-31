@@ -138,6 +138,10 @@ class FrontController extends Controller
         {
             $this->siggyredirect('/account/noAPIAccess');
         }
+		else if( $this->authStatus == AuthStatus::APILOGINNOACCESS )
+		{
+		  $this->siggyredirect('/account/noAPIAccess');
+		}
         else
         
         {
