@@ -1033,6 +1033,7 @@ siggyMap.prototype.updateActives = function( activesData )
 	
 	for( var i in this.drawnSystems )
 	{
+		this.populateBlobTitle( this.drawnSystems[i],  this.systems[i].name, this.systems[i].displayName, this.systems[i].sysClass,this.systems[i].systemID, this.systems[i].effect, this.systems[i].special );
 		if( typeof( activesData[i] ) != 'undefined' )
 		{
 				this.populateBlobBody( this.drawnSystems[i], i, activesData[i] );
@@ -1041,7 +1042,6 @@ siggyMap.prototype.updateActives = function( activesData )
 		{
 				this.populateBlobBody( this.drawnSystems[i], i, '' );
 		}
-		this.populateBlobTitle( this.drawnSystems[i],  this.systems[i].name, this.systems[i].displayName, this.systems[i].sysClass,this.systems[i].systemID, this.systems[i].effect, this.systems[i].special );
 	}
 	
 	for (var i = this.drawnConnections.length; i--;) {
@@ -1328,9 +1328,9 @@ siggyMap.prototype.draw = function()
 			var activesText = '';
 			
 			var systemBlob = this.r.rect(x, y,  70, 30, 4);
+			this.populateBlobTitle( systemBlob,  this.systems[i].name, this.systems[i].displayName, this.systems[i].sysClass,this.systems[i].systemID, this.systems[i].effect, this.systems[i].special );
 			this.populateBlobBody( systemBlob, this.systems[i].systemID, this.systems[i].actives );
 			
-			this.populateBlobTitle( systemBlob,  this.systems[i].name, this.systems[i].displayName, this.systems[i].sysClass,this.systems[i].systemID, this.systems[i].effect, this.systems[i].special );
 			
 			systemBlob.drag(move, dragger, up);
 			
