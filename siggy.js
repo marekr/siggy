@@ -1201,8 +1201,6 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 	$('#truesec').text(systemData.truesec.substr(0,8));
 	$('#radius').text(systemData.radius + ' AU');
 	
-	console.log(systemData.hubJumps);
-	
 	var hubJumpsStr = '';
 	var count = 0;
 	for(var index in systemData.hubJumps)

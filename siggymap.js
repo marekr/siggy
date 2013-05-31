@@ -1361,6 +1361,13 @@ siggyMap.prototype.draw = function()
 					{
 						that.openSystemEdit( el[0].raphael.systemID );
 					}
+					else if( action == "setdest" )
+					{
+                        if( $.browser.eveIGB )
+                        {
+                            CCPEVE.setDestination(el[0].raphael.systemID);
+                        }
+					}
 			});
 		}
 		
