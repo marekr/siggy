@@ -938,30 +938,33 @@ whpopup tabs
 	position: absolute;
 	width: 120px;
 	z-index: 998;
-	border: solid 1px #CCC;
-	background: #EEE;
+	border: solid 1px #CFCFCF;
+	background: #fcfcfc;
 	padding: 0px;
 	margin: 0px;
 	display: none;
+	font-size:11px;
 }
 
-.contextMenu LI {
+.contextMenu li {
 	list-style: none;
 	padding: 0px;
 	margin: 0px;
 }
 
-.contextMenu A {
+.contextMenu a {
 	color: #333;
 	text-decoration: none;
 	display: block;
-	line-height: 20px;
-	height: 20px;
+	line-height: 15px;
+	height: 15px;
 	background-position: 6px center;
 	background-repeat: no-repeat;
+	border-bottom:1px solid #CFCFCF;
 	outline: none;
 	padding: 1px 5px;
-	padding-left: 28px;
+	padding-left: 10px;
+	font-weight: bold;
 }
 
 .contextMenu LI.hover A {
