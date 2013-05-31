@@ -1,3 +1,13 @@
+	<?php if( $group['iskBalance'] < 0 ): ?>
+	<div class="box" style="background-color:rgb(179, 52, 52)">
+		<h2>Balance warning</h2>
+		<p>
+			The balance for this siggy group has gone negative. Payment must be made according to the information in the management panel or service may be discontinued at any time. Contact <b>Jack Tronic</b> if assitance is needed.
+		</p>
+	</div>
+	<br />
+	<br />
+	<?php endif; ?>
 	
 	<?php echo $chainMap; ?>
 		
