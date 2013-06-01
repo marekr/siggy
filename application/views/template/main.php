@@ -5,7 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/siggy.css?25" rel="stylesheet" media="screen" /> 
     <?php if( Kohana::$environment == Kohana::DEVELOPMENT ): ?>
-    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery-1.7.1.min.js'></script>
+    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery-1.8.3.min.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery.tablesorter.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery.ezpz_tooltip.min.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery.blockUI.js'></script>

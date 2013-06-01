@@ -94,18 +94,20 @@ final class miscUtils
 		);
 
 
-		const TIER1COST = 38000;
-		const TIER2COST = 35000;
-		const TIER3COST = 30000;
+		const TIER1COST = 33000;
+		const TIER2COST = 29000;
+		const TIER3COST = 25000;
 
 		static function computeCostPerDays( $memberCount, $days )
 		{
+		/*
 			$total = 0;
+			
 			$membersInTier = 0;
 			
-			if ( $memberCount > 200 )
+			if ( $memberCount > 150 )
 			{
-				$membersInTier = $memberCount - 200;
+				$membersInTier = $memberCount - 150;
 				$memberCount -= $membersInTier;
 				
 				$total += $membersInTier * self::TIER3COST;
@@ -113,9 +115,9 @@ final class miscUtils
 				//print "tier3cost: ". $membersInTier * self::TIER3COST ."<br />"; 
 			}
 			
-			if ( $memberCount > 100 )
+			if ( $memberCount > 50 )
 			{
-				$membersInTier = $memberCount - 100;
+				$membersInTier = $memberCount - 50;
 				$memberCount -= $membersInTier;
 				
 				$total += $membersInTier * self::TIER2COST;
@@ -124,15 +126,19 @@ final class miscUtils
 			}
 			
 			//jack the member count to cost more isk for tiny groups
-			if( $memberCount < 15 )
+			if( $memberCount < 10 )
 			{
-				$memberCount = 15;
+				$memberCount = 10;
 			}
 			
 			$total += $memberCount * self::TIER1COST;
 			//	print "tier1count: ". $memberCount ."<br />"; 
 				//print "tier1cost: ". $memberCount * self::TIER1COST ."<br />"; 
 			
+			return $total*$days;
+			*/
+			
+			$total = 20420*$memberCount + 283650;
 			return $total*$days;
 		}
 		

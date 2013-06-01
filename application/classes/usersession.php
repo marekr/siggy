@@ -16,6 +16,9 @@ class UserSession
 
 	public function __construct()
 	{
+		ini_set('session.use_trans_sid', FALSE);
+		ini_set('session.use_cookies', FALSE);
+	
 		$this->charID = isset($_SERVER['HTTP_EVE_CHARID']) ? $_SERVER['HTTP_EVE_CHARID'] : 0;
 		$this->charName = isset($_SERVER['HTTP_EVE_CHARNAME']) ? $_SERVER['HTTP_EVE_CHARNAME'] : '';
 		$this->corpID = isset($_SERVER['HTTP_EVE_CORPID']) ? $_SERVER['HTTP_EVE_CORPID'] : 0;
@@ -63,9 +66,8 @@ class UserSession
 				
 				if( $userData['password'] == $passHash )
 				{
-					Auth::$user->data &= $userData;
+					Auth::$user->data = &$userData;
 				}
-				
 				$_SESSION['userData'] = $userData;
 				
 			}

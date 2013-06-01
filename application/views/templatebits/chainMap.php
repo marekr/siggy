@@ -114,8 +114,10 @@
 												<option value='0'>Don't Know</option>
 												<option value='1'>Empty</option>
 												<option value='2'>Occupied</option>
-												<option value='5'>Active</option>
-												<option value='3'>Hostile</option>
+												<?php if( $group['groupID'] == 7 ): ?>
+												<option value='99'>Rengas</option>
+												<?php endif; ?>
+												<option value='3'>Active</option>
 												<option value='4'>Friendly</option>
 								</select><br /><br />
 								
@@ -134,6 +136,9 @@
 				<ul id="systemMenu" class="contextMenu">
 					<li class="edit">
 						<a href="#edit">Edit</a>
+					</li>
+					<li class="setdest">
+						<a href="#setdest">SetDest</a>
 					</li>
 				</ul>
 			<!--- system context -->

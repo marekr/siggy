@@ -83,11 +83,11 @@ if( Kohana::$environment == Kohana::DEVELOPMENT && strpos($_SERVER['HTTP_USER_AG
 {
   $_SERVER['HTTP_EVE_CORPID'] = 389326446;
   $_SERVER['HTTP_EVE_CHARID'] = 460256976;
-  $_SERVER['HTTP_EVE_CHARNAME'] = 'Messoroz';
+  $_SERVER['HTTP_EVE_CHARNAME'] = 'Messoroz ROCKS';
   $_SERVER['HTTP_EVE_TRUSTED'] = 'Yes';
   //$_SERVER['HTTP_EVE_TRUSTED'] = 'No';
   $_SERVER['HTTP_USER_AGENT'] = 'Boo EVE-IGB';
-  $lol = false;
+  $lol = true;
 	if( $lol )
 	{
 		$_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] = 'Fricoure';
@@ -104,8 +104,8 @@ if( !isset($_SERVER['HTTP_EVE_SOLARSYSTEMID']) && isset($_SERVER['HTTP_EVE_SOLAR
 	require 'systemReference.php';
 	$_SERVER['HTTP_EVE_SOLARSYSTEMID'] = $systems[ $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] ];
 }
-*/
 
+*/
 
 
 /**
@@ -254,6 +254,12 @@ Kohana::modules(array(
         'action' => 'index',
     ));     
     
+
+  Route::set('pages', 'pages(/<page>)')
+    ->defaults(array(
+      'controller' => 'pages',
+      'action'     => 'viewPage',
+    ));
 
   Route::set('default', '(<controller>(/<action>(/<id>)))')
     ->defaults(array(

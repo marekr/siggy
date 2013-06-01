@@ -339,7 +339,8 @@ class Controller_Account extends FrontController
 						{
 								$user = new User();
 								$user->loadByEmail($_POST['reset_email']);
-								if ( is_numeric( $user->id ) ) 
+
+								if ( isset( $user->data['id'] ) ) 
 								{
 										// send an email with the account reset token
 										$user->data['reset_token'] = Auth::generatePassword(32);
@@ -360,10 +361,10 @@ class Controller_Account extends FrontController
 										$from = Kohana::$config->load('useradmin')->email_address;
 										
 										$body =  __($message, array(
-												':reset_token_link' => URL::site('account/completePasswordReset?reset_token='.$user->reset_token.'&reset_email='.$_POST['reset_email'], TRUE),
+												':reset_token_link' => URL::site('account/completePasswordReset?reset_token='.$user->data['reset_token'].'&reset_email='.$_POST['reset_email'], TRUE),
 												':reset_link' => URL::site('account/completePasswordReset', TRUE),
-												':reset_token' => $user->reset_token,
-												':username' => $user->username
+												':reset_token' => $user->data['reset_token'],
+												':username' => $user->data['username']
 										));
 										
 										$message_swift = Swift_Message::newInstance($subject, $body)
@@ -423,22 +424,19 @@ class Controller_Account extends FrontController
 						}
 						else
 						{
+								$user = new User();
+								$user->loadByEmail($_REQUEST['reset_email']);
 								
-								$user = new Model_Auth_Users;
-								$user->getUserByEmail($_REQUEST['reset_email']);
-								
-								if( $user->reset_token != $_REQUEST['reset_token'] )
+								if( $user->data['reset_token'] != $_REQUEST['reset_token'] )
 								{
 										$errors['reset_token'] = 'The reset token you have entered is invalid';
 										$view = $this->template->content = View::factory('account/completePasswordReset');
 										$view->errors = $errors;
 								}
-								else if ( is_numeric($user->id) && ($user->reset_token == $_REQUEST['reset_token']) ) 
+								else if ( isset($user->data['id']) && ($user->data['reset_token'] == $_REQUEST['reset_token']) ) 
 								{
 										$password = Auth::generatePassword();
-										Auth::$user->data['password'] = $password;
-										Auth::$user->data['reset_token'] = $password;
-										Auth::$user->save();
+										$user->updatePassword($password);
 
 										$message = "You have completed the password reset process. Please use the following randomly generated password to login upon which you may change it to anything you desire\n\n"
 										.":password\n\n"

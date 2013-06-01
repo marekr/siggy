@@ -123,6 +123,12 @@ table td.content {
 	padding-left: 4px;
 }
 
+#hubJumps div
+{
+    float:left;
+    margin-right:10px;
+}
+
 #systemOptions td.content {
 	padding: 5px;
 	width:15%;

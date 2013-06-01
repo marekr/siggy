@@ -15,18 +15,38 @@ class Controller_Pages extends FrontController
 			parent::__construct($request, $response);
 		}
 		
-		public function action_welcome()
-		{
-			if( Auth::loggedIn() )
+		public function action_viewPage()
+		{	
+			$page = $this->request->param('page','');
+			if( $page == '' )
 			{
-				$this->request->redirect('/');
+				if( Auth::loggedIn() )
+				{
+					$this->request->redirect('/');
+				}
 			}
-			
-			$this->template->title = 'siggy - EVE WH Tool';
+			$this->template->title = 'siggy - getting siggy';
 			
 			$this->template->selectedTab = 'home';
 			$this->template->layoutMode = 'blank';
-			$this->template->content = View::factory('pages/home');
+			
+			if( $page == 'getting-siggy' )
+			{
+				$this->template->content = View::factory('pages/gettingSiggy');
+			}
+			else if( $page == 'create-group' || $page == 'createGroup' )
+			{
+				$this->template->selectedTab = 'createGroup';
+				$this->template->content = View::factory('pages/createGroupIntro');
+			}
+			else if( $page == 'costs' )
+			{
+				$this->template->content = View::factory('pages/costs');
+			}
+			else
+			{
+				$this->template->content = View::factory('pages/home');
+			}
 			
 			$this->template->loggedIn = Auth::loggedIn();
 			$this->template->user = Auth::$user->data;

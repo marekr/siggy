@@ -29,7 +29,7 @@ class User
 		DB::update('users')->set( $toSaveArray )->where('id', '=',  $this->data['id'])->execute();
 		
 		//are we the current user?
-		if( $this->data['id'] == Auth::$user->data['id'] )
+		if( isset(Auth::$user->data['id']) && $this->data['id'] == Auth::$user->data['id'] )
 		{
 			Auth::$session->reloadUserSession();
 		}
@@ -42,6 +42,10 @@ class User
 	
 	public function loadByEmail($email)
 	{
+		$email = strtolower($email);
+		$user = DB::query(Database::SELECT, 'SELECT * FROM users WHERE LOWER(email)=:email')->param(':email', $email)->execute()->current();
+		
+		$this->data = $user;
 	}
 	
 	public function updatePassword($newPass)

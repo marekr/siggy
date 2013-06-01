@@ -40,8 +40,8 @@
 <div class="row">
 		<div class="span9 hero-unit" style="width: 750px;">
 		
-				<p>Looking to gain access to your corp or alliance siggy? <a href="<?php echo URL::base(TRUE, TRUE);?>account/register" />Click here to register!</a></p>
-				<!-- <p>Looking to start using siggy for the first time?  COMING SOON</p> -->
+				<p>Looking to gain access to your corp or alliance siggy? <a href="<?php echo URL::base(TRUE, TRUE);?>account/register" />Register here</a></p>
+				<p>Looking to start using siggy for the first time?  <a href="<?php echo URL::base(TRUE, TRUE);?>pages/getting-siggy" />Click here for info</a></p>
 		</div>
 		<div class="span3">
 		</div>

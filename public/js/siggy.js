@@ -1202,17 +1202,10 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 	$('#radius').text(systemData.radius + ' AU');
 	
 	var hubJumpsStr = '';
-	var count = 0;
 	for(var index in systemData.hubJumps)
 	{
         var hub = systemData.hubJumps[index];
-        hubJumpsStr += hub.destination_name + " (" + hub.num_jumps + " jumps) &nbsp;&nbsp&nbsp;&nbsp;";
-        
-        if( ++count > 1 )
-        {
-            count = 0;
-            hubJumpsStr += "<br />";
-        }
+        hubJumpsStr += "<div>"+hub.destination_name + " (" + hub.num_jumps + " jumps)</div>";
 	}
 	$('#hubJumps').html(hubJumpsStr);
 
