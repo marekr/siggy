@@ -62,13 +62,11 @@ class UserSession
 			$passHash = Cookie::get('passHash');
 			if( $memberID && $passHash )
 			{
-				$userData = Auth::getUser($memberID);
 				
-				if( $userData['password'] == $passHash )
+				if( Auth::autoLogin($memberID, $passHash) )
 				{
-					Auth::$user->data = &$userData;
+					$_SESSION['userData'] = Auth::$user->data;
 				}
-				$_SESSION['userData'] = $userData;
 				
 			}
 			

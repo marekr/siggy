@@ -1,7 +1,7 @@
 <div id="headerToolsButtonBar">
 	<div id="globalNotesButton" class="headerToolButton">Notes &#x25BC;</div>
 	
-	<div id="strengthCalcButton" class="headerToolButton">Strength Calc. &#x25BC;</div>
+	<!--- <div id="strengthCalcButton" class="headerToolButton">Strength Calc. &#x25BC;</div> -->
 	<?php if( $group['statsEnabled'] ): ?>
 		<div id="statsButton" class="headerToolButton"><a href="<?php echo URL::base(); ?>stats">Stats</a></div>
 	<?php endif; ?>
@@ -18,7 +18,7 @@
 </div>
 
 <!--- start calc --->
-
+<!---
 <div>
   <div id="sigCalculator">
 	<div style="position:relative">
@@ -152,5 +152,5 @@
 	</div>
   </div>      
 </div>
-
+--->
 <!---- end calc -->

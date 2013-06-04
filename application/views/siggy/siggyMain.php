@@ -14,8 +14,8 @@
 	<br />
 	<div id="systemAdvanced">
 		<div id="systemList">
-		  <ul>
-		  </ul>
+			<ul>
+			</ul>
 		</div>
 		<div id="systemInfoButton" class="selected">Info</div>
 		<div id="systemOptionsButton">Options</div>
@@ -27,13 +27,26 @@
 				<p class='systemName'>System</p>
 				<p class='spacer'>|</p>
 				<p id='collaspedInfoEffectStatic'></p>
-				<p class='systemButtons'><a href='#' target='_blank' class='evekill'><img src='public/images/evekill.png' width='16' height='16'/></a><a href='#' target='_blank' class='dotlan'><img src='public/images/dotlan.png' width='16' height='16'/></a><img src='public/images/carebear.gif' class='carebear' width='16' height='16'/><img id='systemInfo-expand' src='public/images/expand.png'  width='16' height='16'/></p>
+				<p class='systemButtons'>
+					<a href='#' target='_blank' class='evekill clickMe'><img src='public/images/evekill.png' width='16' height='16'/></a>
+					<a href='#' target='_blank' class='dotlan clickMe'><img src='public/images/dotlan.png' width='16' height='16'/></a>
+					<img src='public/images/carebear.gif' class='carebear clickMe' width='16' height='16'/>
+					<img id='systemInfo-expand' class='clickMe' src='public/images/expand.png'  width='16' height='16'/>
+				</p>
 			</h2>
 		</div>
 		<div id="systemInfo"<?php echo ( isset($_COOKIE['sysInfoCollasped']) && $_COOKIE['sysInfoCollasped'] == 1 ) ? "style='display:none'" : '' ?>>
 		<table id="systemTable" cellspacing="1" class='siggyTable'>
 			<tr>
-				<th class="header" colspan="4"><span class="systemName"><?php echo !empty($systemName) ? $systemName : 'System'; ?></span><p><a href='#' target='_blank' class='evekill'><img src='public/images/evekill.png' width='16' height='16'/></a><a href='#' target='_blank' class='dotlan'><img src='public/images/dotlan.png' width='16' height='16'/></a><img src='public/images/carebear.gif' class='carebear' width='16' height='16'/><img id='systemInfo-collaspe' src='public/images/collaspe.png'  width='16' height='16'/></p></th>
+				<th class="header" colspan="4">
+						<span class="systemName"><?php echo !empty($systemName) ? $systemName : 'System'; ?></span>
+						<p>
+							<a href='#' target='_blank' class='evekill clickMe'><img src='public/images/evekill.png' width='16' height='16'/></a>
+							<a href='#' target='_blank' class='dotlan clickMe'><img src='public/images/dotlan.png' width='16' height='16'/></a>
+							<img src='public/images/carebear.gif' class='carebear clickMe' width='16' height='16'/>
+							<img id='systemInfo-collaspe' class='clickMe' src='public/images/collaspe.png'  width='16' height='16'/>
+						</p>
+				</th>
 			</tr>
 			<tr>
 				<td class="title">Region</td>
@@ -117,10 +130,6 @@
 		</div>
 		<!--- end stats -->
 		
-		
-		
-		<br clear='all' />
-		<a href="#" id="massAddSigs">[+] Mass Sig Reader</a>
 		<br clear='all' />
 		<div id="sigAddBox">
 			<form>

@@ -27,8 +27,10 @@
 		<div id="floatingHeader">
 			<div id="topBar">
 				<div>
+				<!---
 					<img src="http://image.eveonline.com/Corporation/<?php echo $corpID; ?>_64.png" height="32px" />
 					<img src="http://image.eveonline.com/Character/<?php echo $charID; ?>_64.jpg" height="32px"/>
+					-->
 					<p class="name"><?php echo $charName; ?> <?php if( $apilogin ): ?>[<a href='<?php echo URL::base(TRUE, TRUE);?>account/logout'>Logout</a>]<?php endif;?>
 					<br />
 					<?php if( ( count( $group['groups']) > 1  ) || (count( current( $group['groups'] ) ) > 1 ) ):?>							
@@ -66,6 +68,7 @@
 			<div id="headerTools">
 				<?php echo $headerTools; ?>
 			</div>
+			<?php echo $routePlanner; ?>
 		</div>
 		<br />
 		<?php endif; ?>

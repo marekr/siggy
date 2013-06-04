@@ -76,9 +76,19 @@ I18n::lang('en-us');
  * Set the environment string by the domain (defaults to 'development').
  */
 
-Kohana::$environment = ($_SERVER['SERVER_NAME'] !== 'localhost') ? Kohana::PRODUCTION : Kohana::DEVELOPMENT;
 
+$headers = apache_request_headers();
+foreach($headers as $k => $v)
+{
+	if( strpos($k,'EVE') == 0 )
+	{
+		$_SERVER['HTTP_' . $k] = $v;
+	}
+}
+ 
+Kohana::$environment = ($_SERVER['SERVER_NAME'] !== 'localhost') ? Kohana::PRODUCTION : Kohana::DEVELOPMENT;
 /*
+
 if( Kohana::$environment == Kohana::DEVELOPMENT && strpos($_SERVER['HTTP_USER_AGENT'],'EVE-IGB') === false )
 {
   $_SERVER['HTTP_EVE_CORPID'] = 389326446;

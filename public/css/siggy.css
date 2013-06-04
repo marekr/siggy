@@ -46,15 +46,6 @@ input {
 	padding: 0 20px 0 20px;
 }
 
-
-#sigs table,
-#notesTable{
-	width:100%;
-	background: #092665;
-	color: #FFFFFF;
-	border: 1px solid #000;
-}
-
 table.siggyTable th,
 h2.header{
 	background-color: #1C1C1C;
@@ -74,8 +65,7 @@ h2.header{
 	height: 16px;
 }
 
-#sigs table td,
-#notesTable td,
+table.siggyTable td,
 #sigCalculator table td,
 table.stats td{
 	border: 1px solid #000;
@@ -160,10 +150,6 @@ table td.desc p{
 	position:relative;
 }
 
-#notesTable {
-	width:100%;
-}
-
 table.tablesorter thead tr .headerSortUp {
 	background-image: url(../../public/images/asc.gif) !important;
 	background-repeat: no-repeat;
@@ -235,36 +221,39 @@ a {
 
 input.sigEdit
 {
-width:50px;
+    width:50px;
 }
 
-#loading {
-left: -28px;
-position: absolute;
-top: -4px;
+#loading
+{
+    left: -28px;
+    position: absolute;
+    top: -4px;
 }
 
-#systemList {
-height: 50px;
-margin-bottom: -29px;
-margin-left: 28px;
-margin-top: 62px;
-float:left;
+#systemList
+{
+    height: 50px;
+    margin-bottom: -29px;
+    margin-left: 28px;
+    margin-top: 62px;
+    float:left;
 }
 
 #systemList ul
 {
-       width: 80px;
-       height: 100%;
-       border-left: 5px solid #1c1c1c;
-       border-top: 4px solid #1C1C1C;
-      -moz-transform: rotate(-90deg);
-      -webkit-transform: rotate(-90deg);
-      -moz-transform-origin: left center;
-      -webkit-transform-origin: left center;
+   width: 80px;
+   height: 100%;
+   border-left: 5px solid #1c1c1c;
+   border-top: 4px solid #1C1C1C;
+  -moz-transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  -moz-transform-origin: left center;
+  -webkit-transform-origin: left center;
 }
 
-#systemList ul li {
+#systemList ul li
+{
     background-color: #02143C;
     padding: 1px;
     width: 80px;
@@ -292,27 +281,35 @@ span.sysClass
   padding-left:2px;
 }
 
-
-.classDangerous{
+.classDangerous
+{
   color: #FF9308;
 }
-.classUnknown{
+
+.classUnknown
+{
   color: #C4AC1C;
 }
-.classDeadly{
+
+.classDeadly
+{
   color: #FF0D0D;
 }
 
-.classHigh{
+.classHigh
+{
   color: #259900;
 }
-.classLow{
+
+.classLow
+{
   color: #FF9308;
 }
-.classNull{
+
+.classNull
+{
   color: #FF0D0D;
 }
-
 
 .sysSelected {
   background-color: #092665 !important;
@@ -320,11 +317,11 @@ span.sysClass
 }
 
 #systemOptions {
-display:none;
+    display:none;
 }
 
 #systemInfo {
-  clear: both;
+    clear: both;
 }
 
 /* collasped style */
@@ -407,17 +404,6 @@ display:none;
 table td.buttonRow {
   text-align:center;
   background-color: #000000;
-}
-
-#globalNotesButton
-{
-
-}
-
-
-#strengthCalcButton
-{
-
 }
 
 .headerToolButton
@@ -568,18 +554,14 @@ label.no {
 }
 
 
-#strengthTable {
+#strengthTable
+{
   display:none;
 }
 
 #bearClassLinks a.active{
 	font-weight:bold;
 	color: #FFF;
-}
-
-#carebear
-{
-	cursor:pointer;
 }
 
 #carebearBox
@@ -627,32 +609,9 @@ td.desc
 	background-color: #2d2d2d;
 }
 
-#chainMapContainer p.loading
-{
-	position:absolute;
-	font-size:3em;
-	display:none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-o-user-select: none;
-	user-select: none;
-	cursor: default;
-}
 
-#chainMapContainer p.editing
-{
-	position:absolute;
-	font-size:1.4em;
-	display:none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-o-user-select: none;
-	user-select: none;
-	cursor: default;
-}
-
+#chainMapContainer p.editing,
+#chainMapContainer p.loading,
 #chainMapContainer p.deleting
 {
 	position:absolute;
@@ -664,6 +623,12 @@ td.desc
 	-o-user-select: none;
 	user-select: none;
 	cursor: default;
+}
+
+
+#chainMapContainer p.loading
+{
+	font-size:3em;
 }
 
 #chainMapContainer div.buttons
@@ -809,7 +774,7 @@ ul.errors
 }
 .acResults {
 	padding: 0px;
-	border: 1px solid #000;
+	border: 1px solid WindowFrame;
 	background-color: #fff;
 	overflow: hidden;
 	color: #000;
@@ -924,16 +889,15 @@ whpopup tabs
 	padding:5px;
 }
 
-#jumpLogList li
+ul.itemList li
 {
 	border-bottom:1px solid #FEA800;
-	height: 58px;
 	padding:4px;
 	font-size: 0.75em;
 	background-color: #121212;
 }
 
-#jumpLogList
+ul.itemList
 {
 	border: 1px solid #000;
 }

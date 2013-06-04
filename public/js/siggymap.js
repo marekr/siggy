@@ -456,6 +456,7 @@ siggyMap.prototype.initialize = function()
 
 		
 		this.setupEditor();
+		this.setupRoutePlanner();
 		
 		menu = new siggyMenu(
 		{	 
@@ -568,6 +569,48 @@ siggyMap.prototype.initialize = function()
 		this.setupSystemEditor();
 }
 
+siggyMap.prototype.setupRoutePlanner = function()
+{
+		var fromSysInput = this.registerSystemAutoComplete("#routePlanner input[name=fromSys]");
+		var toCurrentInput = this.registerSystemAutoComplete("#routePlanner input[name=toSys]");
+
+		var fromCurrentInput = $('#routePlanner input[name=fromCurrent]');
+		//resets cause fucking browsers
+		fromCurrentInput.attr('disabled', false);
+		fromCurrentInput.attr('checked', false);
+		
+		var toCurrentInput = $('#routePlanner input[name=toCurrent]');
+		//resets cause fucking browsers
+		toCurrentInput.attr('disabled', false);
+		toCurrentInput.attr('checked', false);
+		
+		fromCurrentInput.change( function() {
+			if( $(this).is(':checked') )
+			{
+				fromSysInput.attr('disabled',true);
+				toCurrentInput.attr('disabled',true);
+			}
+			else
+			{
+				fromSysInput.attr('disabled',false);
+				toCurrentInput.attr('disabled',false);
+			}
+		} );
+		
+		toCurrentInput.change( function() {
+			if( $(this).is(':checked') )
+			{
+				toSysInput.attr('disabled',true);
+				fromCurrentInput.attr('disabled',true);
+			}
+			else
+			{
+				toSysInput.attr('disabled',false);
+				fromCurrentInput.attr('disabled',false);
+			}
+		} );
+}
+
 siggyMap.prototype.setupSystemEditor = function()
 {
 	var that = this;
@@ -604,6 +647,29 @@ siggyMap.prototype.initializeTabs = function()
 	
 }
 
+siggyMap.prototype.registerSystemAutoComplete = function(inputSelector)
+{
+    var that = this;
+    var input = $(inputSelector);
+    //resets cause fucking browsers
+    input.val('');
+    input.attr('disabled',false);
+    input.autocomplete({url: that.baseUrl+'doautocompleteWH', minChars: 2, 
+        showResult: function(value, data) {
+            if( data[0] != '' )
+            {
+                return  value + ' (' + data[0] + ')';
+            }
+            else
+            {
+                return  value;
+            }
+        } 
+    });
+    
+    return input;
+}
+
 siggyMap.prototype.setupEditor = function()
 {
 		var that = this;
@@ -617,40 +683,9 @@ siggyMap.prototype.setupEditor = function()
 		} );
 		
 		
-		var fromSysInput = $("#wormholeEditor input[name=fromSys]");
-		//resets cause fucking browsers
-		fromSysInput.val('');
-		fromSysInput.attr('disabled',false);
-		fromSysInput.autocomplete({url: that.baseUrl+'doautocompleteWH', minChars: 2, 
-			showResult: function(value, data) {
-				if( data[0] != '' )
-				{
-					return  value + ' (' + data[0] + ')';
-				}
-				else
-				{
-					return  value;
-				}
-			} 
-		});
-		
-		var toSysInput = $("#wormholeEditor input[name=toSys]");
-		//resets cause fucking browsers
-		toSysInput.val('');
-		toSysInput.attr('disabled',false);
-		toSysInput.autocomplete({url: that.baseUrl+'doautocompleteWH', minChars: 2, 
-			showResult: function(value, data) {
-				if( data[0] != '' )
-				{
-					return  value + ' (' + data[0] + ')';
-				}
-				else
-				{
-					return  value;
-				}
-			} 
-		});
-		
+		var fromSysInput = this.registerSystemAutoComplete("#wormholeEditor input[name=fromSys]");
+		var toCurrentInput = this.registerSystemAutoComplete("#wormholeEditor input[name=toSys]");
+
 		var fromCurrentInput = $('#wormholeEditor input[name=fromCurrent]');
 		//resets cause fucking browsers
 		fromCurrentInput.attr('disabled', false);
@@ -687,7 +722,6 @@ siggyMap.prototype.setupEditor = function()
 			}
 		} );
 		
-
 		$('#wormholeEditorSave').click( function() {
 			
 			var data = {};

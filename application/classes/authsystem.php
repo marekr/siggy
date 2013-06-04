@@ -40,10 +40,60 @@ class User
 		}
 	}
 	
+	public function getAPIKeys()
+	{
+		if( !$this->userLoaded() )
+		{
+			return;
+		}
+	
+		$keys = DB::query(Database::SELECT, "SELECT * FROM apikeys WHERE userID=:userid")->param(':userid', $this->data['id'])
+										->execute()->as_array();
+
+		foreach($keys as &$key)
+		{
+			if( $key['apiID'] == 0 || $key['apiKey'] == '' )
+			{
+					$status = 'Missing';
+			}
+			elseif( $key['apiFailures'] > 3 )
+			{
+					$status = 'Failed';
+			}
+			elseif ( $key['apiKeyInvalid'] )
+			{
+					$status = 'Invalid';
+			}
+			else
+			{
+					$status = 'Good';
+			}
+			
+			$key['status'] = $status;
+		}
+		
+		return $keys;				
+	}
+	
 	public function loadByEmail($email)
 	{
 		$email = strtolower($email);
-		$user = DB::query(Database::SELECT, 'SELECT * FROM users WHERE LOWER(email)=:email')->param(':email', $email)->execute()->current();
+		$user = DB::query(Database::SELECT, 'SELECT u.*, ak.*
+												FROM users u
+												LEFT JOIN apikeys ak ON(ak.entryID = u.apiKeyEntryID)
+												WHERE LOWER(u.email)=:email')
+												->param(':email', $email)->execute()->current();
+		
+		$this->data = $user;
+	}
+	
+	public function loadByID($id)
+	{
+		$user = DB::query(Database::SELECT, 'SELECT u.*, ak.*
+												FROM users u
+												LEFT JOIN apikeys ak ON(ak.entryID = u.apiKeyEntryID)
+												WHERE u.id=:id')
+												->param(':id', $id)->execute()->current();
 		
 		$this->data = $user;
 	}
@@ -196,11 +246,20 @@ class Auth
 		//User::$data = array();
 	}
 	
-	public static function getUser($id)
+	public static function autoLogin($id, $passHash)
 	{
-		$user = DB::query(Database::SELECT, 'SELECT * FROM users WHERE id=:id')->param(':id', $id)->execute()->current();
+		$tmp = new User();
+		$tmp->loadByID($id);
 		
-		return $user;
+		if( $tmp->data['password'] == $passHash )
+		{
+			Auth::$user = $tmp;
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
 	}
 	
 	public static function loggedIn()

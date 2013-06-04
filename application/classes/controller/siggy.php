@@ -57,6 +57,8 @@ class Controller_Siggy extends FrontController
 		$chainMapHTML->group = $this->groupData;
 		$view->chainMap = $chainMapHTML;
 		
+		$routePlannerHTML = View::factory('/templatebits/router');
+		$this->template->routePlanner = $routePlannerHTML;
 		
 		//load header tools
 		$headerToolsHTML = View::factory('/templatebits/headerTools');
