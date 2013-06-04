@@ -43,6 +43,17 @@ class Controller_Pages extends FrontController
 			{
 				$this->template->content = View::factory('pages/costs');
 			}
+			else if( $page == 'accessMessage')
+			{
+				$this->template->title = "Trust required";
+				$this->template->selectedTab = 'home';
+				
+				$this->template->content = $view = View::factory('siggy/accessMessage');
+				$view->bind('groupData', $this->groupData);
+				$view->trusted = $this->trusted;
+				$view->igb = $this->igb;
+				$view->set('offlineMode', false);
+			}
 			else
 			{
 				$this->template->content = View::factory('pages/home');
@@ -50,23 +61,6 @@ class Controller_Pages extends FrontController
 			
 			$this->template->loggedIn = Auth::loggedIn();
 			$this->template->user = Auth::$user->data;
-		}
-
-
-		public function action_accessMessage()
-		{
-			$this->template->title = "Trust required";
-			$this->template->layoutMode = 'blank';
-			$this->template->selectedTab = 'home';
-			$this->template->loggedIn = Auth::loggedIn();
-			$this->template->user = Auth::$user->data;
-			
-			$this->template->content = $view = View::factory('siggy/accessMessage');
-			$view->bind('groupData', $this->groupData);
-			$view->trusted = $this->trusted;
-			$view->igb = $this->igb;
-			$view->set('offlineMode', false);
-			$this->response->body($view);
 		}
 
 

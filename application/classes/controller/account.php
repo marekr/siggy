@@ -339,13 +339,14 @@ class Controller_Account extends FrontController
 						{
 								$user = new User();
 								$user->loadByEmail($_POST['reset_email']);
+								
 
 								if ( isset( $user->data['id'] ) ) 
 								{
 										// send an email with the account reset token
 										$user->data['reset_token'] = Auth::generatePassword(32);
 										$user->save();
-
+										
 										$message = "You have requested a password reset for your siggy account. To confirm the password reset, please the follow the proceeding url:\n\n"
 										.":reset_token_link\n\n"
 										."If the above link is not clickable, please visit the following page:\n"
@@ -359,6 +360,7 @@ class Controller_Account extends FrontController
 										
 										$to = $_POST['reset_email'];
 										$from = Kohana::$config->load('useradmin')->email_address;
+										
 										
 										$body =  __($message, array(
 												':reset_token_link' => URL::site('account/completePasswordReset?reset_token='.$user->data['reset_token'].'&reset_email='.$_POST['reset_email'], TRUE),
@@ -436,6 +438,7 @@ class Controller_Account extends FrontController
 								else if ( isset($user->data['id']) && ($user->data['reset_token'] == $_REQUEST['reset_token']) ) 
 								{
 										$password = Auth::generatePassword();
+										$user->data['reset_token'] = '';
 										$user->updatePassword($password);
 
 										$message = "You have completed the password reset process. Please use the following randomly generated password to login upon which you may change it to anything you desire\n\n"
@@ -456,12 +459,18 @@ class Controller_Account extends FrontController
 												':password' => $password
 										));
 										
+										try
+										{
 										$message_swift = Swift_Message::newInstance($subject, $body)
 														->setFrom($from)
 														->setTo($to);
 										
 										$mailer->send($message_swift);																			
-										
+										}
+										catch(Exception $e)
+										{
+											print_r($e);
+										}
 										$view = $this->template->content = View::factory('messages/passwordResetCompleteMessage');
 								}
 								else
