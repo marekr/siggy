@@ -131,6 +131,8 @@
 		<!--- end stats -->
 		
 		<br clear='all' />
+		<a href="#" id="massAddSigs">[+] Mass Sig Reader</a>
+		<br clear='all' />
 		<div id="sigAddBox">
 			<form>
 				<input type="text" name="sig" style="width:50px;float:left;margin-right:5px;" maxlength="3" />

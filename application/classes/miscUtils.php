@@ -153,7 +153,7 @@ final class miscUtils
 			{
 				$data = explode("\t", $line);
 				
-				$sigData = array();
+				$sigData = array('type' => '', 'sig' => '', 'siteID' => 0);
 				
 				
 				$matches = array();
@@ -175,34 +175,27 @@ final class miscUtils
 					continue;	//skip
 				}
 				
-				preg_match("/^(Unknown|Radar|Ladar|Magnetometric|Gravimetric)$/", $data[2], $matches );
+				preg_match("/^(Wormhole|Data|Gas Site|Relic Site|Ore Site)$/", $data[2], $matches );
 				if( count($matches) == 2 )	
 				{
 					switch( $matches[1] )
 					{
-						case 'Unknown':
-							if( $data[3] == 'Unstable Wormhole' )
-							{
-								$sigData['type'] = 'wh';
-							}
-							else
-							{
-								$sigData['type'] = 'none';	//TODO lookup if we are scanning in wormhole system or not, cannot assume for kspace
-							}
+						case 'Wormhole':
+							$sigData['type'] = 'wh';
 							break;
-						case 'Radar':
+						case 'Data Site':
 							$sigData['type'] = 'radar';
 							$sigData['siteID'] = self::siteIDLookupByName( $data[3], 'radar' );
 							break;
-						case 'Ladar':
+						case 'Gas Site':
 							$sigData['type'] = 'ladar';
 							$sigData['siteID'] = self::siteIDLookupByName( $data[3], 'ladar' );
 							break;
-						case 'Magnetometric':
+						case 'Relic Site':
 							$sigData['type'] = 'mag';
 							$sigData['siteID'] = self::siteIDLookupByName( $data[3], 'mag' );
 							break;
-						case 'Gravimetric':
+						case 'Ore Site':
 							$sigData['type'] = 'grav';
 							$sigData['siteID'] = self::siteIDLookupByName( $data[3], 'grav' );
 							break;
