@@ -1611,10 +1611,10 @@ siggymain.prototype.editSigForm = function (sigID)
 	{
 		none: '--',
 		wh: 'WH',
-		ladar: 'Ladar',
-		radar: 'Radar',
-		mag: 'Mag',
-		grav: 'Grav'
+		ladar: 'Gas',
+		radar: 'Data',
+		mag: 'Relic',
+		grav: 'Ore'
 	}, this.sigData[sigID].type).change(function ()
 	{
 		that.editTypeSelectChange(sigID)
@@ -1802,9 +1802,18 @@ siggymain.prototype.removeSig = function (sigID)
 siggymain.prototype.convertType = function (type)
 {
 	//unknown null case, either way this should surpress it
-	if (type == 'none' || type == null || type == 'null' ) return "";
-	else if (type == 'wh') return "WH";
-	else return type.charAt(0).toUpperCase() + type.slice(1);
+	if (type == 'wh')
+        return "WH";
+	else if (type == 'grav')
+        return "Ore";
+	else if (type == 'ladar')
+        return "Gas";
+	else if (type == 'radar')
+        return "Data";
+	else if (type == 'mag')
+        return "Relic";
+    else
+        return "";
 }
 
 siggymain.prototype.convertSiteID = function (whClass, type, siteID)

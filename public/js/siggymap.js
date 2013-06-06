@@ -684,7 +684,7 @@ siggyMap.prototype.setupEditor = function()
 		
 		
 		var fromSysInput = this.registerSystemAutoComplete("#wormholeEditor input[name=fromSys]");
-		var toCurrentInput = this.registerSystemAutoComplete("#wormholeEditor input[name=toSys]");
+		var toSysInput = this.registerSystemAutoComplete("#wormholeEditor input[name=toSys]");
 
 		var fromCurrentInput = $('#wormholeEditor input[name=fromCurrent]');
 		//resets cause fucking browsers
