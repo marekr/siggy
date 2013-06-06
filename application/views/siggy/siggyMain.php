@@ -151,10 +151,10 @@
 				<select name="type" style="float:left;display:block;margin-right:5px;">
 					<option value="none" selected="selected"> -- </option>
 					<option value="wh">WH</option>
-					<option value="ladar">Ladar</option>
-					<option value="grav">Grav</option>
-					<option value="radar">Radar</option>
-					<option value="mag">Mag</option>
+					<option value="ladar">Gas</option>
+					<option value="grav">Ore</option>
+					<option value="radar">Data</option>
+					<option value="mag">Relic</option>
 				</select>
 				<select name="site">
 				</select>

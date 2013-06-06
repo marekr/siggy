@@ -52,16 +52,16 @@ class Controller_Siggy extends FrontController
 		$this->template->content = $view;
 		
 		//load chain map html
-		$chainMapHTML = View::factory('/templatebits/chainMap');
+		$chainMapHTML = View::factory('templatebits/chainMap');
 		$chainMapHTML->mapOpen = $mapOpen;
 		$chainMapHTML->group = $this->groupData;
 		$view->chainMap = $chainMapHTML;
 		
-		$routePlannerHTML = View::factory('/templatebits/router');
+		$routePlannerHTML = View::factory('templatebits/routeplanner');
 		$this->template->routePlanner = $routePlannerHTML;
 		
 		//load header tools
-		$headerToolsHTML = View::factory('/templatebits/headerTools');
+		$headerToolsHTML = View::factory('templatebits/headerTools');
 		$headerToolsHTML->group = $this->groupData;
 		$this->template->headerTools = $headerToolsHTML;
 	}

@@ -146,7 +146,7 @@ class Controller_Account extends FrontController
 				$this->template->content =  View::Factory('account/register')->bind('errors', $errors);
 		}
 		
-		public function action_setAPI()
+		public function action_apiKeys()
 		{
 				if( !Auth::loggedIn() )
 				{
@@ -154,29 +154,95 @@ class Controller_Account extends FrontController
 						return;
 				}
 				
-				$this->template->title = __('siggy: set api key');
+				$view = View::factory('account/apiKeys');
+				$view->set('keys', Auth::$user->getAPIKeys());
+				$this->template->content = $view;
+				$this->template->title = 'siggy - set api';
+		}
 		
-		
-				if( Auth::$user->data['apiID'] == 0 || Auth::$user->data['apiKey'] == '' )
+		public function action_addAPI()
+		{
+				if( !Auth::loggedIn() )
 				{
-						$status = 'missing';
-				}
-				elseif( Auth::$user->data['apiFailures'] > 3 )
-				{
-						$status = 'failed';
-				}
-				elseif ( Auth::$user->data['apiInvalid'] )
-				{
-						$status = 'invalid';
-				}
-				else
-				{
-						$status = 'good';
+						$this->request->redirect('/');
+						return;
 				}
 				
+				
+				$this->apiKeyForm('add');
+		}
+		
+		
+		public function action_editAPI()
+		{
+				if( !Auth::loggedIn() )
+				{
+						$this->request->redirect('/');
+						return;
+				}
+				
+				
+				$this->apiKeyForm('edit');
+		}
+		
+		
+		
+		public function action_removeAPI()
+		{
+				if( !Auth::loggedIn() )
+				{
+						$this->request->redirect('/');
+						return;
+				}
+				
+				
+				$entryID = intval($this->request->param('id',0));
+				
+				
+				$keyData = DB::query(Database::SELECT, "SELECT * FROM apikeys WHERE entryID=:entryID AND userID=:userID")
+												->param(':entryID', $entryID)->param(':userID', Auth::$user->data['id'])
+												->execute()->current();				
+				if( !isset($keyData['entryID']) )
+				{
+					$this->request->redirect('/account/apiKeys');
+				}
+				
+				DB::delete('apikeys')->where('entryID', '=', $entryID)->execute();
+				
+				if( Auth::$user->data['apiKeyEntryID'] == $keyData['entryID'] )
+				{
+					Auth::$user->data['apiCorpID'] = 0;
+					Auth::$user->data['apiCharID'] = 0;
+					Auth::$user->data['apiCharName'] = '';
+					Auth::$user->data['apiKeyEntryID'] = 0;
+					
+					Auth::$user->save();
+				}
+				$this->request->redirect('/account/apiKeys');	
+		}
+		
+		private function apiKeyForm($mode)
+		{
 				$errors = array();
 				
-				if( isset($_POST['set']) )
+				$entryID = intval($this->request->param('id',0));
+				
+				
+				$keyData = array('apiID' => '', 'apiKey' => '', 'entryID' => 0);
+				if( $mode == 'edit' )
+				{
+						$keyData = DB::query(Database::SELECT, "SELECT * FROM apikeys WHERE entryID=:entryID AND userID=:userID")
+														->param(':entryID', $entryID)->param(':userID', Auth::$user->data['id'])
+														->execute()->current();
+														
+														
+						if( !isset($keyData['entryID']) )
+						{
+							$this->request->redirect('/account/apiKeys');
+						}
+				}
+				
+				if ($this->request->method() == "POST") 
 				{
 							if( empty( $_POST['apiID'] ) )
 							{
@@ -220,13 +286,31 @@ class Controller_Account extends FrontController
 													//$this->auth->update_user( Auth::$user['id'], array('apiID' => intval($_POST['apiID']), 'apiKey' => $_POST['apiKey'], 'apiLastCheck' => 0,'apiInvalid' => 0, 'apiFailures' => 0 ) );
 													//$this->auth->reload_user();
 													
-													Auth::$user->data['apiID'] = intval($_POST['apiID']);
-													Auth::$user->data['apiKey'] = $_POST['apiKey'];
-													Auth::$user->data['apiLastCheck'] = 0;
-													Auth::$user->data['apiInvalid'] = 0;
-													Auth::$user->data['apiFailures'] = 0;
+													$data['apiID'] = intval($_POST['apiID']);
+													$data['apiKey'] = $_POST['apiKey'];
+													$data['apiLastCheck'] = 0;
+													$data['apiKeyInvalid'] = 0;
+													$data['apiFailures'] = 0;
 													
-													Auth::$user->save();
+													if( $mode == 'edit' )
+													{
+														DB::update('apikeys')->set( $data )->where('entryID', '=',  $entryID)->execute();
+														
+														
+														if( Auth::$user->data['apiKeyEntryID'] == $entryID )
+														{
+															Auth::$user->data['apiCorpID'] = 0;
+															Auth::$user->data['apiCharID'] = 0;
+															Auth::$user->data['apiCharName'] = '';
+															Auth::$user->data['apiKeyEntryID'] = 0;
+															
+															Auth::$user->save();
+														}
+													}
+													else
+													{
+														DB::insert('apikeys', array_keys($data) )->values(array_values($data))->execute();
+													}
 													
 													$this->request->redirect('/account/characterSelect');
 											}
@@ -241,12 +325,14 @@ class Controller_Account extends FrontController
 									}
 							}
 				}
-				$view = View::factory('account/setAPI');
-				$view->set('status', $status);
+				$this->template->title = 'siggy - api key';
+				$view = View::factory('account/apiKeyForm');
+				$view->set('mode', $mode);
 				$view->set('errors', $errors);
+				$view->set('keyData', $keyData);
 				$this->template->content = $view;
 		}
-
+		
 		function bitMask($mask = 0)
 		{
 				$return = array();
@@ -497,17 +583,23 @@ class Controller_Account extends FrontController
 				$this->template->title = __('siggy: no access');
 						
 				$view = View::factory('siggy/noAPIAccess');
-				
-				if( Auth::$user->data['apiID'] > 0 && ( Auth::$user->data['apiCharID'] == 0 || Auth::$user->data['apiCorpID'] == 0 ) )
+			
+				if(	!isset(Auth::$user->data['apiKeyEntryID']) )
+				{
+						Auth::$user->loadByID(Auth::$user->data['id']);
+						Auth::$user->save();
+				}
+			
+				if( Auth::$user->data['apiKeyEntryID'] && ( Auth::$user->data['apiCharID'] == 0 || Auth::$user->data['apiCorpID'] == 0 ) )
 				{
 						//char select
 						$view->messageType = 'selectChar';
 				}
-				elseif ( Auth::$user->data['apiID'] == 0 )
+				elseif ( !count(Auth::$user->getAPIKeys()) )
 				{
 						$view->messageType = 'missingAPI';
 				}
-				elseif( Auth::$user->data['apiInvalid'] == 1 )
+				elseif( Auth::$user->data['apiKeyInvalid'] == 1 )
 				{
 						$view->messageType = 'badAPI';
 				}
@@ -528,57 +620,66 @@ class Controller_Account extends FrontController
 						return;
 				}		
 		
-				if( !( Auth::$user->data['apiID'] > 0) ||  Auth::$user->data['apiKey'] == '' )
+				$keys = Auth::$user->getAPIKeys();
+				if( !count($keys) )
 				{
-						$this->request->redirect('/account/setAPI');
+						$this->request->redirect('/account/apiKeys');
 				}
 				
 				
 				$this->template->title = __('siggy: character selection');
 				
+				Auth::$user->loadByID(Auth::$user->data['id']);
+				Auth::$user->save();
 				$charID =  Auth::$user->data['apiCharID'];
+				
 				
 				require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
 				spl_autoload_register( "Pheal::classload" );
 				PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
 				PhealConfig::getInstance()->http_ssl_verifypeer = false;
-				$pheal = new Pheal( Auth::$user->data['apiID'],  Auth::$user->data['apiKey']);
 				
-				$corpList = $this->getCorpList();
-				$charList = $this->getCharList();				
-				
-				$apiError = FALSE;
-				try
+				$chars = array();
+				foreach($keys as $key)
 				{
+					try
+					{
+						$pheal = new Pheal( $key['apiID'], $key['apiKey']);
+						
+						$corpList = $this->getCorpList();
+						$charList = $this->getCharList();				
+						
+						$apiError = FALSE;
 						//$result = $pheal->eveScope->CharacterInfo( array( 'characterID' => 460256976 )  );
 					//	print_r($result);
-						$chars = array();
 						$result = $pheal->accountScope->Characters();
 						
 						foreach($result->characters as $char )
 						{
 								if( in_array($char->corporationID, $corpList) || in_array($char->characterID, $charList) )
 								{
-										$chars[ $char->characterID ] = array( 'name' => $char->name, 'corpID' => $char->corporationID, 'corpName' => $char->corporationName, 'charID' => $char->characterID );
+										$chars[ $char->characterID ] = array( 'name' => $char->name, 'corpID' => $char->corporationID, 'corpName' => $char->corporationName, 'charID' => $char->characterID, 'entryID' => $key['entryID'] );
 								}
 						}
 						
-				}
-				catch(PhealAPIException $e)
-				{
-					$apiError = true;
+							
+					}
+					catch(PhealAPIException $e)
+					{
+						$apiError = true;
+					}
 				}
 				
-				
-				if( isset($_POST['charID']) )
+				if ($this->request->method() == "POST") 
 				{
 					$charID = intval($_POST['charID']);
-					
 					if( $charID && isset( $chars[ $charID ] ) )
 					{
 							Auth::$user->data['apiCorpID'] = $chars[ $charID ]['corpID'];
 							Auth::$user->data['apiCharName'] = $chars[ $charID ]['name'];
 							Auth::$user->data['apiCharID'] = $charID;
+							Auth::$user->data['apiKeyEntryID'] = $chars[ $charID ]['entryID'];
+							
 							Auth::$user->data['apiLastCheck'] = 0;
 							Auth::$user->data['apiInvalid'] = 0;
 							Auth::$user->data['apiFailures'] = 0;
@@ -588,7 +689,6 @@ class Controller_Account extends FrontController
 							$this->request->redirect('/');
 					}
 				}
-				
 				$view = View::factory('account/characterSelect');
 				$view->chars = $chars;
 				$view->selectedCharID = $charID;

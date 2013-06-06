@@ -87,8 +87,8 @@ foreach($headers as $k => $v)
 }
  
 Kohana::$environment = ($_SERVER['SERVER_NAME'] !== 'localhost') ? Kohana::PRODUCTION : Kohana::DEVELOPMENT;
-/*
 
+/*
 if( Kohana::$environment == Kohana::DEVELOPMENT && strpos($_SERVER['HTTP_USER_AGENT'],'EVE-IGB') === false )
 {
   $_SERVER['HTTP_EVE_CORPID'] = 389326446;

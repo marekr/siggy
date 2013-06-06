@@ -22,11 +22,35 @@ class User
 			return;
 		}
 		
-		$toSaveArray = $this->data;
-		//unset($toSaveArray['password']);
+		$userArray = array(	'id' => $this->data['id'],
+						'email' => $this->data['email'],
+						'password' => $this->data['password'],
+						'username' => $this->data['username'],
+						'groupID' => $this->data['groupID'],
+						'logins' => $this->data['logins'],
+						'reset_token' => $this->data['reset_token'],
+						'created' => $this->data['created'],
+						'active' => $this->data['active'],
+						'last_login' => $this->data['last_login'],
+						'gadmin' => $this->data['gadmin'],
+						'admin' => $this->data['admin'],
+						'gadmin' => $this->data['gadmin'],
+						'ip_address' => $this->data['ip_address'],
+						'apiCharID' => $this->data['apiCharID'],
+						'apiCharName' => $this->data['apiCharName'],
+						'apiCorpID' => $this->data['apiCorpID'],
+						'apiKeyEntryID' => $this->data['apiKeyEntryID']
+					 );
+		DB::update('users')->set( $userArray )->where('id', '=',  $this->data['id'])->execute();
 		
 		
-		DB::update('users')->set( $toSaveArray )->where('id', '=',  $this->data['id'])->execute();
+		if( $this->data['apiKeyEntryID'] != 0 )
+		{
+			$apiArray = array( 'apiKeyInvalid' => $this->data['apiKeyInvalid'],
+								'apiFailures' => $this->data['apiFailures']
+							 );
+			DB::update('apikeys')->set( $apiArray )->where('entryID', '=',  $this->data['apiKeyEntryID'])->execute();
+		}
 		
 		//are we the current user?
 		if( isset(Auth::$user->data['id']) && $this->data['id'] == Auth::$user->data['id'] )
@@ -78,7 +102,12 @@ class User
 	public function loadByEmail($email)
 	{
 		$email = strtolower($email);
-		$user = DB::query(Database::SELECT, 'SELECT u.*, ak.*
+		$user = DB::query(Database::SELECT, 'SELECT u.*, 
+												COALESCE(ak.apiID,0) as apiID, 
+												COALESCE(ak.apiKey,0) as apiKey, 
+												COALESCE(ak.apiKeyInvalid,0) as apiKeyInvalid, 
+												COALESCE(ak.apiFailures,0) as apiFailures, 
+												COALESCE(ak.apiLastCheck,0) as apiLastCheck 
 												FROM users u
 												LEFT JOIN apikeys ak ON(ak.entryID = u.apiKeyEntryID)
 												WHERE LOWER(u.email)=:email')
@@ -89,11 +118,34 @@ class User
 	
 	public function loadByID($id)
 	{
-		$user = DB::query(Database::SELECT, 'SELECT u.*, ak.*
+		$user = DB::query(Database::SELECT, 'SELECT u.*, 
+												COALESCE(ak.apiID,0) as apiID, 
+												COALESCE(ak.apiKey,0) as apiKey, 
+												COALESCE(ak.apiKeyInvalid,0) as apiKeyInvalid, 
+												COALESCE(ak.apiFailures,0) as apiFailures, 
+												COALESCE(ak.apiLastCheck,0) as apiLastCheck 
 												FROM users u
 												LEFT JOIN apikeys ak ON(ak.entryID = u.apiKeyEntryID)
 												WHERE u.id=:id')
 												->param(':id', $id)->execute()->current();
+		
+		$this->data = $user;
+	}
+	
+	public function loadByUsername($username)
+	{
+		$username = strtolower($username);
+	
+		$user = DB::query(Database::SELECT, 'SELECT u.*, 
+												COALESCE(ak.apiID,0) as apiID, 
+												COALESCE(ak.apiKey,0) as apiKey, 
+												COALESCE(ak.apiKeyInvalid,0) as apiKeyInvalid, 
+												COALESCE(ak.apiFailures,0) as apiFailures, 
+												COALESCE(ak.apiLastCheck,0) as apiLastCheck 
+												FROM users u
+												LEFT JOIN apikeys ak ON(ak.entryID = u.apiKeyEntryID)
+												WHERE LOWER(u.username)=:username')
+												->param(':username', $username)->execute()->current();
 		
 		$this->data = $user;
 	}
@@ -118,11 +170,18 @@ class User
     {
 		if( !self::userLoaded() )
 		{
-			return;
+			return FALSE;
 		}
+
+		//compatbility issue with last update, make them reselect
+		if( !isset($this->data['apiLastCheck']) || !isset($this->data['apiKeyInvalid']) )
+		{
+			return FALSE;
+		}
+		
 		if( $this->data['apiLastCheck'] < time()-60*120 )
 		{
-				if( $this->data['apiID'] == 0 ||  $this->data['apiKey'] == '' || $this->data['apiCharID'] == 0 || $this->data['apiInvalid'] || ($this->data['apiFailures'] >= 3) )
+				if( $this->data['apiID'] == 0 ||  $this->data['apiKey'] == '' || $this->data['apiCharID'] == 0 || $this->data['apiKeyInvalid'] || ($this->data['apiFailures'] >= 3) )
 				{
 					return FALSE;
 				}
@@ -140,10 +199,11 @@ class User
 								$results = $pheal->CharacterInfo( array( 'characterID' => $this->data['apiCharID'] )  );
 								
 			//					$this->update_user( $this->data['id'], array('apiCorpID' => $results->corporationID, 'apiLastCheck' => time(),'apiInvalid' => 0, 'apiFailures' => 0 ) );
-								$this->data['apiCorpID'] = $results->corporationID;
+								$this->data['apiCorpID'] = $results->corporationID;								
+								
 								$this->data['apiLastCheck'] = time();
 								$this->data['apiFailures'] = 0;
-								$this->data['apiInvalid'] = 0;
+								$this->data['apiKeyInvalid'] = 0;
 								$this->save();
 								
 			//					$this->reload_user();
@@ -174,6 +234,7 @@ class User
 											//$this->update_user( $this->data['id'], array('apiFailures' => $this->data['apiFailures']+1 ) );
 											//$this->reload_user();
 											$this->data['apiFailures'] = $this->data['apiFailures']+1;
+											
 											$this->save();
 											return FALSE;
 											break;
@@ -184,7 +245,9 @@ class User
 										case 521:
 											//bad api entirely
 											//$this->update_user( $this->data['id'], array('apiInvalid' => 1) );
-											$this->data['apiInvalid'] = 1;
+											$this->data['apiKeyInvalid'] = 1;
+											
+											
 											$this->save();
 											return FALSE;
 											break;
@@ -308,24 +371,27 @@ class Auth
 	public static function processLogin($username, $password, $rememberMe = FALSE)
 	{
 		
-		$user = DB::query(Database::SELECT, 'SELECT * FROM users WHERE LOWER(username)=:username')->param(':username', strtolower($username))->execute()->current();
-		if( !isset($user['id']) )
+		$tmp = new User();
+		$tmp->loadByUsername($username);
+		
+		
+		if( !isset($tmp->data['id']) )
 		{
 			return self::LOGIN_INVALID;
 		}
 		
-		if( self::hash($password) === $user['password'] )
+		if( self::hash($password) === $tmp->data['password'] )
 		{
 				//success!
-				self::$user->data = $user;
+				self::$user = $tmp;
 				
 				$lifetime = 0;
 				if( $rememberMe )
 				{
 					$lifetime = 60*60*24*365;	//1 year
 				}
-				Cookie::set('userID', $user['id'],$lifetime);
-				Cookie::set('passHash', $user['password'],$lifetime);
+				Cookie::set('userID', self::$user->data['id'],$lifetime);
+				Cookie::set('passHash', self::$user->data['password'],$lifetime);
 				
 				self::$session->reloadUserSession();
 				
