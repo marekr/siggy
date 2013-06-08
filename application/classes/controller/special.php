@@ -254,11 +254,11 @@ class Controller_Special extends Controller {
 												   m.marketGroupName marketGroupName,
 												   mp.marketGroupName marketParentGroupName
 												FROM
-												  chrRaces AS r INNER JOIN
-												  invTypes AS t ON r.raceID = t.raceID INNER JOIN
-												  invGroups AS g ON t.groupID = g.groupID LEFT OUTER JOIN
-												  invMarketGroups AS m ON t.marketGroupID = m.marketGroupID LEFT JOIN
-												  invMarketGroups AS mp ON m.parentGroupID = mp.marketGroupID 
+												  chrRaces AS r 
+												  INNER JOIN invTypes AS t ON r.raceID = t.raceID
+												  INNER JOIN invGroups AS g ON t.groupID = g.groupID
+												  LEFT OUTER JOIN invMarketGroups AS m ON t.marketGroupID = m.marketGroupID 
+												  LEFT JOIN invMarketGroups AS mp ON m.parentGroupID = mp.marketGroupID 
 												WHERE
 												  g.categoryID = 6 AND t.published = 1
 												ORDER BY
@@ -267,11 +267,12 @@ class Controller_Special extends Controller {
 						->as_array();		
 		foreach($ships as $ship)
 		{
+			print_r($ship);
 			$insert = array( 'shipID' => $ship['typeID'],
 							 'shipName' => $ship['typeName'],
 							 'mass' => (double)$ship['mass'],
-							 'graphicID' => (int)$ship['graphicID'],
-							 'iconID' => (int)$ship['iconID'],
+							// 'graphicID' => (int)$ship['graphicID'],
+							// 'iconID' => (int)$ship['iconID'],
 							 'shipClass' => $ship['groupName']
 							 );
 			DB::insert('ships', array_keys($insert) )->values(array_values($insert))->execute();
@@ -279,8 +280,10 @@ class Controller_Special extends Controller {
 	}
 	
 	//protect agaisnt stupid later
-	public function action_preProcess($start = 0)
+	public function action_preProcess()
 	{
+		$start = $this->request->param('start',0);
+	
 		if( !isset($_GET['key']) || $_GET['key'] != 'PIZZAMOFO' )
 		{
 			exit('GTFO');

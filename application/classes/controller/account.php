@@ -291,6 +291,7 @@ class Controller_Account extends FrontController
 													$data['apiLastCheck'] = 0;
 													$data['apiKeyInvalid'] = 0;
 													$data['apiFailures'] = 0;
+													$data['userID'] = Auth::$user->data['id'];
 													
 													if( $mode == 'edit' )
 													{

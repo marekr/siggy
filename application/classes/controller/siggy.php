@@ -11,6 +11,7 @@ class Controller_Siggy extends FrontController
 
 	public function action_index()
 	{
+		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 		$ssname = $this->request->param('ssname', '');
 	
 		$mapOpen = ( isset($_COOKIE['mapOpen'] ) ? intval($_COOKIE['mapOpen']) : 0 );
