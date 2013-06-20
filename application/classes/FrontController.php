@@ -125,8 +125,15 @@ class FrontController extends Controller
           }
           elseif( $this->authStatus != AuthStatus::ACCEPTED )
           {
-              $this->siggyredirect('/pages/accessMessage');
-          }
+				if( Auth::loggedIn() )
+				{
+					$this->siggyredirect('/account/noAPIAccess');
+				}
+				else
+				{
+					$this->siggyredirect('/pages/accessMessage');
+				}
+		  }
       }
       else
       {
