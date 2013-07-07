@@ -1214,6 +1214,9 @@ class Controller_Siggy extends FrontController
 				
 				DB::update('activesystems')->set( array('x' => $system['x'], 'y' => $system['y']) )->where('systemID', '=', $system['id'])->where('groupID', '=', $this->groupData['groupID'])->where('subGroupID', '=', $this->groupData['subGroupID'])->execute();
 			}
+			
+			
+			$this->__logAction('editmap', $this->groupData['charName']. " edited the map");
 		
 			$this->rebuildMapCache();
 		}
