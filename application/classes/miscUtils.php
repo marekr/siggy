@@ -443,6 +443,11 @@ final class miscUtils
 				{
 					return TRUE;
 				}
+                
+                if ( isset($_SERVER['HTTP_EVE_TRUSTED']) )
+                {
+                    return TRUE;
+                } 
 				return FALSE;
 		}
 		
