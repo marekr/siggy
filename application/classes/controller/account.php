@@ -277,48 +277,37 @@ class Controller_Account extends FrontController
 									
 									if( $success )
 									{
-											define('CHARINFO_PRIV', 16777216);
-											define('CHARINFO_PUB', 8388608);
-
-											$accessMask = $this->bitMask($result->key->accessMask);
-											if( in_array( CHARINFO_PRIV, $accessMask ) && in_array( CHARINFO_PUB, $accessMask ) )
-											{
 													//$this->auth->update_user( Auth::$user['id'], array('apiID' => intval($_POST['apiID']), 'apiKey' => $_POST['apiKey'], 'apiLastCheck' => 0,'apiInvalid' => 0, 'apiFailures' => 0 ) );
 													//$this->auth->reload_user();
 													
-													$data['apiID'] = intval($_POST['apiID']);
-													$data['apiKey'] = $_POST['apiKey'];
-													$data['apiLastCheck'] = 0;
-													$data['apiKeyInvalid'] = 0;
-													$data['apiFailures'] = 0;
-													$data['userID'] = Auth::$user->data['id'];
-													
-													if( $mode == 'edit' )
-													{
-														DB::update('apikeys')->set( $data )->where('entryID', '=',  $entryID)->execute();
-														
-														
-														if( Auth::$user->data['apiKeyEntryID'] == $entryID )
-														{
-															Auth::$user->data['apiCorpID'] = 0;
-															Auth::$user->data['apiCharID'] = 0;
-															Auth::$user->data['apiCharName'] = '';
-															Auth::$user->data['apiKeyEntryID'] = 0;
-															
-															Auth::$user->save();
-														}
-													}
-													else
-													{
-														DB::insert('apikeys', array_keys($data) )->values(array_values($data))->execute();
-													}
-													
-													$this->request->redirect('/account/characterSelect');
-											}
-											else
-											{
-													$errors['apiKey'] = 'The API key does not provide the proper access to CharacterInfo(private) and CharacterInfo(Public).';
-											}
+                                            $data['apiID'] = intval($_POST['apiID']);
+                                            $data['apiKey'] = $_POST['apiKey'];
+                                            $data['apiLastCheck'] = 0;
+                                            $data['apiKeyInvalid'] = 0;
+                                            $data['apiFailures'] = 0;
+                                            $data['userID'] = Auth::$user->data['id'];
+                                            
+                                            if( $mode == 'edit' )
+                                            {
+                                                DB::update('apikeys')->set( $data )->where('entryID', '=',  $entryID)->execute();
+                                                
+                                                
+                                                if( Auth::$user->data['apiKeyEntryID'] == $entryID )
+                                                {
+                                                    Auth::$user->data['apiCorpID'] = 0;
+                                                    Auth::$user->data['apiCharID'] = 0;
+                                                    Auth::$user->data['apiCharName'] = '';
+                                                    Auth::$user->data['apiKeyEntryID'] = 0;
+                                                    
+                                                    Auth::$user->save();
+                                                }
+                                            }
+                                            else
+                                            {
+                                                DB::insert('apikeys', array_keys($data) )->values(array_values($data))->execute();
+                                            }
+                                            
+                                            $this->request->redirect('/account/characterSelect');
 									}
 									else
 									{
@@ -645,27 +634,34 @@ class Controller_Account extends FrontController
 				{
 					try
 					{
-						$pheal = new Pheal( $key['apiID'], $key['apiKey']);
-						
-						$corpList = $this->getCorpList();
-						$charList = $this->getCharList();				
-						
-						$apiError = FALSE;
-						//$result = $pheal->eveScope->CharacterInfo( array( 'characterID' => 460256976 )  );
-					//	print_r($result);
-						$result = $pheal->accountScope->Characters();
-						
-						foreach($result->characters as $char )
+						try
 						{
-								if( in_array($char->corporationID, $corpList) || in_array($char->characterID, $charList) )
-								{
-										$chars[ $char->characterID ] = array( 'name' => $char->name, 'corpID' => $char->corporationID, 'corpName' => $char->corporationName, 'charID' => $char->characterID, 'entryID' => $key['entryID'] );
-								}
-						}
-						
+							$pheal = new Pheal( $key['apiID'], $key['apiKey']);
 							
+							$corpList = $this->getCorpList();
+							$charList = $this->getCharList();				
+							
+							$apiError = FALSE;
+							//$result = $pheal->eveScope->CharacterInfo( array( 'characterID' => 460256976 )  );
+						//	print_r($result);
+							$result = $pheal->accountScope->Characters();
+							
+							foreach($result->characters as $char )
+							{
+									if( in_array($char->corporationID, $corpList) || in_array($char->characterID, $charList) )
+									{
+											$chars[ $char->characterID ] = array( 'name' => $char->name, 'corpID' => $char->corporationID, 'corpName' => $char->corporationName, 'charID' => $char->characterID, 'entryID' => $key['entryID'] );
+									}
+							}
+							
+								
+						}
+						catch(PhealAPIException $e)
+						{
+							$apiError = true;
+						}
 					}
-					catch(PhealAPIException $e)
+					catch(PhealHTTPException $e)
 					{
 						$apiError = true;
 					}

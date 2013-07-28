@@ -6,6 +6,7 @@ class User
 {
 	public $data = array();
 	public $apiKeys = array();
+	public $perms = array();
 	
 	public $groupID = 0;
 	public $subGroupID = 0;
@@ -101,53 +102,54 @@ class User
 	
 	public function loadByEmail($email)
 	{
-		$email = strtolower($email);
-		$user = DB::query(Database::SELECT, 'SELECT u.*, 
-												COALESCE(ak.apiID,0) as apiID, 
-												COALESCE(ak.apiKey,0) as apiKey, 
-												COALESCE(ak.apiKeyInvalid,0) as apiKeyInvalid, 
-												COALESCE(ak.apiFailures,0) as apiFailures, 
-												COALESCE(ak.apiLastCheck,0) as apiLastCheck 
-												FROM users u
-												LEFT JOIN apikeys ak ON(ak.entryID = u.apiKeyEntryID)
-												WHERE LOWER(u.email)=:email')
-												->param(':email', $email)->execute()->current();
-		
-		$this->data = $user;
+		$this->loadBy('email', $email);
 	}
 	
 	public function loadByID($id)
 	{
-		$user = DB::query(Database::SELECT, 'SELECT u.*, 
-												COALESCE(ak.apiID,0) as apiID, 
-												COALESCE(ak.apiKey,0) as apiKey, 
-												COALESCE(ak.apiKeyInvalid,0) as apiKeyInvalid, 
-												COALESCE(ak.apiFailures,0) as apiFailures, 
-												COALESCE(ak.apiLastCheck,0) as apiLastCheck 
-												FROM users u
-												LEFT JOIN apikeys ak ON(ak.entryID = u.apiKeyEntryID)
-												WHERE u.id=:id')
-												->param(':id', $id)->execute()->current();
-		
-		$this->data = $user;
+		$this->loadBy('id', $id);
 	}
 	
 	public function loadByUsername($username)
 	{
-		$username = strtolower($username);
+		$this->loadBy('username', $username);
+	}
 	
-		$user = DB::query(Database::SELECT, 'SELECT u.*, 
-												COALESCE(ak.apiID,0) as apiID, 
-												COALESCE(ak.apiKey,0) as apiKey, 
-												COALESCE(ak.apiKeyInvalid,0) as apiKeyInvalid, 
-												COALESCE(ak.apiFailures,0) as apiFailures, 
-												COALESCE(ak.apiLastCheck,0) as apiLastCheck 
-												FROM users u
-												LEFT JOIN apikeys ak ON(ak.entryID = u.apiKeyEntryID)
-												WHERE LOWER(u.username)=:username')
-												->param(':username', $username)->execute()->current();
+	public function loadBy($identifier, $key)
+	{
+		$baseSQL = "SELECT u.*, 
+					COALESCE(ak.apiID,0) as apiID, 
+					COALESCE(ak.apiKey,0) as apiKey, 
+					COALESCE(ak.apiKeyInvalid,0) as apiKeyInvalid, 
+					COALESCE(ak.apiFailures,0) as apiFailures, 
+					COALESCE(ak.apiLastCheck,0) as apiLastCheck 
+					FROM users u
+					LEFT JOIN apikeys ak ON(ak.entryID = u.apiKeyEntryID)";
+					
+		if( $identifier == 'username' )
+		{
+			$user = DB::query(Database::SELECT, $baseSQL .' WHERE LOWER(u.username)=:username')
+											->param(':username', strtolower($key))->execute()->current();
+		}
+		else if( $identifier == 'id' )
+		{
+			$user = DB::query(Database::SELECT, $baseSQL .' WHERE u.id=:id')
+											->param(':id', intval($key))->execute()->current();
+		}
+		else if( $identifier == 'email' )
+		{		
+			$user = DB::query(Database::SELECT, $baseSQL .' WHERE LOWER(u.email)=:email')
+												->param(':email', strtolower($key))->execute()->current();
+		}
 		
 		$this->data = $user;
+		
+
+		$perms = DB::query(Database::SELECT, 'SELECT * FROM users_group_acl WHERE user_id = :id')
+										->param(':id', $this->data['id'])->execute()->as_array('group_id');
+		
+		$this->perms = $perms;
+		
 	}
 	
 	public function updatePassword($newPass)
@@ -196,19 +198,26 @@ class User
 				{
 						try 
 						{
-								$results = $pheal->CharacterInfo( array( 'characterID' => $this->data['apiCharID'] )  );
+                                //get all chars on the key
+                                $result = $pheal->accountScope->Characters();
+                                foreach($result->characters as $char )
+                                {
+                                    if( $char->characterID == $this->data['apiCharID'] )
+                                    {
+                                        $this->data['apiCorpID'] = $char->corporationID;								
+                                        
+                                        $this->data['apiLastCheck'] = time();
+                                        $this->data['apiFailures'] = 0;
+                                        $this->data['apiKeyInvalid'] = 0;
+                                        $this->save();
 								
-			//					$this->update_user( $this->data['id'], array('apiCorpID' => $results->corporationID, 'apiLastCheck' => time(),'apiInvalid' => 0, 'apiFailures' => 0 ) );
-								$this->data['apiCorpID'] = $results->corporationID;								
+                                        return array( 'corpID' => $this->data['apiCorpID'], 'charID' => $this->data['apiCharID'], 'charName' => $this->data['apiCharName'] );
+                                    }
+                                }
+                            
 								
-								$this->data['apiLastCheck'] = time();
-								$this->data['apiFailures'] = 0;
-								$this->data['apiKeyInvalid'] = 0;
-								$this->save();
-								
-			//					$this->reload_user();
-								
-								return array( 'corpID' => $this->data['apiCorpID'], 'charID' => $this->data['apiCharID'], 'charName' => $this->data['apiCharName'] );
+                            //key no longer exists?
+                            return FALSE;
 						}
 						catch( PhealAPIException $e )
 						{
@@ -336,7 +345,7 @@ class Auth
 		
 		if( isset($user['id']) && $user['id'] > 0)
 		{
-			return TRUE;
+			return $user['id'];
 		}
 		
 		return FALSE;
@@ -370,7 +379,6 @@ class Auth
 	
 	public static function processLogin($username, $password, $rememberMe = FALSE)
 	{
-		
 		$tmp = new User();
 		$tmp->loadByUsername($username);
 		

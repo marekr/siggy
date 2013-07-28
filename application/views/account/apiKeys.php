@@ -3,13 +3,8 @@
 					You must provide an proper working API key in order to use siggy. The following are requirements of a key:
 					<ul>
 						<li>Must be a new API Key(customizable keys).</li>
-						<li>The following permissions are required:
-							<ul>
-								<li>CharacterInfo Public</li>
-								<li>CharacterInfo Private*</li>
-							</ul>
-						</li>
-						<li>Keys must be set to never expire or you will lose access immediately</li>
+						<li>No permissions are required, except you must either set it to include the character with access or all characters</li>
+						<li>Keys must be set to never expire or you will lose access</li>
 						<li>Please don't use API keys that do not belong to you</li>
 					</ul>
 			</p>

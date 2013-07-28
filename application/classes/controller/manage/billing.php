@@ -3,13 +3,6 @@
 require_once APPPATH.'classes/groupUtils.php';
 require_once APPPATH.'classes/mapUtils.php';
 require_once APPPATH.'classes/miscUtils.php';
-/**
- * User controller: user administration, also user accounts/profiles.
- *
- * @author Mikito Takada
- * @package default
- * @version 1.0
- */
 
 class Controller_Manage_Billing extends Controller_App {
 

@@ -4,13 +4,6 @@
 			<?php else: ?>
 				<h2>Edit API Key</h2>
 			<?php endif; ?>
-			<p>
-				You must provide an proper working API key in order to use siggy. The following are requirements of a key:
-				<ul>
-					<li>CharacterInfo Public</li>
-					<li>CharacterInfo Private*</li>
-				</ul>
-			</p>
 			<?php if( $mode == 'add' ): ?>
 			<form class="form-horizontal" action='<?php echo URL::base(TRUE, TRUE);?>account/addAPI' method='POST'>
 			<input type="hidden" name="mode" value="add" />

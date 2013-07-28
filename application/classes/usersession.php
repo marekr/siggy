@@ -47,6 +47,10 @@ class UserSession
 				{
 					Auth::$user->data = $_SESSION['userData'];
 				}
+				if( isset($_SESSION['userPerms']) )
+				{
+					Auth::$user->perms = $_SESSION['userPerms'];
+				}
 				$initialized = TRUE;
 			}
 		}
@@ -66,6 +70,7 @@ class UserSession
 				if( Auth::autoLogin($memberID, $passHash) )
 				{
 					$_SESSION['userData'] = Auth::$user->data;
+					$_SESSION['userPerms'] = Auth::$user->perms;
 				}
 				
 			}
@@ -107,6 +112,7 @@ class UserSession
 		
 		
 		$_SESSION['userData'] = Auth::$user->data;
+		$_SESSION['userPerms'] = Auth::$user->perms;
 	}
 	
 	private function __generateSession()

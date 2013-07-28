@@ -3,7 +3,10 @@
   <head>
     <title>siggy</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/siggy.css?25" rel="stylesheet" media="screen" /> 
+	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/siggy.css?28" rel="stylesheet" media="screen" /> 
+	<?php if( isset($_GET['nyan']) ): ?>
+	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/rengas.css?28" rel="stylesheet" media="screen" /> 
+	<?php endif; ?>
     <?php if( Kohana::$environment == Kohana::DEVELOPMENT ): ?>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery-1.8.3.min.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery.tablesorter.js'></script>
@@ -19,7 +22,7 @@
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggymap.js?2'></script>
     <?php else: ?>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/thirdparty.compiled.js?13'></script>
-    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.compiled.js?52'></script>
+    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.compiled.js?74'></script>
     <?php endif; ?>
   </head>
   <body>
@@ -66,7 +69,6 @@
 			<div id="headerTools">
 				<?php echo $headerTools; ?>
 			</div>
-			<?php echo $routePlanner; ?>
 		</div>
 		<br />
 		<?php endif; ?>

@@ -113,10 +113,14 @@ class Controller_Pages extends FrontController
 														
 							if( $groupID )
 							{
-								Auth::$user->data['gadmin'] = 1;
+                                $insert = array('user_id' => Auth::$user->data['user_id'], 'group_id' => $groupID, 'can_manage_access' => 1, 'can_view_financial' => 1, 'can_manage_settings' => 1, 'can_manage_group_members' => 1, 'can_view_logs' => 1 );
+                                DB::insert('users_group_acl', array_keys($insert) )->values( array_values($insert) )->execute();
+                            
 								Auth::$user->data['groupID'] = $groupID;
 								Auth::$user->save();
 								
+                                
+                                
 								$this->request->redirect('pages/createGroup/3');
 							}
 							else

@@ -40,49 +40,51 @@
 		</div>
 		<div id='sidemenu'>
 				<div class='well'>
-						<div id='logoutBox'><strong>Logged in as <?php echo Auth::$user->data['username']; ?> (<?php echo Html::anchor('account/logout', 'Log out'); ?>)</strong><br />
-								<?php if(Auth::$user->isAdmin()): ?><br />
+						<div id='logoutBox'>
+								<strong>Logged in as <?php echo Auth::$user->data['username']; ?> (<?php echo Html::anchor('account/logout', 'Log out'); ?>)</strong><br />
+								<?php if( count($avaliableGroups) > 1 ): ?>
+								<br />
 								<form action='<?php echo URL::base(TRUE, TRUE);?>manage/admin/changeGroup' method='post'>
 										<select name='group' onchange='submit();'>
 										<?php 
-										$groups = ORM::factory('group')->find_all();
-										$selected = Auth::$user->data['groupID'];
-										foreach( $groups as $m ): ?>
-										<option value="<?php echo $m->groupID; ?>" <?php echo ( ($selected == $m->groupID) ? "selected='seleced'" : ''); ?>><?php echo $m->groupName; ?></option>
+											$selected = Auth::$user->data['groupID'];
+											foreach( $avaliableGroups as $m ): ?>
+											<option value="<?php echo $m['groupID']; ?>" <?php echo ( ($selected == $m['groupID']) ? "selected='seleced'" : ''); ?>><?php echo $m['groupName']; ?></option>
 										<?php endforeach; ?>
 										</select>
 								</form>
 								<?php endif; ?>
 						</div>
 						<ul class="nav nav-list">
-							<?php if(Auth::$user->isGroupAdmin()): ?>
 							<li class="nav-header">Information</li>
 							<li><?php echo Html::anchor('manage/group/dashboard', __('Announcements')); ?></li>
+                            <?php if( $perms['can_view_logs'] ): ?>
 							<li><?php echo Html::anchor('manage/logs/activity', __('Usage Logs')); ?></li>
 							<li><?php echo Html::anchor('manage/logs/sessions', __('Active Sessions')); ?></li>
+							<?php endif; ?>
 							
+                            <?php if( $perms['can_manage_group_members'] || $perms['can_manage_access'] ): ?>
 							<li class="nav-header">Group Access</li>
+							<?php endif; ?>
+                            <?php if( $perms['can_manage_group_members'] ): ?>
 							<li><?php echo Html::anchor('manage/group/members', __('Group Members')); ?></li>
 							<li><?php echo Html::anchor('manage/group/subgroups', __('Subgroups')); ?></li>
-							
+							<?php endif; ?>
+                            <?php if( $perms['can_manage_access'] ): ?>
+							<li><?php echo Html::anchor('manage/access/configure', __('Management Access')); ?></li>
+							<?php endif; ?>
+                            
+                            <?php if( $perms['can_manage_settings'] ): ?>
 							<li class="nav-header">Group Settings</li>
 							<li><?php echo Html::anchor('manage/group/settings', __('General')); ?></li>
 							<li><?php echo Html::anchor('manage/group/chainMapSettings', __('Chain Map')); ?></li>
+							<?php endif; ?>
 									
+                            <?php if( $perms['can_view_financial'] ): ?>
 							<li class="nav-header">Financial</li>
 							<li><?php echo Html::anchor('manage/billing/overview', __('Billing Overview')); ?></li>
-							
-							<!--
-							<li class='menu selected'>
-							<h3 style="">Group Data</h3>
-							<ul>
-							<li><?php echo Html::anchor('manage/group/settings', __('Logs')); ?></li>
-							<li><?php echo Html::anchor('manage/group/settings', __('Statistics')); ?></li>
-							</ul>
-							</li>
-							-->
 							<?php endif; ?>
-
+							
 							<?php if(Auth::$user->isAdmin()): ?>
 							<li class="nav-header">Admin</li>
 							<li><?php echo Html::anchor('manage/admin/groups', __('Groups')); ?></li>

@@ -2,6 +2,8 @@
 
 final class groupUtils
 {	
+
+
 		static function getMapCache($groupID, $subGroupID)
 		{
 				$cache = Cache::instance( CACHE_METHOD );

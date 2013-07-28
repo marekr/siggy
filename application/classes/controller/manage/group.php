@@ -3,13 +3,7 @@
 require_once APPPATH.'classes/groupUtils.php';
 require_once APPPATH.'classes/mapUtils.php';
 require_once APPPATH.'classes/miscUtils.php';
-/**
- * User controller: user administration, also user accounts/profiles.
- *
- * @author Mikito Takada
- * @package default
- * @version 1.0
- */
+
 
 class Controller_Manage_Group extends Controller_App {
 
@@ -37,9 +31,7 @@ class Controller_Manage_Group extends Controller_App {
     */
    public $secure_actions = array(
       // user actions
-      'members' => array('login','gadmin')
-      // the others are public (forgot, login, register, reset, noaccess)
-      // logout is also public to avoid confusion (e.g. easier to specify and test post-logout page)
+      'members' => array('can_manage_group_members')
       );
 
    // USER SELF-MANAGEMENT
