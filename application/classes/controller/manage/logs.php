@@ -50,13 +50,13 @@ class Controller_Manage_Logs extends Controller_App {
 	*/
 	public function action_index() 
 	{
-		if( Auth::$user->isGroupAdmin() ) 
+		if( Auth::$user->isGroupAdmin() || Auth::$user->data['admin'] ) 
 		{
-		 $this->request->redirect('manage/logs/activity');
+			$this->request->redirect('manage/logs/activity');
 		} 
 		else 
 		{
-		 $this->request->redirect('account/overview');
+			$this->request->redirect('account/overview');
 		}
 	}
 	

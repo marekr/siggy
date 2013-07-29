@@ -41,7 +41,7 @@ class Controller_Manage_Group extends Controller_App {
     */
    public function action_index() 
    {
-      if( Auth::$user->isGroupAdmin() ) 
+      if( Auth::$user->isGroupAdmin() || Auth::$user->data['admin'] ) 
       {
          $this->request->redirect('manage/group/dashboard');
       } else 

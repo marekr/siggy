@@ -62,6 +62,11 @@ class Controller_App extends Controller
     
     protected function hasAccess( $action )
     {
+        if( Auth::$user->data['admin'] )
+        {
+            return TRUE;
+        }
+    
         if( !isset( Auth::$user->perms[ Auth::$user->data['groupID'] ] ) )
         {
             return FALSE;
