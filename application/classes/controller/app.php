@@ -25,7 +25,7 @@ class Controller_App extends Controller
 
 	public function access_required()
 	{
-		$this->request->redirect('manage/access/denied');
+		$this->request->redirect('/');
 	}
 
 	public function login_required()
