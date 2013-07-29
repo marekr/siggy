@@ -83,18 +83,24 @@ class Controller_Manage_Access extends Controller_App
     {
         $id = $this->request->param('id');
         
-        $data = DB::query(Database::SELECT, 
-							"SELECT u.username,ua.* FROM users u
+        $count = DB::query(Database::SELECT, 
+							"SELECT COUNT(ua.user_id) as total FROM users u
 							JOIN users_group_acl ua ON(u.id = ua.user_id)
-                            WHERE ua.user_id = :id"
-							)->param(":id", $id)->execute()->current();
+                            WHERE ua.group_id = :groupID"
+							)->param(":groupID", Auth::$user->data['groupID'])->execute()->current();
+                           
                             
-                            
-		$view = $this->template->content = View::factory('manage/access/accessform');
-        $view->mode = 'edit';
-        $view->id = $id;
-        $view->data = $data;
-        $view->errors = array();
+        if( $count['total'] <= 1 )
+        {
+            Message::add('error', 'You cannot remove the last user with management access. Another user must be added first.');
+			$this->request->redirect('manage/access/configure');
+        }
+        
+        $id = $this->request->param('id');
+        
+        DB::delete('users_group_acl')->where('user_id', '=', $id)->where('group_id','=', Auth::$user->data['groupID'])->execute();
+        Message::add('sucess', 'User access removed succesfully');
+        $this->request->redirect('manage/access/configure');
     }
     
     public function action_add()
@@ -156,9 +162,14 @@ class Controller_Manage_Access extends Controller_App
         $data = DB::query(Database::SELECT, 
 							"SELECT u.username,ua.* FROM users u
 							JOIN users_group_acl ua ON(u.id = ua.user_id)
-                            WHERE ua.user_id = :id"
-							)->param(":id", $id)->execute()->current();
+                            WHERE ua.user_id = :id AND ua.group_id = :groupID"
+							)->param(":id", $id)->param(":groupID", Auth::$user->data['groupID'])->execute()->current();
                             
+        if( !count($data) )
+        {
+            Message::add('error', 'Invalid user selected.');
+			$this->request->redirect('manage/access/configure');
+        }
                             
         if ($this->request->method() == "POST") 
         {
