@@ -127,7 +127,7 @@ class Controller_Account extends FrontController
 									if( Auth::createUser( $userData ) )
 									{
 											Auth::processLogin($_POST['username'], $_POST['password']);
-											$this->request->redirect('account/setAPI');
+											$this->request->redirect('account/apiKeys');
 									}
 									else
 									{
