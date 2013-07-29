@@ -58,29 +58,29 @@
 						<ul class="nav nav-list">
 							<li class="nav-header">Information</li>
 							<li><?php echo Html::anchor('manage/group/dashboard', __('Announcements')); ?></li>
-                            <?php if( $perms['can_view_logs'] ): ?>
+                            <?php if( Auth::$user->data['admin'] || $perms['can_view_logs'] ): ?>
 							<li><?php echo Html::anchor('manage/logs/activity', __('Usage Logs')); ?></li>
 							<li><?php echo Html::anchor('manage/logs/sessions', __('Active Sessions')); ?></li>
 							<?php endif; ?>
 							
-                            <?php if( $perms['can_manage_group_members'] || $perms['can_manage_access'] ): ?>
+                            <?php if( Auth::$user->data['admin'] || $perms['can_manage_group_members'] || $perms['can_manage_access'] ): ?>
 							<li class="nav-header">Group Access</li>
 							<?php endif; ?>
-                            <?php if( $perms['can_manage_group_members'] ): ?>
+                            <?php if( Auth::$user->data['admin'] || $perms['can_manage_group_members'] ): ?>
 							<li><?php echo Html::anchor('manage/group/members', __('Group Members')); ?></li>
 							<li><?php echo Html::anchor('manage/group/subgroups', __('Subgroups')); ?></li>
 							<?php endif; ?>
-                            <?php if( $perms['can_manage_access'] ): ?>
+                            <?php if( Auth::$user->data['admin'] || $perms['can_manage_access'] ): ?>
 							<li><?php echo Html::anchor('manage/access/configure', __('Management Access')); ?></li>
 							<?php endif; ?>
                             
-                            <?php if( $perms['can_manage_settings'] ): ?>
+                            <?php if( Auth::$user->data['admin'] || $perms['can_manage_settings'] ): ?>
 							<li class="nav-header">Group Settings</li>
 							<li><?php echo Html::anchor('manage/group/settings', __('General')); ?></li>
 							<li><?php echo Html::anchor('manage/group/chainMapSettings', __('Chain Map')); ?></li>
 							<?php endif; ?>
 									
-                            <?php if( $perms['can_view_financial'] ): ?>
+                            <?php if( Auth::$user->data['admin'] || $perms['can_view_financial'] ): ?>
 							<li class="nav-header">Financial</li>
 							<li><?php echo Html::anchor('manage/billing/overview', __('Billing Overview')); ?></li>
 							<?php endif; ?>

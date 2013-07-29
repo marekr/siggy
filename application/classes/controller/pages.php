@@ -113,13 +113,14 @@ class Controller_Pages extends FrontController
 														
 							if( $groupID )
 							{
-                                $insert = array('user_id' => Auth::$user->data['user_id'], 'group_id' => $groupID, 'can_manage_access' => 1, 'can_view_financial' => 1, 'can_manage_settings' => 1, 'can_manage_group_members' => 1, 'can_view_logs' => 1 );
+                                $insert = array('user_id' => Auth::$user->data['id'], 'group_id' => $groupID, 'can_manage_access' => 1, 'can_view_financial' => 1, 'can_manage_settings' => 1, 'can_manage_group_members' => 1, 'can_view_logs' => 1 );
                                 DB::insert('users_group_acl', array_keys($insert) )->values( array_values($insert) )->execute();
                             
 								Auth::$user->data['groupID'] = $groupID;
 								Auth::$user->save();
 								
-                                
+                                Auth::$user->loadByID( Auth::$user->data['id'] );
+                                Auth::$session->reloadUserSession();
                                 
 								$this->request->redirect('pages/createGroup/3');
 							}
