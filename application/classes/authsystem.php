@@ -33,9 +33,7 @@ class User
 						'created' => $this->data['created'],
 						'active' => $this->data['active'],
 						'last_login' => $this->data['last_login'],
-						'gadmin' => $this->data['gadmin'],
 						'admin' => $this->data['admin'],
-						'gadmin' => $this->data['gadmin'],
 						'ip_address' => $this->data['ip_address'],
 						'apiCharID' => $this->data['apiCharID'],
 						'apiCharName' => $this->data['apiCharName'],
@@ -165,7 +163,12 @@ class User
 	
 	public function isGroupAdmin()
 	{
-		return ( (isset($this->data['gadmin']) && $this->data['gadmin']) ? TRUE : FALSE);
+        if( isset( $this->perms[ $this->data['groupID'] ] ) )
+        {
+            return TRUE;
+        }
+
+        return FALSE;
 	}
 	
     public function apiCharCheck()

@@ -73,8 +73,9 @@ class Controller_Manage_Access extends Controller_App
 		
 		$users = DB::query(Database::SELECT, 
 							"SELECT u.username,ua.* FROM users u
-							JOIN users_group_acl ua ON(u.id = ua.user_id)"
-							)->execute()->as_array();
+							JOIN users_group_acl ua ON(u.id = ua.user_id)
+                            WHERE ua.group_id = :groupID"
+							)->param(":groupID", Auth::$user->data['groupID'])->execute()->as_array();
 		
 		$view->users = $users;
 	}
