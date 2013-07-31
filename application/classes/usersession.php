@@ -30,34 +30,7 @@ class UserSession
 		if( $this->sessionID == NULL )
 		{
 			$this->sessionID = $this->__generateSessionID();
-		}
-		session_id($this->sessionID);
-		session_start();
-		
-		$initialized = FALSE;
-		if( !empty($_SESSION['init']) )
-		{
-			
-			$sess = DB::query(Database::SELECT, 'SELECT * FROM siggysessions WHERE sessionID=:id')->param(':id', $this->sessionID)->execute()->current();
-			
-			if( isset($sess['sessionID']) )
-			{
-				$this->__updateSession( $this->sessionID );
-				if( isset($_SESSION['userData']) )
-				{
-					Auth::$user->data = $_SESSION['userData'];
-				}
-				if( isset($_SESSION['userPerms']) )
-				{
-					Auth::$user->perms = $_SESSION['userPerms'];
-				}
-				$initialized = TRUE;
-			}
-		}
-		
-		
-		if( !$initialized )
-		{
+            
 			$userData = array();
 			
 			//reauth the member
@@ -67,10 +40,10 @@ class UserSession
 			if( $memberID && $passHash )
 			{
 				
-				if( Auth::autoLogin($memberID, $passHash) )
+				if( !Auth::autoLogin($memberID, $passHash) )
 				{
-					$_SESSION['userData'] = Auth::$user->data;
-					$_SESSION['userPerms'] = Auth::$user->perms;
+                    Cookie::delete('userID');
+                    Cookie::delete('passHash');
 				}
 				
 			}
@@ -78,6 +51,35 @@ class UserSession
 			
 			$this->__generateSession($this->sessionID);
 		}
+        else
+        {
+            $sess = DB::query(Database::SELECT, 'SELECT sessionID,userID,groupID FROM siggysessions WHERE sessionID=:id')->param(':id', $this->sessionID)->execute()->current();
+                
+            if( isset($sess['sessionID']) )
+            {
+                $this->__updateSession( $this->sessionID );
+                Auth::$user->loadByID( $sess['userID'] );
+            }
+            else
+            {
+                $this->sessionID = $this->__generateSessionID();
+                
+                $memberID = Cookie::get('userID');
+                $passHash = Cookie::get('passHash');
+                if( $memberID && $passHash )
+                {
+                    
+                    if( !Auth::autoLogin($memberID, $passHash) )
+                    {
+                        Cookie::delete('userID');
+                        Cookie::delete('passHash');
+                    }
+                    
+                }
+                $this->__generateSession($this->sessionID);
+            }
+        }
+		
 		
 	}
 	

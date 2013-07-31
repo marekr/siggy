@@ -67,11 +67,11 @@ class Controller_App extends Controller
             return TRUE;
         }
     
+        
         if( !isset( Auth::$user->perms[ Auth::$user->data['groupID'] ] ) )
         {
             return FALSE;
         }
-        
         if( isset( $this->secure_actions[ $action ] ) )
         {
             $perms = Auth::$user->perms[ Auth::$user->data['groupID'] ];
@@ -99,14 +99,24 @@ class Controller_App extends Controller
 	{
 		// Execute parent::before first
 		parent::before();
-        
+		
         
         if( !Auth::loggedIn() )
         {
             $this->login_required();
         }
-		
-
+        
+        $groupID = Auth::$user->data['groupID'];
+        $groups = array_keys(Auth::$user->perms);
+        
+        if( count($groups) > 0 && !in_array($groupID, $groups) )
+        {
+			Auth::$user->data['groupID'] = $groups[0];
+			Auth::$user->save();
+        }
+        
+        
+        
 		// Check user auth and role
 		$action_name = Request::current()->action();
 
