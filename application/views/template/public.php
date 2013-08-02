@@ -35,7 +35,7 @@
               <li><a href="http://siggy.borkedlabs.com/info">Guide</a></li>
             <?php if( $loggedIn ): ?>
               <li <?php echo ($selectedTab == 'account' ? 'class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>account/overview">Account</a></li>
-              <?php if( $user['gadmin'] ): ?>
+              <?php if( count(Auth::$user->perms) > 0 ): ?>
 				<li <?php echo ($selectedTab == 'admin' ? 'class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>manage">Admin</a></li>
 			  <?php elseif( !$igb): ?>
 			  
