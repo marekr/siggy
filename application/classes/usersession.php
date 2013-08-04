@@ -16,8 +16,6 @@ class UserSession
 
 	public function __construct()
 	{
-		ini_set('session.use_trans_sid', FALSE);
-		ini_set('session.use_cookies', FALSE);
 	
 		$this->charID = isset($_SERVER['HTTP_EVE_CHARID']) ? $_SERVER['HTTP_EVE_CHARID'] : 0;
 		$this->charName = isset($_SERVER['HTTP_EVE_CHARNAME']) ? $_SERVER['HTTP_EVE_CHARNAME'] : '';
@@ -87,7 +85,7 @@ class UserSession
 	{
 		DB::delete('siggysessions')->where('sessionID', '=', $this->sessionID)->execute();
 		
-		session_destroy();
+		//session_destroy();
 		
 		Cookie::delete('sessionID');
 	}
@@ -113,8 +111,8 @@ class UserSession
 		DB::update('siggysessions')->set( $update )->where('sessionID', '=',  $this->sessionID)->execute();
 		
 		
-		$_SESSION['userData'] = Auth::$user->data;
-		$_SESSION['userPerms'] = Auth::$user->perms;
+		//$_SESSION['userData'] = Auth::$user->data;
+		//$_SESSION['userPerms'] = Auth::$user->perms;
 	}
 	
 	private function __generateSession()
@@ -134,7 +132,7 @@ class UserSession
 		DB::insert('siggysessions', array_keys($insert) )->values(array_values($insert))->execute();
 		
 		
-		$_SESSION['init'] = TRUE;
+		//$_SESSION['init'] = TRUE;
 		Cookie::set('sessionID', $this->sessionID);
 
 		return TRUE;

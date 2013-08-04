@@ -581,61 +581,6 @@ td.desc
 
 
 /* CHAIN MAP */
-#chainMapContainer
-{
-}
-
-#chainMapContainer h2
-{
-	text-align:center;
-}
-
-#chainMapContainer p.left
-{
-	display:inline-block;
-	position:absolute;
-	left:3px;'
-}
-
-#chainMapInner
-{
-	border: 1px solid #000;
-}
-
-#chainMap
-{
-	width: 100%;
-	height: 400px;
-	background-color: #2d2d2d;
-}
-
-
-#chainMapContainer p.editing,
-#chainMapContainer p.loading,
-#chainMapContainer p.deleting
-{
-	position:absolute;
-	font-size:1.4em;
-	display:none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-o-user-select: none;
-	user-select: none;
-	cursor: default;
-}
-
-
-#chainMapContainer p.loading
-{
-	font-size:3em;
-}
-
-#chainMapContainer div.buttons
-{
-	position:relative;
-	text-align:center;
-}
 
 #wormholePopup,
 #systemOptionsPopup
@@ -652,40 +597,6 @@ button.centered
 }
 
 
-
-#chainPanTrackX
-{
-	display:none;
-	height: 16px;
-	background-color:#000;
-	padding-top:2px;
-	padding-bottom:2px;
-}
-
-#chainPanBarX
-{
-	background-color: #A46D00; 
-	width:40px;
-	height: 16px;
-	cursor: pointer;
-	position:relative;
-}
-
-#chainPanBarX p.left
-{
-	float:left;
-	cursor:inherit;
-	margin-left:10px;
-	font-weight:bold;
-}
-
-#chainPanBarX p.right
-{
-	float:right;
-	cursor:inherit;
-	margin-right:10px;
-	font-weight:bold;
-}
 
 /* siggy Menu "generic" css */
 .dropUp,
@@ -969,3 +880,253 @@ ul.itemList
 .contextMenu LI.delete A { background-image: url(images/page_white_delete.png); }
 .contextMenu LI.quit A { background-image: url(images/door.png); }
 
+
+/*
+
+MAP */
+
+#chainMapContainer
+{
+}
+
+#chainMapContainer h2
+{
+	text-align:center;
+}
+
+#chainMapContainer p.left
+{
+	display:inline-block;
+	position:absolute;
+	left:3px;'
+}
+
+#chainMapInner
+{
+	border: 1px solid #000;
+	background-color: #2d2d2d;
+}
+
+
+#chainMapContainer p.editing,
+#chainMapContainer p.loading,
+#chainMapContainer p.deleting
+{
+	position:absolute;
+	font-size:1.4em;
+	display:none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	cursor: default;
+}
+
+
+#chainMapContainer p.loading
+{
+	font-size:3em;
+}
+
+#chainMapContainer div.buttons
+{
+	position:relative;
+	text-align:center;
+}
+
+#chainMap
+{
+	width: 100%;
+	height: 400px;
+	position:relative;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: moz-none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.map-system-blob
+{
+	width: 80px;
+	min-height:  30px;
+	background-color: #fff;
+	position:absolute;
+	border-radius: 10px;
+	border: 3px solid #676767;
+	color: #000;
+	padding:2px;
+	padding-left: 5px;
+	cursor: pointer;
+	z-index: 24;
+	-webkit-border-radius:  10px;
+	overflow:hidden;
+	font-size: 11px;
+}
+
+.map-system-blob-title
+{
+	font-weight:bold;
+	overflow: hidden;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: moz-none;
+	-ms-user-select: none;
+	user-select: none;
+	white-space: nowrap;
+}
+
+.map-system-blob-class
+{
+	margin-right:3px;
+}
+
+.map-activity-empty
+{
+	border: 3px solid #03B807;
+}
+
+.map-activity-active
+{
+	border: 3px solid #DE4444;
+}
+
+.map-activity-friendly
+{
+	border: 3px solid #092665;
+}
+.map-activity-occupied
+{
+	border: 3px solid #FFE205;
+}
+
+.map-class-unknown
+{
+	color: #2783D9;
+}
+
+.map-class-dangerous
+{
+	color: #FF9308;
+}
+
+.map-class-deadly
+{
+	color: #FF0D0D;
+}
+
+.map-class-high
+{
+	color: #259900;
+}
+
+.map-class-low
+{
+	color: #FF9308;	
+}
+
+.map-class-null
+{
+	color: #FF0D0D;	
+}
+
+.map-effect
+{
+	border-radius: 10px;
+	-webkit-border-radius:  10px;
+	height:10px;
+	width: 10px;
+	background: white;
+	display: inline-block;
+	margin-right: 2px;
+}
+
+.map-effect-blackhole
+{
+	background: black;
+}
+
+.map-effect-pulsar
+{
+	background: blue;
+}
+
+.map-effect-wolf-rayet
+{
+	background: orange;
+}
+
+.map-effect-magnetar
+{
+	background: pink;
+}
+
+.map-effect-catalysmic
+{
+	background: yellow;
+}
+
+.map-effect-red-giant
+{
+	background: red;
+}
+
+#map-footer-bar
+{
+	position:relative;
+	height:25px;
+	background-color: #1C1C1C;
+}
+#chainMapInner div.buttons
+{
+	background-color: #1C1C1C;
+}
+
+.map-tooltip
+{
+	color: #fff;
+	background: #262626;
+	padding:1px;
+}
+
+#chainMapScrolltainer
+{
+	overflow-y: hidden;
+	overflow-x: auto;
+}
+
+/* Let's get this party started */
+#chainMapScrolltainer::-webkit-scrollbar
+{
+	width: 12px;
+}
+ 
+/* Track */
+#chainMapScrolltainer::-webkit-scrollbar-track {
+	
+}
+ 
+/* Handle */
+#chainMapScrolltainer::-webkit-scrollbar-thumb {
+	background-color: #A46D00; 
+}
+#chainMapScrolltainer::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(255,0,0,0.4); 
+}
+
+#chainMapScrolltainer::-webkit-scrollbar-track-piece {
+	background-color: #1C1C1C;
+}
+#chainMapScrolltainer::-webkit-scrollbar-button {
+    background-color: #664402;
+}
+
+.selection-box {
+	position:    relative;
+	border:     1px dotted #fff;
+	background: #fff;
+	opacity: 0.4;
+}

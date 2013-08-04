@@ -8,8 +8,10 @@
 					<p class="loading">Loading....<br /><span style='font-size:0.3em;'>(This may take up to 10 seconds.)</span></p>
 					<p class="editing">Editing: Drag systems by clicking on them.</p>
 					<p class="deleting">Click on(or mouse drag) wormhole links to select for deletion</p>
-					<div id="chainMap">
-					</div>
+                    <div id="chainMapScrolltainer">
+                        <div id="chainMap">
+                        </div>
+                    </div>
 					<!-- magic buttons -->
 					<div class="buttons">
 						<button id="chainMapSave" style="display:none;">Save Map Changes</button>
@@ -17,13 +19,7 @@
 						<button id="chainMapMassDeleteCancel" style="display:none;">Cancel</button>
 					</div>
 					<!-- magic buttons -->
-					<div id='chainPanTrackX'>
-						<div id='chainPanBarX'>
-							<p class='left'> &lt; </p>
-							<p class='right'> &gt; </p>
-						</div>
-					</div>
-					<div style='position:relative;height:25px;'>
+					<div id='map-footer-bar'>
 						<!-- options -->
 						<div class='dropUp' id='chainMapOptions' style='position:absolute;'>
 							<span>Options</span>
