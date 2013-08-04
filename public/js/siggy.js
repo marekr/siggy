@@ -28,15 +28,15 @@ function roundNumber(num, dec)
 */
 jQuery.fn.flash = function( color, duration )
 {
-		if( typeof this.data('flashing') =='undefined' )
-		{
-			this.data('flashing', false);
-		}
-		
-		if( this.data('flashing') == true )
-		{
-			return;
-		}
+    if( typeof this.data('flashing') =='undefined' )
+    {
+        this.data('flashing', false);
+    }
+    
+    if( this.data('flashing') == true )
+    {
+        return;
+    }
     var current = this.css( 'background-color' );
 
 	this.data('flashing', true)
@@ -67,11 +67,11 @@ jQuery.fn.fadeOutFlash = function( color, duration )
 }
 
 new function() {
-		$.browser.eveIGB = false;
+	/*	$.browser.eveIGB = false;
 		if( navigator.appVersion.indexOf('EVE-IGB') != -1 )
 		{
 				$.browser.eveIGB = true;
-		}
+		}*/
 }();
 
 
@@ -455,7 +455,6 @@ var whLookup = {
 var blackHoleEffects = {
 	1: [
 		['Inertia', '+25%'],
-		['Targeting Range', '-10%'],
 		['Falloff', '-10%'],
 		['Missile Velocity', '-10%'],
 		['Ship Velocity', '+25%'],
@@ -463,7 +462,6 @@ var blackHoleEffects = {
 	],
 	2: [
 		['Inertia', '+44%'],
-		['Targeting Range', '-19%'],
 		['Falloff', '-19%'],
 		['Missile Velocity', '-19%'],
 		['Ship Velocity', '+44%'],
@@ -471,7 +469,6 @@ var blackHoleEffects = {
 	],
 	3: [
 		['Inertia', '+55%'],
-		['Targeting Range', '-27%'],
 		['Falloff', '-27%'],
 		['Missile Velocity', '-27%'],
 		['Ship Velocity', '+55%'],
@@ -479,7 +476,6 @@ var blackHoleEffects = {
 	],
 	4: [
 		['Inertia', '+68%'],
-		['Targeting Range', '-34%'],
 		['Falloff', '-34%'],
 		['Missile Velocity', '-34%'],
 		['Ship Velocity', '+68%'],
@@ -487,7 +483,6 @@ var blackHoleEffects = {
 	], 
 	5: [
 		['Inertia', '+85%'],
-		['Targeting Range', '-41%'],
 		['Falloff', '-41%'],
 		['Missile Velocity', '-41%'],
 		['Ship Velocity', '+85%'],
@@ -495,7 +490,6 @@ var blackHoleEffects = {
 	],
 	6: [
 		['Inertia', '+100%'],
-		['Targeting Range', '-50%'],
 		['Falloff', '-50%'],
 		['Missile Velocity', '-50%'],
 		['Ship Velocity', '+100%'],
@@ -796,6 +790,8 @@ function siggymain( options )
 	};
 	
 	this.settings = $.extend(this.defaults, options);
+    
+    this.setSystemID(this.settings.initialSystemID);
 }
 
 siggymain.prototype.getCurrentTime = function ()
@@ -820,52 +816,6 @@ siggymain.displayTimeStamp = function (unixTimestamp)
 
 siggymain.prototype.update = function ()
 {
-/*
-	if( this.idleTimeout >= this.idleMax )
-	{
-		if( !this.afked )
-		{
-			$.blockUI({message: "Please move your mouse to reactivate siggy."});
-			this.afked = true;
-		}
-		
-		var silentRequest = {
-			acsid: this.acsid, 
-			acsname: this.acsname 
-		}
-		var that = this;
-		$.ajax({
-			url: this.baseUrl + 'updateSilent',
-			data: silentRequest,
-			beforeSend : function(xhr, opts){
-				if(that.fatalError == true) //just an example
-				{
-					xhr.abort();
-				}
-			},
-			success: function (data)
-			{
-				if( data != null )
-				{
-					if( parseInt( data.acsid ) != 0 )
-					{
-						that.acsid = data.acsid;
-					}
-					if( data.acsname != '' )
-					{
-						that.acsname = data.acsname;
-					}
-				}
-			},
-			dataType: 'json'
-			});
-		
-		this._updateTimeout = setTimeout(function (thisObj)
-		{
-			thisObj.update(0)
-		}, 20000, this);
-		return;
-	}*/
 
 	var request = {
 		systemID: this.systemID,
@@ -877,8 +827,7 @@ siggymain.prototype.update = function ()
 		acsname: this.acsname,
 		mapOpen: this.map.isMapOpen(),
 		mapLastUpdate: this.map.lastUpdate,
-		forceUpdate: this.forceUpdate,
-		sessionID: this.settings.sessionID
+		forceUpdate: this.forceUpdate
 	};
 
 	var that = this;
@@ -886,6 +835,8 @@ siggymain.prototype.update = function ()
 		url: this.settings.baseUrl + 'update',
 		data: request,
 		dataType: 'json',
+        cache: false,
+        async: true,
 		beforeSend : function(xhr, opts){
 			if(that.fatalError == true) //just an example
 			{
@@ -894,83 +845,95 @@ siggymain.prototype.update = function ()
 		},
 		success: function (data)
 			{
-				if( data.redirect != undefined )
-				{
-					window.location = this.settings.baseUrl + data.redirect;
-					return;
-				}
+                try
+                {
+                    if( data.redirect != undefined )
+                    {
+                        window.location = this.settings.baseUrl + data.redirect;
+                        return;
+                    }
 			
-			
-				if( parseInt( data.acsid ) != 0 )
-				{
-					that.acsid = data.acsid;
-				}
-				if( data.acsname != '' )
-				{
-					that.acsname = data.acsname;
-					$('#acsname b').text(that.acsname);
-				}
-				if (data.systemUpdate)
-				{
-					that.updateSystemInfo(data.systemData);
-					that.updateSystemOptionsForm(data.systemData);
-				}
-				if (data.sigUpdate)
-				{
-					var flashSigs = ( data.systemUpdate ? false : true );
-					that.updateSigs(data.sigData, flashSigs);
-				}
-				if (data.systemListUpdate)
-				{
-					that.systemList = data.systemList;
-					that.updateSystemList(that.systemList);
-				}
-				if (data.globalNotesUpdate)
-				{
-					if (!that.editingGlobalNotes)
-					{
-						
-						if( getCookie('notesUpdate') != null )
-						{
-							var nlu = parseInt(getCookie('notesUpdate'));
-						}				
-						else
-						{
-							var nlu = that.lastGlobalNotesUpdate;
-						}
-						
-						//console.log('nlu:'+nlu);
-						if( !that.globalNotesEle.is(':visible') && data.lastGlobalNotesUpdate > nlu && nlu != 0 )
-						{
-							that.blinkNotes();
-						}
-						
-						that.lastGlobalNotesUpdate = data.lastGlobalNotesUpdate;
-						
-						setCookie('notesUpdate', data.lastGlobalNotesUpdate, 365);
-						
-						that.globalNotes = data.globalNotes;
-						$('#thegnotes').html(that.globalNotes.replace(/\n/g, '<br />'));
-						$('#gNotesTime').text( siggymain.displayTimeStamp(that.lastGlobalNotesUpdate) );
-					}
-				}
-				
-				if( that.map.isMapOpen()  )
-				{
-					if( data.mapUpdate )
-					{
-						that.map.update(data.chainMap.lastUpdate, data.chainMap.systems, data.chainMap.wormholes);
-					}
-					if( typeof(data.chainMap) != 'undefined' && typeof(data.chainMap.actives) != '' )
-					{
-						that.map.updateActives(data.chainMap.actives);
-					}
-				}
+                    if( parseInt( data.acsid ) != 0 )
+                    {
+                        that.acsid = data.acsid;
+                    }
+                    if( data.acsname != '' )
+                    {
+                        that.acsname = data.acsname;
+                        $('#acsname b').text(that.acsname);
+                    }
+                    if (data.systemUpdate)
+                    {
+                        that.updateSystemInfo(data.systemData);
+                        that.updateSystemOptionsForm(data.systemData);
+                    }
+                    if (data.sigUpdate)
+                    {
+                        var flashSigs = ( data.systemUpdate ? false : true );
+                        that.updateSigs(data.sigData, flashSigs);
+                    }
+                    if (data.systemListUpdate)
+                    {
+                        that.systemList = data.systemList;
+                        that.updateSystemList(that.systemList);
+                    }
+                    if (data.globalNotesUpdate)
+                    {
+                        if (!that.editingGlobalNotes)
+                        {
+                            
+                            if( getCookie('notesUpdate') != null )
+                            {
+                                var nlu = parseInt(getCookie('notesUpdate'));
+                            }				
+                            else
+                            {
+                                var nlu = that.lastGlobalNotesUpdate;
+                            }
+                            
+                            //console.log('nlu:'+nlu);
+                            if( !that.globalNotesEle.is(':visible') && data.lastGlobalNotesUpdate > nlu && nlu != 0 )
+                            {
+                                that.blinkNotes();
+                            }
+                            
+                            that.lastGlobalNotesUpdate = data.lastGlobalNotesUpdate;
+                            
+                            setCookie('notesUpdate', data.lastGlobalNotesUpdate, 365);
+                            
+                            that.globalNotes = data.globalNotes;
+                            $('#thegnotes').html(that.globalNotes.replace(/\n/g, '<br />'));
+                            $('#gNotesTime').text( siggymain.displayTimeStamp(that.lastGlobalNotesUpdate) );
+                        }
+                    }
+                    
+                    if( that.map.isMapOpen()  )
+                    {
+                        if( parseInt(data.mapUpdate) == 1  )
+                        {
+                        
+                            //use temp vars or else chrome chokes badly with async requests
+                            var timestamp = data.chainMap.lastUpdate;
+                            var systems = data.chainMap.systems;
+                            var whs = data.chainMap.wormholes;
+                            that.map.update(timestamp, systems, whs);
+                        }
+                        if( typeof(data.chainMap) != 'undefined' && typeof(data.chainMap.actives) != '' )
+                        {
+                            var actives =  data.chainMap.actives;
+                            that.map.updateActives(data.chainMap.actives);
+                        }
+                    }
 
-				that.lastUpdate = data.lastUpdate;
-				//  $.unblockUI();
-				
-				delete data;
+                    that.lastUpdate = data.lastUpdate;
+                    //  $.unblockUI();
+                    
+                    //delete data;*/
+                }
+                catch(err)
+                {
+                    console.log(err.message);
+                }
 			}
 		});
 	
@@ -982,7 +945,7 @@ siggymain.prototype.update = function ()
 	this._updateTimeout = setTimeout(function (thisObj)
 	{
 		thisObj.update(0)
-	}, 10000, this);
+	}, 5000, this);
 	
 	return true;
 }
@@ -2043,7 +2006,7 @@ siggymain.prototype.setupFatalErrorHandler = function()
 {
 	var that = this;
 	
-	$(document).ajaxError( function() {
+	$(document).ajaxError( function(ev, jqxhr, settings, exception) {
 		that.ajaxErrors += 1;
 		if( that.ajaxErrors >= 5 )
 		{
@@ -2066,13 +2029,13 @@ siggymain.prototype.initialize = function ()
 	var that = this;
 	this.setupFatalErrorHandler();
 	
-  $('#loading').ajaxStart( function() {
-    $(this).show();
-  });
-  
-  $('#loading').ajaxStop( function() {
-    $(this).hide();
-  } );	
+      $('#loading').ajaxStart( function() {
+        $(this).show();
+      });
+      
+      $('#loading').ajaxStop( function() {
+        $(this).hide();
+      } );	
 
 
 	sigCalc = new siggyCalc();
@@ -2094,6 +2057,7 @@ siggymain.prototype.initialize = function ()
 	this.map.siggymain = this;
 	this.map.initialize();
 	
+	this.initializeGNotes();
 	
 	this.forceUpdate = true;
 	this.update();
@@ -2197,7 +2161,6 @@ siggymain.prototype.initialize = function ()
 		});
 	});	
 	
-	this.initializeGNotes();
 	
 	$('#bearC1').click(function () { that.setBearTab(1); return false; });
 	$('#bearC2').click(function () { that.setBearTab(2); return false; });
@@ -2209,8 +2172,8 @@ siggymain.prototype.initialize = function ()
 	$('.carebear').click(function ()
 	{
 		$.blockUI({ 
-				message: $('#carebearBox'),
-				css: { 
+            message: $('#carebearBox'),
+            css: { 
             border: 'none', 
             padding: '15px', 
             background: 'transparent', 

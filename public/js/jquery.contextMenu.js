@@ -13,6 +13,8 @@
 //   and the MIT License and is copyright A Beautiful Site, LLC.
 //
 if(jQuery)( function() {
+    $.support.eventSelectstart = ("onselectstart" in document.documentElement);
+
 	$.extend($.fn, {
 		
 		contextMenu: function(o, callback) {
@@ -131,13 +133,20 @@ if(jQuery)( function() {
 				});
 				
 				// Disable text selection
+                if ($.support.eventSelectstart)
+                {
+                    $('#' + o.menu).each( function() { $(this).bind('selectstart.disableTextSelect', function() { return false; }); });
+                }
+                /*
 				if( $.browser.mozilla ) {
 					$('#' + o.menu).each( function() { $(this).css({ 'MozUserSelect' : 'none' }); });
 				} else if( $.browser.msie ) {
 					$('#' + o.menu).each( function() { $(this).bind('selectstart.disableTextSelect', function() { return false; }); });
 				} else {
 					$('#' + o.menu).each(function() { $(this).bind('mousedown.disableTextSelect', function() { return false; }); });
-				}
+				}*/
+                
+                
 				// Disable browser context menu (requires both selectors to work in IE/Safari + FF/Chrome)
 				$(el).add($('UL.contextMenu')).bind('contextmenu', function() { return false; });
 				

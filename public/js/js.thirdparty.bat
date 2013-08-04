@@ -1,2 +1,26 @@
-"C:\Program Files (x86)\Java\jre7\bin\java.exe" -jar compiler.jar --js=jquery-1.8.3.js --js=jquery.ezpz_tooltip.js --js=jquery.blockUI.js --js=jquery.color.js --js=jquery.autocomplete.js --js=jquery.tablesorter.js --js=raphael-1.5.js --js=jquery.flot.js --js=jquery.contextMenu.js --js_output_file=thirdparty.compiled.js
+"C:\Program Files (x86)\Java\jre7\bin\java.exe" -jar compiler.jar ^
+--js=jquery-1.10.1.min.js ^
+--js=jquery-migrate-core.js ^
+--js=jquery-ui-1.10.3.min.js ^
+--js=jquery.ezpz_tooltip.js ^
+--js=jquery.blockUI.js ^
+--js=jquery.color.js ^
+--js=jquery.autocomplete.js ^
+--js=jquery.tablesorter.js ^
+--js=jquery.flot.js ^
+--js=jquery.contextMenu.js ^
+--js=jsBezier-0.6-min.js ^
+--js=jsPlumb-util.js ^
+--js=jsPlumb-dom-adapter.js ^
+--js=jsPlumb-drag.js ^
+--js=jsPlumb.js ^
+--js=jsPlumb-endpoint.js ^
+--js=jsPlumb-connection.js ^
+--js=jsPlumb-anchors.js ^
+--js=jsPlumb-defaults.js ^
+--js=jsPlumb-renderers-svg.js ^
+--js=jsPlumb-renderers-canvas.js ^
+--js=jsPlumb-renderers-vml.js ^
+--js=jquery.jsPlumb.js ^
+--js_output_file=thirdparty.compiled.js
 @pause
