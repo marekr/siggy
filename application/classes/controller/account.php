@@ -277,8 +277,6 @@ class Controller_Account extends FrontController
 									
 									if( $success )
 									{
-													//$this->auth->update_user( Auth::$user['id'], array('apiID' => intval($_POST['apiID']), 'apiKey' => $_POST['apiKey'], 'apiLastCheck' => 0,'apiInvalid' => 0, 'apiFailures' => 0 ) );
-													//$this->auth->reload_user();
 													
                                             $data['apiID'] = intval($_POST['apiID']);
                                             $data['apiKey'] = $_POST['apiKey'];

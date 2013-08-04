@@ -46,7 +46,8 @@ class User
 		if( $this->data['apiKeyEntryID'] != 0 )
 		{
 			$apiArray = array( 'apiKeyInvalid' => $this->data['apiKeyInvalid'],
-								'apiFailures' => $this->data['apiFailures']
+								'apiFailures' => $this->data['apiFailures'],
+                                'apiLastCheck' => $this->data['apiLastCheck']
 							 );
 			DB::update('apikeys')->set( $apiArray )->where('entryID', '=',  $this->data['apiKeyEntryID'])->execute();
 		}
@@ -188,6 +189,10 @@ class User
 		{
 				if( $this->data['apiID'] == 0 ||  $this->data['apiKey'] == '' || $this->data['apiCharID'] == 0 || $this->data['apiKeyInvalid'] || ($this->data['apiFailures'] >= 3) )
 				{
+                    $this->data['apiCharID'] = 0;
+                    $this->data['apiCorpID'] = 0;		
+                    $this->save();
+                                        
 					return FALSE;
 				}
 				
@@ -245,8 +250,15 @@ class User
 											//increment fuck you count
 											//$this->update_user( $this->data['id'], array('apiFailures' => $this->data['apiFailures']+1 ) );
 											//$this->reload_user();
-											$this->data['apiFailures'] = $this->data['apiFailures']+1;
-											
+                                            if( $this->data['apiFailures'] < 3 )
+                                            {
+                                                $this->data['apiFailures'] = $this->data['apiFailures']+1;
+											}
+                                            else
+                                            {
+                                                $this->data['apiKeyInvalid'] = 1;
+                                            }
+                                            
 											$this->save();
 											return FALSE;
 											break;
@@ -255,6 +267,7 @@ class User
 										case 222:
 										case 223:
 										case 521:
+                                        case 403:
 											//bad api entirely
 											//$this->update_user( $this->data['id'], array('apiInvalid' => 1) );
 											$this->data['apiKeyInvalid'] = 1;
@@ -270,8 +283,7 @@ class User
 											break;
 											
 										default:
-											echo 'error: ' . $e->code . ' meesage: ' . $e->getMessage();
-											return array( 'corpID' => $this->data['apiCorpID'], 'charID' => $this->data['apiCharID'], 'charName' => $this->data['apiCharName'] );
+											return FALSE;
 											break;
 								 }
 						}
