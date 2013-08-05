@@ -981,9 +981,14 @@ MAP */
 
 .map-system-blob-selected
 {
+	-moz-box-shadow: 0px 0px 15px rgba(240, 240, 240,1);
+	-webkit-box-shadow: 0px 0px 15px rgba(240, 240, 240,1);
+	box-shadow: 0px 0px 15px rgba(240, 240, 240,1);
 }
 
-.map-system-blob-selected:before
+/*
+
+.map-system-blob-selected:after
 {
     content:"";
     display:block;
@@ -994,7 +999,7 @@ MAP */
     right: 0;
     bottom: 0px;
     border: 2px dotted #36F;
-}
+}*/
 
 .map-system-blob-title
 {
