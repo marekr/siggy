@@ -1,0 +1,23 @@
+#chainMapInner
+{
+	background: url(../../public/images/nyan2sub.png) repeat-x;
+}
+
+#chainMap
+{
+	background: url(../../public/images/nyan2.jpg) no-repeat;
+}
+
+body
+{
+	background: #051121  url(../../public/images/nyan_bg.jpg) no-repeat;
+	background-attachment:fixed;
+	background-position:center; 
+}
+
+.map-system-blob
+{
+	background: url(../../public/images/nyan-blob-bg.png);
+	border: 3px solid #F9D194;
+}
+
