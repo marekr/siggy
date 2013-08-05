@@ -845,8 +845,8 @@ siggymain.prototype.update = function ()
 		},
 		success: function (data)
 			{
-                try
-                {
+                //try
+                //{
                     if( data.redirect != undefined )
                     {
                         window.location = this.settings.baseUrl + data.redirect;
@@ -928,12 +928,12 @@ siggymain.prototype.update = function ()
                     that.lastUpdate = data.lastUpdate;
                     //  $.unblockUI();
                     
-                    //delete data;*/
-                }
-                catch(err)
-                {
-                    console.log(err.message);
-                }
+                    delete data;
+                //}
+                //catch(err)
+               // {
+                //    console.log(err.message);
+                //}
 			}
 		});
 	
@@ -1606,7 +1606,7 @@ siggymain.prototype.editSig = function (sigID)
 	if( this.settings.showSigSizeCol )
 	{
 			var sizeEle = $("#sig-" + sigID + " td.size select");
-			console.log( sizeEle );
+			
 	}
 	var typeEle = $("#sig-" + sigID + " td.type select");
 	var descEle = $("#sig-" + sigID + " td.desc input");
@@ -2029,11 +2029,11 @@ siggymain.prototype.initialize = function ()
 	var that = this;
 	this.setupFatalErrorHandler();
 	
-      $('#loading').ajaxStart( function() {
+      $(document).ajaxStart( function() {
         $(this).show();
       });
       
-      $('#loading').ajaxStop( function() {
+      $(document).ajaxStop( function() {
         $(this).hide();
       } );	
 

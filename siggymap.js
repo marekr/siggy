@@ -75,6 +75,7 @@ function siggyMap(options)
 	this.editingSystem = 0;
 
     this.selectionBox = $('<div>').addClass('selection-box');
+    this.selectedSystemBox = $('<div>').addClass('selected-system');
 }
 
 siggyMap.prototype.showMessage = function(what)
@@ -260,7 +261,7 @@ siggyMap.prototype.initialize = function()
                          x: that.selectionBox.position().left,
                          y: that.selectionBox.position().top
                     };
-                        console.log(bb);
+                       
                     
                     that.selectionBox.remove();
                     
@@ -309,8 +310,28 @@ siggyMap.prototype.initialize = function()
                 }					
             });
         });        
+        
+        
+        
+		$(document).bind('siggy.switchSystem', function(e, systemID) {
+            that.setSelectedSystem( systemID );
+            e.stopPropagation();
+		});
 }
 
+siggyMap.prototype.setSelectedSystem = function( systemID )
+{
+		if( this.selectedSystemID != systemID )
+		{
+            console.log(this.selectedSystemID);
+            console.log(systemID);
+				$( "#"+this.selectedSystemID ).removeClass('map-system-blob-selected');
+                
+				$("#"+systemID ).addClass('map-system-blob-selected');
+				
+				this.selectedSystemID = systemID;
+		}
+}
 
 siggyMap.prototype.registerEvents = function()
 {
@@ -371,65 +392,65 @@ siggyMap.prototype.registerEvents = function()
         
     } );
     
-    
-		$('#chainMapMassDeleteConfirm').click( function() {
-			var deleteHashes = [];
-            
-            
-			var connectionList = jsPlumb.getConnections(); 
-            for (i in connectionList)
-            {
-                var conn = connectionList[i];
-                
-                if( conn.getParameter('deleteMe') == true )
-                {
-                    deleteHashes.push( conn.getParameter('hash') );
-                    jsPlumb.detach(conn);
-                }
-            }
-			
-			if( deleteHashes.length > 0 )
-			{
-				$.post(that.baseUrl + 'dochainMapWHMassDelete', { hashes: JSON.stringify(deleteHashes) }, 
-					function() {
-					that.siggymain.updateNow();
-				});
-			}
-			
-			that.hideMessage('deleting');
-			that.massDelete = false;
-			
-			
-			$(this).hide();
-			$('#chainMapMassDeleteCancel').hide();
-			$('#chainMapOptions').data('disabled',false);
-			
-		});
-		
-		$('#chainMapMassDeleteCancel').click( function() {
 
-			var connectionList = jsPlumb.getConnections(); 
-            for (i in connectionList)
+    $('#chainMapMassDeleteConfirm').click( function() {
+        var deleteHashes = [];
+        
+        
+        var connectionList = jsPlumb.getConnections(); 
+        for (i in connectionList)
+        {
+            var conn = connectionList[i];
+            
+            if( conn.getParameter('deleteMe') == true )
             {
-                var conn = connectionList[i];
-                var hash = conn.getParameter('hash');    
-                
-                conn.setParameter('deleteMe', false);
-                conn.setPaintStyle( {
-                       lineWidth:6,
-                       strokeStyle: that.getMassColor(that.wormholes[hash].mass),
-                       outlineColor: that.getTimeColor(that.wormholes[hash].eol),
-                       outlineWidth:3
-                });
+                deleteHashes.push( conn.getParameter('hash') );
+                jsPlumb.detach(conn);
             }
-			
-			that.hideMessage('deleting');
-			that.massDelete = false;
-			
-			$(this).hide();
-			$('#chainMapMassDeleteConfirm').hide();
-			$('#chainMapOptions').data('disabled', false);
-		});
+        }
+        
+        if( deleteHashes.length > 0 )
+        {
+            $.post(that.baseUrl + 'dochainMapWHMassDelete', { hashes: JSON.stringify(deleteHashes) }, 
+                function() {
+                that.siggymain.updateNow();
+            });
+        }
+        
+        that.hideMessage('deleting');
+        that.massDelete = false;
+        
+        
+        $(this).hide();
+        $('#chainMapMassDeleteCancel').hide();
+        $('#chainMapOptions').data('disabled',false);
+        
+    });
+    
+    $('#chainMapMassDeleteCancel').click( function() {
+
+        var connectionList = jsPlumb.getConnections(); 
+        for (i in connectionList)
+        {
+            var conn = connectionList[i];
+            var hash = conn.getParameter('hash');    
+            
+            conn.setParameter('deleteMe', false);
+            conn.setPaintStyle( {
+                   lineWidth:6,
+                   strokeStyle: that.getMassColor(that.wormholes[hash].mass),
+                   outlineColor: that.getTimeColor(that.wormholes[hash].eol),
+                   outlineWidth:3
+            });
+        }
+        
+        that.hideMessage('deleting');
+        that.massDelete = false;
+        
+        $(this).hide();
+        $('#chainMapMassDeleteConfirm').hide();
+        $('#chainMapOptions').data('disabled', false);
+    });
 }
 
 
@@ -461,7 +482,9 @@ siggyMap.prototype.updateActives = function( activesData )
     for( var i in this.systems )
     {
         var sysID = this.systems[i].systemID;
-        
+
+        var ele =  $('#' + sysID + ' p.map-system-blob-actives');
+        ele.empty();
         if( typeof(activesData[sysID]) != 'undefined' )
         {
             var actives = activesData[sysID];
@@ -484,7 +507,7 @@ siggyMap.prototype.updateActives = function( activesData )
             }
             
             
-            $('#' + sysID + ' p.map-system-blob-actives').html(text);
+            ele.html(text);
         }
     }
 	
@@ -500,18 +523,24 @@ siggyMap.prototype.draw = function()
 {
     var that = this;
     
+    jsPlumb.deleteEveryEndpoint();
     $('#chainMap').empty();
-    jsPlumb.detachAllConnections($('.map-system-blob'));
     
     for( var i in this.systems )
     {
+        //local variable assignment
         var systemData = this.systems[i];
         
         var sysBlob = $("<div>").addClass('map-system-blob').offset({ top: systemData.y, left: systemData.x}).attr("id", systemData.systemID);
         
         //blob time for the title 
-        var systemName = $("<span>").text(systemData.displayName == "" ? systemData.name : systemData.displayName);
-        var titleClassBit = $("<span>").addClass('map-system-blob-class').addClass( this.getClassColor( parseInt(systemData.sysClass) ) ).text( this.getClassText( parseInt(systemData.sysClass) ) );
+        var systemName = $("<span>").text(systemData.displayName == "" ? systemData.name : systemData.displayName).addClass('map-system-blob-sysname');
+        
+        var titleClassBit = "";
+        if( systemData.sysClass >= 7 || ( systemData.sysClass < 7 && systemData.displayName == "") )
+        {
+            titleClassBit = $("<span>").addClass('map-system-blob-class').addClass( this.getClassColor( parseInt(systemData.sysClass) ) ).text( this.getClassText( parseInt(systemData.sysClass) ) );
+        }
         
         //effect stuff
         var effectBit = $("<span>");
@@ -526,6 +555,11 @@ siggyMap.prototype.draw = function()
         //show info on the name 
         systemName.click( function(ele)
         {
+            if( that.editing || that.massDelete )
+            {
+                return false;
+            }
+    
             var sysID = $(this).parent().parent().attr("id");
             if( typeof(CCPEVE) != "undefined" )
             {
@@ -545,6 +579,10 @@ siggyMap.prototype.draw = function()
         var systemBlobActives = $("<p>").addClass('map-system-blob-actives');
         sysBlob.append(systemBlobTitle).append(systemBlobActives);
         
+        if( this.selectedSystemID == systemData.systemID )
+        {
+            sysBlob.addClass('map-system-blob-selected');
+        }
         
         // get the activity color class
         var activityClass = this.getActivityColor( parseInt(systemData.activity) );
@@ -552,7 +590,7 @@ siggyMap.prototype.draw = function()
         
         $("#chainMap").append( sysBlob );
         
-        $(sysBlob).contextMenu( { menu: 'systemMenu' },
+        sysBlob.contextMenu( { menu: 'systemMenu' },
             function(action, el, pos) {
                 if( action == "edit" )
                 {
@@ -566,21 +604,42 @@ siggyMap.prototype.draw = function()
                     }
                 }
         });
+        
+        sysBlob.click( function() {
+            if( that.editing || that.massDelete )
+            {
+                return false;
+            }
+            var sysID = $(this).attr("id");
+            that.siggymain.switchSystem(sysID, that.systems[sysID].name);
+        } );
     }
+    
+    var _listeners = function(e) {
+        e.bind("mouseenter", function(c) { 
+            if( that.editing || that.massDelete )
+            {
+                return false;
+            }
+            c.showOverlay("label");
+        });
+        e.bind("mouseexit", function(c) { 
+            c.hideOverlay("label");
+        });        
+    };    
     
     for( var w in this.wormholes )
     {
         //local variable to make code smaller
         var wormhole = this.wormholes[w];
 
-        
-        var connection = jsPlumb.connect({ source: wormhole.from, 
+        var connectionOptions = { source: wormhole.from, 
                             target: wormhole.to,
                             anchor:"Continuous",
                             endpointsOnTop:false, 
                             endpoint:"Blank",		
                             detachable:false,
-                            connector:["Bezier", { curviness:5 }],
+                            connector:["StateMachine", { curviness:10 }],
                             connectorTooltip: "aSDASDA",
                             tooltip: "aSDASDA",
                             anchor:[ "Perimeter", { shape:"Ellipse" } ],
@@ -594,41 +653,60 @@ siggyMap.prototype.draw = function()
                             endpointStyle:{ fillStyle:"#a7b04b" },
                             parameters: { hash: wormhole.hash, deleteMe: false }
 
-                        });     
-
+                        };
                         
-            connection.bind("click", function(conn)
+        wormhole.eolToggled = parseInt(wormhole.eolToggled);
+        if( wormhole.eolToggled != 0 )
+        {
+            connectionOptions.overlays = [
+                                        ["Label", {													   					
+                                            cssClass:"map-eol-overlay",
+                                            label : 'EOL set at: '+ siggymain.displayTimeStamp(wormhole.eolToggled),
+                                            location:0.5,
+                                            id:"label"
+                                        }]
+                                        ];
+        }
+            
+        var connection = jsPlumb.connect(connectionOptions);     
+
+        if( wormhole.eolToggled != 0 )
+        {
+            _listeners(connection);            
+        }
+        
+        connection.bind("click", function(conn)
+        {
+            var hash = conn.getParameter('hash');    
+            if( that.massDelete )
             {
-                var hash = conn.getParameter('hash');    
-				if( that.massDelete )
-				{
-					if( conn.getParameter('deleteMe') )
-					{
-                        conn.setParameter('deleteMe', false);
-                        conn.setPaintStyle( {
-                               lineWidth:6,
-                               strokeStyle: that.getMassColor(that.wormholes[hash].mass),
-                               outlineColor: that.getTimeColor(that.wormholes[hash].eol),
-                               outlineWidth:3
-                        });
-					}
-					else
-					{
-                        conn.setParameter('deleteMe', true);
-                        conn.setPaintStyle( {
-                               lineWidth:6,
-                               strokeStyle: "#006AFE",
-                               outlineColor: "#006AFE",
-                               outlineWidth:3
-                        });
-						this.deleteMe = true;
-					}
-				}
-				else
-				{
-					that.editWormhole(hash);
-				}
-            });
+                if( conn.getParameter('deleteMe') )
+                {
+                    conn.setParameter('deleteMe', false);
+                    conn.setPaintStyle( {
+                           lineWidth:6,
+                           strokeStyle: that.getMassColor(that.wormholes[hash].mass),
+                           outlineColor: that.getTimeColor(that.wormholes[hash].eol),
+                           outlineWidth:3
+                    });
+                }
+                else
+                {
+                    conn.setParameter('deleteMe', true);
+                    conn.setPaintStyle( {
+                           lineWidth:6,
+                           strokeStyle: "#006AFE",
+                           outlineColor: "#006AFE",
+                           outlineWidth:3
+                    });
+                    this.deleteMe = true;
+                }
+            }
+            else
+            {
+                that.editWormhole(hash);
+            }
+        });
             
     }
          
@@ -971,6 +1049,20 @@ siggyMap.prototype.setupEditor = function()
 		
 }
 
+
+siggyMap.prototype.displayEditorErrors = function(errors)
+{
+	var errorsUL = $('#wormholeEditor ul.errors');
+	errorsUL.empty();
+	errorsUL.show();
+	
+	for( var i = 0; i < errors.length; i++ )
+	{
+		errorsUL.append( $('<li>').text( errors[i] ) );
+	}
+}
+
+
 siggyMap.prototype.setupSystemEditor = function()
 {
 	var that = this;
@@ -1006,11 +1098,85 @@ siggyMap.prototype.initializeTabs = function()
 	
 }
 
+
 siggyMap.prototype.updateJumpLog = function( hash )
 {
+		var logList = $('#jumpLogList');
+		logList.empty();
+		
+		if( !this.settings.jumpTrackerEnabled )
+		{
+            return;
+		}
+		
+		var request = {
+			whHash: hash
+		}
+		
+		var that = this;
+		$.get(this.baseUrl + 'getJumpLog', request, function (data)
+		{
+			data.totalMass = parseInt(data.totalMass);
+			var displayMass = roundNumber(data.totalMass/1000000,2);
+			$('#totalJumpedMass').text(displayMass);
+			
+			if( data.totalMass > 0 )
+			{
+				for( var i in data.jumpItems )
+				{
+					var item = data.jumpItems[i];
+					
+					var mass = roundNumber(parseInt(item.mass)/1000000,2);
+			
+					var charName = '';
+					if( that.settings.jumpTrackerShowNames )
+					{
+						charName = ' - '+item.charName;
+					}
+					
+					var time = '';
+					if( that.settings.jumpTrackerShowTime )
+					{
+						time =  siggymain.displayTimeStamp(item.time);
+					}
+					
+					var direction = '';
+					var fromDName = '';
+                    
+					if( that.systems[item.origin].displayName != '' )
+					{
+						fromDName = ' ('+that.systems[item.origin].displayName+')';
+					}
+					direction += that.systems[item.origin].name+fromDName + ' -> ';
+					
+					var toDName = '';
+					if( that.systems[item.destination].displayName != '' )
+					{
+						toDName = ' ('+that.systems[item.destination].displayName+')';
+					}
+					direction += that.systems[item.destination].name+toDName;					
+					
+					
+					var s = $('<li><p style="float:left"><b>' + item.shipName +'</b>' + charName + '<br />' +
+						item.shipClass + '<br />' +
+						time + 
+						'</p>' +
+						'<p style="float:right">' +
+						'Mass: ' + mass + 'mil' +
+						'</p><div class="clear"></div>' +
+						'<div class="center">' + direction +'</div></li>');
+					
+					logList.append(s);
+				
+				}
+			}
+			else
+			{
+				logList.append( $('<li><b>No jumps recorded<b/></li>') );
+			}		
+		} );
 		
 }
-
 
 siggyMap.prototype.registerSystemAutoComplete = function(inputSelector)
 {

@@ -16,11 +16,12 @@
 --js=jsPlumb.js ^
 --js=jsPlumb-endpoint.js ^
 --js=jsPlumb-connection.js ^
+--js=jsPlumb-connectors-statemachine.js ^
 --js=jsPlumb-anchors.js ^
 --js=jsPlumb-defaults.js ^
 --js=jsPlumb-renderers-svg.js ^
 --js=jsPlumb-renderers-canvas.js ^
 --js=jsPlumb-renderers-vml.js ^
 --js=jquery.jsPlumb.js ^
---js_output_file=thirdparty.compiled.js
+--js_output_file=beta-thirdparty.compiled.js
 @pause
