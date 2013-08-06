@@ -1012,7 +1012,7 @@ MAP */
 	-ms-user-select: none;
 	user-select: none;
 	white-space: nowrap;
-	border-bottom: 1px solid #000;
+	border-bottom: 1px dotted #000;
 }
 .map-system-blob-sysname
 {
@@ -1040,7 +1040,7 @@ MAP */
 
 .map-activity-friendly
 {
-	border: 3px solid #092665;
+	border: 3px solid #0748D6;
 }
 .map-activity-occupied
 {

@@ -503,7 +503,7 @@ siggyMap.prototype.updateActives = function( activesData )
             
             if( len < displayLen )
             {
-                text += '...<br \>';
+                text += ' +' + (len-displayLen) + ' others <br \>';
             }
             
             

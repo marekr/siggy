@@ -156,7 +156,8 @@
 					</li>
 					<li class="setdest">
 						<a href="#setdest">Set Destination</a>
-					</li><!---
+					</li>
+<!---
 					<li class="routefrom">
 						<a href="#routefrom">Route From Here</a>
 					</li>--->
