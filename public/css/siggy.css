@@ -1125,6 +1125,10 @@ MAP */
 	background: red;
 }
 
+.map-actives-expanded
+{
+}
+
 #map-footer-bar
 {
 	position:relative;
