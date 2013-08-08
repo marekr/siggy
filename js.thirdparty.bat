@@ -2,7 +2,7 @@
 --js=jquery-1.10.1.min.js ^
 --js=jquery-migrate-core.js ^
 --js=jquery-ui-1.10.3.min.js ^
---js=jquery.ezpz_tooltip.js ^
+--js=jquery.qtip.js ^
 --js=jquery.blockUI.js ^
 --js=jquery.color.js ^
 --js=jquery.autocomplete.js ^

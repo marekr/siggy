@@ -182,12 +182,14 @@ siggyMap.prototype.initialize = function()
 							that.editing = true;
 							$('#chainMapSave').show();
 							that.centerButtons();
-							
+                            
 							$('#chainMapOptions').data('disabled',true);
 							if( that.infoicon != null )
 							{
 									that.infoicon.disabled = true;
 							}
+                            
+                            $('div.map-system-blob').qtip('disable');
                             
                             jsPlumb.setDraggable($('.map-system-blob'), true);
                             
@@ -323,8 +325,6 @@ siggyMap.prototype.setSelectedSystem = function( systemID )
 {
 		if( this.selectedSystemID != systemID )
 		{
-            console.log(this.selectedSystemID);
-            console.log(systemID);
 				$( "#"+this.selectedSystemID ).removeClass('map-system-blob-selected');
                 
 				$("#"+systemID ).addClass('map-system-blob-selected');
@@ -389,6 +389,7 @@ siggyMap.prototype.registerEvents = function()
         {
                 that.infoicon.disabled = false;
         }
+        $('div.map-system-blob').qtip('enable');
         
     } );
     
@@ -485,6 +486,10 @@ siggyMap.prototype.updateActives = function( activesData )
 
         var ele =  $('#' + sysID + ' p.map-system-blob-actives');
         ele.empty();
+        
+        var fullActives = $("#fullactives"+sysID);
+        fullActives.empty();
+        
         if( typeof(activesData[sysID]) != 'undefined' )
         {
             var actives = activesData[sysID];
@@ -492,22 +497,37 @@ siggyMap.prototype.updateActives = function( activesData )
             
             actives = actives.split(',');
             
+            //setup our lengths
+            //TBH, make the max length configurable
+            var maxDisplayLen = 7;
             var len = actives.length;
-            
-            var displayLen = len > 10 ? 10 : len;
+            var displayLen = len > maxDisplayLen ? maxDisplayLen : len;
             
             for(var j = 0; j < displayLen; j++)
             {
                     text += actives[j] + '<br \>';
             }
             
-            if( len < displayLen )
+            if( len > displayLen )
             {
-                text += ' +' + (len-displayLen) + ' others <br \>';
+                text += ' +' + (len-displayLen) + ' other...<br \>';
             }
             
             
             ele.html(text);
+            //---------------------------------------------------------------------
+            //Full actives section
+            //---------------------------------------------------------------------
+            var fullText = '';
+            for(var j = 0; j < actives.length; j++)
+            {
+                    fullText += actives[j] + '<br \>';
+            }
+            fullActives.html(fullText);
+        }
+        else
+        {
+            fullActives.html("No actives");
         }
     }
 	
@@ -613,6 +633,24 @@ siggyMap.prototype.draw = function()
             var sysID = $(this).attr("id");
             that.siggymain.switchSystem(sysID, that.systems[sysID].name);
         } );
+        
+        var tst = $("<div>").attr("id","fullactives"+systemData.systemID).addClass('tooltip').text("");
+        $("#chainMapContainer").append(tst);
+        
+        var res = sysBlob.qtip({
+            content: {
+                text: $("#fullactives"+systemData.systemID) // Use the "div" element next to this for the content
+            },
+            show: {
+                delay: 2000
+            },
+            position: {
+                target: 'mouse',
+                adjust: { x: 5, y: 5 },
+                viewport: $(window)
+            }
+        });
+        
     }
     
     var _listeners = function(e) {
