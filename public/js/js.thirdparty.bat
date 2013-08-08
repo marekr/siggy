@@ -23,5 +23,5 @@
 --js=jsPlumb-renderers-canvas.js ^
 --js=jsPlumb-renderers-vml.js ^
 --js=jquery.jsPlumb.js ^
---js_output_file=beta-thirdparty.compiled.js
+--js_output_file=thirdparty.compiled.js
 @pause
