@@ -1223,15 +1223,26 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 		effect.append( $("<div>").attr('id', 'systemEffects').addClass('tooltip').html(effectInfo) );
 		collaspedInfoEffectStatic.append( $("<div>").attr('id', 'systemEffectsCollasped').addClass('tooltip').html(effectInfo) );
 		
-		effectTitle.ezpz_tooltip(
-		{
-			contentId: 'systemEffects'
-		});
-		
-		collaspedEffectTitle.ezpz_tooltip(
-		{
-			contentId: 'systemEffectsCollasped'
-		});
+        effectTitle.qtip({
+            content: {
+                text: $("#systemEffects") // Use the "div" element next to this for the content
+            },
+            position: {
+                target: 'mouse',
+                adjust: { x: 5, y: 5 },
+                viewport: $(window)
+            }
+        });
+        collaspedEffectTitle.qtip({
+            content: {
+                text: $("#systemEffectsCollasped") // Use the "div" element next to this for the content
+            },
+            position: {
+                target: 'mouse',
+                adjust: { x: 5, y: 5 },
+                viewport: $(window)
+            }
+        });
 		
 		$('#systemInfo-collasped p.spacer').show();
 		collaspedInfoEffectStatic.append( collaspedEffectTitle );
@@ -1271,11 +1282,18 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 			var staticInfo = "<b>" + theStatic.staticName  + destBlurb + "</b><br />" + "Max Mass: " + theStatic.staticMass + " billion<br />" + "Max Jumpable Mass: " + theStatic.staticJumpMass + " million<br />" + "Max Lifetime: " + theStatic.staticLifetime + " hrs<br />" + "Signature Size: " + theStatic.staticSigSize + " <br />";
 
 			$('#staticInfo').append(staticBit).append( $("<div>").attr('id', 'static-info-' + theStatic.staticID).addClass('tooltip').html( staticInfo ) );
-			staticBit.ezpz_tooltip(
-			{
-				contentId: 'static-info-' + theStatic.staticID
-			});
+
 			
+            staticBit.qtip({
+                content: {
+                    text: $('#static-info-' + theStatic.staticID) // Use the "div" element next to this for the content
+                },
+                position: {
+                    target: 'mouse',
+                    adjust: { x: 5, y: 5 },
+                    viewport: $(window)
+                }
+            });
 			if( staticCount > 1 && counter+1 != staticCount)
 			{
 				var collaspedStaticBit = $("<span>").text(theStatic.staticName+' ');
@@ -1286,11 +1304,21 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 			}
 			collaspedInfoEffectStatic.append( collaspedStaticBit ).append( $("<div>").attr('id', 'static-info-collasped-' + theStatic.staticID).addClass('tooltip').html( staticInfo ) );
 			
-			collaspedStaticBit.ezpz_tooltip(
-			{
-				contentId: 'static-info-collasped-' + theStatic.staticID
-			});
+
 			
+            collaspedStaticBit.qtip({
+                content: {
+                    text: $('#static-info-collasped-' + theStatic.staticID) // Use the "div" element next to this for the content
+                },
+                show: {
+                    delay: 2000
+                },
+                position: {
+                    target: 'mouse',
+                    adjust: { x: 5, y: 5 },
+                    viewport: $(window)
+                }
+            });
 			
 			counter++;
 		}
@@ -1514,15 +1542,17 @@ siggymain.prototype.addSigRow = function (sigData, flashSig)
 	$("#sigTable tbody").append( row );
 	
 	this.sigClocks[sigData.sigID] = new CountUp(sigData.created * 1000, '#sig-' + sigData.sigID + ' td.age span', "test");
-	$('#sig-' + sigData.sigID + ' td.moreinfo img').ezpz_tooltip(
-	{
-		contentId: 'creation-info-' + sigData.sigID
-	});
-	$('#sig-' + sigData.sigID + ' td.age span').ezpz_tooltip(
-	{
-		contentId: 'age-timestamp-' + sigData.sigID
-	});
-	
+
+    $('#sig-' + sigData.sigID + ' td.moreinfo img').qtip({
+        content: {
+            text: $('#creation-info-' + sigData.sigID) // Use the "div" element next to this for the content
+        }
+    });
+    $('#sig-' + sigData.sigID + ' td.age span').qtip({
+        content: {
+            text: $('#age-timestamp-' + sigData.sigID) // Use the "div" element next to this for the content
+        }
+    });
 	this.colorizeSigRows();
 	
 	if( flashSig )
