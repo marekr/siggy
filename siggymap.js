@@ -642,7 +642,7 @@ siggyMap.prototype.draw = function()
                 text: $("#fullactives"+systemData.systemID) // Use the "div" element next to this for the content
             },
             show: {
-                delay: 2000
+                delay: 1000
             },
             position: {
                 target: 'mouse',
