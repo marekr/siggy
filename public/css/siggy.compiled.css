@@ -1,0 +1,1315 @@
+ /*reset*/
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { 
+	margin:0;
+	padding:0;
+}
+table {
+	border-collapse:collapse;
+	border-spacing:0;
+}
+fieldset,img { 
+	border:0;
+}
+address,caption,cite,code,dfn,em,strong,th,var {
+	font-style:normal;
+	font-weight:normal;
+}
+ol,ul {
+	list-style:none;
+}
+caption,th {
+	text-align:left;
+}
+h1,h2,h3,h4,h5,h6 {
+	font-size:100%;
+	font-weight:normal;
+}
+q:before,q:after {
+	content:'';
+}
+abbr,acronym { border:0;
+}body {
+	background: #111111 url(../../public/images/bg.jpg) repeat-x;
+	font-family: Arial;
+	font-size:13px;
+	color: white;
+}
+
+input {
+	background-color: #fff;
+	border: 1px solid #000;
+}
+
+#wrapper {
+	padding: 0 20px 0 20px;
+}
+
+table.siggyTable th,
+h2.header{
+	background-color: #1C1C1C;
+	border: 1px solid #000000;
+	color: #DADADA;
+	font-weight: bold;
+	padding: 3px;
+	text-align: center;
+}
+
+#systemTable th.header,
+h2.header{
+	text-align: left;
+}
+#systemTable th.header p{
+	float:right;
+	height: 16px;
+}
+
+table.siggyTable td,
+#sigCalculator table td,
+table.stats td{
+	border: 1px solid #000;
+	padding:2px;
+}
+
+table.siggyTable tr.alt{
+	background-color: #00279A;
+}
+
+.center{
+	text-align:center;
+}
+
+td.name,
+td.pad{
+	padding-left:5px;
+}
+
+td.smallLeft{
+	font-size:0.9em;
+}
+
+p.desc {
+	font-size:0.8em;
+	font-style:italic;
+}
+
+table.siggyTable{
+	width:100%;
+	background: #092665;
+	color: #FFFFFF;
+}
+
+table td.title {
+	width: 6%;
+	padding:4px;
+	border: 1px solid #000;
+	font-weight: bold;
+}
+
+table td.content {
+	border: 1px solid #000;
+	width:39%;
+	padding-left: 4px;
+}
+
+#hubJumps div
+{
+    float:left;
+    margin-right:10px;
+}
+
+#systemOptions td.content {
+	padding: 5px;
+	width:15%;
+}
+
+#systemOptions td.content label input
+{
+	margin-left:4px;
+	margin-right:4px;
+}
+
+table td.desc p{
+	font-size: 0.85em;
+	font-style: italic;
+}
+
+#sigAddBox {
+	background-color: #252525;
+	border: 1px solid #333333;
+	padding: 5px;
+	min-width: 280px;
+	width: auto;
+	height: 40px;
+	position:relative;
+	display: inline-block;
+}
+
+#sigAddBox form {
+	position:relative;
+}
+
+table.tablesorter thead tr .headerSortUp {
+	background-image: url(../../public/images/asc.gif) !important;
+	background-repeat: no-repeat;
+	background-position: right center;
+}
+table.tablesorter thead tr .headerSortDown {
+	background-image: url(../../public/images/desc.gif) !important;
+	background-repeat: no-repeat;
+	background-position: right center;
+}      
+
+#topBar {
+	width: 100%;
+	height:32px;
+	padding: 7px 0 7px 0;
+	background-color: #1C1C1C;
+	color: white;
+	position:relative;
+}
+
+#topBar > div
+{
+	margin-left:7px;
+}
+
+#topBar p.name {
+	left: 83px;
+	position: absolute;
+	top: 8px;
+	font-weight:bold;
+}
+
+#topBar div.centerBar
+{
+	width: 122px;
+	margin: -29px auto 0;
+	font-size: 0.8em;
+}
+
+#topBar div.centerBar button
+{
+	width: 122px;
+	font-size: 1em;
+	background: #fff;
+	border: 1px solid #000;
+}
+
+#floatingHeader
+{
+	position: fixed;
+	top:0;
+	width: 100%;
+	z-index: 999;
+}
+
+a {
+	text-decoration: none;
+	color: #FF7F00;
+}
+
+#updateTime
+{    
+	position: absolute;
+	right: 12px;
+	top: 7px;
+	text-align:right;
+}
+
+
+input.sigEdit
+{
+    width:50px;
+}
+
+#loading
+{
+    left: -28px;
+    position: absolute;
+    top: -4px;
+}
+
+#systemList
+{
+    height: 50px;
+    margin-bottom: -29px;
+    margin-left: 28px;
+    margin-top: 62px;
+    float:left;
+}
+
+#systemList ul
+{
+   width: 80px;
+   height: 100%;
+   border-left: 5px solid #1c1c1c;
+   border-top: 4px solid #1C1C1C;
+  -moz-transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  -moz-transform-origin: left center;
+  -webkit-transform-origin: left center;
+}
+
+#systemList ul li
+{
+    background-color: #02143C;
+    padding: 1px;
+    width: 80px;
+    font-weight:bold;
+    border: 1px solid #000;
+    cursor: pointer;
+    overflow: hidden;
+}    
+
+#systemList ul li:hover {
+  background-color: #092665;
+}
+
+#systemList ul li.inUse{
+  border-left:4px solid #00FF27;
+}
+
+#systemList ul li.notInUse{
+  border-left:4px solid #FF0000;
+}
+
+span.sysClass
+{
+  font-weight:normal;
+  padding-left:2px;
+}
+
+.classDangerous
+{
+  color: #FF9308;
+}
+
+.classUnknown
+{
+  color: #C4AC1C;
+}
+
+.classDeadly
+{
+  color: #FF0D0D;
+}
+
+.classHigh
+{
+  color: #259900;
+}
+
+.classLow
+{
+  color: #FF9308;
+}
+
+.classNull
+{
+  color: #FF0D0D;
+}
+
+.sysSelected {
+  background-color: #092665 !important;
+  cursor: auto !important;
+}
+
+#systemOptions {
+    display:none;
+}
+
+#systemInfo {
+    clear: both;
+}
+
+/* collasped style */
+#systemInfo-collasped {
+	padding:8px;
+	border: 1px solid #000;
+	background-color: #092665;
+	clear:both;
+}
+
+#systemInfo-collasped h2 {
+	font-weight:bold;
+}
+
+#systemInfo-collasped p.systemName {
+	display:inline-block;
+}
+
+#collaspedInfoEffectStatic {
+	display:inline-block;
+}
+
+#systemInfo-collasped p.systemButtons {
+	display:inline-block;
+	float:right;
+}
+
+#systemInfo-collasped p.spacer {
+	display:inline-block;
+	margin-left:5px;
+	margin-right:5px;
+	font-weight:bold;
+}
+
+#systemInfo-expand,
+#systemInfo-collaspe {
+	margin-left:8px;
+}
+
+
+#systemInfoButton,
+#systemOptionsButton {
+  position:absolute;
+  bottom:0;
+  right:0;
+  padding: 4px;
+  width:50px;
+  background-color: #AB5907;
+  height:14px;
+  border:1px solid #000;
+  text-align:center;
+}
+
+#systemInfoButton{
+  right: 60px;
+}
+
+#systemInfoButton:hover,
+#systemOptionsButton:hover {
+  background-color: #FF8308;
+  cursor: pointer;
+}
+
+.selected {
+  background-color: #FF8308 !important;
+  cursor: auto !important;
+}
+
+#systemAdvanced {
+  position:relative;
+  width: 100%;
+  overflow:hidden;
+}
+
+.clear {
+  clear:both;
+}
+
+
+table td.buttonRow {
+  text-align:center;
+  background-color: #000000;
+}
+
+.headerToolButton
+{
+	display:inline-block;
+    background-color: #3A3535;
+    height: 15px;
+    padding: 5px;
+    text-align:center;
+    cursor:pointer;
+}
+
+
+.headerToolButton a
+{
+	color: inherit;
+}
+
+#headerToolsButtonBar
+{
+	text-align:center;
+}
+
+#headerTools
+{
+  clear:both;
+  background-color: #262626;
+  min-height: 20px;
+  
+}
+
+#globalNotes h2 {
+  font-weight:bold;
+  font-size:1.03em;
+  margin-bottom:4px;
+  border-bottom: 1px solid #fff;
+  padding-bottom:3px;
+}
+
+#globalNotes {
+  -moz-border-radius: 0 0 9px 9px;
+  border-radius: 0 0 9px 9px;
+  -webkit-border-radius: 0 0 9px 9px;
+  padding: 10px;
+  background-color: #092665;
+  display:none;
+}
+
+#globalNotes p
+{
+  font-size:0.8em;
+}
+
+.tooltip
+{
+  display: none;
+  background-color: #262626;
+  color: #fff;
+}
+
+#sigCalculator
+{
+  background-color: #262626;
+  padding: 10px;
+  margin: 0 auto;
+  border: 5px solid #1C1C1C;
+  display:none;
+}
+
+#sigCalculator h2,
+.box h2
+{
+    font-size: 1.05em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.box
+{
+  background-color: #262626;
+  padding: 5px;
+  margin: 0 auto;
+  border: 5px solid #1C1C1C;
+}
+
+.box h3
+{
+	font-weight: bold;
+	font-size: 1.1em;
+	background-color: #1C1C1C;
+	padding: 5px;
+}
+
+.box p
+{
+	margin: 4px 0 4px 0;
+}
+
+fieldset
+{
+    background-color: #2D2D2D;
+    padding: 10px;
+}
+
+fieldset label
+{
+  float:left;
+  display: block;
+  width:200px;
+  margin: 5px 0 0;
+}
+
+fieldset legend
+{
+  font-weight:bold;
+}
+
+
+label.yes{
+    -moz-border-radius: 5px 0 0 5px;
+    -webkit-border-radius: 5px 0 0 5px;
+    border-radius: 5px 0 0 5px;
+    background-color: #21600C;
+    padding: 2px;
+    width: auto;
+}
+
+label.no {
+    -moz-border-radius: 0 5px 5px 0;
+    -webkit-border-radius: 0 5px 5px 0;
+    border-radius: 0 5px 5px 0;
+    background-color: #A70000;
+    padding: 2px;
+    width: auto;
+}
+
+#profileInfo {
+  position:absolute;
+  right: 0;
+  top: 0;
+  display: none;
+}
+
+
+#strengthTable
+{
+  display:none;
+}
+
+#bearClassLinks a.active{
+	font-weight:bold;
+	color: #FFF;
+}
+
+#carebearBox
+{
+	width: 250px;
+}
+
+td.moreinfo
+{
+	border-left:0 !important;
+}
+
+td.desc
+{
+	border-right:0 !important;
+}
+
+
+/* CHAIN MAP */
+
+#wormholePopup,
+#systemOptionsPopup
+{
+	width:300px;
+	display:none;
+	padding:0px;
+}
+
+button.centered
+{
+	display:block;
+	margin:0 auto;
+}
+
+
+
+/* siggy Menu "generic" css */
+.dropUp,
+.dropDown {
+	height: 92%;
+	padding:0 15px 0 15px;
+	vertical-align: middle;
+	background-color: #092665;
+	font-weight: bold;
+}
+
+.dropUp span,
+.dropDown span
+{
+	vertical-align:middle;
+}
+
+.dropUp ul,
+.dropDown ul
+{
+	display:none;
+	background: #02143C;
+	border: 1px solid #000;
+	
+	position:absolute;
+	top: 0;
+	left: 0;
+	
+	z-index: 9999;
+}
+
+.dropUp ul li,
+.dropDown ul li
+{
+	padding: 6px;
+	width: 150px;
+	border-bottom: 1px solid #000;
+	font-size: 0.9em;
+}
+
+.dropUp ul li:hover,
+.dropDown ul li:hover
+{
+	background-color: #092665;
+}
+
+.dropUp:hover,
+.dropDown:hover
+{
+	background-color: #FF8308;
+	cursor: pointer;
+}
+
+/* accessMenu specific sexiness */
+#accessMenu
+{
+	background: none;
+	padding: 0;
+	height: auto;
+}
+
+#accessMenu ul li
+{
+	padding: 3px;
+	width: 200px;
+}
+
+.opened
+{
+	background-color: #AB5907 !important;
+}
+
+ul.errors
+{
+	background-color: #910E0E;
+	padding: 4px;
+	list-style: disc inside none;
+	display: none;
+}
+
+/* AUTOCOMPLETE */
+
+.acInput {
+	width: 115px;
+	background-color: #fff;
+	z-index: 5000;
+}
+.acResults {
+	padding: 0px;
+	border: 1px solid WindowFrame;
+	background-color: #fff;
+	overflow: hidden;
+	color: #000;
+	max-height: 100px;
+	overflow-y: auto;
+	overflow-x: none;
+	z-index: 5000;
+}
+
+.acResults ul {
+	width: 100%;
+	list-style-position: outside;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	z-index: 5000;
+}
+
+.acResults li {
+	margin: 0px;
+	padding: 2px 5px;
+	cursor: pointer;
+	display: block;
+	width: 100%;
+	font: menu;
+	font-size: 12px;
+	overflow: hidden;
+	z-index: 5000;
+}
+
+.acLoading {
+	background: #fff url('indicator.gif') right center no-repeat;
+}
+
+.acSelect {
+	background-color: Highlight;
+	color: HighlightText;
+}
+
+div.fauxTable
+{
+	background-color: #2D2D2D;
+	text-align:center;
+	border:1px solid #000;
+}
+
+div.fauxTable > div
+{
+	padding: 5px;
+}
+
+div.fauxTable h3
+{
+	background-color: #1C1C1C;
+	padding:3px;
+	border-bottom:1px solid #000;
+	text-align:left;
+}
+
+.clickMe
+{
+	cursor:pointer;
+}
+
+div.fauxTable h3,h4
+{
+	font-weight:bold;
+}
+
+.statColor
+{
+	border: 1px solid #fff;
+	width:16px;
+	height:10px;
+	display:inline-block;
+}
+
+input:focus,
+select:focus
+{
+	outline:#FF8308 solid 2px;
+}
+
+.evekill
+{
+	margin-right:4px;
+}
+
+/*****
+whpopup tabs
+*******/
+#wormholeTabs
+{
+	background-color: #1f1f1f;
+}
+
+#wormholeTabs div
+{
+	display: inline-block;
+	background-color: #0E0E0E;
+	padding:5px;
+	margin:0;
+	font-size:1.1em;
+	font-weight:bold;
+}
+
+#wormholeTabs div:hover
+{
+	background-color: #AB5907;
+}
+
+#wormholePopup div.tabcontent
+{
+	padding:5px;
+}
+
+ul.itemList li
+{
+	border-bottom:1px solid #FEA800;
+	padding:4px;
+	font-size: 0.75em;
+	background-color: #121212;
+}
+
+ul.itemList
+{
+	border: 1px solid #000;
+}
+
+
+/* Generic context menu styles */
+.contextMenu {
+	position: absolute;
+	width: 120px;
+	z-index: 998;
+	border: solid 1px #CFCFCF;
+	background: #fcfcfc;
+	padding: 0px;
+	margin: 0px;
+	display: none;
+	font-size:11px;
+}
+
+.contextMenu li {
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+.contextMenu a {
+	color: #333;
+	text-decoration: none;
+	display: block;
+	line-height: 15px;
+	height: 15px;
+	background-position: 6px center;
+	background-repeat: no-repeat;
+	border-bottom:1px solid #CFCFCF;
+	outline: none;
+	padding: 1px 5px;
+	padding-left: 10px;
+	font-weight: bold;
+}
+
+.contextMenu LI.hover A {
+	color: #FFF;
+	background-color: #3399FF;
+}
+
+.contextMenu LI.disabled A {
+	color: #AAA;
+	cursor: default;
+}
+
+.contextMenu LI.hover.disabled A {
+	background-color: transparent;
+}
+
+.contextMenu LI.separator {
+	border-top: solid 1px #CCC;
+}
+
+/*
+	Adding Icons
+	
+	You can add icons to the context menu by adding
+	classes to the respective LI element(s)
+*/
+
+.contextMenu LI.edit A { background-image: url(images/page_white_edit.png); }
+.contextMenu LI.cut A { background-image: url(images/cut.png); }
+.contextMenu LI.copy A { background-image: url(images/page_white_copy.png); }
+.contextMenu LI.paste A { background-image: url(images/page_white_paste.png); }
+.contextMenu LI.delete A { background-image: url(images/page_white_delete.png); }
+.contextMenu LI.quit A { background-image: url(images/door.png); }
+
+
+/*
+
+MAP */
+
+#chainMapContainer
+{
+}
+
+#chainMapContainer h2
+{
+	text-align:center;
+}
+
+#chainMapContainer p.left
+{
+	display:inline-block;
+	position:absolute;
+	left:3px;'
+}
+
+#chainMapInner
+{
+	border: 1px solid #000;
+	background-color: #2d2d2d;
+}
+
+
+#chainMapContainer p.editing,
+#chainMapContainer p.loading,
+#chainMapContainer p.deleting
+{
+	position:absolute;
+	font-size:1.4em;
+	display:none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	cursor: default;
+}
+
+
+#chainMapContainer p.loading
+{
+	font-size:3em;
+}
+
+#chainMapContainer div.buttons
+{
+	position:relative;
+	text-align:center;
+}
+
+#chainMap
+{
+	width: 100%;
+	height: 400px;
+	position:relative;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: moz-none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.map-system-blob
+{
+	min-width: 70px;
+	max-width: 140px;
+	min-height:  30px;
+	background-color: #fff;
+	position:absolute;
+	border: 3px solid #676767;
+	color: #000;
+	padding:1px;
+	cursor: pointer;
+	z-index: 24;
+	border-radius: 8px;
+	-webkit-border-radius:  8px;
+	overflow:hidden;
+	font-size: 11px;
+}
+
+.map-eol-overlay
+{
+    z-index:99999999;
+    background-color:#262626;
+    color: #fff;
+    font-size:11px;
+    padding: 1px;
+    display:none;
+}
+
+.map-system-blob-selected
+{
+	-moz-box-shadow: 0px 0px 15px rgba(240, 240, 240,1);
+	-webkit-box-shadow: 0px 0px 15px rgba(240, 240, 240,1);
+	box-shadow: 0px 0px 15px rgba(240, 240, 240,1);
+}
+
+/*
+
+.map-system-blob-selected:after
+{
+    content:"";
+    display:block;
+    position:absolute;
+    z-index:-1;
+    top: 0px;
+    left: 0;
+    right: 0;
+    bottom: 0px;
+    border: 2px dotted #36F;
+}*/
+
+.map-system-blob-title
+{
+	font-weight:bold;
+	overflow: hidden;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: moz-none;
+	-ms-user-select: none;
+	user-select: none;
+	white-space: nowrap;
+	border-bottom: 1px dotted #000;
+}
+.map-system-blob-sysname
+{
+	font-size:12px;
+}
+
+.map-system-blob-class
+{
+	margin-right:3px;
+}
+.map-system-blob-actives
+{
+	font-size:10px;
+}
+
+.map-activity-empty
+{
+	border: 3px solid #03B807;
+}
+
+.map-activity-active
+{
+	border: 3px solid #DE4444;
+}
+
+.map-activity-friendly
+{
+	border: 3px solid #0748D6;
+}
+.map-activity-occupied
+{
+	border: 3px solid #FFE205;
+}
+
+.map-class-unknown
+{
+	color: #2783D9;
+	font-style:italic;
+}
+
+.map-class-dangerous
+{
+	color: #FF9308;
+	font-style:italic;
+}
+
+.map-class-deadly
+{
+	color: #FF0D0D;
+	font-style:italic;
+}
+
+.map-class-high
+{
+	color: #259900;
+	font-style:italic;
+}
+
+.map-class-low
+{
+	color: #FF9308;	
+	font-style:italic;
+}
+
+.map-class-null
+{
+	color: #FF0D0D;	
+	font-style:italic;
+}
+
+.map-effect
+{
+	border-radius: 10px;
+	-webkit-border-radius:  10px;
+	height:8px;
+	width: 8px;
+	background: white;
+	display: inline-block;
+	margin-right: 2px;
+	border: 1px solid #000;
+}
+
+.map-effect-blackhole
+{
+	background: black;
+}
+
+.map-effect-pulsar
+{
+	background: blue;
+}
+
+.map-effect-wolf-rayet
+{
+	background: orange;
+}
+
+.map-effect-magnetar
+{
+	background: pink;
+}
+
+.map-effect-catalysmic
+{
+	background: yellow;
+}
+
+.map-effect-red-giant
+{
+	background: red;
+}
+
+.map-actives-expanded
+{
+}
+
+#map-footer-bar
+{
+	position:relative;
+	height:25px;
+	background-color: #1C1C1C;
+}
+#chainMapInner div.buttons
+{
+	background-color: #1C1C1C;
+}
+
+.map-tooltip
+{
+	color: #fff;
+	background: #262626;
+	padding:1px;
+}
+
+#chainMapScrolltainer
+{
+	overflow-y: hidden;
+	overflow-x: auto;
+}
+
+/* Let's get this party started */
+#chainMapScrolltainer::-webkit-scrollbar
+{
+	width: 12px;
+}
+ 
+/* Track */
+#chainMapScrolltainer::-webkit-scrollbar-track {
+	
+}
+ 
+/* Handle */
+#chainMapScrolltainer::-webkit-scrollbar-thumb {
+	background-color: #A46D00; 
+}
+#chainMapScrolltainer::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(255,0,0,0.4); 
+}
+
+#chainMapScrolltainer::-webkit-scrollbar-track-piece {
+	background-color: #1C1C1C;
+}
+#chainMapScrolltainer::-webkit-scrollbar-button {
+    background-color: #664402;
+}
+
+.selection-box {
+	position:    relative;
+	border:     1px dotted #fff;
+	background: #fff;
+	opacity: 0.4;
+}/*
+ * qTip2 - Pretty powerful tooltips - v2.1.1
+ * http://qtip2.com
+ *
+ * Copyright (c) 2013 Craig Michael Thompson
+ * Released under the MIT, GPL licenses
+ * http://jquery.org/license
+ *
+ * Date: Thu Jul 11 2013 02:03 GMT+0100+0100
+ * Plugins: None
+ * Styles: None
+ */
+.qtip{
+	position: absolute;
+	left: -28000px;
+	top: -28000px;
+	display: none;
+
+	max-width: 280px;
+	min-width: 50px;
+	
+	font-size: 10.5px;
+	line-height: 12px;
+
+	direction: ltr;
+
+	box-shadow: none;
+	padding: 0;
+}
+
+.qtip-content{
+    position: relative;
+    padding: 5px 9px;
+    overflow: hidden;
+
+    text-align: left;
+    word-wrap: break-word;
+}
+
+.qtip-titlebar{
+    position: relative;
+    padding: 5px 35px 5px 10px;
+    overflow: hidden;
+
+    border-width: 0 0 1px;
+    font-weight: bold;
+}
+
+.qtip-titlebar + .qtip-content{ border-top-width: 0 !important; }
+
+/* Default close button class */
+.qtip-close{
+    position: absolute;
+    right: -9px; top: -9px;
+
+    cursor: pointer;
+    outline: medium none;
+
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+}
+
+.qtip-titlebar .qtip-close
+{
+    right: 4px; top: 50%;
+    margin-top: -9px;
+}
+
+* html .qtip-titlebar .qtip-close{ top: 16px; } /* IE fix */
+
+.qtip-titlebar .ui-icon,
+.qtip-icon .ui-icon
+{
+    display: block;
+    text-indent: -1000em;
+    direction: ltr;
+}
+
+.qtip-icon, .qtip-icon .ui-icon
+{
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    text-decoration: none;
+}
+
+.qtip-icon .ui-icon
+{
+    width: 18px;
+    height: 14px;
+
+    line-height: 14px;
+    text-align: center;
+    text-indent: 0;
+    font: normal bold 10px/13px Tahoma,sans-serif;
+
+    color: inherit;
+    background: transparent none no-repeat -100em -100em;
+}
+
+/* Applied to 'focused' tooltips e.g. most recently displayed/interacted with */
+.qtip-focus{}
+
+/* Applied on hover of tooltips i.e. added/removed on mouseenter/mouseleave respectively */
+.qtip-hover{}
+
+/* Default tooltip style */
+.qtip-default
+{
+	border-width: 1px;
+	border-style: solid;
+	border-color: #2d2d2d;
+
+	background-color: #262626;
+	color: #fff;
+}
+
+.qtip-default .qtip-titlebar
+{
+    background-color: #FFEF93;
+}
+
+.qtip-default .qtip-icon
+{
+    border-color: #CCC;
+    background: #F1F1F1;
+    color: #777;
+}
+
+.qtip-default .qtip-titlebar .qtip-close
+{
+    border-color: #AAA;
+    color: #111;
+}
+

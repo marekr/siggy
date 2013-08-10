@@ -42,11 +42,6 @@ class FrontController extends Controller
 		$this->authStatus = $this->access->authenticate();
 		$this->groupData =& $this->access->accessData;			
         
-        if( $this->groupData['groupID'] == 7)
-        {
-            $_GET['beta'] = 1;
-        }
-		
 		
 		if( isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' )
 		{
