@@ -1,1 +1,1 @@
-copy reset.css+siggy.css+siggy.map.css+jquery.qtip.css siggy.compiled.css
+copy reset.css+siggy.css+siggy.map.css+jquery.qtip.css+autocomplete.css siggy.compiled.css

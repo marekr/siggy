@@ -233,38 +233,44 @@ MAP */
 .map-class-unknown
 {
 	color: #2783D9;
-	font-style:italic;
 }
 
 .map-class-dangerous
 {
 	color: #FF9308;
-	font-style:italic;
 }
 
 .map-class-deadly
 {
 	color: #FF0D0D;
-	font-style:italic;
 }
 
 .map-class-high
 {
 	color: #259900;
-	font-style:italic;
 }
 
 .map-class-low
 {
 	color: #FF9308;	
-	font-style:italic;
 }
 
 .map-class-null
 {
 	color: #FF0D0D;	
-	font-style:italic;
 }
+
+.map-class-unknown,
+.map-class-dangerous,
+.map-class-deadly,
+.map-class-high,
+.map-class-low,
+.map-class-null
+{
+	font-style:italic;
+    margin-right: 2px;
+}
+
 
 .map-effect
 {
@@ -367,4 +373,12 @@ MAP */
 	border:     1px dotted #fff;
 	background: #fff;
 	opacity: 0.4;
+}
+
+
+#loading
+{
+    left: -28px;
+    position: absolute;
+    top: -4px;
 }

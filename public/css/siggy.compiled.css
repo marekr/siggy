@@ -28,20 +28,36 @@ q:before,q:after {
 	content:'';
 }
 abbr,acronym { border:0;
-}body {
+}body
+{
 	background: #111111 url(../../public/images/bg.jpg) repeat-x;
 	font-family: Arial;
 	font-size:13px;
 	color: white;
 }
 
-input {
+input
+{
 	background-color: #fff;
 	border: 1px solid #000;
 }
 
-#wrapper {
+#wrapper
+{
 	padding: 0 20px 0 20px;
+}
+
+
+.center-text
+{
+	text-align:center;
+}
+
+
+
+.clear
+{
+  clear:both;
 }
 
 table.siggyTable th,
@@ -74,9 +90,6 @@ table.siggyTable tr.alt{
 	background-color: #00279A;
 }
 
-.center{
-	text-align:center;
-}
 
 td.name,
 td.pad{
@@ -133,6 +146,20 @@ table td.desc p{
 	font-style: italic;
 }
 
+
+table.tablesorter thead tr .headerSortUp {
+	background-image: url(../../public/images/asc.gif) !important;
+	background-repeat: no-repeat;
+	background-position: right center;
+}
+table.tablesorter thead tr .headerSortDown {
+	background-image: url(../../public/images/desc.gif) !important;
+	background-repeat: no-repeat;
+	background-position: right center;
+}      
+
+
+/*sig add*/
 #sigAddBox {
 	background-color: #252525;
 	border: 1px solid #333333;
@@ -148,16 +175,13 @@ table td.desc p{
 	position:relative;
 }
 
-table.tablesorter thead tr .headerSortUp {
-	background-image: url(../../public/images/asc.gif) !important;
-	background-repeat: no-repeat;
-	background-position: right center;
+#massAddSigBox
+{
+    display:none;
+    width:300px;
 }
-table.tablesorter thead tr .headerSortDown {
-	background-image: url(../../public/images/desc.gif) !important;
-	background-repeat: no-repeat;
-	background-position: right center;
-}      
+
+/*header*/
 
 #topBar {
 	width: 100%;
@@ -222,12 +246,6 @@ input.sigEdit
     width:50px;
 }
 
-#loading
-{
-    left: -28px;
-    position: absolute;
-    top: -4px;
-}
 
 #systemList
 {
@@ -277,36 +295,6 @@ span.sysClass
 {
   font-weight:normal;
   padding-left:2px;
-}
-
-.classDangerous
-{
-  color: #FF9308;
-}
-
-.classUnknown
-{
-  color: #C4AC1C;
-}
-
-.classDeadly
-{
-  color: #FF0D0D;
-}
-
-.classHigh
-{
-  color: #259900;
-}
-
-.classLow
-{
-  color: #FF9308;
-}
-
-.classNull
-{
-  color: #FF0D0D;
 }
 
 .sysSelected {
@@ -394,10 +382,6 @@ span.sysClass
   overflow:hidden;
 }
 
-.clear {
-  clear:both;
-}
-
 
 table td.buttonRow {
   text-align:center;
@@ -433,14 +417,7 @@ table td.buttonRow {
   
 }
 
-#globalNotes h2 {
-  font-weight:bold;
-  font-size:1.03em;
-  margin-bottom:4px;
-  border-bottom: 1px solid #fff;
-  padding-bottom:3px;
-}
-
+/*gnotes*/
 #globalNotes {
   -moz-border-radius: 0 0 9px 9px;
   border-radius: 0 0 9px 9px;
@@ -449,6 +426,15 @@ table td.buttonRow {
   background-color: #092665;
   display:none;
 }
+
+#globalNotes h2 {
+  font-weight:bold;
+  font-size:1.03em;
+  margin-bottom:4px;
+  border-bottom: 1px solid #fff;
+  padding-bottom:3px;
+}
+
 
 #globalNotes p
 {
@@ -462,16 +448,7 @@ table td.buttonRow {
   color: #fff;
 }
 
-#sigCalculator
-{
-  background-color: #262626;
-  padding: 10px;
-  margin: 0 auto;
-  border: 5px solid #1C1C1C;
-  display:none;
-}
 
-#sigCalculator h2,
 .box h2
 {
     font-size: 1.05em;
@@ -539,18 +516,7 @@ label.no {
     width: auto;
 }
 
-#profileInfo {
-  position:absolute;
-  right: 0;
-  top: 0;
-  display: none;
-}
 
-
-#strengthTable
-{
-  display:none;
-}
 
 #bearClassLinks a.active{
 	font-weight:bold;
@@ -670,84 +636,25 @@ ul.errors
 	display: none;
 }
 
-/* AUTOCOMPLETE */
-
-.acInput {
-	width: 115px;
-	background-color: #fff;
-	z-index: 5000;
-}
-.acResults {
-	padding: 0px;
-	border: 1px solid WindowFrame;
-	background-color: #fff;
-	overflow: hidden;
-	color: #000;
-	max-height: 100px;
-	overflow-y: auto;
-	overflow-x: none;
-	z-index: 5000;
-}
-
-.acResults ul {
-	width: 100%;
-	list-style-position: outside;
-	list-style: none;
-	padding: 0;
-	margin: 0;
-	z-index: 5000;
-}
-
-.acResults li {
-	margin: 0px;
-	padding: 2px 5px;
-	cursor: pointer;
-	display: block;
-	width: 100%;
-	font: menu;
-	font-size: 12px;
-	overflow: hidden;
-	z-index: 5000;
-}
-
-.acLoading {
-	background: #fff url('indicator.gif') right center no-repeat;
-}
-
-.acSelect {
-	background-color: Highlight;
-	color: HighlightText;
-}
-
-div.fauxTable
+/*stats */
+#stats
 {
 	background-color: #2D2D2D;
 	text-align:center;
 	border:1px solid #000;
 }
 
-div.fauxTable > div
+#stats > div
 {
 	padding: 5px;
 }
 
-div.fauxTable h3
-{
-	background-color: #1C1C1C;
-	padding:3px;
-	border-bottom:1px solid #000;
-	text-align:left;
-}
 
 .clickMe
 {
 	cursor:pointer;
 }
 
-div.fauxTable h3,h4
-{
-	font-weight:bold;
-}
 
 .statColor
 {
@@ -1043,38 +950,44 @@ MAP */
 .map-class-unknown
 {
 	color: #2783D9;
-	font-style:italic;
 }
 
 .map-class-dangerous
 {
 	color: #FF9308;
-	font-style:italic;
 }
 
 .map-class-deadly
 {
 	color: #FF0D0D;
-	font-style:italic;
 }
 
 .map-class-high
 {
 	color: #259900;
-	font-style:italic;
 }
 
 .map-class-low
 {
 	color: #FF9308;	
-	font-style:italic;
 }
 
 .map-class-null
 {
 	color: #FF0D0D;	
-	font-style:italic;
 }
+
+.map-class-unknown,
+.map-class-dangerous,
+.map-class-deadly,
+.map-class-high,
+.map-class-low,
+.map-class-null
+{
+	font-style:italic;
+    margin-right: 2px;
+}
+
 
 .map-effect
 {
@@ -1177,6 +1090,14 @@ MAP */
 	border:     1px dotted #fff;
 	background: #fff;
 	opacity: 0.4;
+}
+
+
+#loading
+{
+    left: -28px;
+    position: absolute;
+    top: -4px;
 }/*
  * qTip2 - Pretty powerful tooltips - v2.1.1
  * http://qtip2.com
@@ -1311,5 +1232,53 @@ MAP */
 {
     border-color: #AAA;
     color: #111;
+}
+/* AUTOCOMPLETE */
+
+.acInput {
+	width: 115px;
+	background-color: #fff;
+	z-index: 5000;
+}
+.acResults {
+	padding: 0px;
+	border: 1px solid WindowFrame;
+	background-color: #fff;
+	overflow: hidden;
+	color: #000;
+	max-height: 100px;
+	overflow-y: auto;
+	overflow-x: none;
+	z-index: 5000;
+}
+
+.acResults ul {
+	width: 100%;
+	list-style-position: outside;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	z-index: 5000;
+}
+
+.acResults li {
+	margin: 0px;
+	padding: 2px 5px;
+	cursor: pointer;
+	display: block;
+	width: 100%;
+	font: menu;
+	font-size: 12px;
+	overflow: hidden;
+	z-index: 5000;
+}
+
+.acLoading {
+	background: #fff url('indicator.gif') right center no-repeat;
+}
+
+.acSelect {
+	background-color: Highlight;
+	color: HighlightText;
 }
 
