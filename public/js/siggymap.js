@@ -345,7 +345,6 @@ siggyMap.prototype.registerEvents = function()
             $('#chainMapInner').hide();
             $('#chainMapec').text('Click to show');
             $('#chainPanTrackX').hide();
-            that.r.clear();
             that.lastUpdate = 0;
             setCookie('mapOpen', 0, 365);
         }
