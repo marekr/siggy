@@ -18,30 +18,31 @@
 						<button id="chainMapMassDeleteConfirm" style="display:none;">Confirm Mass Delete</button>
 						<button id="chainMapMassDeleteCancel" style="display:none;">Cancel</button>
 					</div>
-					<!-- magic buttons -->
-					<div id='map-footer-bar'>
-						<!-- options -->
-						<div class='dropUp' id='chainMapOptions' style='position:absolute;'>
-							<span>Options</span>
-							<ul class='menu'>
-								<li id='addWHManual'>Add Wormhole Manually</li>
-								<li id='editWHMap'>Edit Map</li>
-								<li id='massDeleteWHs'>Mass Delete Wormholes</li>
-							</ul>
-							<br clear='all' />
-						</div>
-						<div class="clear"></div>
-						<!--- end options -->
-						<!--- broadcast -->
-						<p style='float:right;'>
-							<?php if( !$group['alwaysBroadcast'] ): ?>
-							<?php echo ( ( isset($_COOKIE['broadcast']) && $_COOKIE['broadcast'] == 0 ) ? "<span id='broadcastText'>Location broadcasting is disabled.</span> <button id='chainMapBroadcast'>Enable</button>" : "<span id='broadcastText'>Location broadcasting is enabled.</span> <button id='chainMapBroadcast'>Disable</button>" ); ?>
-							<?php endif; ?>
-						</p>
-						<!-- end broadcast -->
-						<br clear="all" />
-					</div>
+                    <!-- magic buttons -->
+                    <div id='map-footer-bar'>
+                        <!-- options -->
+                        <div class='dropUp' id='chainMapOptions' style='position:absolute;'>
+                            <span>Options</span>
+                            <ul class='menu'>
+                                <li id='addWHManual'>Add Wormhole Manually</li>
+                                <li id='editWHMap'>Edit Map</li>
+                                <li id='massDeleteWHs'>Mass Delete Wormholes</li>
+                            </ul>
+                            <br clear='all' />
+                        </div>
+                        <div class="clear"></div>
+                        <!--- end options -->
+                        <!--- broadcast -->
+                        <p style='float:right;'>
+                            <?php if( !$group['alwaysBroadcast'] ): ?>
+                            <?php echo ( ( isset($_COOKIE['broadcast']) && $_COOKIE['broadcast'] == 0 ) ? "<span id='broadcastText'>Location broadcasting is disabled.</span> <button id='chainMapBroadcast'>Enable</button>" : "<span id='broadcastText'>Location broadcasting is enabled.</span> <button id='chainMapBroadcast'>Disable</button>" ); ?>
+                            <?php endif; ?>
+                        </p>
+                        <!-- end broadcast -->
+                        <br clear="all" />
+                    </div>
 				</div>
+                
 				<!--- wh editor -->
 				<div id="wormholePopup" class="box">
 					<div id="wormholeTabs">
