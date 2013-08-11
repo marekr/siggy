@@ -1019,29 +1019,29 @@ siggymain.prototype.updateSystemList = function (systemList)
 		case 1:
 		case 2:
 		case 3:
-			var colorClass = 'classUnknown';
+			var colorClass = 'map-class-unknown';
 			break;
 		case 4:
 		case 5:
-			var colorClass = 'classDangerous';
+			var colorClass = 'map-class-dangerous';
 			break;
 		case 6:
-			var colorClass = 'classDeadly';
+			var colorClass = 'map-class-deadly';
 			break;
 		case 7:
-			var colorClass = 'classHigh';
+			var colorClass = 'map-class-high';
 			sysClass = 'H';
 			break;
 		case 8:
-			var colorClass = 'classLow';
+			var colorClass = 'map-class-low';
 			sysClass = 'L';
 			break;
 		case 9:
-			var colorClass = 'classNull';
+			var colorClass = 'map-class-null';
 			sysClass = 'N';
 			break;
 		default:
-			var colorClass = 'classUnknown';
+			var colorClass = 'map-class-unknown';
 			break;
 		}
 		//  var that = this;
@@ -1515,26 +1515,26 @@ siggymain.prototype.addSigRow = function (sigData, flashSig)
 	}
 	
 	var row = $('<tr>').attr('id', 'sig-' + sigData.sigID)
-	.append($('<td>').addClass('center').addClass('edit') .append($('<img>').attr('src', this.settings.baseUrl + 'public/images/pencil.png').click(function (e)
+	.append($('<td>').addClass('center-text').addClass('edit') .append($('<img>').attr('src', this.settings.baseUrl + 'public/images/pencil.png').click(function (e)
 		{
 			that.editSigForm(sigData.sigID)
 		})
 	))
-	.append($('<td>').addClass('center').addClass('sig').text(sigData.sig));
+	.append($('<td>').addClass('center-text').addClass('sig').text(sigData.sig));
 	
 	if( this.settings.showSigSizeCol )
 	{
-			row.append( $('<td>').addClass('center').addClass('size').text(sigData.sigSize) );
+			row.append( $('<td>').addClass('center-text').addClass('size').text(sigData.sigSize) );
 	}
 	
-	row.append($('<td>').addClass('center').addClass('type').text(this.convertType(sigData.type)))
+	row.append($('<td>').addClass('center-text').addClass('type').text(this.convertType(sigData.type)))
 	.append(descTD)
-	.append($('<td>').addClass('center').addClass('moreinfo')
+	.append($('<td>').addClass('center-text').addClass('moreinfo')
 			.append($('<img>').attr('src', this.settings.baseUrl + 'public/images/information.png'))
 			.append($("<div>").addClass('tooltip').attr('id', 'creation-info-' + sigData.sigID).html(creationInfo))
 			)
-	.append($('<td>').addClass('center').addClass('age').append($("<span>").text("--")).append($("<div>").addClass('tooltip').attr('id', 'age-timestamp-' + sigData.sigID).text(siggymain.displayTimeStamp(sigData.created))))
-	.append($('<td>').addClass('center').addClass('remove').append($('<img>').attr('src', this.settings.baseUrl + 'public/images/delete.png')).click(function (e)
+	.append($('<td>').addClass('center-text').addClass('age').append($("<span>").text("--")).append($("<div>").addClass('tooltip').attr('id', 'age-timestamp-' + sigData.sigID).text(siggymain.displayTimeStamp(sigData.created))))
+	.append($('<td>').addClass('center-text').addClass('remove').append($('<img>').attr('src', this.settings.baseUrl + 'public/images/delete.png')).click(function (e)
 	{
 		that.removeSig(sigData.sigID)
 	}));
@@ -2068,10 +2068,6 @@ siggymain.prototype.initialize = function ()
       } );	
 
 
-	sigCalc = new siggyCalc();
-	sigCalc.baseUrl = this.settings.baseUrl;
-	sigCalc.initialize();
-
 	if( getCookie('sysInfoCollasped') != null )
 	{
 		this.sysInfoCollasped = parseInt( getCookie('sysInfoCollasped') );
@@ -2305,7 +2301,7 @@ siggymain.prototype.initializeSystemExpandCollaspe = function()
 	});
 	
 	
-	$('#stats h3').click( function() {
+	$('#stats h2').click( function() {
 		var content = $('#stats > div');
 		if( content.is(":visible") )
 		{
