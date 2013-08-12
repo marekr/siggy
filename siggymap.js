@@ -542,6 +542,8 @@ siggyMap.prototype.draw = function()
 {
     var that = this;
     
+    $('div.map-system-blob').qtip('destroy');
+    $('div.map-full-actives').remove();
     jsPlumb.deleteEveryEndpoint();
     $('#chainMap').empty();
     
@@ -633,7 +635,7 @@ siggyMap.prototype.draw = function()
             that.siggymain.switchSystem(sysID, that.systems[sysID].name);
         } );
         
-        var tst = $("<div>").attr("id","fullactives"+systemData.systemID).addClass('tooltip').text("");
+        var tst = $("<div>").attr("id","fullactives"+systemData.systemID).addClass('tooltip').addClass('map-full-actives').text("");
         $("#chainMapContainer").append(tst);
         
         var res = sysBlob.qtip({
