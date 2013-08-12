@@ -721,7 +721,7 @@ ul.itemList
 .contextMenu {
 	position: absolute;
 	width: 120px;
-	z-index: 998;
+	z-index: 9998;
 	border: solid 1px #CFCFCF;
 	background: #fcfcfc;
 	padding: 0px;
