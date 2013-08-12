@@ -33,7 +33,6 @@
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jsPlumb-renderers-vml.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery.jsPlumb.js'></script> 
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.js?2'></script>
-    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggycalc.js?2'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggymap.js?3'></script>
     <?php else: ?>
 	<?php if( isset($_GET['beta']) ): ?>
