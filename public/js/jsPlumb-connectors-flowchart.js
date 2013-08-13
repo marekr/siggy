@@ -1,7 +1,7 @@
 /*
  * jsPlumb
  * 
- * Title:jsPlumb 1.4.1
+ * Title:jsPlumb 1.5.0
  * 
  * Provides a way to visually connect elements on an HTML page, using either SVG, Canvas
  * elements, or VML.  
@@ -30,20 +30,20 @@
      * alwaysRespectStubs - defaults to false. whether or not the connectors should always draw the stub, or, if the two elements
                             are in close proximity to each other (closer than the sum of the two stubs), to adjust the stubs.
      */
-    jsPlumb.Connectors.Flowchart = function(params) {
+    var Flowchart = function(params) {
         this.type = "Flowchart";
         params = params || {};
-        params.stub = params.stub || 30;
+        params.stub = params.stub == null ? 30 : params.stub;
         var self = this,
             _super =  jsPlumb.Connectors.AbstractConnector.apply(this, arguments),		
-            midpoint = params.midpoint || 0.5,
+            midpoint = params.midpoint == null ? 0.5 : params.midpoint,
             points = [], segments = [],
             grid = params.grid,
             alwaysRespectStubs = params.alwaysRespectStubs,
             userSuppliedSegments = null,
             lastx = null, lasty = null, lastOrientation,	
             cornerRadius = params.cornerRadius != null ? params.cornerRadius : 0,	
-            sgn = function(n) { return n < 0 ? -1 : n == 0 ? 0 : 1; },            
+            sgn = function(n) { return n < 0 ? -1 : n === 0 ? 0 : 1; },            
             /**
              * helper method to add a segment.
              */
@@ -69,7 +69,7 @@
                 self.bounds.minY = Math.min(self.bounds.minY, a1[3]);
                 self.bounds.maxY = Math.max(self.bounds.maxY, a1[3]);    
             },
-            writeSegments = function(segments, paintInfo) {
+            writeSegments = function(conn, segments, paintInfo) {
                 var current, next;                
                 for (var i = 0; i < segments.length - 1; i++) {
                     
@@ -83,7 +83,7 @@
                         next[0] += next[5] * radiusToUse;
                         next[1] += next[6] * radiusToUse;														                         			
                         var ac = (current[6] == next[5] && next[5] == 1) ||
-                                 ((current[6] == next[5] && next[5] == 0) && current[5] != next[6]) ||
+                                 ((current[6] == next[5] && next[5] === 0) && current[5] != next[6]) ||
                                  (current[6] == next[5] && next[5] == -1),
                             sgny = next[1] > current[3] ? 1 : -1,
                             sgnx = next[0] > current[2] ? 1 : -1,
@@ -91,11 +91,11 @@
                             cx = (sgnEqual && ac || (!sgnEqual && !ac)) ? next[0] : current[2],
                             cy = (sgnEqual && ac || (!sgnEqual && !ac)) ? current[3] : next[1];                                                        
                         
-                        _super.addSegment("Straight", {
+                        _super.addSegment(conn, "Straight", {
                             x1:current[0], y1:current[1], x2:current[2], y2:current[3]
                         });
                             
-                        _super.addSegment("Arc", {
+                        _super.addSegment(conn, "Arc", {
                             r:radiusToUse, 
                             x1:current[2], 
                             y1:current[3], 
@@ -110,14 +110,14 @@
                         // dx + dy are used to adjust for line width.
                         var dx = (current[2] == current[0]) ? 0 : (current[2] > current[0]) ? (paintInfo.lw / 2) : -(paintInfo.lw / 2),
                             dy = (current[3] == current[1]) ? 0 : (current[3] > current[1]) ? (paintInfo.lw / 2) : -(paintInfo.lw / 2);
-                        _super.addSegment("Straight", {
+                        _super.addSegment(conn, "Straight", {
                             x1:current[0]- dx, y1:current[1]-dy, x2:current[2] + dx, y2:current[3] + dy
                         });
                     }                    
                     current = next;
                 }
                 // last segment
-                _super.addSegment("Straight", {
+                _super.addSegment(conn, "Straight", {
                     x1:next[0], y1:next[1], x2:next[2], y2:next[3]
                 });                             
             };
@@ -143,7 +143,7 @@
                 userSuppliedSegments = null;
             
             if (userSuppliedSegments != null) {
-                writeSegments(userSuppliedSegments, paintInfo);                
+                writeSegments(this, userSuppliedSegments, paintInfo);                
                 return;
             }
             
@@ -201,56 +201,54 @@
                 },
                 lineCalculators = {
                     perpendicular : function(axis, ss, oss, es, oes) {
-                        with (paintInfo) {
-                            var sis = {
+                        var pi = paintInfo, 
+                            sis = {
                                 x:[ [ [ 1,2,3,4 ], null, [ 2,1,4,3 ] ], null, [ [ 4,3,2,1 ], null, [ 3,4,1,2 ] ] ],
                                 y:[ [ [ 3,2,1,4 ], null, [ 2,3,4,1 ] ], null, [ [ 4,1,2,3 ], null, [ 1,4,3,2 ] ] ]
                             },
                             stubs = { 
-                                x:[ [ startStubX, endStubX ] , null, [ endStubX, startStubX ] ],
-                                y:[ [ startStubY, endStubY ] , null, [ endStubY, startStubY ] ]
+                                x:[ [ pi.startStubX, pi.endStubX ] , null, [ pi.endStubX, pi.startStubX ] ],
+                                y:[ [ pi.startStubY, pi.endStubY ] , null, [ pi.endStubY, pi.startStubY ] ]
                             },
                             midLines = {
-                                x:[ [ midx, startStubY ], [ midx, endStubY ] ],
-                                y:[ [ startStubX, midy ], [ endStubX, midy ] ]
+                                x:[ [ midx, pi.startStubY ], [ midx, pi.endStubY ] ],
+                                y:[ [ pi.startStubX, midy ], [ pi.endStubX, midy ] ]
                             },
                             linesToEnd = {
-                                x:[ [ endStubX, startStubY ] ],
-                                y:[ [ startStubX, endStubY ] ]
+                                x:[ [ pi.endStubX, pi.startStubY ] ],
+                                y:[ [ pi.startStubX, pi.endStubY ] ]
                             },
                             startToEnd = {
-                                x:[ [ startStubX, endStubY ], [ endStubX, endStubY ] ],        
-                                y:[ [ endStubX, startStubY ], [ endStubX, endStubY ] ]
+                                x:[ [ pi.startStubX, pi.endStubY ], [ pi.endStubX, pi.endStubY ] ],        
+                                y:[ [ pi.endStubX, pi.startStubY ], [ pi.endStubX, pi.endStubY ] ]
                             },
                             startToMidToEnd = {
-                                x:[ [ startStubX, midy ], [ endStubX, midy ], [ endStubX, endStubY ] ],
-                                y:[ [ midx, startStubY ], [ midx, endStubY ], [ endStubX, endStubY ] ]
+                                x:[ [ pi.startStubX, midy ], [ pi.endStubX, midy ], [ pi.endStubX, pi.endStubY ] ],
+                                y:[ [ midx, pi.startStubY ], [ midx, pi.endStubY ], [ pi.endStubX, pi.endStubY ] ]
                             },
                             otherStubs = {
-                                x:[ startStubY, endStubY ],
-                                y:[ startStubX, endStubX ]                                    
+                                x:[ pi.startStubY, pi.endStubY ],
+                                y:[ pi.startStubX, pi.endStubX ]                                    
                             },
-                                        
                             soIdx = orientations[axis][0], toIdx = orientations[axis][1],
-                            _so = so[soIdx] + 1,
-                            _to = to[toIdx] + 1,
-                            otherFlipped = (to[toIdx] == -1 && (otherStubs[axis][1] < otherStubs[axis][0])) || (to[toIdx] == 1 && (otherStubs[axis][1] > otherStubs[axis][0])),
+                            _so = pi.so[soIdx] + 1,
+                            _to = pi.to[toIdx] + 1,
+                            otherFlipped = (pi.to[toIdx] == -1 && (otherStubs[axis][1] < otherStubs[axis][0])) || (pi.to[toIdx] == 1 && (otherStubs[axis][1] > otherStubs[axis][0])),
                             stub1 = stubs[axis][_so][0],
                             stub2 = stubs[axis][_so][1],
                             segmentIndexes = sis[axis][_so][_to];
-                            
-                            if (segment == segmentIndexes[3] || (segment == segmentIndexes[2] && otherFlipped)) {
-                                return midLines[axis];       
-                            }
-                            else if (segment == segmentIndexes[2] && stub2 < stub1) {
-                                return linesToEnd[axis];
-                            }
-                            else if ((segment == segmentIndexes[2] && stub2 >= stub1) || (segment == segmentIndexes[1] && !otherFlipped)) {
-                                return startToMidToEnd[axis];
-                            }
-                            else if (segment == segmentIndexes[0] || (segment == segmentIndexes[1] && otherFlipped)) {
-                                return startToEnd[axis];  
-                            }                                
+
+                        if (pi.segment == segmentIndexes[3] || (pi.segment == segmentIndexes[2] && otherFlipped)) {
+                            return midLines[axis];       
+                        }
+                        else if (pi.segment == segmentIndexes[2] && stub2 < stub1) {
+                            return linesToEnd[axis];
+                        }
+                        else if ((pi.segment == segmentIndexes[2] && stub2 >= stub1) || (pi.segment == segmentIndexes[1] && !otherFlipped)) {
+                            return startToMidToEnd[axis];
+                        }
+                        else if (pi.segment == segmentIndexes[0] || (pi.segment == segmentIndexes[1] && otherFlipped)) {
+                            return startToEnd[axis];  
                         }                                
                     },
                     orthogonal : function(axis, startStub, otherStartStub, endStub, otherEndStub) {                    
@@ -279,8 +277,7 @@
                             }[axis];
                             
                         }                                                        
-                        else if (!comparator || (pi.so[idx] == 1 && ss > es)
-                           || (pi.so[idx] == -1 && ss < es)) {                                            
+                        else if (!comparator || (pi.so[idx] == 1 && ss > es) || (pi.so[idx] == -1 && ss < es)) {                                            
                             return {
                                 "x":[[ ss, midy ], [ es, midy ]],
                                 "y":[[ midx, ss ], [ midx, es ]]
@@ -320,7 +317,7 @@
             // end stub to end
             addSegment(segments, paintInfo.tx, paintInfo.ty, paintInfo);               
             
-            writeSegments(segments, paintInfo);                            
+            writeSegments(this, segments, paintInfo);                            
         };	
 
         this.getPath = function() {
@@ -359,4 +356,7 @@
             }
         };
     };
+
+    jsPlumbUtil.extend(Flowchart, jsPlumb.Connectors.AbstractConnector);
+    jsPlumb.registerConnectorType(Flowchart, "Flowchart");
 })();

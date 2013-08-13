@@ -1,7 +1,7 @@
 /*
  * jsPlumb
  * 
- * Title:jsPlumb 1.4.1
+ * Title:jsPlumb 1.5.0
  * 
  * Provides a way to visually connect elements on an HTML page, using either SVG, Canvas
  * elements, or VML.  
@@ -25,8 +25,7 @@
 	 * are used by all of the different rendering modes.
 	 * 
 	 */
-	jsPlumb.DOMElementComponent = function(params) {
-		jsPlumb.jsPlumbUIComponent.apply(this, arguments);
+	jsPlumb.DOMElementComponent = jsPlumbUtil.extend(jsPlumb.jsPlumbUIComponent, function(params) {		
 		// when render mode is canvas, these functions may be called by the canvas mouse handler.  
 		// this component is safe to pipe this stuff to /dev/null.
 		this.mousemove = 
@@ -34,14 +33,14 @@
 		this.click = 
 		this.mousedown = 
 		this.mouseup = function(e) { };					
-	};
+	});
 	
 	jsPlumb.Segments = {
         	
         /*
          * Class: AbstractSegment
          * A Connector is made up of 1..N Segments, each of which has a Type, such as 'Straight', 'Arc',
-         * 'Bezier'. This is new from 1.4.1, and gives us a lot more flexibility when drawing connections: things such
+         * 'Bezier'. This is new from 1.4.2, and gives us a lot more flexibility when drawing connections: things such
          * as rounded corners for flowchart connectors, for example, or a straight line stub for Bezier connections, are
          * much easier to do now.
          *
@@ -79,8 +78,7 @@
             };
         },
         Straight : function(params) {
-            var self = this,
-                _super = jsPlumb.Segments.AbstractSegment.apply(this, arguments),
+            var _super = jsPlumb.Segments.AbstractSegment.apply(this, arguments),
                 length, m, m2, x1, x2, y1, y2,
                 _recalc = function() {
                     length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
@@ -90,8 +88,8 @@
                 
             this.type = "Straight";
             
-            self.getLength = function() { return length; };
-            self.getGradient = function() { return m; };
+            this.getLength = function() { return length; };
+            this.getGradient = function() { return m; };
                 
             this.getCoordinates = function() {
                 return { x1:x1,y1:y1,x2:x2,y2:y2 };
@@ -116,7 +114,7 @@
              * 0 to 1 inclusive. for the straight line segment this is simple maths.
              */
              this.pointOnPath = function(location, absolute) {
-                if (location == 0 && !absolute)
+                if (location === 0 && !absolute)
                     return { x:x1, y:y1 };
                 else if (location == 1 && !absolute)
                     return { x:x2, y:y2 };
@@ -139,11 +137,15 @@
              * this hands off to jsPlumbUtil to do the maths, supplying two points and the distance.
              */            
             this.pointAlongPathFrom = function(location, distance, absolute) {            
-                var p = self.pointOnPath(location, absolute),
-                    farAwayPoint = location == 1 ? {
-                        x:x1 + ((x2 - x1) * 10),
-                        y:y1 + ((y1 - y2) * 10)
-                    } : distance <= 0 ? {x:x1, y:y1} : {x:x2, y:y2 };
+                var p = this.pointOnPath(location, absolute),
+                    farAwayPoint = distance <= 0 ? {x:x1, y:y1} : {x:x2, y:y2 };
+
+                /*
+                location == 1 ? {
+                                        x:x1 + ((x2 - x1) * 10),
+                                        y:y1 + ((y1 - y2) * 10)
+                                    } : 
+                */
     
                 if (distance <= 0 && Math.abs(distance) > 1) distance *= -1;
     
@@ -156,7 +158,7 @@
                 notes on this method in AbstractSegment.
             */
             this.findClosestPointOnPath = function(x, y) {
-                if (m == 0) {
+                if (m === 0) {
                     return {
                         x:x,
                         y:y1,
@@ -210,22 +212,21 @@
     
         */
         Arc : function(params) {
-            var self = this,
-                _super = jsPlumb.Segments.AbstractSegment.apply(this, arguments),
+            var _super = jsPlumb.Segments.AbstractSegment.apply(this, arguments),
                 _calcAngle = function(_x, _y) {
                     return jsPlumbUtil.theta([params.cx, params.cy], [_x, _y]);    
                 },
-                _calcAngleForLocation = function(location) {
-                    if (self.anticlockwise) {
-                        var sa = self.startAngle < self.endAngle ? self.startAngle + TWO_PI : self.startAngle,
-                            s = Math.abs(sa - self.endAngle);
+                _calcAngleForLocation = function(segment, location) {
+                    if (segment.anticlockwise) {
+                        var sa = segment.startAngle < segment.endAngle ? segment.startAngle + TWO_PI : segment.startAngle,
+                            s = Math.abs(sa - segment.endAngle);
                         return sa - (s * location);                    
                     }
                     else {
-                        var ea = self.endAngle < self.startAngle ? self.endAngle + TWO_PI : self.endAngle,
-                            s = Math.abs (ea - self.startAngle);
+                        var ea = segment.endAngle < segment.startAngle ? segment.endAngle + TWO_PI : segment.endAngle,
+                            ss = Math.abs (ea - segment.startAngle);
                     
-                        return self.startAngle + (s * location);
+                        return segment.startAngle + (ss * location);
                     }
                 },
                 TWO_PI = 2 * Math.PI;
@@ -237,10 +238,10 @@
             if (params.startAngle && params.endAngle) {
                 this.startAngle = params.startAngle;
                 this.endAngle = params.endAngle;            
-                this.x1 = params.cx + (self.radius * Math.cos(params.startAngle));     
-                this.y1 = params.cy + (self.radius * Math.sin(params.startAngle));            
-                this.x2 = params.cx + (self.radius * Math.cos(params.endAngle));     
-                this.y2 = params.cy + (self.radius * Math.sin(params.endAngle));                        
+                this.x1 = params.cx + (this.radius * Math.cos(params.startAngle));     
+                this.y1 = params.cy + (this.radius * Math.sin(params.startAngle));            
+                this.x2 = params.cx + (this.radius * Math.cos(params.endAngle));     
+                this.y2 = params.cy + (this.radius * Math.sin(params.endAngle));                        
             }
             else {
                 this.startAngle = _calcAngle(params.x1, params.y1);
@@ -261,11 +262,11 @@
             // absolute difference (|d|) between them is the sweep (s) of this arc, unless the
             // arc is 'anticlockwise' in which case 's' is given by 2PI - |d|.
             
-            var ea = self.endAngle < self.startAngle ? self.endAngle + TWO_PI : self.endAngle;
-            self.sweep = Math.abs (ea - self.startAngle);
-            if (self.anticlockwise) self.sweep = TWO_PI - self.sweep;
-            var circumference = 2 * Math.PI * self.radius,
-                frac = self.sweep / TWO_PI,
+            var ea = this.endAngle < this.startAngle ? this.endAngle + TWO_PI : this.endAngle;
+            this.sweep = Math.abs (ea - this.startAngle);
+            if (this.anticlockwise) this.sweep = TWO_PI - this.sweep;
+            var circumference = 2 * Math.PI * this.radius,
+                frac = this.sweep / TWO_PI,
                 length = circumference * frac;
             
             this.getLength = function() {
@@ -278,7 +279,7 @@
                     maxX:params.cx + params.r,
                     minY:params.cy - params.r,
                     maxY:params.cy + params.r
-                }
+                };
             };
             
             var VERY_SMALL_VALUE = 0.0000000001,
@@ -297,18 +298,18 @@
              */
             this.pointOnPath = function(location, absolute) {            
                 
-                if (location == 0) {
-                    return { x:self.x1, y:self.y1, theta:self.startAngle };    
+                if (location === 0) {
+                    return { x:this.x1, y:this.y1, theta:this.startAngle };    
                 }
                 else if (location == 1) {
-                    return { x:self.x2, y:self.y2, theta:self.endAngle };                    
+                    return { x:this.x2, y:this.y2, theta:this.endAngle };                    
                 }
                 
                 if (absolute) {
                     location = location / length;
                 }
     
-                var angle = _calcAngleForLocation(location),
+                var angle = _calcAngleForLocation(this, location),
                     _x = params.cx + (params.r * Math.cos(angle)),
                     _y  = params.cy + (params.r * Math.sin(angle));					
     
@@ -319,27 +320,26 @@
              * returns the gradient of the segment at the given point.
              */
             this.gradientAtPoint = function(location, absolute) {
-                var p = self.pointOnPath(location, absolute);
+                var p = this.pointOnPath(location, absolute);
                 var m = jsPlumbUtil.normal( [ params.cx, params.cy ], [p.x, p.y ] );
-                if (!self.anticlockwise && (m == Infinity || m == -Infinity)) m *= -1;
+                if (!this.anticlockwise && (m == Infinity || m == -Infinity)) m *= -1;
                 return m;
             };	              
                     
             this.pointAlongPathFrom = function(location, distance, absolute) {
-                var p = self.pointOnPath(location, absolute),
+                var p = this.pointOnPath(location, absolute),
                     arcSpan = distance / circumference * 2 * Math.PI,
-                    dir = self.anticlockwise ? -1 : 1,
+                    dir = this.anticlockwise ? -1 : 1,
                     startAngle = p.theta + (dir * arcSpan),				
-                    startX = params.cx + (self.radius * Math.cos(startAngle)),
-                    startY = params.cy + (self.radius * Math.sin(startAngle));	
+                    startX = params.cx + (this.radius * Math.cos(startAngle)),
+                    startY = params.cy + (this.radius * Math.sin(startAngle));	
     
                 return {x:startX, y:startY};
             };	            
         },
 	
         Bezier : function(params) {
-            var self = this,
-                _super = jsPlumb.Segments.AbstractSegment.apply(this, arguments),
+            var _super = jsPlumb.Segments.AbstractSegment.apply(this, arguments),
                 curve = [	
                     { x:params.x1, y:params.y1},
                     { x:params.cp1x, y:params.cp1y },
@@ -401,12 +401,11 @@
         Class: AbstractComponent
         Superclass for AbstractConnector and AbstractEndpoint.
     */
-    var AbstractComponent = function() {
-        var self = this;
-        self.resetBounds = function() {
-            self.bounds = { minX:Infinity, minY:Infinity, maxX:-Infinity, maxY:-Infinity };
+    var AbstractComponent = function() {        
+        this.resetBounds = function() {
+            this.bounds = { minX:Infinity, minY:Infinity, maxX:-Infinity, maxY:-Infinity };
         };
-        self.resetBounds();        
+        this.resetBounds();        
     };
 	
 	/*
@@ -421,9 +420,9 @@
 	 */ 
 	jsPlumb.Connectors.AbstractConnector = function(params) {
 		
-        AbstractComponent.apply(this, arguments);
+        AbstractComponent.apply(this, arguments);        
 
-		var self = this,
+		var //self = this, 
             segments = [],
             editing = false,
 			totalLength = 0,
@@ -440,11 +439,8 @@
             paintInfo = null;            
         
         // subclasses should override.
-        this.isEditable = function() { return false; };                
-        
-        this.setEdited = function(ed) {
-            edited = ed;
-        };
+        this.isEditable = function() { return false; };                        
+        this.setEdited = function(ed) { edited = ed; };
 
         // to be overridden by subclasses.
         this.getPath = function() { };
@@ -507,18 +503,19 @@
                         if (segmentProportions[i][1] >= location) {
                             idx = i;
                             // todo is this correct for all connector path types?
-                            inSegmentProportion = location == 1 ? 1 : location == 0 ? 0 : (location - segmentProportions[i][0]) / segmentProportionalLengths[i];                    
+                            inSegmentProportion = location == 1 ? 1 : location === 0 ? 0 : (location - segmentProportions[i][0]) / segmentProportionalLengths[i];                    
                             break;
                         }
                     }
                 //}
                 return { segment:segments[idx], proportion:inSegmentProportion, index:idx };
             },		
-            _addSegment = function(type, params) {
+            _addSegment = function(conn, type, params) {
+                if (params.x1 == params.x2 && params.y1 == params.y2) return;
                 var s = new jsPlumb.Segments[type](params);
                 segments.push(s);
                 totalLength += s.getLength();	
-                self.updateBounds(s);	                
+                conn.updateBounds(s);	                                
             },					
             _clearSegments = function() {
                 totalLength = 0;
@@ -537,7 +534,7 @@
         };  
         
         var _prepareCompute = function(params) {
-            self.lineWidth = params.lineWidth;
+            this.lineWidth = params.lineWidth;
             var segment = jsPlumbUtil.segment(params.sourcePos, params.targetPos),
                 swapX = params.targetPos[0] < params.sourcePos[0],
                 swapY = params.targetPos[1] < params.sourcePos[1],
@@ -552,7 +549,7 @@
             // if either anchor does not have an orientation set, we derive one from their relative
             // positions.  we fix the axis to be the one in which the two elements are further apart, and
             // point each anchor at the other element.  this is also used when dragging a new connection.
-            if (so[0] == 0 && so[1] == 0 || to[0] == 0 && to[1] == 0) {
+            if (so[0] === 0 && so[1] === 0 || to[0] === 0 && to[1] === 0) {
                 var index = w > h ? 0 : 1, oIndex = [1,0][index];
                 so = []; to = [];
                 so[index] = params.sourcePos[index] > params.targetPos[index] ? -1 : 1;
@@ -581,9 +578,9 @@
                 isXGreaterThanStubTimes2 : Math.abs(sx - tx) > (sourceStub + targetStub),
                 isYGreaterThanStubTimes2 : Math.abs(sy - ty) > (sourceStub + targetStub),
                 opposite:oProduct == -1,
-                perpendicular:oProduct == 0,
+                perpendicular:oProduct === 0,
                 orthogonal:oProduct == 1,
-                sourceAxis : so[0] == 0 ? "y" : "x",
+                sourceAxis : so[0] === 0 ? "y" : "x",
                 points:[x, y, w, h, sx, sy, tx, ty ]
             };
             result.anchorOrientation = result.opposite ? "opposite" : result.orthogonal ? "orthogonal" : "perpendicular";
@@ -592,12 +589,12 @@
 		
 		this.getSegments = function() { return segments; };
 
-        self.updateBounds = function(segment) {
+        this.updateBounds = function(segment) {
             var segBounds = segment.getBounds();
-            self.bounds.minX = Math.min(self.bounds.minX, segBounds.minX);
-            self.bounds.maxX = Math.max(self.bounds.maxX, segBounds.maxX);
-            self.bounds.minY = Math.min(self.bounds.minY, segBounds.minY);
-            self.bounds.maxY = Math.max(self.bounds.maxY, segBounds.maxY);              
+            this.bounds.minX = Math.min(this.bounds.minX, segBounds.minX);
+            this.bounds.maxX = Math.max(this.bounds.maxX, segBounds.maxX);
+            this.bounds.minY = Math.min(this.bounds.minY, segBounds.minY);
+            this.bounds.maxY = Math.max(this.bounds.maxY, segBounds.maxY);              
         };
         
         var dumpSegmentsToConsole = function() {
@@ -608,22 +605,20 @@
         };
 		
 		this.pointOnPath = function(location, absolute) {
-            //console.log("point on path", location);
-			var seg = _findSegmentForLocation(location, absolute);		
-            //console.log("point on path", location, seg);	
-			return seg.segment.pointOnPath(seg.proportion, absolute);
-		};
-		
-		this.gradientAtPoint = function(location) {
-			var seg = _findSegmentForLocation(location, absolute);			
-			return seg.segment.gradientAtPoint(seg.proportion, absolute);
-		};
-		
-		this.pointAlongPathFrom = function(location, distance, absolute) {
-			var seg = _findSegmentForLocation(location, absolute);
-			// TODO what happens if this crosses to the next segment?
-			return seg.segment.pointAlongPathFrom(seg.proportion, distance, false);
-		};
+            var seg = _findSegmentForLocation(location, absolute);      
+            return seg.segment && seg.segment.pointOnPath(seg.proportion, absolute) || [0,0];
+        };
+        
+        this.gradientAtPoint = function(location) {
+            var seg = _findSegmentForLocation(location, absolute);          
+            return seg.segment && seg.segment.gradientAtPoint(seg.proportion, absolute) || 0;
+        };
+        
+        this.pointAlongPathFrom = function(location, distance, absolute) {
+            var seg = _findSegmentForLocation(location, absolute);
+            // TODO what happens if this crosses to the next segment?
+            return seg.segment && seg.segment.pointAlongPathFrom(seg.proportion, distance, false) || [0,0];
+        };
 		
 		this.compute = function(params)  {
             if (!edited)
@@ -631,11 +626,11 @@
             
             _clearSegments();
             this._compute(paintInfo, params);
-            self.x = paintInfo.points[0];
-            self.y = paintInfo.points[1];
-            self.w = paintInfo.points[2];
-            self.h = paintInfo.points[3];               
-            self.segment = paintInfo.segment;         
+            this.x = paintInfo.points[0];
+            this.y = paintInfo.points[1];
+            this.w = paintInfo.points[2];
+            this.h = paintInfo.points[3];               
+            this.segment = paintInfo.segment;         
             _updateSegmentProportions();            
 		};
 		
@@ -650,21 +645,24 @@
             maxGap:Math.max(sourceGap, targetGap)
 		};		
 	};
+    jsPlumbUtil.extend(jsPlumb.Connectors.AbstractConnector, AbstractComponent);
 	
     /**
      * Class: Connectors.Straight
      * The Straight connector draws a simple straight line between the two anchor points.  It does not have any constructor parameters.
      */
-    jsPlumb.Connectors.Straight = function() {
+    var Straight = function() {
     	this.type = "Straight";
 		var _super =  jsPlumb.Connectors.AbstractConnector.apply(this, arguments);		
 
         this._compute = function(paintInfo, _) {                        
-            _super.addSegment("Straight", {x1:paintInfo.sx, y1:paintInfo.sy, x2:paintInfo.startStubX, y2:paintInfo.startStubY});                                                
-            _super.addSegment("Straight", {x1:paintInfo.startStubX, y1:paintInfo.startStubY, x2:paintInfo.endStubX, y2:paintInfo.endStubY});                        
-            _super.addSegment("Straight", {x1:paintInfo.endStubX, y1:paintInfo.endStubY, x2:paintInfo.tx, y2:paintInfo.ty});                                    
+            _super.addSegment(this, "Straight", {x1:paintInfo.sx, y1:paintInfo.sy, x2:paintInfo.startStubX, y2:paintInfo.startStubY});                                                
+            _super.addSegment(this, "Straight", {x1:paintInfo.startStubX, y1:paintInfo.startStubY, x2:paintInfo.endStubX, y2:paintInfo.endStubY});                        
+            _super.addSegment(this, "Straight", {x1:paintInfo.endStubX, y1:paintInfo.endStubY, x2:paintInfo.tx, y2:paintInfo.ty});                                    
         };                    
     };
+    jsPlumbUtil.extend(jsPlumb.Connectors.Straight, jsPlumb.Connectors.AbstractConnector);
+    jsPlumb.registerConnectorType(Straight, "Straight");
                     
     /**
      * Class:Connectors.Bezier
@@ -681,11 +679,10 @@
      * stub - optional value for a distance to travel from the connector's endpoint before beginning the Bezier curve. defaults to 0.
      * 
      */
-    jsPlumb.Connectors.Bezier = function(params) {
+    var Bezier = function(params) {
         params = params || {};
 
-    	var self = this,
-			_super =  jsPlumb.Connectors.AbstractConnector.apply(this, arguments),
+    	var _super =  jsPlumb.Connectors.AbstractConnector.apply(this, arguments),
             stub = params.stub || 50,
             majorAnchor = params.curviness || 150,
             minorAnchor = 10;            
@@ -702,20 +699,20 @@
             	p = [];                
             	
             if (!perpendicular) {
-                if (soo[0] == 0) // X
+                if (soo[0] === 0) // X
                     p.push(sourceAnchorPosition[0] < targetAnchorPosition[0] ? point[0] + minorAnchor : point[0] - minorAnchor);
                 else p.push(point[0] - (majorAnchor * soo[0]));
                                  
-                if (soo[1] == 0) // Y
+                if (soo[1] === 0) // Y
                 	p.push(sourceAnchorPosition[1] < targetAnchorPosition[1] ? point[1] + minorAnchor : point[1] - minorAnchor);
                 else p.push(point[1] + (majorAnchor * too[1]));
             }
              else {
-                if (too[0] == 0) // X
+                if (too[0] === 0) // X
                 	p.push(targetAnchorPosition[0] < sourceAnchorPosition[0] ? point[0] + minorAnchor : point[0] - minorAnchor);
                 else p.push(point[0] + (majorAnchor * too[0]));
                 
-                if (too[1] == 0) // Y
+                if (too[1] === 0) // Y
                 	p.push(targetAnchorPosition[1] < sourceAnchorPosition[1] ? point[1] + minorAnchor : point[1] - minorAnchor);
                 else p.push(point[1] + (majorAnchor * soo[1]));
              }
@@ -732,15 +729,17 @@
                 _sy = sp[1] < tp[1] ? _h : 0,
                 _tx = sp[0] < tp[0] ? 0 : _w,
                 _ty = sp[1] < tp[1] ? 0 : _h,
-                _CP = self._findControlPoint([_sx, _sy], sp, tp, p.sourceEndpoint, p.targetEndpoint),
-                _CP2 = self._findControlPoint([_tx, _ty], tp, sp, p.targetEndpoint, p.sourceEndpoint);
+                _CP = this._findControlPoint([_sx, _sy], sp, tp, p.sourceEndpoint, p.targetEndpoint),
+                _CP2 = this._findControlPoint([_tx, _ty], tp, sp, p.targetEndpoint, p.sourceEndpoint);
 
-			_super.addSegment("Bezier", {
+			_super.addSegment(this, "Bezier", {
 				x1:_sx, y1:_sy, x2:_tx, y2:_ty,
 				cp1x:_CP[0], cp1y:_CP[1], cp2x:_CP2[0], cp2y:_CP2[1]
 			});                    
         };               
-    };        
+    };    
+    jsPlumbUtil.extend(Bezier, jsPlumb.Connectors.AbstractConnector);
+    jsPlumb.registerConnectorType(Bezier, "Bezier");
     
  // ********************************* END OF CONNECTOR TYPES *******************************************************************
     
@@ -748,24 +747,24 @@
     
     jsPlumb.Endpoints.AbstractEndpoint = function(params) {
         AbstractComponent.apply(this, arguments);
-        var self = this;    
-        this.compute = function(anchorPoint, orientation, endpointStyle, connectorPaintStyle) {    
-            var out = self._compute.apply(self, arguments);
-            self.x = out[0];
-            self.y = out[1];
-            self.w = out[2];
-            self.h = out[3];
-            self.bounds.minX = self.x;
-            self.bounds.minY = self.y;
-            self.bounds.maxX = self.x + self.w;
-            self.bounds.maxY = self.y + self.h;
+        var compute = this.compute = function(anchorPoint, orientation, endpointStyle, connectorPaintStyle) {    
+            var out = this._compute.apply(this, arguments);
+            this.x = out[0];
+            this.y = out[1];
+            this.w = out[2];
+            this.h = out[3];
+            this.bounds.minX = this.x;
+            this.bounds.minY = this.y;
+            this.bounds.maxX = this.x + this.w;
+            this.bounds.maxY = this.y + this.h;
             return out;
         };
         return {
-            compute:self.compute,
+            compute:compute,
             cssClass:params.cssClass
         };
     };
+    jsPlumbUtil.extend(jsPlumb.Endpoints.AbstractEndpoint, AbstractComponent);
     
     /**
      * Class: Endpoints.Dot
@@ -781,19 +780,18 @@
 	 */
 	jsPlumb.Endpoints.Dot = function(params) {        
 		this.type = "Dot";
-		var self = this,
-            _super = jsPlumb.Endpoints.AbstractEndpoint.apply(this, arguments);
+		var _super = jsPlumb.Endpoints.AbstractEndpoint.apply(this, arguments);
 		params = params || {};				
 		this.radius = params.radius || 10;
 		this.defaultOffset = 0.5 * this.radius;
 		this.defaultInnerRadius = this.radius / 3;			
 		
 		this._compute = function(anchorPoint, orientation, endpointStyle, connectorPaintStyle) {
-			self.radius = endpointStyle.radius || self.radius;
-			var	x = anchorPoint[0] - self.radius,
-				y = anchorPoint[1] - self.radius,
-                w = self.radius * 2,
-                h = self.radius * 2;
+			this.radius = endpointStyle.radius || this.radius;
+			var	x = anchorPoint[0] - this.radius,
+				y = anchorPoint[1] - this.radius,
+                w = this.radius * 2,
+                h = this.radius * 2;
 
             if (endpointStyle.strokeStyle) {
                 var lw = endpointStyle.lineWidth || 1;
@@ -802,9 +800,10 @@
                 w += (lw * 2);
                 h += (lw * 2);
             }
-			return [ x, y, w, h, self.radius ];
+			return [ x, y, w, h, this.radius ];
 		};
 	};
+    jsPlumbUtil.extend(jsPlumb.Endpoints.Dot, jsPlumb.Endpoints.AbstractEndpoint);
 	
 	/**
 	 * Class: Endpoints.Rectangle
@@ -820,36 +819,37 @@
 	 */
 	jsPlumb.Endpoints.Rectangle = function(params) {
 		this.type = "Rectangle";
-		var self = this,
-            _super = jsPlumb.Endpoints.AbstractEndpoint.apply(this, arguments);
+		var _super = jsPlumb.Endpoints.AbstractEndpoint.apply(this, arguments);
 		params = params || {};
 		this.width = params.width || 20;
 		this.height = params.height || 20;
 		
 		this._compute = function(anchorPoint, orientation, endpointStyle, connectorPaintStyle) {
-			var width = endpointStyle.width || self.width,
-				height = endpointStyle.height || self.height,
+			var width = endpointStyle.width || this.width,
+				height = endpointStyle.height || this.height,
 				x = anchorPoint[0] - (width/2),
 				y = anchorPoint[1] - (height/2);
                 
 			return [ x, y, width, height];
 		};
 	};
+    jsPlumbUtil.extend(jsPlumb.Endpoints.Rectangle, jsPlumb.Endpoints.AbstractEndpoint);
 	
 
     var DOMElementEndpoint = function(params) {
-        jsPlumb.DOMElementComponent.apply(this, arguments);
-        var self = this;
-
-        var displayElements = [  ];
-        this.getDisplayElements = function() { 
-            return displayElements; 
-        };
-        
-        this.appendDisplayElement = function(el) {
-            displayElements.push(el);
-        };            
+        jsPlumb.DOMElementComponent.apply(this, arguments);        
+        this._jsPlumb.displayElements = [  ];                
     };
+    jsPlumbUtil.extend(DOMElementEndpoint, jsPlumb.DOMElementComponent, {
+       // jsPlumb.Endpoints.AbstractEndpoint
+        getDisplayElements : function() { 
+            return this._jsPlumb.displayElements; 
+        },        
+        appendDisplayElement : function(el) {
+            this._jsPlumb.displayElements.push(el);
+        }
+    });
+
 	/**
 	 * Class: Endpoints.Image
 	 * Draws an image as the Endpoint.
@@ -860,32 +860,43 @@
 	 * Parameters:
 	 * 
 	 * 	src	-	location of the image to use.
+
+    TODO: multiple references to self. not sure quite how to get rid of them entirely. perhaps self = null in the cleanup
+    function will suffice
+
+    TODO this class still leaks memory.
+
 	 */
 	jsPlumb.Endpoints.Image = function(params) {
 				
 		this.type = "Image";
 		DOMElementEndpoint.apply(this, arguments);
+        jsPlumb.Endpoints.AbstractEndpoint.apply(this, arguments);
 		
-		var self = this,
-            _super = jsPlumb.Endpoints.AbstractEndpoint.apply(this, arguments), 
-			initialized = false,
-			deleted = false,
-			widthToUse = params.width,
-			heightToUse = params.height,
-            _onload = null,
-            _endpoint = params.endpoint;
-			
-		this.img = new Image();
-		self.ready = false;
+		var _onload = params.onload, 
+            src = params.src || params.url,
+            parent = params.parent,
+            clazz = params.cssClass ? " " + params.cssClass : "";
 
-		this.img.onload = function() {
-			self.ready = true;
-			widthToUse = widthToUse || self.img.width;
-			heightToUse = heightToUse || self.img.height;
-            if (_onload) {
-                _onload(self);
+        this._jsPlumb.img = new Image();		
+        this._jsPlumb.ready = false;
+        this._jsPlumb.initialized = false;
+        this._jsPlumb.deleted = false;
+        this._jsPlumb.widthToUse = params.width;
+        this._jsPlumb.heightToUse = params.height;
+        this._jsPlumb.endpoint = params.endpoint;
+
+		this._jsPlumb.img.onload = function() {
+            // check we weren't actually discarded before use (in fact mostly happens in tests)
+            if (this._jsPlumb != null) {
+    			this._jsPlumb.ready = true;            
+    			this._jsPlumb.widthToUse = this._jsPlumb.widthToUse || this._jsPlumb.img.width;
+    			this._jsPlumb.heightToUse = this._jsPlumb.heightToUse || this._jsPlumb.img.height;
+                if (_onload) {
+                    _onload(this);
+                }
             }
-		};
+		}.bind(this);        
 
         /*
             Function: setImage
@@ -895,91 +906,105 @@
             img         -   may be a URL or an Image object
             onload      -   optional; a callback to execute once the image has loaded.
         */
-        _endpoint.setImage = function(img, onload) {
-            var s = img.constructor == String ? img : img.src;
-            _onload = onload;
-            self.img.src = img;
+        this._jsPlumb.endpoint.setImage = function(_img, onload) {
+            var s = _img.constructor == String ? _img : _img.src;
+            _onload = onload; 
+            this._jsPlumb.img.src = s;
 
-            if (self.canvas != null)
-                self.canvas.setAttribute("src", img);
-        };
+            if (this.canvas != null)
+                this.canvas.setAttribute("src", this._jsPlumb.img.src);
+        }.bind(this);
 
-        _endpoint.setImage(params.src || params.url, params.onload);
+        this._jsPlumb.endpoint.setImage(src, _onload);
+        /*        
+            var s = src.constructor == String ? src : src.src;
+            //_onload = onload; 
+            this._jsPlumb.img.src = src;
+
+            if (this.canvas != null)
+                this.canvas.setAttribute("src", this._jsPlumb.img.src);
+       // }.bind(this);
+
+        //this._jsPlumb.endpoint.setImage(src, _onload);*/
 
 		this._compute = function(anchorPoint, orientation, endpointStyle, connectorPaintStyle) {
-			self.anchorPoint = anchorPoint;
-			if (self.ready) return [anchorPoint[0] - widthToUse / 2, anchorPoint[1] - heightToUse / 2, 
-									widthToUse, heightToUse];
+			this.anchorPoint = anchorPoint;
+			if (this._jsPlumb.ready) return [anchorPoint[0] - this._jsPlumb.widthToUse / 2, anchorPoint[1] - this._jsPlumb.heightToUse / 2, 
+									this._jsPlumb.widthToUse, this._jsPlumb.heightToUse];
 			else return [0,0,0,0];
 		};
 		
-		self.canvas = document.createElement("img"), initialized = false;
-		self.canvas.style["margin"] = 0;
-		self.canvas.style["padding"] = 0;
-		self.canvas.style["outline"] = 0;
-		self.canvas.style["position"] = "absolute";
-		var clazz = params.cssClass ? " " + params.cssClass : "";
-		self.canvas.className = jsPlumb.endpointClass + clazz;
-		if (widthToUse) self.canvas.setAttribute("width", widthToUse);
-		if (heightToUse) self.canvas.setAttribute("height", heightToUse);		
-		jsPlumb.appendElement(self.canvas, params.parent);
-		self.attachListeners(self.canvas, self);
+		this.canvas = document.createElement("img");
+		this.canvas.style.margin = 0;
+		this.canvas.style.padding = 0;
+		this.canvas.style.outline = 0;
+		this.canvas.style.position = "absolute";		
+		this.canvas.className = this._jsPlumb.instance.endpointClass + clazz;
+		if (this._jsPlumb.widthToUse) this.canvas.setAttribute("width", this._jsPlumb.widthToUse);
+		if (this._jsPlumb.heightToUse) this.canvas.setAttribute("height", this._jsPlumb.heightToUse);		
+		this._jsPlumb.instance.appendElement(this.canvas, parent);
+		this.attachListeners(this.canvas, this);		
 		
-		self.cleanup = function() {
-			deleted = true;
-		};
-		
-		var actuallyPaint = function(d, style, anchor) {
-			if (!deleted) {
-				if (!initialized) {
-					self.canvas.setAttribute("src", self.img.src);
-					self.appendDisplayElement(self.canvas);
-					initialized = true;
+		this.actuallyPaint = function(d, style, anchor) {
+			if (!this._jsPlumb.deleted) {
+				if (!this._jsPlumb.initialized) {
+					this.canvas.setAttribute("src", this._jsPlumb.img.src);
+					this.appendDisplayElement(this.canvas);
+					this._jsPlumb.initialized = true;
 				}
-				var x = self.anchorPoint[0] - (widthToUse / 2),
-					y = self.anchorPoint[1] - (heightToUse / 2);
-				jsPlumb.sizeCanvas(self.canvas, x, y, widthToUse, heightToUse);
+				var x = this.anchorPoint[0] - (this._jsPlumb.widthToUse / 2),
+					y = this.anchorPoint[1] - (this._jsPlumb.heightToUse / 2);
+				jsPlumbUtil.sizeElement(this.canvas, x, y, this._jsPlumb.widthToUse, this._jsPlumb.heightToUse);
 			}
 		};
 		
 		this.paint = function(style, anchor) {
-			if (self.ready) {
-    			actuallyPaint(style, anchor);
-			}
-			else { 
-				window.setTimeout(function() {    					
-					self.paint(style, anchor);
-				}, 200);
-			}
+            if (this._jsPlumb != null) {  // may have been deleted
+    			if (this._jsPlumb.ready) {
+        			this.actuallyPaint(style, anchor);
+    			}
+    			else { 
+    				window.setTimeout(function() {    					
+    					this.paint(style, anchor);
+    				}.bind(this), 200);
+    			}
+            }
 		};				
 	};
+    jsPlumbUtil.extend(jsPlumb.Endpoints.Image, [ DOMElementEndpoint, jsPlumb.Endpoints.AbstractEndpoint ], {
+        cleanup : function() {            
+            this._jsPlumb.deleted = true;
+            jsPlumbUtil.removeElement(this.canvas);
+            this.canvas = null;
+        } 
+    });
 	
 	/*
 	 * Class: Endpoints.Blank
 	 * An Endpoint that paints nothing (visible) on the screen.  Supports cssClass and hoverClass parameters like all Endpoints.
 	 */
 	jsPlumb.Endpoints.Blank = function(params) {
-		var self = this,
-            _super = jsPlumb.Endpoints.AbstractEndpoint.apply(this, arguments);
+		var _super = jsPlumb.Endpoints.AbstractEndpoint.apply(this, arguments);
 		this.type = "Blank";
 		DOMElementEndpoint.apply(this, arguments);		
 		this._compute = function(anchorPoint, orientation, endpointStyle, connectorPaintStyle) {
 			return [anchorPoint[0], anchorPoint[1],10,0];
 		};
 		
-		self.canvas = document.createElement("div");
-		self.canvas.style.display = "block";
-		self.canvas.style.width = "1px";
-		self.canvas.style.height = "1px";
-		self.canvas.style.background = "transparent";
-		self.canvas.style.position = "absolute";
-		self.canvas.className = self._jsPlumb.endpointClass;
-		jsPlumb.appendElement(self.canvas, params.parent);
+		this.canvas = document.createElement("div");
+		this.canvas.style.display = "block";
+		this.canvas.style.width = "1px";
+		this.canvas.style.height = "1px";
+		this.canvas.style.background = "transparent";
+		this.canvas.style.position = "absolute";
+		this.canvas.className = this._jsPlumb.endpointClass;
+		jsPlumb.appendElement(this.canvas, params.parent);
 		
 		this.paint = function(style, anchor) {
-			jsPlumb.sizeCanvas(self.canvas, self.x, self.y, self.w, self.h);	
+			jsPlumbUtil.sizeElement(this.canvas, this.x, this.y, this.w, this.h);	
 		};
 	};
+    jsPlumbUtil.extend(jsPlumb.Endpoints.Blank, [jsPlumb.Endpoints.AbstractEndpoint, DOMElementEndpoint]);
 	
 	/*
 	 * Class: Endpoints.Triangle
@@ -995,8 +1020,7 @@
 	 */
 	jsPlumb.Endpoints.Triangle = function(params) {        
 		this.type = "Triangle";
-        var self = this,
-            _super = jsPlumb.Endpoints.AbstractEndpoint.apply(this, arguments);
+        var _super = jsPlumb.Endpoints.AbstractEndpoint.apply(this, arguments);
 		params = params || {  };
 		params.width = params.width || 55;
 		params.height = params.height || 55;
@@ -1016,31 +1040,40 @@
 // ********************************* OVERLAY DEFINITIONS ***********************************************************************    
 
 	var AbstractOverlay = jsPlumb.Overlays.AbstractOverlay = function(params) {
-		var visible = true, self = this;
+		this.visible = true;
         this.isAppendedAtTopLevel = true;
 		this.component = params.component;
 		this.loc = params.location == null ? 0.5 : params.location;
         this.endpointLoc = params.endpointLocation == null ? [ 0.5, 0.5] : params.endpointLocation;
-		this.setVisible = function(val) { 
-			visible = val;
-			self.component.repaint();
-		};
-    	this.isVisible = function() { return visible; };
-    	this.hide = function() { self.setVisible(false); };
-    	this.show = function() { self.setVisible(true); };
-    	
-    	this.incrementLocation = function(amount) {
-    		self.loc += amount;
-    		self.component.repaint();
-    	};
-    	this.setLocation = function(l) {
-    		self.loc = l;
-    		self.component.repaint();
-    	};
-    	this.getLocation = function() {
-    		return self.loc;
-    	};
+		//this.;
 	};
+    AbstractOverlay.prototype = {
+        cleanup:function() {  
+           //console.log("AbstractOverlay cleanup");
+           this.component = null;
+           this.canvas = null;
+           this.endpointLoc = null;
+        },
+        setVisible : function(val) { 
+            this.visible = val;
+            this.component.repaint();
+        },
+        isVisible : function() { return this.visible; },
+        hide : function() { this.setVisible(false); },
+        show : function() { this.setVisible(true); },
+        
+        incrementLocation : function(amount) {
+            this.loc += amount;
+            this.component.repaint();
+        },
+        setLocation : function(l) {
+            this.loc = l;
+            this.component.repaint();
+        },
+        getLocation : function() {
+            return this.loc;
+        }
+    };
 	
 	
 	/*
@@ -1070,7 +1103,7 @@
 		AbstractOverlay.apply(this, arguments);
         this.isAppendedAtTopLevel = false;
 		params = params || {};
-		var self = this, _ju = jsPlumbUtil;
+		var _ju = jsPlumbUtil;
 		
     	this.length = params.length || 20;
     	this.width = params.width || 20;
@@ -1081,22 +1114,22 @@
     	    foldback = params.foldback || 0.623;
     	    	
     	this.computeMaxSize = function() { return self.width * 1.5; };    	
-    	this.cleanup = function() { };  // nothing to clean up for Arrows    
+    	//this.cleanup = function() { };  // nothing to clean up for Arrows    
     	this.draw = function(component, currentConnectionPaintStyle) {
 
             var hxy, mid, txy, tail, cxy;
             if (component.pointAlongPathFrom) {
 
-                if (_ju.isString(self.loc) || self.loc > 1 || self.loc < 0) {                    
-                    var l = parseInt(self.loc);
-                    hxy = component.pointAlongPathFrom(l, direction * self.length / 2, true),
-                    mid = component.pointOnPath(l, true),
-                    txy = _ju.pointOnLine(hxy, mid, self.length);
+                if (_ju.isString(this.loc) || this.loc > 1 || this.loc < 0) {                    
+                    var l = parseInt(this.loc, 10);
+                    hxy = component.pointAlongPathFrom(l, direction * this.length / 2, true);
+                    mid = component.pointOnPath(l, true);
+                    txy = _ju.pointOnLine(hxy, mid, this.length);
                 }
-                else if (self.loc == 1) {                
-					hxy = component.pointOnPath(self.loc);					           
-                    mid = component.pointAlongPathFrom(self.loc, -(self.length));
-					txy = _ju.pointOnLine(hxy, mid, self.length);
+                else if (this.loc == 1) {                
+					hxy = component.pointOnPath(this.loc);					           
+                    mid = component.pointAlongPathFrom(this.loc, -(this.length));
+					txy = _ju.pointOnLine(hxy, mid, this.length);
 					
 					if (direction == -1) {
 						var _ = txy;
@@ -1104,24 +1137,24 @@
 						hxy = _;
 					}
                 }
-                else if (self.loc == 0) {					                    
-					txy = component.pointOnPath(self.loc);                    
-					mid = component.pointAlongPathFrom(self.loc, self.length);                    
-					hxy = _ju.pointOnLine(txy, mid, self.length);                    
+                else if (this.loc === 0) {					                    
+					txy = component.pointOnPath(this.loc);                    
+					mid = component.pointAlongPathFrom(this.loc, this.length);                    
+					hxy = _ju.pointOnLine(txy, mid, this.length);                    
 					if (direction == -1) {
-						var _ = txy;
+						var __ = txy;
 						txy = hxy;
-						hxy = _;
+						hxy = __;
 					}
                 }
                 else {                    
-    			    hxy = component.pointAlongPathFrom(self.loc, direction * self.length / 2),
-                    mid = component.pointOnPath(self.loc),
-                    txy = _ju.pointOnLine(hxy, mid, self.length);
+    			    hxy = component.pointAlongPathFrom(this.loc, direction * this.length / 2);
+                    mid = component.pointOnPath(this.loc);
+                    txy = _ju.pointOnLine(hxy, mid, this.length);
                 }
 
-                tail = _ju.perpendicularLineTo(hxy, txy, self.width);
-                cxy = _ju.pointOnLine(hxy, txy, foldback * self.length);    			
+                tail = _ju.perpendicularLineTo(hxy, txy, this.width);
+                cxy = _ju.pointOnLine(hxy, txy, foldback * this.length);    			
     			
     			var d = { hxy:hxy, tail:tail, cxy:cxy },
     			    strokeStyle = paintStyle.strokeStyle || currentConnectionPaintStyle.strokeStyle,
@@ -1143,7 +1176,8 @@
             }
             else return {component:component, minX:0,maxX:0,minY:0,maxY:0};
     	};
-    };          
+    };    
+    jsPlumbUtil.extend(jsPlumb.Overlays.Arrow, AbstractOverlay);      
     
     /*
      * Class: Overlays.PlainArrow
@@ -1162,6 +1196,7 @@
     	jsPlumb.Overlays.Arrow.call(this, p);
     	this.type = "PlainArrow";
     };
+    jsPlumbUtil.extend(jsPlumb.Overlays.PlainArrow, jsPlumb.Overlays.Arrow);
         
     /*
      * Class: Overlays.Diamond
@@ -1185,102 +1220,69 @@
     	jsPlumb.Overlays.Arrow.call(this, p);
     	this.type = "Diamond";
     };
-    
+    jsPlumbUtil.extend(jsPlumb.Overlays.Diamond, jsPlumb.Overlays.Arrow);
+
+    var _getDimensions = function(component) {
+        if (component._jsPlumb.cachedDimensions == null)
+            component._jsPlumb.cachedDimensions = component.getDimensions();
+        return component._jsPlumb.cachedDimensions;
+    };      
 	
 	// abstract superclass for overlays that add an element to the DOM.
     var AbstractDOMOverlay = function(params) {
 		jsPlumb.DOMElementComponent.apply(this, arguments);
     	AbstractOverlay.apply(this, arguments);
 		
-		var self = this, initialised = false, jpcl = jsPlumb.CurrentLibrary;
-		params = params || {};
+		var jpcl = jsPlumb.CurrentLibrary;		
 		this.id = params.id;
-		var div;
-		
-		var makeDiv = function() {
-			div = params.create(params.component);
-			div = jpcl.getDOMElement(div);
-			div.style["position"] 	= 	"absolute";    	
-			var clazz = params["_jsPlumb"].overlayClass + " " + 
-				(self.cssClass ? self.cssClass : 
-				params.cssClass ? params.cssClass : "");    	
-			div.className =	clazz;
-			params["_jsPlumb"].appendElement(div, params.component.parent);
-			params["_jsPlumb"].getId(div);		
-	    	self.attachListeners(div, self);
-	    	self.canvas = div;
-		};
+        this._jsPlumb.div = null;		
+        this._jsPlumb.initialised = false;
+        this._jsPlumb.component = params.component;
+        this._jsPlumb.cachedDimensions = null;
+        this._jsPlumb.create = params.create;
 		
 		this.getElement = function() {
-			if (div == null) {
-				makeDiv();
+			if (this._jsPlumb.div == null) {
+                var div = this._jsPlumb.div = jpcl.getDOMElement(this._jsPlumb.create(this._jsPlumb.component));                
+                div.style.position   =   "absolute";     
+                var clazz = params._jsPlumb.overlayClass + " " + 
+                    (this.cssClass ? this.cssClass : 
+                    params.cssClass ? params.cssClass : "");        
+                div.className = clazz;
+                this._jsPlumb.instance.appendElement(div, this._jsPlumb.component.parent);
+                this._jsPlumb.instance.getId(div);      
+                this.attachListeners(div, this);
+                this.canvas = div;
 			}
-    		return div;
+    		return this._jsPlumb.div;
     	};
-		
-		this.getDimensions = function() {
-    		return jpcl.getSize(jpcl.getElementObject(self.getElement()));
-    	};
-		
-		var cachedDimensions = null,
-			_getDimensions = function(component) {
-				if (cachedDimensions == null)
-					cachedDimensions = self.getDimensions();
-				return cachedDimensions;
-			};
-		
-		/*
-		 * Function: clearCachedDimensions
-		 * Clears the cached dimensions for the label. As a performance enhancement, label dimensions are
-		 * cached from 1.3.12 onwards. The cache is cleared when you change the label text, of course, but
-		 * there are other reasons why the text dimensions might change - if you make a change through CSS, for
-		 * example, you might change the font size.  in that case you should explicitly call this method.
-		 */
-		this.clearCachedDimensions = function() {
-			cachedDimensions = null;
-		};
-		
-		this.computeMaxSize = function() {
-    		var td = _getDimensions();
-			return Math.max(td[0], td[1]);
-    	}; 
-		
-		//override setVisible
-    	var osv = self.setVisible;
-    	self.setVisible = function(state) {
-    		osv(state); // call superclass
-    		div.style.display = state ? "block" : "none";
-    	};
-		
-		this.cleanup = function() {
-    		if (div != null) jpcl.removeElement(div);
-    	};
-		
-		this.paint = function(params, containerExtents) {
-			if (!initialised) {
-				self.getElement();
-				params.component.appendDisplayElement(div);
-				self.attachListeners(div, params.component);
-				initialised = true;
+			
+            /*	
+		this.paint = function(p, containerExtents) {
+			if (!this._jsPlumb.initialised) {
+				this.getElement();
+				p.component.appendDisplayElement(this._jsPlumb.div);
+				this.attachListeners(this._jsPlumb.div, p.component);
+				this._jsPlumb.initialised = true;
 			}
-			div.style.left = (params.component.x + params.d.minx) + "px";
-			div.style.top = (params.component.y + params.d.miny) + "px";			
-    	};
+			this._jsPlumb.div.style.left = (p.component.x + p.d.minx) + "px";
+			this._jsPlumb.div.style.top = (p.component.y + p.d.miny) + "px";			
+    	};*/
 				
 		this.draw = function(component, currentConnectionPaintStyle) {
-	    	var td = _getDimensions();
+	    	var td = _getDimensions(this);
 	    	if (td != null && td.length == 2) {
 				var cxy = {x:0,y:0};
                 if (component.pointOnPath) {
-                    var loc = self.loc, absolute = false;
-                    if (jsPlumbUtil.isString(self.loc) || self.loc < 0 || self.loc > 1) {
-                        loc = parseInt(self.loc);
+                    var loc = this.loc, absolute = false;
+                    if (jsPlumbUtil.isString(this.loc) || this.loc < 0 || this.loc > 1) {
+                        loc = parseInt(this.loc, 10);
                         absolute = true;
                     }
                     cxy = component.pointOnPath(loc, absolute);  // a connection
                 }
                 else {
-                    var locToUse = self.loc.constructor == Array ? self.loc : self.endpointLoc;
+                    var locToUse = this.loc.constructor == Array ? this.loc : this.endpointLoc;
                     cxy = { x:locToUse[0] * component.w,
                             y:locToUse[1] * component.h };      
                 } 
@@ -1298,15 +1300,53 @@
                 };								
         	}
 	    	else return {minX:0,maxX:0,minY:0,maxY:0};
-	    };
-	    
-	    this.reattachListeners = function(connector) {
-	    	if (div) {
-	    		self.reattachListenersForElement(div, self, connector);
-	    	}
-	    };
-		
+	    };	   	   		
 	};
+    jsPlumbUtil.extend(AbstractDOMOverlay, [jsPlumb.DOMElementComponent, AbstractOverlay], {
+        getDimensions : function() {            
+            return jsPlumb.CurrentLibrary.getSize(jsPlumb.CurrentLibrary.getElementObject(this.getElement()));
+            //var e = this.getElement();
+            //return [e.offsetWidth, e.offsetHeight];
+            //console.log(d);
+            //console.log(e.clientWidth, e.clientHeight);
+        },
+        setVisible : function(state) {
+            this._jsPlumb.div.style.display = state ? "block" : "none";
+        },
+        /*
+         * Function: clearCachedDimensions
+         * Clears the cached dimensions for the label. As a performance enhancement, label dimensions are
+         * cached from 1.3.12 onwards. The cache is cleared when you change the label text, of course, but
+         * there are other reasons why the text dimensions might change - if you make a change through CSS, for
+         * example, you might change the font size.  in that case you should explicitly call this method.
+         */
+        clearCachedDimensions : function() {
+            this._jsPlumb.cachedDimensions = null;
+        },
+        cleanup : function() {
+            //console.log("AbstractDOMOverlay cleanup");
+            if (this._jsPlumb.div != null) jsPlumb.CurrentLibrary.removeElement(this._jsPlumb.div);
+        },
+        computeMaxSize : function() {
+            var td = _getDimensions(this);
+            return Math.max(td[0], td[1]);
+        },
+        reattachListeners : function(connector) {
+            if (this._jsPlumb.div) {
+                this.reattachListenersForElement(this._jsPlumb.div, this, connector);
+            }
+        },
+        paint : function(p, containerExtents) {
+            if (!this._jsPlumb.initialised) {
+                this.getElement();
+                p.component.appendDisplayElement(this._jsPlumb.div);
+                this.attachListeners(this._jsPlumb.div, p.component);
+                this._jsPlumb.initialised = true;
+            }
+            this._jsPlumb.div.style.left = (p.component.x + p.d.minx) + "px";
+            this._jsPlumb.div.style.top = (p.component.y + p.d.miny) + "px";            
+        }
+    });
 	
 	/*
      * Class: Overlays.Custom
@@ -1326,6 +1366,7 @@
     	this.type = "Custom";    	
     	AbstractDOMOverlay.apply(this, arguments);		    	        		    	    		
     };
+    jsPlumbUtil.extend(jsPlumb.Overlays.Custom, AbstractDOMOverlay);
 
     jsPlumb.Overlays.GuideLines = function() {
         var self = this;
@@ -1355,7 +1396,7 @@
             };
         };
 
-        this.cleanup = function() { };  // nothing to clean up for GuideLines
+       // this.cleanup = function() { };  // nothing to clean up for GuideLines
     };
     
     /*
@@ -1377,60 +1418,61 @@
      * 	id - optional id to use for later retrieval of this overlay.
      * 	
      */
-    jsPlumb.Overlays.Label = function(params) {
-		var self = this;    	
+    jsPlumb.Overlays.Label =  function(params) {		   
 		this.labelStyle = params.labelStyle || jsPlumb.Defaults.LabelStyle;
 		this.cssClass = this.labelStyle != null ? this.labelStyle.cssClass : null;
-		params.create = function() {
-			return document.createElement("div");
-		};
-    	jsPlumb.Overlays.Custom.apply(this, arguments);
-		this.type = "Label";
-    	
-        var label = params.label || "",
-            self = this,    	    
-            labelText = null;
-    	
-    	/*
-    	 * Function: setLabel
-    	 * sets the label's, um, label.  you would think i'd call this function
-    	 * 'setText', but you can pass either a Function or a String to this, so
-    	 * it makes more sense as 'setLabel'. This uses innerHTML on the label div, so keep
-         * that in mind if you need escaped HTML.
-    	 */
-    	this.setLabel = function(l) {
-    		label = l;
-    		labelText = null;
-			self.clearCachedDimensions();
-			_update();
-    		self.component.repaint();
-    	};
-    	
-		var _update = function() {
-			if (typeof label == "function") {
-    			var lt = label(self);
-    			self.getElement().innerHTML = lt.replace(/\r\n/g, "<br/>");
-    		}
-    		else {
-    			if (labelText == null) {
-    				labelText = label;
-    				self.getElement().innerHTML = labelText.replace(/\r\n/g, "<br/>");
-    			}
-    		}
-		};
-		
-    	this.getLabel = function() {
-    		return label;
-    	};
-    	
-		var superGD = this.getDimensions;		
-		this.getDimensions = function() {				
-    		_update();
-			return superGD();
-    	};
-		
+		var p = jsPlumb.extend({
+                create : function() {
+                    return document.createElement("div");
+                }}, params);
+    	jsPlumb.Overlays.Custom.call(this, p);
+		this.type = "Label";    	
+        this.label = params.label || "";
+        this.labelText = null;        	    	
     };
-		
+    jsPlumbUtil.extend(jsPlumb.Overlays.Label, jsPlumb.Overlays.Custom, {
+        cleanup:function() {
+            //console.log("Label cleanup");
+            this.div = null;
+            this.label = null;
+            this.labelText = null;
+            this.cssClass = null;
+            this.labelStyle = null;
+        },
+        getLabel : function() {
+            return this.label;
+        },
+        /*
+         * Function: setLabel
+         * sets the label's, um, label.  you would think i'd call this function
+         * 'setText', but you can pass either a Function or a String to this, so
+         * it makes more sense as 'setLabel'. This uses innerHTML on the label div, so keep
+         * that in mind if you need escaped HTML.
+         */
+        setLabel : function(l) {
+            this.label = l;
+            this.labelText = null;
+            this.clearCachedDimensions();
+            this.update();
+            this.component.repaint();
+        },
+        getDimensions : function() {                
+            this.update();
+            return AbstractDOMOverlay.prototype.getDimensions.apply(this, arguments);
+        },
+        update : function() {
+            if (typeof this.label == "function") {
+                var lt = this.label(this);
+                this.getElement().innerHTML = lt.replace(/\r\n/g, "<br/>");
+            }
+            else {
+                if (this.labelText == null) {
+                    this.labelText = this.label;
+                    this.getElement().innerHTML = this.labelText.replace(/\r\n/g, "<br/>");
+                }
+            }
+        }
+    });		
 
  // ********************************* END OF OVERLAY DEFINITIONS ***********************************************************************
     

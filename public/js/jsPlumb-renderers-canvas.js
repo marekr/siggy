@@ -1,12 +1,12 @@
 /*
  * jsPlumb
  * 
- * Title:jsPlumb 1.4.1
+ * Title:jsPlumb 1.5.0
  * 
  * Provides a way to visually connect elements on an HTML page, using either SVG, Canvas
  * elements, or VML.  
  * 
- * This file contains the HTML5 canvas renderers.  Support for canvas was dropped in 1.4.1.
+ * This file contains the HTML5 canvas renderers.  Support for canvas was dropped in 1.4.2.
  * This is being kept around because canvas might make a comeback as a single-page solution
  * that also supports node rendering.
  *
@@ -20,32 +20,6 @@
  */
 
 ;(function() {
-
-// event binding from jsplumb.  canvas no longer supported.  but it may make a comeback in 
-// the form of a single-page canvas.
-
-/*var bindOne = function(event) {
-                    jsPlumb.CurrentLibrary.bind(document, event, function(e) {
-                        if (!_currentInstance.currentlyDragging && renderMode == jsPlumb.CANVAS) {
-                            // try connections first
-                            for (var scope in connectionsByScope) {
-                                var c = connectionsByScope[scope];
-                                for (var i = 0, ii = c.length; i < ii; i++) {
-                                    var t = c[i].getConnector()[event](e);
-                                    if (t) return;	
-                                }
-                            }
-                            for (var el in endpointsByElement) {
-                                var ee = endpointsByElement[el];
-                                for (var i = 0, ii = ee.length; i < ii; i++) {
-                                    if (ee[i].endpoint[event](e)) return;
-                                }
-                            }
-                        }
-                    });					
-				};
-				bindOne("click");bindOne("dblclick");bindOne("mousemove");bindOne("mousedown");bindOne("mouseup");bindOne("contextmenu");
-				*/
 
 	
 // ********************************* CANVAS RENDERERS FOR CONNECTORS AND ENDPOINTS *******************************************************************
@@ -62,7 +36,7 @@
 	 * Class:CanvasMouseAdapter
 	 * Provides support for mouse events on canvases.  
 	 */
-	var CanvasMouseAdapter = function() {
+	var CanvasMouseAdapter = window.CanvasMouseAdapter = function() {
 		var self = this;
 		self.overlayPlacements = [];
 		jsPlumb.jsPlumbUIComponent.apply(this, arguments);
@@ -143,27 +117,29 @@
           _mouseWasDown = false;
         };
 	};
+	jsPlumbUtil.extend(CanvasMouseAdapter, [ jsPlumb.jsPlumbUIComponent, jsPlumbUtil.EventGenerator ]);		
 	
 	var _newCanvas = function(params) {
 		var canvas = document.createElement("canvas");
-		params["_jsPlumb"].appendElement(canvas, params.parent);
+		params._jsPlumb.instance.appendElement(canvas, params.parent);
 		canvas.style.position = "absolute";
 		if (params["class"]) canvas.className = params["class"];
 		// set an id. if no id on the element and if uuid was supplied it
 		// will be used, otherwise we'll create one.
-		params["_jsPlumb"].getId(canvas, params.uuid);
+		params._jsPlumb.instance.getId(canvas, params.uuid);
 		if (params.tooltip) canvas.setAttribute("title", params.tooltip);
 
 		return canvas;
 	};	
 
-	var CanvasComponent = function(params) {
+	var CanvasComponent = window.CanvasComponent = function(params) {
 		CanvasMouseAdapter.apply(this, arguments);
 
 		var displayElements = [ ];
 		this.getDisplayElements = function() { return displayElements; };
 		this.appendDisplayElement = function(el) { displayElements.push(el); };
 	};
+	jsPlumbUtil.extend(CanvasComponent, CanvasMouseAdapter);
 	
 	var segmentMultipliers = [null, [1, -1], [1, 1], [-1, 1], [-1, -1] ];
 	var maybeMakeGradient = function(ctx, style, gradientFunction) {
@@ -178,9 +154,10 @@
 		({
 			"Straight":function(segment, ctx, style, dx, dy) {
 				var d = segment.params;
+				ctx.save();
 				maybeMakeGradient(ctx, style, function() { return ctx.createLinearGradient(d.x1, d.y1, d.x2, d.y2); });
 				ctx.beginPath();
-				ctx.translate(dx/2, dy/2);
+				ctx.translate(dx, dy);				
 				if (style.dashstyle && style.dashstyle.split(" ").length === 2) {			
 					// only a very simple dashed style is supported - having two values, which define the stroke length 
 					// (as a multiple of the stroke width) and then the space length (also as a multiple of stroke width). 
@@ -222,7 +199,7 @@
 
 					// now draw the last bit
 					ctx.moveTo(curPos[0], curPos[1]);
-					ctx.lineTo(d.x2, d.y2);		
+					ctx.lineTo(d.x2, d.y2);							
 
 				}	        
 		        else {
@@ -231,26 +208,28 @@
 		        }				
 
 				ctx.stroke();
+
+				ctx.restore();
 			},
 			"Bezier":function(segment, ctx, style, dx, dy) {				
 				var d = segment.params;
+				ctx.save();
 				maybeMakeGradient(ctx, style, function() { return ctx.createLinearGradient(d.x2 + dx, d.y2 + dy, d.x1 + dx, d.y1 + dy); });
 				ctx.beginPath();
 				ctx.translate(dx, dy);
 				ctx.moveTo(d.x1, d.y1);
 				ctx.bezierCurveTo(d.cp1x, d.cp1y, d.cp2x, d.cp2y, d.x2, d.y2);
 				ctx.stroke();
+				ctx.restore();
 			},
 			"Arc":function(segment, ctx, style, dx, dy) {
 				var d = segment.params;
+				ctx.save();
 				ctx.beginPath();
-				// arcTo is supported in most browsers i think; this is what we will use once the arc segment is a little more clever.
-				// right now its up to the connector to figure out the geometry. well, maybe that's ok.
-				//ctx.moveTo(d.x1, d.y1);
-				//ctx.arcTo((d.x1 + d.x2) / 2, (d.y1 + d.y2) / 2, d.r);
-				ctx.translate(dx, dy);
-				ctx.arc(d.cx, d.cy, d.r, d.startAngle, d.endAngle, d.c);
+				ctx.translate(dx, dy);				
+				ctx.arc(d.cx, d.cy, d.r, segment.startAngle, segment.endAngle, d.ac);
 				ctx.stroke();
+				ctx.restore();
 			}
 		})[segment.type](segment, ctx, style, dx, dy);	
 	};
@@ -260,35 +239,33 @@
 	 * Superclass for Canvas Connector renderers.
 	 */
 	var CanvasConnector = jsPlumb.ConnectorRenderers.canvas = function(params) {
-		var self = this;
 		CanvasComponent.apply(this, arguments);
 		
 		var _paintOneStyle = function(aStyle, dx, dy) {
-			self.ctx.save();
-			jsPlumb.extend(self.ctx, aStyle);
+			this.ctx.save();
+			jsPlumb.extend(this.ctx, aStyle);
 
-			var segments = self.getSegments();				
+			var segments = this.getSegments();				
 			for (var i = 0; i < segments.length; i++) {
-				segmentRenderer(segments[i], self.ctx, aStyle, dx, dy);
+				segmentRenderer(segments[i], this.ctx, aStyle, dx, dy);
 			}
-			self.ctx.restore();
-		};
+			this.ctx.restore();
+		}.bind(this);
 
-		var self = this,
-		clazz = self._jsPlumb.connectorClass + " " + (params.cssClass || "");
-		self.canvas = _newCanvas({ 
+		var clazz = this._jsPlumb.instance.connectorClass + " " + (params.cssClass || "");
+		this.canvas = _newCanvas({ 
 			"class":clazz, 
-			_jsPlumb:self._jsPlumb,
+			_jsPlumb:this._jsPlumb,
 			parent:params.parent
 		});	
-		self.ctx = self.canvas.getContext("2d");
+		this.ctx = this.canvas.getContext("2d");
 		
-		self.appendDisplayElement(self.canvas);
+		this.appendDisplayElement(this.canvas);
 		
-		self.paint = function(style, anchor, extents) {						
+		this.paint = function(style, anchor, extents) {						
 			if (style != null) {							
 
-				var xy = [ self.x, self.y ], wh = [ self.w, self.h ], p,
+				var xy = [ this.x, this.y ], wh = [ this.w, this.h ], p,
 					dx = 0, dy = 0;
 
 				if (extents != null) {
@@ -304,10 +281,10 @@
 					wh[1] = extents.ymax + ((extents.ymin < 0) ? -extents.ymin : 0);
 				}
 
-				self.translateX = dx;
-				self.translateY = dy;
+				this.translateX = dx;
+				this.translateY = dy;
 				
-				jsPlumb.sizeCanvas(self.canvas, xy[0], xy[1], wh[0], wh[1]);				
+				jsPlumbUtil.sizeElement(this.canvas, xy[0], xy[1], wh[0], wh[1]);				
 				
 				if (style.outlineColor != null) {
 					var outlineWidth = style.outlineWidth || 1,
@@ -322,30 +299,29 @@
 			}
 		};				
 	};		
-	
-	
+	jsPlumbUtil.extend(CanvasConnector, CanvasComponent);
+		
 	
 	/**
 	 * Class:CanvasEndpoint
 	 * Superclass for Canvas Endpoint renderers.
 	 */
 	var CanvasEndpoint = function(params) {
-		var self = this;				
 		CanvasComponent.apply(this, arguments);		
-		var clazz = self._jsPlumb.endpointClass + " " + (params.cssClass || ""),
+		var clazz = this._jsPlumb.instance.endpointClass + " " + (params.cssClass || ""),
 			canvasParams = { 
 			"class":clazz, 
-			_jsPlumb:self._jsPlumb,
+			_jsPlumb:this._jsPlumb,
 			parent:params.parent,
 			tooltip:self.tooltip
 		};
-		self.canvas = _newCanvas(canvasParams);	
-		self.ctx = self.canvas.getContext("2d");
+		this.canvas = _newCanvas(canvasParams);	
+		this.ctx = this.canvas.getContext("2d");
 
-		self.appendDisplayElement(self.canvas);
+		this.appendDisplayElement(this.canvas);
 		
 		this.paint = function(style, anchor, extents) {
-			jsPlumb.sizeCanvas(self.canvas, self.x, self.y, self.w, self.h);			
+			jsPlumbUtil.sizeElement(this.canvas, this.x, this.y, this.w, this.h);			
 			if (style.outlineColor != null) {
 				var outlineWidth = style.outlineWidth || 1,
 				outlineStrokeWidth = style.lineWidth + (2 * outlineWidth);
@@ -355,25 +331,26 @@
 				};
 			}
 			
-			self._paint.apply(this, arguments);
+			this._paint.apply(this, arguments);
 		};
 	};
+	jsPlumbUtil.extend(CanvasEndpoint, CanvasComponent);
 	
 	jsPlumb.Endpoints.canvas.Dot = function(params) {		
 		jsPlumb.Endpoints.Dot.apply(this, arguments);
 		CanvasEndpoint.apply(this, arguments);
 		var self = this,		
 		parseValue = function(value) {
-			try { return parseInt(value); }
+			try { return parseInt(value, 10); }
 			catch(e) {
 				if (value.substring(value.length - 1) == '%')
-					return parseInt(value.substring(0, value - 1));
+					return parseInt(value.substring(0, value - 1), 10);
 			}
 		},					    	
 		calculateAdjustments = function(gradient) {
 			var offsetAdjustment = self.defaultOffset, innerRadius = self.defaultInnerRadius;
-			gradient.offset && (offsetAdjustment = parseValue(gradient.offset));
-        	gradient.innerRadius && (innerRadius = parseValue(gradient.innerRadius));
+			if (gradient.offset) offsetAdjustment = parseValue(gradient.offset);
+        	if (gradient.innerRadius) innerRadius = parseValue(gradient.innerRadius);
         	return [offsetAdjustment, innerRadius];
 		};
 		this._paint = function(style) {
@@ -391,7 +368,8 @@
 		            	g.addColorStop(style.gradient.stops[i][0], style.gradient.stops[i][1]);
 		            ctx.fillStyle = g;
 	            }				
-				ctx.beginPath();    		
+				ctx.beginPath();    
+				//ctx.translate(dx, dy);						
 				ctx.arc(self.radius, self.radius, self.radius, 0, Math.PI*2, true);
 				ctx.closePath();				
 				if (style.fillStyle || style.gradient) ctx.fill();
@@ -399,6 +377,7 @@
 			}
     	};
 	};	
+	jsPlumbUtil.extend(jsPlumb.Endpoints.canvas.Dot, [ jsPlumb.Endpoints.Dot, CanvasEndpoint ]);
 		
 	jsPlumb.Endpoints.canvas.Rectangle = function(params) {
 		
@@ -416,10 +395,10 @@
 			/* canvas gradient */
 		    if (style.gradient) {
 		    	// first figure out which direction to run the gradient in (it depends on the orientation of the anchors)
-		    	var y1 = orientation[1] == 1 ? self.h : orientation[1] == 0 ? self.h / 2 : 0;
-				var y2 = orientation[1] == -1 ? self.h : orientation[1] == 0 ? self.h / 2 : 0;
-				var x1 = orientation[0] == 1 ? self.w : orientation[0] == 0 ? self.w / 2 : 0;
-				var x2 = orientation[0] == -1 ? self.w : orientation[0] == 0 ? self.w / 2 : 0;
+		    	var y1 = orientation[1] == 1 ? self.h : orientation[1] === 0 ? self.h / 2 : 0;
+				var y2 = orientation[1] == -1 ? self.h : orientation[1] === 0 ? self.h / 2 : 0;
+				var x1 = orientation[0] == 1 ? self.w : orientation[0] === 0 ? self.w / 2 : 0;
+				var x2 = orientation[0] == -1 ? self.w : orientation[0] === 0 ? self.w / 2 : 0;
 			    var g = ctx.createLinearGradient(x1,y1,x2,y2);
 			    for (var i = 0; i < style.gradient.stops.length; i++)
 	            	g.addColorStop(style.gradient.stops[i][0], style.gradient.stops[i][1]);
@@ -433,6 +412,7 @@
 			if (style.strokeStyle) ctx.stroke();
     	};
 	};		
+	jsPlumbUtil.extend(jsPlumb.Endpoints.canvas.Rectangle, [ jsPlumb.Endpoints.Rectangle, CanvasEndpoint ]);
 	
 	jsPlumb.Endpoints.canvas.Triangle = function(params) {
 	        			
@@ -440,8 +420,7 @@
 		jsPlumb.Endpoints.Triangle.apply(this, arguments);
 		CanvasEndpoint.apply(this, arguments);			
 		
-    	this._paint = function(style)
-		{    					
+    	this._paint = function(style) {    					
 			var ctx = self.canvas.getContext('2d'),
 				offsetX = 0, offsetY = 0, angle = 0,
 				orientation = params.endpoint.anchor.getOrientation(params.endpoint);
@@ -474,6 +453,7 @@
 			if (style.strokeStyle) ctx.stroke();				
     	};
 	};	
+	jsPlumbUtil.extend(jsPlumb.Endpoints.canvas.Triangle, [ jsPlumb.Endpoints.Triangle, CanvasEndpoint ]);
 	
 	/*
 	 * Canvas Image Endpoint: uses the default version, which creates an <img> tag.
@@ -487,25 +467,29 @@
 	
 	/*
      * Canvas Bezier Connector. Draws a Bezier curve onto a Canvas element.
-     */
+     *
     jsPlumb.Connectors.canvas.Bezier = function() {
     	jsPlumb.Connectors.Bezier.apply(this, arguments); 
     	CanvasConnector.apply(this, arguments);    	        
     };
+    jsPlumbUtil.extend(jsPlumb.Connectors.canvas.Bezier, [ jsPlumb.Connectors.Bezier, CanvasConnector ]);
     
     /*
      * Canvas straight line Connector. Draws a straight line onto a Canvas element.
-     */
+     *
     jsPlumb.Connectors.canvas.Straight = function() {   	 
 		jsPlumb.Connectors.Straight.apply(this, arguments);
 		CanvasConnector.apply(this, arguments);		
     };
+    jsPlumbUtil.extend(jsPlumb.Connectors.canvas.Straight, [ jsPlumb.Connectors.Straight, CanvasConnector ]);
     
     jsPlumb.Connectors.canvas.Flowchart = function() {
     	jsPlumb.Connectors.Flowchart.apply(this, arguments);
 		CanvasConnector.apply(this, arguments);
     };
+    jsPlumbUtil.extend(jsPlumb.Connectors.canvas.Flowchart, [ jsPlumb.Connectors.Flowchart, CanvasConnector ]);
     
+    */
 // ********************************* END OF CANVAS RENDERERS *******************************************************************    
     
     jsPlumb.Overlays.canvas.Label = jsPlumb.Overlays.Label;
@@ -517,6 +501,7 @@
     var CanvasOverlay = function() { 
     	jsPlumb.jsPlumbUIComponent.apply(this, arguments);
     };
+    jsPlumbUtil.extend(CanvasOverlay, jsPlumb.jsPlumbUIComponent);
     
     var AbstractCanvasArrowOverlay = function(superclass, originalArgs) {
     	superclass.apply(this, originalArgs);
@@ -525,6 +510,7 @@
     		var ctx = params.component.ctx, d = params.d;
     		
     		if (d) {
+    			ctx.save();
 				ctx.lineWidth = params.lineWidth;
 				ctx.beginPath();
 				ctx.translate(params.component.translateX, params.component.translateY);
@@ -543,6 +529,7 @@
 					ctx.fillStyle = params.fillStyle;			
 					ctx.fill();
 				}
+				ctx.restore();
 			}
     	};
     }; 
@@ -550,12 +537,15 @@
     jsPlumb.Overlays.canvas.Arrow = function() {
     	AbstractCanvasArrowOverlay.apply(this, [jsPlumb.Overlays.Arrow, arguments]);    	
     };
+    jsPlumbUtil.extend(jsPlumb.Overlays.canvas.Arrow, [ jsPlumb.Overlays.Arrow, CanvasOverlay ] );
     
     jsPlumb.Overlays.canvas.PlainArrow = function() {
     	AbstractCanvasArrowOverlay.apply(this, [jsPlumb.Overlays.PlainArrow, arguments]);    	
     };
+    jsPlumbUtil.extend(jsPlumb.Overlays.canvas.PlainArrow, [ jsPlumb.Overlays.PlainArrow, CanvasOverlay ] );
     
     jsPlumb.Overlays.canvas.Diamond = function() {
     	AbstractCanvasArrowOverlay.apply(this, [jsPlumb.Overlays.Diamond, arguments]);    	
     };		
+    jsPlumbUtil.extend(jsPlumb.Overlays.canvas.Diamond, [ jsPlumb.Overlays.Diamond, CanvasOverlay ] );
 })();

@@ -1104,6 +1104,10 @@ siggymain.prototype.switchSystem = function(systemID, systemName)
 		this.sigClocks[i].destroy();
 		delete clock;
 	}
+    
+    $('td.moreinfo img').qtip('destroy');
+    $('td.age span').qtip('destroy');
+    
 	$("#sigTable tbody").empty();
 	this.editingSig = false;
 	this.sigData = {};
@@ -1494,6 +1498,10 @@ siggymain.prototype.removeSigRow = function (sigData)
 		this.sigClocks[sigData.sigID].destroy();
 		delete this.sigClocks[sigData.sigID];
 	}
+    
+    $('#sig-' + sigData.sigID + ' td.moreinfo img').qtip('destroy');
+    $('#sig-' + sigData.sigID + ' td.age span').qtip('destroy');
+    
 	$('#sig-' + sigData.sigID).remove();
 	this.colorizeSigRows();
 }
