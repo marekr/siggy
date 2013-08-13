@@ -356,9 +356,9 @@ var whLookup = {
 		10: "X877 (to C4)",
 		11: "H900 (to C5)",
 		12: "U574 (to C6)",
-		13: " (to Nullsec)",
-		14: "  (to Lowsec)",
-		15: "  (to Highsec)"
+		13: "K329 (to Nullsec)",
+		14: "N290 (to Lowsec)",
+		15: "S047 (to Highsec)"
 	},
 	5: {
 		0: "Unstable Wormhole",
@@ -407,11 +407,11 @@ var whLookup = {
 		7: "Z971 (to C1)",
 		8: "R943 (to C2)",
 		9: "X702 (to C3)",
-		10: " (to C4)",
+		10: "O128 (to C4)",
 		11: "M555 (to C5)",
-		12: "  (to C6)",
-		13: " (to Nullsec)",
-		14: " (to Lowsec)",
+		12: "B041 (to C6)",
+		13: "V283 (to Nullsec)",
+		14: "R051 (to Lowsec)",
 		15: "A641 (to Highsec)"
 	},
 	8: {
@@ -422,15 +422,15 @@ var whLookup = {
 		4: "K162 (from Nullsec)",
 		5: "K162 (from Lowsec)",
 		6: "K162 (from Highsec)",
-		7: " (to C1)",
-		8: "  (to C2)",
+		7: "Z971 (to C1)",
+		8: "R943  (to C2)",
 		9: "X702 (to C3)",
-		10: "  (to C4)",
+		10: "O128 (to C4)",
 		11: "N432 (to C5)",
-		12: "  (to C6)",
-		13: "  (to Nullsec)",
-		14: "  (to Lowsec)",
-		15: "  (to Highsec)"
+		12: "B041 (to C6)",
+		13: "S199  (to Nullsec)",
+		14: "N944  (to Lowsec)",
+		15: "B499  (to Highsec)"
 	},
 	9: {
 		0: "Unstable Wormhole",
@@ -443,9 +443,9 @@ var whLookup = {
 		7: "Z971 (to C1)",
 		8: "R943 (to C2)",
 		9: "X702 (to C3)",
-		10: "  (to C4)",
+		10: "O128  (to C4)",
 		11: "N432 (to C5)",
-		12: "  (to C6)",
+		12: "B041 (to C6)",
 		13: "S199 (to Nullsec)",
 		14: "N944 (to Lowsec)",
 		15: "B449 (to Highsec)"
