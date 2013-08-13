@@ -1,7 +1,7 @@
 /*
  * jsPlumb
  * 
- * Title:jsPlumb 1.4.1
+ * Title:jsPlumb 1.5.0
  * 
  * Provides a way to visually connect elements on an HTML page, using either SVG, Canvas
  * elements, or VML.  
@@ -26,7 +26,6 @@
  * bind					binds some event to an element
  * dragEvents			a dictionary of event names
  * extend				extend some js object with another.  probably not overly necessary; jsPlumb could just do this internally.
- * getAttribute			gets some attribute from an element
  * getDragObject		gets the object that is being dragged, by extracting it from the arguments passed to a drag callback
  * getDragScope			gets the drag scope for a given element.
  * getDropScope			gets the drop scope for a given element.
@@ -45,8 +44,7 @@
  * isDragSupported		returns whether or not drag is supported for some element.
  * isDropSupported		returns whether or not drop is supported for some element.
  * removeClass			removes a class from a given element.
- * removeElement		removes some element completely from the DOM.
- * setAttribute			sets an attribute on some element.
+ * removeElement		removes some element completely from the DOM. 
  * setDragFilter		sets a filter for some element that indicates areas of the element that should not respond to dragging.
  * setDraggable			sets whether or not some element should be draggable.
  * setDragScope			sets the drag scope for a given element.
@@ -94,6 +92,9 @@
 		
 		/**
 		 * appends the given child to the given parent.
+
+TODO: REMOVE!
+
 		 */
 		appendElement : function(child, parent) {
 			_getElementObject(parent).append(child);			
@@ -116,6 +117,16 @@
 			el = _getElementObject(el);
 			el.bind(event, callback);
 		},
+
+		destroyDraggable : function(el) {
+			if ($(el).data("draggable"))
+				$(el).draggable("destroy");
+		},
+
+		destroyDroppable : function(el) {
+			if ($(el).data("droppable"))
+				$(el).droppable("destroy");
+		},
 		
 		/**
          * mapping of drag events for jQuery
@@ -132,14 +143,7 @@
 		 */
 		extend : function(o1, o2) {
 			return $.extend(o1, o2);
-		},
-		
-		/**
-		 * gets the named attribute from the given element object.  
-		 */
-		getAttribute : function(el, attName) {
-			return el.attr(attName);
-		},
+		},		
 		
 		getClientXY : function(eventObject) {
 			return [eventObject.clientX, eventObject.clientY];
@@ -153,7 +157,7 @@
 		},
 		
 		getDragScope : function(el) {
-			return el.draggable("option", "scope");
+			return $(el).draggable("option", "scope");
 		},
 
 		getDropEvent : function(args) {
@@ -161,7 +165,7 @@
 		},
 		
 		getDropScope : function(el) {
-			return el.droppable("option", "scope");		
+			return $(el).droppable("option", "scope");		
 		},
 
 		/**
@@ -170,6 +174,7 @@
 		* two cases).  this is the opposite of getElementObject below.
 		*/
 		getDOMElement : function(el) {
+			if (el == null) return null;
 			if (typeof(el) == "string") return document.getElementById(el);
 			else if (el.context || el.length != null) return el[0];
 			else return el;
@@ -224,6 +229,7 @@
 		 * gets the size for the element object, in an array : [ width, height ].
 		 */
 		getSize : function(el) {
+			el = $(el);
 			return [el.outerWidth(), el.outerHeight()];
 		},
 
@@ -277,6 +283,7 @@
 		 */
 		initDraggable : function(el, options, isPlumbedComponent, _jsPlumb) {
 			options = options || {};
+			el = $(el);
 
 /*
 			// css3 transforms
@@ -307,12 +314,19 @@
 			});
 */
 
+			options["start"] = jsPlumbUtil.wrap(options["start"], function() {
+				$("body").addClass(_jsPlumb.dragSelectClass);
+			});
+
+			options["stop"] = jsPlumbUtil.wrap(options["stop"], function() {
+				$("body").removeClass(_jsPlumb.dragSelectClass);
+			});
 
 			// remove helper directive if present and no override
 			if (!options.doNotRemoveHelper)
 				options.helper = null;
 			if (isPlumbedComponent)
-				options['scope'] = options['scope'] || jsPlumb.Defaults.Scope;
+				options.scope = options.scope || jsPlumb.Defaults.Scope;
 			el.draggable(options);
 		},
 		
@@ -320,26 +334,26 @@
 		 * initialises the given element to be droppable.
 		 */
 		initDroppable : function(el, options) {
-			options['scope'] = options['scope'] || jsPlumb.Defaults.Scope;
-			el.droppable(options);
+			options.scope = options.scope || jsPlumb.Defaults.Scope;
+			$(el).droppable(options);
 		},
 		
 		isAlreadyDraggable : function(el) {
-			return _getElementObject(el).hasClass("ui-draggable");
+			return $(el).hasClass("ui-draggable");
 		},
 		
 		/**
 		 * returns whether or not drag is supported (by the library, not whether or not it is disabled) for the given element.
 		 */
 		isDragSupported : function(el, options) {
-			return el.draggable;
+			return $(el).draggable;
 		},				
 						
 		/**
 		 * returns whether or not drop is supported (by the library, not whether or not it is disabled) for the given element.
 		 */
 		isDropSupported : function(el, options) {
-			return el.droppable;
+			return $(el).droppable;
 		},							
 		
 		/**
@@ -361,11 +375,7 @@
 		
 		removeElement : function(element) {			
 			_getElementObject(element).remove();
-		},
-		
-		setAttribute : function(el, attName, attValue) {
-			el.attr(attName, attValue);
-		},
+		},		
 
 		setDragFilter : function(el, filter) {
 			if (jsPlumb.CurrentLibrary.isAlreadyDraggable(el))

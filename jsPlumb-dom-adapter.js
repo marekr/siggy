@@ -1,7 +1,7 @@
 /*
  * jsPlumb
  * 
- * Title:jsPlumb 1.4.1
+ * Title:jsPlumb 1.5.0
  * 
  * Provides a way to visually connect elements on an HTML page, using either SVG, Canvas
  * elements, or VML.  
@@ -22,13 +22,13 @@
 		svgAvailable = !!window.SVGAngle || document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1"),
 		// http://stackoverflow.com/questions/654112/how-do-you-detect-support-for-vml-or-svg-in-a-browser
 		vmlAvailable = function() {		    
-            if (vmlAvailable.vml == undefined) { 
-                    var a = document.body.appendChild(document.createElement('div'));
-            a.innerHTML = '<v:shape id="vml_flag1" adj="1" />';
-            var b = a.firstChild;
-            b.style.behavior = "url(#default#VML)";
-            vmlAvailable.vml = b ? typeof b.adj == "object": true;
-            a.parentNode.removeChild(a);
+            if (vmlAvailable.vml === undefined) { 
+                var a = document.body.appendChild(document.createElement('div'));
+            	a.innerHTML = '<v:shape id="vml_flag1" adj="1" />';
+            	var b = a.firstChild;
+            	b.style.behavior = "url(#default#VML)";
+            	vmlAvailable.vml = b ? typeof b.adj == "object": true;
+            	a.parentNode.removeChild(a);
             }
             return vmlAvailable.vml;
 		};
@@ -46,11 +46,10 @@
             possible that will continue to be the case.
         */
 		this.register = function(el) {
-            var jpcl = jsPlumb.CurrentLibrary;
-            el = jpcl.getElementObject(el);
-            var id = _currentInstance.getId(el),
-                domEl = jpcl.getDOMElement(el),
-                parentOffset = jpcl.getOffset(el);
+            var jpcl = jsPlumb.CurrentLibrary,
+            	_el = jpcl.getElementObject(el),
+            	id = _currentInstance.getId(el),                
+                parentOffset = jpcl.getOffset(_el);
                     
             if (!_draggables[id]) {
                 _draggables[id] = el;
@@ -64,7 +63,7 @@
                     for (var i = 0; i < p.childNodes.length; i++) {
                         if (p.childNodes[i].nodeType != 3 && p.childNodes[i].nodeType != 8) {
                             var cEl = jpcl.getElementObject(p.childNodes[i]),
-                                cid = _currentInstance.getId(cEl, null, true);
+                                cid = _currentInstance.getId(p.childNodes[i], null, true);
                             if (cid && _elementsWithEndpoints[cid] && _elementsWithEndpoints[cid] > 0) {
                                 var cOff = jpcl.getOffset(cEl);
                                 _delements[id][cid] = {
@@ -82,14 +81,15 @@
                 }
 			};
 
-			_oneLevel(domEl);
+			_oneLevel(el);
 		};
 		
 		// refresh the offsets for child elements of this element. 
 		this.updateOffsets = function(elId) {
 			var jpcl = jsPlumb.CurrentLibrary,
 				el = jpcl.getElementObject(elId),
-				id = _currentInstance.getId(el),
+				domEl = jpcl.getDOMElement(el),
+				id = _currentInstance.getId(domEl),
 				children = _delements[id],
 				parentOffset = jpcl.getOffset(el);
 				
@@ -116,8 +116,10 @@
 			el to that parent's list of elements to update on drag (if it is not there already)
 		*/
 		this.endpointAdded = function(el) {
-			var jpcl = jsPlumb.CurrentLibrary, b = document.body, id = _currentInstance.getId(el), c = jpcl.getDOMElement(el), 
-				p = c.parentNode, done = p == b;
+			var jpcl = jsPlumb.CurrentLibrary, b = document.body, id = _currentInstance.getId(el), 
+				c = jpcl.getElementObject(el), 
+				cLoc = jsPlumb.CurrentLibrary.getOffset(c),
+				p = el.parentNode, done = p == b;
 
 			_elementsWithEndpoints[id] = _elementsWithEndpoints[id] ? _elementsWithEndpoints[id] + 1 : 1;
 
@@ -126,8 +128,7 @@
 				if (pid && _draggables[pid]) {
 					var idx = -1, pEl = jpcl.getElementObject(p), pLoc = jpcl.getOffset(pEl);
 					
-					if (_delements[pid][id] == null) {
-						var cLoc = jsPlumb.CurrentLibrary.getOffset(el);
+					if (_delements[pid][id] == null) {						
 						_delements[pid][id] = {
 							id:id,
 							offset:{
@@ -192,12 +193,20 @@
     window.jsPlumbAdapter = {
         
         headless:false,
+
+        getAttribute:function(el, attName) {
+        	return el.getAttribute(attName);
+        },
+
+        setAttribute:function(el, a, v) {
+        	el.setAttribute(a, v);
+        },
         
         appendToRoot : function(node) {
             document.body.appendChild(node);
         },
         getRenderModes : function() {
-            return [ "canvas", "svg", "vml" ]
+            return [ "canvas", "svg", "vml" ];
         },
         isRenderModeAvailable : function(m) {
             return {
@@ -221,9 +230,9 @@
                 
                 // now test we actually have the capability to do this.						
                 if (mode === "svg") {
-                    if (svgAvailable) renderMode = "svg"
-                    else if (canvasAvailable) renderMode = "canvas"
-                    else if (vmlAvailable) renderMode = "vml"
+                    if (svgAvailable) renderMode = "svg";
+                    else if (canvasAvailable) renderMode = "canvas";
+                    else if (vmlAvailable) renderMode = "vml";
                 }
                 else if (mode === "canvas" && canvasAvailable) renderMode = "canvas";
                 else if (vmlAvailable) renderMode = "vml";
@@ -233,4 +242,28 @@
         }
     };
     
+
+    /*
+
+    addClass:
+
+    add: function( elem, classNames ) {
+    jQuery.each((classNames || "").split(/\s+/), function(i, className){
+        if ( elem.nodeType == 1 && !jQuery.className.has( elem.className, className ) )
+            elem.className += (elem.className ? " " : "") + className;
+        });
+    },
+    */
+
+    /*
+
+	removeClass:
+
+    elem.className = classNames !== undefined ?
+    	jQuery.grep(elem.className.split(/\s+/), function(className){
+    		return !jQuery.className.has( classNames, className );
+    	}).join(" ") :
+
+*/
+
 })();

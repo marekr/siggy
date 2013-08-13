@@ -1,7 +1,7 @@
 /*
  * jsPlumb
  *
- * Title:jsPlumb 1.4.1
+ * Title:jsPlumb 1.5.0
  *
  * Provides a way to visually connect elements on an HTML page, using either SVG, Canvas
  * elements, or VML.
@@ -27,25 +27,25 @@
 		this.b = -1 * ((this.m * x1) - y1);
 	
 		this.rectIntersect = function(x,y,w,h) {
-			var results = [];
+			var results = [], xInt, yInt;
 		
 			// 	try top face
 			// 	the equation of the top face is y = (0 * x) + b; y = b.
-			var xInt = (y - this.b) / this.m;
+			xInt = (y - this.b) / this.m;
 			// test that the X value is in the line's range.
 			if (xInt >= x && xInt <= (x + w)) results.push([ xInt, (this.m * xInt) + this.b ]);
 		
 			// try right face
-			var yInt = (this.m * (x + w)) + this.b;
+			yInt = (this.m * (x + w)) + this.b;
 			if (yInt >= y && yInt <= (y + h)) results.push([ (yInt - this.b) / this.m, yInt ]);
 		
 			// 	bottom face
-			var xInt = ((y + h) - this.b) / this.m;
+			xInt = ((y + h) - this.b) / this.m;
 			// test that the X value is in the line's range.
 			if (xInt >= x && xInt <= (x + w)) results.push([ xInt, (this.m * xInt) + this.b ]);
 		
 			// try left face
-			var yInt = (this.m * x) + this.b;
+			yInt = (this.m * x) + this.b;
 			if (yInt >= y && yInt <= (y + h)) results.push([ (yInt - this.b) / this.m, yInt ]);
 
 			if (results.length == 2) {
@@ -129,7 +129,7 @@
 	 * loopbackRadius	-	the radius of a loopback connector.  optional; defaults to 25.
 	 * showLoopback   -   If set to false this tells the connector that it is ok to paint connections whose source and target is the same element with a connector running through the element. The default value for this is true; the connector always makes a loopback connection loop around the element rather than passing through it.
 	*/
-	jsPlumb.Connectors.StateMachine = function(params) {
+	var StateMachine = function(params) {
 		params = params || {};
 		this.type = "StateMachine";
 
@@ -201,7 +201,7 @@
                                                   distance,
                                                   proximityLimit);
 
-				_super.addSegment("Bezier", {
+				_super.addSegment(this, "Bezier", {
 					x1:_tx, y1:_ty, x2:_sx, y2:_sy,
 					cp1x:_controlPoint[0], cp1y:_controlPoint[1],
 					cp2x:_controlPoint[0], cp2y:_controlPoint[1]
@@ -210,35 +210,35 @@
             else {
             	// a loopback connector.  draw an arc from one anchor to the other.            	
         		var x1 = params.sourcePos[0], x2 = params.sourcePos[0], y1 = params.sourcePos[1] - margin, y2 = params.sourcePos[1] - margin, 				
-					cx = x1, cy = y1 - loopbackRadius;
-				
+					cx = x1, cy = y1 - loopbackRadius,				
 					// canvas sizing stuff, to ensure the whole painted area is visible.
-					w = 2 * loopbackRadius, 
-					h = 2 * loopbackRadius,
-					x = cx - loopbackRadius, 
-					y = cy - loopbackRadius;
+					_w = 2 * loopbackRadius, 
+					_h = 2 * loopbackRadius,
+					_x = cx - loopbackRadius, 
+					_y = cy - loopbackRadius;
 
-				paintInfo.points[0] = x;
-				paintInfo.points[1] = y;
-				paintInfo.points[2] = w;
-				paintInfo.points[3] = h;
+				paintInfo.points[0] = _x;
+				paintInfo.points[1] = _y;
+				paintInfo.points[2] = _w;
+				paintInfo.points[3] = _h;
 				
 				// ADD AN ARC SEGMENT.
-				_super.addSegment("Arc", {
-					x1:(x1-x) + 4,
-					y1:y1-y,
+				_super.addSegment(this, "Arc", {
+					x1:(x1 - _x) + 4,
+					y1:y1 - _y,
 					startAngle:0,
 					endAngle: 2 * Math.PI,
 					r:loopbackRadius,
 					ac:!clockwise,
-					x2:(x1-x) - 4,
-					y2:y1-y,
-					cx:cx-x,
-					cy:cy-y
+					x2:(x1 - _x) - 4,
+					y2:y1 - _y,
+					cx:cx - _x,
+					cy:cy - _y
 				});
             }                           
         };                        
 	};
+	jsPlumb.registerConnectorType(StateMachine, "StateMachine");
 })();
 
 /*
