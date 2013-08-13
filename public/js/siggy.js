@@ -849,7 +849,7 @@ siggymain.prototype.update = function ()
                 //{
                     if( data.redirect != undefined )
                     {
-                        window.location = this.settings.baseUrl + data.redirect;
+                        window.location = that.settings.baseUrl + data.redirect;
                         return;
                     }
 			
