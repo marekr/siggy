@@ -1162,25 +1162,58 @@ siggymain.prototype.updateSigs = function (sigData, flashSigs)
 
 siggymain.prototype.updateSystemInfo = function (systemData)
 {
+    //general info
 	$('#region').text(systemData.regionName);
 	$('#constellation').text(systemData.constellationName);
 	$('#planetsmoons').text(systemData.planets + "/" + systemData.moons + "/" + systemData.belts);
 	$('#truesec').text(systemData.truesec.substr(0,8));
 	$('#radius').text(systemData.radius + ' AU');
 	
+    //HUB JUMPS
 	var hubJumpsStr = '';
+    $('div.hub-jump').destroyContextMenu();
+    $('#hubJumps').empty();
 	for(var index in systemData.hubJumps)
 	{
         var hub = systemData.hubJumps[index];
-        hubJumpsStr += "<div>"+hub.destination_name + " (" + hub.num_jumps + " jumps)</div>";
+        
+        var hubDiv = $("<div>").addClass('hub-jump').text(hub.destination_name + " (" + hub.num_jumps + " jumps)").data("sysID", hub.system_id).data("sysName", hub.destination_name);
+        hubDiv.contextMenu( { menu: 'system-simple-context' },
+            function(action, el, pos) {
+                var sysID = $(el[0]).data("sysID");
+                var sysName  = $(el[0]).data("sysName");
+                if( action == "setdest" )
+                {
+                    if( typeof(CCPEVE) != "undefined" )
+                    {
+                        CCPEVE.setDestination(sysID);
+                    }
+                }
+                else if( action == "showinfo" )
+                {
+                    if( typeof(CCPEVE) != "undefined" )
+                    {
+                            CCPEVE.showInfo(5, sysID );
+                    }
+                    else
+                    {
+                            window.open('http://evemaps.dotlan.net/system/'+sysName , '_blank');
+                    }
+                }
+        });
+        
+        $('#hubJumps').append(hubDiv);
 	}
-	$('#hubJumps').html(hubJumpsStr);
 
+    
+    //EFFECT STUFF
 	var collaspedInfoEffectStatic = $('#collaspedInfoEffectStatic');
+    collaspedInfoEffectStatic.qtip('destroy');
 	collaspedInfoEffectStatic.empty();
 	$('#systemInfo-collasped p.spacer').hide();
 	
 	//effect info
+    $('#systemEffect > p').qtip('destroy');
 	$('#systemEffect').empty();
 	
 	
