@@ -4,7 +4,8 @@ function siggyMap(options)
 	this.defaults = {
 			jumpTrackerEnabled: true,
 			jumpTrackerShowNames: true,
-			jumpTrackerShowTime: true
+			jumpTrackerShowTime: true,
+            showActivesShips: false
 	};
 
 
@@ -494,7 +495,6 @@ siggyMap.prototype.updateActives = function( activesData )
             var actives = activesData[sysID];
             var text = '';
             
-            actives = actives.split(',');
             
             //setup our lengths
             //TBH, make the max length configurable
@@ -502,9 +502,24 @@ siggyMap.prototype.updateActives = function( activesData )
             var len = actives.length;
             var displayLen = len > maxDisplayLen ? maxDisplayLen : len;
             
-            for(var j = 0; j < displayLen; j++)
+            var fullText = '';
+            for(var j in actives)
             {
-                    text += actives[j] + '<br \>';
+                var person = actives[j];
+                
+                if( j < displayLen )
+                {
+                    text += actives[j].name + '<br \>';
+                }
+                
+                if( this.settings.showActivesShips )
+                {
+                    fullText += actives[j].name + " - " + actives[j].ship +'<br \>';
+                }
+                else
+                {
+                    fullText += actives[j].name + '<br \>';
+                }
             }
             
             if( len > displayLen )
@@ -514,14 +529,6 @@ siggyMap.prototype.updateActives = function( activesData )
             
             
             ele.html(text);
-            //---------------------------------------------------------------------
-            //Full actives section
-            //---------------------------------------------------------------------
-            var fullText = '';
-            for(var j = 0; j < actives.length; j++)
-            {
-                    fullText += actives[j] + '<br \>';
-            }
             fullActives.html(fullText);
         }
         else
@@ -543,6 +550,7 @@ siggyMap.prototype.draw = function()
     var that = this;
     
     $('div.map-system-blob').qtip('destroy');
+    $('div.map-system-blob').destroyContextMenu();
     $('div.map-full-actives').remove();
     jsPlumb.deleteEveryEndpoint();
     $('#chainMap').empty();
@@ -622,6 +630,17 @@ siggyMap.prototype.draw = function()
                     if( typeof(CCPEVE) != "undefined" )
                     {
                         CCPEVE.setDestination(el[0].id);
+                    }
+                }
+                else if( action == "showinfo" )
+                {
+                    if( typeof(CCPEVE) != "undefined" )
+                    {
+                            CCPEVE.showInfo(5, el[0].id );
+                    }
+                    else
+                    {
+                            window.open('http://evemaps.dotlan.net/system/'+ that.systems[el[0].id].name , '_blank');
                     }
                 }
         });

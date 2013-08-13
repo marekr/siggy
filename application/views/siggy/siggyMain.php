@@ -316,6 +316,16 @@
                         <p style='text-align:center'><button id="refreshFromFatal">Refresh</button></p>
             </div>      
     </div>  	
+    
+    <!--- system context menu -->
+    <ul id="system-simple-context" class="contextMenu">
+        <li class="setdest">
+            <a href="#setdest">Set Destination</a>
+        </li>
+        <li class="showinfo">
+            <a href="#showinfo">Show Info</a>
+        </li>
+    </ul>
     <script type='text/javascript'>
         $(document).ready(function() { 
 

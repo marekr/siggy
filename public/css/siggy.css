@@ -645,6 +645,13 @@ select:focus
 	margin-right:4px;
 }
 
+
+.hub-jump
+{
+	cursor:pointer;
+	border-bottom: 1px dashed #999;
+}
+
 /*****
 whpopup tabs
 *******/

@@ -268,7 +268,7 @@ class Controller_Siggy extends FrontController
 				$systemData['stats'][] = array( $hourStamp*1000, $apiJumps, $apiKills, $apiNPC, $siggyJumps);
 			}
 			
-			$hubJumps = DB::query(Database::SELECT, " SELECT pr.num_jumps,ss.name as destination_name FROM precomputedroutes pr
+			$hubJumps = DB::query(Database::SELECT, " SELECT ss.id as system_id, pr.num_jumps,ss.name as destination_name FROM precomputedroutes pr
 														INNER JOIN solarsystems ss ON ss.id = pr.destination_system
 														 WHERE pr.origin_system=:system AND pr.destination_system != :system
 														 ORDER BY pr.num_jumps ASC")
@@ -719,214 +719,222 @@ class Controller_Siggy extends FrontController
 	
 	public function action_update()
 	{
-			$this->profiler = NULL;
-			$this->auto_render = FALSE;
-			header('content-type: application/json');
-			header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-			ob_start( 'ob_gzhandler' );
-			
+        $this->profiler = NULL;
+        $this->auto_render = FALSE;
+        header('content-type: application/json');
+        header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+        ob_start( 'ob_gzhandler' );
+        
 
-			if(	!$this->isAuthed() )
-			{
-				echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
-				exit();
-			}			 
-			
-			$chainMapOpen = ( isset($_GET['mapOpen']) ? intval($_GET['mapOpen']) : 0 );
-			
-			$update = array('systemUpdate' => 0, 'sigUpdate' => 0, 'systemListUpdate' => 0, 'globalNotesUpdate' => 0, 'mapUpdate' => 0, 'acsid' => 0, 'acsname' =>'');
-			
-			$this->mapData = groupUtils::getMapCache( $this->groupData['groupID'], $this->groupData['subGroupID'] );
-			
-			if( isset( $_GET['lastUpdate'] ) && isset( $_GET['systemID'] ) && $_GET['systemID'] != 0 )
-			{
-					$currentSystemID = intval($_GET['systemID']);
-					$forceUpdate = $_GET['forceUpdate'] == 'true' ? 1 : 0;
-					$_GET['lastUpdate'] = intval($_GET['lastUpdate']);
-					$freeze = intval( $_GET['freezeSystem'] );
-				//	$detectedSystemID = intval($_SERVER['HTTP_EVE_SOLARSYSTEMID']);
-				
-					$newSystemData = array();
-					$update['acsid'] = $lastSystemID = $actualCurrentSystemID = intval($_GET['acsid']);
-					$update['acsname'] = $lastSystemName = $actualCurrentSystemName = $_GET['acsname'];
+        if(	!$this->isAuthed() )
+        {
+            echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
+            exit();
+        }			 
+        
+        $chainMapOpen = ( isset($_GET['mapOpen']) ? intval($_GET['mapOpen']) : 0 );
+        
+        $update = array('systemUpdate' => 0, 'sigUpdate' => 0, 'systemListUpdate' => 0, 'globalNotesUpdate' => 0, 'mapUpdate' => 0, 'acsid' => 0, 'acsname' =>'');
+        
+        $this->mapData = groupUtils::getMapCache( $this->groupData['groupID'], $this->groupData['subGroupID'] );
+        
+        if( isset( $_GET['lastUpdate'] ) && isset( $_GET['systemID'] ) && $_GET['systemID'] != 0 )
+        {
+            $currentSystemID = intval($_GET['systemID']);
+            $forceUpdate = $_GET['forceUpdate'] == 'true' ? 1 : 0;
+            $_GET['lastUpdate'] = intval($_GET['lastUpdate']);
+            $freeze = intval( $_GET['freezeSystem'] );
+        //	$detectedSystemID = intval($_SERVER['HTTP_EVE_SOLARSYSTEMID']);
+        
+            $newSystemData = array();
+            $update['acsid'] = $lastSystemID = $actualCurrentSystemID = intval($_GET['acsid']);
+            $update['acsname'] = $lastSystemName = $actualCurrentSystemName = $_GET['acsname'];
 
-					if( $this->igb )
-					{
-							if( ($actualCurrentSystemID != $_SERVER['HTTP_EVE_SOLARSYSTEMID'] ) )
-							{
-								//$newSystemData = $this->getSystemData( $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] );
-								//fix me once CCP stops being dumb
-								
-									$update['acsid'] = $actualCurrentSystemID = $_SERVER['HTTP_EVE_SOLARSYSTEMID'];
-									$update['acsname'] = $actualCurrentSystemName = $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'];
-								
-								//
-								
-								
-									if( $this->groupData['recordJumps'] && $actualCurrentSystemID != 0 && $lastSystemID != 0 )
-									{
-											$hourStamp = miscUtils::getHourStamp();
-											DB::query(Database::INSERT, 'INSERT INTO jumpsTracker (`systemID`, `groupID`, `hourStamp`, `jumps`) VALUES(:systemID, :groupID, :hourStamp, 1) ON DUPLICATE KEY UPDATE jumps=jumps+1')
-																->param(':hourStamp', $hourStamp )->param(':systemID', $lastSystemID )->param(':groupID', $this->groupData['groupID'] )->execute();						
+            if( $this->igb )
+            {
+                if( ($actualCurrentSystemID != $_SERVER['HTTP_EVE_SOLARSYSTEMID'] ) )
+                {
+                    //$newSystemData = $this->getSystemData( $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] );
+                    //fix me once CCP stops being dumb
+                    
+                        $update['acsid'] = $actualCurrentSystemID = $_SERVER['HTTP_EVE_SOLARSYSTEMID'];
+                        $update['acsname'] = $actualCurrentSystemName = $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'];
+                    
+                    //
+                    
+                    
+                    if( $this->groupData['recordJumps'] && $actualCurrentSystemID != 0 && $lastSystemID != 0 )
+                    {
+                            $hourStamp = miscUtils::getHourStamp();
+                            DB::query(Database::INSERT, 'INSERT INTO jumpsTracker (`systemID`, `groupID`, `hourStamp`, `jumps`) VALUES(:systemID, :groupID, :hourStamp, 1) ON DUPLICATE KEY UPDATE jumps=jumps+1')
+                                                ->param(':hourStamp', $hourStamp )->param(':systemID', $lastSystemID )->param(':groupID', $this->groupData['groupID'] )->execute();						
 
-											DB::query(Database::INSERT, 'INSERT INTO jumpsTracker (`systemID`, `groupID`, `hourStamp`, `jumps`) VALUES(:systemID, :groupID, :hourStamp, 1) ON DUPLICATE KEY UPDATE jumps=jumps+1')
-																->param(':hourStamp', $hourStamp )->param(':systemID', $actualCurrentSystemID )->param(':groupID', $this->groupData['groupID'] )->execute();									
-									}
-								
-									if( $chainMapOpen && ($lastSystemID != $actualCurrentSystemID) && ( $this->isWormholeSystemByName($lastSystemName) || $this->isWormholeSystemByName($_SERVER['HTTP_EVE_SOLARSYSTEMNAME']) ) && $actualCurrentSystemID != 0 && !empty($lastSystemID) )
-									{
-										$this->__wormholeJump($lastSystemID, $actualCurrentSystemID);
-									}
-								
-							}					 
-					}
+                            DB::query(Database::INSERT, 'INSERT INTO jumpsTracker (`systemID`, `groupID`, `hourStamp`, `jumps`) VALUES(:systemID, :groupID, :hourStamp, 1) ON DUPLICATE KEY UPDATE jumps=jumps+1')
+                                                ->param(':hourStamp', $hourStamp )->param(':systemID', $actualCurrentSystemID )->param(':groupID', $this->groupData['groupID'] )->execute();									
+                    }
+                
+                    if( $chainMapOpen && ($lastSystemID != $actualCurrentSystemID) && ( $this->isWormholeSystemByName($lastSystemName) || $this->isWormholeSystemByName($_SERVER['HTTP_EVE_SOLARSYSTEMNAME']) ) && $actualCurrentSystemID != 0 && !empty($lastSystemID) )
+                    {
+                        $this->__wormholeJump($lastSystemID, $actualCurrentSystemID);
+                    }
+                    
+                }					 
+            }
 					
-					if( $forceUpdate || ( $this->igb && $_GET['systemName'] != $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] ) )
-					{
-							//$newSystemData = $this->getSystemData( $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] );
-							//if specific system isn't picked then load new one
-							if( !$freeze && $this->igb )
-							{
-									$update['systemData'] = $this->getSystemData( $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] );
-									//$newSystemData = $this->getSystemData( $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] );
-									//$update['systemData'] = $newSystemData;
-									if( count( $update['systemData'] ) > 0 )
-									{
-											$update['systemUpdate'] = (int) 1;
-											$currentSystemID = $update['systemData']['id'];
-											//why not
-											$update['systemList'] = $this->getSystemList();
-											$update['systemListUpdate'] = (int) 1;
-									}
-							}
-							//if specific system is picked, we have a forced update
-							elseif( $freeze  || $forceUpdate )
-							{
-									$update['systemData'] = $this->getSystemData( $_GET['systemName'] );
-									if( count( $update['systemData'] ) > 0 )
-									{
-											$update['systemUpdate'] = (int) 1;
-											$currentSystemID = $update['systemData']['id'];
-											//why not
-											$update['systemList'] = $this->getSystemList();
-											$update['systemListUpdate'] = (int) 1;
-									}
-							}
-					}
+            if( $forceUpdate || ( $this->igb && $_GET['systemName'] != $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] ) )
+            {
+                //$newSystemData = $this->getSystemData( $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] );
+                //if specific system isn't picked then load new one
+                if( !$freeze && $this->igb )
+                {
+                    $update['systemData'] = $this->getSystemData( $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] );
+                    //$newSystemData = $this->getSystemData( $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] );
+                    //$update['systemData'] = $newSystemData;
+                    if( count( $update['systemData'] ) > 0 )
+                    {
+                            $update['systemUpdate'] = (int) 1;
+                            $currentSystemID = $update['systemData']['id'];
+                            //why not
+                            $update['systemList'] = $this->getSystemList();
+                            $update['systemListUpdate'] = (int) 1;
+                    }
+                }
+                //if specific system is picked, we have a forced update
+                elseif( $freeze  || $forceUpdate )
+                {
+                    $update['systemData'] = $this->getSystemData( $_GET['systemName'] );
+                    if( count( $update['systemData'] ) > 0 )
+                    {
+                            $update['systemUpdate'] = (int) 1;
+                            $currentSystemID = $update['systemData']['id'];
+                            //why not
+                            $update['systemList'] = $this->getSystemList();
+                            $update['systemListUpdate'] = (int) 1;
+                    }
+                }
+            }
 					
-					//location tracking!
-					if( $this->igb && isset($_SERVER['HTTP_EVE_CHARID']) && isset($_SERVER['HTTP_EVE_CHARNAME']) && $actualCurrentSystemID != 0 )
-					{
-						if( ! $this->groupData['alwaysBroadcast'] )
-						{
-							$broadcast = (isset($_COOKIE['broadcast']) ? intval($_COOKIE['broadcast']) : 1);
-						}
-						else
-						{
-							$broadcast = 1;
-						}
-              
-							  DB::query(Database::INSERT, 'INSERT INTO charTracker (`charID`, `charName`, `currentSystemID`,`groupID`,`subGroupID`,`lastBeep`, `broadcast`,`shipType`, `shipName`) VALUES(:charID, :charName, :systemID, :groupID, :subGroupID, :lastBeep, :broadcast, :shipType, :shipName)'
-											. 'ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, currentSystemID = :systemID, broadcast = :broadcast, shipType = :shipType, shipName = :shipName')
-                            ->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
-                            ->param(':broadcast', $broadcast )
-                            ->param(':systemID', $actualCurrentSystemID )
-                            ->param(':groupID', $this->groupData['groupID'] )
-                            ->param(':shipType', isset($_SERVER['HTTP_EVE_SHIPTYPEID']) ? $_SERVER['HTTP_EVE_SHIPTYPEID'] : 0 )
-                            ->param(':shipName', isset($_SERVER['HTTP_EVE_SHIPNAME']) ? htmlentities($_SERVER['HTTP_EVE_SHIPNAME']) : '' )
-                            ->param(':subGroupID', $this->groupData['subGroupID'] )
-                            ->param(':lastBeep', time() )->execute();			
-		 
-					}
+            //location tracking!
+            if( $this->igb && isset($_SERVER['HTTP_EVE_CHARID']) && isset($_SERVER['HTTP_EVE_CHARNAME']) && $actualCurrentSystemID != 0 )
+            {
+                if( ! $this->groupData['alwaysBroadcast'] )
+                {
+                    $broadcast = (isset($_COOKIE['broadcast']) ? intval($_COOKIE['broadcast']) : 1);
+                }
+                else
+                {
+                    $broadcast = 1;
+                }
+      
+                      DB::query(Database::INSERT, 'INSERT INTO charTracker (`charID`, `charName`, `currentSystemID`,`groupID`,`subGroupID`,`lastBeep`, `broadcast`,`shipType`, `shipName`) VALUES(:charID, :charName, :systemID, :groupID, :subGroupID, :lastBeep, :broadcast, :shipType, :shipName)'
+                                    . 'ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, currentSystemID = :systemID, broadcast = :broadcast, shipType = :shipType, shipName = :shipName')
+                    ->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
+                    ->param(':broadcast', $broadcast )
+                    ->param(':systemID', $actualCurrentSystemID )
+                    ->param(':groupID', $this->groupData['groupID'] )
+                    ->param(':shipType', isset($_SERVER['HTTP_EVE_SHIPTYPEID']) ? $_SERVER['HTTP_EVE_SHIPTYPEID'] : 0 )
+                    ->param(':shipName', isset($_SERVER['HTTP_EVE_SHIPNAME']) ? htmlentities($_SERVER['HTTP_EVE_SHIPNAME']) : '' )
+                    ->param(':subGroupID', $this->groupData['subGroupID'] )
+                    ->param(':lastBeep', time() )->execute();			
+ 
+            }
 					
-					if( $chainMapOpen == 1 )
-					{
-							$update['chainMap']['actives'] = array();
-                            $update['chainMap']['systems'] = array();
-                            $update['chainMap']['wormholes'] = array();
-							if( is_array($this->mapData['systemIDs']) && count($this->mapData['systemIDs'])	 > 0 )
-							{
-									$activesData = array();
-									$activesData = DB::query(Database::SELECT, "SELECT charName,currentSystemID FROM charTracker WHERE groupID = :groupID AND subGroupID = :subGroupID AND broadcast=1 AND currentSystemID IN(".implode(',',$this->mapData['systemIDs']).") AND lastBeep >= :lastBeep")
-									->param(':lastBeep', time()-60)->param(':groupID', $this->groupData['groupID'])->param(':subGroupID', $this->groupData['subGroupID'])->execute()->as_array();
-									
-									if( is_array($activesData) && count($activesData) > 0 )
-									{
-											$actives = array();
-											foreach( $activesData as $act )
-											{
-													if( strlen( $act['charName']) > 15 )
-													{
-														$act['charName'] = substr($act['charName'], 0,12).'...';
-													}
-												 $actives[ $act['currentSystemID'] ][] = $act['charName'];
-											}
-											foreach($actives as &$act )
-											{
-													natcasesort($act);
-													$act = implode( ',', $act );
-											}
-											$update['chainMap']['actives'] = $actives;
-									}
-							}
-							
-							if( $_GET['mapLastUpdate'] != $this->mapData['updateTime'] )
-							{
-									$update['chainMap']['systems'] = $this->mapData['systems'];
-									$update['chainMap']['wormholes'] = $this->mapData['wormholes'];
-									$update['mapUpdate'] = (int) 1;
-							}
-                            $update['chainMap']['lastUpdate'] = $this->mapData['updateTime'];
-					}
-					
-					$activeSystemQuery = DB::query(Database::SELECT, 'SELECT lastUpdate FROM activesystems WHERE systemID=:id AND groupID=:group AND subGroupID=:subgroup')->param(':id', $currentSystemID)->param(':group',$this->groupData['groupID'])->param(':subgroup', $this->groupData['subGroupID'])->execute();
+            if( $chainMapOpen == 1 )
+            {
+                    $update['chainMap']['actives'] = array();
+                    $update['chainMap']['systems'] = array();
+                    $update['chainMap']['wormholes'] = array();
+                    if( is_array($this->mapData['systemIDs']) && count($this->mapData['systemIDs'])	 > 0 )
+                    {
+                            $activesData = array();
+                            $activesData = DB::query(Database::SELECT, "SELECT ct.charName, ct.currentSystemID, s.shipName FROM charTracker ct 
+                                                                        LEFT JOIN ships s ON (ct.shipType=s.shipID)
+                                                                        WHERE ct.groupID = :groupID AND ct.subGroupID = :subGroupID AND ct.broadcast=1 AND
+                                                                            ct.currentSystemID IN(".implode(',',$this->mapData['systemIDs']).") AND ct.lastBeep >= :lastBeep")
+                                                ->param(':lastBeep', time()-60)
+                                                ->param(':groupID', $this->groupData['groupID'])
+                                                ->param(':subGroupID', $this->groupData['subGroupID'])
+                                                ->execute()
+                                                ->as_array();
+                            
+                        if( is_array($activesData) && count($activesData) > 0 )
+                        {
+                            $actives = array();
+                            foreach( $activesData as $act )
+                            {
+                                if( strlen( $act['charName']) > 15 )
+                                {
+                                    $act['charName'] = substr($act['charName'], 0,12).'...';
+                                }
+                                
+                                if( $act['shipName'] == NULL )
+                                {
+                                    $act['shipName'] = "";
+                                }
+                                $actives[ $act['currentSystemID'] ][] = array('name' => $act['charName'], 'ship' => $act['shipName']);
+                            }
 
-					$activeSystem = $activeSystemQuery->current();
-					$recordedLastUpdate = $activeSystem['lastUpdate'];
+                            $update['chainMap']['actives'] = $actives;
+                        }
+                    }
+                    
+                    if( $_GET['mapLastUpdate'] != $this->mapData['updateTime'] )
+                    {
+                        $update['chainMap']['systems'] = $this->mapData['systems'];
+                        $update['chainMap']['wormholes'] = $this->mapData['wormholes'];
+                        $update['mapUpdate'] = (int) 1;
+                    }
+                    $update['chainMap']['lastUpdate'] = $this->mapData['updateTime'];
+            }
+					
+            $activeSystemQuery = DB::query(Database::SELECT, 'SELECT lastUpdate FROM activesystems WHERE systemID=:id AND groupID=:group AND subGroupID=:subgroup')->param(':id', $currentSystemID)->param(':group',$this->groupData['groupID'])->param(':subgroup', $this->groupData['subGroupID'])->execute();
 
-					if( ($_GET['lastUpdate'] < $recordedLastUpdate) || ( $_GET['lastUpdate'] == 0 ) || $forceUpdate || $update['systemUpdate'] )
-					{
-							$additional = '';
-							if( $this->groupData['showSigSizeCol'] )
-							{
-									$additional .= ',sigSize';
-							}
-							$update['sigData'] = DB::query(Database::SELECT, "SELECT sigID,sig, type, siteID, description, created, creator,updated,lastUpdater".$additional." FROM systemsigs WHERE systemID=:id AND groupID=:group")
-											 ->param(':id', $currentSystemID)->param(':group', $this->groupData['groupID'])->execute()->as_array('sigID');	
+            $activeSystem = $activeSystemQuery->current();
+            $recordedLastUpdate = $activeSystem['lastUpdate'];
 
-							$update['sigUpdate'] = (int) 1;
-					}
+            if( ($_GET['lastUpdate'] < $recordedLastUpdate) || ( $_GET['lastUpdate'] == 0 ) || $forceUpdate || $update['systemUpdate'] )
+            {
+                $additional = '';
+                if( $this->groupData['showSigSizeCol'] )
+                {
+                        $additional .= ',sigSize';
+                }
+                $update['sigData'] = DB::query(Database::SELECT, "SELECT sigID,sig, type, siteID, description, created, creator,updated,lastUpdater".$additional." FROM systemsigs WHERE systemID=:id AND groupID=:group")
+                                 ->param(':id', $currentSystemID)->param(':group', $this->groupData['groupID'])->execute()->as_array('sigID');	
+
+                $update['sigUpdate'] = (int) 1;
+            }
 					
-					if( $this->groupData['subGroupID'] != 0 )
-					{
-						if( ( $_GET['lastGlobalNotesUpdate'] ) < $this->groupData['sgNotesTime'] )
-						{
-							$update['globalNotesUpdate'] = (int) 1;
-							$update['lastGlobalNotesUpdate'] = (int) $this->groupData['sgNotesTime'];
-							$update['globalNotes'] = $this->groupData['sgNotes'];
-						}
-					}
-					else
-					{
-						if( ( $_GET['lastGlobalNotesUpdate'] ) < $this->groupData['lastNotesUpdate'] )
-						{
-							$update['globalNotesUpdate'] = (int) 1;
-							$update['lastGlobalNotesUpdate'] = (int) $this->groupData['lastNotesUpdate'];
-							$update['globalNotes'] = $this->groupData['groupNotes'];
-						}
-					}
-					
-					
-					$update['lastUpdate'] = $recordedLastUpdate;
-			}
-			else
-			{
-				$update['error'] = 'You suck';
-			}
-			echo json_encode( $update );
+            if( $this->groupData['subGroupID'] != 0 )
+            {
+                if( ( $_GET['lastGlobalNotesUpdate'] ) < $this->groupData['sgNotesTime'] )
+                {
+                    $update['globalNotesUpdate'] = (int) 1;
+                    $update['lastGlobalNotesUpdate'] = (int) $this->groupData['sgNotesTime'];
+                    $update['globalNotes'] = $this->groupData['sgNotes'];
+                }
+            }
+            else
+            {
+                if( ( $_GET['lastGlobalNotesUpdate'] ) < $this->groupData['lastNotesUpdate'] )
+                {
+                    $update['globalNotesUpdate'] = (int) 1;
+                    $update['lastGlobalNotesUpdate'] = (int) $this->groupData['lastNotesUpdate'];
+                    $update['globalNotes'] = $this->groupData['groupNotes'];
+                }
+            }
+            
+            
+            $update['lastUpdate'] = $recordedLastUpdate;
+        }
+        else
+        {
+            $update['error'] = 'You suck';
+        }
+        echo json_encode( $update );
 			
 		// echo View::factory('profiler/stats'); 
-			exit();
+        exit();
 	}
 	
 	public function action_globalNotesSave()
