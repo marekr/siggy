@@ -603,72 +603,75 @@ class Controller_Siggy extends FrontController
 	
 	private function __wormholeJump($origin, $dest)
 	{
-			$whHash = $this->whHashByID($origin, $dest);
-			DB::query(Database::INSERT, 'INSERT INTO wormholes (`hash`, `to`, `from`, `groupID`, `subGroupID`, `lastJump`) VALUES(:hash, :to, :from, :groupID, :subGroupID, :lastJump) ON DUPLICATE KEY UPDATE lastJump=:lastJump')
-								->param(':hash', $whHash )
-								->param(':to', $dest )
-								->param(':from', $origin)
-								->param(':groupID', $this->groupData['groupID'] )
-								->param(':subGroupID', $this->groupData['subGroupID'] )
-								->param(':lastJump', time() )->execute();
-								
-			
-			if( $this->groupData['jumpLogEnabled']  && !empty( $_SERVER['HTTP_EVE_SHIPTYPEID'] ) )
-			{
-          $charID = ( $this->groupData['jumpLogRecordNames'] ? $_SERVER['HTTP_EVE_CHARID'] : 0 );
-          $charName = ( $this->groupData['jumpLogRecordNames'] ? $_SERVER['HTTP_EVE_CHARNAME'] : '' );
-          $jumpTime = ( $this->groupData['jumpLogRecordTime'] ? time() : 0 );
-          DB::query(Database::INSERT, 'INSERT INTO wormholetracker (`whHash`, `origin`, `destination`, `groupID`, `subGroupID`, `time`, `shipTypeID`,`charID`, `charName`) VALUES(:hash, :origin, :dest, :groupID, :subGroupID, :time,:shipTypeID,:charID,:charName)')
-                    ->param(':hash', $whHash )
-                    ->param(':dest', $dest)
-                    ->param(':origin', $origin )
-                    ->param(':groupID', $this->groupData['groupID'] )
-                    ->param(':subGroupID', $this->groupData['subGroupID'] )
-                    ->param(':time', $jumpTime )
-                    ->param(':shipTypeID',  $_SERVER['HTTP_EVE_SHIPTYPEID'] )
-                    ->param(':charID', $charID)
-                    ->param(':charName', $charName)
-                    ->execute();
-			}
-			
-			if( !in_array($whHash, $this->mapData['wormholeHashes']) )
-			{
-					if( is_array($this->mapData['systemIDs']) && count($this->mapData['systemIDs'])	 > 0 )
-					{
-							//to
-							if( !in_array($dest, $this->mapData['systemIDs']) )
-							{
-									DB::update('activesystems')
-									->set( array('inUse' => 1) )
-									->where('systemID', '=', $dest)
-									->where('groupID', '=', $this->groupData['groupID'])
-									->where('subGroupID', '=', $this->groupData['subGroupID'])->execute();
-							}
-							//from
-							if( !in_array($origin, $this->mapData['systemIDs']) )
-							{
-									DB::update('activesystems')
-									->set( array('inUse' => 1) )
-									->where('systemID', '=', $origin)
-									->where('groupID', '=', $this->groupData['groupID'])
-									->where('subGroupID', '=', $this->groupData['subGroupID'])->execute();
-							}
-					}
-				
-					$this->mapData = $this->rebuildMapCache();
-					
-								
-					if( $this->groupData['statsEnabled'] )
-					{
-							DB::query(Database::INSERT, 'INSERT INTO stats (`charID`,`charName`,`groupID`,`subGroupID`,`dayStamp`,`wormholes`) VALUES(:charID, :charName, :groupID, :subGroupID, :dayStamp, 1) ON DUPLICATE KEY UPDATE wormholes=wormholes+1')
-												->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
-												->param(':groupID', $this->groupData['groupID'] )->param(':subGroupID', $this->groupData['subGroupID'] )->param(':dayStamp', miscUtils::getDayStamp() )->execute();
-				
-					}								
-			}
-			
-			
-			
+        if( $origin == $dest )
+        {
+            //failure condition that happens sometimes, bad for the JS engine
+            return;
+        }
+    
+        $whHash = $this->whHashByID($origin, $dest);
+        DB::query(Database::INSERT, 'INSERT INTO wormholes (`hash`, `to`, `from`, `groupID`, `subGroupID`, `lastJump`) VALUES(:hash, :to, :from, :groupID, :subGroupID, :lastJump) ON DUPLICATE KEY UPDATE lastJump=:lastJump')
+                        ->param(':hash', $whHash )
+                        ->param(':to', $dest )
+                        ->param(':from', $origin)
+                        ->param(':groupID', $this->groupData['groupID'] )
+                        ->param(':subGroupID', $this->groupData['subGroupID'] )
+                        ->param(':lastJump', time() )->execute();
+                        
+
+        if( $this->groupData['jumpLogEnabled']  && !empty( $_SERVER['HTTP_EVE_SHIPTYPEID'] ) )
+        {
+            $charID = ( $this->groupData['jumpLogRecordNames'] ? $_SERVER['HTTP_EVE_CHARID'] : 0 );
+            $charName = ( $this->groupData['jumpLogRecordNames'] ? $_SERVER['HTTP_EVE_CHARNAME'] : '' );
+            $jumpTime = ( $this->groupData['jumpLogRecordTime'] ? time() : 0 );
+            DB::query(Database::INSERT, 'INSERT INTO wormholetracker (`whHash`, `origin`, `destination`, `groupID`, `subGroupID`, `time`, `shipTypeID`,`charID`, `charName`) VALUES(:hash, :origin, :dest, :groupID, :subGroupID, :time,:shipTypeID,:charID,:charName)')
+                ->param(':hash', $whHash )
+                ->param(':dest', $dest)
+                ->param(':origin', $origin )
+                ->param(':groupID', $this->groupData['groupID'] )
+                ->param(':subGroupID', $this->groupData['subGroupID'] )
+                ->param(':time', $jumpTime )
+                ->param(':shipTypeID',  $_SERVER['HTTP_EVE_SHIPTYPEID'] )
+                ->param(':charID', $charID)
+                ->param(':charName', $charName)
+                ->execute();
+        }
+
+        if( !in_array($whHash, $this->mapData['wormholeHashes']) )
+        {
+            if( is_array($this->mapData['systemIDs']) && count($this->mapData['systemIDs'])	 > 0 )
+            {
+                    //to
+                    if( !in_array($dest, $this->mapData['systemIDs']) )
+                    {
+                            DB::update('activesystems')
+                            ->set( array('inUse' => 1) )
+                            ->where('systemID', '=', $dest)
+                            ->where('groupID', '=', $this->groupData['groupID'])
+                            ->where('subGroupID', '=', $this->groupData['subGroupID'])->execute();
+                    }
+                    //from
+                    if( !in_array($origin, $this->mapData['systemIDs']) )
+                    {
+                            DB::update('activesystems')
+                            ->set( array('inUse' => 1) )
+                            ->where('systemID', '=', $origin)
+                            ->where('groupID', '=', $this->groupData['groupID'])
+                            ->where('subGroupID', '=', $this->groupData['subGroupID'])->execute();
+                    }
+            }
+
+            $this->mapData = $this->rebuildMapCache();
+            
+                        
+            if( $this->groupData['statsEnabled'] )
+            {
+                    DB::query(Database::INSERT, 'INSERT INTO stats (`charID`,`charName`,`groupID`,`subGroupID`,`dayStamp`,`wormholes`) VALUES(:charID, :charName, :groupID, :subGroupID, :dayStamp, 1) ON DUPLICATE KEY UPDATE wormholes=wormholes+1')
+                                        ->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
+                                        ->param(':groupID', $this->groupData['groupID'] )->param(':subGroupID', $this->groupData['subGroupID'] )->param(':dayStamp', miscUtils::getDayStamp() )->execute();
+
+            }								
+        }	
 	}
 	
 	public function action_getJumpLog()
@@ -1427,6 +1430,11 @@ class Controller_Siggy extends FrontController
 					$errors[] = "The 'to' system could not be looked up by name.";
 				}
 			}
+            
+            if( fromSysID == $toSysID )
+            {
+				$errors[] = "You cannot link a system to itself!";
+            }
 			
 			if( count($errors) > 0 )
 			{
