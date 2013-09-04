@@ -260,14 +260,15 @@ class Controller_Special extends Controller {
 												  LEFT OUTER JOIN invMarketGroups AS m ON t.marketGroupID = m.marketGroupID 
 												  LEFT JOIN invMarketGroups AS mp ON m.parentGroupID = mp.marketGroupID 
 												WHERE
-												  g.categoryID = 6 AND t.published = 1
+												  (g.categoryID = 6 AND t.published = 1)
+                                                  OR typeID = 670
 												ORDER BY
 												  t.typeName ASC')
 						->execute()
 						->as_array();		
 		foreach($ships as $ship)
 		{
-			print_r($ship);
+			//print_r($ship);
 			$insert = array( 'shipID' => $ship['typeID'],
 							 'shipName' => $ship['typeName'],
 							 'mass' => (double)$ship['mass'],
