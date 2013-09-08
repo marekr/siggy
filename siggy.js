@@ -1389,7 +1389,7 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 	
 	$('a.dotlan').attr('href', 'http://evemaps.dotlan.net/system/'+systemData.name);
 	
-	$('a.evekill').attr('href','http://whkills.info/?a=system_detail&sys_id='+systemData.id);
+	//$('a.evekill').attr('href','http://whkills.info/?a=system_detail&sys_id='+systemData.id);
 	this.setSystemID(systemData.id);
 	this.setSystemClass(systemData.sysClass);
 	this.systemName = systemData.name;
