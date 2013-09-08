@@ -302,6 +302,7 @@ class Controller_Manage_Group extends Controller_App {
 							$group->jumpLogRecordTime = intval($_POST['jumpLogRecordTime']);
 							$group->jumpLogDisplayShipType = intval($_POST['jumpLogDisplayShipType']);
 							$group->alwaysBroadcast = intval($_POST['alwaysBroadcast']);
+                            $group->chain_map_show_actives_ships = intval($_POST['chain_map_show_actives_ships']);
 							
 							$group->save();
 							
@@ -322,7 +323,8 @@ class Controller_Manage_Group extends Controller_App {
 																			'jumpLogRecordNames' => $_POST['jumpLogRecordNames'], 
 																			'jumpLogRecordTime' => $_POST['jumpLogRecordTime'], 
 																			'jumpLogDisplayShipType' => $_POST['jumpLogDisplayShipType'], 
-																			'alwaysBroadcast' => $_POST['alwaysBroadcast']
+																			'alwaysBroadcast' => $_POST['alwaysBroadcast'],
+                                                                            'chain_map_show_actives_ships' => $_POST['chain_map_show_actives_ships']
 																		 ) 
 
 					);

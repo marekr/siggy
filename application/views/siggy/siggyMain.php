@@ -339,7 +339,8 @@
                 map: {
                     jumpTrackerEnabled: <?php echo ( $group['jumpLogEnabled'] ? 'true' : 'false' ); ?>,
                     jumpTrackerShowNames:  <?php echo ( $group['jumpLogRecordNames'] ? 'true' : 'false' ); ?>,
-                    jumpTrackerShowTime:  <?php echo ( $group['jumpLogRecordTime'] ? 'true' : 'false' ); ?>
+                    jumpTrackerShowTime:  <?php echo ( $group['jumpLogRecordTime'] ? 'true' : 'false' ); ?>,
+                    showActivesShips:  <?php echo ( $group['chain_map_show_actives_ships'] ? 'true' : 'false' ); ?>
                 }
             };
 
