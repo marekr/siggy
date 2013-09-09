@@ -28,7 +28,7 @@
             <p class='spacer'>|</p>
             <p id='collaspedInfoEffectStatic'></p>
             <p class='systemButtons'>
-                <a href='#' target='_blank' class='evekill clickMe'><img src='public/images/evekill.png' width='16' height='16'/></a>
+                <!--- <a href='#' target='_blank' class='evekill clickMe'><img src='public/images/evekill.png' width='16' height='16'/></a> -->
                 <a href='#' target='_blank' class='dotlan clickMe'><img src='public/images/dotlan.png' width='16' height='16'/></a>
                 <img src='public/images/carebear.gif' class='carebear clickMe' width='16' height='16'/>
                 <img id='systemInfo-expand' class='clickMe' src='public/images/expand.png'  width='16' height='16'/>
@@ -41,7 +41,7 @@
             <th class="header" colspan="4">
                     <span class="systemName"><?php echo !empty($systemName) ? $systemName : 'System'; ?></span>
                     <p>
-                        <a href='#' target='_blank' class='evekill clickMe'><img src='public/images/evekill.png' width='16' height='16'/></a>
+                      <!---  <a href='#' target='_blank' class='evekill clickMe'><img src='public/images/evekill.png' width='16' height='16'/></a> -->
                         <a href='#' target='_blank' class='dotlan clickMe'><img src='public/images/dotlan.png' width='16' height='16'/></a>
                         <img src='public/images/carebear.gif' class='carebear clickMe' width='16' height='16'/>
                         <img id='systemInfo-collaspe' class='clickMe' src='public/images/collaspe.png'  width='16' height='16'/>
