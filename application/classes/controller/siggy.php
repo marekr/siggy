@@ -734,7 +734,7 @@ class Controller_Siggy extends FrontController
         
         $chainMapOpen = ( isset($_GET['mapOpen']) ? intval($_GET['mapOpen']) : 0 );
         
-        $update = array('systemUpdate' => 0, 'sigUpdate' => 0, 'systemListUpdate' => 0, 'globalNotesUpdate' => 0, 'mapUpdate' => 0, 'acsid' => 0, 'acsname' =>'');
+        $update = array('systemUpdate' => 0, 'sigUpdate' => 0, 'globalNotesUpdate' => 0, 'mapUpdate' => 0, 'acsid' => 0, 'acsname' =>'');
         
         $this->mapData = groupUtils::getMapCache( $this->groupData['groupID'], $this->groupData['subGroupID'] );
         
@@ -794,9 +794,6 @@ class Controller_Siggy extends FrontController
                     {
                             $update['systemUpdate'] = (int) 1;
                             $currentSystemID = $update['systemData']['id'];
-                            //why not
-                            $update['systemList'] = $this->getSystemList();
-                            $update['systemListUpdate'] = (int) 1;
                     }
                 }
                 //if specific system is picked, we have a forced update
@@ -807,9 +804,6 @@ class Controller_Siggy extends FrontController
                     {
                             $update['systemUpdate'] = (int) 1;
                             $currentSystemID = $update['systemData']['id'];
-                            //why not
-                            $update['systemList'] = $this->getSystemList();
-                            $update['systemListUpdate'] = (int) 1;
                     }
                 }
             }
@@ -1440,7 +1434,7 @@ class Controller_Siggy extends FrontController
 				}
 			}
             
-            if( fromSysID == $toSysID )
+            if( $fromSysID == $toSysID )
             {
 				$errors[] = "You cannot link a system to itself!";
             }

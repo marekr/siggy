@@ -146,7 +146,7 @@ siggyMap.prototype.centerButtons = function()
 siggyMap.prototype.initialize = function()
 {
 		var that = this;
-		this.container = $('#chainMapContainer');
+		this.container = $('#chain-map-container');
 		
 		
 		this.loadingMessage = this.container.find('p.loading');
@@ -157,51 +157,43 @@ siggyMap.prototype.initialize = function()
 		
 		this.showMessage('loading');
 		
+        $('#chain-map-add-wh').click( function() {
+            that.resetWormholeEditor();
+            that.openWHEditor('add');
+        });
 		
-		menu = new siggyMenu(
-		{	 
-				ele: 'chainMapOptions', 
-				dir: 'up',
-				optionCallbacks:  
-				{ 
-
-					'addWHManual': function() {
-							that.resetWormholeEditor();
-							that.openWHEditor('add');
-					 },
-					 'massDeleteWHs': function() {
-							that.showMessage('deleting');
-							that.massDelete = true;
-							
-							$('#chainMapOptions').data('disabled',true);
-							
-							$('#chainMapMassDeleteConfirm').show();
-							$('#chainMapMassDeleteCancel').show();
-							that.centerButtons();
-					 },
-					 'editWHMap': function() {
-							that.editing = true;
-							$('#chainMapSave').show();
-							that.centerButtons();
-                            
-							$('#chainMapOptions').data('disabled',true);
-							if( that.infoicon != null )
-							{
-									that.infoicon.disabled = true;
-							}
-                            
-                            $('div.map-system-blob').qtip('disable');
-                            
-                            jsPlumb.setDraggable($('.map-system-blob'), true);
-                            
-							
-							that.showMessage('editing');
-					 }
-
-				}  
-		});
-		
-		menu.initialize();
+        $('#chain-map-edit').click( function() {
+            that.editing = true;
+            $('#chainMapSave').show();
+            that.centerButtons();
+            
+            $('#chainMapOptions').data('disabled',true);
+            if( that.infoicon != null )
+            {
+                    that.infoicon.disabled = true;
+            }
+            
+            $('div.map-system-blob').qtip('disable');
+            
+            jsPlumb.setDraggable($('.map-system-blob'), true);
+            
+            
+            that.showMessage('editing');
+            
+            
+        });
+        
+        $('#chain-map-delete-whs').click( function() {
+            that.showMessage('deleting');
+            that.massDelete = true;
+            
+            $('#chainMapOptions').data('disabled',true);
+            
+            $('#chainMapMassDeleteConfirm').show();
+            $('#chainMapMassDeleteCancel').show();
+            that.centerButtons();
+        });
+        
 		
         this.registerEvents();
         this.initializeTabs();
@@ -339,12 +331,12 @@ siggyMap.prototype.registerEvents = function()
     var that = this;
     
 
-    $('#chainMapContainer h2').click( function() {
+    $('#chain-map-container h2').click( function() {
         if( that.mapOpen == 1 )
         {
             that.mapOpen = 0;
-            $('#chainMapInner').hide();
-            $('#chainMapec').text('Click to show');
+            $('#chain-map-inner').hide();
+            $('#chain-map-ec').text('Click to show');
             $('#chainPanTrackX').hide();
             that.lastUpdate = 0;
             setCookie('mapOpen', 0, 365);
@@ -352,8 +344,8 @@ siggyMap.prototype.registerEvents = function()
         else
         {
             that.mapOpen = 1;
-            $('#chainMapInner').show();
-            $('#chainMapec').text('Click to hide');
+            $('#chain-map-inner').show();
+            $('#chain-map-ec').text('Click to hide');
             setCookie('mapOpen', 1, 365);
             that.showMessage('loading');
         }
@@ -655,7 +647,7 @@ siggyMap.prototype.draw = function()
         } );
         
         var tst = $("<div>").attr("id","fullactives"+systemData.systemID).addClass('tooltip').addClass('map-full-actives').text("");
-        $("#chainMapContainer").append(tst);
+        $("#chain-map-container").append(tst);
         
         var res = sysBlob.qtip({
             content: {
@@ -781,7 +773,7 @@ siggyMap.prototype.openSystemEdit = function( sysID )
 {
 	this.editingSystem = sysID;
 	
-	$('#chainMapContainer').block({
+	$('#chain-map-container').block({
 		message: $('#systemOptionsPopup'),
 		css: { 
 				border: 'none', 
@@ -992,7 +984,7 @@ siggyMap.prototype.getTimeColor = function(eol)
 siggyMap.prototype.setupEditor = function()
 {
 		var that = this;
-		$('#wormholeEditorDisconnect').click( function() {
+		$('#wormhole-editor-disconnect').click( function() {
 			$.post(that.baseUrl + 'dochainMapWHDisconnect', 
             {
 				hash: that.editingHash
@@ -1001,19 +993,19 @@ siggyMap.prototype.setupEditor = function()
             {
 				that.siggymain.updateNow();
 			});
-			$('#chainMapContainer').unblock();
+			$('#chain-map-container').unblock();
 		} );
 		
 		
-		var fromSysInput = this.registerSystemAutoComplete("#wormholeEditor input[name=fromSys]");
-		var toSysInput = this.registerSystemAutoComplete("#wormholeEditor input[name=toSys]");
+		var fromSysInput = this.registerSystemAutoComplete("#wormhole-editor input[name=from-sys]");
+		var toSysInput = this.registerSystemAutoComplete("#wormhole-editor input[name=to-sys]");
 
-		var fromCurrentInput = $('#wormholeEditor input[name=fromCurrent]');
+		var fromCurrentInput = $('#wormhole-editor input[name=fromCurrent]');
 		//resets cause fucking browsers
 		fromCurrentInput.attr('disabled', false);
 		fromCurrentInput.attr('checked', false);
 		
-		var toCurrentInput = $('#wormholeEditor input[name=toCurrent]');
+		var toCurrentInput = $('#wormhole-editor input[name=toCurrent]');
 		//resets cause fucking browsers
 		toCurrentInput.attr('disabled', false);
 		toCurrentInput.attr('checked', false);
@@ -1052,8 +1044,8 @@ siggyMap.prototype.setupEditor = function()
 				data = { 
 					mode: 'edit',
 					hash: that.editingHash,
-					eol: $('#wormholeEditor input[name=eol]:checked').val(),
-					mass: $('#wormholeEditor select[name=mass]').val()
+					eol: $('#wormhole-editor input[name=eol]:checked').val(),
+					mass: $('#wormhole-editor select[name=mass]').val()
 				};
 				
 				$.post(that.baseUrl + 'dochainMapWHSave', data, function() 
@@ -1063,7 +1055,7 @@ siggyMap.prototype.setupEditor = function()
 			
 			
 				that.editorOpen = false;
-				$('#chainMapContainer').unblock();
+				$('#chain-map-container').unblock();
 			}
 			else
 			{
@@ -1075,8 +1067,8 @@ siggyMap.prototype.setupEditor = function()
 					fromSysCurrent: ( fromCurrentInput.is(':checked') ? 1 : 0 ),
 					toSys: toSysInput.val(),
 					toSysCurrent: ( toCurrentInput.is(':checked') ? 1 : 0 ),
-					eol: $('#wormholeEditor input[name=eol]:checked').val(),
-					mass: $('#wormholeEditor select[name=mass]').val()
+					eol: $('#wormhole-editor input[name=eol]:checked').val(),
+					mass: $('#wormhole-editor select[name=mass]').val()
 				};
 				
 				$.post(that.baseUrl + 'dochainMapWHSave', data, function(resp)
@@ -1084,7 +1076,7 @@ siggyMap.prototype.setupEditor = function()
 					if( parseInt(resp.success) == 1 )
 					{
 						that.editorOpen = false;
-						$('#chainMapContainer').unblock();
+						$('#chain-map-container').unblock();
 						that.siggymain.updateNow();
 					}
 					else
@@ -1098,11 +1090,11 @@ siggyMap.prototype.setupEditor = function()
 		} );
 		
 		$('#jumpLogClose').click( function() {
-			$('#chainMapContainer').unblock();
+			$('#chain-map-container').unblock();
 		});	
 		
 		$('#wormholeEditorCancel').click( function() {
-			$('#chainMapContainer').unblock();
+			$('#chain-map-container').unblock();
 		});	
 		
 }
@@ -1125,7 +1117,7 @@ siggyMap.prototype.setupSystemEditor = function()
 {
 	var that = this;
 	$('#systemEditorCancel').click( function() {
-		$('#chainMapContainer').unblock();
+		$('#chain-map-container').unblock();
 		that.editingSystem = 0;
 	});	
 	
@@ -1136,7 +1128,7 @@ siggyMap.prototype.setupSystemEditor = function()
 
 
 		that.siggymain.saveSystemOptions(that.editingSystem, label, inUse, activity);
-		$('#chainMapContainer').unblock();
+		$('#chain-map-container').unblock();
 	});	
 }
 siggyMap.prototype.initializeTabs = function()
@@ -1261,32 +1253,32 @@ siggyMap.prototype.registerSystemAutoComplete = function(inputSelector)
 
 siggyMap.prototype.resetWormholeEditor = function()
 {
-	var errorsUL = $('#wormholeEditor ul.errors');
+	var errorsUL = $('#wormhole-editor ul.errors');
 	errorsUL.empty();
 	errorsUL.hide();
 	
-	var fromCurrentInput = $('#wormholeEditor input[name=fromCurrent]');
+	var fromCurrentInput = $('#wormhole-editor input[name=fromCurrent]');
 	//resets cause fucking browsers
 	fromCurrentInput.attr('disabled', false);
 	fromCurrentInput.attr('checked', false);
 
-	var toCurrentInput = $('#wormholeEditor input[name=toCurrent]');
+	var toCurrentInput = $('#wormhole-editor input[name=toCurrent]');
 	//resets cause fucking browsers
 	toCurrentInput.attr('disabled', false);
 	toCurrentInput.attr('checked', false);
 	
-	var fromSysInput = $("#wormholeEditor input[name=fromSys]");
+	var fromSysInput = $("#wormhole-editor input[name=from-sys]");
 	//resets cause fucking browsers
 	fromSysInput.val('');
 	fromSysInput.attr('disabled',false);
 	
-	var toSysInput = $("#wormholeEditor input[name=toSys]");
+	var toSysInput = $("#wormhole-editor input[name=to-sys]");
 	//resets cause fucking browsers
 	toSysInput.val('');
 	toSysInput.attr('disabled',false);
 	
-	$('#wormholeEditor select[name=mass]').val(0);
-	$('#wormholeEditor input[name=eol]').filter('[value=0]').attr('checked', true);
+	$('#wormhole-editor select[name=mass]').val(0);
+	$('#wormhole-editor input[name=eol]').filter('[value=0]').attr('checked', true);
 }
 
 siggyMap.prototype.editWormhole = function(hash)
@@ -1313,8 +1305,8 @@ siggyMap.prototype.editWormhole = function(hash)
 	}
 	$('#whEditTo').text(this.systems[wormhole.to].name+toDName);
 	
-	$('#wormholeEditor select[name=mass]').val(wormhole.mass);
-	$('#wormholeEditor input[name=eol]').filter('[value=' + wormhole.eol + ']').attr('checked', true);
+	$('#wormhole-editor select[name=mass]').val(wormhole.mass);
+	$('#wormhole-editor input[name=eol]').filter('[value=' + wormhole.eol + ']').attr('checked', true);
 	
 	this.openWHEditor('edit');
 
@@ -1324,12 +1316,12 @@ siggyMap.prototype.setWHPopupTab = function (state)
 {
 	if( state == 'editor' )
 	{
-		$('#wormholeEditor').show();
+		$('#wormhole-editor').show();
 		$('#jumpLogViewer').hide();
 	}
 	else if( state =='jumpLog' )
 	{
-		$('#wormholeEditor').hide();
+		$('#wormhole-editor').hide();
 		$('#jumpLogViewer').show();
 	}
 	$('#wormholeTabs').show();
@@ -1340,8 +1332,8 @@ siggyMap.prototype.setWHPopupTab = function (state)
 siggyMap.prototype.openWHEditor = function(mode)
 {
 	this.setWHPopupTab('editor');
-	$('#chainMapContainer').block({
-		message: $('#wormholePopup'),
+	$('#chain-map-container').block({
+		message: $('#wormhole-popup'),
 		css: { 
 				border: 'none', 
 				padding: '15px', 
@@ -1360,16 +1352,16 @@ siggyMap.prototype.openWHEditor = function(mode)
 	});
 	if( mode == 'edit' )
 	{
-		$('#whEditorAdd').hide();
-		$('#whEditorEdit').show();
+		$('#wh-editor-add').hide();
+		$('#wh-editor-edit').show();
 		this.editorMode = 'edit';
 		this.editorOpen = true;
 	}
 	else
 	{
 		$('#wormholeTabs').hide();
-		$('#whEditorAdd').show();
-		$('#whEditorEdit').hide();
+		$('#wh-editor-add').show();
+		$('#wh-editor-edit').hide();
 		this.editorMode = 'add';
 		this.editorOpen = true;
 	}

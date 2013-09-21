@@ -3,7 +3,14 @@
   <head>
     <title>siggy</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <?php if( Kohana::$environment == Kohana::DEVELOPMENT ): ?>
+	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/reset.css?32" rel="stylesheet" media="screen" /> 
+	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/siggy.css?32" rel="stylesheet" media="screen" /> 
+	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/siggy.map.css?32" rel="stylesheet" media="screen" /> 
+    <?php else: ?>
 	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/siggy.compiled.css?32" rel="stylesheet" media="screen" /> 
+    <?php endif; ?>
+    
 	<?php if( isset($_GET['nyan']) ): ?>
 	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/rengas.css?28" rel="stylesheet" media="screen" /> 
 	<?php endif; ?>
@@ -55,7 +62,7 @@
 					<p class="name"><?php echo $charName; ?> <?php if( $apilogin ): ?>[<a href='<?php echo URL::base(TRUE, TRUE);?>account/logout'>Logout</a>]<?php endif;?>
 					<br />
 					<?php if( ( count( $group['groups']) > 1  ) || (count( current( $group['groups'] ) ) > 1 ) ):?>							
-									<div class='dropDown' id='accessMenu' style='position:absolute;left:83px;top:25px;'>
+									<div class='drop-down' id='accessMenu' style='position:absolute;left:83px;top:25px;'>
 											<span style="font-size:0.9em;font-style:italic;font-weight: normal;padding:3px 6px;background-color: #092665;"><?php echo $group['accessName']; ?> - <?php echo ($group['subGroupID'] != 0 ) ? $group['sgName'].' - ' : '' ?><?php echo $group['groupTicker'] ?>&nbsp;&nbsp;&nbsp;<span style='font-style:normal;font-weight:bold;'>&#x25BC;</span></span>
 											<ul class='menu'>
 												<?php foreach( $group['groups'] as $g => $sgs ): ?>
@@ -86,7 +93,7 @@
 					</div>
 				<?php endif; ?>
 			</div>
-			<div id="headerTools">
+			<div id="header-tools">
 				<?php echo $headerTools; ?>
 			</div>
 		</div>
@@ -96,7 +103,7 @@
 			<div style="height:70px; width: 100%"></div>
 			
 			<?php echo $content; ?>
-			<div id="footerLinks" style="text-align:center;font-size:0.9em;margin-top:100px;">
+			<div id="footer-link" style="text-align:center;font-size:0.9em;margin-top:100px;">
 					<a href="http://siggy.borkedlabs.com/info/">Usage Guide</a>
 					<?php if( $apilogin ): ?>
 					&nbsp;&middot;&nbsp;

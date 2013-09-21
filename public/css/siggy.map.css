@@ -71,32 +71,37 @@
 
 MAP */
 
-#chainMapContainer
+#chain-map-container
 {
 }
 
-#chainMapContainer h2
+
+
+#chain-map-container h2
 {
 	text-align:center;
+    position:relative;
+    padding: 5px;
+    font-weight: bold;
+    background-color: #1C1C1C;
 }
 
-#chainMapContainer p.left
+#chain-map-container p.left
 {
 	display:inline-block;
 	position:absolute;
 	left:3px;'
 }
 
-#chainMapInner
+#chain-map-inner
 {
-	border: 1px solid #000;
 	background-color: #2d2d2d;
 }
 
 
-#chainMapContainer p.editing,
-#chainMapContainer p.loading,
-#chainMapContainer p.deleting
+#chain-map-container p.editing,
+#chain-map-container p.loading,
+#chain-map-container p.deleting
 {
 	position:absolute;
 	font-size:1.4em;
@@ -110,12 +115,12 @@ MAP */
 }
 
 
-#chainMapContainer p.loading
+#chain-map-container p.loading
 {
 	font-size:3em;
 }
 
-#chainMapContainer div.buttons
+#chain-map-container div.buttons
 {
 	position:relative;
 	text-align:center;
@@ -321,8 +326,10 @@ MAP */
 #map-footer-bar
 {
 	position:relative;
-	height:25px;
+	height:28px;
 	background-color: #1C1C1C;
+    padding-left:10px;
+    padding-top:6px;
 }
 #chainMapInner div.buttons
 {
@@ -336,35 +343,35 @@ MAP */
 	padding:1px;
 }
 
-#chainMapScrolltainer
+#chain-map-scrolltainer
 {
 	overflow-y: hidden;
 	overflow-x: auto;
 }
 
 /* Let's get this party started */
-#chainMapScrolltainer::-webkit-scrollbar
+#chain-map-scrolltainer::-webkit-scrollbar
 {
 	width: 12px;
 }
  
 /* Track */
-#chainMapScrolltainer::-webkit-scrollbar-track {
+#chain-map-scrolltainer::-webkit-scrollbar-track {
 	
 }
  
 /* Handle */
-#chainMapScrolltainer::-webkit-scrollbar-thumb {
+#chain-map-scrolltainer::-webkit-scrollbar-thumb {
 	background-color: #A46D00; 
 }
-#chainMapScrolltainer::-webkit-scrollbar-thumb:window-inactive {
+#chain-map-scrolltainer::-webkit-scrollbar-thumb:window-inactive {
 	background: rgba(255,0,0,0.4); 
 }
 
-#chainMapScrolltainer::-webkit-scrollbar-track-piece {
+#chain-map-scrolltainer::-webkit-scrollbar-track-piece {
 	background-color: #1C1C1C;
 }
-#chainMapScrolltainer::-webkit-scrollbar-button {
+#chain-map-scrolltainer::-webkit-scrollbar-button {
     background-color: #664402;
 }
 
@@ -381,4 +388,27 @@ MAP */
     left: -28px;
     position: absolute;
     top: -4px;
+}
+
+
+/* CHAIN MAP */
+
+#wormhole-popup,
+#system-options-popup
+{
+	width:300px;
+	display:none;
+	padding:0px;
+}
+
+button.centered
+{
+	display:block;
+	margin:0 auto;
+}
+
+input[name=from-sys],
+input[name=to-sys]
+{
+    width:100px;
 }
