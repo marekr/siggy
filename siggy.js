@@ -763,7 +763,6 @@ function siggymain( options )
 	this.acsname = '';
 	
 	//collasped sysInfo
-	this.sysInfoCollasped  = 0;
 	this.statsOpened = 0;
 	
 	//afk stuff
@@ -875,7 +874,6 @@ siggymain.prototype.update = function ()
                     if (data.systemListUpdate)
                     {
                         that.systemList = data.systemList;
-                        that.updateSystemList(that.systemList);
                     }
                     if (data.globalNotesUpdate)
                     {
@@ -902,8 +900,8 @@ siggymain.prototype.update = function ()
                             setCookie('notesUpdate', data.lastGlobalNotesUpdate, 365);
                             
                             that.globalNotes = data.globalNotes;
-                            $('#thegnotes').html(that.globalNotes.replace(/\n/g, '<br />'));
-                            $('#gNotesTime').text( siggymain.displayTimeStamp(that.lastGlobalNotesUpdate) );
+                            $('#global-notes-content').html(that.globalNotes.replace(/\n/g, '<br />'));
+                            $('#global-notes-time').text( siggymain.displayTimeStamp(that.lastGlobalNotesUpdate) );
                         }
                     }
                     
@@ -999,80 +997,6 @@ siggymain.prototype.sortSystemList = function (a, b)
 	}
 }
 
-siggymain.prototype.updateSystemList = function (systemList)
-{
-	var sortable = [];
-	for (var i in systemList)
-	{
-		sortable.push([i, systemList[i].inUse, systemList[i].lastActive]);
-	}
-	sortable.sort(this.sortSystemList);
-
-	var listContainer = $('#systemList ul');
-	listContainer.empty();
-	for (var i in sortable)
-	{
-		var key = sortable[i][0];
-		var sysClass = Number(systemList[key].sysClass);
-		switch (sysClass)
-		{
-		case 1:
-		case 2:
-		case 3:
-			var colorClass = 'map-class-unknown';
-			break;
-		case 4:
-		case 5:
-			var colorClass = 'map-class-dangerous';
-			break;
-		case 6:
-			var colorClass = 'map-class-deadly';
-			break;
-		case 7:
-			var colorClass = 'map-class-high';
-			sysClass = 'H';
-			break;
-		case 8:
-			var colorClass = 'map-class-low';
-			sysClass = 'L';
-			break;
-		case 9:
-			var colorClass = 'map-class-null';
-			sysClass = 'N';
-			break;
-		default:
-			var colorClass = 'map-class-unknown';
-			break;
-		}
-		//  var that = this;
-		var displayName = '';
-		if (systemList[key].displayName != "")
-		{
-			displayName = systemList[key].displayName;
-		}
-		else
-		{
-			displayName = systemList[key].name;
-		}
-
-		var item = $('<li>').text(displayName).prepend($('<span>').addClass('sysClass').addClass(colorClass).text(sysClass));
-		this.registerSwitchHandler(item, systemList[key].systemID, systemList[key].name);
-		if (systemList[key].name == this.systemName)
-		{
-			item.addClass('sysSelected');
-		}
-
-		if (systemList[key].inUse == 1)
-		{
-			item.addClass('inUse');
-		}
-		else
-		{
-			item.addClass('notInUse');
-		}
-		listContainer.append(item);
-	}
-}
 
 siggymain.prototype.registerSwitchHandler = function (item, systemID, systemName)
 {
@@ -1108,15 +1032,16 @@ siggymain.prototype.switchSystem = function(systemID, systemName)
     $('td.moreinfo img').qtip('destroy');
     $('td.age span').qtip('destroy');
     
-	$("#sigTable tbody").empty();
+	$("#sig-table tbody").empty();
 	this.editingSig = false;
 	this.sigData = {};
 	
 	
-	$('#sigAddBox select[name=type]').val(0);
+	$('#sig-add-box select[name=type]').val(0);
   //$('#sigAddBox select[name=site]').replaceWith(this.generateSiteSelect(this.systemClass, 0, 0).attr('name', 'site'));
-	this.updateSiteSelect('#sigAddBox select[name=site]',this.systemClass, 0, 0);
+	this.updateSiteSelect('#sig-add-box select[name=site]',this.systemClass, 0, 0);
 	
+    
 	if( this.updateNow() )
 	{
 			$(document).trigger('siggy.switchSystem', systemID );
@@ -1157,7 +1082,7 @@ siggymain.prototype.updateSigs = function (sigData, flashSigs)
 		}
 	}
 	//this.colorizeSigRows();
-	$('#sigTable').trigger('update');
+	$('#sig-table').trigger('update');
 }
 
 siggymain.prototype.updateSystemInfo = function (systemData)
@@ -1207,10 +1132,6 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 
     
     //EFFECT STUFF
-	var collaspedInfoEffectStatic = $('#collaspedInfoEffectStatic');
-    collaspedInfoEffectStatic.qtip('destroy');
-	collaspedInfoEffectStatic.empty();
-	$('#systemInfo-collasped p.spacer').hide();
 	
 	//effect info
     $('#systemEffect > p').qtip('destroy');
@@ -1220,8 +1141,6 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 	var effectTitle = $("<p>").text(systemData.effectTitle);
 	var effect = $('#systemEffect').append(effectTitle);
 	var effectInfo = '';
-	
-	var collaspedEffectTitle = $("<span>").text( (systemData.effectTitle == 'None' ? '': systemData.effectTitle) );
 	
 	if( systemData.effectTitle != 'None' )
 	{
@@ -1258,7 +1177,6 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 		}
 		
 		effect.append( $("<div>").attr('id', 'systemEffects').addClass('tooltip').html(effectInfo) );
-		collaspedInfoEffectStatic.append( $("<div>").attr('id', 'systemEffectsCollasped').addClass('tooltip').html(effectInfo) );
 		
         effectTitle.qtip({
             content: {
@@ -1270,20 +1188,6 @@ siggymain.prototype.updateSystemInfo = function (systemData)
                 viewport: $(window)
             }
         });
-        collaspedEffectTitle.qtip({
-            content: {
-                text: $("#systemEffectsCollasped") // Use the "div" element next to this for the content
-            },
-            position: {
-                target: 'mouse',
-                adjust: { x: 5, y: 5 },
-                viewport: $(window)
-            }
-        });
-		
-		$('#systemInfo-collasped p.spacer').show();
-		collaspedInfoEffectStatic.append( collaspedEffectTitle );
-		collaspedInfoEffectStatic.append( ' - ' );
 	}
 	
 	//
@@ -1291,7 +1195,6 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 	var staticCount = Object.size(systemData.staticData);
 	if( staticCount > 0 )
 	{
-		collaspedInfoEffectStatic.append('[');
 		var counter = 0;
 		for (var i in systemData.staticData)
 		{
@@ -1331,36 +1234,9 @@ siggymain.prototype.updateSystemInfo = function (systemData)
                     viewport: $(window)
                 }
             });
-			if( staticCount > 1 && counter+1 != staticCount)
-			{
-				var collaspedStaticBit = $("<span>").text(theStatic.staticName+' ');
-			}
-			else
-			{
-				var collaspedStaticBit = $("<span>").text(theStatic.staticName);
-			}
-			collaspedInfoEffectStatic.append( collaspedStaticBit ).append( $("<div>").attr('id', 'static-info-collasped-' + theStatic.staticID).addClass('tooltip').html( staticInfo ) );
-			
-
-			
-            collaspedStaticBit.qtip({
-                content: {
-                    text: $('#static-info-collasped-' + theStatic.staticID) // Use the "div" element next to this for the content
-                },
-                show: {
-                    delay: 2000
-                },
-                position: {
-                    target: 'mouse',
-                    adjust: { x: 5, y: 5 },
-                    viewport: $(window)
-                }
-            });
 			
 			counter++;
 		}
-		$('#systemInfo-collasped p.spacer').show();
-		collaspedInfoEffectStatic.append(']');
 	}
 	
 	var sysName = systemData.name;
@@ -1384,7 +1260,7 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 	{
 		sysName += " - [0.0]";
 	}
-	$('.systemName').text(sysName);
+	$('#system-name').text(sysName);
   
 	
 	$('a.dotlan').attr('href', 'http://evemaps.dotlan.net/system/'+systemData.name);
@@ -1459,7 +1335,7 @@ siggymain.prototype.renderStats = function()
 
 siggymain.prototype.setBearTab = function( bearClass )
 {
-		$('#bearClassLinks a').each(function(index) 
+		$('#bear-class-links a').each(function(index) 
 		{
 			if( $(this).text() == 'C'+bearClass )
 			{
@@ -1470,9 +1346,9 @@ siggymain.prototype.setBearTab = function( bearClass )
 				$(this).removeClass('active');
 			}
 		});	
-		$('#bearInfoSets div').each(function(index) 
+		$('#bear-info-sets div').each(function(index) 
 		{
-			if( $(this).attr('id') == 'bearClass'+bearClass )
+			if( $(this).attr('id') == 'bear-class-'+bearClass )
 			{
 				$(this).show();
 			}
@@ -1487,10 +1363,10 @@ siggymain.prototype.setBearTab = function( bearClass )
 
 siggymain.prototype.updateSystemOptionsForm = function (systemData)
 {
-	$('#systemOptions table th').text('System Options for '+systemData.name);
-	$('#systemOptions input[name=label]').val(systemData.displayName);
-	$('#systemOptions input[name=inUse]').filter('[value=' + systemData.inUse + ']').attr('checked', true);
-	$('#systemOptions select[name=activity]').val(systemData.activity);
+	$('#system-options table th').text('System Options for '+systemData.name);
+	$('#system-options input[name=label]').val(systemData.displayName);
+	$('#system-options input[name=in-use]').filter('[value=' + systemData.inUse + ']').attr('checked', true);
+	$('#system-options select[name=activity]').val(systemData.activity);
 }
 
 
@@ -1556,7 +1432,7 @@ siggymain.prototype.addSigRow = function (sigData, flashSig)
 	}
 	
 	var row = $('<tr>').attr('id', 'sig-' + sigData.sigID)
-	.append($('<td>').addClass('center-text').addClass('edit') .append($('<img>').attr('src', this.settings.baseUrl + 'public/images/pencil.png').click(function (e)
+	.append($('<td>').addClass('center-text').addClass('edit') .append($('<i>').addClass('icon-pencil').addClass('icon-large').click(function (e)
 		{
 			that.editSigForm(sigData.sigID)
 		})
@@ -1571,20 +1447,20 @@ siggymain.prototype.addSigRow = function (sigData, flashSig)
 	row.append($('<td>').addClass('center-text').addClass('type').text(this.convertType(sigData.type)))
 	.append(descTD)
 	.append($('<td>').addClass('center-text').addClass('moreinfo')
-			.append($('<img>').attr('src', this.settings.baseUrl + 'public/images/information.png'))
+			.append($('<i>').addClass('icon-info-sign').addClass('icon-large').addClass('icon-yellow'))
 			.append($("<div>").addClass('tooltip').attr('id', 'creation-info-' + sigData.sigID).html(creationInfo))
 			)
 	.append($('<td>').addClass('center-text').addClass('age').append($("<span>").text("--")).append($("<div>").addClass('tooltip').attr('id', 'age-timestamp-' + sigData.sigID).text(siggymain.displayTimeStamp(sigData.created))))
-	.append($('<td>').addClass('center-text').addClass('remove').append($('<img>').attr('src', this.settings.baseUrl + 'public/images/delete.png')).click(function (e)
+	.append($('<td>').addClass('center-text').addClass('remove').append($('<i>').addClass('icon-remove-sign').addClass('icon-large').addClass('icon-red')).click(function (e)
 	{
 		that.removeSig(sigData.sigID)
 	}));
 	
-	$("#sigTable tbody").append( row );
+	$("#sig-table tbody").append( row );
 	
 	this.sigClocks[sigData.sigID] = new CountUp(sigData.created * 1000, '#sig-' + sigData.sigID + ' td.age span', "test");
 
-    $('#sig-' + sigData.sigID + ' td.moreinfo img').qtip({
+    $('#sig-' + sigData.sigID + ' td.moreinfo i').qtip({
         content: {
             text: $('#creation-info-' + sigData.sigID) // Use the "div" element next to this for the content
         }
@@ -1734,7 +1610,7 @@ siggymain.prototype.editSig = function (sigID)
 
 	var controlEle = $("#sig-" + sigID + " td.edit");
 	controlEle.text('');
-	controlEle.append($('<img>').attr('src', this.settings.baseUrl + 'public/images/pencil.png').click(function (e)
+	controlEle.append($('<i>').addClass('icon-pencil').addClass('icon-large').click(function (e)
 	{
 		that.editSigForm(sigID)
 	}));
@@ -1779,6 +1655,7 @@ siggymain.prototype.updateSiteSelect = function( ele, whClass, type, siteID )
 
 siggymain.prototype.generateSiteSelect = function (whClass, type, siteID)
 {
+    console.log("hi");
 	if (type == "wh") return this.generateSelect(whLookup[whClass], siteID);
 	else if (type == "ladar") return this.generateSelect(ladarsLookup, siteID);
 	else if (type == "mag") return this.generateSelect(magsLookup[whClass], siteID);
@@ -1825,7 +1702,7 @@ siggymain.prototype.removeSig = function (sigID)
 	{
 		sigID: sigID
 	});
-	$('#sigTable').trigger('update');
+	$('#sig-table').trigger('update');
 
 	$.post(this.settings.baseUrl + 'dosigRemove', {
 		systemID: this.systemID,
@@ -1881,7 +1758,7 @@ siggymain.prototype.setSystemClass = function (systemClass)
 siggymain.prototype.colorizeSigRows = function()
 {
 	var i = 0;
-	$('#sigTable tbody tr').each( function() {
+	$('#sig-table tbody tr').each( function() {
 		$( this ).removeClass('alt');
 		if( i % 2 != 0 )
 			$( this ).addClass('alt');
@@ -1891,9 +1768,9 @@ siggymain.prototype.colorizeSigRows = function()
 
 siggymain.prototype.setupAddBox = function ()
 {
-	var massAddBlob = $('#massAddSigBox textarea[name=blob]');
+	var massAddBlob = $('#mass-add-sig-box textarea[name=blob]');
 	massAddBlob.val('');
-	$('#massAddSigBox form').submit( function() 
+	$('#mass-add-sig-box button[name=add]').submit( function() 
 	{
 		var postData = {
 			systemID: that.systemID,
@@ -1907,7 +1784,7 @@ siggymain.prototype.setupAddBox = function ()
 				that.addSigRow(newSig[i]);
 			}
 			$.extend(that.sigData, newSig);
-			$('#sigTable').trigger('update');
+			$('#sig-table').trigger('update');
 
 		}, 'json');
 		
@@ -1918,16 +1795,16 @@ siggymain.prototype.setupAddBox = function ()
 		return false;
 	} );
 	
-	$('#massAddSigBox button[name=cancel]').click( function() 
+	$('#mass-add-sig-box button[name=cancel]').click( function() 
 	{
       $.unblockUI();
       return false;
 	} );
 	
-	$('#massAddSigs').click(function ()
+	$('#mass-add-sigs').click(function ()
 	{
 		$.blockUI({ 
-				message: $('#massAddSigBox'),
+				message: $('#mass-add-sig-box'),
 				css: { 
             border: 'none', 
             padding: '15px', 
@@ -1953,15 +1830,15 @@ siggymain.prototype.setupAddBox = function ()
 
 
 	//override potential form memory
-	$('#sigAddBox select[name=type]').val('none');
+	$('#sig-add-box select[name=type]').val('none');
 
 	var that = this;
-	$('#sigAddBox form').submit(function ()
+	$('#sig-add-box form').submit(function ()
 	{
-		var sigEle = $('#sigAddBox input[name=sig]');
-		var typeEle = $('#sigAddBox select[name=type]');
-		var descEle = $('#sigAddBox input[name=desc]');
-		var siteEle = $('#sigAddBox select[name=site]');
+		var sigEle = $('#sig-add-box input[name=sig]');
+		var typeEle = $('#sig-add-box select[name=type]');
+		var descEle = $('#sig-add-box input[name=desc]');
+		var siteEle = $('#sig-add-box select[name=site]');
 		
 		if (sigEle.val().length != 3)
 		{
@@ -1988,7 +1865,7 @@ siggymain.prototype.setupAddBox = function ()
 
 		if( that.settings.showSigSizeCol )
 		{
-				var sizeEle = $('#sigAddBox select[name=size]');
+				var sizeEle = $('#sig-add-box select[name=size]');
 				postData.sigSize = sizeEle.val();
 		}
 
@@ -1999,7 +1876,7 @@ siggymain.prototype.setupAddBox = function ()
 				that.addSigRow(newSig[i]);
 			}
 			$.extend(that.sigData, newSig);
-			$('#sigTable').trigger('update');
+			$('#sig-table').trigger('update');
 
 		}, 'json');
 
@@ -2019,12 +1896,12 @@ siggymain.prototype.setupAddBox = function ()
 	});
 	
 
-	$('#sigAddBox select[name=type]').change(function ()
+	$('#sig-add-box select[name=type]').change(function ()
 	{
 		newType = $(this).val();
 		
 		//$('#sigAddBox select[name=site]').replaceWith(that.generateSiteSelect(that.systemClass, newType, 0).attr('name', 'site'));
-		that.updateSiteSelect( '#sigAddBox select[name=site]', that.systemClass, newType, 0);
+		that.updateSiteSelect( '#sig-add-box select[name=site]', that.systemClass, newType, 0);
 		// $('#sigAddBox select[name=site]').empty();
 	 // $('#sigAddBox select[name=site]').append(that.generateSiteSelect(that.systemClass, newType, 0).attr('name', 'site'));
 		//$('#sigAddBox select[name=site]').focus();
@@ -2032,17 +1909,17 @@ siggymain.prototype.setupAddBox = function ()
 	
 	if( this.settings.showSigSizeCol )
 	{
-			$('#sigAddBox select[name=size]').keypress(this.addBoxEnterHandler);	
+			$('#sig-add-box select[name=size]').keypress(this.addBoxEnterHandler);	
 	}
 	//$('#sigAddBox select[name=site]').live('keypress', this.addBoxEnterHandler);	
-	$( document ).on('keypress', '#sigAddBox select[name=site]', this.addBoxEnterHandler); 
+	$( document ).on('keypress', '#sig-add-box select[name=site]', this.addBoxEnterHandler); 
 	
 }
 
 siggymain.prototype.addBoxEnterHandler = function(e)
 {
 			if(e.which == 13) {
-					$('input[name=add]').focus().click();
+					$('button[name=add]').focus().click();
 			}
 }
 
@@ -2109,11 +1986,6 @@ siggymain.prototype.initialize = function ()
       } );	
 
 
-	if( getCookie('sysInfoCollasped') != null )
-	{
-		this.sysInfoCollasped = parseInt( getCookie('sysInfoCollasped') );
-	}				
-	
 	if( getCookie('statsOpened') != null )
 	{
 		this.statsOpened = parseInt( getCookie('statsOpened') );
@@ -2159,57 +2031,37 @@ siggymain.prototype.initialize = function ()
 		};
 	}
 
-	$('#sigTable').tablesorter(
+	$('#sig-table').tablesorter(
 	{
 		headers: tableSorterHeaders
 	});
 	
-	$('#sigTable').bind('sortEnd', function() {
+	$('#sig-table').bind('sortEnd', function() {
 		that.colorizeSigRows();
 	});
 	
 
 	this.setupAddBox();
 
-	$('#unfreezeLink').click(function ()
+	$('#system-options-save').click(function ()
 	{
-		that.unfreeze();
-	});
-	$('#freezeLink').click(function ()
-	{
-		that.freeze();
-	});
-
-
-
-
-	$("#systemInfoButton").click(function ()
-	{
-		that.handleSystemAdvancedMenuClick('info');
-	});
-
-
-	$("#systemOptionsButton").click(function ()
-	{
-		that.handleSystemAdvancedMenuClick('options');
-	});
-
-	$('#systemOptions button.save').click(function ()
-	{
-		var label = $('#systemOptions input[name=label]').val();
-		var inUse = $('#systemOptions input[name=inUse]:checked').val();
-		var activity = $('#systemOptions select[name=activity]').val();
+		var label = $('#system-options input[name=label]').val();
+		var inUse = $('#system-options input[name=in-use]:checked').val();
+		var activity = $('#system-options select[name=activity]').val();
 		
+        console.log(label);
+        console.log(inUse);
+        console.log(activity);
 		that.saveSystemOptions(that.systemID, label, inUse, activity);
 	});
 
 	
 
-	$('#systemOptions button.reset').click(function ()
+	$('#system-options-reset').click(function ()
 	{
-		$('#systemOptions input[name=label]').val('');
-		$('#systemOptions input[name=inUse]').filter('[value=0]').attr('checked', true);
-		$('#systemOptions select[name=activity]').val(0);
+		$('#system-options input[name=label]').val('');
+		$('#system-options input[name=in-use]').filter('[value=0]').attr('checked', true);
+		$('#system-options select[name=activity]').val(0);
 
 		$.post(that.settings.baseUrl + 'dosaveSystemOptions', {
 			systemID: that.systemID,
@@ -2223,44 +2075,18 @@ siggymain.prototype.initialize = function ()
 				that.systemList[that.systemID].displayName = '';
 				that.systemList[that.systemID].inUse = 0;
 				that.systemList[that.systemID].activity = 0;
-				that.updateSystemList(that.systemList);
 			}
 		});
 	});	
 	
 	
-	$('#bearC1').click(function () { that.setBearTab(1); return false; });
-	$('#bearC2').click(function () { that.setBearTab(2); return false; });
-	$('#bearC3').click(function () { that.setBearTab(3); return false; });
-	$('#bearC4').click(function () { that.setBearTab(4); return false; });
-	$('#bearC5').click(function () { that.setBearTab(5); return false; });
-	$('#bearC6').click(function () { that.setBearTab(6); return false; });
+	$('#bear-C1').click(function () { that.setBearTab(1); return false; });
+	$('#bear-C2').click(function () { that.setBearTab(2); return false; });
+	$('#bear-C3').click(function () { that.setBearTab(3); return false; });
+	$('#bear-C4').click(function () { that.setBearTab(4); return false; });
+	$('#bear-C5').click(function () { that.setBearTab(5); return false; });
+	$('#bear-C6').click(function () { that.setBearTab(6); return false; });
 
-	$('.carebear').click(function ()
-	{
-		$.blockUI({ 
-            message: $('#carebearBox'),
-            css: { 
-            border: 'none', 
-            padding: '15px', 
-            background: 'transparent', 
-            color: 'inherit',
-            cursor: 'auto',
-            textAlign: 'left',
-            top: '20%',
-						width: 'auto',
-						centerX: true,
-						centerY: false
-        },
-        overlayCSS: {
-            cursor: 'auto'
-        },
-        fadeIn:  0, 
-        fadeOut:  0
-		}); 
-		$('.blockOverlay').attr('title','Click to unblock').click($.unblockUI); 
-	});
-	
 	
 	accessMenu = new siggyMenu(
 	{	 
@@ -2298,7 +2124,7 @@ siggymain.prototype.initialize = function ()
 	//	console.log(that.idleTimeout);
 	//}, 1000 );	
 	
-	this.initializeSystemExpandCollaspe();
+	this.initializeTabs();
 }
 
 siggymain.prototype.saveSystemOptions = function(systemID, label, inUse, activity)
@@ -2316,48 +2142,50 @@ siggymain.prototype.saveSystemOptions = function(systemID, label, inUse, activit
 				that.systemList[systemID].displayName = label;
 				that.systemList[systemID].inUse = inUse;
 				that.systemList[systemID].activity = activity;
-				that.updateSystemList(that.systemList);
 			}
 		});
 }
 
-siggymain.prototype.initializeSystemExpandCollaspe = function()
+siggymain.prototype.initializeTabs = function()
 {
 	var that = this;
-	$('#systemInfo-collaspe').click( function() {
-		$('#systemInfo-collasped').show();
-		$('#systemInfo').hide();
-		
-		that.sysInfoCollasped = 1;
-		setCookie('sysInfoCollasped', 1, 365); 
-	});
+    
+    $('#system-advanced ul.tabs li a').click( function()
+    {
+        that.changeTab( $(this).attr('href') );
+        return false;
+    } );
+    
+    this.changeTab( '#sigs' );
 	
-	
-	$('#systemInfo-expand').click( function() {
-		$('#systemInfo-collasped').hide();
-		$('#systemInfo').show();
-		
-		that.sysInfoCollasped = 0;
-		setCookie('sysInfoCollasped', 0, 365); 
-	});
-	
-	
-	$('#stats h2').click( function() {
-		var content = $('#stats > div');
-		if( content.is(":visible") )
-		{
-			content.hide();
-			that.statsOpened = 0;
-			setCookie('statsOpened', 0, 365); 
-		}
-		else
-		{
-			content.show();
+}
+
+siggymain.prototype.changeTab = function( selectedTab )
+{
+    var that = this;
+    $.each( $('#system-advanced ul.tabs li a'), function()
+    {
+        var href = $(this).attr('href');
+        
+        if( href == selectedTab )
+        {
+            $( this ).parent().addClass('active');
+            $( href ).show();
+        }
+        else
+        {
+            $( this ).parent().removeClass('active');
+            $( href ).hide();
+        }
+        
+        if( href == "#stats" )
+        {
 			that.renderStats();
-			that.statsOpened = 1;
-			setCookie('statsOpened', 1 , 365);
-		}
-	});	
+        }
+        
+		setCookie('system-tab', href, 365);
+    } );
+
 }
 
 siggymain.prototype.registerHeaderToolButton = function( button, callback, shownText, hiddenText  )
@@ -2368,34 +2196,34 @@ siggymain.prototype.initializeGNotes = function()
 {
 	var that = this;
 
-	this.globalNotesEle = $('#globalNotes');
-	$('#globalNotesButton').click(function ()
+	this.globalNotesEle = $('#global-notes');
+	$('#global-notes-button').click(function ()
 	{
 		if ( that.globalNotesEle.is(":visible") )
 		{
 			that.globalNotesEle.hide();
-			$('#globalNotesButton').html('Notes &#x25BC;');
+			$('#global-notes-button').html('Notes &#x25BC;');
 		}
 		else
 		{
 			that.globalNotesEle.show();
-			$('#globalNotesButton').html('Notes &#x25B2;');
+			$('#global-notes-button').html('Notes &#x25B2;');
 			that.stopBlinkingNotes();
 		}
 	});
 
-	$('#gNotesEdit').click(function ()
+	$('#global-notes-edit').click(function ()
 	{
 		$(this).hide();
-		$('#thegnotes').hide();
-		$('#gNotesEditBox').val(that.globalNotes).show();
-		$('#gNotesSave').show();
-		$('#gNotesCancel').show();
+		$('#global-notes-content').hide();
+		$('#global-notes-edit-box').val(that.globalNotes).show();
+		$('#global-notes-save').show();
+		$('#global-notes-cancel').show();
 	});
 
-	$('#gNotesSave').click(function ()
+	$('#global-notes-save').click(function ()
 	{
-		that.globalNotes = $('#gNotesEditBox').val();
+		that.globalNotes = $('#global-notes-edit-box').val();
 		$.post(that.settings.baseUrl + 'doglobalNotesSave', {
 			notes: that.globalNotes
 		}, function (data)
@@ -2403,24 +2231,24 @@ siggymain.prototype.initializeGNotes = function()
 			that.editingGlobalNotes = false;
 			that.lastGlobalNotesUpdate = data;
 			setCookie('notesUpdate', that.lastGlobalNotesUpdate, 365);
-			$('#gNotesTime').text(siggymain.displayTimeStamp(that.lastGlobalNotesUpdate));
+			$('#global-notes-time').text(siggymain.displayTimeStamp(that.lastGlobalNotesUpdate));
 		});
 
-		$('#thegnotes').html(that.globalNotes.replace(/\n/g, '<br />')).show();
-		$('#gNotesEditBox').hide();
-		$('#gNotesEdit').show();
-		$('#gNotesCancel').hide();
+		$('#global-notes-content').html(that.globalNotes.replace(/\n/g, '<br />')).show();
+		$('#global-notes-edit-box').hide();
+		$('#global-notes-edit').show();
+		$('#global-notes-cancel').hide();
 		$(this).hide();
 	});
 	
 	
-	$('#gNotesCancel').click(function ()
+	$('#global-notes-cancel').click(function ()
 	{
 		this.editingGlobalNotes = false;
 		$('#thegnotes').show();
-		$('#gNotesEditBox').hide();
-		$('#gNotesEdit').show();
-		$('#gateNotesSave').hide();
+		$('#global-notes-edit-box').hide();
+		$('#global-notes-edit').show();
+		$('#global-notes-save').hide();
 		$(this).hide();
 	});
 }
@@ -2448,32 +2276,6 @@ siggymain.prototype.stopBlinkingNotes = function()
 	}
 }
 
-siggymain.prototype.handleSystemAdvancedMenuClick = function (what)
-{
-	var info = $('#systemInfoButton');
-	var options = $('#systemOptionsButton');
-
-	if (what == 'options')
-	{
-		info.removeClass('selected');
-		options.addClass('selected');
-
-		$('#systemInfo').hide();
-		$('#systemOptions').show();
-	}
-	else
-	{
-		options.removeClass('selected');
-		info.addClass('selected');
-		
-		if( this.sysInfoCollasped == 0 )
-		{
-			$('#systemInfo').show();
-		}
-		
-		$('#systemOptions').hide();
-	}
-}
 
 siggymain.prototype.freeze = function ()
 {
