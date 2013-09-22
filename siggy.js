@@ -1097,7 +1097,7 @@ siggymain.prototype.updateSystemInfo = function (systemData)
     //HUB JUMPS
 	var hubJumpsStr = '';
     $('div.hub-jump').destroyContextMenu();
-    $('#hubJumps').empty();
+    $('#hub-jumps').empty();
 	for(var index in systemData.hubJumps)
 	{
         var hub = systemData.hubJumps[index];
@@ -1127,19 +1127,19 @@ siggymain.prototype.updateSystemInfo = function (systemData)
                 }
         });
         
-        $('#hubJumps').append(hubDiv);
+        $('#hub-jumps').append(hubDiv);
 	}
 
     
     //EFFECT STUFF
 	
 	//effect info
-    $('#systemEffect > p').qtip('destroy');
-	$('#systemEffect').empty();
+    $('#system-effect > p').qtip('destroy');
+	$('#system-effect').empty();
 	
 	
 	var effectTitle = $("<p>").text(systemData.effectTitle);
-	var effect = $('#systemEffect').append(effectTitle);
+	var effect = $('#system-effect').append(effectTitle);
 	var effectInfo = '';
 	
 	if( systemData.effectTitle != 'None' )
@@ -1176,11 +1176,11 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 			effectInfo += '<b>'+effData[i][0]+':&nbsp;</b>'+effData[i][1]+'<br />';
 		}
 		
-		effect.append( $("<div>").attr('id', 'systemEffects').addClass('tooltip').html(effectInfo) );
+		effect.append( $("<div>").attr('id', 'system-effect').addClass('tooltip').html(effectInfo) );
 		
         effectTitle.qtip({
             content: {
-                text: $("#systemEffects") // Use the "div" element next to this for the content
+                text: $("#system-effect") // Use the "div" element next to this for the content
             },
             position: {
                 target: 'mouse',
@@ -1191,7 +1191,7 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 	}
 	
 	//
-	$('#staticInfo').empty();
+	$('#static-info').empty();
 	var staticCount = Object.size(systemData.staticData);
 	if( staticCount > 0 )
 	{
@@ -1221,7 +1221,9 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 			var staticBit = $("<p>").text(theStatic.staticName + destBlurb);
 			var staticInfo = "<b>" + theStatic.staticName  + destBlurb + "</b><br />" + "Max Mass: " + theStatic.staticMass + " billion<br />" + "Max Jumpable Mass: " + theStatic.staticJumpMass + " million<br />" + "Max Lifetime: " + theStatic.staticLifetime + " hrs<br />" + "Signature Size: " + theStatic.staticSigSize + " <br />";
 
-			$('#staticInfo').append(staticBit).append( $("<div>").attr('id', 'static-info-' + theStatic.staticID).addClass('tooltip').html( staticInfo ) );
+            
+            var staticTooltip = $("<div>").attr('id', 'static-info-' + theStatic.staticID).addClass('tooltip').html( staticInfo );
+			$('#static-info').append(staticBit).append( staticTooltip );
 
 			
             staticBit.qtip({
@@ -1277,10 +1279,7 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 	if( systemData.stats.length > 0 )
 	{
 		this.systemStats = systemData.stats;
-		if ( this.statsOpened ) 
-		{
-			this.renderStats();
-		}
+        this.renderStats();
 	}
 	else
 	{
@@ -1501,7 +1500,7 @@ siggymain.prototype.editSigForm = function (sigID)
 	var sigEle = $("#sig-" + sigID + " td.sig");
 	sigEle.text('');
 
-	var sigInput = $('<input>').val(this.sigData[sigID].sig).addClass('sigEdit').attr('maxlength', 3).keypress( function(e) { if(e.which == 13){ that.editSig(sigID)  } } );
+	var sigInput = $('<input>').val(this.sigData[sigID].sig).attr('maxlength', 3).keypress( function(e) { if(e.which == 13){ that.editSig(sigID)  } } );
 	sigEle.append(sigInput);
 	
 	if( this.settings.showSigSizeCol )
@@ -1770,7 +1769,7 @@ siggymain.prototype.setupAddBox = function ()
 {
 	var massAddBlob = $('#mass-add-sig-box textarea[name=blob]');
 	massAddBlob.val('');
-	$('#mass-add-sig-box button[name=add]').submit( function() 
+	$('#mass-add-sig-box button[name=add]').click( function() 
 	{
 		var postData = {
 			systemID: that.systemID,
@@ -2178,7 +2177,7 @@ siggymain.prototype.changeTab = function( selectedTab )
             $( href ).hide();
         }
         
-        if( href == "#stats" )
+        if( href == "#system-info" )
         {
 			that.renderStats();
         }
