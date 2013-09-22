@@ -138,7 +138,7 @@ final class miscUtils
 			return $total*$days;
 			*/
 			
-			$total = 20420*$memberCount + 283650;
+			$total = 25420*$memberCount + 283650;
 			return $total*$days;
 		}
 		
@@ -175,7 +175,7 @@ final class miscUtils
 					continue;	//skip
 				}
 				
-				preg_match("/^(Wormhole|Data|Gas Site|Relic Site|Ore Site)$/", $data[2], $matches );
+				preg_match("/^(Wormhole|Data Site|Gas Site|Relic Site|Ore Site)$/", $data[2], $matches );
 				if( count($matches) == 2 )	
 				{
 					switch( $matches[1] )
@@ -453,12 +453,15 @@ final class miscUtils
 		
 		static function generateString($length = 14) 
 		{
+			/*
 			$characters = '0123456789abcdefghijklmnopqrstuvwxyz';
 			$randomString = '';
 			for ($i = 0; $i < $length; $i++) 
 			{
 				$randomString .= $characters[rand(0, strlen($characters) - 1)];
-			}
+			}*/
+			
+			$randomString = substr( md5(uniqid(microtime() . rand(), true)), 0 ,14);
 			return $randomString;
 		}
 		
