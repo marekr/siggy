@@ -1176,11 +1176,11 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 			effectInfo += '<b>'+effData[i][0]+':&nbsp;</b>'+effData[i][1]+'<br />';
 		}
 		
-		effect.append( $("<div>").attr('id', 'system-effect').addClass('tooltip').html(effectInfo) );
+		effect.append( $("<div>").attr('id', 'system-effects').addClass('tooltip').html(effectInfo) );
 		
         effectTitle.qtip({
             content: {
-                text: $("#system-effect") // Use the "div" element next to this for the content
+                text: $("#system-effects") // Use the "div" element next to this for the content
             },
             position: {
                 target: 'mouse',
@@ -1265,7 +1265,8 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 	$('#system-name').text(sysName);
   
 	
-	$('a.dotlan').attr('href', 'http://evemaps.dotlan.net/system/'+systemData.name);
+	$('a.site-dotlan').attr('href', 'http://evemaps.dotlan.net/system/'+systemData.name);
+	$('a.site-wormholes').attr('href', 'http://wormhol.es/'+systemData.name);
 	
 	//$('a.evekill').attr('href','http://whkills.info/?a=system_detail&sys_id='+systemData.id);
 	this.setSystemID(systemData.id);
