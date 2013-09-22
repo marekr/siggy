@@ -20,20 +20,13 @@
             </h2>
             <ul class='option-bar tabs'>
                 <li class="active"><a href='#system-info'>Info</a></li>
-                <li><a href='#sigs'>Sigs</a></li>
+                <li><a href='#sigs'>Recon</a></li>
                 <li><a href='#system-options'>Options</a></li>
-                <li><a href='#stats'>Stats</a></li>
             </ul>
         </div>
       
         <div id="system-info" class="tab clear-fix">
             <table id="system-table" cellspacing="1" class='siggy-table'>
-                <tr>
-                    <td class="title">Region</td>
-                    <td class="content" id="region"></td>
-                    <td class="title">Constellation</td>
-                    <td class="content" id="constellation"></td>
-                </tr>
                 <tr>
                     <td class="title">Planets/Moons/Belts</td>
                     <td class="content" id="planetsmoons"></td>
@@ -43,16 +36,36 @@
                 <tr>
                     <td class="title">True Sec</td>
                     <td class="content" id="truesec"></td>
-                    <td class="title">System Effect</td>
-                    <td class="content" id="systemEffect"></td>
-                </tr>
-                <tr>
-                    <td class="title">Hub Jumps</td>
-                    <td class="content" id="hubJumps"></td>
-                    <td class="title">Statics</td>
-                    <td class="content" id="staticInfo"></td>
+                    <td class="title">Constellation</td>
+                    <td class="content" id="constellation"></td>
                 </tr>
             </table>
+            
+            <!---start stats--->
+            <div id='stats'>
+                <h2>Stats</h2>
+                <div>
+                    <div style='display:inline-block'>
+                        <h4>Jumps</h4>
+                        <div id='jumps' style='width:250px;height:160px;'></div>
+                    </div>
+                    <div style='display:inline-block'>
+                        <h4>NPC Kills</h4>
+                        <div id='npcKills' style='width:250px;height:160px;'></div>
+                    </div>
+                    <div style='display:inline-block'>
+                        <h4>Ship Kills</h4>
+                        <div id='shipKills' style='width:250px;height:160px;'></div>
+                    </div>
+                    <div>
+                        <div class='statColor' style='background-color:#AFD8F8'></div>
+                        <span>siggy</span>
+                        <div class='statColor' style='background-color:#EDC240'></div>
+                        <span>API</span>
+                    </div>
+                </div>
+            </div>
+            <!--- end stats -->
             <!-- carebear box -->
             <div id="carebear-box">
                 <h2>Carebearing</h2>
@@ -194,33 +207,23 @@
                 </tr>
             </table>
         </div>
-        <!---start stats--->
-        <div id='stats' class="tab">
-            <div>
-                <div style='display:inline-block'>
-                    <h4>Jumps</h4>
-                    <div id='jumps' style='width:250px;height:160px;'></div>
-                </div>
-                <div style='display:inline-block'>
-                    <h4>NPC Kills</h4>
-                    <div id='npcKills' style='width:250px;height:160px;'></div>
-                </div>
-                <div style='display:inline-block'>
-                    <h4>Ship Kills</h4>
-                    <div id='shipKills' style='width:250px;height:160px;'></div>
-                </div>
-                <div>
-                    <div class='statColor' style='background-color:#AFD8F8'></div>
-                    <span>siggy</span>
-                    <div class='statColor' style='background-color:#EDC240'></div>
-                    <span>API</span>
-                </div>
-            </div>
-        </div>
-        <!--- end stats -->
     
     
         <div id="sigs">
+            <table id="system-table" cellspacing="1" class='siggy-table'>
+                <tr>
+                    <td class="title">Region</td>
+                    <td class="content" id="region"></td>
+                    <td class="title">System Effect</td>
+                    <td class="content" id="system-effect"></td>
+                </tr>
+                <tr>
+                    <td class="title">Hub Jumps</td>
+                    <td class="content" id="hub-jumps"></td>
+                    <td class="title">Statics</td>
+                    <td class="content" id="static-info"></td>
+                </tr>
+            </table>
             <div id="sig-add-box" style="padding:10px;">
                 <form>
                     <div style="float:left">

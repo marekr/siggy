@@ -124,7 +124,7 @@ table td.content {
 	padding-left: 6px;
 }
 
-#hubJumps div
+#hub-jumps div
 {
     float:left;
     margin-right:10px;
@@ -187,7 +187,7 @@ table.tablesorter thead tr .headerSortDown {
 
 /*header*/
 
-#topBar {
+#top-bar {
 	width: 100%;
 	height:32px;
 	padding: 7px 0 7px 0;
@@ -196,34 +196,19 @@ table.tablesorter thead tr .headerSortDown {
 	position:relative;
 }
 
-#topBar > div
+#top-bar > div
 {
 	margin-left:7px;
 }
 
-#topBar p.name {
+#top-bar p.name {
 	left: 83px;
 	position: absolute;
 	top: 8px;
 	font-weight:bold;
 }
 
-#topBar div.centerBar
-{
-	width: 122px;
-	margin: -29px auto 0;
-	font-size: 0.8em;
-}
-
-#topBar div.centerBar button
-{
-	width: 122px;
-	font-size: 1em;
-	background: #fff;
-	border: 1px solid #000;
-}
-
-#floatingHeader
+#floating-header
 {
 	position: fixed;
 	top:0;
@@ -236,7 +221,7 @@ a {
 	color: #FF7F00;
 }
 
-#updateTime
+#update-time
 {    
 	position: absolute;
 	right: 12px;
@@ -244,7 +229,7 @@ a {
 	text-align:right;
 }
 
-input.sigEdit
+td.sig input
 {
     width:50px;
 }
@@ -406,25 +391,47 @@ td.desc input
     margin-top:4px;
 }
 
+
+
+/*stats */
+
+.statColor
+{
+	border: 1px solid #fff;
+	width:16px;
+	height:10px;
+	display:inline-block;
+}
+
 #bear-class-links a.active{
 	font-weight:bold;
 	color: #FFF;
 }
 
-#carebear-box h2
+#carebear-box h2,
+#stats h2
 {
     background-color: #1C1C1C;
     padding:6px;
     padding-left:10px;
     font-weight: bold;
+    text-align:left;
 }
 
+
+#stats,
 #carebear-box
 {
     background-color: #092665;
 }
 
-#carebear-box > div
+#stats
+{
+    text-align:center;
+}
+
+#carebear-box > div,
+#stats > div
 {
     padding: 10px;
 }
@@ -528,17 +535,6 @@ ul.errors
 	display: none;
 }
 
-/*stats */
-#stats
-{
-	background-color: #2D2D2D;
-	text-align:center;
-}
-
-#stats > div
-{
-	padding: 5px;
-}
 
 
 .click-me
@@ -547,13 +543,6 @@ ul.errors
 }
 
 
-.statColor
-{
-	border: 1px solid #fff;
-	width:16px;
-	height:10px;
-	display:inline-block;
-}
 
 input:focus,
 select:focus
@@ -573,33 +562,6 @@ select:focus
 	border-bottom: 1px dashed #999;
 }
 
-/*****
-whpopup tabs
-*******/
-#wormholeTabs
-{
-	background-color: #1f1f1f;
-}
-
-#wormholeTabs div
-{
-	display: inline-block;
-	background-color: #0E0E0E;
-	padding:5px;
-	margin:0;
-	font-size:1.1em;
-	font-weight:bold;
-}
-
-#wormholeTabs div:hover
-{
-	background-color: #AB5907;
-}
-
-#wormholePopup div.tabcontent
-{
-	padding:5px;
-}
 
 ul.itemList li
 {

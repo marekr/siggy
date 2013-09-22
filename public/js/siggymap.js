@@ -774,7 +774,7 @@ siggyMap.prototype.openSystemEdit = function( sysID )
 	this.editingSystem = sysID;
 	
 	$('#chain-map-container').block({
-		message: $('#systemOptionsPopup'),
+		message: $('#system-options-popup'),
 		css: { 
 				border: 'none', 
 				padding: '15px', 

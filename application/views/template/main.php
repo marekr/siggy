@@ -7,6 +7,7 @@
 	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/reset.css?32" rel="stylesheet" media="screen" /> 
 	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/siggy.css?32" rel="stylesheet" media="screen" /> 
 	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/siggy.map.css?32" rel="stylesheet" media="screen" /> 
+	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/jquery.qtip.css?32" rel="stylesheet" media="screen" /> 
     <?php else: ?>
 	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/siggy.compiled.css?32" rel="stylesheet" media="screen" /> 
     <?php endif; ?>
@@ -54,8 +55,8 @@
   </head>
   <body>
 		<?php if( $loggedIn = true || Kohana::$environment == Kohana::DEVELOPMENT): ?>
-		<div id="floatingHeader">
-			<div id="topBar">
+		<div id="floating-header">
+			<div id="top-bar">
 				<div>
 					<img src="http://image.eveonline.com/Corporation/<?php echo $corpID; ?>_64.png" height="32px" />
 					<img src="http://image.eveonline.com/Character/<?php echo $charID; ?>_64.jpg" height="32px"/>
@@ -84,7 +85,7 @@
 					</p>
 				</div>
 				<?php if( $siggyMode ): ?>
-					<div id="updateTime">
+					<div id="update-time">
 						<span id="loading" style="display:none;"><img src="<?php echo URL::base(TRUE, TRUE);?>public/images/ajax-loader.gif" />&nbsp;</span>
 						Selected System: <span id="currentsystem"><b>System</b></span><br />
 						<?php if( $igb ): ?>
