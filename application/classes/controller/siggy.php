@@ -251,10 +251,10 @@ class Controller_Siggy extends FrontController
 			
 			$end = miscUtils::getHourStamp();
 			$start = miscUtils::getHourStamp(-24);
-			$apiData = DB::query(Database::SELECT, "SELECT hourStamp, jumps, kills, npcKills FROM apiHourlyMapData WHERE systemID=:system AND hourStamp >= :start AND hourStamp <= :end ORDER BY hourStamp asc LIMIT 0,24")
+			$apiData = DB::query(Database::SELECT, "SELECT hourStamp, jumps, kills, npcKills FROM apihourlymapdata WHERE systemID=:system AND hourStamp >= :start AND hourStamp <= :end ORDER BY hourStamp asc LIMIT 0,24")
 											->param(':system', $systemData['id'])->param(':start', $start)->param(':end', $end)->execute()->as_array('hourStamp');	 
 			
-			$trackedJumps = DB::query(Database::SELECT, "SELECT hourStamp, jumps FROM jumpsTracker WHERE systemID=:system AND groupID=:group AND hourStamp >= :start AND hourStamp <= :end ORDER BY hourStamp asc LIMIT 0,24")
+			$trackedJumps = DB::query(Database::SELECT, "SELECT hourStamp, jumps FROM jumpstracker WHERE systemID=:system AND groupID=:group AND hourStamp >= :start AND hourStamp <= :end ORDER BY hourStamp asc LIMIT 0,24")
 											->param(':system', $systemData['id'])->param(':group', $this->groupData['groupID'])->param(':start', $start)->param(':end', $end)->execute()->as_array('hourStamp');	 
 			
 			$systemData['stats'] = array();
@@ -563,10 +563,10 @@ class Controller_Siggy extends FrontController
 								if( $this->groupData['recordJumps'] && $actualCurrentSystemID != 0 && $lastSystemID != 0 )
 								{
 									$hourStamp = miscUtils::getHourStamp();
-									DB::query(Database::INSERT, 'INSERT INTO jumpsTracker (`systemID`, `groupID`, `hourStamp`, `jumps`) VALUES(:systemID, :groupID, :hourStamp, 1) ON DUPLICATE KEY UPDATE jumps=jumps+1')
+									DB::query(Database::INSERT, 'INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`) VALUES(:systemID, :groupID, :hourStamp, 1) ON DUPLICATE KEY UPDATE jumps=jumps+1')
 														->param(':hourStamp', $hourStamp )->param(':systemID', $lastSystemID )->param(':groupID', $this->groupData['groupID'] )->execute();						
 
-									DB::query(Database::INSERT, 'INSERT INTO jumpsTracker (`systemID`, `groupID`, `hourStamp`, `jumps`) VALUES(:systemID, :groupID, :hourStamp, 1) ON DUPLICATE KEY UPDATE jumps=jumps+1')
+									DB::query(Database::INSERT, 'INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`) VALUES(:systemID, :groupID, :hourStamp, 1) ON DUPLICATE KEY UPDATE jumps=jumps+1')
 														->param(':hourStamp', $hourStamp )->param(':systemID', $actualCurrentSystemID )->param(':groupID', $this->groupData['groupID'] )->execute();									
 								}							
 					}
@@ -583,7 +583,7 @@ class Controller_Siggy extends FrontController
 							$broadcast = 1;
 						}
 						
-						DB::query(Database::INSERT, 'INSERT INTO charTracker (`charID`, `charName`, `currentSystemID`,`groupID`,`subGroupID`,`lastBeep`, `broadcast`,`shipType`) VALUES(:charID, :charName, :systemID, :groupID, :subGroupID, :lastBeep, :broadcast, :shipType)'
+						DB::query(Database::INSERT, 'INSERT INTO chartracker (`charID`, `charName`, `currentSystemID`,`groupID`,`subGroupID`,`lastBeep`, `broadcast`,`shipType`) VALUES(:charID, :charName, :systemID, :groupID, :subGroupID, :lastBeep, :broadcast, :shipType)'
 													. 'ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, currentSystemID = :systemID, broadcast = :broadcast, shipType = :shipType')
 													->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
 													->param(':broadcast', $broadcast )
@@ -820,7 +820,7 @@ class Controller_Siggy extends FrontController
                     $broadcast = 1;
                 }
       
-                      DB::query(Database::INSERT, 'INSERT INTO charTracker (`charID`, `charName`, `currentSystemID`,`groupID`,`subGroupID`,`lastBeep`, `broadcast`,`shipType`, `shipName`) VALUES(:charID, :charName, :systemID, :groupID, :subGroupID, :lastBeep, :broadcast, :shipType, :shipName)'
+                      DB::query(Database::INSERT, 'INSERT INTO chartracker (`charID`, `charName`, `currentSystemID`,`groupID`,`subGroupID`,`lastBeep`, `broadcast`,`shipType`, `shipName`) VALUES(:charID, :charName, :systemID, :groupID, :subGroupID, :lastBeep, :broadcast, :shipType, :shipName)'
                                     . 'ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, currentSystemID = :systemID, broadcast = :broadcast, shipType = :shipType, shipName = :shipName')
                     ->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
                     ->param(':broadcast', $broadcast )
@@ -841,7 +841,7 @@ class Controller_Siggy extends FrontController
                     if( is_array($this->mapData['systemIDs']) && count($this->mapData['systemIDs'])	 > 0 )
                     {
                             $activesData = array();
-                            $activesData = DB::query(Database::SELECT, "SELECT ct.charName, ct.currentSystemID, s.shipName FROM charTracker ct 
+                            $activesData = DB::query(Database::SELECT, "SELECT ct.charName, ct.currentSystemID, s.shipName FROM chartracker ct 
                                                                         LEFT JOIN ships s ON (ct.shipType=s.shipID)
                                                                         WHERE ct.groupID = :groupID AND ct.subGroupID = :subGroupID AND ct.broadcast=1 AND
                                                                             ct.currentSystemID IN(".implode(',',$this->mapData['systemIDs']).") AND ct.lastBeep >= :lastBeep 
