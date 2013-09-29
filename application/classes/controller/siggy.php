@@ -672,6 +672,11 @@ class Controller_Siggy extends FrontController
 
             }								
         }	
+        else
+        {
+			$message = $this->groupData['charName'].' added wormhole by jumping between system IDs' . $origin . ' and ' . $dest;
+			$this->__logAction('addwh', $message );	
+        }
 	}
 	
 	public function action_getJumpLog()
@@ -1452,6 +1457,9 @@ class Controller_Siggy extends FrontController
 			DB::query(Database::INSERT, 'INSERT INTO wormholes (`hash`, `to`, `from`, `eol`, `mass`, `groupID`, `subGroupID`, `lastJump`) VALUES(:hash, :to, :from, :eol, :mass, :groupID, :subGroupID, :lastJump) ON DUPLICATE KEY UPDATE eol=:eol, mass=:mass')
 								->param(':hash', $whHash )->param(':to', $toSysID )->param(':from', $fromSysID	)->param(':eol', $eol	 )->param(':mass', $mass	)->param(':groupID', $this->groupData['groupID'] )->param(':subGroupID', $this->groupData['subGroupID'] )->param(':lastJump', time() )->execute();
 			
+            
+			$message = $this->groupData['charName'].' added wormhole manually between system IDs' . $fromSysID . ' and ' . $toSysID;
+			$this->__logAction('addwh', $message );	
 		}
 		$this->rebuildMapCache();
 		echo json_encode( array('success' => 1) );

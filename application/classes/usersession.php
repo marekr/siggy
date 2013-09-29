@@ -105,7 +105,9 @@ class UserSession
 
 		$update = array( 'userID' => Auth::$user->data['id'],
 						 'groupID' => Auth::$user->data['groupID'],
-						 'subGroupID' => Auth::$user->subGroupID
+						 'subGroupID' => Auth::$user->subGroupID,
+                         'charName' => Auth::$user->data['apiCharName'],
+                         'charID' => Auth::$user->data['apiCharID']
 						 );
 
 		DB::update('siggysessions')->set( $update )->where('sessionID', '=',  $this->sessionID)->execute();
@@ -148,6 +150,7 @@ class UserSession
 
 		$update = array( 'lastBeep' => time() );
 
+        
 		DB::update('siggysessions')->set( $update )->where('sessionID', '=',  $this->sessionID)->execute();
 	}
 }
