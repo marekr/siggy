@@ -1365,7 +1365,6 @@ siggymain.prototype.updateSystemOptionsForm = function (systemData)
 {
 	$('#system-options table th').text('System Options for '+systemData.name);
 	$('#system-options input[name=label]').val(systemData.displayName);
-	$('#system-options input[name=in-use]').filter('[value=' + systemData.inUse + ']').attr('checked', true);
 	$('#system-options select[name=activity]').val(systemData.activity);
 }
 
@@ -1926,10 +1925,10 @@ siggymain.prototype.addBoxEnterHandler = function(e)
 siggymain.prototype.displayFatalError = function(message)
 {
 
-		$('#fatalErrorMessage').html(message);
+		$('#fatal-error-message').html(message);
 
 		$.blockUI({ 
-				message: $('#fatalError'),
+				message: $('#fatal-error'),
 				css: { 
 				border: 'none', 
 				padding: '15px', 
@@ -1967,7 +1966,7 @@ siggymain.prototype.setupFatalErrorHandler = function()
 	} );	
 	
 	
-	$('#refreshFromFatal').click( function() {
+	$('#fatal-error-refresh').click( function() {
 		location.reload(true);
 	} );
 }
@@ -2046,7 +2045,6 @@ siggymain.prototype.initialize = function ()
 	$('#system-options-save').click(function ()
 	{
 		var label = $('#system-options input[name=label]').val();
-		var inUse = $('#system-options input[name=in-use]:checked').val();
 		var activity = $('#system-options select[name=activity]').val();
 		
         console.log(label);
@@ -2060,7 +2058,6 @@ siggymain.prototype.initialize = function ()
 	$('#system-options-reset').click(function ()
 	{
 		$('#system-options input[name=label]').val('');
-		$('#system-options input[name=in-use]').filter('[value=0]').attr('checked', true);
 		$('#system-options select[name=activity]').val(0);
 
 		$.post(that.settings.baseUrl + 'dosaveSystemOptions', {
