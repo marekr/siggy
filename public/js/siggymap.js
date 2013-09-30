@@ -789,7 +789,6 @@ siggyMap.prototype.openSystemEdit = function( sysID )
 	
 	$('#systemEditor input[name=label]').val( this.systems[ sysID ].displayName );
 	$('#systemEditor select[name=activity]').val(this.systems[ sysID ].activity);
-	$('#systemEditor input[name=inUse]').filter('[value=' + this.systems[ sysID ].inUse + ']').attr('checked', true);
 }
 
 siggyMap.prototype.setUpBoxedToolTip = function(trigger, displayText)
@@ -1117,11 +1116,10 @@ siggyMap.prototype.setupSystemEditor = function()
 	
 	$('#systemEditorSave').click( function() {
 		var label = $('#systemEditor input[name=label]').val();
-		var inUse = $('#systemEditor input[name=inUse]:checked').val();
 		var activity = $('#systemEditor select[name=activity]').val();
 
 
-		that.siggymain.saveSystemOptions(that.editingSystem, label, inUse, activity);
+		that.siggymain.saveSystemOptions(that.editingSystem, label, activity);
 		$('#chain-map-container').unblock();
 	});	
 }

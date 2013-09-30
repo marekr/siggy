@@ -1985,9 +1985,9 @@ siggymain.prototype.initialize = function ()
       } );	
 
 
-	if( getCookie('statsOpened') != null )
+	if( getCookie('system_stats_open') != null )
 	{
-		this.statsOpened = parseInt( getCookie('statsOpened') );
+		this.statsOpened = parseInt( getCookie('system_stats_open') );
 	}		
 
 	this.map = new siggyMap(this.settings.map);
@@ -2047,10 +2047,7 @@ siggymain.prototype.initialize = function ()
 		var label = $('#system-options input[name=label]').val();
 		var activity = $('#system-options select[name=activity]').val();
 		
-        console.log(label);
-        console.log(inUse);
-        console.log(activity);
-		that.saveSystemOptions(that.systemID, label, inUse, activity);
+		that.saveSystemOptions(that.systemID, label, activity);
 	});
 
 	
@@ -2097,6 +2094,24 @@ siggymain.prototype.initialize = function ()
 	});
 	
 	accessMenu.initialize();
+    
+    
+    $('#system-stats h2').click( function() {
+		var content = $('#system-stats > div');
+		if( content.is(":visible") )
+		{
+			content.hide();
+			that.statsOpened = 0;
+			setCookie('system_stats_open', 0, 365); 
+		}
+		else
+		{
+			content.show();
+			that.renderStats();
+			that.statsOpened = 1;
+			setCookie('system_stats_open', 1 , 365);
+		}
+	});	
 	
 	//default to class 1
 //	this.setBearTab(1);
@@ -2124,20 +2139,18 @@ siggymain.prototype.initialize = function ()
 	this.initializeTabs();
 }
 
-siggymain.prototype.saveSystemOptions = function(systemID, label, inUse, activity)
+siggymain.prototype.saveSystemOptions = function(systemID, label, activity)
 {
 		var that = this;
 		$.post(that.settings.baseUrl + 'dosaveSystemOptions', {
 			systemID: systemID,
 			label: label,
-			inUse: inUse,
 			activity: activity
 		}, function (data)
 		{
 			if (that.systemList[systemID])
 			{
 				that.systemList[systemID].displayName = label;
-				that.systemList[systemID].inUse = inUse;
 				that.systemList[systemID].activity = activity;
 			}
 		});

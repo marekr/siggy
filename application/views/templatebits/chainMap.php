@@ -122,10 +122,6 @@
 								<input type="text" name="label" />
 								
 								<br /><br />
-								<b>Is currently connected/used hole?</b><br />
-								<label class="yes" style="display:inline;float:none;">Yes<input type="radio" name="inUse" value="1" /></label>
-								<label class="no" style="display:inline;float:none;">No<input type="radio" name="inUse" value="0" /></label>
-								<br /><br />
 								<b>Activity Level</b><br />
 								<select name='activity'>
 												<option value='0'>Don't Know</option>
@@ -136,7 +132,9 @@
 												<?php endif; ?>
 												<option value='3'>Active</option>
 												<option value='4'>Friendly</option>
-								</select><br /><br />
+								</select>
+                                <br />
+                                <br />
 								
 								
 								<div class="center-text">

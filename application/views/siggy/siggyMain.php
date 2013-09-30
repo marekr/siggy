@@ -20,8 +20,8 @@
                 <a href='#' target='_blank' class='site-icon site-wormholes click-me'><img src='public/images/wormholes.png' width='16' height='16'/></a>
             </h2>
             <ul class='option-bar tabs'>
-                <li class="active"><a href='#system-info'>Info</a></li>
-                <li><a href='#sigs'>Recon</a></li>
+                <li class="active"><a href='#system-info'>Extra</a></li>
+                <li><a href='#sigs'>Scan</a></li>
                 <li><a href='#system-options'>Options</a></li>
             </ul>
         </div>
@@ -41,33 +41,6 @@
                     <td class="content" id="constellation"></td>
                 </tr>
             </table>
-            
-            <!---start stats--->
-            <div id='system-stats' class="sub-display-group">
-                <h2>Statistic</h2>
-                <div>
-                    <div class="system-stats-graph">
-                        <h4>Jumps</h4>
-                        <div id='jumps'></div>
-                    </div>
-                    <div class="system-stats-graph" >
-                        <h4>NPC Kills</h4>
-                        <div id='npcKills'></div>
-                    </div>
-                    <div class="system-stats-graph">
-                        <h4>Ship Kills</h4>
-                        <div id='shipKills'></div>
-                    </div>
-                    <div>
-                        <div class='system-stats-legend-box system-stats-legend-siggy'></div>
-                        <span>siggy</span>
-                        
-                        <div class='system-stats-legend-box system-stats-legend-api'></div>
-                        <span>API</span>
-                    </div>
-                </div>
-            </div>
-            <!--- end stats -->
             
             <!-- carebear box -->
             <div id="carebear-box" class="sub-display-group">
@@ -223,54 +196,85 @@
                     <td class="content" id="static-info"></td>
                 </tr>
             </table>
-            <div id="sig-add-box" style="padding:10px;">
-                <a href="#" id="mass-add-sigs" class="btn btn-xs btn-default">Mass Sig Reader</a>
-                <div class="clear"></div>
-                <form>
-                    <div style="float:left">
-                        <div class="input-group" style="width:50px" >
-                            <label>Sig ID</label>
-                            <input type="text" name="sig" maxlength="3" />
-                        </div>
-                        <?php if( $group['showSigSizeCol'] ): ?>
-                        <div class="input-group"  style="width:100px;">
-                            <label>Sig Size</label>
-                            <select name="size">
-                                <option value="" selected="selected"> -- </option>
-                                <option value="1.25">1.25</option>
-                                <option value="2.2">2.2</option>
-                                <option value="2.5">2.5</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6.67">6.67</option>
-                                <option value="10">10</option>
-                            </select>
-                        </div>
-                        <?php endif; ?>
-                        <div class="input-group"  style="width:100px;">
-                            <label>Type</label>
-                            <select name="type">
-                                <option value="none" selected="selected"> -- </option>
-                                <option value="wh">WH</option>
-                                <option value="ladar">Gas</option>
-                                <option value="grav">Ore</option>
-                                <option value="radar">Data</option>
-                                <option value="mag">Relic</option>
-                            </select>
-                        </div>
-                        <div class="input-group" style="width: auto;">
-                            <label>Site</label>
-                            <select name="site">
-                            </select>
-                        </div>
-                        <br />
-                        <div class="input-group" style="width:236px;">
-                            <label>Description</label>
-                            <input type="text" name="desc"  />
-                        </div>
+            
+            
+            <!---start stats--->
+            <div id='system-stats' class="sub-display-group">
+                <h2 class="hover">Statistics</h2>
+                <div <?php echo( !$statsOpen ? "style='display:none;'" : "" ); ?>>
+                    <div class="system-stats-graph">
+                        <h4>Jumps</h4>
+                        <div id='jumps'></div>
                     </div>
-                    <button name='add' class="btn btn-default" style="margin-top: 15px;line-height: 171%;"><i class="icon-plus-sign"></i>  Add</button>
-                </form>
+                    <div class="system-stats-graph" >
+                        <h4>NPC Kills</h4>
+                        <div id='npcKills'></div>
+                    </div>
+                    <div class="system-stats-graph">
+                        <h4>Ship Kills</h4>
+                        <div id='shipKills'></div>
+                    </div>
+                    <div>
+                        <div class='system-stats-legend-box system-stats-legend-siggy'></div>
+                        <span>siggy</span>
+                        
+                        <div class='system-stats-legend-box system-stats-legend-api'></div>
+                        <span>API</span>
+                    </div>
+                </div>
+            </div>
+            <!--- end stats -->
+            <div id="sig-add-box" class="sub-display-group">
+                <h2>Sigs</h2>
+                <div>
+                    <a href="#" id="mass-add-sigs" class="btn btn-xs btn-default">Mass Sig Reader</a>
+                    <div class="clear"></div>
+                    <form>
+                        <div style="float:left">
+                            <div class="input-group" style="width:50px" >
+                                <label>Sig ID</label>
+                                <input type="text" name="sig" maxlength="3" />
+                            </div>
+                            <?php if( $group['showSigSizeCol'] ): ?>
+                            <div class="input-group"  style="width:100px;">
+                                <label>Sig Size</label>
+                                <select name="size">
+                                    <option value="" selected="selected"> -- </option>
+                                    <option value="1.25">1.25</option>
+                                    <option value="2.2">2.2</option>
+                                    <option value="2.5">2.5</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6.67">6.67</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </div>
+                            <?php endif; ?>
+                            <div class="input-group"  style="width:100px;">
+                                <label>Type</label>
+                                <select name="type">
+                                    <option value="none" selected="selected"> -- </option>
+                                    <option value="wh">WH</option>
+                                    <option value="ladar">Gas</option>
+                                    <option value="grav">Ore</option>
+                                    <option value="radar">Data</option>
+                                    <option value="mag">Relic</option>
+                                </select>
+                            </div>
+                            <div class="input-group" style="width: auto;">
+                                <label>Site</label>
+                                <select name="site">
+                                </select>
+                            </div>
+                            <br />
+                            <div class="input-group" style="width:236px;">
+                                <label>Description</label>
+                                <input type="text" name="desc"  />
+                            </div>
+                        </div>
+                        <button name='add' class="btn btn-default" style="margin-top: 15px;line-height: 171%;"><i class="icon-plus-sign"></i>  Add</button>
+                    </form>
+                </div>
             </div>
             <table id="sig-table" cellspacing="1" class="siggy-table tablesorter">
                 <thead> 

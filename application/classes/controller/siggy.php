@@ -15,6 +15,8 @@ class Controller_Siggy extends FrontController
 		$ssname = $this->request->param('ssname', '');
 	
 		$mapOpen = ( isset($_COOKIE['mapOpen'] ) ? intval($_COOKIE['mapOpen']) : 0 );
+        $statsOpen = ( isset($_COOKIE['system_stats_open'] ) ? intval($_COOKIE['system_stats_open']) : 0 );
+        
 		if( !empty($ssname) )
 		{
 				$ssname = preg_replace("/[^a-zA-Z0-9]/", "", $ssname);
@@ -31,6 +33,7 @@ class Controller_Siggy extends FrontController
 		$view->initialSystem = false;
 		$view->group = $this->groupData;
 		$view->requested = $requested;
+        $view->statsOpen = $statsOpen;
 		if( $ssname )
 		{
 				$sysData = $this->getSystemData($ssname);
@@ -1494,7 +1497,12 @@ class Controller_Siggy extends FrontController
 		{
 			$id = intval($_POST['systemID']);
 			
-			DB::update('activesystems')->set( array('displayName' => trim($_POST['label']),'inUse' => intval($_POST['inUse']) , 'activity' => intval($_POST['activity']) ) )->where('systemID', '=', $_POST['systemID'])->where('groupID', '=', $this->groupData['groupID'])->where('subGroupID', '=', $this->groupData['subGroupID'])->execute();
+			DB::update('activesystems')->set( array('displayName' => trim($_POST['label']), 
+                                                    'activity' => intval($_POST['activity']) ) )
+                                      ->where('systemID', '=', $_POST['systemID'])
+                                      ->where('groupID', '=', $this->groupData['groupID'])
+                                      ->where('subGroupID', '=', $this->groupData['subGroupID'])
+                                      ->execute();
 			echo json_encode('1');
 			
 			$this->rebuildMapCache();
