@@ -43,32 +43,34 @@
             </table>
             
             <!---start stats--->
-            <div id='stats'>
-                <h2>Stats</h2>
+            <div id='system-stats' class="sub-display-group">
+                <h2>Statistic</h2>
                 <div>
-                    <div style='display:inline-block'>
+                    <div class="system-stats-graph">
                         <h4>Jumps</h4>
-                        <div id='jumps' style='width:250px;height:160px;'></div>
+                        <div id='jumps'></div>
                     </div>
-                    <div style='display:inline-block'>
+                    <div class="system-stats-graph" >
                         <h4>NPC Kills</h4>
-                        <div id='npcKills' style='width:250px;height:160px;'></div>
+                        <div id='npcKills'></div>
                     </div>
-                    <div style='display:inline-block'>
+                    <div class="system-stats-graph">
                         <h4>Ship Kills</h4>
-                        <div id='shipKills' style='width:250px;height:160px;'></div>
+                        <div id='shipKills'></div>
                     </div>
                     <div>
-                        <div class='statColor' style='background-color:#AFD8F8'></div>
+                        <div class='system-stats-legend-box system-stats-legend-siggy'></div>
                         <span>siggy</span>
-                        <div class='statColor' style='background-color:#EDC240'></div>
+                        
+                        <div class='system-stats-legend-box system-stats-legend-api'></div>
                         <span>API</span>
                     </div>
                 </div>
             </div>
             <!--- end stats -->
+            
             <!-- carebear box -->
-            <div id="carebear-box">
+            <div id="carebear-box" class="sub-display-group">
                 <h2>Carebearing</h2>
                 <div>
                     <div id="bear-class-links">
@@ -185,10 +187,6 @@
                     <td class="content"><input type="text" name="label" /></td>
                 </tr>
                 <tr>
-                    <td class="title">Is currently connected/used hole?</td>
-                    <td class="content"><label class="yes">Yes<input type="radio" name="in-use" value="1" /></label><label class="no">No<input type="radio" name="in-use" value="0" /></label></td>
-                </tr>
-                <tr>
                     <td class="title">Activity Level</td>
                     <td class="content">
                     <select name='activity'>
@@ -226,6 +224,8 @@
                 </tr>
             </table>
             <div id="sig-add-box" style="padding:10px;">
+                <a href="#" id="mass-add-sigs" class="btn btn-xs btn-default">Mass Sig Reader</a>
+                <div class="clear"></div>
                 <form>
                     <div style="float:left">
                         <div class="input-group" style="width:50px" >
@@ -271,7 +271,6 @@
                     </div>
                     <button name='add' class="btn btn-default" style="margin-top: 15px;line-height: 171%;"><i class="icon-plus-sign"></i>  Add</button>
                 </form>
-            <a href="#" id="mass-add-sigs" class="btn btn-xs btn-default"">Mass Sig Reader</a>
             </div>
             <table id="sig-table" cellspacing="1" class="siggy-table tablesorter">
                 <thead> 
@@ -315,14 +314,16 @@
     </div>
   
 
-    <div id="fatalError" class="box" style="display:none;">
-            <div>
-                        <h2>Fatal error has ocurred</h2>
-                        <br />
-                        <p id="fatalErrorMessage"></p>
-                        <br />
-                        <p style='text-align:center'><button id="refreshFromFatal">Refresh</button></p>
-            </div>      
+    <div id="fatal-error" class="box" style="display:none;">
+        <div>
+                <h2>Fatal error has ocurred</h2>
+                <br />
+                <p id="fatal-error-message"></p>
+                <br />
+                <p style='text-align:center'>
+                    <button id="fatal-error-refresh" class="btn btn-default">Refresh</button>
+                </p>
+        </div>      
     </div>  	
     
     <!--- system context menu -->

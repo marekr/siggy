@@ -110,19 +110,19 @@ MAP */
     position:relative;
     padding: 5px;
     font-weight: bold;
-    background-color: #1C1C1C;
+    background-color: @header-background;
 }
 
 #chain-map-container p.left
 {
 	display:inline-block;
 	position:absolute;
-	left:3px;'
+	left:3px;
 }
 
 #chain-map-inner
 {
-	background-color: #2d2d2d;
+	background-color: @chain-map-background;
 }
 
 
@@ -153,7 +153,7 @@ MAP */
 	text-align:center;
 }
 
-#chainMap
+#chain-map
 {
 	width: 100%;
 	height: 400px;
@@ -354,13 +354,14 @@ MAP */
 {
 	position:relative;
 	height:28px;
-	background-color: #1C1C1C;
+	background-color: @header-background;
     padding-left:10px;
     padding-top:6px;
 }
-#chainMapInner div.buttons
+
+#chain-map-inner div.buttons
 {
-	background-color: #1C1C1C;
+	background-color: @header-background;
 }
 
 .map-tooltip
@@ -396,7 +397,7 @@ MAP */
 }
 
 #chain-map-scrolltainer::-webkit-scrollbar-track-piece {
-	background-color: #1C1C1C;
+	background-color: @header-background;
 }
 #chain-map-scrolltainer::-webkit-scrollbar-button {
     background-color: #664402;

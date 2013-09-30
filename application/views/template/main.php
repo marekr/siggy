@@ -4,12 +4,9 @@
     <title>siggy</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <?php if( Kohana::$environment == Kohana::DEVELOPMENT ): ?>
-	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/reset.css?32" rel="stylesheet" media="screen" /> 
-	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/siggy.css?32" rel="stylesheet" media="screen" /> 
-	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/siggy.map.css?32" rel="stylesheet" media="screen" /> 
-	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/jquery.qtip.css?32" rel="stylesheet" media="screen" /> 
+	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>theme.php?id=0" rel="stylesheet" media="screen" /> 
     <?php else: ?>
-	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/siggy.compiled.css?32" rel="stylesheet" media="screen" /> 
+	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>theme.php?id=0" rel="stylesheet" media="screen" /> 
     <?php endif; ?>
     
 	<?php if( isset($_GET['nyan']) ): ?>

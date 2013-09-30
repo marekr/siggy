@@ -136,10 +136,10 @@ siggyMap.prototype.centerButtons = function()
 	var bottomOffset = 30;
 	if( this.buttonsContainer != null )
 	{
-		if( $('#chainPanTrackX').is(':visible') )
-		{
-			bottomOffset += 20;
-		}
+	//	if( $('#chainPanTrackX').is(':visible') )
+		//{
+		//	bottomOffset += 20;
+		//}
 	}
 }
 
@@ -164,10 +164,9 @@ siggyMap.prototype.initialize = function()
 		
         $('#chain-map-edit').click( function() {
             that.editing = true;
-            $('#chainMapSave').show();
+            $('#chain-map-save').show();
             that.centerButtons();
             
-            $('#chainMapOptions').data('disabled',true);
             if( that.infoicon != null )
             {
                     that.infoicon.disabled = true;
@@ -187,10 +186,9 @@ siggyMap.prototype.initialize = function()
             that.showMessage('deleting');
             that.massDelete = true;
             
-            $('#chainMapOptions').data('disabled',true);
             
-            $('#chainMapMassDeleteConfirm').show();
-            $('#chainMapMassDeleteCancel').show();
+            $('#chain-map-mass-delete-confirm').show();
+            $('#chain-map-mass-delete-cancel').show();
             that.centerButtons();
         });
         
@@ -206,7 +204,7 @@ siggyMap.prototype.initialize = function()
 			that.centerButtons();
 		});
         
-        var $container = $("#chainMap");
+        var $container = $("#chain-map");
         $container.on('mousedown', function(e) {
             if( !that.massDelete || that.massSelect )
             {
@@ -351,7 +349,7 @@ siggyMap.prototype.registerEvents = function()
         }
     } );
         
-    $('#chainMapSave').click( function() {
+    $('#chain-map-save').click( function() {
         var saveSystemData = [];
         for (var i in that.systems) 
         {
@@ -374,8 +372,6 @@ siggyMap.prototype.registerEvents = function()
         
         that.editing = false;
         $(this).hide();
-        //$('#chainMapEdit').show();
-        $('#chainMapOptions').data('disabled',false);
         that.hideMessage('editing');
         if( that.infoicon != null )
         {
@@ -386,7 +382,7 @@ siggyMap.prototype.registerEvents = function()
     } );
     
 
-    $('#chainMapMassDeleteConfirm').click( function() {
+    $('#chain-map-mass-delete-confirm').click( function() {
         var deleteHashes = [];
         
         
@@ -415,12 +411,11 @@ siggyMap.prototype.registerEvents = function()
         
         
         $(this).hide();
-        $('#chainMapMassDeleteCancel').hide();
-        $('#chainMapOptions').data('disabled',false);
+        $('#chain-map-mass-delete-cancel').hide();
         
     });
     
-    $('#chainMapMassDeleteCancel').click( function() {
+    $('#chain-map-mass-delete-cancel').click( function() {
 
         var connectionList = jsPlumb.getConnections(); 
         for (i in connectionList)
@@ -441,8 +436,7 @@ siggyMap.prototype.registerEvents = function()
         that.massDelete = false;
         
         $(this).hide();
-        $('#chainMapMassDeleteConfirm').hide();
-        $('#chainMapOptions').data('disabled', false);
+        $('#chain-map-mass-delete-confirm').hide();
     });
 }
 
@@ -545,7 +539,7 @@ siggyMap.prototype.draw = function()
     $('div.map-system-blob').destroyContextMenu();
     $('div.map-full-actives').remove();
     jsPlumb.deleteEveryEndpoint();
-    $('#chainMap').empty();
+    $('#chain-map').empty();
     
     for( var i in this.systems )
     {
@@ -609,7 +603,7 @@ siggyMap.prototype.draw = function()
         var activityClass = this.getActivityColor( parseInt(systemData.activity) );
         sysBlob.addClass( activityClass) ;
         
-        $("#chainMap").append( sysBlob );
+        $("#chain-map").append( sysBlob );
         
         sysBlob.contextMenu( { menu: 'systemMenu' },
             function(action, el, pos) {

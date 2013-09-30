@@ -1,0 +1,44 @@
+/*icons*/
+i
+{
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    width: 16px;
+    height:16px;
+    display:inline-block;
+    line-height:200%;
+    margin-top:2px;
+    position:relative;
+    top: 3px;
+}
+
+.icon-plus-sign
+{
+	background-image: url(public/images/icon_plus.png);
+}
+
+.icon-pencil
+{
+	background-image: url(public/images/icon_pencil.png);
+}
+
+.icon-info-sign
+{
+	background-image: url(public/images/icon_info.png);
+}
+
+.icon-remove-sign
+{
+	background-image: url(public/images/icon_remove.png);
+}
+
+
+.icon-yellow
+{
+    color: #FFFF03;
+}
+
+.icon-red
+{
+    color: red;
+}

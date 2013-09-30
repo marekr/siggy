@@ -1,0 +1,656 @@
+body
+{
+	background: @page-background;
+	font-family: Arial;
+	font-size:13px;
+	color: white;
+}
+
+input,
+select,
+textarea
+{
+	background-color: #fff;
+    border: 1px solid #cccccc;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+input[type=text],
+input[type=password],
+select
+{
+    height: 20px;
+    width: 100%;
+}
+
+select
+{
+    height: 22px;
+    min-width:70px;
+}
+
+.input-group
+{
+    float:left;
+    display:inline-block;
+    width:50px;
+    margin-right:10px;
+}
+
+#wrapper
+{
+	padding: 0 20px 0 20px;
+}
+
+
+.center-text
+{
+	text-align:center;
+}
+
+.text-left
+{
+    text-align:left;
+}
+
+.bordered-wrap
+{
+    border: 3px solid #090909;
+}
+
+.clear
+{
+  clear:both;
+}
+
+table.siggy-table th,
+h2.header{
+	background: @header-background;
+	border: 1px solid #000000;
+	color: #DADADA;
+	font-weight: bold;
+	padding: 3px;
+	text-align: center;
+}
+
+table.siggy-table td
+{
+	border-bottom: 1px solid #000;
+	padding:4px;
+}
+
+table.siggy-table tr.alt {
+	background-color: @alt-primary-background;
+}
+
+#system-name
+{
+    font-weight:bold;
+}
+
+td.name,
+td.pad{
+	padding-left:5px;
+}
+
+td.smallLeft{
+	font-size:0.9em;
+}
+
+p.desc {
+	font-size:0.8em;
+	font-style:italic;
+    font-weight: normal;
+}
+
+table.siggy-table{
+	width:100%;
+	background: @primary-background;
+	color: #FFFFFF;
+}
+
+table td.title {
+	width: 6%;
+	padding:6px;
+	font-weight: bold;
+}
+
+table td.content {
+	width:39%;
+	padding-left: 6px;
+}
+
+#hub-jumps div
+{
+    float:left;
+    margin-right:10px;
+}
+
+#system-options td.content {
+	padding: 5px;
+	width:15%;
+}
+
+#system-options td.content label input
+{
+	margin-left:4px;
+	margin-right:4px;
+}
+
+table td.desc p{
+	font-size: 0.85em;
+	font-style: italic;
+}
+
+
+table.tablesorter thead tr .headerSortUp {
+	background-image: url(public/images/asc.gif) !important;
+	background-repeat: no-repeat;
+	background-position: right center;
+}
+table.tablesorter thead tr .headerSortDown {
+	background-image: url(public/images/desc.gif) !important;
+	background-repeat: no-repeat;
+	background-position: right center;
+}      
+
+
+
+td.desc input
+{
+    margin-top:4px;
+}
+
+
+td.moreinfo
+{
+	border-left:0 !important;
+}
+
+td.desc
+{
+	border-right:0 !important;
+}
+
+
+td.sig input
+{
+    width:50px;
+}
+
+
+
+/*sig add*/
+#sig-add-box {
+	padding: 5px;
+	min-width: 280px;
+	display: inline-block;
+    width: 100%;
+}
+
+
+
+#sig-add-box form {
+	display: inline-block;
+}
+
+#mass-add-sig-box
+{
+    display:none;
+    width:300px;
+}
+
+#mass-add-sigs
+{
+    margin-right: 12px;
+    float:left;
+}
+
+/*header*/
+
+#top-bar {
+	width: 100%;
+	height:32px;
+	padding: 7px 0 7px 0;
+	background: @header-background;
+	color: white;
+	position:relative;
+}
+
+#top-bar > div
+{
+	margin-left:7px;
+}
+
+#top-bar p.name {
+	left: 83px;
+	position: absolute;
+	top: 8px;
+	font-weight:bold;
+}
+
+#floating-header
+{
+	position: fixed;
+	top:0;
+	width: 100%;
+	z-index: 999;
+}
+
+a {
+	text-decoration: none;
+	color: #FF7F00;
+}
+
+#update-time
+{    
+	position: absolute;
+	right: 12px;
+	top: 7px;
+	text-align:right;
+}
+
+
+.tab
+{
+    display:none;
+}
+
+
+
+.selected
+{
+  background-color: #FF8308 !important;
+  cursor: auto !important;
+}
+
+
+
+table td.button-row
+{
+  text-align:center;
+  background: @header-background;
+}
+
+.header-tool-button
+{
+	display:inline-block;
+    background-color: @box-button-background;
+    height: 15px;
+    padding: 5px;
+    text-align:center;
+    cursor:pointer;
+}
+
+
+.header-tool-button a
+{
+	color: inherit;
+}
+
+#header-tools-button-bar
+{
+	text-align:center;
+}
+
+#header-tools
+{
+  clear:both;
+  background-color: @header-sub-background;
+  min-height: 20px;
+  
+}
+
+/*gnotes*/
+#global-notes {
+  -moz-border-radius: 0 0 9px 9px;
+  border-radius: 0 0 9px 9px;
+  -webkit-border-radius: 0 0 9px 9px;
+  padding: 10px;
+  background-color: @primary-background;
+  display:none;
+}
+
+#global-notes h2 {
+  font-weight:bold;
+  font-size:1.03em;
+  margin-bottom:4px;
+  border-bottom: 1px solid #fff;
+  padding-bottom:3px;
+}
+
+
+#global-notes p
+{
+  font-size:0.8em;
+}
+
+
+
+
+
+label.yes{
+    -moz-border-radius: 5px 0 0 5px;
+    -webkit-border-radius: 5px 0 0 5px;
+    border-radius: 5px 0 0 5px;
+    background-color: #21600C;
+    padding: 4px;
+    padding-left:8px;
+    width: auto;
+}
+
+label.no {
+    -moz-border-radius: 0 5px 5px 0;
+    -webkit-border-radius: 0 5px 5px 0;
+    border-radius: 0 5px 5px 0;
+    background-color: #A70000;
+    padding: 4px;
+    padding-right:8px;
+    width: auto;
+}
+
+
+/*sub display groups*/
+.sub-display-group h2
+{
+    background: @header-background;
+    padding:6px;
+    padding-left:10px;
+    font-weight: bold;
+    text-align:left;
+}
+
+.sub-display-group
+{
+    background-color: @primary-background;
+}
+
+.sub-display-group > div
+{
+    padding: 10px;
+}
+
+/*stats */
+
+#system-stats
+{
+    text-align:center;
+}
+
+.system-stats-graph
+{
+	display:inline-block;
+}
+
+.system-stats-graph h4
+{
+}
+
+.system-stats-graph > div
+{
+	width:250px;
+	height:160px;
+}
+
+.system-stats-legend-box
+{
+	border: 1px solid #fff;
+	width:16px;
+	height:10px;
+	display:inline-block;
+}
+
+.system-stats-legend-siggy
+{
+	background-color:#AFD8F8;
+}
+
+.system-stats-legend-api
+{
+	background-color:#EDC240;
+}
+
+/* end stats*/
+
+
+#bear-class-links a.active
+{
+	font-weight:bold;
+	color: #FFF;
+}
+
+#carebear-box h3
+{
+	font-weight:bold;
+}
+
+
+/* siggy Menu "generic" css */
+.drop-up,
+.drop-down {
+	height: 92%;
+	padding:0 15px 0 15px;
+	vertical-align: middle;
+	background-color: @primary-background;
+	font-weight: bold;
+}
+
+.drop-up span,
+.drop-down span
+{
+	vertical-align:middle;
+}
+
+.drop-up ul,
+.drop-down ul
+{
+	display:none;
+	background: #02143C;
+	border: 1px solid #000;
+	
+	position:absolute;
+	top: 0;
+	left: 0;
+	
+	z-index: 99999;
+}
+
+.drop-up ul li,
+.drop-down ul li
+{
+	padding: 6px;
+	width: 150px;
+	border-bottom: 1px solid #000;
+	font-size: 0.9em;
+}
+
+.drop-up ul li:hover,
+.drop-down ul li:hover
+{
+	background-color: @primary-background;
+}
+
+.drop-up:hover,
+.drop-down:hover
+{
+	background-color: #FF8308;
+	cursor: pointer;
+}
+
+/* accessMenu specific sexiness */
+#accessMenu
+{
+	background: none;
+	padding: 0;
+	height: auto;
+}
+
+#accessMenu ul li
+{
+	padding: 3px;
+	width: 200px;
+}
+
+.opened
+{
+	background-color: #AB5907 !important;
+}
+
+ul.errors
+{
+	background-color: #910E0E;
+	padding: 4px;
+	list-style: disc inside none;
+	display: none;
+}
+
+
+
+.click-me
+{
+	cursor:pointer;
+}
+
+
+
+input:focus,
+select:focus
+{
+	outline:#FF8308 solid 2px;
+}
+
+.evekill
+{
+	margin-right:4px;
+}
+
+
+.hub-jump
+{
+	cursor:pointer;
+	border-bottom: 1px dashed #999;
+}
+
+
+ul.itemList li
+{
+	border-bottom:1px solid #FEA800;
+	padding:4px;
+	font-size: 0.75em;
+	background-color: #121212;
+}
+
+ul.itemList
+{
+	border: 1px solid #000;
+}
+
+
+#sigs
+{
+    background-color: @primary-background;
+}
+
+#system-advanced
+{
+    background: @header-background;
+    padding-left:  10px;
+    font-weight: bold;
+}
+
+#system-advanced h2
+{
+    float:left;
+    vertical-align:middle;
+}
+
+ul.option-bar
+{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    text-align: right;
+}
+
+ul.option-bar a
+{
+    color: #fff;
+    display:block;
+    height: 100%;
+    width: 100%;
+}
+
+ul.option-bar li
+{
+    display:inline-block;
+    min-width:60px;
+    line-height: 200%;
+    background-color: @box-button-background;
+    text-align: center;
+    cursor:pointer;
+}
+
+ul.option-bar li.active
+{
+    background-color: @primary-background;
+}
+
+/* "modal" box */
+
+.tooltip
+{
+  display: none;
+  background-color: #262626;
+  color: #fff;
+}
+
+
+.box h2
+{
+    font-size: 1.05em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.box
+{
+  background-color: @primary-background;
+  padding: 5px;
+  margin: 0 auto;
+  border: 3px solid #090909
+}
+
+.box h3
+{
+	font-weight: bold;
+	font-size: 1.1em;
+	background: @header-background;
+	padding: 5px;
+}
+
+.box p
+{
+	margin: 4px 0 4px 0;
+}
+
+
+.box fieldset
+{
+    background-color: #335191;
+    padding: 10px;
+}
+
+.box fieldset label
+{
+  float:left;
+  display: block;
+  width:200px;
+  margin: 5px 0 0;
+}
+
+.box fieldset legend
+{
+  font-weight:bold;
+}

@@ -9,14 +9,14 @@
 					<p class="editing">Editing: Drag systems by clicking on them.</p>
 					<p class="deleting">Click on(or mouse drag) wormhole links to select for deletion</p>
                     <div id="chain-map-scrolltainer">
-                        <div id="chainMap">
+                        <div id="chain-map">
                         </div>
                     </div>
 					<!-- magic buttons -->
 					<div class="buttons">
-						<button id="chainMapSave" style="display:none;" class="btn btn-default btn-xs">Save Map Changes</button>
-						<button id="chainMapMassDeleteConfirm" style="display:none;" class="btn btn-default btn-xs">Confirm Mass Delete</button>
-						<button id="chainMapMassDeleteCancel" style="display:none;" class="btn btn-default btn-xs">Cancel</button>
+						<button id="chain-map-save" style="display:none;" class="btn btn-default btn-xs">Save Map Changes</button>
+						<button id="chain-map-mass-delete-confirm" style="display:none;" class="btn btn-default btn-xs">Confirm Mass Delete</button>
+						<button id="chain-map-mass-delete-cancel" style="display:none;" class="btn btn-default btn-xs">Cancel</button>
 					</div>
                     <!-- magic buttons -->
                     <div id='map-footer-bar'>
