@@ -61,7 +61,10 @@
 					<br />
 					<?php if( ( count( $group['groups']) > 1  ) || (count( current( $group['groups'] ) ) > 1 ) ):?>							
 									<div class='drop-down' id='accessMenu' style='position:absolute;left:83px;top:25px;'>
-											<span style="font-size:0.9em;font-style:italic;font-weight: normal;padding:3px 6px;background-color: #092665;"><?php echo $group['accessName']; ?> - <?php echo ($group['subGroupID'] != 0 ) ? $group['sgName'].' - ' : '' ?><?php echo $group['groupTicker'] ?>&nbsp;&nbsp;&nbsp;<span style='font-style:normal;font-weight:bold;'>&#x25BC;</span></span>
+											<span>
+                                                <?php echo $group['accessName']; ?> - <?php echo ($group['subGroupID'] != 0 ) ? $group['sgName'].' - ' : '' ?>
+                                                <?php echo $group['groupTicker'] ?>&nbsp;&nbsp;&nbsp;<span style='font-style:normal;font-weight:bold;'>&#x25BC;
+                                            </span>
 											<ul class='menu'>
 												<?php foreach( $group['groups'] as $g => $sgs ): ?>
 													<?php foreach( $sgs as $sg ): ?>

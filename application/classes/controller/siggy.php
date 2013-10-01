@@ -72,7 +72,8 @@ class Controller_Siggy extends FrontController
 		
 		//load header tools
         $themes = DB::query(Database::SELECT, "SELECT theme_id, theme_name FROM themes
-                                                WHERE visibility='all' OR (group_id=:group AND visibility='group')")
+                                                WHERE visibility='all' OR (group_id=:group AND visibility='group')
+                                                ORDER BY theme_id ASC")
                             ->param(':group', $this->groupData['groupID'])->execute()->as_array();
         
         
