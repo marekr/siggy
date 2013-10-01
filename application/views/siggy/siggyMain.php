@@ -173,7 +173,7 @@
                 </tr>
                 <tr>
                     <td class="button-row" colspan="2">
-                        <button id="system-options-reset" class="btn btn-default">Reset</button>
+                        <button id="system-options-reset" type="reset" class="btn btn-default">Reset</button>
                         <button id="system-options-save" class="btn btn-primary">Save</button>
                     </td>
                 </tr>
@@ -304,29 +304,28 @@
     <!-- mass add box start -->
     
     <div id="mass-add-sig-box" class="box">
+        <h3>Mass Sig Reader</h3>
         <div>
-            <h2>Mass Sig Reader</h2>
             <p>This is for copy pasted signatures from your scanner window. Simply select a signature, hit CTRL+A, then CTRL-C, then paste into the box below. This tool can add AND update signatures.</p>
             <form>
                 <textarea name="blob" rows="12" style="width:100%;font-size:11px;"></textarea>
-                <div style="text-align:center;">
+                <div class="center-text form-actions">
                     <button name='add' class="btn btn-primary" type="submit">Submit</button>
-                    <button name='cancel' class="btn btn-default">Cancel</button>
+                    <button name='cancel' type="button" class="btn btn-default">Cancel</button>
                 </div>
             </form>
         </div>
     </div>
   
-
     <div id="fatal-error" class="box" style="display:none;">
+        <h3>Fatal error has ocurred</h3>
         <div>
-                <h2>Fatal error has ocurred</h2>
-                <br />
-                <p id="fatal-error-message"></p>
-                <br />
-                <p style='text-align:center'>
-                    <button id="fatal-error-refresh" class="btn btn-default">Refresh</button>
-                </p>
+            <br />
+            <p id="fatal-error-message"></p>
+            <br />
+            <p style='text-align:center'>
+                <button id="fatal-error-refresh" class="btn btn-default">Refresh</button>
+            </p>
         </div>      
     </div>  	
     

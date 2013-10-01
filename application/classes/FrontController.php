@@ -29,6 +29,8 @@ class FrontController extends Controller
 	protected $noAutoAuthRedirects = false;
 	
 	public $template = '';
+    
+    public $auto_render = true;
 	
 	function __construct(Kohana_Request $request, Kohana_Response $response)
 	{
@@ -160,7 +162,7 @@ class FrontController extends Controller
     
 	public function after()
 	{
-		if( !$this->ajaxRequest && $this->template != '' )
+		if( !$this->ajaxRequest && $this->template != '' && $this->auto_render )
 		{
 			$this->response->body($this->template->render());
 		}

@@ -2198,14 +2198,42 @@ siggymain.prototype.changeTab = function( selectedTab )
 
 }
 
-siggymain.prototype.registerHeaderToolButton = function( button, callback, shownText, hiddenText  )
-{
-}
 
 siggymain.prototype.initializeGNotes = function()
 {
 	var that = this;
 
+    
+	$('#settings-button').click(function ()
+	{
+        $.blockUI({ 
+            message: $('#settings-dialog'),
+            css: { 
+                border: 'none', 
+                padding: '15px', 
+                background: 'transparent', 
+                color: 'inherit',
+                cursor: 'auto',
+                textAlign: 'left',
+                top: '20%',
+                width: 'auto',
+                centerX: true,
+                centerY: false
+            },
+            overlayCSS: {
+                cursor: 'auto'
+            },
+            fadeIn:  0, 
+            fadeOut:  0
+		}); 
+		$('.blockOverlay').attr('title','Click to unblock').click($.unblockUI); 
+	});
+    
+    $('#settings-cancel').click( function() {
+		$.unblockUI(); 
+    });
+    
+    
 	this.globalNotesEle = $('#global-notes');
 	$('#global-notes-button').click(function ()
 	{

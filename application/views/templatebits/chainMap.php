@@ -103,8 +103,8 @@
 								<option value='2'>Stage 3/Critical</option>
 							</select><br /><br />
 							<div class="center-text">
-								<button id="wormholeEditorSave" class="btn btn-default btn-xs">Save</button>
-								<button id='wormholeEditorCancel' class="btn btn-default btn-xs">Cancel</button>
+								<button id="wormhole-editor-save" class="btn btn-primary btn-xs">Save</button>
+								<button id='wormhole-editor-cancel' class="btn btn-default btn-xs">Cancel</button>
 								<br />
 							</div>
 						</fieldset>
@@ -113,38 +113,35 @@
 				<!-- end wh editor -->
 
 				<div id="system-options-popup" class="box">
-					<div id="systemEditor" class="tabcontent">
-						<h3>Editing System: <span id="editingSystemName">System</span></h3>
-						<div style="padding:10px;">
-								<ul class="errors">
-								</ul>
-								<b>System label/display name</b><br />
-								<input type="text" name="label" />
-								
-								<br /><br />
-								<b>Activity Level</b><br />
-								<select name='activity'>
-												<option value='0'>Don't Know</option>
-												<option value='1'>Empty</option>
-												<option value='2'>Occupied</option>
-												<?php if( $group['groupID'] == 7 ): ?>
-												<option value='99'>Rengas</option>
-												<?php endif; ?>
-												<option value='3'>Active</option>
-												<option value='4'>Friendly</option>
-								</select>
-                                <br />
-                                <br />
-								
-								
-								<div class="center-text">
-                                    <button id="systemEditorSave" class="btn btn-default btn-xs">Save</button>
-                                    <button id='systemEditorCancel' class="btn btn-default btn-xs">Cancel</button><br />
-								</div>
-							</div>							
+                    <h3>Editing System: <span id="editingSystemName">System</span></h3>
+					<div id="system-editor">
+                        <ul class="errors">
+                        </ul>
+                        <b>System label/display name</b>
+                        <br />
+                        <input type="text" name="label" />
+                        
+                        <br />
+                        <br />
+                        <b>Activity Level</b>
+                        <br />
+                        <select name='activity'>
+                            <option value='0'>Don't Know</option>
+                            <option value='1'>Empty</option>
+                            <option value='2'>Occupied</option>
+                            <option value='3'>Active</option>
+                            <option value='4'>Friendly</option>
+                        </select>
+                        <br />
+                        <br />
+                        
+                        
+                        <div class="center-text form-actions">
+                            <button id="system-editor-save" class="btn btn-xs btn-primary">Save</button>
+                            <button id='system-editor-cancel' class="btn btn-default btn-xs">Cancel</button><br />
+                        </div>
+                    </div>							
 							
-							
-					</div>
 				</div>
 				<!-- end wh editor -->				
 				

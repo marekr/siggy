@@ -269,21 +269,23 @@ a {
 table td.button-row
 {
   text-align:center;
-  background: @header-background;
+  background: @footer-background;
 }
 
-.header-tool-button
+#header-tools-button-bar li
 {
-	display:inline-block;
-    background-color: @box-button-background;
-    height: 15px;
-    padding: 5px;
-    text-align:center;
-    cursor:pointer;
+    display: inline-block;
+    min-width: 30px;
+    padding-left:5px;
+    padding-right: 5px;
+    line-height: 200%;
+    background-color: #494242;
+    text-align: center;
+    cursor: pointer;
 }
 
 
-.header-tool-button a
+#header-tools-button-bar li a
 {
 	color: inherit;
 }
@@ -291,6 +293,9 @@ table td.button-row
 #header-tools-button-bar
 {
 	text-align:center;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
 }
 
 #header-tools
@@ -610,6 +615,23 @@ ul.option-bar li.active
 }
 
 
+.form-actions
+{
+    background-color: @footer-background;
+    margin: -5px;
+    margin-top: 10px;
+    padding:5px;
+}
+
+.box
+{
+    background-color: @primary-background;
+    padding: 0px;
+    margin: 0 auto;
+    border: 3px solid #090909;
+    width: 300px;
+}
+
 .box h2
 {
     font-size: 1.05em;
@@ -618,12 +640,9 @@ ul.option-bar li.active
     width: 100%;
 }
 
-.box
+.box > div
 {
-  background-color: @primary-background;
-  padding: 5px;
-  margin: 0 auto;
-  border: 3px solid #090909
+    padding: 5px;
 }
 
 .box h3
@@ -654,7 +673,7 @@ ul.option-bar li.active
   margin: 5px 0 0;
 }
 
-.box fieldset legend
+.box legend
 {
   font-weight:bold;
 }

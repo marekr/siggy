@@ -4,9 +4,9 @@
     <title>siggy</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <?php if( Kohana::$environment == Kohana::DEVELOPMENT ): ?>
-	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>theme.php?id=0" rel="stylesheet" media="screen" /> 
+	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>theme.php?id=<?php echo $settings['theme_id']; ?>" rel="stylesheet" media="screen" /> 
     <?php else: ?>
-	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>theme.php?id=0" rel="stylesheet" media="screen" /> 
+	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>theme.php?id=<?php echo $settings['theme_id']; ?>" rel="stylesheet" media="screen" /> 
     <?php endif; ?>
     
 	<?php if( isset($_GET['nyan']) ): ?>

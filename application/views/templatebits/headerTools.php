@@ -1,11 +1,11 @@
-<div id="header-tools-button-bar">
-	<div id="global-notes-button" class="header-tool-button">Notes &#x25BC;</div>
+<ul id="header-tools-button-bar">
+	<li id="global-notes-button">Notes &#x25BC;</li>
 	
-	<!--- <div id="strengthCalcButton" class="headerToolButton">Strength Calc. &#x25BC;</div> -->
 	<?php if( $group['statsEnabled'] ): ?>
-		<div id="stats-button" class="header-tool-button"><a target="_blank" href="<?php echo URL::base(); ?>stats">Stats</a></div>
+		<li id="stats-button"><a target="_blank" href="<?php echo URL::base(); ?>stats">Stats</a></li>
 	<?php endif; ?>
-</div>
+    <li id="settings-button"><i class="icon icon-settings"></i></li>
+</ul>
 <div id="global-notes">
 	<h2>Notes <a href="#" id="global-notes-edit" >[edit]</a></h2>
 	<textarea style="width:100%;height:100px;display:none;" id="global-notes-edit-box">
@@ -15,5 +15,26 @@
 		<button style="display:none" id="global-notes-save" class="btn btn-default btn-xs">Save</button>
         <button style="display:none" id="global-notes-cancel" class="btn btn-default btn-xs">Cancel</button><br />
 		<p>Last update: <span id="global-notes-time">00:00:00</span></p>
+	</div>
+</div>
+
+<div id="settings-dialog" class="box" style="display:none;">
+	<h3>Settings</h3>
+	<div>
+        <form action="<?php echo URL::base(); ?>process/savesettings" method="post">
+            <legend>Theme
+                <select name="theme_id">
+                <?php foreach($themes as $theme): ?>
+                     <option value="<?php echo $theme['theme_id']; ?>" <?php echo( $theme['theme_id'] == $settings['theme_id'] ? 'selected="selected"' : '' ); ?>> <?php echo $theme['theme_name']; ?></option>
+                <?php endforeach; ?>
+                </select>
+            </legend>
+            
+            
+            <div class="center-text form-actions">
+                <button id="settings-save" type="submit" class="btn btn-primary btn-xs">Save</button>
+                <button id='settings-cancel' type="reset" class="btn btn-default btn-xs">Cancel</button><br />
+            </div>
+        </form>
 	</div>
 </div>

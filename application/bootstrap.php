@@ -216,10 +216,14 @@ Kohana::modules(array(
 
    Route::set('siggySigs', 'do(<action>)')
     ->defaults(array(
-        'controller' => 'siggy',
-        'action' => 'sigAdd',
+        'controller' => 'siggy'
     ));     
     
+
+   Route::set('siggy-process', 'process/<action>')
+    ->defaults(array(
+        'controller' => 'siggy'
+    ));     
 
    Route::set('login', 'manage/login')
     ->defaults(array(

@@ -42,3 +42,8 @@ i
 {
     color: red;
 }
+
+.icon-settings
+{
+	background-image: url(public/images/icon_settings.png);
+}

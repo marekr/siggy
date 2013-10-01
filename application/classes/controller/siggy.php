@@ -11,11 +11,17 @@ class Controller_Siggy extends FrontController
 
 	public function action_index()
 	{
+    
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 		$ssname = $this->request->param('ssname', '');
 	
 		$mapOpen = ( isset($_COOKIE['mapOpen'] ) ? intval($_COOKIE['mapOpen']) : 0 );
         $statsOpen = ( isset($_COOKIE['system_stats_open'] ) ? intval($_COOKIE['system_stats_open']) : 0 );
+        
+        
+                    
+        $settings = $this->loadSettings();
+        $this->template->settings = $settings;
         
 		if( !empty($ssname) )
 		{
@@ -65,11 +71,65 @@ class Controller_Siggy extends FrontController
 		$this->template->routePlanner = $routePlannerHTML;
 		
 		//load header tools
+        $themes = DB::query(Database::SELECT, "SELECT theme_id, theme_name FROM themes
+                                                WHERE visibility='all' OR (group_id=:group AND visibility='group')")
+                            ->param(':group', $this->groupData['groupID'])->execute()->as_array();
+        
+        
+        
 		$headerToolsHTML = View::factory('templatebits/headerTools');
 		$headerToolsHTML->group = $this->groupData;
+        $headerToolsHTML->themes = $themes;
+        $headerToolsHTML->settings = $settings;
 		$this->template->headerTools = $headerToolsHTML;
 	}
+    
+    private function loadSettings()
+    {
+        $settings = array();
+        $settings = DB::query(Database::SELECT, "SELECT * FROM character_settings 
+						WHERE char_id=:charID")
+                    ->param(':charID', $this->groupData['charID'])->execute()->current();
+                    
+        if( !isset($settings['char_id']) )
+        {
+            $settings = array('theme_id' => 0 );
+        }
+        
+        return $settings;
+    }
 	
+    public function action_savesettings()
+    {
+        $this->profiler = NULL;
+        $this->auto_render = FALSE;
+        
+        $charID = $this->groupData['charID'];
+        
+        
+        if( !empty($charID) )
+        {									
+            $themeID = intval($_POST['theme_id']);
+            
+            
+            $themes = DB::query(Database::SELECT, "SELECT theme_id, theme_name FROM themes
+                                                    WHERE theme_id = :themeID AND (visibility='all' OR (group_id=:group AND visibility='group'))")
+                                ->param(':themeID', $themeID)
+                                ->param(':group', $this->groupData['groupID'])->execute()->as_array();
+                                
+            if( count( $themes ) > 0 )
+            {
+                DB::query(Database::INSERT, 'REPLACE INTO character_settings (`char_id`, `theme_id`) VALUES(:charID, :themeID)')
+                        ->param(':charID', $charID )
+                        ->param(':themeID', $themeID)
+                        ->execute();
+            }
+        }
+        
+        $this->request->redirect('/');
+        
+        exit();
+    }
 	
 	public function before()
 	{
@@ -290,20 +350,20 @@ class Controller_Siggy extends FrontController
 			
 			//if( $this->isAuthed() )
 			//{
-					if( count( $this->groupData['groups'] ) > 1 || count( current($this->groupData['groups']) > 1) )
-					{
-							foreach( $this->groupData['groups'] as $g => $sgs )
-							{
-									foreach( $sgs as $sg )
-									{
-											if( md5($g.'-'.$sg) == $k )
-											{
-													Cookie::set('membershipChoice', $g.'-'.$sg, 365*60*60*24);
-													break;
-											}
-									}
-							}
-					}
+        if( count( $this->groupData['groups'] ) > 1 || count( current($this->groupData['groups']) > 1) )
+        {
+            foreach( $this->groupData['groups'] as $g => $sgs )
+            {
+                foreach( $sgs as $sg )
+                {
+                    if( md5($g.'-'.$sg) == $k )
+                    {
+                        Cookie::set('membershipChoice', $g.'-'.$sg, 365*60*60*24);
+                        break;
+                    }
+                }
+            }
+        }
 			//}
 			
 			$this->request->redirect('/');
