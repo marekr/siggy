@@ -787,8 +787,8 @@ siggyMap.prototype.openSystemEdit = function( sysID )
 	});
 	$('#editingSystemName').text(this.systems[ sysID ].name);
 	
-	$('#systemEditor input[name=label]').val( this.systems[ sysID ].displayName );
-	$('#systemEditor select[name=activity]').val(this.systems[ sysID ].activity);
+	$('#system-editor input[name=label]').val( this.systems[ sysID ].displayName );
+	$('#system-editor select[name=activity]').val(this.systems[ sysID ].activity);
 }
 
 siggyMap.prototype.setUpBoxedToolTip = function(trigger, displayText)
@@ -1029,7 +1029,7 @@ siggyMap.prototype.setupEditor = function()
 			}
 		} );
 		
-		$('#wormholeEditorSave').click( function() {
+		$('#wormhole-editor-save').click( function() {
 			
 			var data = {};
 			if( that.editorMode == 'edit' )
@@ -1086,7 +1086,7 @@ siggyMap.prototype.setupEditor = function()
 			$('#chain-map-container').unblock();
 		});	
 		
-		$('#wormholeEditorCancel').click( function() {
+		$('#wormhole-editor-cancel').click( function() {
 			$('#chain-map-container').unblock();
 		});	
 		
@@ -1095,7 +1095,7 @@ siggyMap.prototype.setupEditor = function()
 
 siggyMap.prototype.displayEditorErrors = function(errors)
 {
-	var errorsUL = $('#wormholeEditor ul.errors');
+	var errorsUL = $('#wormhole-editor ul.errors');
 	errorsUL.empty();
 	errorsUL.show();
 	
@@ -1109,14 +1109,14 @@ siggyMap.prototype.displayEditorErrors = function(errors)
 siggyMap.prototype.setupSystemEditor = function()
 {
 	var that = this;
-	$('#systemEditorCancel').click( function() {
+	$('#system-editor-cancel').click( function() {
 		$('#chain-map-container').unblock();
 		that.editingSystem = 0;
 	});	
 	
-	$('#systemEditorSave').click( function() {
-		var label = $('#systemEditor input[name=label]').val();
-		var activity = $('#systemEditor select[name=activity]').val();
+	$('#system-editor-save').click( function() {
+		var label = $('#system-editor input[name=label]').val();
+		var activity = $('#system-editor select[name=activity]').val();
 
 
 		that.siggymain.saveSystemOptions(that.editingSystem, label, activity);
