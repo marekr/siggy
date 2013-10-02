@@ -245,21 +245,21 @@ MAP */
 
 .map-activity-empty
 {
-	border: 3px solid #03B807;
+	border: 3px solid #03B807 !important;
 }
 
 .map-activity-active
 {
-	border: 3px solid #DE4444;
+	border: 3px solid #DE4444 !important;
 }
 
 .map-activity-friendly
 {
-	border: 3px solid #0748D6;
+	border: 3px solid #0748D6 !important;
 }
 .map-activity-occupied
 {
-	border: 3px solid #FFE205;
+	border: 3px solid #FFE205 !important;
 }
 
 .map-class-unknown
