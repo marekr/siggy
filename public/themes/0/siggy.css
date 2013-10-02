@@ -449,13 +449,18 @@ label.no {
 .drop-down span
 {
 	vertical-align:middle;
+    font-size:0.9em;
+    font-style:italic;
+    font-weight: normal;
+    padding:3px 6px;
+    background-color: @primary-background;
 }
 
 .drop-up ul,
 .drop-down ul
 {
 	display:none;
-	background: #02143C;
+	background: @primary-background;
 	border: 1px solid #000;
 	
 	position:absolute;
@@ -477,7 +482,7 @@ label.no {
 .drop-up ul li:hover,
 .drop-down ul li:hover
 {
-	background-color: @primary-background;
+	background: @alt-primary-background;
 }
 
 .drop-up:hover,
