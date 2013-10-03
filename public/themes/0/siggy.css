@@ -222,6 +222,20 @@ td.sig input
 	margin-left:7px;
 }
 
+#top-bar > div > div.dropdown
+{
+    background: @primary-background;
+    color: @primary-color;
+    font-weight:bold;
+    padding:4px;
+    font-size: 12px;
+}
+
+#top-bar > div > div.dropdown > a
+{
+    color: @primary-font-color;
+}
+
 #top-bar p.name {
 	left: 83px;
 	position: absolute;
@@ -385,6 +399,12 @@ label.no {
 #system-stats
 {
     text-align:center;
+    border-bottom:1px dashed #9C9C9C;
+}
+
+#system-stats h2
+{
+    cursor: pointer;
 }
 
 .system-stats-graph
@@ -493,18 +513,6 @@ label.no {
 }
 
 /* accessMenu specific sexiness */
-#accessMenu
-{
-	background: none;
-	padding: 0;
-	height: auto;
-}
-
-#accessMenu ul li
-{
-	padding: 3px;
-	width: 200px;
-}
 
 .opened
 {
@@ -547,18 +555,6 @@ select:focus
 }
 
 
-ul.itemList li
-{
-	border-bottom:1px solid #FEA800;
-	padding:4px;
-	font-size: 0.75em;
-	background-color: #121212;
-}
-
-ul.itemList
-{
-	border: 1px solid #000;
-}
 
 
 #sigs

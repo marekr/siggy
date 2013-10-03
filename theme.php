@@ -21,6 +21,7 @@ $themeFiles = array( 'global_variables.css',
                       'autocomplete.css',
                       'icons.css',
                       'buttons.css',
+                      'dropdown.css',
                       'overwrite.css' );
 
                       

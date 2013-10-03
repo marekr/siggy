@@ -440,3 +440,18 @@ input[name=to-sys]
 {
     width:100px;
 }
+
+
+
+ul.itemList li
+{
+	border-bottom:1px solid #FEA800;
+	padding:4px;
+	font-size: 0.75em;
+	background-color: #121212;
+}
+
+ul.itemList
+{
+	border: 1px solid #000;
+}

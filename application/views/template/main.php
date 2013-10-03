@@ -32,12 +32,12 @@
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jsPlumb-connection.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jsPlumb-anchors.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jsPlumb-defaults.js'></script>
-    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jsPlumb-connectors-bezier.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jsPlumb-connectors-statemachine.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jsPlumb-renderers-svg.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jsPlumb-renderers-canvas.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jsPlumb-renderers-vml.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery.jsPlumb.js'></script> 
+    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/dropdown.js'></script> 
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.js?2'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggymap.js?3'></script>
     <?php else: ?>
@@ -60,18 +60,27 @@
 					<p class="name"><?php echo $charName; ?> <?php if( $apilogin ): ?>[<a href='<?php echo URL::base(TRUE, TRUE);?>account/logout'>Logout</a>]<?php endif;?>
 					<br />
 					<?php if( ( count( $group['groups']) > 1  ) || (count( current( $group['groups'] ) ) > 1 ) ):?>							
-									<div class='drop-down' id='accessMenu' style='position:absolute;left:83px;top:25px;'>
-											<span>
+									<div class="dropdown" style="display:inline-block;">
+											<a data-toggle="dropdown" href="#">
                                                 <?php echo $group['accessName']; ?> - <?php echo ($group['subGroupID'] != 0 ) ? $group['sgName'].' - ' : '' ?>
-                                                <?php echo $group['groupTicker'] ?>&nbsp;&nbsp;&nbsp;<span style='font-style:normal;font-weight:bold;'>&#x25BC;
-                                            </span>
-											<ul class='menu'>
+                                                <?php echo $group['groupTicker'] ?>&nbsp;&nbsp;&nbsp;<span style='font-style:normal;font-weight:bold;'>&#x25BC;</span>
+                                            </a>
+											<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 												<?php foreach( $group['groups'] as $g => $sgs ): ?>
 													<?php foreach( $sgs as $sg ): ?>
 														<?php if( $sg == 0 ): ?>
-																<li id='<?php echo md5($g.'-'.$sg); ?>'><?php echo $group['groupDetails']['group'][ $g ]['groupName'] ?></li>
+																<li>
+                                                                    
+                                                                    <a href="<?php echo URL::base(); ?>doswitchMembership/?k=<?php echo md5($g.'-'.$sg); ?>">
+                                                                    <?php echo $group['groupDetails']['group'][ $g ]['groupName'] ?>
+                                                                    </a>
+                                                                </li>
 														<?php else: ?>
-																<li id='<?php echo md5($g.'-'.$sg); ?>'><?php echo $group['groupDetails']['subgroup'][ $sg ]['accessName']; ?> - <?php echo $group['groupDetails']['subgroup'][ $sg ]['subGroupName'] ?> - <?php echo $group['groupDetails']['group'][ $g ]['groupName'] ?></li>										
+																<li>
+                                                                    <a href="<?php echo URL::base(); ?>doswitchMembership/?k=<?php echo md5($g.'-'.$sg); ?>">
+                                                                        <?php echo $group['groupDetails']['subgroup'][ $sg ]['accessName']; ?> - <?php echo $group['groupDetails']['subgroup'][ $sg ]['subGroupName'] ?> - <?php echo $group['groupDetails']['group'][ $g ]['groupName'] ?>
+                                                                    </a>
+                                                                </li>										
 														<?php endif; ?>
 													<?php endforeach; ?>
 												<?php endforeach; ?>

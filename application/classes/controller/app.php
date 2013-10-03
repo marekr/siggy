@@ -109,12 +109,14 @@ class Controller_App extends Controller
         $groupID = Auth::$user->data['groupID'];
         $groups = array_keys(Auth::$user->perms);
         
-        if( count($groups) > 0 && !in_array($groupID, $groups) )
+        if( !Auth::$user->data['admin'] )
         {
-			Auth::$user->data['groupID'] = $groups[0];
-			Auth::$user->save();
+            if( count($groups) > 0 && !in_array($groupID, $groups) )
+            {
+                Auth::$user->data['groupID'] = $groups[0];
+                Auth::$user->save();
+            }
         }
-        
         
         
 		// Check user auth and role
@@ -134,7 +136,14 @@ class Controller_App extends Controller
 			// only load the template if the template has not been set..
 			$this->template = View::factory($this->template);
 
-            $this->template->perms = Auth::$user->perms[ Auth::$user->data['groupID'] ];
+            if( !Auth::$user->data['admin'] )
+            {
+                $this->template->perms = Auth::$user->perms[ Auth::$user->data['groupID'] ];
+            }
+            else
+            {
+                $this->template->perms =array();
+            }
 			// Initialize empty values
 			// Page title
 			$this->template->title   = '';
