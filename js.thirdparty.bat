@@ -23,5 +23,6 @@
 --js=jsPlumb-renderers-canvas.js ^
 --js=jsPlumb-renderers-vml.js ^
 --js=jquery.jsPlumb.js ^
+--js=dropdown.js ^
 --js_output_file=thirdparty.compiled.js
 @pause
