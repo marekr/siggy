@@ -842,7 +842,7 @@ class Controller_Siggy extends FrontController
                                                 ->param(':hourStamp', $hourStamp )->param(':systemID', $actualCurrentSystemID )->param(':groupID', $this->groupData['groupID'] )->execute();									
                     }
                 
-                    if( $chainMapOpen && ($lastSystemID != $actualCurrentSystemID) && ( $this->isWormholeSystemByName($lastSystemName) || $this->isWormholeSystemByName($_SERVER['HTTP_EVE_SOLARSYSTEMNAME']) ) && $actualCurrentSystemID != 0 && !empty($lastSystemID) )
+                    if( ($lastSystemID != $actualCurrentSystemID) && ( $this->isWormholeSystemByName($lastSystemName) || $this->isWormholeSystemByName($_SERVER['HTTP_EVE_SOLARSYSTEMNAME']) ) && $actualCurrentSystemID != 0 && !empty($lastSystemID) )
                     {
                         $this->__wormholeJump($lastSystemID, $actualCurrentSystemID);
                     }
