@@ -291,12 +291,7 @@ class access
 				}
 				else
 				{
-						//no corp sent, fuck off with your headers
-						if (isset($benchmark))
-						{
-								// Stop the benchmark
-								Profiler::stop($benchmark);
-						}
+					//no corp sent, fuck off with your headers
 						return $default;
 				}
 				
@@ -308,72 +303,53 @@ class access
 				else
 				{
 					//no char sent, fuck off with your headers
-					if (isset($benchmark))
-					{
-							// Stop the benchmark
-							Profiler::stop($benchmark);
-					}
 					return $default;
 				}
+                
 				$accessGroupID = 0;
 				$accessSubGroupID = 0;
 				if( empty( $chosenGroupID ) )
 				{
 					
-							$corpMemberData = array();
-							if( in_array($corpID, $corpList) )
-							{
-									$corpMemberData = groupUtils::getCorpData( $corpID );
-							}
-							$charMemberData = array();
-							if( in_array($charID, $charList) )
-							{
-									$charMemberData = groupUtils::getCharData( $charID );
-							}				
+                    $corpMemberData = array();
+                    if( in_array($corpID, $corpList) )
+                    {
+                            $corpMemberData = groupUtils::getCorpData( $corpID );
+                    }
+                    $charMemberData = array();
+                    if( in_array($charID, $charList) )
+                    {
+                            $charMemberData = groupUtils::getCharData( $charID );
+                    }				
 							
-									
-							//just moved it here
-							if( !empty($corpMemberData) )
-							{
-									$memberData = $corpMemberData;
-									
-									//$firstGroup = current($memberData['groups']);
-									//$accessGroupID = $firstGroup[0];
-									//$accessSubGroupID = $firstGroup[1];
-							}
-							else
-							{
-									$memberData = $charMemberData;
-									if( !$memberData )
-									{
-											//no access anyway
-											if (isset($benchmark))
-											{
-													// Stop the benchmark
-													Profiler::stop($benchmark);
-											}
-											return $default;
-									}
-									//else
-									//{
-											//$firstGroup = current($memberData['groups']);
-										//	$accessGroupID = $firstGroup[0];
-										//	$accessSubGroupID = $firstGroup[1];			
-									//}
-							}
-							$keys = array_keys($memberData['groups']);
-							$firstGroup = $keys[0];
-							$accessGroupID = $firstGroup;
-							$accessSubGroupID = $memberData['groups'][ $firstGroup ][0];	//picking the first subGroupID
-							
-							if(  isset( $corpMemberData['groups'] ) &&  isset( $charMemberData['groups'] ) )
-							{
-						//			$memberData['groups'] =  array_merge($corpMemberData['groups'],$charMemberData['groups']);
-									$memberData['groups'] =  $this->_blah($corpMemberData['groups'],$charMemberData['groups']);
-									$memberData['groupDetails']['group'] =  $corpMemberData['groupDetails']['group'] + $charMemberData['groupDetails']['group'];
-									$memberData['groupDetails']['subgroup'] =  $corpMemberData['groupDetails']['subgroup'] + $charMemberData['groupDetails']['subgroup'];
-									//$memberData['groups'] = array_unique( $memberData['groups'] );
-							}						
+                            
+                    //just moved it here
+                    if( !empty($corpMemberData) )
+                    {
+                            $memberData = $corpMemberData;
+                    }
+                    else
+                    {
+                            $memberData = $charMemberData;
+                            if( !$memberData )
+                            {
+                                    //no access anyway
+                                    return $default;
+                            }
+                    }
+                    $keys = array_keys($memberData['groups']);
+                    $firstGroup = $keys[0];
+                    $accessGroupID = $firstGroup;
+                    $accessSubGroupID = $memberData['groups'][ $firstGroup ][0];	//picking the first subGroupID
+                    
+                    if(  isset( $corpMemberData['groups'] ) &&  isset( $charMemberData['groups'] ) )
+                    {
+                //			$memberData['groups'] =  array_merge($corpMemberData['groups'],$charMemberData['groups']);
+                            $memberData['groups'] =  $this->_blah($corpMemberData['groups'],$charMemberData['groups']);
+                            $memberData['groupDetails']['group'] =  $corpMemberData['groupDetails']['group'] + $charMemberData['groupDetails']['group'];
+                            $memberData['groupDetails']['subgroup'] =  $corpMemberData['groupDetails']['subgroup'] + $charMemberData['groupDetails']['subgroup'];
+                            //$memberData['groups'] = array_unique( $memberData['groups'] );
+                    }						
 							
 				}
 				else

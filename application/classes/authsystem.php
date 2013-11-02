@@ -204,93 +204,89 @@ class User
 				
 				try 
 				{
-						try 
+						//get all chars on the key
+						$result = $pheal->accountScope->Characters();
+						foreach($result->characters as $char )
 						{
-                                //get all chars on the key
-                                $result = $pheal->accountScope->Characters();
-                                foreach($result->characters as $char )
-                                {
-                                    if( $char->characterID == $this->data['apiCharID'] )
-                                    {
-                                        $this->data['apiCorpID'] = $char->corporationID;								
-                                        
-                                        $this->data['apiLastCheck'] = time();
-                                        $this->data['apiFailures'] = 0;
-                                        $this->data['apiKeyInvalid'] = 0;
-                                        $this->save();
+							if( $char->characterID == $this->data['apiCharID'] )
+							{
+								$this->data['apiCorpID'] = $char->corporationID;								
 								
-                                        return array( 'corpID' => $this->data['apiCorpID'], 'charID' => $this->data['apiCharID'], 'charName' => $this->data['apiCharName'] );
-                                    }
-                                }
-                            
-								
-                            //key no longer exists?
-                            return FALSE;
+								$this->data['apiLastCheck'] = time();
+								$this->data['apiFailures'] = 0;
+								$this->data['apiKeyInvalid'] = 0;
+								$this->save();
+						
+								return array( 'corpID' => $this->data['apiCorpID'], 'charID' => $this->data['apiCharID'], 'charName' => $this->data['apiCharName'] );
+							}
 						}
-						catch( PhealAPIException $e )
-						{
-								 switch( $e->code )
-								 {
-										//bad char
-										case 105:
-											//$this->update_user( $this->data['id'], array('apiCharID' => 0, 'apiCorpID' => 0 ) );
-											//$this->reload_user();
-											$this->data['apiCharID'] = 0;
-											$this->data['apiCorpID'] = 0;
-											$this->save();
-											return FALSE;
-											break;
-											
-										case 202:
-										case 203:
-										case 204:
-										case 205:
-										case 210:
-										case 212:
-											//increment fuck you count
-											//$this->update_user( $this->data['id'], array('apiFailures' => $this->data['apiFailures']+1 ) );
-											//$this->reload_user();
-                                            if( $this->data['apiFailures'] < 3 )
-                                            {
-                                                $this->data['apiFailures'] = $this->data['apiFailures']+1;
-											}
-                                            else
-                                            {
-                                                $this->data['apiKeyInvalid'] = 1;
-                                            }
-                                            
-											$this->save();
-											return FALSE;
-											break;
-											
-										case 221:
-										case 222:
-										case 223:
-										case 521:
-                                        case 403:
-											//bad api entirely
-											//$this->update_user( $this->data['id'], array('apiInvalid' => 1) );
-											$this->data['apiKeyInvalid'] = 1;
-											
-											
-											$this->save();
-											return FALSE;
-											break;
-
-										case 211:
-											//expired account
-											return FALSE;
-											break;
-											
-										default:
-											return FALSE;
-											break;
-								 }
-						}
+					
+						
+					//key no longer exists?
+					return FALSE;
 				}
 				catch( PhealException $e )
 				{
-						return array( 'corpID' => $this->data['apiCorpID'], 'charID' => $this->data['apiCharID'], 'charName' => $this->data['apiCharName'] );
+					if ($e instanceof PhealAPIException OR $e instanceof PhealHTTPException)
+					{
+						 switch( $e->getCode() )
+						 {
+								//bad char
+								case 105:
+									//$this->update_user( $this->data['id'], array('apiCharID' => 0, 'apiCorpID' => 0 ) );
+									//$this->reload_user();
+									$this->data['apiCharID'] = 0;
+									$this->data['apiCorpID'] = 0;
+									$this->save();
+									return FALSE;
+									break;
+									
+								case 202:
+								case 203:
+								case 204:
+								case 205:
+								case 210:
+								case 212:
+									//increment fuck you count
+									//$this->update_user( $this->data['id'], array('apiFailures' => $this->data['apiFailures']+1 ) );
+									//$this->reload_user();
+									if( $this->data['apiFailures'] < 3 )
+									{
+										$this->data['apiFailures'] = $this->data['apiFailures']+1;
+									}
+									else
+									{
+										$this->data['apiKeyInvalid'] = 1;
+									}
+									
+									$this->save();
+									return FALSE;
+									break;
+									
+								case 221:
+								case 222:
+								case 223:
+								case 521:
+								case 403:
+									//bad api entirely
+									//$this->update_user( $this->data['id'], array('apiInvalid' => 1) );
+									$this->data['apiKeyInvalid'] = 1;
+									
+									
+									$this->save();
+									return FALSE;
+									break;
+
+								case 211:
+									//expired account
+									return FALSE;
+									break;
+									
+								default:
+									return FALSE;
+									break;
+						 }
+					}
 				}
 				
 		}
