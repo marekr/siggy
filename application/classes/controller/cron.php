@@ -1,4 +1,8 @@
 <?php defined('SYSPATH') or die('No direct script access.');
+//error_reporting(E_ALL);
+//error_reporting(E_ALL);
+ini_set('display_errors', 'on');
+ini_set('display_startup_errors', 'on');
 class eveAPIWalletJournalTypes
 {
 	const playerTrading = 1;
@@ -37,6 +41,7 @@ class Controller_Cron extends Controller
 				if( $trans['refTypeID'] == eveAPIWalletJournalTypes::playerDonation || $trans['refTypeID'] == eveAPIWalletJournalTypes::corpAccountWithdrawal)
 				{
 					$entryCode = trim(str_replace('DESC:','',$trans['reason']));
+					$entryCode = $this->superclean($entryCode);
 					if( !empty($entryCode) )
 					{
 						preg_match('/^siggy-([a-zA-Z0-9]{14,})/', $entryCode, $matches);
@@ -76,7 +81,11 @@ class Controller_Cron extends Controller
 							{
 								//processed already!
 								//do nothing
+									print_r($entryCode);
+									print_r($res);
 								print "Payment already processed";
+									print "<br />";
+									print "<br />";
 							}
 							
 						}
@@ -96,6 +105,24 @@ class Controller_Cron extends Controller
 		return $stop;	
 	}
 	
+	public function superclean($text)
+	{
+			// Strip HTML Tags
+		$clear = strip_tags($text);
+		// Clean up things like &amp;
+		$clear = html_entity_decode($clear);
+		// Strip out any url-encoded stuff
+		$clear = urldecode($clear);
+		// Replace non-AlNum characters with space
+		$clear = preg_replace('/[^-a-z0-9]+/i', ' ', $clear);
+		// Replace Multiple spaces with single space
+		$clear = preg_replace('/ +/', ' ', $clear);
+		// Trim the string of leading/trailing space
+		$clear = trim($clear);
+		
+		return $clear;
+	}
+	
 	public function action_pruneSiggySessions()
 	{
 			$this->profiler = NULL;
@@ -109,7 +136,8 @@ class Controller_Cron extends Controller
 
 	public function action_billingTransactions()
 	{
-		
+		ini_set('memory_limit', '128M');
+		ini_set('max_execution_time', 0);
 		set_time_limit(600);
 		
 		require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
@@ -131,6 +159,7 @@ class Controller_Cron extends Controller
 			{
 				$transactions = $pheal->WalletJournal( array('fromID' => $fromID, 'rowCount' => 100) )->entries;
 				$stop = $this->processBillingTransactionsResult($transactions, $previousID, $maxID, $fromID );
+				unset($transactions);
 			}
 		}
 

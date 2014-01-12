@@ -19,9 +19,6 @@ class Controller_Siggy extends FrontController
         $statsOpen = ( isset($_COOKIE['system_stats_open'] ) ? intval($_COOKIE['system_stats_open']) : 0 );
         
         
-                    
-        $settings = $this->loadSettings();
-        $this->template->settings = $settings;
         
 		if( !empty($ssname) )
 		{
@@ -81,24 +78,9 @@ class Controller_Siggy extends FrontController
 		$headerToolsHTML = View::factory('templatebits/headerTools');
 		$headerToolsHTML->group = $this->groupData;
         $headerToolsHTML->themes = $themes;
-        $headerToolsHTML->settings = $settings;
+        $headerToolsHTML->settings = $this->template->settings;
 		$this->template->headerTools = $headerToolsHTML;
 	}
-    
-    private function loadSettings()
-    {
-        $settings = array();
-        $settings = DB::query(Database::SELECT, "SELECT * FROM character_settings 
-						WHERE char_id=:charID")
-                    ->param(':charID', $this->groupData['charID'])->execute()->current();
-                    
-        if( !isset($settings['char_id']) )
-        {
-            $settings = array('theme_id' => 0 );
-        }
-        
-        return $settings;
-    }
 	
     public function action_savesettings()
     {

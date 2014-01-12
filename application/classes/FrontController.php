@@ -92,6 +92,10 @@ class FrontController extends Controller
 			$this->template->igb = $this->igb;
 			$this->template->trusted = $this->trusted;
 			
+                    
+			$settings = $this->loadSettings();
+			$this->template->settings = $settings;
+			
 			$this->template->charID = isset($this->groupData['charID']) ? $this->groupData['charID'] : 0;
 			$this->template->corpID = isset($this->groupData['corpID']) ?  $this->groupData['corpID'] : 0;
 			$this->template->charName = isset($this->groupData['charName']) ? $this->groupData['charName'] : '';
@@ -106,6 +110,26 @@ class FrontController extends Controller
 				$this->template->apilogin = true;
 			}
 		}
+    }
+    
+    
+    private function loadSettings()
+    {
+        $settings = array('theme_id' => 0 );
+        
+        if( isset($this->groupData['charID']) && $this->groupData['charID'] != 0)
+        {
+			$settings = DB::query(Database::SELECT, "SELECT * FROM character_settings 
+							WHERE char_id=:charID")
+						->param(':charID', $this->groupData['charID'])->execute()->current();
+						
+			if( !isset($settings['char_id']) )
+			{
+				$settings = array('theme_id' => 0 );
+			}
+        }
+        
+        return $settings;
     }
     
     public function authCheckAndRedirect()
