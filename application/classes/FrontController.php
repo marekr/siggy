@@ -62,7 +62,7 @@ class FrontController extends Controller
 		}
 		else
 		{
-			$this->request->redirect($url);
+			HTTP::redirect($url);
 		}
 	}
 	

@@ -1,10 +1,11 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php defined('SYSPATH') OR die('No direct script access.');
 /**
  * MySQLi database connection.
  *
  * @package    Kohana/Database
  * @category   Drivers
- * @author     Austin Bischoff et al.
+ * @author     Kohana Team
+ * @copyright  (c) 2008-2009 Kohana Team
  * @license    http://kohanaphp.com/license
  */
 class Kohana_Database_MySQLi extends Database {
@@ -35,13 +36,12 @@ class Kohana_Database_MySQLi extends Database {
 
 		// Extract the connection parameters, adding required variabels
 		extract($this->_config['connection'] + array(
-			'database'   => '',
-			'hostname'   => '',
-			'port'       => ini_get("mysqli.default_port"),
-			'socket'     => ini_get("mysqli.default_socket"),
-			'username'   => '',
-			'password'   => '',
-			'persistent' => FALSE,
+			'database' => '',
+			'hostname' => '',
+			'username' => '',
+			'password' => '',
+			'socket'   => '',
+			'port'     => 3306,
 		));
 
 		// Prevent this information from showing up in traces
@@ -49,58 +49,37 @@ class Kohana_Database_MySQLi extends Database {
 
 		try
 		{
-			if ($persistent)
-			{
-				// Create a persistent connection
-				$this->_connection = new mysqli('p:'.$hostname, $username, $password, $database, $port, $socket);
-			}
-			else
-			{
-				// Create a connection and force it to be a new link
-				$this->_connection = new mysqli($hostname, $username, $password, $database, $port, $socket);
-			}
+			$this->_connection = new mysqli($hostname, $username, $password, $database, $port, $socket);
 		}
-		catch (ErrorException $e)
+		catch (Exception $e)
 		{
-			throw new Database_Exception('[:code] :error', array(
-					':code' => $this->_connection->connect_errno,
-					':error' => $this->_connection->connect_error,
-				), $this->_connection->connect_errno);
-
 			// No connection exists
 			$this->_connection = NULL;
+
+			throw new Database_Exception(':error', array(':error' => $e->getMessage()), $e->getCode());
 		}
 
 		// \xFF is a better delimiter, but the PHP driver uses underscore
 		$this->_connection_id = sha1($hostname.'_'.$username.'_'.$password);
-
-		$this->_select_db($database);
 
 		if ( ! empty($this->_config['charset']))
 		{
 			// Set the character set
 			$this->set_charset($this->_config['charset']);
 		}
-	}
 
-	/**
-	 * Select the database
-	 *
-	 * @param   string  Database
-	 * @return  void
-	 */
-	protected function _select_db($database)
-	{
-		if ( ! $this->_connection->select_db($database))
+		if ( ! empty($this->_config['connection']['variables']))
 		{
-			// Unable to select database
-			throw new Database_Exception('[:code] :error', array(
-				':code' => $this->_connection->errno,
-				':error' => $this->_connection->error,
-			), $this->_connection->errno);
-		}
+			// Set session variables
+			$variables = array();
 
-		Database_MySQLi::$_current_databases[$this->_connection_id] = $database;
+			foreach ($this->_config['connection']['variables'] as $var => $val)
+			{
+				$variables[] = 'SESSION '.$var.' = '.$this->quote($val);
+			}
+
+			$this->_connection->query('SET '.implode(', ', $variables));
+		}
 	}
 
 	public function disconnect()
@@ -116,6 +95,9 @@ class Kohana_Database_MySQLi extends Database {
 				{
 					// Clear the connection
 					$this->_connection = NULL;
+
+					// Clear the instance
+					parent::disconnect();
 				}
 			}
 		}
@@ -146,10 +128,7 @@ class Kohana_Database_MySQLi extends Database {
 
 		if ($status === FALSE)
 		{
-			throw new Database_Exception('[:code] :error', array(
-				':code' => $this->_connection->errno,
-				':error' => $this->_connection->error,
-			), $this->_connection->errno);
+			throw new Database_Exception(':error', array(':error' => $this->_connection->error), $this->_connection->errno);
 		}
 	}
 
@@ -158,16 +137,10 @@ class Kohana_Database_MySQLi extends Database {
 		// Make sure the database is connected
 		$this->_connection or $this->connect();
 
-		if ( ! empty($this->_config['profiling']))
+		if (Kohana::$profiling)
 		{
 			// Benchmark this query for the current instance
 			$benchmark = Profiler::start("Database ({$this->_instance})", $sql);
-		}
-
-		if ( ! empty($this->_config['connection']['persistent']) AND $this->_config['connection']['database'] !== Database_MySQLi::$_current_databases[$this->_connection_id])
-		{
-			// Select database on persistent connections
-			$this->_select_db($this->_config['connection']['database']);
 		}
 
 		// Execute the query
@@ -179,10 +152,9 @@ class Kohana_Database_MySQLi extends Database {
 				Profiler::delete($benchmark);
 			}
 
-			throw new Database_Exception('[:code] :error ( :query )', array(
-				':code' => $this->_connection->errno,
+			throw new Database_Exception(':error [ :query ]', array(
 				':error' => $this->_connection->error,
-				':query' => $sql,
+				':query' => $sql
 			), $this->_connection->errno);
 		}
 
@@ -230,6 +202,7 @@ class Kohana_Database_MySQLi extends Database {
 			'fixed'                     => array('type' => 'float', 'exact' => TRUE),
 			'fixed unsigned'            => array('type' => 'float', 'exact' => TRUE, 'min' => '0'),
 			'float unsigned'            => array('type' => 'float', 'min' => '0'),
+			'geometry'                  => array('type' => 'string', 'binary' => TRUE),
 			'int unsigned'              => array('type' => 'int', 'min' => '0', 'max' => '4294967295'),
 			'integer unsigned'          => array('type' => 'int', 'min' => '0', 'max' => '4294967295'),
 			'longblob'                  => array('type' => 'string', 'binary' => TRUE, 'character_maximum_length' => '4294967295'),
@@ -266,7 +239,7 @@ class Kohana_Database_MySQLi extends Database {
 	 *
 	 * @link http://dev.mysql.com/doc/refman/5.0/en/set-transaction.html
 	 *
-	 * @param string Isolation level
+	 * @param string $mode  Isolation level
 	 * @return boolean
 	 */
 	public function begin($mode = NULL)
@@ -276,8 +249,9 @@ class Kohana_Database_MySQLi extends Database {
 
 		if ($mode AND ! $this->_connection->query("SET TRANSACTION ISOLATION LEVEL $mode"))
 		{
-			throw new Database_Exception(':error', array(':error' => $this->_connection->error),
-										 $this->_connection->errno);
+			throw new Database_Exception(':error', array(
+				':error' => $this->_connection->error
+			), $this->_connection->errno);
 		}
 
 		return (bool) $this->_connection->query('START TRANSACTION');
@@ -286,7 +260,6 @@ class Kohana_Database_MySQLi extends Database {
 	/**
 	 * Commit a SQL transaction
 	 *
-	 * @param string Isolation level
 	 * @return boolean
 	 */
 	public function commit()
@@ -300,7 +273,6 @@ class Kohana_Database_MySQLi extends Database {
 	/**
 	 * Rollback a SQL transaction
 	 *
-	 * @param string Isolation level
 	 * @return boolean
 	 */
 	public function rollback()
@@ -420,10 +392,9 @@ class Kohana_Database_MySQLi extends Database {
 		// Make sure the database is connected
 		$this->_connection or $this->connect();
 
-		if (($value = $this->_connection->real_escape_string((string) $value)) === FALSE)
+		if (($value = $this->_connection->real_escape_string( (string) $value)) === FALSE)
 		{
-			throw new Database_Exception('[:code] :error', array(
-				':code' => $this->_connection->errno,
+			throw new Database_Exception(':error', array(
 				':error' => $this->_connection->error,
 			), $this->_connection->errno);
 		}

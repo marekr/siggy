@@ -313,7 +313,6 @@ class Auth
 	public static function initialize()
 	{
 		
-		Cookie::$salt = 'y[$e.swbDs@|Gd(ndtUSy^';
 		
 		self::$user = new User();
 		self::$session = new UserSession();

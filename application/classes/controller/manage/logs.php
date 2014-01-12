@@ -52,11 +52,11 @@ class Controller_Manage_Logs extends Controller_App {
 	{
 		if( Auth::$user->isGroupAdmin() || Auth::$user->data['admin'] ) 
 		{
-			$this->request->redirect('manage/logs/activity');
+			HTTP::redirect('manage/logs/activity');
 		} 
 		else 
 		{
-			$this->request->redirect('account/overview');
+			HTTP::redirect('account/overview');
 		}
 	}
 	

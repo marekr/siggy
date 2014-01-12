@@ -5,7 +5,7 @@
  * @package    Kohana/Userguide
  * @category   Base
  * @author     Kohana Team
- * @copyright  (c) 2009 Kohana Team
+ * @copyright  (c) 2009-2012 Kohana Team
  * @license    http://kohanaphp.com/license
  */
 class Kohana_Kodoc_Class extends Kodoc {
@@ -57,13 +57,7 @@ class Kohana_Kodoc_Class extends Kodoc {
 			$this->modifiers = '<small>'.implode(' ', Reflection::getModifierNames($modifiers)).'</small> ';
 		}
 
-		if ($constants = $this->class->getConstants())
-		{
-			foreach ($constants as $name => $value)
-			{
-				$this->constants[$name] = Debug::vars($value);
-			}
-		}
+		$this->constants = $this->class->getConstants();
 
 		// If ReflectionClass::getParentClass() won't work if the class in 
 		// question is an interface
@@ -81,34 +75,62 @@ class Kohana_Kodoc_Class extends Kodoc {
 			}
 		}
 
-		$parents = $this->parents;
-
-		array_unshift($parents, $this->class);
-
-		foreach ($parents as $parent)
+		if ( ! $comment = $this->class->getDocComment())
 		{
-			if ($comment = $parent->getDocComment())
+			foreach ($this->parents as $parent)
 			{
-				// Found a description for this class
-				break;
+				if ($comment = $parent->getDocComment())
+				{
+					// Found a description for this class
+					break;
+				}
 			}
 		}
 
-		list($this->description, $this->tags) = Kodoc::parse($comment);
-		
+		list($this->description, $this->tags) = Kodoc::parse($comment, FALSE);
+	}
+
+	/**
+	 * Gets the constants of this class as HTML.
+	 *
+	 * @return  array
+	 */
+	public function constants()
+	{
+		$result = array();
+
+		foreach ($this->constants as $name => $value)
+		{
+			$result[$name] = Debug::vars($value);
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Get the description of this class as HTML. Includes a warning when the
+	 * class or one of its parents could not be found.
+	 *
+	 * @return  string  HTML
+	 */
+	public function description()
+	{
+		$result = $this->description;
+
 		// If this class extends Kodoc_Missing, add a warning about possible
 		// incomplete documentation
-		foreach ($parents as $parent)
+		foreach ($this->parents as $parent)
 		{
 			if ($parent->name == 'Kodoc_Missing')
 			{
-				$warning = "[!!] **This class, or a class parent, could not be
+				$result .= "[!!] **This class, or a class parent, could not be
 				           found or loaded. This could be caused by a missing
-						   module or other dependancy. The documentation for
-						   class may not be complete!**";
-				$this->description = Markdown($warning).$this->description;
+				           module or other dependancy. The documentation for
+				           class may not be complete!**";
 			}
 		}
+
+		return Kodoc_Markdown::markdown($result);
 	}
 
 	/**
@@ -120,12 +142,14 @@ class Kohana_Kodoc_Class extends Kodoc {
 	{
 		$props = $this->class->getProperties();
 
+		$defaults = $this->class->getDefaultProperties();
+
 		usort($props, array($this,'_prop_sort'));
 
 		foreach ($props as $key => $property)
 		{
 			// Create Kodoc Properties for each property
-			$props[$key] = new Kodoc_Property($this->class->name, $property->name);
+			$props[$key] = new Kodoc_Property($this->class->name, $property->name,  Arr::get($defaults, $property->name));
 		}
 
 		return $props;
@@ -194,7 +218,7 @@ class Kohana_Kodoc_Class extends Kodoc {
 		
 		
 		/*
-		echo kohana::debug('a is '.$a->class.'::'.$a->name,'b is '.$b->class.'::'.$b->name,
+		echo Debug::vars('a is '.$a->class.'::'.$a->name,'b is '.$b->class.'::'.$b->name,
 						   'are the classes the same?', $a->class == $b->class,'if they are, the result is:',strcmp($a->name, $b->name),
 						   'is a this class?', $a->name == $this->class->name,-1,
 						   'is b this class?', $b->name == $this->class->name,1,
@@ -233,4 +257,23 @@ class Kohana_Kodoc_Class extends Kodoc {
 		return $bdepth - $adepth;
 	}
 
-} // End Kodac_Class
+	/**
+	 * Get the tags of this class as HTML.
+	 *
+	 * @return  array
+	 */
+	public function tags()
+	{
+		$result = array();
+
+		foreach ($this->tags as $name => $set)
+		{
+			foreach ($set as $text)
+			{
+				$result[$name][] = Kodoc::format_tag($name, $text);
+			}
+		}
+
+		return $result;
+	}
+}

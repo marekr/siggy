@@ -43,10 +43,10 @@ class Controller_Manage_Group extends Controller_App {
    {
       if( Auth::$user->isGroupAdmin() || Auth::$user->data['admin'] ) 
       {
-         $this->request->redirect('manage/group/dashboard');
+         HTTP::redirect('manage/group/dashboard');
       } else 
       {
-         $this->request->redirect('account/overview');
+         HTTP::redirect('account/overview');
       }
    }
    
@@ -174,13 +174,13 @@ class Controller_Manage_Group extends Controller_App {
 									}
 									
 									Message::add('sucess', 'Group member added');
-									$this->request->redirect('manage/group/members');
+									HTTP::redirect('manage/group/members');
 									return;
 							} 
 							catch (ORM_Validation_Exception $e) 
 							{
 								//something broke, restart because our form is currently idiot proof anyway
-								$this->request->redirect('manage/group/addMember');
+								HTTP::redirect('manage/group/addMember');
 							}
 						}
 						else if ( $action == 'doForm' )
@@ -188,7 +188,7 @@ class Controller_Manage_Group extends Controller_App {
 							if( empty($_POST['eveID']) || empty($_POST['accessName']) || empty($_POST['memberType']) )
 							{
 								//bad request
-								$this->request->redirect('manage/group/addMember');
+								HTTP::redirect('manage/group/addMember');
 							}
 							
 							$view = View::factory('manage/group/addMemberSimpleSelected');
@@ -203,14 +203,14 @@ class Controller_Manage_Group extends Controller_App {
 						else
 						{
 							//invalid
-							$this->request->redirect('manage/group/addMember');
+							HTTP::redirect('manage/group/addMember');
 						}
 						
 					}
 					else
 					{
 						//invalid
-						$this->request->redirect('manage/group/addMember');
+						HTTP::redirect('manage/group/addMember');
 					}
 			}
 			else
@@ -257,7 +257,7 @@ class Controller_Manage_Group extends Controller_App {
 											groupUtils::recacheCharList();
 											groupUtils::recacheChar($member->eveID);
 									}
-									$this->request->redirect('manage/group/members');
+									HTTP::redirect('manage/group/members');
 									return;
 							} 
 							catch (ORM_Validation_Exception $e) 
@@ -310,7 +310,7 @@ class Controller_Manage_Group extends Controller_App {
 						
 						groupUtils::recacheGroup( Auth::$user->data['groupID'] );
 						
-						$this->request->redirect('manage/group/chainMapSettings');
+						HTTP::redirect('manage/group/chainMapSettings');
 						return;
 				} 
 				catch (ORM_Validation_Exception $e) 
@@ -415,7 +415,7 @@ class Controller_Manage_Group extends Controller_App {
 						Message::add('success', __('Settings saved.'));
 						//$this->__recacheCorpMembers();
 						groupUtils::recacheGroup( Auth::$user->data['groupID'] );
-						$this->request->redirect('manage/group/settings');
+						HTTP::redirect('manage/group/settings');
 						return;
 				} 
 				catch (ORM_Validation_Exception $e) 
@@ -548,7 +548,7 @@ class Controller_Manage_Group extends Controller_App {
 
 							//$this->__recacheCorpMembers();
 							groupUtils::recacheSubGroup($sg->subGroupID);
-							$this->request->redirect('manage/group/subgroups');
+							HTTP::redirect('manage/group/subgroups');
 							return;
 					} 
 					catch (ORM_Validation_Exception $e) 
@@ -584,7 +584,7 @@ class Controller_Manage_Group extends Controller_App {
 			if( $member->groupID != Auth::$user->data['groupID'] )
 			{
 					Message::add('error', __('Error: You do not have permission to edit that group member.'));
-					$this->request->redirect('manage/group/members');
+					HTTP::redirect('manage/group/members');
 			}
 
 			$errors = array();
@@ -631,7 +631,7 @@ class Controller_Manage_Group extends Controller_App {
 								groupUtils::recacheCharList();
 								groupUtils::recacheChar($member->eveID);
 						}
-						$this->request->redirect('manage/group/members');
+						HTTP::redirect('manage/group/members');
 						return;
 					} 
 					catch (ORM_Validation_Exception $e) 
@@ -668,7 +668,7 @@ class Controller_Manage_Group extends Controller_App {
 				if( $sg->groupID != Auth::$user->data['groupID'] )
 				{
 				 Message::add('error', __('Error: You do not have permission to edit that subgroup.'));
-				 $this->request->redirect('manage/group/subgroups');
+				 HTTP::redirect('manage/group/subgroups');
 				}
 				$group = ORM::factory('group', Auth::$user->data['groupID']);
 
@@ -740,7 +740,7 @@ class Controller_Manage_Group extends Controller_App {
 
 								//$this->__recacheCorpMembers();
 								groupUtils::recacheSubGroup($sg->subGroupID);
-								$this->request->redirect('manage/group/subgroups');
+								HTTP::redirect('manage/group/subgroups');
 								return;
 						} 
 						catch (ORM_Validation_Exception $e) 
@@ -776,7 +776,7 @@ class Controller_Manage_Group extends Controller_App {
 		if( $member->groupID != Auth::$user->data['groupID'] )
 		{
 				Message::add('error', __('Error: You do not have permission to remove that group member.'));
-				$this->request->redirect('manage/group/members');
+				HTTP::redirect('manage/group/members');
 		}
 
 		$view = View::factory('manage/group/deleteForm');
@@ -798,7 +798,7 @@ class Controller_Manage_Group extends Controller_App {
 						}
 						$member->delete();
 						//$this->__recacheCorpMembers();
-						$this->request->redirect('manage/group/members');
+						HTTP::redirect('manage/group/members');
 						return;
 				} 
 				catch (Exception $e) 
@@ -822,7 +822,7 @@ class Controller_Manage_Group extends Controller_App {
 			if( $sg->groupID != Auth::$user->data['groupID'] )
 			{
 					Message::add('error', __('Error: You do not have permission to remove that subgroup.'));
-					$this->request->redirect('manage/group/subgroups');
+					HTTP::redirect('manage/group/subgroups');
 			}
 
 			$view = View::factory('manage/group/deleteSubGroupForm');
@@ -838,7 +838,7 @@ class Controller_Manage_Group extends Controller_App {
 							$sg->delete();
 
 							//$this->__recacheCorpMembers();
-							$this->request->redirect('manage/group/subgroups');
+							HTTP::redirect('manage/group/subgroups');
 							return;
 					} 
 					catch (Exception $e) 

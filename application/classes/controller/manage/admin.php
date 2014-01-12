@@ -30,11 +30,11 @@ class Controller_Manage_Admin extends Controller_App
    {
       if( Auth::$user->isAdmin() ) 
       {
-         $this->request->redirect('manage/admin/groups');
+         HTTP::redirect('manage/admin/groups');
       } 
       else 
       {
-         $this->request->redirect('manage/admin/noaccess');
+         HTTP::redirect('manage/admin/noaccess');
       }
    }
 
@@ -51,7 +51,7 @@ class Controller_Manage_Admin extends Controller_App
 	{
 		if( !isset( $_POST['group'] ) )
 		{
-			$this->request->redirect('manage');
+			HTTP::redirect('manage');
 		}
 		
 		$group = intval($_POST['group']);
@@ -60,7 +60,7 @@ class Controller_Manage_Admin extends Controller_App
 			!( Auth::$user->perms[ $group ]['canManage'] == 1)
 		) 
 		{
-			$this->request->redirect('manage/admin/noaccess');
+			HTTP::redirect('manage/admin/noaccess');
 		}
 		else
 		{
@@ -68,7 +68,7 @@ class Controller_Manage_Admin extends Controller_App
 			Auth::$user->save();
 		}
       
-	  $this->request->redirect('/manage');
+	  HTTP::redirect('/manage');
       
 	}
 

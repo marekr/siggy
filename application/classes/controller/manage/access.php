@@ -22,11 +22,11 @@ class Controller_Manage_Access extends Controller_App
    {
       if( Auth::$user->isAdmin() ) 
       {
-         $this->request->redirect('manage/admin/groups');
+         HTTP::redirect('manage/admin/groups');
       } 
       else 
       {
-         $this->request->redirect('manage/access/denied');
+         HTTP::redirect('manage/access/denied');
       }
    }
 
@@ -43,7 +43,7 @@ class Controller_Manage_Access extends Controller_App
 	{
 		if( !isset( $_POST['group'] ) )
 		{
-			$this->request->redirect('manage');
+			HTTP::redirect('manage');
 		}
 		
 		$group = intval($_POST['group']);
@@ -52,7 +52,7 @@ class Controller_Manage_Access extends Controller_App
 			!( Auth::$user->perms[ $group ]['canManage'] == 1)
 		) 
 		{
-			$this->request->redirect('manage/access/denied');
+			HTTP::redirect('manage/access/denied');
 		}
 		else
 		{
@@ -60,7 +60,7 @@ class Controller_Manage_Access extends Controller_App
 			Auth::$user->save();
 		}
       
-	  $this->request->redirect('/manage');
+	  HTTP::redirect('/manage');
       
 	}
 	
@@ -94,14 +94,14 @@ class Controller_Manage_Access extends Controller_App
         if( $count['total'] <= 1 )
         {
             Message::add('error', 'You cannot remove the last user with management access. Another user must be added first.');
-			$this->request->redirect('manage/access/configure');
+			HTTP::redirect('manage/access/configure');
         }
         
         $id = $this->request->param('id');
         
         DB::delete('users_group_acl')->where('user_id', '=', $id)->where('group_id','=', Auth::$user->data['groupID'])->execute();
         Message::add('sucess', 'User access removed succesfully');
-        $this->request->redirect('manage/access/configure');
+        HTTP::redirect('manage/access/configure');
     }
     
     public function action_add()
@@ -142,7 +142,7 @@ class Controller_Manage_Access extends Controller_App
                 DB::insert('users_group_acl', array_keys($save) )->values(array_values($save))->execute();
                 
                 Message::add('sucess', 'User access added succesfully');
-                $this->request->redirect('manage/access/configure');
+                HTTP::redirect('manage/access/configure');
             }
         }
         else
@@ -169,7 +169,7 @@ class Controller_Manage_Access extends Controller_App
         if( !count($data) )
         {
             Message::add('error', 'Invalid user selected.');
-			$this->request->redirect('manage/access/configure');
+			HTTP::redirect('manage/access/configure');
         }
                             
         if ($this->request->method() == "POST") 
@@ -186,7 +186,7 @@ class Controller_Manage_Access extends Controller_App
             
             
             Message::add('sucess', 'User access edited succesfully');
-			$this->request->redirect('manage/access/configure');
+			HTTP::redirect('manage/access/configure');
         }
         else
         {

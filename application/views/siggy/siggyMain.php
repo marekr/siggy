@@ -22,8 +22,84 @@
             <ul class='option-bar tabs'>
                 <li class="active"><a href='#system-info'>Extra</a></li>
                 <li><a href='#sigs'>Scan</a></li>
+                <li><a href='#system-intel'>Intel</a></li>
                 <li><a href='#system-options'>Options</a></li>
             </ul>
+        </div>
+        <div id="system-intel" class="tab clear-fix">
+            <div id="pos-box" class="sub-display-group">
+                <h2>POSes</h2>
+                <div>
+                    <a href="#" class="btn btn-default btn-xs">Add POS</a><br /><br />
+                    <table  cellspacing="1" class='siggy-table bordered-wrap'>
+                        <tr>
+                            <th width="10%">Planet - Moon</th>
+                            <th width="20%">Corp</th>
+                            <th>Status</th>
+                            <th>Type</th>
+                            <th>Date Added</th>
+                            <th>Added by</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                        <tr>
+                            <td>5 - 1</td>
+                            <td>AQUILA INC</td>
+                            <td>Offline</td>
+                            <td>Amarr Large</td>
+                            <td>25.12.2012 2:42</td>
+                            <td>Messoroz</td>
+                            <td><a href="#" class="btn btn-default btn-xs">Edit</a>
+                            <a href="#" class="btn btn-default btn-xs">Remove</a></td>
+                        </tr>
+                        <tr class="alt">
+                            <td>5 - 1</td>
+                            <td>AQUILA INC</td>
+                            <td>Offline</td>
+                            <td>Amarr Large</td>
+                            <td>25.12.2012 2:42</td>
+                            <td>Messoroz</td>
+                            <td><a href="#" class="btn btn-default btn-xs">Edit</a>
+                            <a href="#" class="btn btn-default btn-xs">Remove</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div id="dscan-box" class="sub-display-group">
+                <h2>DScan</h2>
+                <div>
+                    <a href="#" class="btn btn-default btn-xs">Add DScan result</a><br /><br />
+                    <table  cellspacing="1" class='siggy-table bordered-wrap'>
+                        <tr>
+                            <th width="60%">Title</th>
+                            <th>Date Added</th>
+                            <th>Added by</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                        <tr>
+                            <td>Scan from p5</td>
+                            <td>25.12.2012 2:42</td>
+                            <td>Messoroz</td>
+                            <td><a href="#" class="btn  btn-default btn-xs">View</a>
+                           <a href="#" class="btn btn-default btn-xs">Remove</a></td>
+                        </tr>
+                        <tr>
+                            <td>Scan from center</td>
+                            <td>25.12.2012 2:59</td>
+                            <td>Messoroz</td>
+                            <td><a href="#" class="btn btn-default btn-xs">View</a>
+                            <a href="#" class="btn btn-default btn-xs">Remove</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div id="system-notes-box" class="sub-display-group">
+                <h2>Notes</h2>
+                <div>
+                    <a href="#" class="btm btn-default btn-xs">Edit</a><br />
+                    THIS SYSTEM SUCKS, WTB PORN
+                </div>
+            </div>
+            
         </div>
       
         <div id="system-info" class="tab clear-fix">

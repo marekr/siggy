@@ -27,7 +27,7 @@ class Controller_Account extends FrontController
 				default:
 					if( !Auth::loggedIn() )
 					{
-						$this->request->redirect('/account/login');
+						HTTP::redirect('/account/login');
 					}
 					break;
 			}
@@ -86,7 +86,7 @@ class Controller_Account extends FrontController
 				
 				if( Auth::loggedIn() )
 				{
-					$this->request->redirect('/account');
+					HTTP::redirect('/account');
 				}
 				
 				$errors = array();
@@ -127,7 +127,7 @@ class Controller_Account extends FrontController
 									if( Auth::createUser( $userData ) )
 									{
 											Auth::processLogin($_POST['username'], $_POST['password']);
-											$this->request->redirect('account/apiKeys');
+											HTTP::redirect('account/apiKeys');
 									}
 									else
 									{
@@ -150,7 +150,7 @@ class Controller_Account extends FrontController
 		{
 				if( !Auth::loggedIn() )
 				{
-						$this->request->redirect('/');
+						HTTP::redirect('/');
 						return;
 				}
 				
@@ -164,7 +164,7 @@ class Controller_Account extends FrontController
 		{
 				if( !Auth::loggedIn() )
 				{
-						$this->request->redirect('/');
+						HTTP::redirect('/');
 						return;
 				}
 				
@@ -177,7 +177,7 @@ class Controller_Account extends FrontController
 		{
 				if( !Auth::loggedIn() )
 				{
-						$this->request->redirect('/');
+						HTTP::redirect('/');
 						return;
 				}
 				
@@ -191,7 +191,7 @@ class Controller_Account extends FrontController
 		{
 				if( !Auth::loggedIn() )
 				{
-						$this->request->redirect('/');
+						HTTP::redirect('/');
 						return;
 				}
 				
@@ -204,7 +204,7 @@ class Controller_Account extends FrontController
 												->execute()->current();				
 				if( !isset($keyData['entryID']) )
 				{
-					$this->request->redirect('/account/apiKeys');
+					HTTP::redirect('/account/apiKeys');
 				}
 				
 				DB::delete('apikeys')->where('entryID', '=', $entryID)->execute();
@@ -218,7 +218,7 @@ class Controller_Account extends FrontController
 					
 					Auth::$user->save();
 				}
-				$this->request->redirect('/account/apiKeys');	
+				HTTP::redirect('/account/apiKeys');	
 		}
 		
 		private function apiKeyForm($mode)
@@ -238,7 +238,7 @@ class Controller_Account extends FrontController
 														
 						if( !isset($keyData['entryID']) )
 						{
-							$this->request->redirect('/account/apiKeys');
+							HTTP::redirect('/account/apiKeys');
 						}
 				}
 				
@@ -305,7 +305,7 @@ class Controller_Account extends FrontController
                                                 DB::insert('apikeys', array_keys($data) )->values(array_values($data))->execute();
                                             }
                                             
-                                            $this->request->redirect('/account/characterSelect');
+                                            HTTP::redirect('/account/characterSelect');
 									}
 									else
 									{
@@ -339,7 +339,7 @@ class Controller_Account extends FrontController
 		{
 				if( !Auth::loggedIn() )
 				{
-						$this->request->redirect('/');
+						HTTP::redirect('/');
 						return;
 				}		
 				
@@ -372,7 +372,7 @@ class Controller_Account extends FrontController
 							{
 								 Auth::$user->updatePassword($_POST['password']);
 								 
-								 $this->request->redirect('/');
+								 HTTP::redirect('/');
 							}
 				}
 				
@@ -384,7 +384,7 @@ class Controller_Account extends FrontController
 		{
 				if( !Auth::loggedIn() )
 				{
-						$this->request->redirect('/');
+						HTTP::redirect('/');
 						return;
 				}		
 				
@@ -395,7 +395,7 @@ class Controller_Account extends FrontController
 		{
 				if( Auth::loggedIn() )
 				{
-						$this->request->redirect('/');
+						HTTP::redirect('/');
 						return;
 				}		
 				
@@ -473,7 +473,7 @@ class Controller_Account extends FrontController
 		{
 				if( Auth::loggedIn() )
 				{
-						$this->request->redirect('/');
+						HTTP::redirect('/');
 						return;
 				}		
 				$this->template->title = __('siggy: complete password reset');
@@ -565,7 +565,7 @@ class Controller_Account extends FrontController
 		{
 				if( !Auth::loggedIn() )
 				{
-						$this->request->redirect('/');
+						HTTP::redirect('/');
 						return;
 				}
 				$this->template->title = __('siggy: no access');
@@ -604,14 +604,14 @@ class Controller_Account extends FrontController
 		{
 				if( !Auth::loggedIn() )
 				{
-						$this->request->redirect('/');
+						HTTP::redirect('/');
 						return;
 				}		
 		
 				$keys = Auth::$user->getAPIKeys();
 				if( !count($keys) )
 				{
-						$this->request->redirect('/account/apiKeys');
+						HTTP::redirect('/account/apiKeys');
 				}
 				
 				
@@ -681,7 +681,7 @@ class Controller_Account extends FrontController
 					
 							Auth::$user->save();
 							
-							$this->request->redirect('/');
+							HTTP::redirect('/');
 					}
 				}
 				$view = View::factory('account/characterSelect');
@@ -698,7 +698,7 @@ class Controller_Account extends FrontController
 				
 				if( Auth::loggedIn() )
 				{
-					$this->request->redirect('/');
+					HTTP::redirect('/');
 				}
 				
 				if( isset($_POST['login']) )
@@ -708,11 +708,11 @@ class Controller_Account extends FrontController
 						{
 								if( isset($_REQUEST['bounce'] ) )
 								{
-									$this->request->redirect(URL::base(TRUE, TRUE) . $_REQUEST['bounce']);
+									HTTP::redirect(URL::base(TRUE, TRUE) . $_REQUEST['bounce']);
 								}
 								else
 								{
-									$this->request->redirect('/');
+									HTTP::redirect('/');
 								}
 						}
 						else
@@ -739,7 +739,7 @@ class Controller_Account extends FrontController
 				// Sign out the user
 				Auth::processLogout();
 
-				$this->request->redirect('/');
+				HTTP::redirect('/');
 		}			
 		
 

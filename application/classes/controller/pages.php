@@ -22,7 +22,7 @@ class Controller_Pages extends FrontController
 			{
 				if( Auth::loggedIn() )
 				{
-					$this->request->redirect('/');
+					HTTP::redirect('/');
 				}
 			}
 			$this->template->title = 'siggy - getting siggy';
@@ -68,7 +68,7 @@ class Controller_Pages extends FrontController
 		{
 			if( $this->igb || !Auth::loggedIn() )
 			{
-				$this->request->redirect('/');
+				HTTP::redirect('/');
 			}
 		
 			$this->template->title = 'Create siggy group';
@@ -122,7 +122,7 @@ class Controller_Pages extends FrontController
                                 Auth::$user->loadByID( Auth::$user->data['id'] );
                                 Auth::$session->reloadUserSession();
                                 
-								$this->request->redirect('pages/createGroup/3');
+								HTTP::redirect('pages/createGroup/3');
 							}
 							else
 							{

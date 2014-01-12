@@ -3,7 +3,7 @@
 define('SIGGY_VERSION', '2.6.1');
 define('WIN_DEV', true);
 define('NEWFRONT', true);
-define('CACHE_METHOD', 'file');
+define('CACHE_METHOD', 'default');
 // -- Environment setup --------------------------------------------------------
 
 // Load the core Kohana class
@@ -71,6 +71,7 @@ I18n::lang('en-us');
 //	Kohana::$environment = constant('Kohana::'.strtoupper($_SERVER['KOHANA_ENV']));
 //}
 
+		Cookie::$salt = 'y[$e.swbDs@|Gd(ndtUSy^';
 /**
  * FUCK the above code, too much work.
  * Set the environment string by the domain (defaults to 'development').

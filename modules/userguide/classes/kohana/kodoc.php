@@ -5,7 +5,7 @@
  * @package    Kohana/Userguide
  * @category   Base
  * @author     Kohana Team
- * @copyright  (c) 2008-2009 Kohana Team
+ * @copyright  (c) 2008-2012 Kohana Team
  * @license    http://kohanaphp.com/license
  */
 class Kohana_Kodoc {
@@ -57,15 +57,6 @@ class Kohana_Kodoc {
 	{
 		$classes = Kodoc::classes();
 
-		foreach ($classes as $class)
-		{
-			if (isset($classes['kohana_'.$class]))
-			{
-				// Remove extended classes
-				unset($classes['kohana_'.$class]);
-			}
-		}
-
 		ksort($classes);
 
 		$menu = array();
@@ -74,6 +65,9 @@ class Kohana_Kodoc {
 
 		foreach ($classes as $class)
 		{
+			if (Kodoc::is_transparent($class, $classes))
+				continue;
+
 			$class = Kodoc_Class::factory($class);
 
 			// Test if we should show this class
@@ -113,9 +107,7 @@ class Kohana_Kodoc {
 	}
 
 	/**
-	 * Returns an array of all the classes available, built by listing all files in the classes folder and then trying to create that class.
-	 *
-	 * This means any empty class files (as in complety empty) will cause an exception
+	 * Returns an array of all the classes available, built by listing all files in the classes folder.
 	 *
 	 * @param   array   array of files, obtained using Kohana::list_files
 	 * @return  array   an array of all the class names
@@ -129,19 +121,22 @@ class Kohana_Kodoc {
 
 		$classes = array();
 
+		// This will be used a lot!
+		$ext_length = strlen(EXT);
+
 		foreach ($list as $name => $path)
 		{
 			if (is_array($path))
 			{
 				$classes += Kodoc::classes($path);
 			}
-			else
+			elseif (substr($name, -$ext_length) === EXT)
 			{
 				// Remove "classes/" and the extension
-				$class = substr($name, 8, -(strlen(EXT)));
+				$class = substr($name, 8, -$ext_length);
 
 				// Convert slashes to underscores
-				$class = str_replace(DIRECTORY_SEPARATOR, '_', strtolower($class));
+				$class = str_replace(DIRECTORY_SEPARATOR, '_', $class);
 
 				$classes[$class] = $class;
 			}
@@ -166,13 +161,11 @@ class Kohana_Kodoc {
 
 		foreach ($list as $class)
 		{
-			$_class = new ReflectionClass($class);
-
-			if (stripos($_class->name, 'Kohana_') === 0)
-			{
-				// Skip transparent extension classes
+			// Skip transparent extension classes
+			if (Kodoc::is_transparent($class))
 				continue;
-			}
+
+			$_class = new ReflectionClass($class);
 
 			$methods = array();
 
@@ -180,10 +173,10 @@ class Kohana_Kodoc {
 			{
 				$declares = $_method->getDeclaringClass()->name;
 
-				if (stripos($declares, 'Kohana_') === 0)
+				// Remove the transparent prefix from declaring classes
+				if ($child = Kodoc::is_transparent($declares))
 				{
-					// Remove "Kohana_"
-					$declares = substr($declares, 7);
+					$declares = $child;
 				}
 
 				if ($declares === $_class->name OR $declares === "Core")
@@ -201,92 +194,148 @@ class Kohana_Kodoc {
 	}
 
 	/**
+	 * Generate HTML for the content of a tag.
+	 *
+	 * @param   string  $tag    Name of the tag without @
+	 * @param   string  $text   Content of the tag
+	 * @return  string  HTML
+	 */
+	public static function format_tag($tag, $text)
+	{
+		if ($tag === 'license')
+		{
+			if (strpos($text, '://') !== FALSE)
+				return HTML::anchor($text);
+		}
+		elseif ($tag === 'link')
+		{
+			$split = preg_split('/\s+/', $text, 2);
+
+			return HTML::anchor(
+				$split[0],
+				isset($split[1]) ? $split[1] : $split[0]
+			);
+		}
+		elseif ($tag === 'copyright')
+		{
+			// Convert the copyright symbol
+			return str_replace('(c)', '&copy;', $text);
+		}
+		elseif ($tag === 'throws')
+		{
+			$route = Route::get('docs/api');
+
+			if (preg_match('/^(\w+)\W(.*)$/D', $text, $matches))
+			{
+				return HTML::anchor(
+					$route->uri(array('class' => $matches[1])),
+					$matches[1]
+				).' '.$matches[2];
+			}
+
+			return HTML::anchor(
+				$route->uri(array('class' => $text)),
+				$text
+			);
+		}
+		elseif ($tag === 'see' OR $tag === 'uses')
+		{
+			if (preg_match('/^'.Kodoc::$regex_class_member.'/', $text, $matches))
+				return Kodoc::link_class_member($matches);
+		}
+
+		return $text;
+	}
+
+	/**
 	 * Parse a comment to extract the description and the tags
 	 *
-	 * @param   string  the comment retreived using ReflectionClass->getDocComment()
+	 * [!!] Converting the output to HTML in this method is deprecated in 3.3
+	 *
+	 * @param   string  $comment    The DocBlock to parse
+	 * @param   boolean $html       Whether or not to convert the return values
+	 *   to HTML (deprecated)
 	 * @return  array   array(string $description, array $tags)
 	 */
-	public static function parse($comment)
+	public static function parse($comment, $html = TRUE)
 	{
 		// Normalize all new lines to \n
 		$comment = str_replace(array("\r\n", "\n"), "\n", $comment);
 
-		// Remove the phpdoc open/close tags and split
-		$comment = array_slice(explode("\n", $comment), 1, -1);
+		// Split into lines while capturing without leading whitespace
+		preg_match_all('/^\s*\* ?(.*)\n/m', $comment, $lines);
 
 		// Tag content
 		$tags = array();
 
-		foreach ($comment as $i => $line)
+		/**
+		 * Process a tag and add it to $tags
+		 *
+		 * @param   string  $tag    Name of the tag without @
+		 * @param   string  $text   Content of the tag
+		 * @return  void
+		 */
+		$add_tag = function($tag, $text) use ($html, &$tags)
 		{
-			// Remove all leading whitespace
-			$line = preg_replace('/^\s*\* ?/m', '', $line);
-
-			// Search this line for a tag
-			if (preg_match('/^@(\S+)(?:\s*(.+))?$/', $line, $matches))
+			// Don't show @access lines, they are shown elsewhere
+			if ($tag !== 'access')
 			{
-				// This is a tag line
-				unset($comment[$i]);
-
-				$name = $matches[1];
-				$text = isset($matches[2]) ? $matches[2] : '';
-
-				switch ($name)
+				if ($html)
 				{
-					case 'license':
-						if (strpos($text, '://') !== FALSE)
-						{
-							// Convert the lincense into a link
-							$text = HTML::anchor($text);
-						}
-					break;
-					case 'link':
-						$text = preg_split('/\s+/', $text, 2);
-						$text = HTML::anchor($text[0], isset($text[1]) ? $text[1] : $text[0]);
-					break;
-					case 'copyright':
-						if (strpos($text, '(c)') !== FALSE)
-						{
-							// Convert the copyright sign
-							$text = str_replace('(c)', '&copy;', $text);
-						}
-					break;
-					case 'throws':
-						if (preg_match('/^(\w+)\W(.*)$/', $text, $matches))
-						{
-							$text = HTML::anchor(Route::get('docs/api')->uri(array('class' => $matches[1])), $matches[1]).' '.$matches[2];
-						}
-						else
-						{
-							$text = HTML::anchor(Route::get('docs/api')->uri(array('class' => $text)), $text);
-						}
-					break;
-					case 'uses':
-						if (preg_match('/^'.Kodoc::$regex_class_member.'$/i', $text, $matches))
-						{
-							$text = Kodoc::link_class_member($matches);
-						}
-					break;
-					// Don't show @access lines, they are shown elsewhere
-					case 'access':
-						continue 2;
+					$text = Kodoc::format_tag($tag, $text);
 				}
 
 				// Add the tag
-				$tags[$name][] = $text;
+				$tags[$tag][] = $text;
+			}
+		};
+
+		$comment = $tag = null;
+		$end = count($lines[1]) - 1;
+
+		foreach ($lines[1] as $i => $line)
+		{
+			// Search this line for a tag
+			if (preg_match('/^@(\S+)\s*(.+)?$/', $line, $matches))
+			{
+				if ($tag)
+				{
+					// Previous tag is finished
+					$add_tag($tag, $text);
+				}
+
+				$tag = $matches[1];
+				$text = isset($matches[2]) ? $matches[2] : '';
+
+				if ($i === $end)
+				{
+					// No more lines
+					$add_tag($tag, $text);
+				}
+			}
+			elseif ($tag)
+			{
+				// This is the continuation of the previous tag
+				$text .= "\n".$line;
+
+				if ($i === $end)
+				{
+					// No more lines
+					$add_tag($tag, $text);
+				}
 			}
 			else
 			{
-				// Overwrite the comment line
-				$comment[$i] = (string) $line;
+				$comment .= "\n".$line;
 			}
 		}
 
-		// Concat the comment lines back to a block of text
-		if ($comment = trim(implode("\n", $comment)))
+		$comment = trim($comment, "\n");
+
+		if ($comment AND $html)
 		{
 			// Parse the comment with Markdown
-			$comment = Markdown($comment);
+			$comment = Kodoc_Markdown::markdown($comment);
 		}
 
 		return array($comment, $tags);
@@ -348,6 +397,69 @@ class Kohana_Kodoc {
 		}
 
 		return $show_this;
+	}
+
+	/**
+	 * Checks whether a class is a transparent extension class or not.
+	 *
+	 * This method takes an optional $classes parameter, a list of all defined
+	 * class names. If provided, the method will return false unless the extension
+	 * class exists. If not, the method will only check known transparent class
+	 * prefixes.
+	 *
+	 * Transparent prefixes are defined in the userguide.php config file:
+	 *
+	 *     'transparent_prefixes' => array(
+	 *         'Kohana' => TRUE,
+	 *     );
+	 *
+	 * Module developers can therefore add their own transparent extension
+	 * namespaces and exclude them from the userguide.
+	 *          
+	 * @param string $class The name of the class to check for transparency
+	 * @param array $classes An optional list of all defined classes
+	 * @return false If this is not a transparent extension class 
+	 * @return string The name of the class that extends this (in the case provided)
+	 * @throws InvalidArgumentException If the $classes array is provided and the $class variable is not lowercase
+	 */
+	public static function is_transparent($class, $classes = NULL)
+	{
+
+		static $transparent_prefixes = NULL;
+
+		if ( ! $transparent_prefixes)
+		{
+			$transparent_prefixes = Kohana::$config->load('userguide.transparent_prefixes');
+		}
+
+		// Split the class name at the first underscore
+		$segments = explode('_',$class,2);
+
+		if ((count($segments) == 2) AND (isset($transparent_prefixes[$segments[0]])))
+		{
+			if ($segments[1] === 'Core')
+			{
+				// Cater for Module extends Module_Core naming
+				$child_class = $segments[0];
+			}
+			else
+			{
+				// Cater for Foo extends Module_Foo naming
+				$child_class = $segments[1];
+			}
+			
+			// It is only a transparent class if the unprefixed class also exists
+			if ($classes AND ! isset($classes[$child_class]))
+				return FALSE;
+			
+			// Return the name of the child class
+			return $child_class;
+		}
+		else
+		{
+			// Not a transparent class
+			return FALSE;
+		}
 	}
 
 

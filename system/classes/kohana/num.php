@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php defined('SYSPATH') OR die('No direct script access.');
 /**
  * Number helper class. Provides additional formatting methods that for working
  * with numbers.
@@ -6,7 +6,7 @@
  * @package    Kohana
  * @category   Helpers
  * @author     Kohana Team
- * @copyright  (c) 2009-2011 Kohana Team
+ * @copyright  (c) 2009-2012 Kohana Team
  * @license    http://kohanaframework.org/license
  */
 class Kohana_Num {
@@ -63,7 +63,7 @@ class Kohana_Num {
 	 *     echo 10, Num::ordinal(10); // "10th"
 	 *     echo 33, Num::ordinal(33); // "33rd"
 	 *
-	 * @param   integer  number
+	 * @param   integer $number
 	 * @return  string
 	 */
 	public static function ordinal($number)
@@ -99,9 +99,9 @@ class Kohana_Num {
 	 *     // In Portuguese, "1.200.05"
 	 *     echo Num::format(1200.05, 2, TRUE);
 	 *
-	 * @param   float    number to format
-	 * @param   integer  decimal places
-	 * @param   boolean  monetary formatting?
+	 * @param   float   $number     number to format
+	 * @param   integer $places     decimal places
+	 * @param   boolean $monetary   monetary formatting?
 	 * @return  string
 	 * @since   3.0.2
 	 */
@@ -132,7 +132,7 @@ class Kohana_Num {
 	 * @param boolean $native Set to false to force use of the userland implementation
 	 * @return float Rounded number
 	 */
-	public static function round($value, $precision = 0, $mode = self::ROUND_HALF_UP, $native = true)
+	public static function round($value, $precision = 0, $mode = self::ROUND_HALF_UP, $native = TRUE)
 	{
 		if (version_compare(PHP_VERSION, '5.3', '>=') AND $native)
 		{
@@ -199,7 +199,7 @@ class Kohana_Num {
 	 *     echo Num::bytes('1000');  // 1000
 	 *     echo Num::bytes('2.5GB'); // 2684354560
 	 *
-	 * @param   string   file size in SB format
+	 * @param   string  $bytes  file size in SB format
 	 * @return  float
 	 */
 	public static function bytes($size)
@@ -231,4 +231,4 @@ class Kohana_Num {
 		return $bytes;
 	}
 
-} // End num
+}

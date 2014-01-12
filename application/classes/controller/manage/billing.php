@@ -44,10 +44,10 @@ class Controller_Manage_Billing extends Controller_App {
    {
       if( Auth::$user->isGroupAdmin() ) 
       {
-         $this->request->redirect('manage/billing/overview');
+         HTTP::redirect('manage/billing/overview');
       } else 
       {
-         $this->request->redirect('account/overview');
+         HTTP::redirect('account/overview');
       }
    }
    

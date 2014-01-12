@@ -109,7 +109,7 @@ class Controller_Siggy extends FrontController
             }
         }
         
-        $this->request->redirect('/');
+        HTTP::redirect('/');
         
         exit();
     }
@@ -166,7 +166,7 @@ class Controller_Siggy extends FrontController
 				if( $pass == $this->groupData['sgAuthPassword'] )
 				{
 					Cookie::set('authPassword', $pass, 365*60*60*24);
-					$this->request->redirect('/');
+					HTTP::redirect('/');
 				}
 				else
 				{
@@ -178,7 +178,7 @@ class Controller_Siggy extends FrontController
 				if( $pass == $this->groupData['authPassword'] )
 				{
 					Cookie::set('authPassword', $pass, 365*60*60*24);
-					$this->request->redirect('/');
+					HTTP::redirect('/');
 				}
 				else
 				{
@@ -239,43 +239,6 @@ class Controller_Siggy extends FrontController
 										->param(':name', $name)->param(':group', $this->groupData['groupID'])->param(':subgroup', $this->groupData['subGroupID'])->execute();
 			
 			//system exists
-			if(	 $systemQuery->count() < 1 )
-			{
-				//system potentially lacking activesystems entry
-				//do this the long way :(
-				$system = DB::query(Database::SELECT, 'SELECT * FROM solarsystems WHERE name=:name')->param(':name', $name)->execute()->current();
-				if( isset( $system['id'] ) )
-				{
-					$activeSystemQuery = DB::query(Database::SELECT, 'SELECT * FROM activesystems WHERE systemID=:id AND groupID=:group AND subGroupID=:subgroup')->param(':id', $system['id'])->param(':group',$this->groupData['groupID'])->param(':subgroup', $this->groupData['subGroupID'])->execute();
-					if( $activeSystemQuery->count() < 1 )
-					{
-						$insert['systemID'] = $system['id'];
-						$insert['groupID'] = $this->groupData['groupID'];
-						$insert['subGroupID'] = $this->groupData['subGroupID'];
-						DB::insert('activesystems', array_keys($insert) )->values(array_values($insert))->execute();
-				
-						//try again
-						//dont like this but ah well for now
-						$systemQuery = DB::query(Database::SELECT, "SELECT ss.*,se.effectTitle, r.regionName, c.constellationName,sa.displayName, sa.inUse FROM solarsystems ss 
-						INNER JOIN systemeffects se ON ss.effect = se.id
-						INNER JOIN regions r ON ss.region = r.regionID
-						INNER JOIN constellations c ON ss.constellation = c.constellationID
-						INNER JOIN activesystems sa ON ss.id = sa.systemID
-						WHERE ss.name=:name AND sa.groupID = :group AND sa.subGroupID=:subgroup")
-													->param(':name', $name)->param(':group', $this->groupData['groupID'])->param(':subgroup', $this->groupData['subGroupID'])->execute();
-
-					}
-					else
-					{
-						//LOL WOOPS ERROR
-					}				 
-					//$systemData = $systemQuery->current();
-				}
-				else
-				{
-					//system does not exist
-				}
-			}			 
 			
 			$systemData = $systemQuery->current();
 			if( !$systemData['id'] )
@@ -321,9 +284,25 @@ class Controller_Siggy extends FrontController
 											->param(':system', $systemData['id'])->execute()->as_array();
 			
 			$systemData['hubJumps'] = $hubJumps;
+            
+            $systemData['poses'] = $this->getPOSes( $systemData['id'] );
 			
 			return $systemData;
 	}
+    
+    private function getPOSes( $systemID )
+    {
+        $poses = DB::query(Database::SELECT, "SELECT p.pos_id, p.pos_location, p.pos_online, p.pos_type, p.pos_size,
+                                                p.pos_added_date, c.corporationName, pt.pos_type_name FROM pos_tracker p
+                                                LEFT JOIN corporations c ON(c.corporationID = p.pos_corp_id)
+                                                INNER JOIN pos_types pt ON(pt.pos_type_id = p.pos_type)
+                                                WHERE p.group_id=:group_id AND p.pos_system_id=:system_id")
+										->param(':group_id', $this->groupData['groupID'])
+                                        ->param(':system_id', $systemID)
+                                        ->execute()->as_array();	
+
+        return $poses;
+    }
 	
 	public function action_switchMembership()
 	{
@@ -349,7 +328,7 @@ class Controller_Siggy extends FrontController
         }
 			//}
 			
-			$this->request->redirect('/');
+			HTTP::redirect('/');
 	}
 	
 	private function getMapCache()
