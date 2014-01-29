@@ -791,6 +791,10 @@ function siggymain( options )
 	this.settings = $.extend(this.defaults, options);
     
     this.setSystemID(this.settings.initialSystemID);
+	
+	
+	/* POSes */
+	this.poses = {};
 }
 
 siggymain.prototype.getCurrentTime = function ()
@@ -1286,6 +1290,8 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 	{
 		this.systemStats = [];
 	}
+	
+	this.updatePOSList( systemData.poses );
 }
 
 siggymain.prototype.renderStats = function()
@@ -1767,22 +1773,23 @@ siggymain.prototype.colorizeSigRows = function()
 
 siggymain.prototype.setupAddBox = function ()
 {
+	var $this = this;
 	var massAddBlob = $('#mass-add-sig-box textarea[name=blob]');
 	massAddBlob.val('');
 	$('#mass-add-sig-box button[name=add]').click( function() 
 	{
 		var postData = {
-			systemID: that.systemID,
+			systemID: $this.systemID,
 			blob: massAddBlob.val()
 		};
 		
-		$.post(that.settings.baseUrl + 'domassSigs', postData, function (newSig)
+		$.post( $this.settings.baseUrl + 'domassSigs', postData, function (newSig)
 		{
 			for (var i in newSig)
 			{
-				that.addSigRow(newSig[i]);
+				$this.addSigRow(newSig[i]);
 			}
-			$.extend(that.sigData, newSig);
+			$.extend($this.sigData, newSig);
 			$('#sig-table').trigger('update');
 
 		}, 'json');
@@ -1831,7 +1838,6 @@ siggymain.prototype.setupAddBox = function ()
 	//override potential form memory
 	$('#sig-add-box select[name=type]').val('none');
 
-	var that = this;
 	$('#sig-add-box form').submit(function ()
 	{
 		var sigEle = $('#sig-add-box input[name=sig]');
@@ -1855,32 +1861,32 @@ siggymain.prototype.setupAddBox = function ()
 		}
 		
 		var postData = {
-			systemID: that.systemID,
+			systemID: $this.systemID,
 			sig: sigEle.val(),
 			type: type,
 			desc: descEle.val(),
 			siteID: siteEle.val()
 		};
 
-		if( that.settings.showSigSizeCol )
+		if( $this.settings.showSigSizeCol )
 		{
 				var sizeEle = $('#sig-add-box select[name=size]');
 				postData.sigSize = sizeEle.val();
 		}
 
-		$.post(that.settings.baseUrl + 'dosigAdd', postData, function (newSig)
+		$.post($this.settings.baseUrl + 'dosigAdd', postData, function (newSig)
 		{
 			for (var i in newSig)
 			{
-				that.addSigRow(newSig[i]);
+				$this.addSigRow(newSig[i]);
 			}
-			$.extend(that.sigData, newSig);
+			$.extend($this.sigData, newSig);
 			$('#sig-table').trigger('update');
 
 		}, 'json');
 
 		sigEle.val('');
-		if( that.settings.showSigSizeCol )
+		if( $this.settings.showSigSizeCol )
 		{
 				sizeEle.val('');
 		}		
@@ -1899,10 +1905,10 @@ siggymain.prototype.setupAddBox = function ()
 	{
 		newType = $(this).val();
 		
-		//$('#sigAddBox select[name=site]').replaceWith(that.generateSiteSelect(that.systemClass, newType, 0).attr('name', 'site'));
-		that.updateSiteSelect( '#sig-add-box select[name=site]', that.systemClass, newType, 0);
+		//$('#sigAddBox select[name=site]').replaceWith($this.generateSiteSelect($this.systemClass, newType, 0).attr('name', 'site'));
+		$this.updateSiteSelect( '#sig-add-box select[name=site]', $this.systemClass, newType, 0);
 		// $('#sigAddBox select[name=site]').empty();
-	 // $('#sigAddBox select[name=site]').append(that.generateSiteSelect(that.systemClass, newType, 0).attr('name', 'site'));
+	 // $('#sigAddBox select[name=site]').append($this.generateSiteSelect($this.systemClass, newType, 0).attr('name', 'site'));
 		//$('#sigAddBox select[name=site]').focus();
 	}).keypress(this.addBoxEnterHandler);	
 	
@@ -2124,6 +2130,9 @@ siggymain.prototype.initialize = function ()
 	//}, 1000 );	
 	
 	this.initializeTabs();
+	
+	
+	this.initializePOSes();
 }
 
 siggymain.prototype.saveSystemOptions = function(systemID, label, activity)
@@ -2302,17 +2311,214 @@ siggymain.prototype.stopBlinkingNotes = function()
 }
 
 
-siggymain.prototype.freeze = function ()
+siggymain.prototype.freeze = function()
 {
 	this.freezeSystem = 1;
 	$('#freezeOpt').hide();
 	$('#unfreezeOpt').show();
 }
 
-siggymain.prototype.unfreeze = function ()
+siggymain.prototype.unfreeze = function()
 {
 	this.freezeSystem = 0;
 	$('#unfreezeOpt').hide();
 	$('#freezeOpt').show();
 }
 
+
+siggymain.prototype.initializePOSes = function()
+{
+	var $this = this;
+	$('#system-intel-poses tbody').empty();
+	
+	$('#system-intel-add-pos').click( function() {
+		$this.openPOSForm();
+		$this.addPOS();
+	} );
+	
+	$('#pos-form button[name=cancel]').click( function() {
+		$.unblockUI();
+	} );
+}
+
+siggymain.prototype.getPOSStatus = function( online )
+{
+	if( online )
+	{
+		return "Online";
+	}
+	else
+	{
+		return "Offline";
+	}
+}
+
+siggymain.prototype.updatePOSList = function( data )
+{
+	var $this = this;
+
+	var body = $('#system-intel-poses tbody');
+	if( typeof data != "undefined" && Object.size(data) > 0 )
+	{
+		for(var i in data)
+		{
+			var row = $("<tr>").attr('id', 'pos-'+data[i].pos_id);
+			
+			row.append( $("<td>").text( data[i].pos_location_planet + " - " + data[i].pos_location_moon ) );
+			row.append( $("<td>").text( data[i].pos_owner ) );
+			row.append( $("<td>").text( $this.getPOSStatus(data[i].pos_online) ) );
+			row.append( $("<td>").text( data[i].pos_type_name ) );
+			row.append( $("<td>").text( data[i].pos_size ) );
+			row.append( $("<td>").text(siggymain.displayTimeStamp(data[i].pos_added_date)) );
+			row.append( $("<td>").text("") );
+			
+			var edit = $("<a>").addClass("btn btn-default btn-xs").text("Edit").click( function() {
+					$this.openPOSForm();
+					$this.editPOS( data[i].pos_id );
+				}
+			);
+			var remove = $("<a>").addClass("btn btn-default btn-xs").text("Remove").click( function() {
+					$this.removePOS( data[i].pos_id );
+				}
+			);
+			
+			
+			row.append( $("<td>").append(edit).append(remove) ).addClass('center-text');
+			
+			body.append(row);
+		}
+		
+		$this.poses = data;
+	}
+	else
+	{
+		body.empty();
+		
+		$this.poses = {};
+	}
+}
+
+siggymain.prototype.openPOSForm = function()
+{
+	var $this = this;
+	
+	$.blockUI({ 
+		message: $('#pos-form'),
+		css: { 
+			border: 'none', 
+			padding: '15px', 
+			background: 'transparent', 
+			color: 'inherit',
+			cursor: 'auto',
+			textAlign: 'left',
+			top: '20%',
+			width: 'auto',
+			centerX: true,
+			centerY: false
+		},
+		overlayCSS: {
+			cursor: 'auto'
+		},
+		fadeIn:  0, 
+		fadeOut:  0
+	}); 
+	
+	$('.blockOverlay').attr('title','Click to unblock').click($.unblockUI); 
+	
+	
+	
+	return false;
+}
+
+siggymain.prototype.addPOS = function()
+{
+	this.setupPOSForm('add');
+	
+}
+
+siggymain.prototype.setupPOSForm = function(mode, posID)
+{
+	var $this = this;
+	
+	var planet = $("#pos-form input[name=pos_location_planet]");
+	var moon = $("#pos-form input[name=pos_location_moon]");
+	var owner = $("#pos-form input[name=pos_owner]");
+	var type = $("#pos-form input[name=pos_type]");
+	var size = $("#pos-form select[name=pos_size]");
+	var status = $("#pos-form select[name=pos_status]");
+	var notes = $("#pos-form select[name=pos_status]");
+	
+	var data = {};
+	var action = '';
+	if( mode == 'edit' )
+	{
+		data = this.poses[posID];
+		action = $this.settings.baseUrl + 'pos/edit';
+	}
+	else
+	{
+		data = {
+					pos_location_planet: '',
+					pos_location_moon: '',
+					pos_owner: '',
+					pos_type: 1,
+					pos_size: 'small',
+					pos_status: 0,
+					pos_notes: '',
+					pos_system_id: 0
+				};
+		action = $this.settings.baseUrl + 'pos/add';
+	}
+	
+	planet.val( data.pos_location_planet );
+	moon.val( data.pos_location_moon );
+	owner.val( data.pos_owner );
+	type.val( data.pos_type );
+	size.val( data.pos_size );
+	status.val( data.pos_online );
+	notes.val( data.pos_notes );
+	
+	
+	
+	$("#pos-form button[name=submit]").off('click');
+	$("#pos-form button[name=submit]").click( function() {
+
+		var posData = {
+			pos_location_planet: planet.val(),
+			pos_location_moon: moon.val(),
+			pos_owner: owner.val(),
+			pos_type: type.val(),
+			pos_size: size.val(),
+			pos_online: status.val(),
+			pos_notes: notes.val(),
+			pos_system_id: $this.systemID
+		};
+
+		if( posData.pos_location_moon != "" && posData.pos_location_planet != "" )
+		{
+			$.post(action, posData, function ()
+			{
+				$.unblockUI();
+			});
+		}
+
+		return false;
+	});
+}
+
+siggymain.prototype.editPOS = function(posID)
+{
+	this.setupPOSForm('edit', posID);
+}
+
+siggymain.prototype.removePOS = function(posID)
+{
+	var r = confirm("Are you sure you want to delete the POS?");
+	if (r == true)
+	{
+		$.post(this.settings.baseUrl + 'pos/remove', posID, function ()
+		{
+			$('#pos-'+posID).remove();
+		});
+	}
+}
