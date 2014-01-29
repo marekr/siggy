@@ -292,14 +292,14 @@ class Controller_Siggy extends FrontController
     
     private function getPOSes( $systemID )
     {
-        $poses = DB::query(Database::SELECT, "SELECT p.pos_id, p.pos_location, p.pos_online, p.pos_type, p.pos_size,
-                                                p.pos_added_date, c.corporationName, pt.pos_type_name FROM pos_tracker p
-                                                LEFT JOIN corporations c ON(c.corporationID = p.pos_corp_id)
+        $poses = DB::query(Database::SELECT, "SELECT p.pos_id, p.pos_location_planet, p.pos_location_moon, p.pos_online, p.pos_type, p.pos_size,
+                                                p.pos_added_date, p.pos_owner, pt.pos_type_name, p.pos_notes
+												FROM pos_tracker p
                                                 INNER JOIN pos_types pt ON(pt.pos_type_id = p.pos_type)
                                                 WHERE p.group_id=:group_id AND p.pos_system_id=:system_id")
 										->param(':group_id', $this->groupData['groupID'])
                                         ->param(':system_id', $systemID)
-                                        ->execute()->as_array();	
+                                        ->execute()->as_array('pos_id');	
 
         return $poses;
     }
@@ -310,7 +310,7 @@ class Controller_Siggy extends FrontController
 			
 
 			
-			//if( $this->isAuthed() )
+			//if( $this->siggyAccessGranted() )
 			//{
         if( count( $this->groupData['groups'] ) > 1 || count( current($this->groupData['groups']) > 1) )
         {
@@ -449,7 +449,7 @@ class Controller_Siggy extends FrontController
 	
 	public function action_loadScanProfiles()
 	{
-		if(	 !$this->isAuthed() )
+		if(	 !$this->siggyAccessGranted() )
 		{
 			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
 			exit();
@@ -473,7 +473,7 @@ class Controller_Siggy extends FrontController
 	
 	public function action_tweakScanProfile()
 	{
-		if(	 !$this->isAuthed() )
+		if(	 !$this->siggyAccessGranted() )
 		{
 			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
 			exit();
@@ -545,15 +545,6 @@ class Controller_Siggy extends FrontController
 		return FALSE;
 	}
 	
-	public function isAuthed()
-	{
-			if(	 $this->authStatus != AuthStatus::ACCEPTED )
-			{
-				return FALSE;
-			}			 
-			return TRUE;
-	}
-	
 	public function action_updateSilent()
 	{
 			$this->profiler = NULL;
@@ -566,7 +557,7 @@ class Controller_Siggy extends FrontController
 				return;
 			}
 			
-			if(	!$this->isAuthed() )
+			if(	!$this->siggyAccessGranted() )
 			{
 				echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
 				exit();
@@ -712,7 +703,7 @@ class Controller_Siggy extends FrontController
 			header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1\
 			
 
-			if(	!$this->isAuthed() )
+			if(	!$this->siggyAccessGranted() )
 			{
 				echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
 				exit();
@@ -756,7 +747,7 @@ class Controller_Siggy extends FrontController
         ob_start( 'ob_gzhandler' );
         
 
-        if(	!$this->isAuthed() )
+        if(	!$this->siggyAccessGranted() )
         {
             echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
             exit();
@@ -969,7 +960,7 @@ class Controller_Siggy extends FrontController
 		header('content-type: application/json');	 
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 		
-		if(	 !$this->isAuthed() )
+		if(	 !$this->siggyAccessGranted() )
 		{
 			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
 			exit();
@@ -1022,7 +1013,7 @@ class Controller_Siggy extends FrontController
 		header('content-type: application/json');
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 		
-		if(	 !$this->isAuthed() )
+		if(	 !$this->siggyAccessGranted() )
 		{
 			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
 			exit();
@@ -1040,7 +1031,7 @@ class Controller_Siggy extends FrontController
 			
 			if( $this->groupData['showSigSizeCol'] )
 			{
-					$insert['sigSize'] = ( is_numeric( $_POST['sigSize'] ) ? $_POST['sigSize'] : '' );
+				$insert['sigSize'] = ( is_numeric( $_POST['sigSize'] ) ? $_POST['sigSize'] : '' );
 			}
 			
 			if( !empty( $this->groupData['charName'] ) )
@@ -1072,7 +1063,7 @@ class Controller_Siggy extends FrontController
 		header('content-type: application/json');
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 		
-		if(	 !$this->isAuthed() )
+		if(	 !$this->siggyAccessGranted() )
 		{
 			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
 			exit();
@@ -1378,7 +1369,7 @@ class Controller_Siggy extends FrontController
 		header('content-type: application/json');	 
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 		
-		if(	 !$this->isAuthed() )
+		if(	 !$this->siggyAccessGranted() )
 		{
 			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
 			exit();

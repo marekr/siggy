@@ -30,40 +30,26 @@
             <div id="pos-box" class="sub-display-group">
                 <h2>POSes</h2>
                 <div>
-                    <a href="#" class="btn btn-default btn-xs">Add POS</a><br /><br />
-                    <table  cellspacing="1" class='siggy-table bordered-wrap'>
-                        <tr>
-                            <th width="10%">Planet - Moon</th>
-                            <th width="20%">Corp</th>
-                            <th>Status</th>
-                            <th>Type</th>
-                            <th>Date Added</th>
-                            <th>Added by</th>
-                            <th>&nbsp;</th>
-                        </tr>
-                        <tr>
-                            <td>5 - 1</td>
-                            <td>AQUILA INC</td>
-                            <td>Offline</td>
-                            <td>Amarr Large</td>
-                            <td>25.12.2012 2:42</td>
-                            <td>Messoroz</td>
-                            <td><a href="#" class="btn btn-default btn-xs">Edit</a>
-                            <a href="#" class="btn btn-default btn-xs">Remove</a></td>
-                        </tr>
-                        <tr class="alt">
-                            <td>5 - 1</td>
-                            <td>AQUILA INC</td>
-                            <td>Offline</td>
-                            <td>Amarr Large</td>
-                            <td>25.12.2012 2:42</td>
-                            <td>Messoroz</td>
-                            <td><a href="#" class="btn btn-default btn-xs">Edit</a>
-                            <a href="#" class="btn btn-default btn-xs">Remove</a></td>
-                        </tr>
+                    <a href="#" id='system-intel-add-pos' class="btn btn-default btn-xs">Add POS</a><br /><br />
+                    <table id="system-intel-poses" cellspacing="1" class='siggy-table bordered-wrap'>
+						<thead>
+							<tr>
+								<th width="8%">Location</th>
+								<th width="12%">Corp</th>
+								<th width="8%">Status</th>
+								<th width="12%">Type</th>
+								<th width="8%">Size</th>
+								<th width="8%">Added</th>
+								<th width="32%">Notes</th>
+								<th width="8%">&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
                     </table>
                 </div>
             </div>
+			<!---
             <div id="dscan-box" class="sub-display-group">
                 <h2>DScan</h2>
                 <div>
@@ -78,14 +64,14 @@
                         <tr>
                             <td>Scan from p5</td>
                             <td>25.12.2012 2:42</td>
-                            <td>Messoroz</td>
+                            <td></td>
                             <td><a href="#" class="btn  btn-default btn-xs">View</a>
                            <a href="#" class="btn btn-default btn-xs">Remove</a></td>
                         </tr>
                         <tr>
                             <td>Scan from center</td>
                             <td>25.12.2012 2:59</td>
-                            <td>Messoroz</td>
+                            <td></td>
                             <td><a href="#" class="btn btn-default btn-xs">View</a>
                             <a href="#" class="btn btn-default btn-xs">Remove</a></td>
                         </tr>
@@ -99,6 +85,7 @@
                     THIS SYSTEM SUCKS, WTB PORN
                 </div>
             </div>
+			--->
             
         </div>
       
@@ -377,7 +364,59 @@
     </div>
     <br />
     
-    <!-- mass add box start -->
+    <!-- mass add box start -->    
+    <div id="pos-form" class="box" style="display:none;">
+        <h3>Add POS</h3>
+        <div>
+            <form>
+				<label>
+					Location(Planet - Moon)<br />
+					<input type="text" value="" name="pos_location_planet" size="2" maxlength="2" style="width:auto"/> -
+					<input type="text" value="" name="pos_location_moon" size="3" maxlength="4" style="width:auto"/>
+				</label><br />
+				<label>
+					Owner
+					<input type="text" value="" name="pos_owner" />
+				</label>
+				<label>
+					Type
+					<select name="pos_type">
+						<option value="1">Amarr</option>
+						<option value="2">Caldari</option>
+						<option value="3">Gallente</option>
+						<option value="4">Minmatar</option>
+						<option value="5">Dread Guristas</option>
+						<option value="6">Shadow Serpentis</option>
+						<option value="7">Guristas</option>
+					</select>
+				</label>
+				<label>
+					Size
+					<select name="pos_size">
+						<option value="small">Small</option>
+						<option value="medium">Medium</option>
+						<option value="large">Large</option>
+					</select>
+				</label>
+				<label>
+					Status
+					<select name="pos_status">
+						<option value="1">Online</option>
+						<option value="0">Offline</option>
+					</select>
+				</label>
+				<label>
+					Notes
+					<textarea name="blob" rows="6" style="width:100%;font-size:11px;"></textarea>
+				</label>
+                <div class="center-text form-actions">
+                    <button name='submit' class="btn btn-primary" type="submit">Submit</button>
+                    <button name='cancel' type="button" class="btn btn-default">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+  
     
     <div id="mass-add-sig-box" class="box">
         <h3>Mass Sig Reader</h3>
@@ -387,6 +426,21 @@
                 <textarea name="blob" rows="12" style="width:100%;font-size:11px;"></textarea>
                 <div class="center-text form-actions">
                     <button name='add' class="btn btn-primary" type="submit">Submit</button>
+                    <button name='cancel' type="button" class="btn btn-default">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+	
+	
+    <div id="dscan-form" class="box">
+        <h3>DScan Results</h3>
+        <div>
+            <p>This is for copy pasted dscan results from your scanner window. Simply select a entry, hit CTRL+A, then CTRL-C, then paste into the box below. </p>
+            <form>
+                <textarea name="blob" rows="12" style="width:100%;font-size:11px;"></textarea>
+                <div class="center-text form-actions">
+                    <button name='submit' class="btn btn-primary" type="submit">Submit</button>
                     <button name='cancel' type="button" class="btn btn-default">Cancel</button>
                 </div>
             </form>

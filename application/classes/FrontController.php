@@ -53,6 +53,15 @@ class FrontController extends Controller
 		parent::__construct($request, $response);
 	}
 	
+	public function siggyAccessGranted()
+	{
+		if(	 $this->authStatus != AuthStatus::ACCEPTED )
+		{
+			return FALSE;
+		}			 
+		return TRUE;
+	}
+	
 	public function siggyredirect($url)
 	{
 		if( $this->ajaxRequest )
