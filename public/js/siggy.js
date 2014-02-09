@@ -2401,7 +2401,7 @@ siggymain.prototype.setupDScanForm = function(mode, posID)
 	{
 		data = {
 					dscan_title: '',
-					blob: '',
+					blob: ''
 				};
 		action = $this.settings.baseUrl + 'dscan/add';
 	}
@@ -2414,7 +2414,7 @@ siggymain.prototype.setupDScanForm = function(mode, posID)
 		var data = {
 			dscan_title: title.val(),
 			blob: scan.val(),
-			system_id: $this.systemID,
+			system_id: $this.systemID
 		};
 		
 		if( data.dscan_title != "" && data.blob != "" )
