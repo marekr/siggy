@@ -2620,6 +2620,11 @@ siggymain.prototype.setupPOSForm = function(mode, posID)
 			pos_notes: notes.val(),
 			pos_system_id: $this.systemID
 		};
+		
+		if(mode == 'edit')
+		{
+			posData.pos_id = posID;
+		}
 
 		if( posData.pos_location_moon != "" && posData.pos_location_planet != "" )
 		{
