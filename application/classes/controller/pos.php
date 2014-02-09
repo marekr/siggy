@@ -50,11 +50,64 @@ class Controller_Pos extends FrontController
 
 	public function action_edit()
 	{
+		$id = $_POST['pos_id'];
 		
+		$pos = DB::query(Database::SELECT, "SELECT pos_id
+										FROM pos_tracker
+										WHERE pos_id=:pos_id AND group_id=:group_id")
+								->param(':group_id', $this->groupData['groupID'])
+								->param(':pos_id', $id)
+								->execute()->current();
+								
+		if( !isset($pos['pos_id']) )
+		{
+			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid POS ID'));
+			exit();
+		}
+		
+		$data = array(
+			'pos_location_planet' => $_POST['pos_location_planet'],
+			'pos_location_moon' => $_POST['pos_location_moon'],
+			'pos_owner' => $_POST['pos_owner'],
+			'pos_type' => isset($_POST['pos_type']) ? intval($_POST['pos_type']) : 1,
+			'pos_online' => intval($_POST['pos_online']),
+			'pos_size' => $_POST['pos_size'],
+			'pos_notes' => $_POST['pos_notes']
+		);
+		
+		if( empty($data['pos_location_planet'] ) || empty($data['pos_location_moon'] ) )
+		{
+			echo json_encode(array('error' => 1, 'errorMsg' => 'Missing POS Location'));
+			exit();
+		}
+		
+		if( !in_array( $data['pos_size'], array('small','medium','large') ) )
+		{
+			$data['pos_size'] = 'small';
+		}
+			
+			
+		DB::update('pos_tracker')->set( $data )->where('pos_id', '=', $pos['pos_id'])->execute();
 	}
 	
 	public function action_remove()
 	{
+		$id = $_POST['pos_id'];
+		
+		$pos = DB::query(Database::SELECT, "SELECT pos_id
+										FROM pos_tracker
+										WHERE pos_id=:pos_id AND group_id=:group_id")
+								->param(':group_id', $this->groupData['groupID'])
+								->param(':pos_id', $id)
+								->execute()->current();
+								
+		if( !isset($pos['pos_id']) )
+		{
+			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid POS ID'));
+			exit();
+		}
+		
+		DB::delete('pos_tracker')->where('pos_id', '=', $id)->execute();
 		
 	}
 }
