@@ -2572,7 +2572,7 @@ siggymain.prototype.setupPOSForm = function(mode, posID)
 	var planet = $("#pos-form input[name=pos_location_planet]");
 	var moon = $("#pos-form input[name=pos_location_moon]");
 	var owner = $("#pos-form input[name=pos_owner]");
-	var type = $("#pos-form input[name=pos_type]");
+	var type = $("#pos-form select[name=pos_type]");
 	var size = $("#pos-form select[name=pos_size]");
 	var status = $("#pos-form select[name=pos_status]");
 	var notes = $("#pos-form select[name=pos_status]");
