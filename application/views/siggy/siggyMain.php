@@ -379,6 +379,13 @@
 						<option value="5">Dread Guristas</option>
 						<option value="6">Shadow Serpentis</option>
 						<option value="7">Guristas</option>
+						<option value="8">Serpentis</option>
+						<option value="9">Angel</option>
+						<option value="10">Blood</option>
+						<option value="11">Dark Blood</option>
+						<option value="12">Domination</option>
+						<option value="13">Sansha</option>
+						<option value="14">True Sansha</option>
 					</select>
 				</label>
 				<label>
