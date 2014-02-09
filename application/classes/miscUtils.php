@@ -453,14 +453,6 @@ final class miscUtils
 		
 		static function generateString($length = 14) 
 		{
-			/*
-			$characters = '0123456789abcdefghijklmnopqrstuvwxyz';
-			$randomString = '';
-			for ($i = 0; $i < $length; $i++) 
-			{
-				$randomString .= $characters[rand(0, strlen($characters) - 1)];
-			}*/
-			
 			$randomString = substr( md5(uniqid(microtime() . rand(), true)), 0 ,14);
 			return $randomString;
 		}
