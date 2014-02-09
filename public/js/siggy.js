@@ -1975,7 +1975,7 @@ siggymain.prototype.setupFatalErrorHandler = function()
 		}
 	} );
 	$(document).ajaxSuccess( function() {
-		that.ajaxErrors += 0;
+		that.ajaxErrors = 0;
 	} );	
 	
 	
