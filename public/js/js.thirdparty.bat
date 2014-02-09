@@ -10,19 +10,7 @@
 --js=jquery.flot.js ^
 --js=jquery.contextMenu.js ^
 --js=jsBezier-0.6-min.js ^
---js=jsPlumb-util.js ^
---js=jsPlumb-dom-adapter.js ^
---js=jsPlumb-drag.js ^
---js=jsPlumb.js ^
---js=jsPlumb-endpoint.js ^
---js=jsPlumb-connection.js ^
---js=jsPlumb-connectors-statemachine.js ^
---js=jsPlumb-anchors.js ^
---js=jsPlumb-defaults.js ^
---js=jsPlumb-renderers-svg.js ^
---js=jsPlumb-renderers-canvas.js ^
---js=jsPlumb-renderers-vml.js ^
---js=jquery.jsPlumb.js ^
+--js=jquery.jsPlumb-1.5.5-min.js ^
 --js=dropdown.js ^
 --js_output_file=thirdparty.compiled.js
 @pause

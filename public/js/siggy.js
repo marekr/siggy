@@ -454,6 +454,7 @@ var whLookup = {
 
 var blackHoleEffects = {
 	1: [
+		['Lock range', '-10%'],
 		['Inertia', '+25%'],
 		['Falloff', '-10%'],
 		['Missile Velocity', '-10%'],
@@ -461,6 +462,7 @@ var blackHoleEffects = {
 		['Drone control Range', '-10%']
 	],
 	2: [
+		['Lock range', '-19%'],
 		['Inertia', '+44%'],
 		['Falloff', '-19%'],
 		['Missile Velocity', '-19%'],
@@ -468,6 +470,7 @@ var blackHoleEffects = {
 		['Drone control Range', '-19%']
 	],
 	3: [
+		['Lock range', '-27%'],
 		['Inertia', '+55%'],
 		['Falloff', '-27%'],
 		['Missile Velocity', '-27%'],
@@ -475,6 +478,7 @@ var blackHoleEffects = {
 		['Drone control Range', '-27%']
 	],
 	4: [
+		['Lock range', '-34%'],
 		['Inertia', '+68%'],
 		['Falloff', '-34%'],
 		['Missile Velocity', '-34%'],
@@ -482,6 +486,7 @@ var blackHoleEffects = {
 		['Drone control Range', '-34%']
 	], 
 	5: [
+		['Lock range', '-41%'],
 		['Inertia', '+85%'],
 		['Falloff', '-41%'],
 		['Missile Velocity', '-41%'],
@@ -489,6 +494,7 @@ var blackHoleEffects = {
 		['Drone control Range', '-41%']
 	],
 	6: [
+		['Lock range', '-50%'],
 		['Inertia', '+100%'],
 		['Falloff', '-50%'],
 		['Missile Velocity', '-50%'],
@@ -810,7 +816,7 @@ siggymain.prototype.getCurrentTime = function ()
 siggymain.displayTimeStamp = function (unixTimestamp)
 {
 	var date = new Date(unixTimestamp * 1000);
-	var time = pad(date.getUTCDate(), 2) + '/' + pad(date.getUTCMonth() + 1, 2) + ' ' + pad(date.getUTCHours(), 2) + ':' + pad(date.getUTCMinutes(), 2) + ':' + pad(date.getUTCSeconds(), 2);
+	var time = pad(date.getUTCDate(), 2) + '/' + pad(date.getUTCMonth() + 1, 2) + '/' + date.getUTCFullYear().toString().substr(2,2)  + ' ' + pad(date.getUTCHours(), 2) + ':' + pad(date.getUTCMinutes(), 2) + ':' + pad(date.getUTCSeconds(), 2);
 
 	delete date;
 
@@ -1292,6 +1298,7 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 	}
 	
 	this.updatePOSList( systemData.poses );
+	this.updateDScan( systemData.dscans );
 }
 
 siggymain.prototype.renderStats = function()
@@ -2132,6 +2139,7 @@ siggymain.prototype.initialize = function ()
 	this.initializeTabs();
 	
 	
+	this.initializeDScan();
 	this.initializePOSes();
 }
 
@@ -2325,85 +2333,31 @@ siggymain.prototype.unfreeze = function()
 	$('#freezeOpt').show();
 }
 
-
-siggymain.prototype.initializePOSes = function()
+siggymain.prototype.initializeDScan = function()
 {
 	var $this = this;
-	$('#system-intel-poses tbody').empty();
 	
-	$('#system-intel-add-pos').click( function() {
-		$this.openPOSForm();
-		$this.addPOS();
+	
+	$('#system-intel-add-dscan').click( function() {
+		//$this.openPOSForm();
+		$this.openBox('#dscan-form');
+		$this.setupDScanForm('add');
+		return false;
 	} );
 	
-	$('#pos-form button[name=cancel]').click( function() {
+	
+	$('#dscan-form button[name=cancel]').click( function() {
 		$.unblockUI();
+		return false;
 	} );
 }
 
-siggymain.prototype.getPOSStatus = function( online )
-{
-	if( online )
-	{
-		return "Online";
-	}
-	else
-	{
-		return "Offline";
-	}
-}
-
-siggymain.prototype.updatePOSList = function( data )
-{
-	var $this = this;
-
-	var body = $('#system-intel-poses tbody');
-	if( typeof data != "undefined" && Object.size(data) > 0 )
-	{
-		for(var i in data)
-		{
-			var row = $("<tr>").attr('id', 'pos-'+data[i].pos_id);
-			
-			row.append( $("<td>").text( data[i].pos_location_planet + " - " + data[i].pos_location_moon ) );
-			row.append( $("<td>").text( data[i].pos_owner ) );
-			row.append( $("<td>").text( $this.getPOSStatus(data[i].pos_online) ) );
-			row.append( $("<td>").text( data[i].pos_type_name ) );
-			row.append( $("<td>").text( data[i].pos_size ) );
-			row.append( $("<td>").text(siggymain.displayTimeStamp(data[i].pos_added_date)) );
-			row.append( $("<td>").text("") );
-			
-			var edit = $("<a>").addClass("btn btn-default btn-xs").text("Edit").click( function() {
-					$this.openPOSForm();
-					$this.editPOS( data[i].pos_id );
-				}
-			);
-			var remove = $("<a>").addClass("btn btn-default btn-xs").text("Remove").click( function() {
-					$this.removePOS( data[i].pos_id );
-				}
-			);
-			
-			
-			row.append( $("<td>").append(edit).append(remove) ).addClass('center-text');
-			
-			body.append(row);
-		}
-		
-		$this.poses = data;
-	}
-	else
-	{
-		body.empty();
-		
-		$this.poses = {};
-	}
-}
-
-siggymain.prototype.openPOSForm = function()
+siggymain.prototype.openBox = function(ele)
 {
 	var $this = this;
 	
 	$.blockUI({ 
-		message: $('#pos-form'),
+		message: $(ele),
 		css: { 
 			border: 'none', 
 			padding: '15px', 
@@ -2425,9 +2379,184 @@ siggymain.prototype.openPOSForm = function()
 	
 	$('.blockOverlay').attr('title','Click to unblock').click($.unblockUI); 
 	
-	
-	
 	return false;
+}
+
+
+siggymain.prototype.setupDScanForm = function(mode, posID)
+{
+	var $this = this;
+	
+	var title = $("#dscan-form input[name=dscan_title]");
+	var scan = $("#dscan-form textarea[name=blob]");
+	
+	var data = {};
+	var action = '';
+	if( mode == 'edit' )
+	{
+		//data = this.poses[posID];
+		action = $this.settings.baseUrl + 'dscan/edit';
+	}
+	else
+	{
+		data = {
+					dscan_title: '',
+					blob: '',
+				};
+		action = $this.settings.baseUrl + 'dscan/add';
+	}
+	
+	title.val( data.dscan_title );
+	scan.val( data.blob );
+	
+	$('#dscan-form button[name=submit]').off('click');
+	$('#dscan-form button[name=submit]').click( function() {
+		var data = {
+			dscan_title: title.val(),
+			blob: scan.val(),
+			system_id: $this.systemID,
+		};
+		
+		if( data.dscan_title != "" && data.blob != "" )
+		{
+			$.post(action, data, function ()
+			{
+				$this.forceUpdate = true;
+				$.unblockUI();
+			});
+		}
+		
+		return false;
+	} );
+}
+
+siggymain.prototype.updateDScan = function( data )
+{
+	var $this = this;
+
+	var body = $('#system-intel-dscans tbody');
+	body.empty();
+		
+	if( typeof data != "undefined" && Object.size(data) > 0 )
+	{
+		for(var i in data)
+		{
+			var dscan_id = data[i].dscan_id;
+			var row = $("<tr>").attr('id', 'dscan-'+dscan_id);
+			
+			row.append( $("<td>").text( data[i].dscan_title ) );
+			row.append( $("<td>").text(siggymain.displayTimeStamp(data[i].dscan_date)) );
+			row.append( $("<td>").text( data[i].dscan_added_by ) );
+			
+			(function(dscan_id){
+				var view = $("<a>").addClass("btn btn-default btn-xs").text("View").attr("href",$this.settings.baseUrl + 'dscan/view/'+dscan_id).attr("target","_blank");
+				var remove = $("<a>").addClass("btn btn-default btn-xs").text("Remove").click( function() {
+						$this.removeDScan( dscan_id );
+					}
+				);
+				row.append( $("<td>").append(view).append(remove) ).addClass('center-text');
+			})(dscan_id);
+			
+			
+			
+			body.append(row);
+		}
+		
+		$this.dscans = data;
+	}
+	else
+	{
+		$this.dscans = {};
+	}
+}
+
+siggymain.prototype.removeDScan = function(dscanID)
+{
+	var r = confirm("Are you sure you want to delete the dscan entry?");
+	if (r == true)
+	{
+		$.post(this.settings.baseUrl + 'dscan/remove', {dscan_id: dscanID}, function ()
+		{
+			$('#dscan-'+dscanID).remove();
+		});
+	}
+}
+
+
+siggymain.prototype.initializePOSes = function()
+{
+	var $this = this;
+	$('#system-intel-poses tbody').empty();
+	
+	$('#system-intel-add-pos').click( function() {
+		$this.openBox('#pos-form');
+		$this.addPOS();
+		return false;
+	} );
+	
+	$('#pos-form button[name=cancel]').click( function() {
+		$.unblockUI();
+		return false;
+	} );
+}
+
+siggymain.prototype.getPOSStatus = function( online )
+{
+	if( online )
+	{
+		return "Online";
+	}
+	else
+	{
+		return "Offline";
+	}
+}
+
+siggymain.prototype.updatePOSList = function( data )
+{
+	var $this = this;
+
+	var body = $('#system-intel-poses tbody');
+	body.empty();
+
+	if( typeof data != "undefined" && Object.size(data) > 0 )
+	{
+		for(var i in data)
+		{
+			var pos_id = data[i].pos_id;
+			var row = $("<tr>").attr('id', 'pos-'+pos_id);
+			
+			row.append( $("<td>").text( data[i].pos_location_planet + " - " + data[i].pos_location_moon ) );
+			row.append( $("<td>").text( data[i].pos_owner ) );
+			row.append( $("<td>").text( $this.getPOSStatus(data[i].pos_online) ) );
+			row.append( $("<td>").text( data[i].pos_type_name ) );
+			row.append( $("<td>").text( data[i].pos_size ) );
+			row.append( $("<td>").text(siggymain.displayTimeStamp(data[i].pos_added_date)) );
+			row.append( $("<td>").text("") );
+			
+			(function(pos_id){
+				var edit = $("<a>").addClass("btn btn-default btn-xs").text("Edit").click( function() {
+						$this.openBox('#pos-form');
+						$this.editPOS( pos_id );
+					}
+				);
+				var remove = $("<a>").addClass("btn btn-default btn-xs").text("Remove").click( function() {
+						$this.removePOS( pos_id );
+					}
+				);
+			
+				row.append( $("<td>").append(edit).append(remove) ).addClass('center-text');
+			})(pos_id);
+			
+			body.append(row);
+		}
+		
+		$this.poses = data;
+	}
+	else
+	{
+		$this.poses = {};
+	}
 }
 
 siggymain.prototype.addPOS = function()
@@ -2478,8 +2607,6 @@ siggymain.prototype.setupPOSForm = function(mode, posID)
 	status.val( data.pos_online );
 	notes.val( data.pos_notes );
 	
-	
-	
 	$("#pos-form button[name=submit]").off('click');
 	$("#pos-form button[name=submit]").click( function() {
 
@@ -2498,6 +2625,7 @@ siggymain.prototype.setupPOSForm = function(mode, posID)
 		{
 			$.post(action, posData, function ()
 			{
+				$this.forceUpdate = true;
 				$.unblockUI();
 			});
 		}
@@ -2516,7 +2644,7 @@ siggymain.prototype.removePOS = function(posID)
 	var r = confirm("Are you sure you want to delete the POS?");
 	if (r == true)
 	{
-		$.post(this.settings.baseUrl + 'pos/remove', posID, function ()
+		$.post(this.settings.baseUrl + 'pos/remove', {pos_id: posID}, function ()
 		{
 			$('#pos-'+posID).remove();
 		});

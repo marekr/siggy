@@ -49,35 +49,26 @@
                     </table>
                 </div>
             </div>
-			<!---
+			
             <div id="dscan-box" class="sub-display-group">
                 <h2>DScan</h2>
                 <div>
-                    <a href="#" class="btn btn-default btn-xs">Add DScan result</a><br /><br />
-                    <table  cellspacing="1" class='siggy-table bordered-wrap'>
-                        <tr>
-                            <th width="60%">Title</th>
-                            <th>Date Added</th>
-                            <th>Added by</th>
-                            <th>&nbsp;</th>
-                        </tr>
-                        <tr>
-                            <td>Scan from p5</td>
-                            <td>25.12.2012 2:42</td>
-                            <td></td>
-                            <td><a href="#" class="btn  btn-default btn-xs">View</a>
-                           <a href="#" class="btn btn-default btn-xs">Remove</a></td>
-                        </tr>
-                        <tr>
-                            <td>Scan from center</td>
-                            <td>25.12.2012 2:59</td>
-                            <td></td>
-                            <td><a href="#" class="btn btn-default btn-xs">View</a>
-                            <a href="#" class="btn btn-default btn-xs">Remove</a></td>
-                        </tr>
+                    <a href="#" id="system-intel-add-dscan" class="btn btn-default btn-xs">Add DScan result</a><br /><br />
+                    <table id="system-intel-dscans" cellspacing="1" class='siggy-table bordered-wrap'>
+						<thead>
+							<tr>
+								<th width="60%">Title</th>
+								<th>Date Added</th>
+								<th>Added by</th>
+								<th>&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
                     </table>
                 </div>
             </div>
+			<!---
             <div id="system-notes-box" class="sub-display-group">
                 <h2>Notes</h2>
                 <div>
@@ -433,12 +424,19 @@
     </div>
 	
 	
-    <div id="dscan-form" class="box">
+    <div id="dscan-form" class="box" style="display:none;">
         <h3>DScan Results</h3>
         <div>
             <p>This is for copy pasted dscan results from your scanner window. Simply select a entry, hit CTRL+A, then CTRL-C, then paste into the box below. </p>
             <form>
-                <textarea name="blob" rows="12" style="width:100%;font-size:11px;"></textarea>
+				<label>
+					Title
+					<input type="text" value="" name="dscan_title" />
+				</label><br /><br />
+				<label>
+					Scan
+					<textarea name="blob" rows="12" style="width:100%;font-size:11px;"></textarea>
+				</label>
                 <div class="center-text form-actions">
                     <button name='submit' class="btn btn-primary" type="submit">Submit</button>
                     <button name='cancel' type="button" class="btn btn-default">Cancel</button>

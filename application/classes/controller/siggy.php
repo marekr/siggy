@@ -287,6 +287,8 @@ class Controller_Siggy extends FrontController
             
             $systemData['poses'] = $this->getPOSes( $systemData['id'] );
 			
+			$systemData['dscans'] = $this->getDScans( $systemData['id'] );
+			
 			return $systemData;
 	}
     
@@ -302,6 +304,19 @@ class Controller_Siggy extends FrontController
                                         ->execute()->as_array('pos_id');	
 
         return $poses;
+    }
+	
+	
+    private function getDScans( $systemID )
+    {
+        $dscans = DB::query(Database::SELECT, "SELECT dscan_id, dscan_title, dscan_date
+												FROM dscan
+                                                WHERE group_id=:group_id AND system_id=:system_id")
+										->param(':group_id', $this->groupData['groupID'])
+                                        ->param(':system_id', $systemID)
+                                        ->execute()->as_array();	
+
+        return $dscans;
     }
 	
 	public function action_switchMembership()
@@ -545,77 +560,6 @@ class Controller_Siggy extends FrontController
 		return FALSE;
 	}
 	
-	public function action_updateSilent()
-	{
-			$this->profiler = NULL;
-			$this->auto_render = FALSE;
-			header('content-type: application/json');
-			header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-			
-			if( !isset( $_SERVER['HTTP_EVE_SOLARSYSTEMNAME']) && !isset( $_SERVER['HTTP_EVE_SOLARSYSTEMID']) )
-			{
-				return;
-			}
-			
-			if(	!$this->siggyAccessGranted() )
-			{
-				echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
-				exit();
-			}			 
-			
-			if( $this->igb )
-			{
-					$update = array('acsid' => 0, 'acsname' => '');
-					
-					$update['acsid'] = $lastSystemID = $actualCurrentSystemID = intval($_GET['acsid']);
-					$update['acsname'] = $actualCurrentSystemName = $_GET['acsname'];
-					
-					if( $actualCurrentSystemID != $_SERVER['HTTP_EVE_SOLARSYSTEMID']	)
-					{
-								$update['acsid'] = $actualCurrentSystemID = $_SERVER['HTTP_EVE_SOLARSYSTEMID'];
-								$update['acsname'] = $actualCurrentSystemName = $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'];
-								
-
-								if( $this->groupData['recordJumps'] && $actualCurrentSystemID != 0 && $lastSystemID != 0 )
-								{
-									$hourStamp = miscUtils::getHourStamp();
-									DB::query(Database::INSERT, 'INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`) VALUES(:systemID, :groupID, :hourStamp, 1) ON DUPLICATE KEY UPDATE jumps=jumps+1')
-														->param(':hourStamp', $hourStamp )->param(':systemID', $lastSystemID )->param(':groupID', $this->groupData['groupID'] )->execute();						
-
-									DB::query(Database::INSERT, 'INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`) VALUES(:systemID, :groupID, :hourStamp, 1) ON DUPLICATE KEY UPDATE jumps=jumps+1')
-														->param(':hourStamp', $hourStamp )->param(':systemID', $actualCurrentSystemID )->param(':groupID', $this->groupData['groupID'] )->execute();									
-								}							
-					}
-					
-					//location tracking!
-					if( isset($_SERVER['HTTP_EVE_CHARID']) && isset($_SERVER['HTTP_EVE_CHARNAME']) && $actualCurrentSystemID != 0 )
-					{
-						if( ! $this->groupData['alwaysBroadcast'] )
-						{
-							$broadcast = (isset($_COOKIE['broadcast']) ? intval($_COOKIE['broadcast']) : 1);
-						}
-						else
-						{
-							$broadcast = 1;
-						}
-						
-						DB::query(Database::INSERT, 'INSERT INTO chartracker (`charID`, `charName`, `currentSystemID`,`groupID`,`subGroupID`,`lastBeep`, `broadcast`,`shipType`) VALUES(:charID, :charName, :systemID, :groupID, :subGroupID, :lastBeep, :broadcast, :shipType)'
-													. 'ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, currentSystemID = :systemID, broadcast = :broadcast, shipType = :shipType')
-													->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
-													->param(':broadcast', $broadcast )
-													->param(':systemID', $actualCurrentSystemID )
-													->param(':groupID', $this->groupData['groupID'] )
-													->param(':shipType', isset($_SERVER['HTTP_EVE_SHIPTYPEID']) ? $_SERVER['HTTP_EVE_SHIPTYPEID'] : 0 )
-													->param(':subGroupID', $this->groupData['subGroupID'] )
-													->param(':lastBeep', time() )->execute();		
-		 
-					}
-						
-					echo json_encode( $update );
-			}
-		// echo View::factory('profiler/stats'); 
-			exit();
-	}
 	
 	private function __wormholeJump($origin, $dest)
 	{

@@ -13,6 +13,7 @@
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/thirdparty.compiled.js?13'></script>
 
     <!-- Le fav and touch icons -->
     <link rel="shortcut icon" href="<?php echo URL::base(TRUE, TRUE);?>favicon.ico">
@@ -67,18 +68,17 @@
 	</div> 
 	<?php elseif( $layoutMode == 'leftMenu' ): ?>
 
-  <div class="container">
+	<div class="container">
 
-    <div class="row">
-		<div class="sidenav span3">
-		<?php echo $leftMenu; ?>
-		</div>
-		<div class="span9">
-		<?php echo $content; ?>
-
-		</div>
-    </div>	
-	<?php endif; ?>
-
+		<div class="row">
+			<div class="sidenav span3">
+			<?php echo $leftMenu; ?>
+			</div>
+			<div class="span9">
+			<?php echo $content; ?>
+			</div>
+		</div>	
+		<?php endif; ?>
+	</div>
 </body>
 </html>
