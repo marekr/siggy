@@ -273,7 +273,7 @@ siggyMap.prototype.initialize = function()
                             y: internalconn.y,
                             w: internalconn.w
                         };
-                        inside = jsPlumbUtil.intersects( bb, compareBB );
+                        inside = jsPlumbGeom.intersects( bb, compareBB );
                         
                         if( inside )
                         {

@@ -32,8 +32,8 @@
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/beta-thirdparty.compiled.js?<?php echo time(); ?>'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/beta-siggy.compiled.js?<?php echo time(); ?>'></script>
     <?php else: ?>
-    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/thirdparty.compiled.js?13'></script>
-    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.compiled.js?74'></script>
+    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/thirdparty.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>
+    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>
 	<?php endif; ?>
     <?php endif; ?>
   </head>

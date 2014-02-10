@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-define('SIGGY_VERSION', '2.6.1');
+define('SIGGY_VERSION', '2.9.1');
 define('WIN_DEV', true);
 define('NEWFRONT', true);
 define('CACHE_METHOD', 'default');

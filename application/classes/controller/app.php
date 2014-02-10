@@ -30,7 +30,7 @@ class Controller_App extends Controller
 
 	public function login_required()
 	{
-		Request::current()->redirect('account/login?bounce=manage');
+		HTTP::redirect('account/login?bounce=manage');
 	}
 
 	public function __construct(Kohana_Request $request, Kohana_Response $response)
