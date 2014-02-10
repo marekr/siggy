@@ -254,6 +254,9 @@ siggyMap.prototype.initialize = function()
                          x: that.selectionBox.position().left,
                          y: that.selectionBox.position().top
                     };
+					
+					if( bb.w < 1 || bb.h < 1 )
+						return;
                        
                     
                     that.selectionBox.remove();
@@ -277,6 +280,7 @@ siggyMap.prototype.initialize = function()
                         
                         if( inside )
                         {
+						
                             if( conn.getParameter('deleteMe') )
                             {
                                 conn.setParameter('deleteMe', false);
@@ -683,7 +687,7 @@ siggyMap.prototype.draw = function()
                             endpointsOnTop:false, 
                             endpoint:"Blank",		
                             detachable:false,
-                            connector:["StateMachine", { curviness:10 }],
+                            connector:["StateMachine", { curviness:0.001 }],
                             connectorTooltip: "aSDASDA",
                             tooltip: "aSDASDA",
                             anchor:[ "Perimeter", { shape:"Ellipse" } ],
@@ -703,12 +707,12 @@ siggyMap.prototype.draw = function()
         if( wormhole.eolToggled != 0 )
         {
             connectionOptions.overlays = [
-                                        ["Label", {													   					
-                                            cssClass:"map-eol-overlay",
-                                            label : 'EOL set at: '+ siggymain.displayTimeStamp(wormhole.eolToggled),
-                                            location:0.5,
-                                            id:"label"
-                                        }]
+											["Label", {													   					
+												cssClass:"map-eol-overlay",
+												label : 'EOL set at: '+ siggymain.displayTimeStamp(wormhole.eolToggled),
+												location:0.5,
+												id:"label"
+											}]
                                         ];
         }
             
@@ -726,30 +730,30 @@ siggyMap.prototype.draw = function()
             {
                 if( conn.getParameter('deleteMe') )
                 {
-                    conn.setParameter('deleteMe', false);
                     conn.setPaintStyle( {
                            lineWidth:6,
                            strokeStyle: that.getMassColor(that.wormholes[hash].mass),
                            outlineColor: that.getTimeColor(that.wormholes[hash].eol),
                            outlineWidth:3
                     });
+                    conn.setParameter('deleteMe', false);
                 }
                 else
                 {
-                    conn.setParameter('deleteMe', true);
                     conn.setPaintStyle( {
                            lineWidth:6,
                            strokeStyle: "#006AFE",
                            outlineColor: "#006AFE",
                            outlineWidth:3
                     });
-                    this.deleteMe = true;
+                    conn.setParameter('deleteMe', true);
                 }
             }
             else
             {
                 that.editWormhole(hash);
             }
+			return false;
         });
             
     }
