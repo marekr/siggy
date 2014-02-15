@@ -261,14 +261,30 @@ class Controller_Special extends Controller {
 												  LEFT JOIN invMarketGroups AS mp ON m.parentGroupID = mp.marketGroupID 
 												WHERE
 												  (g.categoryID = 6 AND t.published = 1)
-                                                  OR typeID = 670
+                                                  OR t.groupID=29
 												ORDER BY
 												  t.typeName ASC')
 						->execute()
 						->as_array();		
 		foreach($ships as $ship)
 		{
-			//print_r($ship);
+			if( $ship['typeID'] == 29988 ) //proteus
+			{
+				$ship['mass'] = 15000000;
+			}
+			else if( $ship['typeID'] == 29986 ) // legion
+			{
+				$ship['mass'] = 16000000;
+			}
+			else if( $ship['typeID'] == 29984 ) // tengu
+			{
+				$ship['mass'] = 14000000;
+			}
+			else if( $ship['typeID'] == 29990 ) // loki
+			{
+				$ship['mass'] = 15000000;
+			}
+		
 			$insert = array( 'shipID' => $ship['typeID'],
 							 'shipName' => $ship['typeName'],
 							 'mass' => (double)$ship['mass'],
