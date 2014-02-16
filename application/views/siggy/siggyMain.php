@@ -238,7 +238,7 @@
         <div id="sigs">
             <table id="system-table" cellspacing="1" class='siggy-table'>
                 <tr>
-                    <td class="title">Region</td>
+                    <td class="title">Region / Constellation</td>
                     <td class="content" id="region"></td>
                     <td class="title">System Effect</td>
                     <td class="content" id="system-effect"></td>
@@ -313,6 +313,7 @@
                                     <option value="grav">Ore</option>
                                     <option value="radar">Data</option>
                                     <option value="mag">Relic</option>
+                                    <option value="combat">Combat</option>
                                 </select>
                             </div>
                             <div class="input-group" style="width: auto;">
@@ -449,6 +450,19 @@
                     <button name='cancel' type="button" class="btn btn-default">Cancel</button>
                 </div>
             </form>
+        </div>
+    </div>
+	
+	
+	
+    <div id="confirm-dialog" class="box" style="display:none;">
+        <h3>Confirm action!</h3>
+        <div>
+            <p id="confirm-dialog-message"></p>
+			<p class="center-text">
+				<button id="confirm-dialog-yes">Yes</button>
+				<button id="confirm-dialog-no">No</button>
+			</p>
         </div>
     </div>
   

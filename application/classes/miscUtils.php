@@ -199,6 +199,10 @@ final class miscUtils
 							$sigData['type'] = 'grav';
 							$sigData['siteID'] = self::siteIDLookupByName( $data[3], 'grav' );
 							break;
+						case 'Combat Site':
+							$sigData['type'] = 'combat';
+							$sigData['siteID'] = 0;
+							break;
 					}
 				}
 				else if( $data[2] == "" )
