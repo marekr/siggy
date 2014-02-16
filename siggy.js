@@ -1098,7 +1098,7 @@ siggymain.prototype.updateSigs = function (sigData, flashSigs)
 siggymain.prototype.updateSystemInfo = function (systemData)
 {
     //general info
-	$('#region').text(systemData.regionName);
+	$('#region').text(systemData.regionName + " / " + systemData.constellationName);
 	$('#constellation').text(systemData.constellationName);
 	$('#planetsmoons').text(systemData.planets + "/" + systemData.moons + "/" + systemData.belts);
 	$('#truesec').text(systemData.truesec.substr(0,8));
@@ -1536,6 +1536,7 @@ siggymain.prototype.editSigForm = function (sigID)
 		ladar: 'Gas',
 		radar: 'Data',
 		mag: 'Relic',
+		combat: 'Combat',
 		grav: 'Ore'
 	}, this.sigData[sigID].type).change(function ()
 	{
@@ -1735,6 +1736,8 @@ siggymain.prototype.convertType = function (type)
         return "Data";
 	else if (type == 'mag')
         return "Relic";
+	else if (type == 'combat')
+        return "Combat";
     else
         return "";
 }
@@ -2472,14 +2475,34 @@ siggymain.prototype.updateDScan = function( data )
 
 siggymain.prototype.removeDScan = function(dscanID)
 {
-	var r = confirm("Are you sure you want to delete the dscan entry?");
-	if (r == true)
-	{
+	this.confirmDialog("Are you sure you want to delete the dscan entry?", function() {
 		$.post(this.settings.baseUrl + 'dscan/remove', {dscan_id: dscanID}, function ()
 		{
 			$('#dscan-'+dscanID).remove();
 		});
-	}
+	});
+}
+
+siggymain.prototype.confirmDialog = function(message, yesCallback, noCallback)
+{
+	var $this = this;
+	
+	$this.openBox("#confirm-dialog");
+	
+	
+	$("#confirm-dialog-message").text(message);
+	$("#confirm-dialog-yes").unbind('click').click( function() {
+		$.unblockUI();
+		if (typeof(yesCallback) != "undefined" ) {
+			yesCallback.call($this);
+		}
+	});
+	$("#confirm-dialog-no").unbind('click').click( function() {
+		$.unblockUI();
+		if (noCallback && $.isFunction(noCallback)) {
+			noCallback.call($this);
+		}
+	});
 }
 
 
@@ -2646,12 +2669,10 @@ siggymain.prototype.editPOS = function(posID)
 
 siggymain.prototype.removePOS = function(posID)
 {
-	var r = confirm("Are you sure you want to delete the POS?");
-	if (r == true)
-	{
+	this.confirmDialog("Are you sure you want to delete the POS?", function() {
 		$.post(this.settings.baseUrl + 'pos/remove', {pos_id: posID}, function ()
 		{
 			$('#pos-'+posID).remove();
 		});
-	}
+	});
 }
