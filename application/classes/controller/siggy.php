@@ -18,7 +18,9 @@ class Controller_Siggy extends FrontController
 		$mapOpen = ( isset($_COOKIE['mapOpen'] ) ? intval($_COOKIE['mapOpen']) : 0 );
         $statsOpen = ( isset($_COOKIE['system_stats_open'] ) ? intval($_COOKIE['system_stats_open']) : 0 );
         
-        
+        //print_r($this->__generatePossibleSystemLocations(751,147));
+		//$this->_addSystemToMap($this->whHashByID(31002016,31002032),31002016,31002032);
+		//__doBoxesIntersect
         
 		if( !empty($ssname) )
 		{
@@ -568,15 +570,55 @@ class Controller_Siggy extends FrontController
             //failure condition that happens sometimes, bad for the JS engine
             return;
         }
+		
+		$shipTypeID = isset($_SERVER['HTTP_EVE_SHIPTYPEID']) ? $_SERVER['HTTP_EVE_SHIPTYPEID']  : 0;
+		
+		if( $shipTypeID == 0 || $shipTypeID == 670 || $shipTypeID == 33328 )
+		{
+			//pods
+			//return because we could be podded :)
+			return;
+		}
+		
+		$kspaceJump = DB::query(Database::SELECT, "SELECT `fromSolarSystemID`, `toSolarSystemID` FROM mapsolarsystemjumps WHERE (fromSolarSystemID=:sys1 AND toSolarSystemID=:sys2) OR
+																																(fromSolarSystemID=:sys2 AND toSolarSystemID=:sys1)")
+						->param(':sys1', $origin)
+						->param(':sys2', $dest)
+						->execute()->current();
+						
+		if( isset($kspaceJump['fromSolarSystemID']) )
+		{
+			return;
+		}
+		
+		
     
         $whHash = $this->whHashByID($origin, $dest);
-        DB::query(Database::INSERT, 'INSERT INTO wormholes (`hash`, `to`, `from`, `groupID`, `subGroupID`, `lastJump`) VALUES(:hash, :to, :from, :groupID, :subGroupID, :lastJump) ON DUPLICATE KEY UPDATE lastJump=:lastJump')
-                        ->param(':hash', $whHash )
-                        ->param(':to', $dest )
-                        ->param(':from', $origin)
-                        ->param(':groupID', $this->groupData['groupID'] )
-                        ->param(':subGroupID', $this->groupData['subGroupID'] )
-                        ->param(':lastJump', time() )->execute();
+		
+		$connection = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE hash=:hash AND groupID=:group AND subGroupID=:subGroupID")
+						->param(':hash', $whHash)
+						->param(':group', $this->groupData['groupID'])
+						->param(':subGroupID', $this->groupData['subGroupID'])
+						->execute()->current();
+
+		if( !isset($connection['hash'] ) )
+		{
+			//new wh
+			$this->_addSystemToMap($whHash, $origin, $dest);
+
+			
+		}
+		else
+		{
+			//existing wh
+			DB::update('wormholes')
+				->set( array('lastJump' => time()) )
+				->where('hash', '=', $whHash)
+				->where('groupID', '=', $this->groupData['groupID'])
+				->where('subGroupID', '=', $this->groupData['subGroupID'])
+				->execute();
+		}
+		
                         
 
         if( $this->groupData['jumpLogEnabled']  && !empty( $_SERVER['HTTP_EVE_SHIPTYPEID'] ) )
@@ -597,46 +639,197 @@ class Controller_Siggy extends FrontController
                 ->execute();
         }
 
-        if( !in_array($whHash, $this->mapData['wormholeHashes']) )
-        {
-            if( is_array($this->mapData['systemIDs']) && count($this->mapData['systemIDs'])	 > 0 )
-            {
-                    //to
-                    if( !in_array($dest, $this->mapData['systemIDs']) )
-                    {
-                            DB::update('activesystems')
-                            ->set( array('inUse' => 1) )
-                            ->where('systemID', '=', $dest)
-                            ->where('groupID', '=', $this->groupData['groupID'])
-                            ->where('subGroupID', '=', $this->groupData['subGroupID'])->execute();
-                    }
-                    //from
-                    if( !in_array($origin, $this->mapData['systemIDs']) )
-                    {
-                            DB::update('activesystems')
-                            ->set( array('inUse' => 1) )
-                            ->where('systemID', '=', $origin)
-                            ->where('groupID', '=', $this->groupData['groupID'])
-                            ->where('subGroupID', '=', $this->groupData['subGroupID'])->execute();
-                    }
-            }
+	}
+	
+	private function _addSystemToMap($whHash, $sys1,$sys2)
+	{
+		$sys1Connections = $this->__getConnectedSystems($sys1);	
+		$sys2Connections = $this->__getConnectedSystems($sys2);	
+		
+		$sys1Count = count($sys1Connections);
+		$sys2Count = count($sys2Connections);
+		
+		$sysPos = array('x' => 0, 'y' => 0);
+		if( $sys1Count == 0 )
+		{
+			$sysPos = $this->__placeSystem($sys2,$sys2Connections, $sys1);
+		}
+		else if( $sys2Count == 0 )
+		{
+			//sys2 is "new"
+			$sysPos = $this->__placeSystem($sys1,$sys1Connections, $sys2);
+		}
+		else if( $sys1Count == 0 && $sys2Count == 0 )
+		{
+			//both are new
+		}
+		
+		//default case is both systems already mapped, so jsut connect them
+							
+						 
+		DB::query(Database::INSERT, 'INSERT INTO wormholes (`hash`, `to`, `from`, `groupID`, `subGroupID`, `lastJump`) VALUES(:hash, :to, :from, :groupID, :subGroupID, :lastJump)')
+						->param(':hash', $whHash )
+						->param(':to', $sys1 )
+						->param(':from', $sys2)
+						->param(':groupID', $this->groupData['groupID'] )
+						->param(':subGroupID', $this->groupData['subGroupID'] )
+						->param(':lastJump', time() )->execute();
+		$this->rebuildMapCache();
+	}
+	
+	private function __getConnectedSystems($system)
+	{
+		return DB::query(Database::SELECT, "SELECT x,y FROM activesystems 
+														WHERE groupID=:group AND
+														subGroupID=:subGroupID AND
+														systemID IN (SELECT
+																		CASE WHEN w.`to`=:sys
+																			THEN w.`from`
+																			ELSE w.`to`
+																		END AS `connected_system` 
+																		FROM wormholes w
+																		WHERE w.`to`=:sys OR w.`from`=:sys AND w.groupID=:group AND w.subGroupID=:subGroupID)")
+						->param(':sys', $system)
+						->param(':group', $this->groupData['groupID'])
+						->param(':subGroupID', $this->groupData['subGroupID'])
+						->execute()
+						->as_array();	
+	}
+	
+	private function __placeSystem($originSys, $originSystems, $systemToBePlaced)
+	{
+		$sysPos = NULL;
+		$sysData = DB::query(Database::SELECT, "SELECT * FROM activesystems 
+														WHERE groupID=:group AND
+														subGroupID=:subGroupID AND
+														systemID=:sys")
+						->param(':sys', $originSys)
+						->param(':group', $this->groupData['groupID'])
+						->param(':subGroupID', $this->groupData['subGroupID'])
+						->execute()
+						->current();
+										
+		$spots = $this->__generatePossibleSystemLocations($sysData['x'], $sysData['y']);
+		//print_r($spots);
+		//print_r($originSystems);
+		foreach($spots as $spot)
+		{
+			$intersect = false;
+			foreach($originSystems as $sys)
+			{
+				if( $this->__doBoxesIntersect($this->__coordsToBB($spot['x'],$spot['y']), $this->__coordsToBB($sys['x'],$sys['y'])) )
+				{
+					$intersect = true;
+				}
+			}
+			
+			if( !$intersect )
+			{
+				//winnar!
+				//print "winner";
+				$sysPos = $spot;
+				//print_r($sysPos);
+				break;
+			}
+		}
+		
+		//if we didnt find a spot, just use the first one and call it a day
+		if( $sysPos == NULL )
+		{
+			$sysPOS = $spots[0];
+		}
+		
+		DB::update('activesystems')
+			->set( array('x' => $sysPos['x']) )
+			->set( array('y' => $sysPos['y']) )
+			->where('systemID', '=', $systemToBePlaced)
+			->where('groupID', '=', $this->groupData['groupID'])
+			->where('subGroupID', '=', $this->groupData['subGroupID'])->execute();
+		
+	}
+	
+	
+	private function __generatePossibleSystemLocations($x, $y)
+	{
+		$originBB = $this->__coordsToBB($x,$y);
+		
+		$cX = $originBB['left'];
+		$cY = $originBB['top'];
+		
+		//print_r($originBB);
+		
+		
+		//equation of a circle
+		
+		$ret = array();
+		
+		$positions = 8;
+		$rotation = 2 * M_PI / $positions;
+		for($position = 0; $position < $positions; ++$position)
+		{
+			$spot_rotation = $position * $rotation;
+			$newx = $cX + 125*cos($spot_rotation);
+			$newy = $cY + 105*sin($spot_rotation);
+			
+			
+			//limited horizontal span
+			if( $newy < 380 && $newy > 0 )
+			{
+				$ret[] = array('x' => $newx, 'y' => $newy);
+			}
+			
+		}
+		
+		return $ret;
+	}
+	
+	private function __doBoxesIntersect($a, $b)
+	{
+		//print_r($a);
+		//print_r($b);
+		//return (abs($a['x'] - $b['x']) * 2 < ($a['width'] + $b['width'])) &&
+		//		(abs($a['y'] - $b['y']) * 2 < ($a['height'] + $b['height']));
+		
+		
+		//a = r2
+		//b = r1
+		//return (!($a['left'] > $b['right']
+		//	|| $a['right']< $b['left'] 
+		//	|| $a['top'] < $b['bottom']
+		//	|| $a['bottom'] > $b['top'] ));
+		
+		//print_r($a);
+		//print_r($b);
+		
+		$x1 = $a['left'];
+		$x2 = $a['left'] + $a['width'];
+		$y1 = $a['bottom'];
+		$y2 = $a['bottom'] + $a['height'];
+		
+		$a1 = $b['left'];
+		
+		$a2 = $b['left'] + $b['width'];
+		$b1 =  $b['bottom'];
+		$b2 =  $b['bottom'] +  $b['height'];
 
-            $this->mapData = $this->rebuildMapCache();
-            
-                        
-            if( $this->groupData['statsEnabled'] )
-            {
-                    DB::query(Database::INSERT, 'INSERT INTO stats (`charID`,`charName`,`groupID`,`subGroupID`,`dayStamp`,`wormholes`) VALUES(:charID, :charName, :groupID, :subGroupID, :dayStamp, 1) ON DUPLICATE KEY UPDATE wormholes=wormholes+1')
-                                        ->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
-                                        ->param(':groupID', $this->groupData['groupID'] )->param(':subGroupID', $this->groupData['subGroupID'] )->param(':dayStamp', miscUtils::getDayStamp() )->execute();
-
-            }								
-        }	
-        else
-        {
-			$message = $this->groupData['charName'].' added wormhole by jumping between system IDs' . $origin . ' and ' . $dest;
-			$this->__logAction('addwh', $message );	
-        }
+			return  ( ($x1 <= $a1 && $a1 <= $x2) && ($y1 <= $b1 && $b1 <= $y2) ) ||
+			        ( ($x1 <= $a2 && $a2 <= $x2) && ($y1 <= $b1 && $b1 <= $y2) ) ||
+			        ( ($x1 <= $a1 && $a1 <= $x2) && ($y1 <= $b2 && $b2 <= $y2) ) ||
+			        ( ($x1 <= $a2 && $a1 <= $x2) && ($y1 <= $b2 && $b2 <= $y2) ) ||	
+			        ( ($a1 <= $x1 && $x1 <= $a2) && ($b1 <= $y1 && $y1 <= $b2) ) ||
+			        ( ($a1 <= $x2 && $x2 <= $a2) && ($b1 <= $y1 && $y1 <= $b2) ) ||
+			        ( ($a1 <= $x1 && $x1 <= $a2) && ($b1 <= $y2 && $y2 <= $b2) ) ||
+			        ( ($a1 <= $x2 && $x1 <= $a2) && ($b1 <= $y2 && $y2 <= $b2) );
+	}
+	
+	private function __coordsToBB($x,$y)
+	{
+		return array( 'left' => $x,
+					  'top' => $y,
+					  'width' => 78,
+					  'height' => 38,
+					   'right' => $x+78,
+					   'bottom' => $y+38 );
 	}
 	
 	public function action_getJumpLog()
@@ -688,7 +881,7 @@ class Controller_Siggy extends FrontController
         $this->auto_render = FALSE;
         header('content-type: application/json');
         header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-        ob_start( 'ob_gzhandler' );
+      //  ob_start( 'ob_gzhandler' );
         
 
         if(	!$this->siggyAccessGranted() )
@@ -738,7 +931,7 @@ class Controller_Siggy extends FrontController
                                                 ->param(':hourStamp', $hourStamp )->param(':systemID', $actualCurrentSystemID )->param(':groupID', $this->groupData['groupID'] )->execute();									
                     }
                 
-                    if( ($lastSystemID != $actualCurrentSystemID) && ( $this->isWormholeSystemByName($lastSystemName) || $this->isWormholeSystemByName($_SERVER['HTTP_EVE_SOLARSYSTEMNAME']) ) && $actualCurrentSystemID != 0 && !empty($lastSystemID) )
+                    if( ($lastSystemID != $actualCurrentSystemID) && $actualCurrentSystemID != 0 && !empty($lastSystemID) )
                     {
                         $this->__wormholeJump($lastSystemID, $actualCurrentSystemID);
                     }
