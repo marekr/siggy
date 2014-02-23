@@ -649,19 +649,21 @@ class Controller_Siggy extends FrontController
 		$sys1Count = count($sys1Connections);
 		$sys2Count = count($sys2Connections);
 		
-		$sysPos = array('x' => 0, 'y' => 0);
 		if( $sys1Count == 0 )
 		{
-			$sysPos = $this->__placeSystem($sys2,$sys2Connections, $sys1);
+			$this->__placeSystem($sys2,$sys2Connections, $sys1);
 		}
 		else if( $sys2Count == 0 )
 		{
 			//sys2 is "new"
-			$sysPos = $this->__placeSystem($sys1,$sys1Connections, $sys2);
+			 $this->__placeSystem($sys1,$sys1Connections, $sys2);
 		}
 		else if( $sys1Count == 0 && $sys2Count == 0 )
 		{
 			//both are new
+			//we just map one
+			//this will probably change at some point soon
+			 $this->__placeSystem($sys1,$sys1Connections, $sys2);
 		}
 		
 		//default case is both systems already mapped, so jsut connect them
@@ -756,11 +758,6 @@ class Controller_Siggy extends FrontController
 		$cX = $originBB['left'];
 		$cY = $originBB['top'];
 		
-		//print_r($originBB);
-		
-		
-		//equation of a circle
-		
 		$ret = array();
 		
 		$positions = 8;
@@ -769,7 +766,7 @@ class Controller_Siggy extends FrontController
 		{
 			$spot_rotation = $position * $rotation;
 			$newx = $cX + 125*cos($spot_rotation);
-			$newy = $cY + 105*sin($spot_rotation);
+			$newy = $cY + 85*sin($spot_rotation);
 			
 			
 			//limited horizontal span
@@ -785,21 +782,6 @@ class Controller_Siggy extends FrontController
 	
 	private function __doBoxesIntersect($a, $b)
 	{
-		//print_r($a);
-		//print_r($b);
-		//return (abs($a['x'] - $b['x']) * 2 < ($a['width'] + $b['width'])) &&
-		//		(abs($a['y'] - $b['y']) * 2 < ($a['height'] + $b['height']));
-		
-		
-		//a = r2
-		//b = r1
-		//return (!($a['left'] > $b['right']
-		//	|| $a['right']< $b['left'] 
-		//	|| $a['top'] < $b['bottom']
-		//	|| $a['bottom'] > $b['top'] ));
-		
-		//print_r($a);
-		//print_r($b);
 		
 		$x1 = $a['left'];
 		$x2 = $a['left'] + $a['width'];
@@ -894,7 +876,6 @@ class Controller_Siggy extends FrontController
         
         $update = array('systemUpdate' => 0, 'sigUpdate' => 0, 'globalNotesUpdate' => 0, 'mapUpdate' => 0, 'acsid' => 0, 'acsname' =>'');
         
-        $this->mapData = groupUtils::getMapCache( $this->groupData['groupID'], $this->groupData['subGroupID'] );
         
         if( isset( $_GET['lastUpdate'] ) && isset( $_GET['systemID'] ) && $_GET['systemID'] != 0 )
         {
@@ -991,6 +972,7 @@ class Controller_Siggy extends FrontController
  
             }
 					
+			$this->mapData = groupUtils::getMapCache( $this->groupData['groupID'], $this->groupData['subGroupID'] );
             if( $chainMapOpen == 1 )
             {
                     $update['chainMap']['actives'] = array();
