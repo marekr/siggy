@@ -2555,7 +2555,7 @@ siggymain.prototype.updatePOSList = function( data )
 			row.append( $("<td>").text( data[i].pos_type_name ) );
 			row.append( $("<td>").text( data[i].pos_size ) );
 			row.append( $("<td>").text(siggymain.displayTimeStamp(data[i].pos_added_date)) );
-			row.append( $("<td>").text("") );
+			row.append( $("<td>").text( data[i].pos_notes ) );
 			
 			(function(pos_id){
 				var edit = $("<a>").addClass("btn btn-default btn-xs").text("Edit").click( function() {
@@ -2598,7 +2598,7 @@ siggymain.prototype.setupPOSForm = function(mode, posID)
 	var type = $("#pos-form select[name=pos_type]");
 	var size = $("#pos-form select[name=pos_size]");
 	var status = $("#pos-form select[name=pos_status]");
-	var notes = $("#pos-form select[name=pos_status]");
+	var notes = $("#pos-form textarea[name=pos_notes]");
 	
 	var data = {};
 	var action = '';

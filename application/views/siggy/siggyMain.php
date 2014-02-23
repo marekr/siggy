@@ -406,7 +406,7 @@
 				</label>
 				<label>
 					Notes
-					<textarea name="blob" rows="6" style="width:100%;font-size:11px;"></textarea>
+					<textarea name="pos_notes" rows="6" style="width:100%;font-size:11px;"></textarea>
 				</label>
                 <div class="center-text form-actions">
                     <button name='submit' class="btn btn-primary" type="submit">Submit</button>
