@@ -605,8 +605,6 @@ class Controller_Siggy extends FrontController
 		{
 			//new wh
 			$this->_addSystemToMap($whHash, $origin, $dest);
-
-			
 		}
 		else
 		{
@@ -641,7 +639,7 @@ class Controller_Siggy extends FrontController
 
 	}
 	
-	private function _addSystemToMap($whHash, $sys1,$sys2)
+	private function _addSystemToMap($whHash, $sys1,$sys2, $eol=0, $mass=0)
 	{
 		$sys1Connections = $this->__getConnectedSystems($sys1);	
 		$sys2Connections = $this->__getConnectedSystems($sys2);	
@@ -669,10 +667,12 @@ class Controller_Siggy extends FrontController
 		//default case is both systems already mapped, so jsut connect them
 							
 						 
-		DB::query(Database::INSERT, 'INSERT INTO wormholes (`hash`, `to`, `from`, `groupID`, `subGroupID`, `lastJump`) VALUES(:hash, :to, :from, :groupID, :subGroupID, :lastJump)')
+		DB::query(Database::INSERT, 'INSERT INTO wormholes (`hash`, `to`, `from`, `groupID`, `subGroupID`, `lastJump`, `eol`, `mass`) VALUES(:hash, :to, :from, :groupID, :subGroupID, :lastJump, :eol, :mass)')
 						->param(':hash', $whHash )
 						->param(':to', $sys1 )
 						->param(':from', $sys2)
+						->param(':eol', $eol )
+						->param(':mass', $mass )
 						->param(':groupID', $this->groupData['groupID'] )
 						->param(':subGroupID', $this->groupData['subGroupID'] )
 						->param(':lastJump', time() )->execute();
@@ -1522,6 +1522,7 @@ class Controller_Siggy extends FrontController
 			}
 		
 			DB::update('wormholes')->set( $update )->where('hash', '=', $hash)->where('groupID', '=', $this->groupData['groupID'])->where('subGroupID', '=', $this->groupData['subGroupID'])->execute();
+			$this->rebuildMapCache();
 		}
 		else
 		{
@@ -1589,14 +1590,15 @@ class Controller_Siggy extends FrontController
 			$mass = intval($_POST['mass']);	
 			
 			$whHash = $this->whHashByID($fromSysID , $toSysID);
+			$this->_addSystemToMap($whHash, $fromSysID, $toSysID, $eol, $mass);
+			/*
 			DB::query(Database::INSERT, 'INSERT INTO wormholes (`hash`, `to`, `from`, `eol`, `mass`, `groupID`, `subGroupID`, `lastJump`) VALUES(:hash, :to, :from, :eol, :mass, :groupID, :subGroupID, :lastJump) ON DUPLICATE KEY UPDATE eol=:eol, mass=:mass')
-								->param(':hash', $whHash )->param(':to', $toSysID )->param(':from', $fromSysID	)->param(':eol', $eol	 )->param(':mass', $mass	)->param(':groupID', $this->groupData['groupID'] )->param(':subGroupID', $this->groupData['subGroupID'] )->param(':lastJump', time() )->execute();
+								->param(':hash', $whHash )->param(':to', $toSysID )->param(':from', $fromSysID	)->param(':eol', $eol	 )->param(':mass', $mass	)->param(':groupID', $this->groupData['groupID'] )->param(':subGroupID', $this->groupData['subGroupID'] )->param(':lastJump', time() )->execute();*/
 			
             
 			$message = $this->groupData['charName'].' added wormhole manually between system IDs' . $fromSysID . ' and ' . $toSysID;
 			$this->__logAction('addwh', $message );	
 		}
-		$this->rebuildMapCache();
 		echo json_encode( array('success' => 1) );
 		
 		exit();
