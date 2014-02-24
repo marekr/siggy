@@ -15,7 +15,7 @@ final class MapUtils
 		}
 	}
 	
-	static function rebuildMapData($groupID, $subGroupID = 0, $additionalSystems = null)
+	static function rebuildMapData($groupID, $subGroupID = 0, $additionalSystems = array())
 	{
 			$data = array();
 			
@@ -47,9 +47,18 @@ final class MapUtils
 			{
 					$systemsToPoll = implode(',', $systemsToPoll);
 					
-					$chainMapSystems = DB::query(Database::SELECT, "SELECT sa.systemID,ss.name,sa.displayName,sa.inUse,sa.x,sa.y,sa.activity,ss.sysClass,ss.effect FROM activesystems sa 
-					 INNER JOIN solarsystems ss ON ss.id = sa.systemID
-					WHERE sa.systemID IN(".$systemsToPoll.") AND sa.groupID=:group AND sa.subGroupID=:subgroup ORDER BY sa.systemID ASC")
+					$chainMapSystems = DB::query(Database::SELECT, "SELECT ss.name,
+																	ss.id as systemID,
+																	COALESCE(sa.displayName,'') as displayName,
+																	COALESCE(sa.x,0) as x,
+																	COALESCE(sa.y,10) as y,
+																	COALESCE(sa.activity,0) as activity,
+																	COALESCE(sa.inUse,0) as inUse,
+																	ss.sysClass,
+																	ss.effect
+																	FROM solarsystems ss
+																	LEFT OUTER JOIN activesystems sa ON (ss.id = sa.systemID AND sa.groupID=:group AND sa.subGroupID=:subgroup)
+																	WHERE ss.id IN(".$systemsToPoll.")  ORDER BY ss.id ASC")
 												->param(':group', $groupID)->param(':subgroup', $subGroupID)->execute()->as_array('systemID');	
 					
 					foreach( $chainMapSystems as &$sys ) 

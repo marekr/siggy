@@ -10,6 +10,9 @@ final class groupUtils
 				
 				$cacheName = 'mapCache-'.$groupID.'-'.$subGroupID;
 				
+					$mapData = self::rebuildMapCache($groupID, $subGroupID);
+											
+					return $mapData;			
 				if( $mapData = $cache->get( $cacheName, FALSE ) )
 				{
 					return $mapData;
@@ -133,15 +136,15 @@ final class groupUtils
 
 		static function rebuildMapCache($groupID, $subGroupID = 0)
 		{
-				$cache = Cache::instance( CACHE_METHOD );
-				$cacheName = 'mapCache-'.$groupID.'-'.$subGroupID;
-				
-				$homeSystems = self::getHomeSystems($groupID, $subGroupID);
-				$mapData = mapUtils::rebuildMapData($groupID, $subGroupID, $homeSystems);
-				
-				$cache->set($cacheName, $mapData);		 
-				
-				return $mapData;
+			$cache = Cache::instance( CACHE_METHOD );
+			$cacheName = 'mapCache-'.$groupID.'-'.$subGroupID;
+			
+			$homeSystems = self::getHomeSystems($groupID, $subGroupID);
+			$mapData = mapUtils::rebuildMapData($groupID, $subGroupID, $homeSystems);
+			
+			$cache->set($cacheName, $mapData);		 
+			
+			return $mapData;
 		}
 		
 		static function applyISKCharge($groupID, $amount)

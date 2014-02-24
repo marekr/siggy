@@ -35,6 +35,8 @@ class Controller_Siggy extends FrontController
 
 		$view = View::factory('siggy/siggyMain');
 		
+		mapUtils::rebuildMapData(1,0);
+		
 		$view->initialSystem = false;
 		$view->group = $this->groupData;
 		$view->requested = $requested;
@@ -232,13 +234,20 @@ class Controller_Siggy extends FrontController
 
 	private function getSystemData( $name )
 	{
-			$systemQuery = DB::query(Database::SELECT, "SELECT ss.*,se.effectTitle, r.regionName, c.constellationName,sa.displayName, sa.inUse,sa.activity FROM solarsystems ss 
-			INNER JOIN systemeffects se ON ss.effect = se.id
-			INNER JOIN regions r ON ss.region = r.regionID
-			INNER JOIN constellations c ON ss.constellation = c.constellationID
-			INNER JOIN activesystems sa ON ss.id = sa.systemID
-			WHERE ss.name=:name AND sa.groupID = :group AND sa.subGroupID=:subgroup")
-										->param(':name', $name)->param(':group', $this->groupData['groupID'])->param(':subgroup', $this->groupData['subGroupID'])->execute();
+			$systemQuery = DB::query(Database::SELECT, "SELECT ss.*,se.effectTitle, r.regionName, c.constellationName, 
+														COALESCE(sa.displayName,'') as displayName,
+														COALESCE(sa.inUse,0) as inUse,
+														COALESCE(sa.activity,0) as activity
+														FROM solarsystems ss 
+														INNER JOIN systemeffects se ON ss.effect = se.id
+														INNER JOIN regions r ON ss.region = r.regionID
+														INNER JOIN constellations c ON ss.constellation = c.constellationID
+														LEFT OUTER JOIN activesystems sa ON (ss.id = sa.systemID  AND sa.groupID = :group AND sa.subGroupID=:subgroup)
+														WHERE ss.name=:name")
+										->param(':name', $name)
+										->param(':group', $this->groupData['groupID'])
+										->param(':subgroup', $this->groupData['subGroupID'])
+										->execute();
 			
 			//system exists
 			
@@ -345,123 +354,33 @@ class Controller_Siggy extends FrontController
         }
 			//}
 			
-			HTTP::redirect('/');
-	}
-	
-	private function getMapCache()
-	{
-			$cache = Cache::instance( CACHE_METHOD );
-			
-			$cacheName = 'mapCache-'.$this->groupData['groupID'].'-'.$this->groupData['subGroupID'];
-			
-			if( $mapData = $cache->get( $cacheName, FALSE ) )
-			{
-				return $mapData;
-			}
-			else
-			{
-				$mapData = $this->rebuildMapCache();
-										
-				return $mapData;			
-			}
-	}
-	
-	private function rebuildMapData($groupID, $subGroupID = 0, $additionalSystems = null)
-	{
-			$data = array();
-			
-			$wormholes = DB::query(Database::SELECT, "SELECT `hash`, `to`, `from`, eol, mass, eolToggled FROM wormholes WHERE groupID=:group AND subGroupID=:subGroupID")
-							 ->param(':group', $groupID)->param(':subGroupID', $subGroupID)->execute()->as_array('hash');	 
-			
-			$systemsToPoll = array();
-			$wormholeHashes = array();
-			foreach( $wormholes as $wormhole )
-			{
-				$systemsToPoll[] = $wormhole['to'];
-				$systemsToPoll[] = $wormhole['from'];
-				$wormholeHashes[] = $wormhole['hash'];
-			}
-			
-			
-			$data['systems'] = array();
-			$data['systemIDs'] = array();
-			
-			$systemsToPoll = array_unique($systemsToPoll);
-			
-
-			if( $additionalSystems != null && is_array($additionalSystems) && count($additionalSystems) > 0 )
-			{
-				$systemsToPoll = array_merge($systemsToPoll, $additionalSystems);
-			}
-
-			if( count($systemsToPoll) > 0 )
-			{
-					$systemsToPoll = implode(',', $systemsToPoll);
-					
-					$chainMapSystems = DB::query(Database::SELECT, "SELECT sa.systemID,ss.name,sa.displayName,sa.inUse,sa.x,sa.y,sa.activity,ss.sysClass,ss.effect FROM activesystems sa 
-					 INNER JOIN solarsystems ss ON ss.id = sa.systemID
-					WHERE sa.systemID IN(".$systemsToPoll.") AND sa.groupID=:group AND sa.subGroupID=:subgroup ORDER BY sa.systemID ASC")
-												->param(':group', $groupID)->param(':subgroup', $subGroupID)->execute()->as_array('systemID');	
-					
-					foreach( $chainMapSystems as &$sys ) 
-					{
-							if( in_array( $sys['systemID'], $additionalSystems ) )
-							{
-									$sys['special'] = 1;
-							}
-							else
-							{
-									$sys['special'] = 0;
-							}
-					}
-					$data['systems'] = $chainMapSystems;
-					$data['systemIDs'] = explode(',', $systemsToPoll);
-			}
-			
-			$data['wormholeHashes'] = $wormholeHashes;
-			$data['wormholes'] = $wormholes;
-			$data['updateTime'] = time();
-			
-			
-			return $data;
+		HTTP::redirect('/');
 	}
 	
 	private function rebuildMapCache()
 	{
-			if( !isset($this->groupData['subGroupID']) )
-			{
-				Kohana::$log->add(Kohana::ERROR, 'WHAT THE FUCK? missing subGroupID dump:'. print_r($this->groupData) );
-			}
-			$cache = Cache::instance( CACHE_METHOD );
-			$cacheName = 'mapCache-'.$this->groupData['groupID'].'-'.$this->groupData['subGroupID'];
-			
-			$homeSystems = $this->getHomeSystems();
-			$mapData = $this->rebuildMapData($this->groupData['groupID'], $this->groupData['subGroupID'], $homeSystems);
-			
-			$cache->set($cacheName, $mapData);		 
-			
-			return $mapData;
+		return groupUtils::rebuildMapCache($this->groupData['groupID'], $this->groupData['subGroupID']);
 	}
 	
 	private function getHomeSystems()
 	{			
-			$homeSystems = array();
-			if( $this->groupData['subGroupID'] != 0 )
+		$homeSystems = array();
+		if( $this->groupData['subGroupID'] != 0 )
+		{
+			if( $this->groupData['sgHomeSystemIDs'] != '' )
 			{
-				if( $this->groupData['sgHomeSystemIDs'] != '' )
-				{
-					$homeSystems = explode(',', $this->groupData['sgHomeSystemIDs']);
-				}
+				$homeSystems = explode(',', $this->groupData['sgHomeSystemIDs']);
 			}
-			else
+		}
+		else
+		{
+			if( $this->groupData['homeSystemIDs'] != '' )
 			{
-				if( $this->groupData['homeSystemIDs'] != '' )
-				{
-					$homeSystems = explode(',', $this->groupData['homeSystemIDs']);
-				}
+				$homeSystems = explode(',', $this->groupData['homeSystemIDs']);
 			}
-			
-			return $homeSystems;
+		}
+		
+		return $homeSystems;
 	}
 	
 	public function action_loadScanProfiles()
@@ -740,14 +659,46 @@ class Controller_Siggy extends FrontController
 		{
 			$sysPOS = $spots[0];
 		}
+			
+		$this->__setActiveSystem($systemToBePlaced, array( 'x' => $sysPos['x'],
+															'y' => $sysPos['y'],
+															'lastUpdate' => time() ) );
+	}
+	
+	private function __setActiveSystem($systemID, $data)
+	{
+		if( !(count($data) > 0) )
+		{
+			return;
+		}
 		
-		DB::update('activesystems')
-			->set( array('x' => $sysPos['x']) )
-			->set( array('y' => $sysPos['y']) )
-			->where('systemID', '=', $systemToBePlaced)
-			->where('groupID', '=', $this->groupData['groupID'])
-			->where('subGroupID', '=', $this->groupData['subGroupID'])->execute();
+		$extraIns = '';
+		$extraInsVal = '';
+		$extraUp = array();
 		
+		foreach($data as $k => $v)
+		{
+			$extraIns .= ',`'.$k.'`';
+			$extraInsVal .= ',:'.$k;
+			$extraUp[] = $k.'=:'.$k;
+		}
+		
+		$extraUp = implode(',', $extraUp);
+		
+		$q = DB::query(Database::INSERT, 'INSERT INTO activesystems (`systemID`, `groupID`, `subGroupID`'.$extraIns.')
+									 VALUES(:systemID, :groupID, :subGroupID'.$extraInsVal.')
+									 ON DUPLICATE KEY UPDATE '.$extraUp)
+							->param(':systemID', $systemID )
+							->param(':groupID', $this->groupData['groupID'] )
+							->param(':subGroupID', $this->groupData['subGroupID'] );
+			
+		foreach($data as $k => $v)
+		{
+			$q->param(':'.$k, $v);
+		}
+		$q->execute();
+		
+		print_r($q);
 	}
 	
 	
@@ -1022,10 +973,14 @@ class Controller_Siggy extends FrontController
                     $update['chainMap']['lastUpdate'] = $this->mapData['updateTime'];
             }
 					
-            $activeSystemQuery = DB::query(Database::SELECT, 'SELECT lastUpdate FROM activesystems WHERE systemID=:id AND groupID=:group AND subGroupID=:subgroup')->param(':id', $currentSystemID)->param(':group',$this->groupData['groupID'])->param(':subgroup', $this->groupData['subGroupID'])->execute();
+            $activeSystemQuery = DB::query(Database::SELECT, 'SELECT lastUpdate FROM activesystems WHERE systemID=:id AND groupID=:group AND subGroupID=:subgroup')
+												->param(':id', $currentSystemID)
+												->param(':group',$this->groupData['groupID'])
+												->param(':subgroup', $this->groupData['subGroupID'])
+												->execute();
 
             $activeSystem = $activeSystemQuery->current();
-            $recordedLastUpdate = $activeSystem['lastUpdate'];
+            $recordedLastUpdate = ($activeSystem['lastUpdate'] > 0) ? $activeSystem['lastUpdate']: time();
 
             if( ($_GET['lastUpdate'] < $recordedLastUpdate) || ( $_GET['lastUpdate'] == 0 ) || $forceUpdate || $update['systemUpdate'] )
             {
@@ -1160,7 +1115,10 @@ class Controller_Siggy extends FrontController
 			
 			$sigID = DB::insert('systemsigs', array_keys($insert) )->values(array_values($insert))->execute();
 			
-			DB::update('activesystems')->set( array('lastUpdate' => time(),'lastActive' => time() ) )->where('systemID', '=', $insert['systemID'])->where('groupID', '=', $this->groupData['groupID'])->where('subGroupID', '=', $this->groupData['subGroupID'])->execute();
+			//DB::update('activesystems')->set( array('lastUpdate' => time(),'lastActive' => time() ) )->where('systemID', '=', $insert['systemID'])->where('groupID', '=', $this->groupData['groupID'])->where('subGroupID', '=', $this->groupData['subGroupID'])->execute();
+			$this->__setActiveSystem($insert['systemID'], array('lastUpdate' => time(),
+																'lastActive' => time() )
+																);
 			
 			if( $this->groupData['statsEnabled'] )
 			{
@@ -1258,7 +1216,7 @@ class Controller_Siggy extends FrontController
 				
 				if( $doingUpdate )
 				{
-					DB::update('activesystems')->set( array('lastUpdate' => time(),'lastActive' => time() ) )->where('systemID', '=', $systemID)->where('groupID', '=', $this->groupData['groupID'])->where('subGroupID', '=', $this->groupData['subGroupID'])->execute();
+					$this->__setActiveSystem($systemID, array('lastUpdate' => time(),'lastActive' => time() ));
 				}
 				
 				echo json_encode($addedSigs);
@@ -1296,7 +1254,7 @@ class Controller_Siggy extends FrontController
 			
 			
 			DB::update('systemsigs')->set( $update )->where('sigID', '=', $id)->execute();
-			DB::update('activesystems')->set( array('lastUpdate' => time(),'lastActive' => time() ) )->where('systemID', '=', $_POST['systemID'])->where('groupID', '=', $this->groupData['groupID'])->where('subGroupID', '=', $this->groupData['subGroupID'])->execute();
+			$this->__setActiveSystem($_POST['systemID'], array('lastUpdate' => time(),'lastActive' => time() ));
 			
 			if( $this->groupData['statsEnabled'] )
 			{
@@ -1325,7 +1283,7 @@ class Controller_Siggy extends FrontController
 			
 			DB::delete('systemsigs')->where('sigID', '=', $id)->execute();
 			
-			DB::update('activesystems')->set( array('lastUpdate' => time() ) )->where('systemID', '=', $_POST['systemID'])->where('groupID', '=', $this->groupData['groupID'])->where('subGroupID', '=', $this->groupData['subGroupID'])->execute();
+			$this->__setActiveSystem($_POST['systemID'], array('lastUpdate' => time() ));
 			
 			$message = $this->groupData['charName'].' deleted sig "'.$sigData['sig'].'" from system '.$sigData['systemName'];;
 			if( $sigData['type'] != 'none' )
@@ -1360,9 +1318,8 @@ class Controller_Siggy extends FrontController
 					$system['x'] = 0;
 				}
 				
-				DB::update('activesystems')->set( array('x' => $system['x'], 'y' => $system['y']) )->where('systemID', '=', $system['id'])->where('groupID', '=', $this->groupData['groupID'])->where('subGroupID', '=', $this->groupData['subGroupID'])->execute();
+				$this->__setActiveSystem($system['id'], array('x' => $system['x'], 'y' => $system['y']));
 			}
-			
 			
 			$this->__logAction('editmap', $this->groupData['charName']. " edited the map");
 		
@@ -1445,7 +1402,7 @@ class Controller_Siggy extends FrontController
 				$check = DB::query(Database::SELECT, 'SELECT * FROM	 wormholes WHERE groupID=:groupID AND subGroupID=:subGroupID AND (`to`=:id OR `from`=:id)')->param(':groupID', $this->groupData['groupID'])->param(':subGroupID', $this->groupData['subGroupID'])->param(':id', $systemID)->execute()->current();
 				if( !$check['hash'] )
 				{ 
-					DB::update('activesystems')->set( array('displayName' => '','inUse' => 0 , 'activity' => 0 ) )->where('systemID', '=', $systemID)->where('groupID', '=', $this->groupData['groupID'])->where('subGroupID', '=', $this->groupData['subGroupID'])->execute();
+					$this->__setActiveSystem($systemID, array('displayName' => '','inUse' => 0 , 'activity' => 0 ) );
 				}
 			}
 		}
@@ -1631,12 +1588,7 @@ class Controller_Siggy extends FrontController
 		{
 			$id = intval($_POST['systemID']);
 			
-			DB::update('activesystems')->set( array('displayName' => trim($_POST['label']), 
-                                                    'activity' => intval($_POST['activity']) ) )
-                                      ->where('systemID', '=', $_POST['systemID'])
-                                      ->where('groupID', '=', $this->groupData['groupID'])
-                                      ->where('subGroupID', '=', $this->groupData['subGroupID'])
-                                      ->execute();
+			$this->__setActiveSystem($_POST['systemID'], array('displayName' => trim($_POST['label']), 'activity' => intval($_POST['activity']) ) );
 			echo json_encode('1');
 			
 			$this->rebuildMapCache();
@@ -1659,9 +1611,11 @@ class Controller_Siggy extends FrontController
 				return;
 		}
 		
-		$customsystems = DB::select(array('solarsystems.name', 'name'),array('activesystems.displayName', 'displayName'))->from('activesystems')
-											->join('solarsystems', 'LEFT')->on('activesystems.systemID', '=', 'solarsystems.id')
-											->where('displayName','like',$q.'%')->where('groupID', '=', $this->groupData['groupID'])->where('subGroupID', '=', $this->groupData['subGroupID'])->execute()->as_array();
+		$customsystems = DB::select(	array('solarsystems.name', 'name'), array('activesystems.displayName', 'displayName') )
+								->from('activesystems')
+								->join('solarsystems', 'LEFT')->on('activesystems.systemID', '=', 'solarsystems.id')
+								->where('displayName','like',$q.'%')->where('groupID', '=', $this->groupData['groupID'])
+								->where('subGroupID', '=', $this->groupData['subGroupID'])->execute()->as_array();
 		foreach($customsystems as $system)
 		{
 				print $system['displayName']."|".$system['name']."\n";
