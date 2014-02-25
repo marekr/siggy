@@ -537,15 +537,6 @@ class Controller_Manage_Group extends Controller_App {
 
 							$sg->save();
 
-
-							$systems = DB::select('id')->from('solarsystems')->order_by('id', 'ASC')->execute()->as_array();
-
-							foreach($systems as $system)
-							{		
-								DB::query(Database::INSERT, 'INSERT INTO activesystems (`systemID`,`groupID`,`subGroupID`) VALUES(:systemID, :groupID, :subGroupID) ON DUPLICATE KEY UPDATE systemID=systemID')
-																		->param(':systemID', $system['id'] )->param(':groupID', $sg->groupID )->param(':subGroupID', $sg->subGroupID )->execute();
-							}
-
 							//$this->__recacheCorpMembers();
 							groupUtils::recacheSubGroup($sg->subGroupID);
 							HTTP::redirect('manage/group/subgroups');
