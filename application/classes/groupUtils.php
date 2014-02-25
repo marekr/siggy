@@ -10,9 +10,6 @@ final class groupUtils
 				
 				$cacheName = 'mapCache-'.$groupID.'-'.$subGroupID;
 				
-					$mapData = self::rebuildMapCache($groupID, $subGroupID);
-											
-					return $mapData;			
 				if( $mapData = $cache->get( $cacheName, FALSE ) )
 				{
 					return $mapData;

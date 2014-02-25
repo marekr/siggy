@@ -35,8 +35,6 @@ class Controller_Siggy extends FrontController
 
 		$view = View::factory('siggy/siggyMain');
 		
-		mapUtils::rebuildMapData(1,0);
-		
 		$view->initialSystem = false;
 		$view->group = $this->groupData;
 		$view->requested = $requested;
