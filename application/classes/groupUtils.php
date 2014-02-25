@@ -6,69 +6,68 @@ final class groupUtils
 
 		static function getMapCache($groupID, $subGroupID)
 		{
-				$cache = Cache::instance( CACHE_METHOD );
-				
-				$cacheName = 'mapCache-'.$groupID.'-'.$subGroupID;
-				
-				if( $mapData = $cache->get( $cacheName, FALSE ) )
-				{
-					return $mapData;
-				}
-				else
-				{
-					$mapData = self::rebuildMapCache($groupID, $subGroupID);
-											
-					return $mapData;			
-				}
+			$cache = Cache::instance( CACHE_METHOD );
+			
+			$cacheName = 'mapCache-'.$groupID.'-'.$subGroupID;
+			
+			if( $mapData = $cache->get( $cacheName, FALSE ) )
+			{
+				return $mapData;
+			}
+			else
+			{
+				$mapData = self::rebuildMapCache($groupID, $subGroupID);
+
+				return $mapData;			
+			}
 		}
 		
 		static function getCharacterUsageCount( $groupID )
 		{
-				$numCorps = DB::query(Database::SELECT, "SELECT SUM(DISTINCT c.memberCount) as total FROM groupmembers gm
-												LEFT JOIN corporations c ON(gm.eveID = c.corporationID)
-												WHERE gm.groupID=:group AND gm.memberType='corp'")
-												->param(':group', $groupID)->execute()->current();
-												
-				$numCorps = $numCorps['total'];
-				
-				$numChars = DB::query(Database::SELECT, "SELECT COUNT(DISTINCT eveID) as total FROM groupmembers
-												WHERE groupID=:group AND memberType ='char' ")
-												->param(':group', $groupID)->execute()->current();
-				$numChars = $numChars['total'];
-				$numUsers = $numCorps + $numChars;		
-				
-				return $numUsers;
+			$numCorps = DB::query(Database::SELECT, "SELECT SUM(DISTINCT c.memberCount) as total FROM groupmembers gm
+											LEFT JOIN corporations c ON(gm.eveID = c.corporationID)
+											WHERE gm.groupID=:group AND gm.memberType='corp'")
+											->param(':group', $groupID)->execute()->current();
+											
+			$numCorps = $numCorps['total'];
+			
+			$numChars = DB::query(Database::SELECT, "SELECT COUNT(DISTINCT eveID) as total FROM groupmembers
+											WHERE groupID=:group AND memberType ='char' ")
+											->param(':group', $groupID)->execute()->current();
+			$numChars = $numChars['total'];
+			$numUsers = $numCorps + $numChars;		
+			
+			return $numUsers;
 		}
 		
 		static function createNewGroup($data)
 		{
-				$homeSysData = self::parseHomeSystems($data['homeSystems']);
-				
-				$salt = miscUtils::generateSalt(10);
-				$password = "";
-				if( $data['groupPassword'] != "" && $data['authMode'] == 1 )
-				{
-					$password = self::hashGroupPassword( $data['groupPassword'], $salt );
-				}
-		
-				$insert = array(
-									'groupName' => $data['groupName'],
-									'groupTicker' => $data['groupTicker'],
-									'billingContact' => $data['ingameContact'],
-									'authMode' => $data['authMode'],
-									'authSalt' => $salt,
-									'authPassword' => $password,
-									'homeSystems' => $homeSysData['homeSystems'],
-									'homeSystemIDs' => $homeSysData['homeSystemIDs'],
-									'dateCreated' => time(),
-									'paymentCode' => miscUtils::generateString(14),
-									'billable' => 1
-								);
-				$result = DB::insert('groups', array_keys($insert) )->values( array_values($insert) )->execute();
-				$groupID = $result[0];
-				self::createGroupActiveSystems( $groupID );
-				
-				return $groupID;
+			$homeSysData = self::parseHomeSystems($data['homeSystems']);
+			
+			$salt = miscUtils::generateSalt(10);
+			$password = "";
+			if( $data['groupPassword'] != "" && $data['authMode'] == 1 )
+			{
+				$password = self::hashGroupPassword( $data['groupPassword'], $salt );
+			}
+	
+			$insert = array(
+								'groupName' => $data['groupName'],
+								'groupTicker' => $data['groupTicker'],
+								'billingContact' => $data['ingameContact'],
+								'authMode' => $data['authMode'],
+								'authSalt' => $salt,
+								'authPassword' => $password,
+								'homeSystems' => $homeSysData['homeSystems'],
+								'homeSystemIDs' => $homeSysData['homeSystemIDs'],
+								'dateCreated' => time(),
+								'paymentCode' => miscUtils::generateString(14),
+								'billable' => 1
+							);
+			$result = DB::insert('groups', array_keys($insert) )->values( array_values($insert) )->execute();
+			$groupID = $result[0];
+			
+			return $groupID;
 		}
 		
 		static function hashGroupPassword( $password, $salt )
@@ -118,18 +117,6 @@ final class groupUtils
 			
 			return $return;	
 		}
-		
-		static function createGroupActiveSystems($groupID, $subGroup = 0)
-		{
-			$systems = DB::select('id')->from('solarsystems')->order_by('id', 'ASC')->execute()->as_array();
-			
-			foreach($systems as $system)
-			{		
-				DB::query(Database::INSERT, 'INSERT INTO activesystems (`systemID`,`groupID`,`subGroupID`) VALUES(:systemID, :groupID, :subGroupID) ON DUPLICATE KEY UPDATE systemID=systemID')
-														->param(':systemID', $system['id'] )->param(':groupID', $groupID )->param(':subGroupID', $subGroup )->execute();
-			}
-		}
-
 
 		static function rebuildMapCache($groupID, $subGroupID = 0)
 		{
