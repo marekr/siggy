@@ -18,10 +18,6 @@ class Controller_Siggy extends FrontController
 		$mapOpen = ( isset($_COOKIE['mapOpen'] ) ? intval($_COOKIE['mapOpen']) : 0 );
         $statsOpen = ( isset($_COOKIE['system_stats_open'] ) ? intval($_COOKIE['system_stats_open']) : 0 );
         
-        //print_r($this->__generatePossibleSystemLocations(751,147));
-		//$this->_addSystemToMap($this->whHashByID(31002016,31002032),31002016,31002032);
-		//__doBoxesIntersect
-        
 		if( !empty($ssname) )
 		{
 				$ssname = preg_replace("/[^a-zA-Z0-9]/", "", $ssname);
@@ -629,8 +625,7 @@ class Controller_Siggy extends FrontController
 						->current();
 										
 		$spots = $this->__generatePossibleSystemLocations($sysData['x'], $sysData['y']);
-		//print_r($spots);
-		//print_r($originSystems);
+
 		foreach($spots as $spot)
 		{
 			$intersect = false;
@@ -645,9 +640,7 @@ class Controller_Siggy extends FrontController
 			if( !$intersect )
 			{
 				//winnar!
-				//print "winner";
 				$sysPos = $spot;
-				//print_r($sysPos);
 				break;
 			}
 		}
@@ -695,8 +688,6 @@ class Controller_Siggy extends FrontController
 			$q->param(':'.$k, $v);
 		}
 		$q->execute();
-		
-		print_r($q);
 	}
 	
 	
