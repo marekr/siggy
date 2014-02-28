@@ -53,7 +53,6 @@ class access
 				
 				if( $this->igb )
 				{
-						$this->authPassword = Cookie::get('authPassword', '');
 						
 						if( $this->trusted )
 						{
@@ -66,7 +65,9 @@ class access
 								{
 											if( $this->accessData['authMode'] == 1 )
 											{
-											
+													$groupID = intval($this->accessData['groupID']);
+													$subGroupID = intval($this->accessData['subGroupID']);
+													$this->authPassword = Cookie::get('authPassword-' .$groupID .'-'.$subGroupID, '');
 													if( (!empty($this->accessData['sgAuthPassword']) && $this->authPassword == $this->accessData['sgAuthPassword'] )	 
 															|| ( empty($this->accessData['sgAuthPassword']) && $this->authPassword == $this->accessData['authPassword']) 
 														) 

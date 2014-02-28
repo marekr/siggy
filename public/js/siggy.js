@@ -1446,7 +1446,7 @@ siggymain.prototype.addSigRow = function (sigData, flashSig)
 	var row = $('<tr>').attr('id', 'sig-' + sigData.sigID)
 	.append($('<td>').addClass('center-text').addClass('edit') .append($('<i>').addClass('icon-pencil').addClass('icon-large').click(function (e)
 		{
-			that.editSigForm(sigData.sigID)
+			that.editSigForm(sigData.sigID);
 		})
 	))
 	.append($('<td>').addClass('center-text').addClass('sig').text(sigData.sig));
@@ -1601,14 +1601,15 @@ siggymain.prototype.editSig = function (sigID)
 	
 
 	
+	console.log("POOP");
 	var that = this;
-	$.post(this.settings.baseUrl + 'dosigEdit', postData, function ()
+	$.post(this.settings.baseUrl + 'dosigEdit', postData, function ( data )
 	{
-
+		console.log("halo");
 		that.editingSig = false;
 		that.sigData[sigID].editing = false;
 
-	});
+	},"json").fail( function(xhr, textStatus, errorThrown) { alert(xhr.responseText) } );
 
 	sigEle.remove();
 	if( this.settings.showSigSizeCol )
@@ -1624,9 +1625,10 @@ siggymain.prototype.editSig = function (sigID)
 	var controlEle = $("#sig-" + sigID + " td.edit");
 	controlEle.text('');
 	controlEle.append($('<i>').addClass('icon-pencil').addClass('icon-large').click(function (e)
-	{
-		that.editSigForm(sigID)
-	}));
+																						{
+																							that.editSigForm(sigID)
+																						})
+																					);
 
 }
 

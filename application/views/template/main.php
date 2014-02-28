@@ -36,8 +36,8 @@
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>
 	<?php endif; ?>
     <?php endif; ?>
-  </head>
-  <body>
+	</head>
+	<body>
 		<?php if( $loggedIn = true || Kohana::$environment == Kohana::DEVELOPMENT): ?>
 		<div id="floating-header">
 			<div id="top-bar">
@@ -56,18 +56,18 @@
 												<?php foreach( $group['groups'] as $g => $sgs ): ?>
 													<?php foreach( $sgs as $sg ): ?>
 														<?php if( $sg == 0 ): ?>
-																<li>
-                                                                    
-                                                                    <a href="<?php echo URL::base(); ?>doswitchMembership/?k=<?php echo md5($g.'-'.$sg); ?>">
-                                                                    <?php echo $group['groupDetails']['group'][ $g ]['groupName'] ?>
-                                                                    </a>
-                                                                </li>
+															<li>
+																
+																<a href="<?php echo URL::base(); ?>access/switch_membership/?k=<?php echo md5($g.'-'.$sg); ?>">
+																<?php echo $group['groupDetails']['group'][ $g ]['groupName'] ?>
+																</a>
+															</li>
 														<?php else: ?>
-																<li>
-                                                                    <a href="<?php echo URL::base(); ?>doswitchMembership/?k=<?php echo md5($g.'-'.$sg); ?>">
-                                                                        <?php echo $group['groupDetails']['subgroup'][ $sg ]['accessName']; ?> - <?php echo $group['groupDetails']['subgroup'][ $sg ]['subGroupName'] ?> - <?php echo $group['groupDetails']['group'][ $g ]['groupName'] ?>
-                                                                    </a>
-                                                                </li>										
+															<li>
+																<a href="<?php echo URL::base(); ?>access/switch_membership/?k=<?php echo md5($g.'-'.$sg); ?>">
+																	<?php echo $group['groupDetails']['subgroup'][ $sg ]['accessName']; ?> - <?php echo $group['groupDetails']['subgroup'][ $sg ]['subGroupName'] ?> - <?php echo $group['groupDetails']['group'][ $g ]['groupName'] ?>
+																</a>
+															</li>										
 														<?php endif; ?>
 													<?php endforeach; ?>
 												<?php endforeach; ?>
@@ -98,24 +98,23 @@
 		<?php endif; ?>
 		<div id="wrapper">
 			<div style="height:70px; width: 100%"></div>
-			
+
 			<?php echo $content; ?>
 			<div id="footer-link" style="text-align:center;font-size:0.9em;margin-top:100px;">
-					<a href="http://siggy.borkedlabs.com/info/">Usage Guide</a>
-					<?php if( $apilogin ): ?>
-					&nbsp;&middot;&nbsp;
-					<a href="<?php echo URL::base(TRUE, TRUE);?>account/apiKeys">API Keys</a>
-					&nbsp;&middot;&nbsp;
-					<a href="<?php echo URL::base(TRUE, TRUE);?>account/characterSelect">Switch Character</a>
-					&nbsp;&middot;&nbsp;
-					<a href="<?php echo URL::base(TRUE, TRUE);?>account/changePassword">Change Password</a>
-					<?php endif; ?>
-					<br />
-					<?php if( $siggyMode ): ?>
-					Last Update: <span class="updateTime" title='Last update recieved'>00:00:00</span><br />
-					<?php endif; ?>
+				<a href="http://wiki.siggy.borkedlabs.com/">Usage Guide</a>
+				<?php if( $apilogin ): ?>
+				&nbsp;&middot;&nbsp;
+				<a href="<?php echo URL::base(TRUE, TRUE);?>account/apiKeys">API Keys</a>
+				&nbsp;&middot;&nbsp;
+				<a href="<?php echo URL::base(TRUE, TRUE);?>account/characterSelect">Switch Character</a>
+				&nbsp;&middot;&nbsp;
+				<a href="<?php echo URL::base(TRUE, TRUE);?>account/changePassword">Change Password</a>
+				<?php endif; ?>
+				<br />
+				<?php if( $siggyMode ): ?>
+				Last Update: <span class="updateTime" title='Last update received'>00:00:00</span><br />
+			<?php endif; ?>
 			</div>    
 		</div>
-		<?php if( defined('MESSMODE') ) { echo View::factory('profiler/stats'); } ?>
-  </body>
+	</body>
 </html>

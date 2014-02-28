@@ -148,7 +148,7 @@ class FrontController extends Controller
       {
           if( $this->authStatus == AuthStatus::GPASSWRONG )
           {
-              $this->siggyredirect('/doGroupAuth');
+              $this->siggyredirect('/access/group_password');
           }
           elseif( $this->authStatus == AuthStatus::APILOGINNOACCESS )
           {

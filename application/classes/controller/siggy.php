@@ -4,7 +4,6 @@ require_once APPPATH.'classes/FrontController.php';
 
 class Controller_Siggy extends FrontController 
 {
-	public $groupData = array();
 	public $trusted = false;
 	
 	public $template = 'template/main';
@@ -137,56 +136,6 @@ class Controller_Siggy extends FrontController
 		}
 	
 		parent::after();
-	}
-	
-	public function action_groupAuth()
-	{
-		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-		if( !$this->trusted )
-		{
-			return;
-		}
-		
-		$view = View::factory('siggy/groupPassword');
-		$view->groupData = $this->groupData;
-		$view->trusted = $this->trusted;
-		$view->wrongPass = false;
-		$this->template->siggyMode = false;
-
-		//load header tools
-		$this->template->headerTools = '';		
-		
-		if( isset($_POST['authPassword']) )
-		{
-			$pass = sha1($_POST['authPassword'].$this->groupData['authSalt']);
-			if( !empty( $this->groupData['sgAuthPassword'] ) )
-			{
-				if( $pass == $this->groupData['sgAuthPassword'] )
-				{
-					Cookie::set('authPassword', $pass, 365*60*60*24);
-					HTTP::redirect('/');
-				}
-				else
-				{
-					$view->wrongPass = true;
-				}
-			}
-			elseif( !empty($this->groupData['authPassword']) )
-			{
-				if( $pass == $this->groupData['authPassword'] )
-				{
-					Cookie::set('authPassword', $pass, 365*60*60*24);
-					HTTP::redirect('/');
-				}
-				else
-				{
-					$view->wrongPass = true;
-				}
-			}
-		}
-		
-		
-		$this->template->content = $view;
 	}
 	
 	public function action_systemData($name='')
@@ -324,32 +273,6 @@ class Controller_Siggy extends FrontController
         return $dscans;
     }
 	
-	public function action_switchMembership()
-	{
-			$k = $_GET['k'];
-			
-
-			
-			//if( $this->siggyAccessGranted() )
-			//{
-        if( count( $this->groupData['groups'] ) > 1 || count( current($this->groupData['groups']) > 1) )
-        {
-            foreach( $this->groupData['groups'] as $g => $sgs )
-            {
-                foreach( $sgs as $sg )
-                {
-                    if( md5($g.'-'.$sg) == $k )
-                    {
-                        Cookie::set('membershipChoice', $g.'-'.$sg, 365*60*60*24);
-                        break;
-                    }
-                }
-            }
-        }
-			//}
-			
-		HTTP::redirect('/');
-	}
 	
 	private function rebuildMapCache()
 	{

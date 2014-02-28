@@ -1,10 +1,10 @@
+<script type='text/javascript'>
+if( typeof(CCPEVE) != "undefined" )
+{
+CCPEVE.requestTrust('<?php echo URL::base(true,true); ?>*');
+}      
+</script>
 
-      <script type='text/javascript'>
-        if( typeof(CCPEVE) != "undefined" )
-        {
-          CCPEVE.requestTrust('<?php echo URL::base(true,true); ?>*');
-        }      
-      </script>
 <div class="well">
 	<h2>Welcome to siggy!</h2>
 	<?php if( $igb && $trusted  ): ?>
