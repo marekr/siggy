@@ -573,9 +573,10 @@ class Controller_Siggy extends FrontController
 		{
 			$sysPOS = $spots[0];
 		}
+		
 			
-		$this->__setActiveSystem($systemToBePlaced, array( 'x' => $sysPos['x'],
-															'y' => $sysPos['y'],
+		$this->__setActiveSystem($systemToBePlaced, array( 'x' => intval($sysPos['x']),
+															'y' => intval($sysPos['y']),
 															'lastUpdate' => time() ) );
 	}
 	
@@ -1220,12 +1221,12 @@ class Controller_Siggy extends FrontController
 		{
 			foreach( $systemData as $system )
 			{
-				if( $system['y'] < 0 || $system['y'] > 400 )
+				if( !isset($system['y']) || $system['y'] < 0 || $system['y'] > 400 )
 				{
 					$system['y'] = 0;
 				}
 				
-				if( $system['x'] < 0 )
+				if( !isset($system['x']) || $system['x'] < 0 )
 				{
 					$system['x'] = 0;
 				}
