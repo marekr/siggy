@@ -774,28 +774,33 @@ class Controller_Manage_Group extends Controller_App {
 		$view->set('id', $id);
 		if ( !empty($_POST)  ) 
 		{
-				try 
+			try 
+			{
+				if( $member->memberType == 'corp' )
 				{
-
-						if( $member->memberType == 'corp' )
-						{
-							groupUtils::recacheCorpList();
-							groupUtils::deleteCorpCache( $member->eveID );
-						}
-						elseif( $member->memberType == 'char' )
-						{
-							groupUtils::recacheCharList();
-							groupUtils::deleteCharCache( $member->eveID );
-						}
-						$member->delete();
-						//$this->__recacheCorpMembers();
-						HTTP::redirect('manage/group/members');
-						return;
-				} 
-				catch (Exception $e) 
-				{
-						Message::add('error', __('Error: Removal of member failed for unknown reasons.'));
+					groupUtils::recacheCorpList();
+					groupUtils::deleteCorpCache( $member->eveID );
 				}
+				elseif( $member->memberType == 'char' )
+				{
+					groupUtils::recacheCharList();
+					groupUtils::deleteCharCache( $member->eveID );
+				}
+				$member->delete();
+				//$this->__recacheCorpMembers();
+				HTTP::redirect('manage/group/members');
+			} 
+			catch (Exception $e) 
+			{
+				if($e instanceof HTTP_Exception)
+				{
+					throw $e;
+				}
+				else
+				{
+					Message::add('error', __('Error: Removal of member failed for unknown reasons.'));
+				}
+			}
 		}
 
 		$view->set('data', $member->as_array() );
@@ -820,22 +825,28 @@ class Controller_Manage_Group extends Controller_App {
 			$view->set('id', $id);
 			if ( !empty($_POST)  ) 
 			{
-					try 
-					{
-							DB::update('groupmembers')->set( array('subGroupID' => 0 ) )->where( 'subGroupID', '=', $sg->subGroupID )->execute();
-							DB::delete('activesystems')->where('subGroupID', '=', $sg->subGroupID)->execute();
+				try 
+				{
+					DB::update('groupmembers')->set( array('subGroupID' => 0 ) )->where( 'subGroupID', '=', $sg->subGroupID )->execute();
+					DB::delete('activesystems')->where('subGroupID', '=', $sg->subGroupID)->execute();
 
-							groupUtils::deleteSubGroupCache($sg->subGroupID);
-							$sg->delete();
+					groupUtils::deleteSubGroupCache($sg->subGroupID);
+					$sg->delete();
 
-							//$this->__recacheCorpMembers();
-							HTTP::redirect('manage/group/subgroups');
-							return;
-					} 
-					catch (Exception $e) 
+					//$this->__recacheCorpMembers();
+					HTTP::redirect('manage/group/subgroups');
+				}
+				catch (Exception $e) 
+				{
+					if($e instanceof HTTP_Exception)
 					{
-							Message::add('error', __('Error: Removal of member failed for unknown reasons.'));
+						throw $e;
 					}
+					else
+					{
+						Message::add('error', __('Error: Removal of subgroup failed for unknown reasons.'));
+					}
+				}
 			}
 
 			$view->set('data', $sg->as_array() );
