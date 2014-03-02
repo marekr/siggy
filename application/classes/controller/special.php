@@ -3,6 +3,8 @@
 require_once APPPATH.'classes/groupUtils.php';
 require_once APPPATH.'classes/mapUtils.php';
 require_once APPPATH.'classes/miscUtils.php';
+require_once APPPATH.'classes/astar.php';
+require_once APPPATH.'classes/systempathfinder.php';
 
 class Controller_Special extends Controller {
 	
@@ -20,13 +22,24 @@ class Controller_Special extends Controller {
 	{
 		$results = $this->searchEVEEntityByName( 'Dreddit', 'corp' );
 		print_r($results);
+	}
+	
+
+	public function action_test3()
+	{
+		if( !isset($_GET['key']) || $_GET['key'] != 'PIZZAMOFO' )
+		{
+			exit('GTFO');
+		}
+		echo memory_get_usage() . "\n"; // 36640
 		
-		
+		$pather = new SystemPathFinder();
+		print_r($pather->PathFind("30000142", "30002187"));
+		echo memory_get_usage() . "\n"; // 36640
 	}
 	
 	public function action_generateHubJumps()
 	{
-	
 		if( !isset($_GET['key']) || $_GET['key'] != 'PIZZAMOFO' )
 		{
 			exit('GTFO');
@@ -70,7 +83,6 @@ class Controller_Special extends Controller {
 				print_r($jumpResult);
 			}
 		}
-		
 	}
 	
 	private function shortestRoute($origin, $target, $jumps)

@@ -1424,7 +1424,7 @@ class Controller_Siggy extends FrontController
 			}
 			elseif( !empty($fromSys) )
 			{
-				$fromSysID = $this->__findSystemByName($fromSys);
+				$fromSysID = mapUtils::findSystemByName($fromSys, $this->groupData['groupID'], $this->groupData['subGroupID'] );
 				if( !$fromSysID )
 				{
 					$errors[] = "The 'from' system could not be looked up by name.";
@@ -1438,7 +1438,7 @@ class Controller_Siggy extends FrontController
 			}
 			elseif( !empty($toSys) )
 			{
-				$toSysID = $this->__findSystemByName($toSys);
+				$toSysID = mapUtils::findSystemByName($toSys, $this->groupData['groupID'], $this->groupData['subGroupID'] );
 				if( !$toSysID )
 				{
 					$errors[] = "The 'to' system could not be looked up by name.";
@@ -1474,22 +1474,6 @@ class Controller_Siggy extends FrontController
 		exit();
 	}
 	
-	//allows finding by display name or real name
-	private function __findSystemByName($name)
-	{
-		$name = strtolower($name);
-		$systemID = DB::query(Database::SELECT, 'SELECT systemID,displayName FROM activesystems WHERE LOWER(displayName) = :name AND groupID=:groupID AND subGroupID=:subGroupID')
-													->param(':name', $name )->param(':groupID', $this->groupData['groupID'])->param(':subGroupID', $this->groupData['subGroupID'])->execute()->get('systemID', 0);
-													
-		if( $systemID == 0 )
-		{
-			$systemID = DB::query(Database::SELECT, 'SELECT id,name FROM solarsystems WHERE LOWER(name) = :name')
-																->param(':name', $name )->execute()->get('id', 0);
-																
-		}
-		
-		return $systemID;
-	}
 	
 	public function action_saveSystemOptions()
 	{

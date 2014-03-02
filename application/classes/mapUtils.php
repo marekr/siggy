@@ -15,6 +15,22 @@ final class MapUtils
 		}
 	}
 	
+	static function findSystemByName($name, $groupID, $subGroupID = 0)
+	{
+		$name = strtolower($name);
+		$systemID = DB::query(Database::SELECT, 'SELECT systemID,displayName FROM activesystems WHERE LOWER(displayName) = :name AND groupID=:groupID AND subGroupID=:subGroupID')
+													->param(':name', $name )->param(':groupID', $groupID)->param(':subGroupID', $subGroupID)->execute()->get('systemID', 0);
+													
+		if( $systemID == 0 )
+		{
+			$systemID = DB::query(Database::SELECT, 'SELECT id,name FROM solarsystems WHERE LOWER(name) = :name')
+																->param(':name', $name )->execute()->get('id', 0);
+																
+		}
+		
+		return $systemID;
+	}
+	
 	static function rebuildMapData($groupID, $subGroupID = 0, $additionalSystems = array())
 	{
 			$data = array();
