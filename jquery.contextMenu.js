@@ -26,6 +26,7 @@ if(jQuery)( function() {
 			// 0 needs to be -1 for expected results (no fade)
 			if( o.inSpeed == 0 ) o.inSpeed = -1;
 			if( o.outSpeed == 0 ) o.outSpeed = -1;
+			if( o.leftMouse == undefined ) o.leftMouse = false;
 			// Loop each context menu
 			$(this).each( function() {
 				var el = $(this);
@@ -38,7 +39,8 @@ if(jQuery)( function() {
 					$(this).mouseup( function(e) {
 						var srcElement = $(this);
 						$(this).unbind('mouseup');
-						if( evt.button == 2 ) {
+							console.log(evt.button);
+						if( evt.button == 2 || (o.leftMouse == true && evt.button ==0) ) {
 							evt.stopPropagation();
 							e.stopPropagation();
 							// Hide context menus that may be showing
