@@ -677,3 +677,44 @@ ul.option-bar li.active
 {
   font-weight:bold;
 }
+
+ul.box-simple-list li
+{
+	border-bottom:1px solid #FEA800;
+	padding:4px;
+	font-size: 1em;
+	background-color: #121212;
+}
+
+ul.box-simple-list
+{
+	border: 1px solid #000;
+}
+
+.faux-link
+{
+	font-weight:bold;
+	color: #FEA800;
+	cursor:pointer;
+}
+
+.box-load-progress
+{
+	text-align: center;
+	padding: 0;
+	margin: 0;
+	vertical-align: middle;
+	margin-top: 10px;
+}
+
+.box-load-progress img
+{
+	vertical-align: middle;
+	margin-right: 9px;
+}
+
+.box-load-progress span
+{
+	display: inline-block;
+	font-weight: bold;
+	}

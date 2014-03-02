@@ -5,6 +5,7 @@
 		<li id="stats-button"><a target="_blank" href="<?php echo URL::base(); ?>stats">Stats</a></li>
 	<?php endif; ?>
     <li id="settings-button"><i class="icon icon-settings"></i></li>
+    <li id="exit-finder-button">Exit Finder</li>
 </ul>
 <div id="global-notes">
 	<h2>Notes <a href="#" id="global-notes-edit" >[edit]</a></h2>

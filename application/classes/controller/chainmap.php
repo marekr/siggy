@@ -29,8 +29,8 @@ class Controller_Chainmap extends FrontController
 		}
 		
 		
-		$target = isset($_GET['target']) ? trim($_REQUEST['target']) : "";
-		$targetCurrentSys = isset($_GET['current_system']) ? intval($_GET['current_system']) : 0;
+		$target = isset($_REQUEST['target']) ? trim($_REQUEST['target']) : "";
+		$targetCurrentSys = isset($_REQUEST['current_system']) ? intval($_REQUEST['current_system']) : 0;
 		
 		$targetID = 0;
 		
@@ -71,7 +71,7 @@ class Controller_Chainmap extends FrontController
 		{
 			$path = $pather->PathFind($targetID, $system['sys_id']);
 			
-			$result[] = array('system_name' => $system['name'], 'number_jumps' => count($path) );
+			$result[] = array('system_id' => $system['sys_id'], 'system_name' => $system['name'], 'number_jumps' => count($path) );
 		}
 		
 		usort($result, array('Controller_Chainmap','sortResults'));

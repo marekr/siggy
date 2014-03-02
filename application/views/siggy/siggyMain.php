@@ -361,11 +361,11 @@
         <h3>Add POS</h3>
         <div>
             <form>
-				<label>
+				<div>
 					Location(Planet - Moon)<br />
 					<input type="text" value="" name="pos_location_planet" size="2" maxlength="2" style="width:auto"/> -
 					<input type="text" value="" name="pos_location_moon" size="3" maxlength="4" style="width:auto"/>
-				</label><br />
+				</div>
 				<label>
 					Owner
 					<input type="text" value="" name="pos_owner" />
@@ -453,6 +453,32 @@
         </div>
     </div>
 	
+    <div id="exit-finder" class="box" style="display:none;">
+        <h3>Exit Finder</h3>
+        <div>
+            <p></p>
+            <form>
+				<label>
+					System
+					<input type="text" value="" name="target_system" />
+				</label>
+				<div id="exit-finder-loading" class="box-load-progress" style="display:none;">
+					<img src="<?php echo URL::base(TRUE, TRUE);?>public/images/ajax-loader.gif" />
+					<span>Calculating....</span>
+				</div>
+				<div id="exit-finder-results-wrap" style='max-height:210px;overflow: auto;margin-top: 10px;'>
+					<h3>Results</h3>
+					<ul id="exit-finder-list" class="box-simple-list">
+						<li><b>No exits found</b></li>
+					</ul>
+				</div>
+                <div class="center-text form-actions">
+                    <button name='submit' class="btn btn-primary" type="button">Search</button>
+                    <button name='cancel' type="button" class="btn btn-default">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
 	
 	
     <div id="confirm-dialog" class="box" style="display:none;">
