@@ -278,23 +278,23 @@ final class miscUtils
 		{
 			if( $type == 'corp' )
 			{
-					$nameArray = explode(',', $names);
-					$queryArray = array();
-					foreach($nameArray as $name)
+				$nameArray = explode(',', $names);
+				$queryArray = array();
+				foreach($nameArray as $name)
+				{
+					$name = trim($name);
+					if(!empty($name))
 					{
-						$name = trim($name);
-						if(!empty($name))
-						{
-							$queryArray[] = "corporationName LIKE ".Database::instance()->escape("%".$name."%");
-						}
+						$queryArray[] = "corporationName LIKE ".Database::instance()->escape("%".$name."%");
 					}
-					$querySQL = implode(" OR ", $queryArray);
-					$results = DB::query(Database::SELECT, 'SELECT * FROM corporations WHERE '.$querySQL)->execute()->as_array();
-					
-					if( count( $results ) )
-					{
-						return $results;
-					}
+				}
+				$querySQL = implode(" OR ", $queryArray);
+				$results = DB::query(Database::SELECT, 'SELECT * FROM corporations WHERE '.$querySQL)->execute()->as_array();
+				
+				if( count( $results ) )
+				{
+					return $results;
+				}
 			}
 		
 			require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
@@ -318,41 +318,39 @@ final class miscUtils
 			$resultArray = array();
 			foreach( $potentialCorps as $corp )
 			{
-					try
+				try
+				{
+					if( $type == 'corp' )
 					{
-							if( $type == 'corp' )
-							{
-								$result = $pheal->CorporationSheet( array( 'corporationID' => (int)$corp['characterID'] ) )->toArray();
-								//print 'found corp, storing locally!';
-								$result = $result['result'];
-								DB::query(Database::INSERT, 'INSERT INTO corporations (`corporationID`, `corporationName`, `memberCount`, `ticker`, `description`, `lastUpdate`) VALUES(:corporationID, :corporationName, :memberCount, :ticker, :description, :lastUpdate)'
-														   .' ON DUPLICATE KEY UPDATE description = :description, memberCount = :memberCount, lastUpdate = :lastUpdate')
-														->param(':memberCount', $result['memberCount'] )
-														->param(':corporationID', $result['corporationID'] )
-														->param(':corporationName', $result['corporationName'] )
-														->param(':description', $result['description'] )
-														->param(':ticker', $result['ticker'] )
-														->param(':lastUpdate', time() )
-														->execute();	
-								$resultArray[] = $result;				
-							}	
-							else
-							{
-								$result = $pheal->CharacterInfo( array( 'characterID' => (int)$corp['characterID'] ) )->toArray();
-								$result = $result['result'];
-								
-								$resultArray[] = $result;				
-							}
-						
-						
-					}
-					catch( PhealAPIException $e )
+						$result = $pheal->CorporationSheet( array( 'corporationID' => (int)$corp['characterID'] ) )->toArray();
+						//print 'found corp, storing locally!';
+						$result = $result['result'];
+						DB::query(Database::INSERT, 'INSERT INTO corporations (`corporationID`, `corporationName`, `memberCount`, `ticker`, `description`, `lastUpdate`) VALUES(:corporationID, :corporationName, :memberCount, :ticker, :description, :lastUpdate)'
+												   .' ON DUPLICATE KEY UPDATE description = :description, memberCount = :memberCount, lastUpdate = :lastUpdate')
+												->param(':memberCount', $result['memberCount'] )
+												->param(':corporationID', $result['corporationID'] )
+												->param(':corporationName', $result['corporationName'] )
+												->param(':description', $result['description'] )
+												->param(':ticker', $result['ticker'] )
+												->param(':lastUpdate', time() )
+												->execute();	
+						$resultArray[] = $result;				
+					}	
+					else
 					{
-							if( $e->code == 523 || $e->code == 522 )	//not a corp error
-							{
-								continue;
-							}
+						$result = $pheal->CharacterInfo( array( 'characterID' => (int)$corp['characterID'] ) )->toArray();
+						$result = $result['result'];
+						
+						$resultArray[] = $result;				
 					}
+				}
+				catch( PhealException $e )
+				{
+					if( $e->getCode() == 523 || $e->getCode() == 522 )	//not a corp error
+					{
+						continue;
+					}
+				}
 			}
 			
 			return $resultArray;
