@@ -153,6 +153,11 @@ final class miscUtils
 			{
 				$data = explode("\t", $line);
 				
+				if( count($data) < 2 )
+				{
+					continue;
+				}
+				
 				$sigData = array('type' => '', 'sig' => '', 'siteID' => 0);
 				
 				

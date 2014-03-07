@@ -456,12 +456,16 @@
     <div id="exit-finder" class="box" style="display:none;">
         <h3>Exit Finder</h3>
         <div>
-            <p></p>
+            <p>Find's the nearest exit to the given system or your location.</p>
             <form>
 				<label>
 					System
-					<input type="text" value="" name="target_system" />
+					<input type="text" value="" name="target_system" style="width:150px" />
+					<button name='submit' class="btn btn-default btn-xs" type="submit" style="margin-top: -4px;">Search</button> <br />
 				</label>
+				<?php if( $igb ): ?>
+				<button name='current_location' class="btn btn-default btn-xs">Exits near my location</button>
+				<?php endif; ?>
 				<div id="exit-finder-loading" class="box-load-progress" style="display:none;">
 					<img src="<?php echo URL::base(TRUE, TRUE);?>public/images/ajax-loader.gif" />
 					<span>Calculating....</span>
@@ -473,8 +477,7 @@
 					</ul>
 				</div>
                 <div class="center-text form-actions">
-                    <button name='submit' class="btn btn-primary" type="button">Search</button>
-                    <button name='cancel' type="button" class="btn btn-default">Cancel</button>
+                    <button name='cancel' type="button" class="btn btn-default">Close</button>
                 </div>
             </form>
         </div>

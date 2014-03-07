@@ -44,7 +44,7 @@ class Controller_Chainmap extends FrontController
 			$targetID = mapUtils::findSystemByName($target, $this->groupData['groupID'], $this->groupData['subGroupID'] );
 		}
 		
-		if( $targetID == 0 )
+		if( $targetID == 0 || $targetID >= 31000000 )
 		{
 			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid system'));
 			exit();

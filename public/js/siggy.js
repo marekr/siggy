@@ -2340,6 +2340,53 @@ siggymain.prototype.unfreeze = function()
 	$('#freezeOpt').show();
 }
 
+siggymain.prototype.populateExitData = function(data)
+{
+
+	if( typeof(data.result) != "undefined" )
+	{
+		for(var i in data.result)
+		{
+			var item = $("<li>");
+			item.html("<span class='faux-link'>"+data.result[i].system_name + "</span> - " + data.result[i].number_jumps + " jumps");
+			$('#exit-finder-list').append(item);
+			
+			item.data("sysID", data.result[i].system_id);
+			item.data("sysName",data.result[i].system_name);
+						
+			item.contextMenu( { menu: 'system-simple-context', leftMouse: true },
+				function(action, el, pos) {
+					var sysID = $(el[0]).data("sysID");
+					var sysName  = $(el[0]).data("sysName");
+					if( action == "setdest" )
+					{
+						if( typeof(CCPEVE) != "undefined" )
+						{
+							CCPEVE.setDestination(sysID);
+						}
+					}
+					else if( action == "showinfo" )
+					{
+						if( typeof(CCPEVE) != "undefined" )
+						{
+								CCPEVE.showInfo(5, sysID );
+						}
+						else
+						{
+								window.open('http://evemaps.dotlan.net/system/'+sysName , '_blank');
+						}
+					}
+			});
+		}
+	}
+	else
+	{
+		var item = $("<li>");
+		item.text("Invalid system or no exits");
+		$('#exit-finder-list').append(item);
+	}
+}
+
 
 siggymain.prototype.initializeExitFinder = function()
 {
@@ -2351,56 +2398,28 @@ siggymain.prototype.initializeExitFinder = function()
 		return false;
 	} );
 	
+	$('#exit-finder button[name=current_location]').click( function() {
+		$("#exit-finder-loading").show();
+		$("#exit-finder-results-wrap").hide();
+		$.post($this.settings.baseUrl + 'chainmap/findNearestExits', {current_system: 1}, function (data)
+		{
+			$("#exit-finder-loading").hide();
+			$('#exit-finder-list').empty();
+			$this.populateExitData(data);
+			$("#exit-finder-results-wrap").show();
+		});
+		return false;
+	});
+	
 	$('#exit-finder button[name=submit]').click( function() {
 		var target = $("#exit-finder input[name=target_system]").val();
 		$("#exit-finder-loading").show();
+		$("#exit-finder-results-wrap").hide();
 		$.post($this.settings.baseUrl + 'chainmap/findNearestExits', {target: target}, function (data)
 		{
-		$("#exit-finder-loading").hide();
+			$("#exit-finder-loading").hide();
 			$('#exit-finder-list').empty();
-			if( typeof(data.result) != "undefined" )
-			{
-				for(var i in data.result)
-				{
-					var item = $("<li>");
-					item.html("<span class='faux-link'>"+data.result[i].system_name + "</span> - " + data.result[i].number_jumps + " jumps");
-					$('#exit-finder-list').append(item);
-					
-					item.data("sysID", data.result[i].system_id);
-					item.data("sysName",data.result[i].system_name);
-								
-					item.contextMenu( { menu: 'system-simple-context', leftMouse: true },
-						function(action, el, pos) {
-							var sysID = $(el[0]).data("sysID");
-							var sysName  = $(el[0]).data("sysName");
-							if( action == "setdest" )
-							{
-								if( typeof(CCPEVE) != "undefined" )
-								{
-									CCPEVE.setDestination(sysID);
-								}
-							}
-							else if( action == "showinfo" )
-							{
-								if( typeof(CCPEVE) != "undefined" )
-								{
-										CCPEVE.showInfo(5, sysID );
-								}
-								else
-								{
-										window.open('http://evemaps.dotlan.net/system/'+sysName , '_blank');
-								}
-							}
-					});
-				}
-			}
-			else
-			{
-				var item = $("<li>");
-				item.text("Invalid system or no exits");
-				$('#exit-finder-list').append(item);
-			}
-			
+			$this.populateExitData(data);
 			$("#exit-finder-results-wrap").show();
 		});
 		return false;
@@ -2602,6 +2621,7 @@ siggymain.prototype.initializePOSes = function()
 
 siggymain.prototype.getPOSStatus = function( online )
 {
+	online = parseInt(online);
 	if( online )
 	{
 		return "Online";

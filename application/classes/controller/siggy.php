@@ -34,6 +34,7 @@ class Controller_Siggy extends FrontController
 		$view->group = $this->groupData;
 		$view->requested = $requested;
         $view->statsOpen = $statsOpen;
+		$view->igb = $this->igb;
 		if( $ssname )
 		{
 				$sysData = $this->getSystemData($ssname);
@@ -441,6 +442,11 @@ class Controller_Siggy extends FrontController
 		{
 			//new wh
 			$this->_addSystemToMap($whHash, $origin, $dest);
+			
+			DB::query(Database::INSERT, 'INSERT INTO stats (`charID`,`charName`,`groupID`,`subGroupID`,`dayStamp`,`wormholes`)
+										 VALUES(:charID, :charName, :groupID, :subGroupID, :dayStamp, 1) ON DUPLICATE KEY UPDATE wormholes=wormholes+1')
+					->param(':charID',  $this->groupData['charID'])->param(':charName', $this->groupData['charName'] )
+					->param(':groupID', $this->groupData['groupID'] )->param(':subGroupID', $this->groupData['subGroupID'] )->param(':dayStamp', miscUtils::getDayStamp() )->execute();
 		}
 		else
 		{
@@ -502,16 +508,23 @@ class Controller_Siggy extends FrontController
 		
 		//default case is both systems already mapped, so jsut connect them
 							
-						 
-		DB::query(Database::INSERT, 'INSERT INTO wormholes (`hash`, `to`, `from`, `groupID`, `subGroupID`, `lastJump`, `eol`, `mass`) VALUES(:hash, :to, :from, :groupID, :subGroupID, :lastJump, :eol, :mass)')
-						->param(':hash', $whHash )
-						->param(':to', $sys1 )
-						->param(':from', $sys2)
-						->param(':eol', $eol )
-						->param(':mass', $mass )
-						->param(':groupID', $this->groupData['groupID'] )
-						->param(':subGroupID', $this->groupData['subGroupID'] )
-						->param(':lastJump', time() )->execute();
+		try
+		{
+			DB::query(Database::INSERT, 'INSERT INTO wormholes (`hash`, `to`, `from`, `groupID`, `subGroupID`, `lastJump`, `eol`, `mass`) VALUES(:hash, :to, :from, :groupID, :subGroupID, :lastJump, :eol, :mass)')
+							->param(':hash', $whHash )
+							->param(':to', $sys1 )
+							->param(':from', $sys2)
+							->param(':eol', $eol )
+							->param(':mass', $mass )
+							->param(':groupID', $this->groupData['groupID'] )
+							->param(':subGroupID', $this->groupData['subGroupID'] )
+							->param(':lastJump', time() )->execute();
+		}
+		catch( Exception $e )
+		{
+			//do nothing
+			return;
+		}
 		$this->rebuildMapCache();
 	}
 	
@@ -1450,6 +1463,19 @@ class Controller_Siggy extends FrontController
 				$errors[] = "You cannot link a system to itself!";
             }
 			
+			$whHash = $this->whHashByID($fromSysID , $toSysID);
+			
+			$connection = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE hash=:hash AND groupID=:group AND subGroupID=:subGroupID")
+				->param(':hash', $whHash)
+				->param(':group', $this->groupData['groupID'])
+				->param(':subGroupID', $this->groupData['subGroupID'])
+				->execute()->current();
+				
+			if( isset($connection['hash']) )
+			{
+				$errors[] = "Wormhole already exists";
+			}
+			
 			if( count($errors) > 0 )
 			{
 				echo json_encode(array('success' => 0, 'dataErrorMsgs' => $errors ) );
@@ -1459,7 +1485,7 @@ class Controller_Siggy extends FrontController
 			$eol = intval($_POST['eol']);
 			$mass = intval($_POST['mass']);	
 			
-			$whHash = $this->whHashByID($fromSysID , $toSysID);
+						
 			$this->_addSystemToMap($whHash, $fromSysID, $toSysID, $eol, $mass);
 			/*
 			DB::query(Database::INSERT, 'INSERT INTO wormholes (`hash`, `to`, `from`, `eol`, `mass`, `groupID`, `subGroupID`, `lastJump`) VALUES(:hash, :to, :from, :eol, :mass, :groupID, :subGroupID, :lastJump) ON DUPLICATE KEY UPDATE eol=:eol, mass=:mass')
