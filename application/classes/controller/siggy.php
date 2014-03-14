@@ -540,9 +540,9 @@ class Controller_Siggy extends FrontController
 																		END AS `connected_system` 
 																		FROM wormholes w
 																		WHERE w.`to`=:sys OR w.`from`=:sys AND w.groupID=:group AND w.subGroupID=:subGroupID)")
-						->param(':sys', $system)
+						->param(':sys', intval($system))
 						->param(':group', $this->groupData['groupID'])
-						->param(':subGroupID', $this->groupData['subGroupID'])
+						->param(':subGroupID', intval($this->groupData['subGroupID']))
 						->execute()
 						->as_array();	
 	}
