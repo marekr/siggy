@@ -1,3 +1,4 @@
+
 function siggyMap(options)
 {
 
@@ -662,7 +663,7 @@ siggyMap.prototype.draw = function()
         });
         
     }
-    
+	
     var _listeners = function(e) {
         e.bind("mouseenter", function(c) { 
             if( that.editing || that.massDelete )
@@ -755,16 +756,17 @@ siggyMap.prototype.draw = function()
             }
 			return false;
         });
-            
     }
-         
-            
-    jsPlumb.draggable($('.map-system-blob'), {
-      containment: 'parent',
-      stack: "div"
-    });
     
-    jsPlumb.setDraggable($('.map-system-blob'), false);
+    if( Object.size(this.systems) > 0 )
+	{
+		jsPlumb.draggable($('.map-system-blob'), {
+			containment: 'parent',
+			stack: "div"
+		});
+		
+		jsPlumb.setDraggable($('.map-system-blob'), false);
+	}
 }
 
 siggyMap.prototype.openSystemEdit = function( sysID )
