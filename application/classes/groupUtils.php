@@ -126,7 +126,7 @@ final class groupUtils
 			$homeSystems = self::getHomeSystems($groupID, $subGroupID);
 			$mapData = mapUtils::rebuildMapData($groupID, $subGroupID, $homeSystems);
 			
-			$cache->set($cacheName, $mapData);		 
+			$cache->set($cacheName, $mapData, 3600);		 
 			
 			return $mapData;
 		}
