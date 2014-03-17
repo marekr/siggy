@@ -1091,8 +1091,12 @@ siggymain.prototype.updateSigs = function (sigData, flashSigs)
 			this.sigData[i] = sigData[i];
 		}
 	}
+	
 	//this.colorizeSigRows();
-	$('#sig-table').trigger('update');
+	if (!this.editingSig)
+	{
+		$('#sig-table').trigger('update');
+	}
 }
 
 siggymain.prototype.updateSystemInfo = function (systemData)
@@ -1277,15 +1281,13 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 	
 	$('a.site-dotlan').attr('href', 'http://evemaps.dotlan.net/system/'+systemData.name);
 	$('a.site-wormholes').attr('href', 'http://wormhol.es/'+systemData.name);
+	$('a.site-evekill').attr('href','http://eve-kill.net/?a=system_detail&sys_name='+systemData.name);
 	
-	//$('a.evekill').attr('href','http://whkills.info/?a=system_detail&sys_id='+systemData.id);
 	this.setSystemID(systemData.id);
 	this.setSystemClass(systemData.sysClass);
 	this.systemName = systemData.name;
 	
 	$('#currentsystem b').text(this.systemName);
-	
-	
 	
 	if( systemData.stats.length > 0 )
 	{
@@ -1670,7 +1672,6 @@ siggymain.prototype.updateSiteSelect = function( ele, whClass, type, siteID )
 
 siggymain.prototype.generateSiteSelect = function (whClass, type, siteID)
 {
-    console.log("hi");
 	if (type == "wh") return this.generateSelect(whLookup[whClass], siteID);
 	else if (type == "ladar") return this.generateSelect(ladarsLookup, siteID);
 	else if (type == "mag") return this.generateSelect(magsLookup[whClass], siteID);
