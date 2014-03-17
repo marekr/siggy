@@ -2,8 +2,6 @@
 
 final class groupUtils
 {	
-
-
 		static function getMapCache($groupID, $subGroupID)
 		{
 			$cache = Cache::instance( CACHE_METHOD );
@@ -126,7 +124,7 @@ final class groupUtils
 			$homeSystems = self::getHomeSystems($groupID, $subGroupID);
 			$mapData = mapUtils::rebuildMapData($groupID, $subGroupID, $homeSystems);
 			
-			$cache->set($cacheName, $mapData, 3600);		 
+			$cache->set($cacheName, $mapData, 1800);		 
 			
 			return $mapData;
 		}

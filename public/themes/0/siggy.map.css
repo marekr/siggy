@@ -229,6 +229,13 @@ MAP */
 	white-space: nowrap;
 	border-bottom: 1px dotted #000;
 }
+
+.map-system-blob-mini-icon
+{
+	width:12px;
+	height:12px;
+}
+
 .map-system-blob-sysname
 {
 	font-size:12px;

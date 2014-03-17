@@ -591,7 +591,24 @@ siggyMap.prototype.draw = function()
             }
         });
         
-        var systemBlobTitle = $("<p>").addClass('map-system-blob-title').append(titleClassBit).append(effectBit).append(systemName);
+		var killBit = $("<span>");
+		
+		if( systemData.sysClass != 7 &&  systemData.sysClass != 8 )
+		{
+			if( parseInt(systemData.kills_in_last_2_hours) > 0 )
+			{
+				killBit.append($("<img>").attr("src", this.baseUrl + "public/images/evekill.png").addClass('map-system-blob-mini-icon').attr('title','Kills in last 2 hours'));
+			}
+			
+			
+			if( parseInt(systemData.npcs_kills_in_last_2_hours) > 0 )
+			{
+				killBit.append($("<img>").attr("src", this.baseUrl + "public/images/carebear.gif").addClass('map-system-blob-mini-icon').attr('title','NPC Kills in last 2 hours'));
+			}
+		}
+		
+		
+        var systemBlobTitle = $("<p>").addClass('map-system-blob-title').append(titleClassBit).append(effectBit).append(killBit).append(systemName);
         
         
         
