@@ -68,7 +68,7 @@ final class MapUtils
 			{
 				$systemsToPoll = implode(',', $systemsToPoll);
 				
-				$killCutoff = time()-(3600*2);	//minus 2 hours
+				$killCutoff = time()-(3600*1);	//minus 2 hours
 				
 				$chainMapSystems = DB::query(Database::SELECT, "SELECT ss.name,
 																ss.id as systemID,
