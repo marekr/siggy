@@ -782,10 +782,10 @@ class Controller_Siggy extends FrontController
                     if( $this->groupData['recordJumps'] && $actualCurrentSystemID != 0 && $lastSystemID != 0 )
                     {
                             $hourStamp = miscUtils::getHourStamp();
-                            DB::query(Database::INSERT, 'INSERT INTO jumpsTracker (`systemID`, `groupID`, `hourStamp`, `jumps`) VALUES(:systemID, :groupID, :hourStamp, 1) ON DUPLICATE KEY UPDATE jumps=jumps+1')
+                            DB::query(Database::INSERT, 'INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`) VALUES(:systemID, :groupID, :hourStamp, 1) ON DUPLICATE KEY UPDATE jumps=jumps+1')
                                                 ->param(':hourStamp', $hourStamp )->param(':systemID', $lastSystemID )->param(':groupID', $this->groupData['groupID'] )->execute();						
 
-                            DB::query(Database::INSERT, 'INSERT INTO jumpsTracker (`systemID`, `groupID`, `hourStamp`, `jumps`) VALUES(:systemID, :groupID, :hourStamp, 1) ON DUPLICATE KEY UPDATE jumps=jumps+1')
+                            DB::query(Database::INSERT, 'INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`) VALUES(:systemID, :groupID, :hourStamp, 1) ON DUPLICATE KEY UPDATE jumps=jumps+1')
                                                 ->param(':hourStamp', $hourStamp )->param(':systemID', $actualCurrentSystemID )->param(':groupID', $this->groupData['groupID'] )->execute();									
                     }
                 
