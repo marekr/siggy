@@ -2412,7 +2412,7 @@ siggymain.prototype.initializeExitFinder = function()
 		return false;
 	});
 	
-	$('#exit-finder button[name=submit]').click( function() {
+	var submitHandler = function() {
 		var target = $("#exit-finder input[name=target_system]").val();
 		$("#exit-finder-loading").show();
 		$("#exit-finder-results-wrap").hide();
@@ -2424,7 +2424,9 @@ siggymain.prototype.initializeExitFinder = function()
 			$("#exit-finder-results-wrap").show();
 		});
 		return false;
-	} );
+	};
+	
+	$('#exit-finder form').submit(submitHandler);
 	
 	$('#exit-finder button[name=cancel]').click( function() {
 		$.unblockUI();
