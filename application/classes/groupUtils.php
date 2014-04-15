@@ -142,29 +142,29 @@ final class groupUtils
 	
 		static function getHomeSystems($groupID, $subGroupID = 0)
 		{			
-				$groupData = self::getGroupData($groupID, $subGroupID);
-				if( empty($groupData) )
+			$groupData = self::getGroupData($groupID, $subGroupID);
+			if( empty($groupData) )
+			{
+				return;
+			}
+			
+			$homeSystems = array();
+			if( $groupData['subGroupID'] != 0 )
+			{
+				if( $groupData['sgHomeSystemIDs'] != '' )
 				{
-					return;
+					$homeSystems = explode(',', $groupData['sgHomeSystemIDs']);
 				}
-				
-				$homeSystems = array();
-				if( $groupData['subGroupID'] != 0 )
+			}
+			else
+			{
+				if( $groupData['homeSystemIDs'] != '' )
 				{
-					if( $groupData['sgHomeSystemIDs'] != '' )
-					{
-						$homeSystems = explode(',', $groupData['sgHomeSystemIDs']);
-					}
+					$homeSystems = explode(',', $groupData['homeSystemIDs']);
 				}
-				else
-				{
-					if( $groupData['homeSystemIDs'] != '' )
-					{
-						$homeSystems = explode(',', $groupData['homeSystemIDs']);
-					}
-				}
+			}
 
-				return $homeSystems;
+			return $homeSystems;
 		}
 	
 		static function recacheCorpList()

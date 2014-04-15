@@ -489,11 +489,11 @@ class Controller_Siggy extends FrontController
 		$sys1Count = count($sys1Connections);
 		$sys2Count = count($sys2Connections);
 		
-		if( $sys1Count == 0 )
+		if( $sys1Count == 0 && $sys2Count != 0 )
 		{
 			$this->__placeSystem($sys2,$sys2Connections, $sys1);
 		}
-		else if( $sys2Count == 0 )
+		else if( $sys2Count == 0 && $sys1Count != 0 )
 		{
 			//sys2 is "new"
 			 $this->__placeSystem($sys1,$sys1Connections, $sys2);
@@ -502,12 +502,27 @@ class Controller_Siggy extends FrontController
 		{
 			//both are new
 			//we just map one
-			//this will probably change at some point soon
-			 $this->__placeSystem($sys1,$sys1Connections, $sys2);
+			//ensure its not a home system, those stay fixed lol
+			$homeSystems = groupUtils::getHomeSystems($this->groupData['groupID'], $this->groupData['subGroupID']);
+			if( in_array($sys2, $homeSystems) && !in_array($sys1, $homeSystems) )
+			{
+				//sys2 is home system
+				//map sys1 instead
+				$this->__placeSystem($sys2,$sys2Connections,$sys1);
+			}
+			else if( in_array($sys1, $homeSystems) && !in_array($sys2, $homeSystems) )
+			{
+				//sys1 is home system
+				//map sys2 instead
+				$this->__placeSystem($sys1,$sys1Connections,$sys2);
+			}
+			else
+			{
+				//don't mess with the system positions if both are home systems
+			}
 		}
 		
-		//default case is both systems already mapped, so jsut connect them
-							
+		//default case is both systems already mapped, so just connect them
 		try
 		{
 			DB::query(Database::INSERT, 'INSERT INTO wormholes (`hash`, `to`, `from`, `groupID`, `subGroupID`, `lastJump`, `eol`, `mass`) VALUES(:hash, :to, :from, :groupID, :subGroupID, :lastJump, :eol, :mass)')
@@ -539,9 +554,9 @@ class Controller_Siggy extends FrontController
 																			ELSE w.`to`
 																		END AS `connected_system` 
 																		FROM wormholes w
-																		WHERE w.`to`=:sys OR w.`from`=:sys AND w.groupID=:group AND w.subGroupID=:subGroupID)")
+																		WHERE (w.`to`=:sys OR w.`from`=:sys) AND w.groupID=:group AND w.subGroupID=:subGroupID)")
 						->param(':sys', intval($system))
-						->param(':group', $this->groupData['groupID'])
+						->param(':group', intval($this->groupData['groupID']))
 						->param(':subGroupID', intval($this->groupData['subGroupID']))
 						->execute()
 						->as_array();	
@@ -587,7 +602,6 @@ class Controller_Siggy extends FrontController
 			$sysPOS = $spots[0];
 		}
 		
-			
 		$this->__setActiveSystem($systemToBePlaced, array( 'x' => intval($sysPos['x']),
 															'y' => intval($sysPos['y']),
 															'lastUpdate' => time() ) );
@@ -1487,11 +1501,7 @@ class Controller_Siggy extends FrontController
 			
 						
 			$this->_addSystemToMap($whHash, $fromSysID, $toSysID, $eol, $mass);
-			/*
-			DB::query(Database::INSERT, 'INSERT INTO wormholes (`hash`, `to`, `from`, `eol`, `mass`, `groupID`, `subGroupID`, `lastJump`) VALUES(:hash, :to, :from, :eol, :mass, :groupID, :subGroupID, :lastJump) ON DUPLICATE KEY UPDATE eol=:eol, mass=:mass')
-								->param(':hash', $whHash )->param(':to', $toSysID )->param(':from', $fromSysID	)->param(':eol', $eol	 )->param(':mass', $mass	)->param(':groupID', $this->groupData['groupID'] )->param(':subGroupID', $this->groupData['subGroupID'] )->param(':lastJump', time() )->execute();*/
-			
-            
+
 			$message = $this->groupData['charName'].' added wormhole manually between system IDs' . $fromSysID . ' and ' . $toSysID;
 			$this->__logAction('addwh', $message );	
 		}
