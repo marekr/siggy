@@ -21,266 +21,265 @@ class Controller_Manage_Group extends Controller_App {
     */
    public $auth_required = 'gadmin';
 
-   /** Controls access for separate actions
-    *
-    *  See Controller_App for how this implemented.
-    *
-    *  Examples:
-    * 'adminpanel' => 'admin' will only allow users with the role admin to access action_adminpanel
-    * 'moderatorpanel' => array('login', 'moderator') will only allow users with the roles login and moderator to access action_moderatorpanel
-    */
-   public $secure_actions = array(
-      // user actions
-      'members' => array('can_manage_group_members')
-      );
+	/** Controls access for separate actions
+	*
+	*  See Controller_App for how this implemented.
+	*
+	*  Examples:
+	* 'adminpanel' => 'admin' will only allow users with the role admin to access action_adminpanel
+	* 'moderatorpanel' => array('login', 'moderator') will only allow users with the roles login and moderator to access action_moderatorpanel
+	*/
+	public $secure_actions = array(
+		// user actions
+		'members' => array('can_manage_group_members')
+	);
 
    // USER SELF-MANAGEMENT
 
-   /**
-    * View: Redirect admins to admin index, users to user profile.
-    */
-   public function action_index() 
-   {
-      if( Auth::$user->isGroupAdmin() || Auth::$user->data['admin'] ) 
-      {
-         HTTP::redirect('manage/group/dashboard');
-      } else 
-      {
-         HTTP::redirect('account/overview');
-      }
-   }
+	/**
+	* View: Redirect admins to admin index, users to user profile.
+	*/
+	public function action_index() 
+	{
+		if( Auth::$user->isGroupAdmin() || Auth::$user->data['admin'] ) 
+		{
+			HTTP::redirect('manage/group/dashboard');
+		}
+		else 
+		{
+			HTTP::redirect('account/overview');
+		}
+	}
    
-   public function action_dashboard()
-   {
-      $this->template->title = __('Manage');
-      $view = View::factory('manage/group/dashboard');
-      
-      
+	public function action_dashboard()
+	{
+		$this->template->title = __('Manage');
+		$view = View::factory('manage/group/dashboard');
+
+
 		$news = DB::query(Database::SELECT, "SELECT * FROM announcements WHERE visibility = 'manage' OR visibility = 'all' ORDER BY datePublished DESC LIMIT 0,3")
-										->execute()->as_array();
-		
-      $view->bind('news', $news);
-      
-      $this->template->content = $view;
-   }
+									->execute()->as_array();
 
-   /**
-    * View: Access not allowed.
-    */
-   public function action_noaccess() 
-   {
-      $this->template->title = __('Access not allowed');
-      $view = $this->template->content = View::factory('user/noaccess');
-   }
+		$view->bind('news', $news);
 
-   public function action_members() 
-   {
-      $this->template->title = __('Group management');
-      
-      $view = $this->template->content = View::factory('manage/group/members');
-      
-      $view->set('user', Auth::$user->data );
-      
-      $group = ORM::factory('group', Auth::$user->data['groupID']);
-      $view->set('group', $group );
-   }
-   
-   public function action_subgroups() 
-   {
-      $this->template->title = __('Group management');
-      
-      $view = $this->template->content = View::factory('manage/group/subgroups');
-      
-      $view->set('user', Auth::$user->data);
-      
-      $group = ORM::factory('group', Auth::$user->data['groupID']);
-      $view->set('group', $group );
-   }
+		$this->template->content = $view;
+	}
+
+	/**
+	* View: Access not allowed.
+	*/
+	public function action_noaccess() 
+	{
+		$this->template->title = __('Access not allowed');
+		$view = $this->template->content = View::factory('user/noaccess');
+	}
+
+	public function action_members() 
+	{
+		$this->template->title = __('Group management');
+
+		$view = $this->template->content = View::factory('manage/group/members');
+
+		$view->set('user', Auth::$user->data );
+
+		$group = ORM::factory('group', Auth::$user->data['groupID']);
+		$view->set('group', $group );
+	}
+
+	public function action_subgroups() 
+	{
+		$this->template->title = __('Group management');
+
+		$view = $this->template->content = View::factory('manage/group/subgroups');
+
+		$view->set('user', Auth::$user->data);
+
+		$group = ORM::factory('group', Auth::$user->data['groupID']);
+		$view->set('group', $group );
+	}
    
 
    
 	public function action_addMember()
 	{
-			$this->template->title = __('Group management');
+		$this->template->title = __('Group management');
+		
+		$id = intval($this->request->param('id'));
+		
+		
+		if( $id == 0 || $id == 1 )
+		{
+			$results = array();
+			$errors = array();
+			$data = array('memberType' => 'corp');
+			$view = View::factory('manage/group/addMemberSimple');
 			
-			$id = intval($this->request->param('id'));
-			
-			
-			if( $id == 0 || $id == 1 )
+			if ($this->request->method() == "POST") 
 			{
-					$results = array();
-					$errors = array();
-					$data = array('memberType' => 'corp');
-					$view = View::factory('manage/group/addMemberSimple');
-					
-					if ($this->request->method() == "POST") 
-					{
-						$errors = array();
-						if( empty($_POST['searchName']) )
-						{
-							$errors['searchName'] = 'Name cannot be empty';
-						}
-						
-						if( !count($errors) )
-						{
-							$results = miscUtils::searchEVEEntityByName( $_POST['searchName'], $_POST['memberType'] );
-							$view->bind('memberType', $_POST['memberType'] );
+				$errors = array();
+				if( empty($_POST['searchName']) )
+				{
+					$errors['searchName'] = 'Name cannot be empty';
+				}
+				
+				if( !count($errors) )
+				{
+					$results = miscUtils::searchEVEEntityByName( $_POST['searchName'], $_POST['memberType'] );
+					$view->bind('memberType', $_POST['memberType'] );
 
-						}
-					}
-					
-					
-					$group = ORM::factory('group', Auth::$user->data['groupID']);
-					$view->set('group', $group );
-					$view->bind('data', $data);
-					$view->bind('errors', $errors);
-					$view->bind('results', $results);
-
-					$this->template->content = $view;
+				}
 			}
-			else if( $id == 2 )
+			
+			
+			$group = ORM::factory('group', Auth::$user->data['groupID']);
+			$view->set('group', $group );
+			$view->bind('data', $data);
+			$view->bind('errors', $errors);
+			$view->bind('results', $results);
+
+			$this->template->content = $view;
+		}
+		else if( $id == 2 )
+		{
+			if ($this->request->method() == "POST") 
 			{
-					if ($this->request->method() == "POST") 
+				$action = $_POST['act'];
+				
+				if( $action == 'doAdd' )
+				{
+					try 
 					{
-						$action = $_POST['act'];
-						
-						if( $action == 'doAdd' )
-						{
-							try 
+							$member = ORM::factory('groupmember');
+							$member->eveID = $_POST['eveID'];
+							$member->accessName = $_POST['accessName'];
+							$member->groupID = Auth::$user->data['groupID'];
+							$member->memberType = $_POST['memberType'];
+							if( isset( $_POST['subGroupID'] ) )
 							{
-									$member = ORM::factory('groupmember');
-									$member->eveID = $_POST['eveID'];
-									$member->accessName = $_POST['accessName'];
-									$member->groupID = Auth::$user->data['groupID'];
-									$member->memberType = $_POST['memberType'];
-									if( isset( $_POST['subGroupID'] ) )
-									{
-											$member->subGroupID = $_POST['subGroupID'];
-									}
-									else
-									{
-											$member->subGroupID = 0;
-									}
-									$member->save();
-									if( $member->memberType == 'corp' )
-									{
-											groupUtils::recacheCorpList();
-											groupUtils::recacheCorp($member->eveID);
-									}
-									elseif( $member->memberType == 'char' )
-									{
-											groupUtils::recacheCharList();
-											groupUtils::recacheChar($member->eveID);
-									}
-									
-									Message::add('sucess', 'Group member added');
-									HTTP::redirect('manage/group/members');
-									return;
-							} 
-							catch (ORM_Validation_Exception $e) 
-							{
-								//something broke, restart because our form is currently idiot proof anyway
-								HTTP::redirect('manage/group/addMember');
+									$member->subGroupID = $_POST['subGroupID'];
 							}
-						}
-						else if ( $action == 'doForm' )
-						{
-							if( empty($_POST['eveID']) || empty($_POST['accessName']) || empty($_POST['memberType']) )
+							else
 							{
-								//bad request
-								HTTP::redirect('manage/group/addMember');
+									$member->subGroupID = 0;
+							}
+							$member->save();
+							if( $member->memberType == 'corp' )
+							{
+									groupUtils::recacheCorpList();
+									groupUtils::recacheCorp($member->eveID);
+							}
+							elseif( $member->memberType == 'char' )
+							{
+									groupUtils::recacheCharList();
+									groupUtils::recacheChar($member->eveID);
 							}
 							
-							$view = View::factory('manage/group/addMemberSimpleSelected');
-							$group = ORM::factory('group', Auth::$user->data['groupID']);
-							$view->set('group', $group );
-						
-							$view->set('eveID', intval($_POST['eveID']) );
-							$view->set('accessName', $_POST['accessName'] );
-							$view->set('memberType', $_POST['memberType'] );
-							$this->template->content = $view;
-						}
-						else
-						{
-							//invalid
-							HTTP::redirect('manage/group/addMember');
-						}
-						
-					}
-					else
+							Message::add('sucess', 'Group member added');
+							HTTP::redirect('manage/group/members');
+							return;
+					} 
+					catch (ORM_Validation_Exception $e) 
 					{
-						//invalid
+						//something broke, restart because our form is currently idiot proof anyway
 						HTTP::redirect('manage/group/addMember');
 					}
+				}
+				else if ( $action == 'doForm' )
+				{
+					if( empty($_POST['eveID']) || empty($_POST['accessName']) || empty($_POST['memberType']) )
+					{
+						//bad request
+						HTTP::redirect('manage/group/addMember');
+					}
+					
+					$view = View::factory('manage/group/addMemberSimpleSelected');
+					$group = ORM::factory('group', Auth::$user->data['groupID']);
+					$view->set('group', $group );
+				
+					$view->set('eveID', intval($_POST['eveID']) );
+					$view->set('accessName', $_POST['accessName'] );
+					$view->set('memberType', $_POST['memberType'] );
+					$this->template->content = $view;
+				}
+				else
+				{
+					//invalid
+					HTTP::redirect('manage/group/addMember');
+				}
+				
 			}
 			else
 			{
-			
-					$errors = array();
-					$data = array('eveID' => '',
-								'accessName' => '',
-								'subGroupID' => 0,
-								'memberType' => 'corp');
-			  
-					$view = View::factory('manage/group/memberForm');
-					$view->set('mode', 'add');
-					$view->bind('errors', $errors);
-					$view->bind('data', $data);
-					
-					
-					
-					if ($this->request->method() == "POST") 
-					{
-							try 
-							{
-									$member = ORM::factory('groupmember');
-									$member->eveID = $_POST['eveID'];
-									$member->accessName = $_POST['accessName'];
-									$member->groupID = Auth::$user->data['groupID'];
-									$member->memberType = $_POST['memberType'];
-									if( isset( $_POST['subGroupID'] ) )
-									{
-											$member->subGroupID = $_POST['subGroupID'];
-									}
-									else
-									{
-											$member->subGroupID = 0;
-									}
-									$member->save();
-									if( $member->memberType == 'corp' )
-									{
-											groupUtils::recacheCorpList();
-											groupUtils::recacheCorp($member->eveID);
-									}
-									elseif( $member->memberType == 'char' )
-									{
-											groupUtils::recacheCharList();
-											groupUtils::recacheChar($member->eveID);
-									}
-									HTTP::redirect('manage/group/members');
-									return;
-							} 
-							catch (ORM_Validation_Exception $e) 
-							{
-									// Get errors for display in view
-									// Note how the first param is the path to the message file (e.g. /messages/register.php)
-									Message::add('error', __('Error: Values could not be saved.'));
-									$errors = $e->errors('addMember');
-									$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
-									// Pass on the old form values
-
-									$view->set('data', array('eveID' => $_POST['eveID'], 'accessName' => $_POST['accessName']) );
-							}
-					}
-					$view->set('user', Auth::$user->data);
-
-					$group = ORM::factory('group', Auth::$user->data['groupID']);
-					$view->set('group', $group );
-
-					$this->template->content = $view;
+				//invalid
+				HTTP::redirect('manage/group/addMember');
 			}
+		}
+		else
+		{
+			$errors = array();
+			$data = array('eveID' => '',
+						'accessName' => '',
+						'subGroupID' => 0,
+						'memberType' => 'corp');
+	  
+			$view = View::factory('manage/group/memberForm');
+			$view->set('mode', 'add');
+			$view->bind('errors', $errors);
+			$view->bind('data', $data);
+
+			
+			
+			if ($this->request->method() == "POST") 
+			{
+					try 
+					{
+							$member = ORM::factory('groupmember');
+							$member->eveID = $_POST['eveID'];
+							$member->accessName = $_POST['accessName'];
+							$member->groupID = Auth::$user->data['groupID'];
+							$member->memberType = $_POST['memberType'];
+							if( isset( $_POST['subGroupID'] ) )
+							{
+									$member->subGroupID = $_POST['subGroupID'];
+							}
+							else
+							{
+									$member->subGroupID = 0;
+							}
+							$member->save();
+							if( $member->memberType == 'corp' )
+							{
+									groupUtils::recacheCorpList();
+									groupUtils::recacheCorp($member->eveID);
+							}
+							elseif( $member->memberType == 'char' )
+							{
+									groupUtils::recacheCharList();
+									groupUtils::recacheChar($member->eveID);
+							}
+							HTTP::redirect('manage/group/members');
+							return;
+					} 
+					catch (ORM_Validation_Exception $e) 
+					{
+							// Get errors for display in view
+							// Note how the first param is the path to the message file (e.g. /messages/register.php)
+							Message::add('error', __('Error: Values could not be saved.'));
+							$errors = $e->errors('addMember');
+							$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
+							// Pass on the old form values
+
+							$view->set('data', array('eveID' => $_POST['eveID'], 'accessName' => $_POST['accessName']) );
+					}
+			}
+			$view->set('user', Auth::$user->data);
+
+			$group = ORM::factory('group', Auth::$user->data['groupID']);
+			$view->set('group', $group );
+
+			$this->template->content = $view;
+		}
 	}
-	
 	
 	public function action_chainMapSettings()
 	{
@@ -350,411 +349,411 @@ class Controller_Manage_Group extends Controller_App {
 					
 		if ($this->request->method() == "POST") 
 		{
-				try 
+			try 
+			{
+				$group->groupName = $_POST['groupName'];
+				$group->groupTicker = $_POST['groupTicker'];
+				$group->authMode = $_POST['authMode'];
+				$group->showSigSizeCol = intval($_POST['showSigSizeCol']);
+				$group->statsEnabled = intval($_POST['statsEnabled']);
+				
+				if( !empty($_POST['password']) && !empty($_POST['password_confirm']) )
 				{
-							$group->groupName = $_POST['groupName'];
-							$group->groupTicker = $_POST['groupTicker'];
-							$group->authMode = $_POST['authMode'];
-							$group->showSigSizeCol = intval($_POST['showSigSizeCol']);
-							$group->statsEnabled = intval($_POST['statsEnabled']);
-							
-							if( !empty($_POST['password']) && !empty($_POST['password_confirm']) )
-							{
-									if( $_POST['password'] == $_POST['password_confirm'] )
-									{
-											$group->authPassword = sha1($_POST['password'].$group->authSalt);
-									}
-									else
-									{
-											Message::add( 'error', __('Error: The password was not saved because it did not match between the two fields.') );
-									}
-							}
-							
-							$homeSystems = trim($_POST['homeSystems']);
-							if( !empty($homeSystems) )
-							{
-									$homeSystems = explode(',', $homeSystems);
-									$homeSystemIDs = array();
-									if( is_array( $homeSystems ) )
-									{
-											foreach($homeSystems as $k => $v)
-											{
-													if( trim($v) != '' )
-													{
-															$id = $this->__findSystemByName(trim($v));
-															if( $id != 0 )
-															{
-																	$homeSystemIDs[] = $id;
-															}
-															else
-															{
-																	unset($homeSystems[ $k ] );
-															}
-													}
-													else
-													{
-															unset($homeSystems[ $k ] );
-													}
-											}
-									}
-									$group->homeSystemIDs = implode(',', $homeSystemIDs);
-									$group->homeSystems = implode(',', $homeSystems);
-							}
-							else
-							{
-								$group->homeSystems = '';
-								$group->homeSystemIDs = '';
-							}
-							
-							$group->recordJumps = intval($_POST['recordJumps']);
-							$group->skipPurgeHomeSigs = intval($_POST['skipPurgeHomeSigs']);
-							$group->sysListShowReds = intval($_POST['sysListShowReds']);
-							
-							$group->save();
-							
-						Message::add('success', __('Settings saved.'));
-						//$this->__recacheCorpMembers();
-						groupUtils::recacheGroup( Auth::$user->data['groupID'] );
-						HTTP::redirect('manage/group/settings');
-						return;
-				} 
-				catch (ORM_Validation_Exception $e) 
-				{
-					// Get errors for display in view
-					// Note how the first param is the path to the message file (e.g. /messages/register.php)
-					Message::add('error', __('Error: Values could not be saved.'));
-					$errors = $e->errors('editSubGroup');
-					$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
-					// Pass on the old form values
-
-					$view->set('data', array( 'groupName' => $_POST['groupName'],
-																			'groupTicker' => $_POST['groupTicker'], 
-																			'authMode' => $_POST['authMode'], 
-																			'homeSystems' => $_POST['homeSystems'], 
-																			'recordJumps' => $_POST['recordJumps'], 
-																			'skipPurgeHomeSigs' => $_POST['skipPurgeHomeSigs'],
-																			'sysListShowReds' => $_POST['sysListShowReds']
-																		 ) 
-
-					);
+						if( $_POST['password'] == $_POST['password_confirm'] )
+						{
+								$group->authPassword = sha1($_POST['password'].$group->authSalt);
+						}
+						else
+						{
+								Message::add( 'error', __('Error: The password was not saved because it did not match between the two fields.') );
+						}
 				}
+			
+				$homeSystems = trim($_POST['homeSystems']);
+				if( !empty($homeSystems) )
+				{
+						$homeSystems = explode(',', $homeSystems);
+						$homeSystemIDs = array();
+						if( is_array( $homeSystems ) )
+						{
+								foreach($homeSystems as $k => $v)
+								{
+										if( trim($v) != '' )
+										{
+												$id = $this->__findSystemByName(trim($v));
+												if( $id != 0 )
+												{
+														$homeSystemIDs[] = $id;
+												}
+												else
+												{
+														unset($homeSystems[ $k ] );
+												}
+										}
+										else
+										{
+												unset($homeSystems[ $k ] );
+										}
+								}
+						}
+						$group->homeSystemIDs = implode(',', $homeSystemIDs);
+						$group->homeSystems = implode(',', $homeSystems);
+				}
+				else
+				{
+					$group->homeSystems = '';
+					$group->homeSystemIDs = '';
+				}
+				
+				$group->recordJumps = intval($_POST['recordJumps']);
+				$group->skipPurgeHomeSigs = intval($_POST['skipPurgeHomeSigs']);
+				$group->sysListShowReds = intval($_POST['sysListShowReds']);
+				
+				$group->save();
+					
+				Message::add('success', __('Settings saved.'));
+				//$this->__recacheCorpMembers();
+				groupUtils::recacheGroup( Auth::$user->data['groupID'] );
+				HTTP::redirect('manage/group/settings');
+				return;
+			} 
+			catch (ORM_Validation_Exception $e) 
+			{
+				// Get errors for display in view
+				// Note how the first param is the path to the message file (e.g. /messages/register.php)
+				Message::add('error', __('Error: Values could not be saved.'));
+				$errors = $e->errors('editSubGroup');
+				$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
+				// Pass on the old form values
+
+				$view->set('data', array( 'groupName' => $_POST['groupName'],
+																		'groupTicker' => $_POST['groupTicker'], 
+																		'authMode' => $_POST['authMode'], 
+																		'homeSystems' => $_POST['homeSystems'], 
+																		'recordJumps' => $_POST['recordJumps'], 
+																		'skipPurgeHomeSigs' => $_POST['skipPurgeHomeSigs'],
+																		'sysListShowReds' => $_POST['sysListShowReds']
+																	 ) 
+
+				);
 			}
+		}
 
-			$view->set('data', $group->as_array() );
+		$view->set('data', $group->as_array() );
 
-			$this->template->content = $view;      
+		$this->template->content = $view;      
 	  
 	}
    
 	private function __findSystemByName($name)
 	{
-			$systemID = DB::query(Database::SELECT, 'SELECT id,name FROM solarsystems WHERE LOWER(name) = :name')
-																->param(':name', $name )->execute()->get('id', 0);
-																
-			
-			return $systemID;
+		$systemID = DB::query(Database::SELECT, 'SELECT id,name FROM solarsystems WHERE LOWER(name) = :name')
+															->param(':name', $name )->execute()->get('id', 0);
+															
+		
+		return $systemID;
 	}   
    
    public function action_addSubGroup()
    {
-			$this->template->title = __('Subgroup management');
+		$this->template->title = __('Subgroup management');
 
-			$group = ORM::factory('group', Auth::$user->data['groupID']);
+		$group = ORM::factory('group', Auth::$user->data['groupID']);
 
-			$errors = array();
-			$data = array('sgName' => '',
-							'sgHomeSystems' => '',
-							'sgSysListShowReds' => 1,
-							'sgSkipPurgeHomeSigs' => 0,
-							);
-			$view = View::factory('manage/group/subGroupForm');
-			$view->bind('errors', $errors);
-			$view->bind('data', $data);
-			
-			
-			$view->set('mode', 'add');
-			
-			if ($this->request->method() == "POST") 
+		$errors = array();
+		$data = array('sgName' => '',
+						'sgHomeSystems' => '',
+						'sgSysListShowReds' => 1,
+						'sgSkipPurgeHomeSigs' => 0,
+						);
+		$view = View::factory('manage/group/subGroupForm');
+		$view->bind('errors', $errors);
+		$view->bind('data', $data);
+		
+		
+		$view->set('mode', 'add');
+		
+		if ($this->request->method() == "POST") 
+		{
+			try 
 			{
-					try 
-					{
-							$sg = ORM::factory('subgroup');
-							$sg->sgName = $_POST['sgName'];
-							$sg->groupID = Auth::$user->data['groupID'];
+				$sg = ORM::factory('subgroup');
+				$sg->sgName = $_POST['sgName'];
+				$sg->groupID = Auth::$user->data['groupID'];
 
 
-							if( !empty($_POST['password']) && !empty($_POST['password_confirm']) )
-							{
-									if( $_POST['password'] == $_POST['password_confirm'] )
-									{
-											$sg->sgAuthPassword = sha1($_POST['password'].$group->authSalt);
-									}
-									else
-									{
-											Message::add( 'error', __('Error: The password was not saved because it did not match between the two fields.') );
-									}
-							}
+				if( !empty($_POST['password']) && !empty($_POST['password_confirm']) )
+				{
+						if( $_POST['password'] == $_POST['password_confirm'] )
+						{
+								$sg->sgAuthPassword = sha1($_POST['password'].$group->authSalt);
+						}
+						else
+						{
+								Message::add( 'error', __('Error: The password was not saved because it did not match between the two fields.') );
+						}
+				}
 
 
-							$homeSystems = trim($_POST['sgHomeSystems']);
-							if( !empty($homeSystems) )
-							{
-									$homeSystems = explode(',', $homeSystems);
-									$homeSystemIDs = array();
-									if( is_array( $homeSystems ) )
-									{
-											foreach($homeSystems as $k => $v)
-											{
-													if( trim($v) != '' )
-													{
-															$id = $this->__findSystemByName(trim($v));
-															if( $id != 0 )
-															{
-																$homeSystemIDs[] = $id;
-															}
-															else
-															{
-																	unset($homeSystems[ $k ] );
-															}
-													}
-													else
-													{
-															unset($homeSystems[ $k ] );
-													}
-											}
-									}
-									$sg->sgHomeSystemIDs = implode(',', $homeSystemIDs);
-									$sg->sgHomeSystems = implode(',', $homeSystems);
-							}
-							else
-							{
-									$sg->sgHomeSystems = '';
-									$sg->sgHomeSystemIDs = '';
-							}												
+				$homeSystems = trim($_POST['sgHomeSystems']);
+				if( !empty($homeSystems) )
+				{
+						$homeSystems = explode(',', $homeSystems);
+						$homeSystemIDs = array();
+						if( is_array( $homeSystems ) )
+						{
+								foreach($homeSystems as $k => $v)
+								{
+										if( trim($v) != '' )
+										{
+												$id = $this->__findSystemByName(trim($v));
+												if( $id != 0 )
+												{
+													$homeSystemIDs[] = $id;
+												}
+												else
+												{
+														unset($homeSystems[ $k ] );
+												}
+										}
+										else
+										{
+												unset($homeSystems[ $k ] );
+										}
+								}
+						}
+						$sg->sgHomeSystemIDs = implode(',', $homeSystemIDs);
+						$sg->sgHomeSystems = implode(',', $homeSystems);
+				}
+				else
+				{
+						$sg->sgHomeSystems = '';
+						$sg->sgHomeSystemIDs = '';
+				}												
 
-							$sg->sgSkipPurgeHomeSigs = intval($_POST['sgSkipPurgeHomeSigs']);
-							$sg->sgSysListShowReds = intval($_POST['sgSysListShowReds']);
+				$sg->sgSkipPurgeHomeSigs = intval($_POST['sgSkipPurgeHomeSigs']);
+				$sg->sgSysListShowReds = intval($_POST['sgSysListShowReds']);
 
-							$sg->save();
+				$sg->save();
 
-							//$this->__recacheCorpMembers();
-							groupUtils::recacheSubGroup($sg->subGroupID);
-							HTTP::redirect('manage/group/subgroups');
-							return;
-					} 
-					catch (ORM_Validation_Exception $e) 
-					{
-							// Get errors for display in view
-							// Note how the first param is the path to the message file (e.g. /messages/register.php)
-							Message::add('error', __('Error: Values could not be saved.'));
-							$errors = $e->errors('addSubGroup');
-							$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
-							$view->set('errors', $errors);
-							// Pass on the old form values
+				//$this->__recacheCorpMembers();
+				groupUtils::recacheSubGroup($sg->subGroupID);
+				HTTP::redirect('manage/group/subgroups');
+				return;
+			} 
+			catch (ORM_Validation_Exception $e) 
+			{
+				// Get errors for display in view
+				// Note how the first param is the path to the message file (e.g. /messages/register.php)
+				Message::add('error', __('Error: Values could not be saved.'));
+				$errors = $e->errors('addSubGroup');
+				$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
+				$view->set('errors', $errors);
+				// Pass on the old form values
 
-							$view->set('data', array(
-														'sgName' => $_POST['sgName'],
-														'sgHomeSystems' => $_POST['sgHomeSystems'],
-														'sgSysListShowReds' => $_POST['sgSysListShowReds'],
-														'sgSkipPurgeHomeSigs' => $_POST['sgSkipPurgeHomeSigs']
-													) 
-									);
-					}
+				$view->set('data', array(
+											'sgName' => $_POST['sgName'],
+											'sgHomeSystems' => $_POST['sgHomeSystems'],
+											'sgSysListShowReds' => $_POST['sgSysListShowReds'],
+											'sgSkipPurgeHomeSigs' => $_POST['sgSkipPurgeHomeSigs']
+										) 
+						);
 			}
+		}
 		  
-			$this->template->content = $view;
+		$this->template->content = $view;
    }
    
    public function action_editMember()
    {
-			$id = $this->request->param('id');
-			
-			$this->template->title = __('Group management');
+		$id = $this->request->param('id');
+		
+		$this->template->title = __('Group management');
 
-			$member = ORM::factory('groupmember', $id);
-			if( $member->groupID != Auth::$user->data['groupID'] )
+		$member = ORM::factory('groupmember', $id);
+		if( $member->groupID != Auth::$user->data['groupID'] )
+		{
+				Message::add('error', __('Error: You do not have permission to edit that group member.'));
+				HTTP::redirect('manage/group/members');
+		}
+
+		$errors = array();
+
+		$view = View::factory('manage/group/memberForm');
+		$view->bind('errors', $errors);
+		$view->set('mode', 'edit');
+		$view->set('id', $id);
+	
+		if ($this->request->method() == "POST") 
+		{
+			try 
 			{
-					Message::add('error', __('Error: You do not have permission to edit that group member.'));
-					HTTP::redirect('manage/group/members');
-			}
+				//delete to prevent LOLs
+				if( $member->memberType == 'corp' )
+				{
+					groupUtils::deleteCorpCache( $member->eveID );
+				}
+				else
+				{
+					groupUtils::deleteCharCache( $member->eveID );
+				}
 
-			$errors = array();
-
-			$view = View::factory('manage/group/memberForm');
-			$view->bind('errors', $errors);
-			$view->set('mode', 'edit');
-			$view->set('id', $id);
-			
-			if ($this->request->method() == "POST") 
+				$member->eveID = $_POST['eveID'];
+				$member->accessName = $_POST['accessName'];
+				$member->groupID = Auth::$user->data['groupID'];
+				$member->memberType = $_POST['memberType'];
+				if( isset( $_POST['subGroupID'] ) )
+				{
+					$member->subGroupID = $_POST['subGroupID'];
+				}
+				else
+				{
+					$member->subGroupID = 0;
+				}
+				$member->save();
+				if( $member->memberType == 'corp' )
+				{
+					groupUtils::recacheCorpList();
+					groupUtils::recacheCorp($member->eveID);
+				}
+				elseif( $member->memberType == 'char' )
+				{
+					groupUtils::recacheCharList();
+					groupUtils::recacheChar($member->eveID);
+				}
+				HTTP::redirect('manage/group/members');
+				return;
+			} 
+			catch (ORM_Validation_Exception $e) 
 			{
-					try 
-					{
-						//delete to prevent LOLs
-						if( $member->memberType == 'corp' )
-						{
-							groupUtils::deleteCorpCache( $member->eveID );
-						}
-						else
-						{
-							groupUtils::deleteCharCache( $member->eveID );
-						}
+				// Get errors for display in view
+				// Note how the first param is the path to the message file (e.g. /messages/register.php)
+				Message::add('error', __('Error: Values could not be saved.'));
+				$errors = $e->errors('editMember');
+				$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
+				$view->set('errors', $errors);
+				// Pass on the old form values
 
-						$member->eveID = $_POST['eveID'];
-						$member->accessName = $_POST['accessName'];
-						$member->groupID = Auth::$user->data['groupID'];
-						$member->memberType = $_POST['memberType'];
-						if( isset( $_POST['subGroupID'] ) )
-						{
-							$member->subGroupID = $_POST['subGroupID'];
-						}
-						else
-						{
-							$member->subGroupID = 0;
-						}
-						$member->save();
-						if( $member->memberType == 'corp' )
-						{
-								groupUtils::recacheCorpList();
-								groupUtils::recacheCorp($member->eveID);
-						}
-						elseif( $member->memberType == 'char' )
-						{
-								groupUtils::recacheCharList();
-								groupUtils::recacheChar($member->eveID);
-						}
-						HTTP::redirect('manage/group/members');
-						return;
-					} 
-					catch (ORM_Validation_Exception $e) 
-					{
-							// Get errors for display in view
-							// Note how the first param is the path to the message file (e.g. /messages/register.php)
-							Message::add('error', __('Error: Values could not be saved.'));
-							$errors = $e->errors('editMember');
-							$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
-							$view->set('errors', $errors);
-							// Pass on the old form values
-
-							$view->set('data', array('eveID' => $_POST['eveID'], 'accessName' => $_POST['accessName']) );
-					}
+				$view->set('data', array('eveID' => $_POST['eveID'], 'accessName' => $_POST['accessName']) );
 			}
+		}
 
-			$view->set('data', $member->as_array() );
+		$view->set('data', $member->as_array() );
 
-			$view->set('user', Auth::$user->data);
+		$view->set('user', Auth::$user->data);
 
-			$group = ORM::factory('group', Auth::$user->data['groupID']);
-			$view->set('group', $group );
+		$group = ORM::factory('group', Auth::$user->data['groupID']);
+		$view->set('group', $group );
 
-			$this->template->content = $view;
+		$this->template->content = $view;
    }   
    
-		public function action_editSubGroup()
+	public function action_editSubGroup()
+	{
+		$id = intval($this->request->param('id'));
+			
+		$this->template->title = __('Editing sub group');
+
+		$sg = ORM::factory('subgroup', $id);
+		if( $sg->groupID != Auth::$user->data['groupID'] )
 		{
-				$id = intval($this->request->param('id'));
-					
-				$this->template->title = __('Editing sub group');
+		 Message::add('error', __('Error: You do not have permission to edit that subgroup.'));
+		 HTTP::redirect('manage/group/subgroups');
+		}
+		$group = ORM::factory('group', Auth::$user->data['groupID']);
 
-				$sg = ORM::factory('subgroup', $id);
-				if( $sg->groupID != Auth::$user->data['groupID'] )
+		$errors = array();
+
+		$view = View::factory('manage/group/subGroupForm');
+		$view->bind('errors', $errors);
+		$view->set('mode', 'edit');
+		$view->set('id', $id);
+		if ( !empty($_POST)  ) 
+		{
+			try 
+			{
+				$sg->sgName = $_POST['sgName'];
+
+				if( !empty($_POST['password']) && !empty($_POST['password_confirm']) )
 				{
-				 Message::add('error', __('Error: You do not have permission to edit that subgroup.'));
-				 HTTP::redirect('manage/group/subgroups');
+					if( $_POST['password'] == $_POST['password_confirm'] )
+					{
+							$sg->sgAuthPassword = sha1($_POST['password'].$group->authSalt);
+					}
+					else
+					{
+							Message::add( 'error', __('Error: The password was not saved because it did not match between the two fields.') );
+					}
 				}
-				$group = ORM::factory('group', Auth::$user->data['groupID']);
 
-				$errors = array();
 
-				$view = View::factory('manage/group/subGroupForm');
-				$view->bind('errors', $errors);
-				$view->set('mode', 'edit');
-				$view->set('id', $id);
-				if ( !empty($_POST)  ) 
+				$homeSystems = trim($_POST['sgHomeSystems']);
+				if( !empty($homeSystems) )
 				{
-						try 
+					$homeSystems = explode(',', $homeSystems);
+					$homeSystemIDs = array();
+					if( is_array( $homeSystems ) )
+					{
+						foreach($homeSystems as $k => $v)
 						{
-								$sg->sgName = $_POST['sgName'];
-
-								if( !empty($_POST['password']) && !empty($_POST['password_confirm']) )
+							if( trim($v) != '' )
+							{
+								$id = $this->__findSystemByName(trim($v));
+								if( $id != 0 )
 								{
-										if( $_POST['password'] == $_POST['password_confirm'] )
-										{
-												$sg->sgAuthPassword = sha1($_POST['password'].$group->authSalt);
-										}
-										else
-										{
-												Message::add( 'error', __('Error: The password was not saved because it did not match between the two fields.') );
-										}
-								}
-
-
-								$homeSystems = trim($_POST['sgHomeSystems']);
-								if( !empty($homeSystems) )
-								{
-										$homeSystems = explode(',', $homeSystems);
-										$homeSystemIDs = array();
-										if( is_array( $homeSystems ) )
-										{
-												foreach($homeSystems as $k => $v)
-												{
-														if( trim($v) != '' )
-														{
-																$id = $this->__findSystemByName(trim($v));
-																if( $id != 0 )
-																{
-																		$homeSystemIDs[] = $id;
-																}
-																else
-																{
-																		unset($homeSystems[ $k ] );
-																}
-														}
-														else
-														{
-																unset($homeSystems[ $k ] );
-														}
-												}
-										}
-										$sg->sgHomeSystemIDs = implode(',', $homeSystemIDs);
-										$sg->sgHomeSystems = implode(',', $homeSystems);
+										$homeSystemIDs[] = $id;
 								}
 								else
 								{
-										$sg->sgHomeSystems = '';
-										$sg->sgHomeSystemIDs = '';
-								}						
-
-								$sg->sgSkipPurgeHomeSigs = intval($_POST['sgSkipPurgeHomeSigs']);
-								$sg->sgSysListShowReds = intval($_POST['sgSysListShowReds']);
-
-								$sg->save();
-
-								//$this->__recacheCorpMembers();
-								groupUtils::recacheSubGroup($sg->subGroupID);
-								HTTP::redirect('manage/group/subgroups');
-								return;
-						} 
-						catch (ORM_Validation_Exception $e) 
-						{
-								// Get errors for display in view
-								// Note how the first param is the path to the message file (e.g. /messages/register.php)
-								Message::add('error', __('Error: Values could not be saved.'));
-								$errors = $e->errors('editSubGroup');
-								$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
-								$view->set('errors', $errors);
-								// Pass on the old form values
-
-								$view->set('data', array( 'sgName' => $_POST['sgName'],
-															'sgHomeSystems' => $_POST['sgHomeSystems'],
-															'sgSysListShowReds' => $_POST['sgSysListShowReds'],
-															'sgSkipPurgeHomeSigs' => $_POST['sgSkipPurgeHomeSigs']
-														 ) );
+										unset($homeSystems[ $k ] );
+								}
+							}
+							else
+							{
+									unset($homeSystems[ $k ] );
+							}
 						}
+					}
+						$sg->sgHomeSystemIDs = implode(',', $homeSystemIDs);
+						$sg->sgHomeSystems = implode(',', $homeSystems);
 				}
+				else
+				{
+						$sg->sgHomeSystems = '';
+						$sg->sgHomeSystemIDs = '';
+				}						
+
+				$sg->sgSkipPurgeHomeSigs = intval($_POST['sgSkipPurgeHomeSigs']);
+				$sg->sgSysListShowReds = intval($_POST['sgSysListShowReds']);
+
+				$sg->save();
+
+				//$this->__recacheCorpMembers();
+				groupUtils::recacheSubGroup($sg->subGroupID);
+				HTTP::redirect('manage/group/subgroups');
+				return;
+			} 
+			catch (ORM_Validation_Exception $e) 
+			{
+				// Get errors for display in view
+				// Note how the first param is the path to the message file (e.g. /messages/register.php)
+				Message::add('error', __('Error: Values could not be saved.'));
+				$errors = $e->errors('editSubGroup');
+				$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
+				$view->set('errors', $errors);
+				// Pass on the old form values
+
+				$view->set('data', array( 'sgName' => $_POST['sgName'],
+											'sgHomeSystems' => $_POST['sgHomeSystems'],
+											'sgSysListShowReds' => $_POST['sgSysListShowReds'],
+											'sgSkipPurgeHomeSigs' => $_POST['sgSkipPurgeHomeSigs']
+										 ) );
+			}
+		}
 	  
-			$view->set('data', $sg->as_array() );
-	  
-			$this->template->content = $view;
+		$view->set('data', $sg->as_array() );
+  
+		$this->template->content = $view;
 	}   
    
 	public function action_removeMember()
@@ -766,8 +765,8 @@ class Controller_Manage_Group extends Controller_App {
 		$member = ORM::factory('groupmember', $id);
 		if( $member->groupID != Auth::$user->data['groupID'] )
 		{
-				Message::add('error', __('Error: You do not have permission to remove that group member.'));
-				HTTP::redirect('manage/group/members');
+			Message::add('error', __('Error: You do not have permission to remove that group member.'));
+			HTTP::redirect('manage/group/members');
 		}
 
 		$view = View::factory('manage/group/deleteForm');
@@ -812,45 +811,45 @@ class Controller_Manage_Group extends Controller_App {
 	{
 		$id = intval($this->request->param('id'));
 		
-			$this->template->title = __('Removing sub group');
+		$this->template->title = __('Removing sub group');
 
-			$sg = ORM::factory('subgroup', $id);
-			if( $sg->groupID != Auth::$user->data['groupID'] )
+		$sg = ORM::factory('subgroup', $id);
+		if( $sg->groupID != Auth::$user->data['groupID'] )
+		{
+				Message::add('error', __('Error: You do not have permission to remove that subgroup.'));
+				HTTP::redirect('manage/group/subgroups');
+		}
+
+		$view = View::factory('manage/group/deleteSubGroupForm');
+		$view->set('id', $id);
+		if ( !empty($_POST)  ) 
+		{
+			try 
 			{
-					Message::add('error', __('Error: You do not have permission to remove that subgroup.'));
-					HTTP::redirect('manage/group/subgroups');
-			}
+				DB::update('groupmembers')->set( array('subGroupID' => 0 ) )->where( 'subGroupID', '=', $sg->subGroupID )->execute();
+				DB::delete('activesystems')->where('subGroupID', '=', $sg->subGroupID)->execute();
 
-			$view = View::factory('manage/group/deleteSubGroupForm');
-			$view->set('id', $id);
-			if ( !empty($_POST)  ) 
+				groupUtils::deleteSubGroupCache($sg->subGroupID);
+				$sg->delete();
+
+				//$this->__recacheCorpMembers();
+				HTTP::redirect('manage/group/subgroups');
+			}
+			catch (Exception $e) 
 			{
-				try 
+				if($e instanceof HTTP_Exception)
 				{
-					DB::update('groupmembers')->set( array('subGroupID' => 0 ) )->where( 'subGroupID', '=', $sg->subGroupID )->execute();
-					DB::delete('activesystems')->where('subGroupID', '=', $sg->subGroupID)->execute();
-
-					groupUtils::deleteSubGroupCache($sg->subGroupID);
-					$sg->delete();
-
-					//$this->__recacheCorpMembers();
-					HTTP::redirect('manage/group/subgroups');
+					throw $e;
 				}
-				catch (Exception $e) 
+				else
 				{
-					if($e instanceof HTTP_Exception)
-					{
-						throw $e;
-					}
-					else
-					{
-						Message::add('error', __('Error: Removal of subgroup failed for unknown reasons.'));
-					}
+					Message::add('error', __('Error: Removal of subgroup failed for unknown reasons.'));
 				}
 			}
+		}
 
-			$view->set('data', $sg->as_array() );
+		$view->set('data', $sg->as_array() );
 
-			$this->template->content = $view;
+		$this->template->content = $view;
 	}   
 }
