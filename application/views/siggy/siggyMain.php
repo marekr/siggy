@@ -536,10 +536,6 @@
             };
 
             siggy = new siggymain( options );
-                <?php if( $initialSystem ): ?>
-            siggy.setSystemID(<?php echo $systemData['id']; ?>);
-            siggy.systemName = '<?php echo $systemData['name']; ?>';
-                <?php endif; ?>
             <?php if( $requested): ?>
             siggy.freeze();
             <?php endif; ?>

@@ -763,22 +763,21 @@ class Controller_Siggy extends FrontController
             exit();
         }			 
         
-        $chainMapOpen = ( isset($_GET['mapOpen']) ? intval($_GET['mapOpen']) : 0 );
+        $chainMapOpen = ( isset($_POST['mapOpen']) ? intval($_POST['mapOpen']) : 0 );
         
         $update = array('systemUpdate' => 0, 'sigUpdate' => 0, 'globalNotesUpdate' => 0, 'mapUpdate' => 0, 'acsid' => 0, 'acsname' =>'');
         
         
-        if( isset( $_GET['lastUpdate'] ) && isset( $_GET['systemID'] ) && $_GET['systemID'] != 0 )
+        if( isset( $_POST['lastUpdate'] ) && isset( $_POST['systemID'] ) && $_POST['systemID'] != 0 )
         {
-            $currentSystemID = intval($_GET['systemID']);
-            $forceUpdate = $_GET['forceUpdate'] == 'true' ? 1 : 0;
-            $_GET['lastUpdate'] = intval($_GET['lastUpdate']);
-            $freeze = intval( $_GET['freezeSystem'] );
-        //	$detectedSystemID = intval($_SERVER['HTTP_EVE_SOLARSYSTEMID']);
+            $currentSystemID = intval($_POST['systemID']);
+            $forceUpdate = $_POST['forceUpdate'] == 'true' ? 1 : 0;
+            $_POST['lastUpdate'] = intval($_POST['lastUpdate']);
+            $freeze = intval( $_POST['freezeSystem'] );
         
             $newSystemData = array();
-            $update['acsid'] = $lastSystemID = $actualCurrentSystemID = intval($_GET['acsid']);
-            $update['acsname'] = $lastSystemName = $actualCurrentSystemName = $_GET['acsname'];
+            $update['acsid'] = $lastSystemID = $actualCurrentSystemID = intval($_POST['acsid']);
+            $update['acsname'] = $lastSystemName = $actualCurrentSystemName = $_POST['acsname'];
 
             if( $this->igb )
             {
@@ -811,7 +810,7 @@ class Controller_Siggy extends FrontController
                 }					 
             }
 					
-            if( $forceUpdate || ( $this->igb && $_GET['systemName'] != $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] ) )
+            if( $forceUpdate || ( $this->igb && $_POST['systemName'] != $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] ) )
             {
                 //$newSystemData = $this->getSystemData( $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] );
                 //if specific system isn't picked then load new one
@@ -829,7 +828,7 @@ class Controller_Siggy extends FrontController
                 //if specific system is picked, we have a forced update
                 elseif( $freeze  || $forceUpdate )
                 {
-                    $update['systemData'] = $this->getSystemData( $_GET['systemName'] );
+                    $update['systemData'] = $this->getSystemData( $_POST['systemName'] );
                     if( count( $update['systemData'] ) > 0 )
                     {
                             $update['systemUpdate'] = (int) 1;
@@ -904,7 +903,7 @@ class Controller_Siggy extends FrontController
                         }
                     }
                     
-                    if( $_GET['mapLastUpdate'] != $this->mapData['updateTime'] )
+                    if( $_POST['mapLastUpdate'] != $this->mapData['updateTime'] )
                     {
                         $update['chainMap']['systems'] = $this->mapData['systems'];
                         $update['chainMap']['wormholes'] = $this->mapData['wormholes'];
@@ -922,7 +921,7 @@ class Controller_Siggy extends FrontController
             $activeSystem = $activeSystemQuery->current();
             $recordedLastUpdate = ($activeSystem['lastUpdate'] > 0) ? $activeSystem['lastUpdate']: time();
 
-            if( ($_GET['lastUpdate'] < $recordedLastUpdate) || ( $_GET['lastUpdate'] == 0 ) || $forceUpdate || $update['systemUpdate'] )
+            if( ($_POST['lastUpdate'] < $recordedLastUpdate) || ( $_POST['lastUpdate'] == 0 ) || $forceUpdate || $update['systemUpdate'] )
             {
                 $additional = '';
                 if( $this->groupData['showSigSizeCol'] )
@@ -937,7 +936,7 @@ class Controller_Siggy extends FrontController
 					
             if( $this->groupData['subGroupID'] != 0 )
             {
-                if( ( $_GET['lastGlobalNotesUpdate'] ) < $this->groupData['sgNotesTime'] )
+                if( ( $_POST['lastGlobalNotesUpdate'] ) < $this->groupData['sgNotesTime'] )
                 {
                     $update['globalNotesUpdate'] = (int) 1;
                     $update['lastGlobalNotesUpdate'] = (int) $this->groupData['sgNotesTime'];
@@ -946,7 +945,7 @@ class Controller_Siggy extends FrontController
             }
             else
             {
-                if( ( $_GET['lastGlobalNotesUpdate'] ) < $this->groupData['lastNotesUpdate'] )
+                if( ( $_POST['lastGlobalNotesUpdate'] ) < $this->groupData['lastNotesUpdate'] )
                 {
                     $update['globalNotesUpdate'] = (int) 1;
                     $update['lastGlobalNotesUpdate'] = (int) $this->groupData['lastNotesUpdate'];
@@ -963,7 +962,6 @@ class Controller_Siggy extends FrontController
         }
         echo json_encode( $update );
 			
-		// echo View::factory('profiler/stats'); 
         exit();
 	}
 	
