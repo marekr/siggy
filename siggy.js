@@ -784,20 +784,20 @@ function siggymain( options )
 	this.editingGlobalNotes = false;
 	
 	this.defaults = {
-      baseUrl: '',
-      initialSystemID: 0,
-      initialSystemName: '',
-			showSigSizeCol: false,
-			sessionID: '',
-			map: {
-              jumpTrackerEnabled: true
-            }
+		baseUrl: '',
+		initialSystemID: 0,
+		initialSystemName: '',
+		showSigSizeCol: false,
+		sessionID: '',
+		map: {
+		  jumpTrackerEnabled: true
+		}
 	};
 	
 	this.settings = $.extend(this.defaults, options);
     
+	this.systemName = this.settings.initialSystemName;
     this.setSystemID(this.settings.initialSystemID);
-	
 	
 	/* POSes */
 	this.poses = {};
@@ -846,6 +846,7 @@ siggymain.prototype.update = function ()
 		dataType: 'json',
         cache: false,
         async: true,
+		method: 'post',
 		beforeSend : function(xhr, opts){
 			if(that.fatalError == true) //just an example
 			{
