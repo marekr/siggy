@@ -1281,7 +1281,7 @@ siggymain.prototype.updateSystemInfo = function (systemData)
   
 	
 	$('a.site-dotlan').attr('href', 'http://evemaps.dotlan.net/system/'+systemData.name);
-	$('a.site-wormholes').attr('href', 'http://wormhol.es/'+systemData.name);
+	$('a.site-wormholes').attr('href', 'http://wh.pasta.gg/'+systemData.name);
 	$('a.site-evekill').attr('href','http://eve-kill.net/?a=system_detail&sys_name='+systemData.name);
 	
 	this.setSystemID(systemData.id);
