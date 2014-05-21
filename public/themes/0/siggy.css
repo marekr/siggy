@@ -717,4 +717,10 @@ ul.box-simple-list
 {
 	display: inline-block;
 	font-weight: bold;
-	}
+}
+
+.site-icon
+{
+	position:relative;
+	top: 3px;
+}
