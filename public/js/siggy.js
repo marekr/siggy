@@ -874,6 +874,7 @@ siggymain.prototype.update = function ()
                     }
                     if (data.systemUpdate)
                     {
+					console.log(data);
                         that.updateSystemInfo(data.systemData);
                         that.updateSystemOptionsForm(data.systemData);
                     }

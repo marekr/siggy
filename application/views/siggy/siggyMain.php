@@ -522,10 +522,8 @@
 
             var options = {
                 baseUrl: '<?php echo URL::base(TRUE, TRUE);?>',
-                <?php if( $initialSystem ): ?>
                 initialSystemID: <?php echo $systemData['id']; ?>,
                 initialSystemName: '<?php echo $systemData['name']; ?>',
-                <?php endif; ?>
                 showSigSizeCol: <?php echo ( $group['showSigSizeCol'] ? 'true' : 'false' ); ?>,
                 map: {
                     jumpTrackerEnabled: <?php echo ( $group['jumpLogEnabled'] ? 'true' : 'false' ); ?>,
@@ -536,7 +534,7 @@
             };
 
             siggy = new siggymain( options );
-            <?php if( $requested): ?>
+            <?php if($requested): ?>
             siggy.freeze();
             <?php endif; ?>
 

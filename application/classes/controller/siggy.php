@@ -10,46 +10,59 @@ class Controller_Siggy extends FrontController
 
 	public function action_index()
 	{
-    
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+		
+		$view = View::factory('siggy/siggyMain');
+		
 		$ssname = $this->request->param('ssname', '');
 	
 		$mapOpen = ( isset($_COOKIE['mapOpen'] ) ? intval($_COOKIE['mapOpen']) : 0 );
         $statsOpen = ( isset($_COOKIE['system_stats_open'] ) ? intval($_COOKIE['system_stats_open']) : 0 );
-        
+		
 		if( !empty($ssname) )
 		{
-				$ssname = preg_replace("/[^a-zA-Z0-9]/", "", $ssname);
+			$sysData = array();
+			
+			$ssname = preg_replace("/[^a-zA-Z0-9]/", "", $ssname);
+			
+			$ssid = $this->findSystemIDByName($ssname);
+			if( $ssid )
+			{
+				$sysData = $this->getSystemData($ssid);
+			}
+			
+			if( !empty($sysData) )
+			{
 				$requested = true;
+				$view->systemData = $sysData;
+			}
+			else
+			{
+				//default to jita
+				$view->systemData = array('id' => 30000142, 'name' => 'Jita');
+			}
 		}
 		else
 		{
-				$ssname = ($this->igb ? $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] : 'Jita');
-				$requested = false;
+			$requested = false;
+			$homeSystems = $this->getHomeSystems();
+			
+			if( count($homeSystems) > 0 )
+			{
+				$view->systemData = array('id' => $homeSystems[0], 'name' => '');
+			}
+			else
+			{
+				$view->systemData = array('id' => 30000142, 'name' => 'Jita');
+			}
+			$view->initialSystem = true;
 		}
-
-		$view = View::factory('siggy/siggyMain');
 		
-		$view->initialSystem = false;
+		$view->initialSystem = true;
 		$view->group = $this->groupData;
 		$view->requested = $requested;
         $view->statsOpen = $statsOpen;
 		$view->igb = $this->igb;
-		if( $ssname )
-		{
-				$sysData = $this->getSystemData($ssname);
-				if( $sysData )
-				{
-						$view->systemData = $sysData;
-						$view->initialSystem = true;
-				}
-				else
-				{
-						$requested = false;
-						$view->systemData = array('id' => 30000142, 'name' => 'Jita');
-						$view->initialSystem = true;
-				}
-		}
 		
 		//$sessionID = $this->__generateSession();
 		$view->sessionID = '';
@@ -139,24 +152,6 @@ class Controller_Siggy extends FrontController
 		parent::after();
 	}
 	
-	public function action_systemData($name='')
-	{
-			if ($this->request->is_ajax()) {
-					$this->profiler = NULL;
-					$this->auto_render = FALSE;
-					header('content-type: application/json');
-			}
-			
-			if( !empty($name ) )
-			{
-				$systemData = $this->getSystemData($name);
-				echo json_encode($systemData);
-				die();
-
-			}
-		
-	}
-	
 	private function getSystemList()
 	{
 			//removed	 ORDER BY sa.inUse DESC, sa.lastActive DESC because the client sorts it anyway
@@ -176,75 +171,90 @@ class Controller_Siggy extends FrontController
 			return $systems;
 	}
 
-	private function getSystemData( $name )
+	private function findSystemIDByName( $id )
 	{
-			$systemQuery = DB::query(Database::SELECT, "SELECT ss.*,se.effectTitle, r.regionName, c.constellationName, 
-														COALESCE(sa.displayName,'') as displayName,
-														COALESCE(sa.inUse,0) as inUse,
-														COALESCE(sa.activity,0) as activity
-														FROM solarsystems ss 
-														INNER JOIN systemeffects se ON ss.effect = se.id
-														INNER JOIN regions r ON ss.region = r.regionID
-														INNER JOIN constellations c ON ss.constellation = c.constellationID
-														LEFT OUTER JOIN activesystems sa ON (ss.id = sa.systemID  AND sa.groupID = :group AND sa.subGroupID=:subgroup)
-														WHERE ss.name=:name")
-										->param(':name', $name)
-										->param(':group', $this->groupData['groupID'])
-										->param(':subgroup', $this->groupData['subGroupID'])
-										->execute();
-			
-			//system exists
-			
-			$systemData = $systemQuery->current();
-			if( !$systemData['id'] )
-			{
-				return FALSE;
-			}
-			
-			$systemData['staticData'] = array();
-										
-			$staticData = DB::query(Database::SELECT, "SELECT st.* FROM staticmap sm 
-			INNER JOIN statics st ON sm.staticID = st.staticID
-			WHERE sm.systemID=:id")
-										->param(':id', $systemData['id'])->execute()->as_array();	 
-			
-			if( count( $staticData ) > 0 )
-			{
-				$systemData['staticData'] = $staticData;
-			}
-			
-			$end = miscUtils::getHourStamp();
-			$start = miscUtils::getHourStamp(-24);
-			$apiData = DB::query(Database::SELECT, "SELECT hourStamp, jumps, kills, npcKills FROM apihourlymapdata WHERE systemID=:system AND hourStamp >= :start AND hourStamp <= :end ORDER BY hourStamp asc LIMIT 0,24")
-											->param(':system', $systemData['id'])->param(':start', $start)->param(':end', $end)->execute()->as_array('hourStamp');	 
-			
-			$trackedJumps = DB::query(Database::SELECT, "SELECT hourStamp, jumps FROM jumpstracker WHERE systemID=:system AND groupID=:group AND hourStamp >= :start AND hourStamp <= :end ORDER BY hourStamp asc LIMIT 0,24")
-											->param(':system', $systemData['id'])->param(':group', $this->groupData['groupID'])->param(':start', $start)->param(':end', $end)->execute()->as_array('hourStamp');	 
-			
-			$systemData['stats'] = array();
-			for($i = 23; $i >= 0; $i--)
-			{
-				$hourStamp = miscUtils::getHourStamp($i*-1);
-				$apiJumps = ( isset($apiData[ $hourStamp ]) ? $apiData[ $hourStamp ]['jumps'] : 0);
-				$apiKills = ( isset($apiData[ $hourStamp ]) ? $apiData[ $hourStamp ]['kills'] : 0);
-				$apiNPC = ( isset($apiData[ $hourStamp ]) ? $apiData[ $hourStamp ]['npcKills'] : 0);
-				$siggyJumps = ( isset($trackedJumps[ $hourStamp ]) ? $trackedJumps[ $hourStamp ]['jumps'] : 0);
-				$systemData['stats'][] = array( $hourStamp*1000, $apiJumps, $apiKills, $apiNPC, $siggyJumps);
-			}
-			
-			$hubJumps = DB::query(Database::SELECT, " SELECT ss.id as system_id, pr.num_jumps,ss.name as destination_name FROM precomputedroutes pr
-														INNER JOIN solarsystems ss ON ss.id = pr.destination_system
-														 WHERE pr.origin_system=:system AND pr.destination_system != :system
-														 ORDER BY pr.num_jumps ASC")
-											->param(':system', $systemData['id'])->execute()->as_array();
-			
-			$systemData['hubJumps'] = $hubJumps;
-            
-            $systemData['poses'] = $this->getPOSes( $systemData['id'] );
-			
-			$systemData['dscans'] = $this->getDScans( $systemData['id'] );
-			
-			return $systemData;
+		$systemData = DB::query(Database::SELECT, "SELECT ss.id,ss.name
+													FROM solarsystems ss 
+													WHERE ss.name=:name")
+									->param(':id', $id)
+									->execute->current();
+									
+		if( !$systemData['id'] )
+		{
+			return 0;
+		}
+		else
+		{
+			return $systemData['id'];
+		}
+	}
+	
+	private function getSystemData( $id )
+	{
+		$systemData = DB::query(Database::SELECT, "SELECT ss.*,se.effectTitle, r.regionName, c.constellationName, 
+													COALESCE(sa.displayName,'') as displayName,
+													COALESCE(sa.inUse,0) as inUse,
+													COALESCE(sa.activity,0) as activity
+													FROM solarsystems ss 
+													INNER JOIN systemeffects se ON ss.effect = se.id
+													INNER JOIN regions r ON ss.region = r.regionID
+													INNER JOIN constellations c ON ss.constellation = c.constellationID
+													LEFT OUTER JOIN activesystems sa ON (ss.id = sa.systemID  AND sa.groupID = :group AND sa.subGroupID=:subgroup)
+													WHERE ss.id=:id")
+									->param(':id', $id)
+									->param(':group', $this->groupData['groupID'])
+									->param(':subgroup', $this->groupData['subGroupID'])
+									->execute()->current();
+		
+		if( !$systemData['id'] )
+		{
+			return FALSE;
+		}
+		
+		$systemData['staticData'] = array();
+									
+		$staticData = DB::query(Database::SELECT, "SELECT st.* FROM staticmap sm 
+		INNER JOIN statics st ON sm.staticID = st.staticID
+		WHERE sm.systemID=:id")
+									->param(':id', $systemData['id'])->execute()->as_array();	 
+		
+		if( count( $staticData ) > 0 )
+		{
+			$systemData['staticData'] = $staticData;
+		}
+		
+		$end = miscUtils::getHourStamp();
+		$start = miscUtils::getHourStamp(-24);
+		$apiData = DB::query(Database::SELECT, "SELECT hourStamp, jumps, kills, npcKills FROM apihourlymapdata WHERE systemID=:system AND hourStamp >= :start AND hourStamp <= :end ORDER BY hourStamp asc LIMIT 0,24")
+										->param(':system', $systemData['id'])->param(':start', $start)->param(':end', $end)->execute()->as_array('hourStamp');	 
+		
+		$trackedJumps = DB::query(Database::SELECT, "SELECT hourStamp, jumps FROM jumpstracker WHERE systemID=:system AND groupID=:group AND hourStamp >= :start AND hourStamp <= :end ORDER BY hourStamp asc LIMIT 0,24")
+										->param(':system', $systemData['id'])->param(':group', $this->groupData['groupID'])->param(':start', $start)->param(':end', $end)->execute()->as_array('hourStamp');	 
+		
+		$systemData['stats'] = array();
+		for($i = 23; $i >= 0; $i--)
+		{
+			$hourStamp = miscUtils::getHourStamp($i*-1);
+			$apiJumps = ( isset($apiData[ $hourStamp ]) ? $apiData[ $hourStamp ]['jumps'] : 0);
+			$apiKills = ( isset($apiData[ $hourStamp ]) ? $apiData[ $hourStamp ]['kills'] : 0);
+			$apiNPC = ( isset($apiData[ $hourStamp ]) ? $apiData[ $hourStamp ]['npcKills'] : 0);
+			$siggyJumps = ( isset($trackedJumps[ $hourStamp ]) ? $trackedJumps[ $hourStamp ]['jumps'] : 0);
+			$systemData['stats'][] = array( $hourStamp*1000, $apiJumps, $apiKills, $apiNPC, $siggyJumps);
+		}
+		
+		$hubJumps = DB::query(Database::SELECT, " SELECT ss.id as system_id, pr.num_jumps,ss.name as destination_name FROM precomputedroutes pr
+													INNER JOIN solarsystems ss ON ss.id = pr.destination_system
+													 WHERE pr.origin_system=:system AND pr.destination_system != :system
+													 ORDER BY pr.num_jumps ASC")
+										->param(':system', $systemData['id'])->execute()->as_array();
+		
+		$systemData['hubJumps'] = $hubJumps;
+		
+		$systemData['poses'] = $this->getPOSes( $systemData['id'] );
+		
+		$systemData['dscans'] = $this->getDScans( $systemData['id'] );
+		
+		return $systemData;
 	}
     
     private function getPOSes( $systemID )
@@ -810,13 +820,13 @@ class Controller_Siggy extends FrontController
                 }					 
             }
 					
-            if( $forceUpdate || ( $this->igb && $_POST['systemName'] != $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] ) )
+            if( $forceUpdate || ( $this->igb && $_POST['systemID'] != $_SERVER['HTTP_EVE_SOLARSYSTEMID'] ) )
             {
                 //$newSystemData = $this->getSystemData( $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] );
                 //if specific system isn't picked then load new one
                 if( !$freeze && $this->igb )
                 {
-                    $update['systemData'] = $this->getSystemData( $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] );
+                    $update['systemData'] = $this->getSystemData( $_SERVER['HTTP_EVE_SOLARSYSTEMID'] );
                     //$newSystemData = $this->getSystemData( $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] );
                     //$update['systemData'] = $newSystemData;
                     if( count( $update['systemData'] ) > 0 )
@@ -828,7 +838,7 @@ class Controller_Siggy extends FrontController
                 //if specific system is picked, we have a forced update
                 elseif( $freeze  || $forceUpdate )
                 {
-                    $update['systemData'] = $this->getSystemData( $_POST['systemName'] );
+                    $update['systemData'] = $this->getSystemData( $_POST['systemID'] );
                     if( count( $update['systemData'] ) > 0 )
                     {
                             $update['systemUpdate'] = (int) 1;
@@ -960,6 +970,7 @@ class Controller_Siggy extends FrontController
         {
             $update['error'] = 'You suck';
         }
+		
         echo json_encode( $update );
 			
         exit();
@@ -1568,20 +1579,6 @@ class Controller_Siggy extends FrontController
 		
 		die();
 	}
-	
-	
-	
-	private function shouldSysListShowReds()
-	{
-		if( $this->groupData['subGroupID'] )
-		{
-			return $this->groupData['sgSysListShowReds'];
-		}
-		else
-		{
-			return $this->groupData['sysListShowReds'];
-		}
-	}
 
-} // End Welcome
+}
 
