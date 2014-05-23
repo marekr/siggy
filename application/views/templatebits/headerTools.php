@@ -9,6 +9,7 @@
 	<?php if( count(Auth::$user->perms) > 0 ): ?>
 	<li><a href="<?php echo URL::base(TRUE, TRUE);?>manage">Admin</a></li>
 	<?php endif; ?>
+    <li><a target="_blank" href="http://wiki.siggy.borkedlabs.com">Guide</a></li>
 </ul>
 
 <div id="global-notes">
