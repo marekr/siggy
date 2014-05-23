@@ -101,7 +101,6 @@
 
 			<?php echo $content; ?>
 			<div id="footer-link" style="text-align:center;font-size:0.9em;margin-top:100px;">
-				<a href="http://wiki.siggy.borkedlabs.com/">Usage Guide</a>
 				<?php if( $apilogin ): ?>
 				&nbsp;&middot;&nbsp;
 				<a href="<?php echo URL::base(TRUE, TRUE);?>account/apiKeys">API Keys</a>
@@ -111,9 +110,19 @@
 				<a href="<?php echo URL::base(TRUE, TRUE);?>account/changePassword">Change Password</a>
 				<?php endif; ?>
 				<br />
-				<?php if( $siggyMode ): ?>
-				Last Update: <span class="updateTime" title='Last update received'>00:00:00</span><br />
-			<?php endif; ?>
+				<div>
+					<p style="width:33%;float:left;text-align:left;">
+					&nbsp;
+					</p>
+					<p style="width:33%;float:left;text-align:center;">
+						Last Update: <span class="updateTime" title='Last update received'>00:00:00</span>
+					</p>
+					<p style="width:33%;float:left;text-align:right;">
+						<?php if( defined("SIGGY_VERSION") ): ?>
+						siggy version: <?php echo SIGGY_VERSION; ?>
+					<?php endif; ?>
+					</p>
+				</div>
 			</div>    
 		</div>
 	</body>
