@@ -100,44 +100,6 @@ final class miscUtils
 
 		static function computeCostPerDays( $memberCount, $days )
 		{
-		/*
-			$total = 0;
-			
-			$membersInTier = 0;
-			
-			if ( $memberCount > 150 )
-			{
-				$membersInTier = $memberCount - 150;
-				$memberCount -= $membersInTier;
-				
-				$total += $membersInTier * self::TIER3COST;
-				//print "tier3count: ". $membersInTier ."<br />"; 
-				//print "tier3cost: ". $membersInTier * self::TIER3COST ."<br />"; 
-			}
-			
-			if ( $memberCount > 50 )
-			{
-				$membersInTier = $memberCount - 50;
-				$memberCount -= $membersInTier;
-				
-				$total += $membersInTier * self::TIER2COST;
-			//	print "tier2count: ". $membersInTier ."<br />"; 
-				//print "tier2cost: ". $membersInTier * self::TIER2COST ."<br />"; 
-			}
-			
-			//jack the member count to cost more isk for tiny groups
-			if( $memberCount < 10 )
-			{
-				$memberCount = 10;
-			}
-			
-			$total += $memberCount * self::TIER1COST;
-			//	print "tier1count: ". $memberCount ."<br />"; 
-				//print "tier1cost: ". $memberCount * self::TIER1COST ."<br />"; 
-			
-			return $total*$days;
-			*/
-			
 			$total = 22420*$memberCount + 283650;
 			return $total*$days;
 		}
@@ -386,7 +348,7 @@ final class miscUtils
 				return;
 			}
 			
-			if( !in_array( $stat, array('adds','updates') ) )
+			if( !in_array( $stat, array('adds','updates','wormholes','pos_adds','pos_edits') ) )
 			{
 				throw new Exception("invalid stat key");
 			}
