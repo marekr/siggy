@@ -273,7 +273,6 @@ final class groupUtils
 				$corp['groupDetails']['subgroup'][ $cm['subGroupID'] ] = array( 'subGroupName' => $cm['sgName'], 'accessName' => $cm['accessName'] );
 			}
 
-
 			$cache->set('corp-'.$corp['eveID'], $corp);    
 				 
 			return TRUE;
@@ -430,7 +429,7 @@ final class groupUtils
 	{
 		if( !$corpID )
 		{
-				return FALSE;
+			return FALSE;
 		}
 		
 		$cache = Cache::instance(CACHE_METHOD);
