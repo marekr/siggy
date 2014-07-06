@@ -1,6 +1,6 @@
 
 
-@page-background: #111111 url(public/images/awesomebg3.jpg) no-repeat;
+@page-background: #111111 url(public/images/awesomebg3.jpg)  no-repeat center top fixed;
 
 
 @primary-background: #650909;
