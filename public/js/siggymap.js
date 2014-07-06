@@ -146,187 +146,185 @@ siggyMap.prototype.centerButtons = function()
 
 siggyMap.prototype.initialize = function()
 {
-		var that = this;
-		this.container = $('#chain-map-container');
+	var that = this;
+	this.container = $('#chain-map-container');
+	
+	
+	this.loadingMessage = this.container.find('p.loading');
+	this.editingMessage = this.container.find('p.editing');
+	this.deletingMessage = this.container.find('p.deleting');
+	
+	this.buttonsContainer = this.container.find('div.buttons');
+	
+	this.showMessage('loading');
+	
+	$('#chain-map-add-wh').click( function() {
+		that.resetWormholeEditor();
+		that.openWHEditor('add');
+	});
+	
+	$('#chain-map-edit').click( function() {
+		that.editing = true;
+		$('#chain-map-save').show();
+		that.centerButtons();
 		
-		
-		this.loadingMessage = this.container.find('p.loading');
-		this.editingMessage = this.container.find('p.editing');
-		this.deletingMessage = this.container.find('p.deleting');
-		
-		this.buttonsContainer = this.container.find('div.buttons');
-		
-		this.showMessage('loading');
-		
-        $('#chain-map-add-wh').click( function() {
-            that.resetWormholeEditor();
-            that.openWHEditor('add');
-        });
-		
-        $('#chain-map-edit').click( function() {
-            that.editing = true;
-            $('#chain-map-save').show();
-            that.centerButtons();
-            
-            if( that.infoicon != null )
-            {
-                    that.infoicon.disabled = true;
-            }
-            
-            $('div.map-system-blob').qtip('disable');
-            
-            jsPlumb.setDraggable($('.map-system-blob'), true);
-            
-            
-            that.showMessage('editing');
-            
-            
-        });
-        
-        $('#chain-map-delete-whs').click( function() {
-            that.showMessage('deleting');
-            that.massDelete = true;
-            
-            
-            $('#chain-map-mass-delete-confirm').show();
-            $('#chain-map-mass-delete-cancel').show();
-            that.centerButtons();
-        });
-        
-		
-        this.registerEvents();
-        this.initializeTabs();
-        this.setupEditor();
-        this.setupSystemEditor();
-        
-        $(window).bind('resize', function() 
+		if( that.infoicon != null )
 		{
-			that.updateMessagePositions();
-			that.centerButtons();
+				that.infoicon.disabled = true;
+		}
+		
+		$('div.map-system-blob').qtip('disable');
+		
+		jsPlumb.setDraggable($('.map-system-blob'), true);
+		
+		
+		that.showMessage('editing');
+		
+		
+	});
+	
+	$('#chain-map-delete-whs').click( function() {
+		that.showMessage('deleting');
+		that.massDelete = true;
+		
+		
+		$('#chain-map-mass-delete-confirm').show();
+		$('#chain-map-mass-delete-cancel').show();
+		that.centerButtons();
+	});
+	
+	
+	this.registerEvents();
+	this.initializeTabs();
+	this.setupEditor();
+	this.setupSystemEditor();
+	
+	$(window).bind('resize', function() 
+	{
+		that.updateMessagePositions();
+		that.centerButtons();
+	});
+	
+	var $container = $("#chain-map");
+	$container.on('mousedown', function(e) {
+		if( !that.massDelete || that.massSelect )
+		{
+			return;
+		}
+		that.massSelect = true;
+		var click_y = e.pageY-110,
+		click_x = e.pageX-20;
+		that.selectionBox.css({
+		  'top':    click_y,
+		  'left':   click_x,
+		  'width':  0,
+		  'height': 0,
+		  'z-index': 9999
 		});
-        
-        var $container = $("#chain-map");
-        $container.on('mousedown', function(e) {
-            if( !that.massDelete || that.massSelect )
-            {
-                return;
-            }
-            that.massSelect = true;
-            var click_y = e.pageY-110,
-            click_x = e.pageX-20;
-            that.selectionBox.css({
-              'top':    click_y,
-              'left':   click_x,
-              'width':  0,
-              'height': 0,
-              'z-index': 9999
-            });
-            
-            that.selectionBox.appendTo($container);
-            
-            $container.on('mousemove', function(e) { 
-				if ( ( that.massSelect )  )
-				{           
-                    var move_x = e.pageX-20,
-                      move_y = e.pageY-110,
-                      width  = Math.abs(move_x - click_x),
-                      height = Math.abs(move_y - click_y),
-                      new_x, new_y;
+		
+		that.selectionBox.appendTo($container);
+		
+		$container.on('mousemove', function(e) { 
+			if ( ( that.massSelect )  )
+			{           
+				var move_x = e.pageX-20,
+				  move_y = e.pageY-110,
+				  width  = Math.abs(move_x - click_x),
+				  height = Math.abs(move_y - click_y),
+				  new_x, new_y;
 
-                    new_x = (move_x < click_x) ? (click_x - width) : click_x;
-                    new_y = (move_y < click_y) ? (click_y - height) : click_y;
+				new_x = (move_x < click_x) ? (click_x - width) : click_x;
+				new_y = (move_y < click_y) ? (click_y - height) : click_y;
 
-                    that.selectionBox.css({
-                    'width': width,
-                    'height': height,
-                    'top': new_y,
-                    'left': new_x
-                    });
-              }
-            }).on('mouseup', function(e) {
-				if ( that.massSelect )
+				that.selectionBox.css({
+				'width': width,
+				'height': height,
+				'top': new_y,
+				'left': new_x
+				});
+		  }
+		}).on('mouseup', function(e) {
+			if ( that.massSelect )
+			{
+				that.massSelect = false;
+				$container.off('mousemove');
+				
+				var bb = {
+					 w: that.selectionBox.width(),
+					 h: that.selectionBox.height(),
+					 x: that.selectionBox.position().left,
+					 y: that.selectionBox.position().top
+				};
+				
+				if( bb.w < 1 || bb.h < 1 )
+					return;
+				   
+				
+				that.selectionBox.remove();
+				
+				var connectionList = jsPlumb.getConnections(); 
+				for (i in connectionList)
 				{
-					that.massSelect = false;
-                    $container.off('mousemove');
-                    
-                    var bb = {
-                         w: that.selectionBox.width(),
-                         h: that.selectionBox.height(),
-                         x: that.selectionBox.position().left,
-                         y: that.selectionBox.position().top
-                    };
+					var conn = connectionList[i];
+					var hash = conn.getParameter('hash');    
+					var ele = $( conn.id );
 					
-					if( bb.w < 1 || bb.h < 1 )
-						return;
-                       
-                    
-                    that.selectionBox.remove();
-                    
-                    var connectionList = jsPlumb.getConnections(); 
-                    for (i in connectionList)
-                    {
-                        var conn = connectionList[i];
-                        var hash = conn.getParameter('hash');    
-                        var ele = $( conn.id );
-                        
-                        var inside = false;              
-                        var internalconn = conn.getConnector();
-                        var compareBB = {
-                            h: internalconn.h,
-                            x: internalconn.x,
-                            y: internalconn.y,
-                            w: internalconn.w
-                        };
-                        inside = jsPlumbGeom.intersects( bb, compareBB );
-                        
-                        if( inside )
-                        {
-						
-                            if( conn.getParameter('deleteMe') )
-                            {
-                                conn.setParameter('deleteMe', false);
-                                conn.setPaintStyle( {
-                                       lineWidth:6,
-                                       strokeStyle: that.getMassColor(that.wormholes[hash].mass),
-                                       outlineColor: that.getTimeColor(that.wormholes[hash].eol),
-                                       outlineWidth:3
-                                });
-                            }
-                            else
-                            {
-                                conn.setParameter('deleteMe', true);
-                                conn.setPaintStyle( {
-                                       lineWidth:6,
-                                       strokeStyle: "#006AFE",
-                                       outlineColor: "#006AFE",
-                                       outlineWidth:3
-                                });
-                                this.deleteMe = true;
-                            }
-                        }
-                    }
-                }					
-            });
-        });        
-        
-        
-        
-		$(document).bind('siggy.switchSystem', function(e, systemID) {
-            that.setSelectedSystem( systemID );
-            e.stopPropagation();
+					var inside = false;              
+					var internalconn = conn.getConnector();
+					var compareBB = {
+						h: internalconn.h,
+						x: internalconn.x,
+						y: internalconn.y,
+						w: internalconn.w
+					};
+					inside = jsPlumbGeom.intersects( bb, compareBB );
+					
+					if( inside )
+					{
+					
+						if( conn.getParameter('deleteMe') )
+						{
+							conn.setParameter('deleteMe', false);
+							conn.setPaintStyle( {
+								   lineWidth:6,
+								   strokeStyle: that.getMassColor(that.wormholes[hash].mass),
+								   outlineColor: that.getTimeColor(that.wormholes[hash].eol),
+								   outlineWidth:3
+							});
+						}
+						else
+						{
+							conn.setParameter('deleteMe', true);
+							conn.setPaintStyle( {
+								   lineWidth:6,
+								   strokeStyle: "#006AFE",
+								   outlineColor: "#006AFE",
+								   outlineWidth:3
+							});
+							this.deleteMe = true;
+						}
+					}
+				}
+			}
 		});
+	});
+        
+	$(document).bind('siggy.switchSystem', function(e, systemID) {
+		that.setSelectedSystem( systemID );
+		e.stopPropagation();
+	});
 }
 
 siggyMap.prototype.setSelectedSystem = function( systemID )
 {
-		if( this.selectedSystemID != systemID )
-		{
-				$( "#"+this.selectedSystemID ).removeClass('map-system-blob-selected');
-                
-				$("#"+systemID ).addClass('map-system-blob-selected');
-				
-				this.selectedSystemID = systemID;
-		}
+	if( this.selectedSystemID != systemID )
+	{
+		$( "#"+this.selectedSystemID ).removeClass('map-system-blob-selected');
+		
+		$("#"+systemID ).addClass('map-system-blob-selected');
+		
+		this.selectedSystemID = systemID;
+	}
 }
 
 siggyMap.prototype.registerEvents = function()
@@ -371,7 +369,7 @@ siggyMap.prototype.registerEvents = function()
             saveSystemData.push(saveSystem);
         }
         
-        $.post(that.baseUrl + 'dochainMapSave', {
+        $.post(that.baseUrl + 'chainmap/save', {
             systemData: JSON.stringify(saveSystemData)
         });
         
@@ -405,7 +403,7 @@ siggyMap.prototype.registerEvents = function()
         
         if( deleteHashes.length > 0 )
         {
-            $.post(that.baseUrl + 'dochainMapWHMassDelete', { hashes: JSON.stringify(deleteHashes) }, 
+            $.post(that.baseUrl + 'chainmap/wh_mass_delete', { hashes: JSON.stringify(deleteHashes) }, 
                 function() {
                 that.siggymain.updateNow();
             });
@@ -413,7 +411,6 @@ siggyMap.prototype.registerEvents = function()
         
         that.hideMessage('deleting');
         that.massDelete = false;
-        
         
         $(this).hide();
         $('#chain-map-mass-delete-cancel').hide();
@@ -457,8 +454,7 @@ siggyMap.prototype.update = function(timestamp, systems, wormholes)
 	
 	this.systems = systems;
 	this.wormholes = wormholes;
-    
-    
+
 	this.draw();
 	
 	this.hideMessage('loading');
@@ -485,8 +481,7 @@ siggyMap.prototype.updateActives = function( activesData )
         {
             var actives = activesData[sysID];
             var text = '';
-            
-            
+
             //setup our lengths
             //TBH, make the max length configurable
             var maxDisplayLen = 7;
@@ -527,14 +522,12 @@ siggyMap.prototype.updateActives = function( activesData )
             fullActives.html("No actives");
         }
     }
-	
 }
 
 siggyMap.prototype.isMapOpen = function()
 {
 	return this.mapOpen;
 }
-
 
 siggyMap.prototype.draw = function()
 {
@@ -607,10 +600,7 @@ siggyMap.prototype.draw = function()
 			}
 		}
 		
-		
         var systemBlobTitle = $("<p>").addClass('map-system-blob-title').append(titleClassBit).append(effectBit).append(killBit).append(systemName);
-        
-        
         
         //add empty paragraph for the active chars
         var systemBlobActives = $("<p>").addClass('map-system-blob-actives');
@@ -678,7 +668,6 @@ siggyMap.prototype.draw = function()
                 viewport: $(window)
             }
         });
-        
     }
 	
     var _listeners = function(e) {
@@ -814,14 +803,6 @@ siggyMap.prototype.openSystemEdit = function( sysID )
 	$('#system-editor select[name=activity]').val(this.systems[ sysID ].activity);
 }
 
-siggyMap.prototype.setUpBoxedToolTip = function(trigger, displayText)
-{
-}
-
-siggyMap.prototype.setUpWHToolTip = function(connection, eolAt )
-{
-}
-
 siggyMap.prototype.getEffectText = function(effect)
 {
     var effText = '';
@@ -858,27 +839,27 @@ siggyMap.prototype.getEffectColor = function(effect)
     var eff = effect;
     switch( effect )
     {
-            case 30574:
-                eff = 'map-effect-magnetar'; //magnetar
-                break;
-            case 30575:	//black hole
-                eff = 'map-effect-blackhole';
-                break;
-            case 30576:
-                eff = 'map-effect-red-giant'; //red giant
-                break;
-            case 30577:
-                eff = 'map-effect-pulsar'; //pulsar
-                break;
-            case 30669:
-                eff = 'map-effect-wolf-rayet'; //wolf-rayet
-                break;
-            case 30670:
-                eff = 'map-effect-catalysmic'; //catalysmic
-                break;
-            default:
-                eff = '';
-                break;
+		case 30574:
+			eff = 'map-effect-magnetar'; //magnetar
+			break;
+		case 30575:	//black hole
+			eff = 'map-effect-blackhole';
+			break;
+		case 30576:
+			eff = 'map-effect-red-giant'; //red giant
+			break;
+		case 30577:
+			eff = 'map-effect-pulsar'; //pulsar
+			break;
+		case 30669:
+			eff = 'map-effect-wolf-rayet'; //wolf-rayet
+			break;
+		case 30670:
+			eff = 'map-effect-catalysmic'; //catalysmic
+			break;
+		default:
+			eff = '';
+			break;
     }
     
     return eff;
@@ -890,19 +871,19 @@ siggyMap.prototype.getClassText = function(sysClass)
     
     if( sysClass == 7 )
     {
-            text = 'H';
+		text = 'H';
     }
     else if( sysClass == 8 )
     {
-            text = 'L';
+		text = 'L';
     }
     else if( sysClass == 9 )
     {
-            text = '0.0';
+		text = '0.0';
     }
     else
     {
-            text = 'C'+sysClass;
+		text = 'C'+sysClass;
     }
     
     return text;
@@ -913,30 +894,30 @@ siggyMap.prototype.getClassColor = function(sysClass)
     var classColor = '';
     switch( sysClass )
     {
-            case 1:
-            case 2:
-            case 3:
-                    classColor = 'map-class-unknown';
-                    break;
-            case 4:
-            case 5:
-                    classColor = 'map-class-dangerous';
-                    break;
-            case 6:
-                    classColor = 'map-class-deadly';
-                    break;
-            case 7:
-                    classColor = 'map-class-high';
-                    break;
-            case 8:
-                    classColor = 'map-class-low';
-                    break;
-            case 9:
-                    classColor = 'map-class-null';
-                    break;
-            default:
-                    classColor = '';
-                    break;
+		case 1:
+		case 2:
+		case 3:
+				classColor = 'map-class-unknown';
+				break;
+		case 4:
+		case 5:
+				classColor = 'map-class-dangerous';
+				break;
+		case 6:
+				classColor = 'map-class-deadly';
+				break;
+		case 7:
+				classColor = 'map-class-high';
+				break;
+		case 8:
+				classColor = 'map-class-low';
+				break;
+		case 9:
+				classColor = 'map-class-null';
+				break;
+		default:
+				classColor = '';
+				break;
     }
 
     return classColor;
@@ -973,146 +954,140 @@ siggyMap.prototype.getActivityColor = function(activity)
 
 siggyMap.prototype.getMassColor = function(mass)
 {
-		var inner = '#676767';
-		if( mass == 1 )
-		{
-			inner = '#e2cb06';
-		}
-		else if( mass == 2 )
-		{
-			inner = '#9a0808';
-		}
-		return inner;
+	var inner = '#676767';
+	if( mass == 1 )
+	{
+		inner = '#e2cb06';
+	}
+	else if( mass == 2 )
+	{
+		inner = '#9a0808';
+	}
+	return inner;
 }
 
 siggyMap.prototype.getTimeColor = function(eol)
 {
-		var outer = '#3d3d3d';
-		if( eol == 1 )
-		{
-			outer = '#FF17FE';
-		}
-		return outer;
+	var outer = '#3d3d3d';
+	if( eol == 1 )
+	{
+		outer = '#FF17FE';
+	}
+	return outer;
 }
-
-/*aasd*/
 
 siggyMap.prototype.setupEditor = function()
 {
-		var that = this;
-		$('#wormhole-editor-disconnect').click( function() {
-			$.post(that.baseUrl + 'dochainMapWHDisconnect', 
-            {
-				hash: that.editingHash
-			}, 
-            function() 
-            {
+	var that = this;
+	$('#wormhole-editor-disconnect').click( function() {
+		$.post(that.baseUrl + 'chainmap/wh_disconnect', 
+		{
+			hash: that.editingHash
+		}, 
+		function() 
+		{
+			that.siggymain.updateNow();
+		});
+		$('#chain-map-container').unblock();
+	} );
+		
+	var fromSysInput = this.registerSystemAutoComplete("#wormhole-editor input[name=from-sys]");
+	var toSysInput = this.registerSystemAutoComplete("#wormhole-editor input[name=to-sys]");
+
+	var fromCurrentInput = $('#wormhole-editor input[name=fromCurrent]');
+	//resets cause fucking browsers
+	fromCurrentInput.attr('disabled', false);
+	fromCurrentInput.attr('checked', false);
+	
+	var toCurrentInput = $('#wormhole-editor input[name=toCurrent]');
+	//resets cause fucking browsers
+	toCurrentInput.attr('disabled', false);
+	toCurrentInput.attr('checked', false);
+	
+	fromCurrentInput.change( function() {
+		if( $(this).is(':checked') )
+		{
+			fromSysInput.attr('disabled',true);
+			toCurrentInput.attr('disabled',true);
+		}
+		else
+		{
+			fromSysInput.attr('disabled',false);
+			toCurrentInput.attr('disabled',false);
+		}
+	});
+	
+	toCurrentInput.change( function() {
+		if( $(this).is(':checked') )
+		{
+			toSysInput.attr('disabled',true);
+			fromCurrentInput.attr('disabled',true);
+		}
+		else
+		{
+			toSysInput.attr('disabled',false);
+			fromCurrentInput.attr('disabled',false);
+		}
+	});
+	
+	$('#wormhole-editor-save').click( function() {
+		
+		var data = {};
+		if( that.editorMode == 'edit' )
+		{
+			data = { 
+				mode: 'edit',
+				hash: that.editingHash,
+				eol: $('#wormhole-editor input[name=eol]:checked').val(),
+				mass: $('#wormhole-editor select[name=mass]').val()
+			};
+			
+			$.post(that.baseUrl + 'chainmap/wh_save', data, function() 
+			{
 				that.siggymain.updateNow();
 			});
+		
+		
+			that.editorOpen = false;
 			$('#chain-map-container').unblock();
-		} );
+		}
+		else
+		{
+			var errors = [];
 		
-		
-		var fromSysInput = this.registerSystemAutoComplete("#wormhole-editor input[name=from-sys]");
-		var toSysInput = this.registerSystemAutoComplete("#wormhole-editor input[name=to-sys]");
-
-		var fromCurrentInput = $('#wormhole-editor input[name=fromCurrent]');
-		//resets cause fucking browsers
-		fromCurrentInput.attr('disabled', false);
-		fromCurrentInput.attr('checked', false);
-		
-		var toCurrentInput = $('#wormhole-editor input[name=toCurrent]');
-		//resets cause fucking browsers
-		toCurrentInput.attr('disabled', false);
-		toCurrentInput.attr('checked', false);
-		
-		fromCurrentInput.change( function() {
-			if( $(this).is(':checked') )
-			{
-				fromSysInput.attr('disabled',true);
-				toCurrentInput.attr('disabled',true);
-			}
-			else
-			{
-				fromSysInput.attr('disabled',false);
-				toCurrentInput.attr('disabled',false);
-			}
-		} );
-		
-		toCurrentInput.change( function() {
-			if( $(this).is(':checked') )
-			{
-				toSysInput.attr('disabled',true);
-				fromCurrentInput.attr('disabled',true);
-			}
-			else
-			{
-				toSysInput.attr('disabled',false);
-				fromCurrentInput.attr('disabled',false);
-			}
-		} );
-		
-		$('#wormhole-editor-save').click( function() {
+			data = { 
+				mode: 'add',
+				fromSys: fromSysInput.val(),
+				fromSysCurrent: ( fromCurrentInput.is(':checked') ? 1 : 0 ),
+				toSys: toSysInput.val(),
+				toSysCurrent: ( toCurrentInput.is(':checked') ? 1 : 0 ),
+				eol: $('#wormhole-editor input[name=eol]:checked').val(),
+				mass: $('#wormhole-editor select[name=mass]').val()
+			};
 			
-			var data = {};
-			if( that.editorMode == 'edit' )
+			$.post(that.baseUrl + 'chainmap/wh_save', data, function(resp)
 			{
-				data = { 
-					mode: 'edit',
-					hash: that.editingHash,
-					eol: $('#wormhole-editor input[name=eol]:checked').val(),
-					mass: $('#wormhole-editor select[name=mass]').val()
-				};
-				
-				$.post(that.baseUrl + 'dochainMapWHSave', data, function() 
+				if( parseInt(resp.success) == 1 )
 				{
-						that.siggymain.updateNow();
-				});
-			
-			
-				that.editorOpen = false;
-				$('#chain-map-container').unblock();
-			}
-			else
-			{
-				var errors = [];
-			
-				data = { 
-					mode: 'add',
-					fromSys: fromSysInput.val(),
-					fromSysCurrent: ( fromCurrentInput.is(':checked') ? 1 : 0 ),
-					toSys: toSysInput.val(),
-					toSysCurrent: ( toCurrentInput.is(':checked') ? 1 : 0 ),
-					eol: $('#wormhole-editor input[name=eol]:checked').val(),
-					mass: $('#wormhole-editor select[name=mass]').val()
-				};
-				
-				$.post(that.baseUrl + 'dochainMapWHSave', data, function(resp)
+					that.editorOpen = false;
+					$('#chain-map-container').unblock();
+					that.siggymain.updateNow();
+				}
+				else
 				{
-					if( parseInt(resp.success) == 1 )
-					{
-						that.editorOpen = false;
-						$('#chain-map-container').unblock();
-						that.siggymain.updateNow();
-					}
-					else
-					{
-						that.displayEditorErrors( resp.dataErrorMsgs );
-					}
-				});
-				
-			}
-			
-		} );
-		
-		$('#jumpLogClose').click( function() {
-			$('#chain-map-container').unblock();
-		});	
-		
-		$('#wormhole-editor-cancel').click( function() {
-			$('#chain-map-container').unblock();
-		});	
-		
+					that.displayEditorErrors( resp.dataErrorMsgs );
+				}
+			});
+		}
+	} );
+	
+	$('#jumpLogClose').click( function() {
+		$('#chain-map-container').unblock();
+	});
+	
+	$('#wormhole-editor-cancel').click( function() {
+		$('#chain-map-container').unblock();
+	});
 }
 
 
@@ -1135,7 +1110,7 @@ siggyMap.prototype.setupSystemEditor = function()
 	$('#system-editor-cancel').click( function() {
 		$('#chain-map-container').unblock();
 		that.editingSystem = 0;
-	});	
+	});
 	
 	$('#system-editor-save').click( function() {
 		var label = $('#system-editor input[name=label]').val();
@@ -1144,7 +1119,7 @@ siggyMap.prototype.setupSystemEditor = function()
 
 		that.siggymain.saveSystemOptions(that.editingSystem, label, activity);
 		$('#chain-map-container').unblock();
-	});	
+	});
 }
 siggyMap.prototype.initializeTabs = function()
 {
@@ -1160,9 +1135,7 @@ siggyMap.prototype.initializeTabs = function()
         that.updateJumpLog(that.editingHash);
       } );
 	}
-	
 }
-
 
 siggyMap.prototype.updateJumpLog = function( hash )
 {
@@ -1380,5 +1353,4 @@ siggyMap.prototype.openWHEditor = function(mode)
 		this.editorMode = 'add';
 		this.editorOpen = true;
 	}
-	
 }

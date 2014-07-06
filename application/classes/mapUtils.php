@@ -2,7 +2,6 @@
 
 final class MapUtils
 {
-
 	static function whHashByID($to, $from)
 	{
 		if( $to < $from )
@@ -22,6 +21,7 @@ final class MapUtils
 		{
 			return 0;
 		}
+		
 		$name = strtolower($name);
 		$systemID = DB::query(Database::SELECT, "SELECT systemID,displayName FROM activesystems WHERE groupID=:groupID AND subGroupID=:subGroupID AND displayName LIKE 'name'")
 													->param(':name', $name )->param(':groupID', $groupID)->param(':subGroupID', $subGroupID)->execute()->get('systemID', 0);

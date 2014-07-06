@@ -378,7 +378,41 @@ final class miscUtils
 					->execute();
 			
 		}
-
+		
+		static function setActiveSystem($systemID, $data, $groupID, $subGroupID)
+		{
+			if( !(count($data) > 0) )
+			{
+				return;
+			}
+			
+			$extraIns = '';
+			$extraInsVal = '';
+			$extraUp = array();
+			
+			foreach($data as $k => $v)
+			{
+				$extraIns .= ',`'.$k.'`';
+				$extraInsVal .= ',:'.$k;
+				$extraUp[] = $k.'=:'.$k;
+			}
+			
+			$extraUp = implode(',', $extraUp);
+			
+			$q = DB::query(Database::INSERT, 'INSERT INTO activesystems (`systemID`, `groupID`, `subGroupID`'.$extraIns.')
+											  VALUES(:systemID, :groupID, :subGroupID'.$extraInsVal.')
+											  ON DUPLICATE KEY UPDATE '.$extraUp)
+								->param(':systemID', $systemID )
+								->param(':groupID', $groupID )
+								->param(':subGroupID', $subGroupID );
+				
+			foreach($data as $k => $v)
+			{
+				$q->param(':'.$k, $v);
+			}
+			
+			$q->execute();
+		}
 
 		static function findSystemByName($name)
 		{
