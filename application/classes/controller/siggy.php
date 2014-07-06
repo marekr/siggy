@@ -1239,7 +1239,8 @@ class Controller_Siggy extends FrontController
 			{
 				$message .= '" which was of type '.strtoupper($sigData['type']);
 			}
-			$this->__logAction('delsig', $message );
+			
+			groupUtils::log_action($this->groupData['groupID'], 'delsig', $message);
 			echo json_encode('1');
 		}
 		die();
@@ -1270,22 +1271,12 @@ class Controller_Siggy extends FrontController
 				$this->__setActiveSystem($system['id'], array('x' => $system['x'], 'y' => $system['y']));
 			}
 			
-			$this->__logAction('editmap', $this->groupData['charName']. " edited the map");
+			groupUtils::log_action($this->groupData['groupID'], 'editmap', $this->groupData['charName']. " edited the map");
 		
 			$this->rebuildMapCache();
 		}
 		
 		exit();
-	}
-	
-	private function __logAction( $type, $message )
-	{
-		$insert = array( 'groupID' => $this->groupData['groupID'],
-										'type' => $type,
-										'message' => $message,
-										'entryTime' => time()
-						);
-		DB::insert('logs', array_keys($insert) )->values(array_values($insert))->execute();
 	}
 	
 	public function action_chainMapWHMassDelete()
@@ -1319,7 +1310,7 @@ class Controller_Siggy extends FrontController
 			DB::query(Database::DELETE, 'DELETE FROM wormholetracker WHERE whHash IN('.$hashes.') AND groupID=:groupID AND subGroupID=:subGroupID')->param(':groupID', $this->groupData['groupID'])->param(':subGroupID', $this->groupData['subGroupID'])->execute();
 			
 			$message = $this->groupData['charName'].' deleted wormholes with IDs: '.implode(',', $systemIDs);
-			$this->__logAction('delwhs', $message );			
+			groupUtils::log_action($this->groupData['groupID'],'delwhs', $message );
 			
 			$this->sysResetByMap( $systemIDs );
 			
@@ -1378,7 +1369,8 @@ class Controller_Siggy extends FrontController
 		DB::query(Database::DELETE, 'DELETE FROM wormholetracker WHERE whHash=:hash AND groupID=:groupID AND subGroupID=:subGroupID')->param(':hash',$hash)->param(':groupID', $this->groupData['groupID'])->param(':subGroupID', $this->groupData['subGroupID'])->execute();
 			
 		$message = $this->groupData['charName'].' deleted wormhole between system IDs: '.implode(',', array($wormhole['to'], $wormhole['from']) );
-		$this->__logAction('delwh', $message );			
+
+		groupUtils::log_action($this->groupData['groupID'],'delwh', $message );
 			
 		$this->sysResetByMap( array($wormhole['to'], $wormhole['from']) );
 		
@@ -1512,7 +1504,8 @@ class Controller_Siggy extends FrontController
 			$this->_addSystemToMap($whHash, $fromSysID, $toSysID, $eol, $mass);
 
 			$message = $this->groupData['charName'].' added wormhole manually between system IDs' . $fromSysID . ' and ' . $toSysID;
-			$this->__logAction('addwh', $message );	
+
+			groupUtils::log_action($this->groupData['groupID'],'addwh', $message );
 		}
 		echo json_encode( array('success' => 1) );
 		
