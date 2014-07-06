@@ -46,15 +46,17 @@ class Controller_Pos extends FrontController
 		
 		$posID = DB::insert('pos_tracker', array_keys($data) )->values(array_values($data))->execute();
 		
+		miscUtils::increment_stat('pos_adds', $this->groupData);
 	}
 
 	public function action_edit()
 	{
 		$id = $_POST['pos_id'];
 		
-		$pos = DB::query(Database::SELECT, "SELECT pos_id
-										FROM pos_tracker
-										WHERE pos_id=:pos_id AND group_id=:group_id")
+		$pos = DB::query(Database::SELECT, "SELECT pos.pos_id,pos.pos_system_id,ss.name as system_name
+										FROM pos_tracker pos
+										INNER JOIN solarsystems ss ON ss.id = pos.pos_system_id
+										WHERE pos.pos_id=:pos_id AND pos.group_id=:group_id")
 								->param(':group_id', $this->groupData['groupID'])
 								->param(':pos_id', $id)
 								->execute()->current();
@@ -88,15 +90,21 @@ class Controller_Pos extends FrontController
 			
 			
 		DB::update('pos_tracker')->set( $data )->where('pos_id', '=', $pos['pos_id'])->execute();
+		
+		miscUtils::increment_stat('pos_edits', $this->groupData);
+		
+		$log_message = sprintf("%s edit POS in system %s", $this->groupData['charName'], $pos['system_name']);
+		groupUtils::log_action($this->groupData['groupID'], 'delpos', $log_message);
 	}
 	
 	public function action_remove()
 	{
 		$id = $_POST['pos_id'];
 		
-		$pos = DB::query(Database::SELECT, "SELECT pos_id
-										FROM pos_tracker
-										WHERE pos_id=:pos_id AND group_id=:group_id")
+		$pos = DB::query(Database::SELECT, "SELECT pos.pos_id,pos.pos_system_id,ss.name as system_name
+										FROM pos_tracker pos
+										INNER JOIN solarsystems ss ON ss.id = pos.pos_system_id
+										WHERE pos.pos_id=:pos_id AND pos.group_id=:group_id")
 								->param(':group_id', $this->groupData['groupID'])
 								->param(':pos_id', $id)
 								->execute()->current();
@@ -109,5 +117,7 @@ class Controller_Pos extends FrontController
 		
 		DB::delete('pos_tracker')->where('pos_id', '=', $id)->execute();
 		
+		$log_message = sprintf("%s deleted POS from system %s", $this->groupData['charName'], $pos['system_name']);
+		groupUtils::log_action($this->groupData['groupID'], 'delpos', $log_message);
 	}
 }
