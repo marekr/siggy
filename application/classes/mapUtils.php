@@ -2,6 +2,69 @@
 
 final class MapUtils
 {
+	static function generatePossibleSystemLocations($x, $y)
+	{
+		$originBB = self::coordsToBB($x,$y);
+		
+		$cX = $originBB['left'];
+		$cY = $originBB['top'];
+		
+		$ret = array();
+		
+		$positions = 8;
+		$rotation = 2 * M_PI / $positions;
+		
+		for($position = 0; $position < $positions; ++$position)
+		{
+			$spot_rotation = $position * $rotation;
+			$newx = $cX + 125*cos($spot_rotation);
+			$newy = $cY + 85*sin($spot_rotation);
+			
+			
+			//limited horizontal span
+			if( $newy < 380 && $newy > 0 && $newx > 0 )
+			{
+				$ret[] = array('x' => $newx, 'y' => $newy);
+			}
+			
+		}
+		
+		return $ret;
+	}
+	
+	static function doBoxesIntersect($a, $b)
+	{
+		$x1 = $a['left'];
+		$x2 = $a['left'] + $a['width'];
+		$y1 = $a['bottom'];
+		$y2 = $a['bottom'] + $a['height'];
+		
+		$a1 = $b['left'];
+		
+		$a2 = $b['left'] + $b['width'];
+		$b1 =  $b['bottom'];
+		$b2 =  $b['bottom'] +  $b['height'];
+
+		return  ( ($x1 <= $a1 && $a1 <= $x2) && ($y1 <= $b1 && $b1 <= $y2) ) ||
+				( ($x1 <= $a2 && $a2 <= $x2) && ($y1 <= $b1 && $b1 <= $y2) ) ||
+				( ($x1 <= $a1 && $a1 <= $x2) && ($y1 <= $b2 && $b2 <= $y2) ) ||
+				( ($x1 <= $a2 && $a1 <= $x2) && ($y1 <= $b2 && $b2 <= $y2) ) ||	
+				( ($a1 <= $x1 && $x1 <= $a2) && ($b1 <= $y1 && $y1 <= $b2) ) ||
+				( ($a1 <= $x2 && $x2 <= $a2) && ($b1 <= $y1 && $y1 <= $b2) ) ||
+				( ($a1 <= $x1 && $x1 <= $a2) && ($b1 <= $y2 && $y2 <= $b2) ) ||
+				( ($a1 <= $x2 && $x1 <= $a2) && ($b1 <= $y2 && $y2 <= $b2) );
+	}
+	
+	static function coordsToBB($x,$y)
+	{
+		return array( 'left' => $x,
+					  'top' => $y,
+					  'width' => 78,
+					  'height' => 38,
+					  'right' => $x+78,
+					  'bottom' => $y+38 );
+	}
+	
 	static function whHashByID($to, $from)
 	{
 		if( $to < $from )

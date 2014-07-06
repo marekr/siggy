@@ -426,14 +426,7 @@ class Controller_Siggy extends FrontController
 			//new wh
 			$this->_addSystemToMap($whHash, $origin, $dest);
 			
-			DB::query(Database::INSERT, 'INSERT INTO stats (`charID`,`charName`,`groupID`,`subGroupID`,`dayStamp`,`wormholes`)
-										 VALUES(:charID, :charName, :groupID, :subGroupID, :dayStamp, 1) ON DUPLICATE KEY UPDATE wormholes=wormholes+1')
-					->param(':charID',  $this->groupData['charID'])
-					->param(':charName', $this->groupData['charName'] )
-					->param(':groupID', $this->groupData['groupID'] )
-					->param(':subGroupID', $this->groupData['subGroupID'] )
-					->param(':dayStamp', miscUtils::getDayStamp() )
-					->execute();
+			miscUtils::increment_stat('wormholes', $this->groupData);
 		}
 		else
 		{
@@ -563,14 +556,14 @@ class Controller_Siggy extends FrontController
 						->execute()
 						->current();
 										
-		$spots = $this->__generatePossibleSystemLocations($sysData['x'], $sysData['y']);
+		$spots = mapUtils::generatePossibleSystemLocations($sysData['x'], $sysData['y']);
 
 		foreach($spots as $spot)
 		{
 			$intersect = false;
 			foreach($originSystems as $sys)
 			{
-				if( $this->__doBoxesIntersect($this->__coordsToBB($spot['x'],$spot['y']), $this->__coordsToBB($sys['x'],$sys['y'])) )
+				if( mapUtils::doBoxesIntersect(mapUtils::coordsToBB($spot['x'],$spot['y']), mapUtils::coordsToBB($sys['x'],$sys['y'])) )
 				{
 					$intersect = true;
 				}
@@ -596,70 +589,6 @@ class Controller_Siggy extends FrontController
 											$this->groupData['groupID'],
 											$this->groupData['subGroupID']
 									);
-	}
-	
-	
-	private function __generatePossibleSystemLocations($x, $y)
-	{
-		$originBB = $this->__coordsToBB($x,$y);
-		
-		$cX = $originBB['left'];
-		$cY = $originBB['top'];
-		
-		$ret = array();
-		
-		$positions = 8;
-		$rotation = 2 * M_PI / $positions;
-		
-		for($position = 0; $position < $positions; ++$position)
-		{
-			$spot_rotation = $position * $rotation;
-			$newx = $cX + 125*cos($spot_rotation);
-			$newy = $cY + 85*sin($spot_rotation);
-			
-			
-			//limited horizontal span
-			if( $newy < 380 && $newy > 0 && $newx > 0 )
-			{
-				$ret[] = array('x' => $newx, 'y' => $newy);
-			}
-			
-		}
-		
-		return $ret;
-	}
-	
-	private function __doBoxesIntersect($a, $b)
-	{
-		$x1 = $a['left'];
-		$x2 = $a['left'] + $a['width'];
-		$y1 = $a['bottom'];
-		$y2 = $a['bottom'] + $a['height'];
-		
-		$a1 = $b['left'];
-		
-		$a2 = $b['left'] + $b['width'];
-		$b1 =  $b['bottom'];
-		$b2 =  $b['bottom'] +  $b['height'];
-
-		return  ( ($x1 <= $a1 && $a1 <= $x2) && ($y1 <= $b1 && $b1 <= $y2) ) ||
-				( ($x1 <= $a2 && $a2 <= $x2) && ($y1 <= $b1 && $b1 <= $y2) ) ||
-				( ($x1 <= $a1 && $a1 <= $x2) && ($y1 <= $b2 && $b2 <= $y2) ) ||
-				( ($x1 <= $a2 && $a1 <= $x2) && ($y1 <= $b2 && $b2 <= $y2) ) ||	
-				( ($a1 <= $x1 && $x1 <= $a2) && ($b1 <= $y1 && $y1 <= $b2) ) ||
-				( ($a1 <= $x2 && $x2 <= $a2) && ($b1 <= $y1 && $y1 <= $b2) ) ||
-				( ($a1 <= $x1 && $x1 <= $a2) && ($b1 <= $y2 && $y2 <= $b2) ) ||
-				( ($a1 <= $x2 && $x1 <= $a2) && ($b1 <= $y2 && $y2 <= $b2) );
-	}
-	
-	private function __coordsToBB($x,$y)
-	{
-		return array( 'left' => $x,
-					  'top' => $y,
-					  'width' => 78,
-					  'height' => 38,
-					  'right' => $x+78,
-					  'bottom' => $y+38 );
 	}
 	
 	public function action_getJumpLog()
@@ -1014,13 +943,8 @@ class Controller_Siggy extends FrontController
 										$this->groupData['subGroupID']
 										);
 			
-			if( $this->groupData['statsEnabled'] )
-			{
-				DB::query(Database::INSERT, 'INSERT INTO stats (`charID`,`charName`,`groupID`,`subGroupID`,`dayStamp`,`adds`) VALUES(:charID, :charName, :groupID, :subGroupID, :dayStamp, 1) ON DUPLICATE KEY UPDATE adds=adds+1')
-									->param(':charID',  $this->groupData['charID'])->param(':charName', $this->groupData['charName'] )
-									->param(':groupID', $this->groupData['groupID'] )->param(':subGroupID', $this->groupData['subGroupID'] )->param(':dayStamp', miscUtils::getDayStamp() )->execute();
-	
-			}
+			miscUtils::increment_stat('adds', $this->groupData);
+			
 			$insert['sigID'] = $sigID[0];
 			echo json_encode(array($sigID[0] => $insert ));
 		}
@@ -1096,16 +1020,9 @@ class Controller_Siggy extends FrontController
 						
 						$addedSigs[ $sigID[0] ] = $insert;
 									
-						if( $this->groupData['statsEnabled'] && $insert['type'] != 'none' )
+						if( $insert['type'] != 'none' )
 						{
-							DB::query(Database::INSERT, 'INSERT INTO stats (`charID`,`charName`,`groupID`,`subGroupID`,`dayStamp`,`adds`) VALUES(:charID, :charName, :groupID, :subGroupID, :dayStamp, 1)
-														ON DUPLICATE KEY UPDATE adds=adds+1')
-												->param(':charID',  $this->groupData['charID'])
-												->param(':charName', $this->groupData['charName'] )
-												->param(':groupID', $this->groupData['groupID'] )
-												->param(':subGroupID', $this->groupData['subGroupID'] )
-												->param(':dayStamp', miscUtils::getDayStamp() )
-												->execute();
+							miscUtils::increment_stat('adds', $this->groupData);
 						}
 					}
 				}
@@ -1158,17 +1075,8 @@ class Controller_Siggy extends FrontController
 											$this->groupData['subGroupID']
 										);
 			
-			if( $this->groupData['statsEnabled'] )
-			{
-				DB::query(Database::INSERT, 'INSERT INTO stats (`charID`,`charName`,`groupID`,`subGroupID`,`dayStamp`,`updates`) VALUES(:charID, :charName, :groupID, :subGroupID, :dayStamp, 1)
-											 ON DUPLICATE KEY UPDATE updates=updates+1')
-									->param(':charID',  $this->groupData['charID'] )
-									->param(':charName', $this->groupData['charName'] )
-									->param(':groupID', $this->groupData['groupID'] )
-									->param(':subGroupID', $this->groupData['subGroupID'] )
-									->param(':dayStamp', miscUtils::getDayStamp() )
-									->execute();			
-			}
+			miscUtils::increment_stat('updates', $this->groupData);
+			
 			echo json_encode('1');
 		}
 		die();

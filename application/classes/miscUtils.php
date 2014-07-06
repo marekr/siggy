@@ -379,6 +379,31 @@ final class miscUtils
 			
 		}
 		
+		static function increment_stat($stat, $groupData)
+		{
+			if( !$groupData['statsEnabled'] )
+			{
+				return;
+			}
+			
+			if( !in_array( $stat, array('adds','updates') ) )
+			{
+				throw new Exception("invalid stat key");
+			}
+			
+			$duplicate_update_string = $stat .'='. $stat .'+1';
+			
+			DB::query(Database::INSERT, 'INSERT INTO stats (`charID`,`charName`,`groupID`,`subGroupID`,`dayStamp`,`'.$stat.'`) 
+													VALUES(:charID, :charName, :groupID, :subGroupID, :dayStamp, 1)
+													ON DUPLICATE KEY UPDATE '.$duplicate_update_string)
+								->param(':charID',  $groupData['charID'] )
+								->param(':charName', $groupData['charName'] )
+								->param(':groupID', $groupData['groupID'] )
+								->param(':subGroupID', $groupData['subGroupID'] )
+								->param(':dayStamp', miscUtils::getDayStamp() )
+								->execute();	
+		}
+		
 		static function setActiveSystem($systemID, $data, $groupID, $subGroupID)
 		{
 			if( !(count($data) > 0) )
