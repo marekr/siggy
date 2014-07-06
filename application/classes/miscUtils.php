@@ -104,10 +104,8 @@ final class miscUtils
 			return $total*$days;
 		}
 		
-		
 		static function parseIngameSigExport( $string )
 		{
-
 			$resultingSigs = array();
 	
 			$lines = explode("\n", $string);
@@ -122,9 +120,7 @@ final class miscUtils
 				
 				$sigData = array('type' => '', 'sig' => '', 'siteID' => 0);
 				
-				
 				$matches = array();
-				
 				
 				preg_match("/^(Cosmic Signature)$/", $data[1], $matches );
 				if( !count($matches) )
@@ -238,7 +234,6 @@ final class miscUtils
 			}
 				
 			return 0;
-		
 		}
 
 		static function searchEVEEntityByName( $names, $type = 'corp' )
@@ -325,20 +320,19 @@ final class miscUtils
 
 		static function getDBCacheItem( $key )
 		{
-				$cache = DB::query(Database::SELECT, "SELECT * FROM cache_store WHERE cacheKey = :key")
-													->param(':key', $key)
-							  ->execute()->current();
-							  
-				return $cache['cacheValue'];
+			$cache = DB::query(Database::SELECT, "SELECT * FROM cache_store WHERE cacheKey = :key")
+												->param(':key', $key)
+						  ->execute()->current();
+						  
+			return $cache['cacheValue'];
 		}
 		
 		static function storeDBCacheItem( $key, $value )
 		{
-				DB::query(null, "INSERT INTO cache_store (`cacheKey`,`cacheValue`) VALUES (:key, :value)  ON DUPLICATE KEY UPDATE cacheValue=:value")
-					->param(':key', $key )
-					->param(':value', $value )
-					->execute();
-			
+			DB::query(null, "INSERT INTO cache_store (`cacheKey`,`cacheValue`) VALUES (:key, :value)  ON DUPLICATE KEY UPDATE cacheValue=:value")
+				->param(':key', $key )
+				->param(':value', $value )
+				->execute();
 		}
 		
 		static function increment_stat($stat, $groupData)
@@ -403,11 +397,11 @@ final class miscUtils
 
 		static function findSystemByName($name)
 		{
-				$systemID = DB::query(Database::SELECT, 'SELECT id,name FROM solarsystems WHERE LOWER(name) = :name')
-																	->param(':name', $name )->execute()->get('id', 0);
-																	
-				
-				return $systemID;
+			$systemID = DB::query(Database::SELECT, 'SELECT id,name FROM solarsystems WHERE LOWER(name) = :name')
+																->param(':name', $name )->execute()->get('id', 0);
+																
+			
+			return $systemID;
 		}   
 		
 		static function apiFetchCorp( $corpID )
@@ -420,63 +414,64 @@ final class miscUtils
 				
 			$result = $pheal->CorporationSheet( array( 'corporationID' => (int)$gm->eveID ) );
 			$count = $result->memberCount;
-			
 		}
    
 
 		static function getDayStamp()
 		{
-				date_default_timezone_set('UTC');
-				$today = getdate();
-				return gmmktime(0,0,0,$today['mon'],$today['mday'],$today['year']);
+			date_default_timezone_set('UTC');
+			$today = getdate();
+			return gmmktime(0,0,0,$today['mon'],$today['mday'],$today['year']);
 		}
 	
 		static function getHourStamp( $offset=0 )
 		{
-				date_default_timezone_set('UTC');
-				$now = time()+($offset*3600);
-				$today = getdate($now);
-				return gmmktime($today['hours'],0,0,$today['mon'],$today['mday'],$today['year']);
+			date_default_timezone_set('UTC');
+			$now = time()+($offset*3600);
+			$today = getdate($now);
+			return gmmktime($today['hours'],0,0,$today['mon'],$today['mday'],$today['year']);
 		}
 		
 
 	
 		static function timeToHourString( $timestamp )
 		{
-				$date = getdate($timestamp);
-			
-				return str_pad( $date['hours'], 2, '0', STR_PAD_LEFT).':00';
+			$date = getdate($timestamp);
+		
+			return str_pad( $date['hours'], 2, '0', STR_PAD_LEFT).':00';
 		}
 	
 
 		static function week_bounds( $date, &$start, &$end ) 
 		{
-				$date = strtotime( $date );
-				// Find the start of the week, working backwards
-				$start = $date;
-				while( date( 'w', $start ) > WEEK_START ) 
-				{
-						$start -= 86400; // One day
-				}
-				// End of the week is simply 6 days from the start
-				$end = date( 'Y-m-d', $start + ( 6 * 86400 ) );
-				$start = date( 'Y-m-d', $start );
+			$date = strtotime( $date );
+			
+			// Find the start of the week, working backwards
+			$start = $date;
+			while( date( 'w', $start ) > WEEK_START ) 
+			{
+				$start -= 86400; // One day
+			}
+			
+			// End of the week is simply 6 days from the start
+			$end = date( 'Y-m-d', $start + ( 6 * 86400 ) );
+			$start = date( 'Y-m-d', $start );
 		}			
 		
 		
 		static function isIGB() 
 		{
-		
-				if ( isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'],'EVE-IGB') !== false ) 
-				{
-					return TRUE;
-				}
-                
-                if ( isset($_SERVER['HTTP_EVE_TRUSTED']) )
-                {
-                    return TRUE;
-                } 
-				return FALSE;
+			if ( isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'],'EVE-IGB') !== false ) 
+			{
+				return TRUE;
+			}
+			
+			if ( isset($_SERVER['HTTP_EVE_TRUSTED']) )
+			{
+				return TRUE;
+			}
+			
+			return FALSE;
 		}
 		
 		static function generateString($length = 14) 
@@ -493,24 +488,26 @@ final class miscUtils
 			{
 				$randomString .= $characters[rand(0, strlen($characters) - 1)];
 			}
+			
 			return $randomString;
 		}
 			
 		static function getTrust() 
 		{
-				if ( self::isIGB() ) 
+			if ( self::isIGB() ) 
+			{
+				//because CCP cant use integers.
+				if (!isset($_SERVER['HTTP_EVE_TRUSTED']) || strtolower($_SERVER['HTTP_EVE_TRUSTED']) == 'no') 
 				{
-					 //because CCP cant use integers.
-					 if (!isset($_SERVER['HTTP_EVE_TRUSTED']) || strtolower($_SERVER['HTTP_EVE_TRUSTED']) == 'no') 
-					 {
-							return false;
-					 } 
-					 else 
-					 {
-							return true;
-					 }
+					return false;
+				} 
+				else 
+				{
+					return true;
 				}
-				return false;
+			}
+			
+			return false;
 		}
 
 }
