@@ -261,10 +261,15 @@ Kohana::modules(array(
    Route::set('stats', 'stats(/year/<year>(/month(/<month>))(/week/<week>))')
     ->defaults(array(
         'controller' => 'stats',
-        'action' => 'index',
+        'action' => 'overview',
     ));     
-    
 
+   Route::set('stats_specific', 'stats/<action>(/year/<year>(/month(/<month>))(/week/<week>))')
+    ->defaults(array(
+        'controller' => 'stats',
+        'action' => 'index',
+    ));  
+	
   Route::set('pages', 'pages(/<page>)')
     ->defaults(array(
       'controller' => 'pages',

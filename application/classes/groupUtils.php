@@ -222,14 +222,14 @@ final class groupUtils
 		$id = intval($id);
 		if( !$id )
 		{
-				return FALSE;
+			return FALSE;
 		}
 
 		$cache = Cache::instance( CACHE_METHOD );
 		$group = DB::query(Database::SELECT, "SELECT * FROM groups WHERE groupID = :group")
 										->param(':group', $id)
-				  ->execute()->current();
-				  
+								->execute()
+								->current();
 		if( $group['groupID'] )
 		{
 			$cache->set('group-'.$group['groupID'], $group);         

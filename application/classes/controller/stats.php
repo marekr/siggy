@@ -4,19 +4,123 @@ require_once APPPATH.'classes/access.php';
 require_once APPPATH.'classes/groupUtils.php';
 require_once APPPATH.'classes/mapUtils.php';
 require_once APPPATH.'classes/miscUtils.php';
+require_once APPPATH.'classes/Date_Pager.php';
+require_once APPPATH.'classes/Zebra_Pagination2.php';
 
 class Controller_Stats extends FrontController
 {
 	private $auth;
 	private $user;
-	public $template = 'template/public';
+	public $template = 'template/public_bootstrap32';
 
 	function __construct(Kohana_Request $request, Kohana_Response $response)
 	{	
 		parent::__construct($request, $response);
 	}
+	
+	public function action_leaderboard()
+	{
+		$this->template->title = "siggy: leaderboard";
+		$this->template->selectedTab = 'home';
+		$this->template->loggedIn = Auth::loggedIn();
+		$this->template->user = Auth::$user->data;
+		$this->template->layoutMode = 'blank';
 		
-	public function action_index()
+		
+		$wrapper = View::factory('stats/stats_wrapper');
+		
+		$datep = $this->__setupDatePager();
+		$wrapper->previous_date = $datep->getPreviousDate();
+		$wrapper->current_date = $datep->getCurrentDate();
+		$wrapper->next_date = $datep->getNextDate();
+		$wrapper->stats_mode = $datep->mode;
+		$wrapper->sub_page = 'leaderboard';
+		
+		$view = View::factory('stats/leaderboard');
+		
+		$dateRange = $datep->getTimestamps();
+		
+		//short names for vars for multipliers
+		$wormhole = (double)$this->groupData['stats_wh_map_points'];
+		$sig_add = (double)$this->groupData['stats_sig_add_points'];
+		$sig_update = (double)$this->groupData['stats_sig_update_points'];
+		$pos_add= (double)$this->groupData['stats_pos_add_points'];
+		$pos_update = (double)$this->groupData['stats_pos_update_points'];
+		
+		$resultCount = DB::query(Database::SELECT, "SELECT COUNT(*) as total
+											FROM 
+											(
+												SELECT charID, (sum(wormholes) + sum(adds) + sum(updates) + sum(pos_adds)+sum(pos_edits)) as score
+												FROM stats
+												WHERE groupID=:group AND dayStamp >= :start AND dayStamp < :end
+												GROUP BY charID
+												HAVING score > 0
+												ORDER BY score DESC
+											) u")
+								->param(':group', $this->groupData['groupID'])
+								->param(':start', $dateRange['start'])
+								->param(':end', $dateRange['end'])
+								->execute()
+								->current();
+								
+		$pagination = new Zebra_Pagination2();
+		$pagination->records($resultCount['total']);
+		$pagination->records_per_page(50);
+		
+		$paginationHTML = $pagination->render(true);
+		$offset = $pagination->next_page_offset();
+		
+		$results = DB::query(Database::SELECT, "SELECT charID, charName, ({$wormhole}*sum(wormholes) + {$sig_add}*sum(adds) + {$sig_update}*sum(updates) + {$pos_add}*sum(pos_adds)+{$pos_update}*sum(pos_edits)) as score, 
+											sum(wormholes) as wormholes, 
+											sum(adds) as adds, 
+											sum(updates) as updates, 
+											sum(pos_adds) as pos_adds, 
+											sum(pos_edits) as pos_edits
+											FROM stats
+											WHERE groupID=:group AND dayStamp >= :start AND dayStamp < :end
+											GROUP BY charID
+											HAVING score > 0
+											ORDER BY score DESC
+											LIMIT ".$offset.",50
+											")
+								->param(':group', $this->groupData['groupID'])
+								->param(':start', $dateRange['start'])
+								->param(':end', $dateRange['end'])
+								->execute()
+								->as_array();
+		
+		$view->results = $results;
+		$view->rank_offset = $offset;
+		$view->pagination = $paginationHTML;
+		$wrapper->content = $view;
+		$this->template->content = $wrapper;	
+	}
+	
+	private function __setupDatePager()
+	{		
+		$year = $this->request->param('year', NULL);
+		$month = $this->request->param('month', NULL);
+		$day = $this->request->param('day', NULL);
+		$week = $this->request->param('week', NULL);
+		
+		$mode = Date_Pager::MODEWEEKLY;
+		if( $month != NULL )
+		{
+			$mode = Date_Pager::MODEMONTHLY;
+		}
+		else if( $day != NULL )
+		{
+			$mode = Date_Pager::MODEWEEKLY;
+		}
+		else if( $year != NULL && $week == NULL )
+		{
+			$mode = Date_Pager::MODEYEARLY;
+		}
+		
+		return new Date_Pager($mode, $day, $month, $year, $week);
+	}
+	
+	public function action_overview()
 	{
 		$this->template->title = "siggy: stats";
 		$this->template->selectedTab = 'home';
@@ -24,117 +128,33 @@ class Controller_Stats extends FrontController
 		$this->template->user = Auth::$user->data;
 		$this->template->layoutMode = 'blank';
 		
+		$wrapper = View::factory('stats/stats_wrapper');
 		$view = View::factory('stats/stats');
+	
+		$datep = $this->__setupDatePager();
 		
+		$wrapper->previous_date = $datep->getPreviousDate();
+		$wrapper->current_date = $datep->getCurrentDate();
+		$wrapper->next_date = $datep->getNextDate();
+		$wrapper->stats_mode = $datep->mode;
+		$wrapper->sub_page = 'overview';
 		
-		$week = intval($this->request->param('week'));
-		$month = intval($this->request->param('month'));
-		$year = intval($this->request->param('year'));
+		$dateRange = $datep->getTimestamps();
 		
-		if( empty($week) && !empty($year) && empty($month) )
-		{
-			$dateRange = array( 0 => strtotime("1.1.".$year),
-								1 => strtotime("1.1.".($year+1))-1
-								);
-								
-			$statsMode = 'yearly';
-			
-			$yearlyPrevYear = $year - 1;
-			$yearlyNextYear = $year + 1;
-			
-			$view->yearlyPrevYear = $yearlyPrevYear;
-			$view->yearlyNextYear = $yearlyNextYear;
-			
-		}
-		else if( !empty($year) && !empty($month) )
-		{
-			$dateRange = $this->monthTimestamps($month, $year);
-		
-			if( $month - 1 == 0 )
-			{
-				$monthlyPrevMonth = 12;
-				$monthlyPrevYear = $year-1;
-			}
-			else
-			{
-				$monthlyPrevMonth = $month - 1;
-				$monthlyPrevYear = $year;
-			}
-			$view->monthlyPrevMonth = $monthlyPrevMonth;
-			$view->monthlyPrevMonthName = date("F", mktime(0, 0, 0, $monthlyPrevMonth, 10));
-			$view->monthlyPrevYear = $monthlyPrevYear;
-		
-			if( $month + 1 == 13 )
-			{
-				$monthlyNextMonth = 1;
-				$monthlyNextYear = $year+1;
-			}
-			else
-			{
-				$monthlyNextMonth = $month + 1;
-				$monthlyNextYear = $year;
-			}
-			
-			$view->monthlyNextMonth = $monthlyNextMonth;
-			$view->monthlyNextMonthName = date("F", mktime(0, 0, 0, $monthlyNextMonth, 10));
-			$view->monthlyNextYear = $monthlyNextYear;
-		
-			$statsMode = 'monthly';	
-		}
-		else
-		{
-			if( empty($week) && empty($year) )
-			{
-				$year = date("Y");
-				$week = date("W");
-			}
-			
-			$statsMode = 'weekly';
-			
-			$dateRange = $this->weekTimestamps($week, $year);
-			
-			if( $week-1 == 0 )
-			{
-				$weeklyPrevWeek = $this->getIsoWeeksInYear($year-1);
-				$weeklyPrevYear = $year-1;
-			}
-			else
-			{
-				$weeklyPrevWeek = $week-1;
-				$weeklyPrevYear = $year;
-			}
-			$view->weeklyPrevWeek = $weeklyPrevWeek;
-			$view->weeklyPrevYear = $weeklyPrevYear;
-			
-			if( $week+1 >= $this->getIsoWeeksInYear($year) )
-			{
-				$weeklyNextWeek = 1;
-				$weeklyNextYear = $year+1;
-			}
-			else
-			{
-				$weeklyNextWeek = $week+1;
-				$weeklyNextYear = $year;
-			}
-			$view->weeklyNextWeek = $weeklyNextWeek;
-			$view->weeklyNextYear = $weeklyNextYear;
-		}
-		
-		$top10Adds = $this->getTop10Adds($dateRange[0],$dateRange[1]);
+		$top10Adds = $this->getTop10('adds',$dateRange['start'],$dateRange['end']);
 		$addsHTML = View::factory('stats/top10');
 		$addsHTML->max = $top10Adds['max'];
 		$addsHTML->data = $top10Adds['top10'];
 		$addsHTML->title = "Signatures added";
-		
 
-		$top10Edits = $this->getTop10Edits($dateRange[0],$dateRange[1]);
+		$top10Edits = $this->getTop10('updates',$dateRange['start'],$dateRange['end']);
 		$editsHTML = View::factory('stats/top10');
 		$editsHTML->max = $top10Edits['max'];
 		$editsHTML->data = $top10Edits['top10'];
 		$editsHTML->title = "Signatures updated";
 		
 		
-		$top10WHs = $this->getTop10WHs($dateRange[0],$dateRange[1]);
+		$top10WHs = $this->getTop10('wormholes',$dateRange['start'],$dateRange['end']);
 		$whsHTML = View::factory('stats/top10');
 		$whsHTML->max = $top10WHs['max'];
 		$whsHTML->data = $top10WHs['top10'];
@@ -144,64 +164,29 @@ class Controller_Stats extends FrontController
 		$view->addsHTML = $addsHTML;
 		$view->editsHTML = $editsHTML;
 		$view->whsHTML = $whsHTML;
-		$view->week = $week;
-		$view->month = $month;
-		$view->monthName = date("F", mktime(0, 0, 0, $month, 10));
-		$view->year = $year;
-		$view->statsMode = $statsMode;
-		$this->template->content = $view;	
+		
+		$wrapper->content = $view;
+		
+		$this->template->content = $wrapper;	
 	}
 	
-	private function getTop10WHs($start, $end)
+	private function getTop10($key, $start, $end)
 	{
-		//adds
-		$groupTop10WHs = DB::query(Database::SELECT, "SELECT charID, charName, sum(wormholes) as value FROM stats WHERE groupID=:group AND dayStamp >= :start AND dayStamp < :end AND wormholes != 0 GROUP BY charID  ORDER BY value DESC LIMIT 0,10")
-										->param(':group', $this->groupData['groupID'])->param(':start', $start)->param(':end', $end)->execute()->as_array();	
-		
-
-		$max = 0;
-		if( count($groupTop10WHs ) > 0 )
+		if( !in_array($key,array('wormholes','updates','adds') ) )
 		{
-			foreach( $groupTop10WHs as &$p )
-			{
-				if( $max < $p['value'] )
-				{
-					$max = $p['value'];
-				}
-			}
-		}		
+			throw new Exception("Invalid stat key");
+		}
 		
-		return array( 'max' => $max, 'top10' => $groupTop10WHs );
-	}
-	
-	private function getTop10Edits($start, $end)
-	{
-		//adds
-		$groupTop10Edits = DB::query(Database::SELECT, "SELECT charID, charName, sum(updates) as value FROM stats WHERE groupID=:group AND dayStamp >= :start AND dayStamp < :end AND updates != 0 GROUP BY charID  ORDER BY value DESC LIMIT 0,10")
-										->param(':group', $this->groupData['groupID'])->param(':start', $start)->param(':end', $end)->execute()->as_array();	 
+		$groupTop10 = DB::query(Database::SELECT, "SELECT charID, charName, sum(".$key.") as value FROM stats 
+													WHERE groupID=:group AND dayStamp >= :start AND dayStamp < :end AND ".$key." != 0 
+													GROUP BY charID  
+													ORDER BY value DESC LIMIT 0,10")
+										->param(':group', $this->groupData['groupID'])
+										->param(':start', $start)
+										->param(':end', $end)
+										->execute()
+										->as_array();
 		
-		$max = 0;
-		if( count($groupTop10Edits ) > 0 )
-		{
-			foreach( $groupTop10Edits as &$p )
-			{
-				if( $max < $p['value'] )
-				{
-					$max = $p['value'];
-				}
-			}
-		}		
-		
-		return array( 'max' => $max, 'top10' => $groupTop10Edits );
-	}
-	
-	private function getTop10Adds($start, $end)
-	{
-		//adds
-		$groupTop10 = DB::query(Database::SELECT, "SELECT charID, charName, sum(adds) as value FROM stats WHERE groupID=:group AND dayStamp >= :start AND dayStamp < :end AND adds != 0 GROUP BY charID  ORDER BY value DESC LIMIT 0,10")
-										->param(':group', $this->groupData['groupID'])->param(':start', $start)->param(':end', $end)->execute()->as_array();	 
-		
-
 		$max = 0;
 		if( count($groupTop10 ) > 0 )
 		{
@@ -211,28 +196,9 @@ class Controller_Stats extends FrontController
 				{
 					$max = $p['value'];
 				}
-			}	
-		}
+			}
+		}		
 		
 		return array( 'max' => $max, 'top10' => $groupTop10 );
 	}
-	function monthTimestamps($month, $year)
-	{
-		$start = strtotime('first day of 1.'.$month.'.'.$year.' +1 day');
-		return array( $start, strtotime('last day of 1.'.$month.'.'.$year));
-	}	
-	
-	function weekTimestamps($week, $year)
-	{
-		$start = strtotime("+".($week-1)." weeks -1 day", strtotime("1.1.".$year));
-		return array( $start, strtotime('next monday', $start)-1 );
-	}	
-	
-	function getIsoWeeksInYear($year) {
-		$date = new DateTime;
-		$date->setISODate($year, 53);
-		return ($date->format("W") === "53" ? 53 : 52);
-	}
 }
-
-?>
