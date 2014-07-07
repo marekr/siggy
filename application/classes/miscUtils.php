@@ -342,7 +342,7 @@ final class miscUtils
 				return;
 			}
 			
-			if( !in_array( $stat, array('adds','updates','wormholes','pos_adds','pos_edits') ) )
+			if( !in_array( $stat, array('adds','updates','wormholes','pos_adds','pos_updates') ) )
 			{
 				throw new Exception("invalid stat key");
 			}

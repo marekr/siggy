@@ -250,6 +250,10 @@
                     <td class="title">Statics</td>
                     <td class="content" id="static-info"></td>
                 </tr>
+                <tr>
+                    <td class="title">POS Summary (Intel)</td>
+                    <td class="content" id="pos-summary" colspan="3"></td>
+                </tr>
             </table>
             
             
