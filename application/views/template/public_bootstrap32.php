@@ -9,7 +9,7 @@
     <!-- Le styles -->
     <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap3/css/bootstrap.min.css" rel="stylesheet">
     <link href="<?php echo URL::base(TRUE, TRUE);?>public/css/public.css" rel="stylesheet">
-    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/thirdparty.compiled.js?13'></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap3/js/bootstrap.min.js"></script>
 
 	
@@ -26,6 +26,12 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/ico/apple-touch-icon-57-precomposed.png">
+	
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$('.dropdown-toggle').dropdown()
+	});
+	</script>
 </head>
 <body>	
 	<div class="navbar navbar-default navbar-inverse navbar-fixed-top">
@@ -56,7 +62,7 @@
 
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Logged in as <?php echo $user['username']; ?><b class="caret"></b></a>
-					<ul class="dropdown-menu">
+					<ul class="dropdown-menu" role="menu">
 						<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/overview">Account</a></li>
 						<li class="divider"></li>
 						<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/logout">Logout</a></li>
