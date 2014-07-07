@@ -1,4 +1,4 @@
-<div class="well span3">
+<div class="well">
 	<table cellspacing='1' class='table table-striped'>
 		<tr>
 			<th colspan='3'><?php echo $title; ?></th>

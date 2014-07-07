@@ -21,12 +21,7 @@ class Controller_Stats extends FrontController
 	public function action_leaderboard()
 	{
 		$this->template->title = "siggy: leaderboard";
-		$this->template->selectedTab = 'home';
-		$this->template->loggedIn = Auth::loggedIn();
-		$this->template->user = Auth::$user->data;
-		$this->template->layoutMode = 'blank';
-		
-		
+			
 		$wrapper = View::factory('stats/stats_wrapper');
 		
 		$datep = $this->__setupDatePager();
@@ -50,7 +45,7 @@ class Controller_Stats extends FrontController
 		$resultCount = DB::query(Database::SELECT, "SELECT COUNT(*) as total
 											FROM 
 											(
-												SELECT charID, (sum(wormholes) + sum(adds) + sum(updates) + sum(pos_adds)+sum(pos_edits)) as score
+												SELECT charID, (sum(wormholes) + sum(adds) + sum(updates) + sum(pos_adds)+sum(pos_updates)) as score
 												FROM stats
 												WHERE groupID=:group AND dayStamp >= :start AND dayStamp < :end
 												GROUP BY charID
@@ -70,12 +65,12 @@ class Controller_Stats extends FrontController
 		$paginationHTML = $pagination->render(true);
 		$offset = $pagination->next_page_offset();
 		
-		$results = DB::query(Database::SELECT, "SELECT charID, charName, ({$wormhole}*sum(wormholes) + {$sig_add}*sum(adds) + {$sig_update}*sum(updates) + {$pos_add}*sum(pos_adds)+{$pos_update}*sum(pos_edits)) as score, 
+		$results = DB::query(Database::SELECT, "SELECT charID, charName, ({$wormhole}*sum(wormholes) + {$sig_add}*sum(adds) + {$sig_update}*sum(updates) + {$pos_add}*sum(pos_adds)+{$pos_update}*sum(pos_updates)) as score, 
 											sum(wormholes) as wormholes, 
 											sum(adds) as adds, 
 											sum(updates) as updates, 
 											sum(pos_adds) as pos_adds, 
-											sum(pos_edits) as pos_edits
+											sum(pos_updates) as pos_updates
 											FROM stats
 											WHERE groupID=:group AND dayStamp >= :start AND dayStamp < :end
 											GROUP BY charID
@@ -88,6 +83,105 @@ class Controller_Stats extends FrontController
 								->param(':end', $dateRange['end'])
 								->execute()
 								->as_array();
+		
+		$view->results = $results;
+		$view->rank_offset = $offset;
+		$view->pagination = $paginationHTML;
+		$wrapper->content = $view;
+		$this->template->content = $wrapper;	
+	}
+	
+	public function before()
+	{
+		parent::before();
+		
+		$this->template->title = "siggy: stats";
+		$this->template->selectedTab = 'home';
+		$this->template->loggedIn = Auth::loggedIn();
+		$this->template->user = Auth::$user->data;
+		$this->template->layoutMode = 'blank';
+	}
+	
+	public function action_sig_updates()
+	{
+		$this->handle_keyed_stats('sig_updates');
+	}
+	
+	public function action_sig_adds()
+	{
+		$this->handle_keyed_stats('sig_adds');
+	}
+	
+	public function action_wormholes()
+	{
+		$this->handle_keyed_stats('wormholes');
+	}
+	
+	public function action_pos_adds()
+	{
+		$this->handle_keyed_stats('pos_adds');
+	}
+	
+	public function action_pos_updates()
+	{
+		$this->handle_keyed_stats('pos_updates');
+	}
+	
+	private function handle_keyed_stats($key)
+	{			
+		$wrapper = View::factory('stats/stats_wrapper');
+		
+		$keyLookup = array('sig_adds' => 'adds',
+							'sig_updates' => 'updates',
+							'pos_adds' => 'pos_adds',
+							'wormholes' => 'wormholes',
+							'pos_updates' => 'pos_updates' 
+							);
+		$convertedKey = $keyLookup[$key];
+		
+		$datep = $this->__setupDatePager();
+		$wrapper->previous_date = $datep->getPreviousDate();
+		$wrapper->current_date = $datep->getCurrentDate();
+		$wrapper->next_date = $datep->getNextDate();
+		$wrapper->stats_mode = $datep->mode;
+		$wrapper->sub_page = $key;
+		
+		$view = View::factory('stats/specific_stat');
+		
+		$dateRange = $datep->getTimestamps();
+		
+		
+		$resultCount = DB::query(Database::SELECT, "SELECT COUNT(*) as total
+											FROM 
+											(
+													SELECT charID, charName, sum(".$convertedKey.") as value FROM stats 
+													WHERE groupID=:group AND dayStamp >= :start AND dayStamp < :end AND ".$convertedKey." != 0 
+													GROUP BY charID  
+													ORDER BY value DESC
+											) u")
+								->param(':group', $this->groupData['groupID'])
+								->param(':start', $dateRange['start'])
+								->param(':end', $dateRange['end'])
+								->execute()
+								->current();
+								
+		$pagination = new Zebra_Pagination2();
+		$pagination->records($resultCount['total']);
+		$pagination->records_per_page(50);
+		
+		$paginationHTML = $pagination->render(true);
+		$offset = $pagination->next_page_offset();
+								
+		$results = DB::query(Database::SELECT, "SELECT charID, charName, sum(".$convertedKey.") as value FROM stats 
+													WHERE groupID=:group AND dayStamp >= :start AND dayStamp < :end AND ".$convertedKey." != 0 
+													GROUP BY charID  
+													ORDER BY value DESC
+													LIMIT ".$offset.",50")
+										->param(':group', $this->groupData['groupID'])
+										->param(':start', $dateRange['start'])
+										->param(':end', $dateRange['end'])
+										->execute()
+										->as_array();
 		
 		$view->results = $results;
 		$view->rank_offset = $offset;
@@ -123,10 +217,6 @@ class Controller_Stats extends FrontController
 	public function action_overview()
 	{
 		$this->template->title = "siggy: stats";
-		$this->template->selectedTab = 'home';
-		$this->template->loggedIn = Auth::loggedIn();
-		$this->template->user = Auth::$user->data;
-		$this->template->layoutMode = 'blank';
 		
 		$wrapper = View::factory('stats/stats_wrapper');
 		$view = View::factory('stats/stats');

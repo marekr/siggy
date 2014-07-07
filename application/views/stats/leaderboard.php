@@ -15,16 +15,51 @@
 			<?php foreach($results as $result): ?>
 			<tr>
 				<td><?php echo (++$rank_offset); ?></td>
-				<td class="centered"><img src='http://image.eveonline.com/Character/<?php echo $result['charID'];?>_32.jpg' /><?php echo $result['charName']; ?></td>
+				<td class="center">
+					<b><a href='javascript:CCPEVE.showInfo(1377, <?php echo $result['charID']; ?>)'><?php echo $result['charName']; ?></a></b><br />
+					<img src='http://image.eveonline.com/Character/<?php echo $result['charID'];?>_32.jpg' />
+				</td>
 				<td><?php echo $result['adds']; ?></td>
 				<td><?php echo $result['updates']; ?></td>
 				<td><?php echo $result['wormholes']; ?></td>
 				<td><?php echo $result['pos_adds']; ?></td>
-				<td><?php echo $result['pos_edits']; ?></td>
+				<td><?php echo $result['pos_updates']; ?></td>
 				<td><?php echo $result['score']; ?></td>
 			</tr>
 			<?php endforeach; ?>
 		</table>
 		<?php echo $pagination; ?>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row">
+		<h3>Point Legend</h3>
+		<table class="table table-striped">
+			<tr>
+				<th>Item </th>
+				<th>Points</th>
+			</tr>
+			<tr>
+				<td>Sig Additions</td>
+				<td>1</td>
+			</tr>
+			<tr>
+				<td>Sig Updates</td>
+				<td>1</td>
+			</tr>
+			<tr>
+				<td>Wormholes</td>
+				<td>1</td>
+			</tr>
+			<tr>
+				<td>POS Adds</td>
+				<td>1</td>
+			</tr>
+			<tr>
+				<td>POS Edits</td>
+				<td>1</td>
+			</tr>
+		</table>
 	</div>
 </div>

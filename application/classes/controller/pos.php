@@ -91,7 +91,7 @@ class Controller_Pos extends FrontController
 			
 		DB::update('pos_tracker')->set( $data )->where('pos_id', '=', $pos['pos_id'])->execute();
 		
-		miscUtils::increment_stat('pos_edits', $this->groupData);
+		miscUtils::increment_stat('pos_updates', $this->groupData);
 		
 		$log_message = sprintf("%s edit POS in system %s", $this->groupData['charName'], $pos['system_name']);
 		groupUtils::log_action($this->groupData['groupID'], 'delpos', $log_message);
