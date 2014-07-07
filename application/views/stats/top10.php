@@ -1,8 +1,6 @@
-<div class="well">
+<div class="panel panel-default">
+	<div class="panel-heading"><?php echo $title; ?></div>
 	<table cellspacing='1' class='table table-striped'>
-		<tr>
-			<th colspan='3'><?php echo $title; ?></th>
-		</tr>
 	<?php 
 	$pos = 1;
 	if( count($data) > 0 ): 
