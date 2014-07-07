@@ -4,3 +4,17 @@ body {
 
 .centered { vertical-align:middle; text-align:center; }
 .centered img { display:block; margin:0 auto; }
+
+.panel-announce > .panel-heading {
+    padding-bottom: 5px; 
+}
+.panel-announce > .panel-heading > h3 {
+    margin: 0px;
+    font-size: 14px;
+    font-weight: 700;
+}
+.panel-announce > .panel-heading > h5 {
+    color: rgb(153, 153, 153);
+    font-size: 12px;
+    font-weight: 400;
+}

@@ -88,7 +88,7 @@ class Controller_Stats extends FrontController
 		$view->rank_offset = $offset;
 		$view->pagination = $paginationHTML;
 		$wrapper->content = $view;
-		$this->template->content = $wrapper;	
+		$this->template->content = $wrapper;
 	}
 	
 	public function before()
@@ -96,7 +96,7 @@ class Controller_Stats extends FrontController
 		parent::before();
 		
 		$this->template->title = "siggy: stats";
-		$this->template->selectedTab = 'home';
+		$this->template->selectedTab = 'stats';
 		$this->template->loggedIn = Auth::loggedIn();
 		$this->template->user = Auth::$user->data;
 		$this->template->layoutMode = 'blank';
