@@ -23,6 +23,82 @@ function roundNumber(num, dec)
 	return result;
 }
 
+function array_unique(inputArr) {
+  //  discuss at: http://phpjs.org/functions/array_unique/
+  // original by: Carlos R. L. Rodrigues (http://www.jsfromhell.com)
+  //    input by: duncan
+  //    input by: Brett Zamir (http://brett-zamir.me)
+  // bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+  // bugfixed by: Nate
+  // bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+  // bugfixed by: Brett Zamir (http://brett-zamir.me)
+  // improved by: Michael Grier
+  //        note: The second argument, sort_flags is not implemented;
+  //        note: also should be sorted (asort?) first according to docs
+  //   example 1: array_unique(['Kevin','Kevin','van','Zonneveld','Kevin']);
+  //   returns 1: {0: 'Kevin', 2: 'van', 3: 'Zonneveld'}
+  //   example 2: array_unique({'a': 'green', 0: 'red', 'b': 'green', 1: 'blue', 2: 'red'});
+  //   returns 2: {a: 'green', 0: 'red', 1: 'blue'}
+
+  var key = '',
+    tmp_arr2 = {},
+    val = '';
+
+  var __array_search = function(needle, haystack) {
+    var fkey = '';
+    for (fkey in haystack) {
+      if (haystack.hasOwnProperty(fkey)) {
+        if ((haystack[fkey] + '') === (needle + '')) {
+          return fkey;
+        }
+      }
+    }
+    return false;
+  };
+
+  for (key in inputArr) {
+    if (inputArr.hasOwnProperty(key)) {
+      val = inputArr[key];
+      if (false === __array_search(val, tmp_arr2)) {
+        tmp_arr2[key] = val;
+      }
+    }
+  }
+
+  return tmp_arr2;
+}
+
+function implode(glue, pieces) {
+  //  discuss at: http://phpjs.org/functions/implode/
+  // original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+  // improved by: Waldo Malqui Silva
+  // improved by: Itsacon (http://www.itsacon.net/)
+  // bugfixed by: Brett Zamir (http://brett-zamir.me)
+  //   example 1: implode(' ', ['Kevin', 'van', 'Zonneveld']);
+  //   returns 1: 'Kevin van Zonneveld'
+  //   example 2: implode(' ', {first:'Kevin', last: 'van Zonneveld'});
+  //   returns 2: 'Kevin van Zonneveld'
+
+  var i = '',
+    retVal = '',
+    tGlue = '';
+  if (arguments.length === 1) {
+    pieces = glue;
+    glue = '';
+  }
+  if (typeof pieces === 'object') {
+    if (Object.prototype.toString.call(pieces) === '[object Array]') {
+      return pieces.join(glue);
+    }
+    for (i in pieces) {
+      retVal += tGlue + pieces[i];
+      tGlue = glue;
+    }
+    return retVal;
+  }
+  return pieces;
+}
+
 /**
 * @constructor
 */
@@ -874,7 +950,6 @@ siggymain.prototype.update = function ()
                     }
                     if (data.systemUpdate)
                     {
-					console.log(data);
                         that.updateSystemInfo(data.systemData);
                         that.updateSystemOptionsForm(data.systemData);
                     }
@@ -901,7 +976,6 @@ siggymain.prototype.update = function ()
                                 var nlu = that.lastGlobalNotesUpdate;
                             }
                             
-                            //console.log('nlu:'+nlu);
                             if( !that.globalNotesEle.is(':visible') && data.lastGlobalNotesUpdate > nlu && nlu != 0 )
                             {
                                 that.blinkNotes();
@@ -1050,7 +1124,6 @@ siggymain.prototype.switchSystem = function(systemID, systemName)
 	
 	
 	$('#sig-add-box select[name=type]').val(0);
-  //$('#sigAddBox select[name=site]').replaceWith(this.generateSiteSelect(this.systemClass, 0, 0).attr('name', 'site'));
 	this.updateSiteSelect('#sig-add-box select[name=site]',this.systemClass, 0, 0);
 	
     
@@ -1088,13 +1161,11 @@ siggymain.prototype.updateSigs = function (sigData, flashSigs)
 	{
 		if (sigData[i].exists != true)
 		{
-			// console.log(sigData);
 			this.addSigRow(sigData[i],flashSigs);
 			this.sigData[i] = sigData[i];
 		}
 	}
 	
-	//this.colorizeSigRows();
 	if (!this.editingSig)
 	{
 		$('#sig-table').trigger('update');
@@ -1145,10 +1216,8 @@ siggymain.prototype.updateSystemInfo = function (systemData)
         
         $('#hub-jumps').append(hubDiv);
 	}
-
     
     //EFFECT STUFF
-	
 	//effect info
     $('#system-effect > p').qtip('destroy');
 	$('#system-effect').empty();
@@ -1602,14 +1671,9 @@ siggymain.prototype.editSig = function (sigID)
 			postData.sigSize = this.sigData[sigID].sigSize;
 	}
 	
-	
-
-	
-	console.log("POOP");
 	var that = this;
 	$.post(this.settings.baseUrl + 'dosigEdit', postData, function ( data )
 	{
-		console.log("halo");
 		that.editingSig = false;
 		that.sigData[sigID].editing = false;
 
@@ -2121,28 +2185,6 @@ siggymain.prototype.initialize = function ()
 		}
 	});	
 	
-	//default to class 1
-//	this.setBearTab(1);
-	/*
-	$(window).mousemove( function() {
-		//console.log('hi');
-		that.idleTimeout = 0;
-		if( that.afked )
-		{
-			that.afked = false;
-			$.unblockUI();
-			that.updateNow();
-		}
-	} );
-	*/
-	//setInterval( function() {
-		//if( that.idleTimeout >= that.idleMax || that.afked )
-		//{
-		//	return;
-		//}
-		//that.idleTimeout += 1;
-	//	console.log(that.idleTimeout);
-	//}, 1000 );	
 	
 	this.initializeTabs();
 	
@@ -2314,7 +2356,6 @@ siggymain.prototype.blinkNotes = function()
 	
 	$('#globalNotesButton').flash("#A46D00", 3000);
 	this._blinkNotesInterval = setInterval( function() {
-			//console.log('flash!');
 			$('#globalNotesButton').flash("#A46D00", 3000);
 	}, 4000 );		
 }
@@ -2643,6 +2684,12 @@ siggymain.prototype.updatePOSList = function( data )
 
 	var body = $('#system-intel-poses tbody');
 	body.empty();
+	
+	var online = 0;
+	var offline = 1;
+	var summary = '';
+	
+	var owner_names = [];
 
 	if( typeof data != "undefined" && Object.size(data) > 0 )
 	{
@@ -2674,14 +2721,32 @@ siggymain.prototype.updatePOSList = function( data )
 			})(pos_id);
 			
 			body.append(row);
+			
+			owner_names.push(data[i].pos_owner);
+			if( parseInt(data[i].pos_online) == 1 )
+			{
+				online++;
+			}
+			else
+			{
+				offline++;
+			}
 		}
 		
+		
+		owner_names = array_unique(owner_names);
+		var owner_string = "<b>Residents:</b> "+implode(",",owner_names);
+		
+		summary = "<b>Total:</b> " + online + " online towers, " + offline + " offline towers" + "<br />" + owner_string;
 		$this.poses = data;
 	}
 	else
 	{
 		$this.poses = {};
+		summary = "No POS data added for this system";
 	}
+	
+	$("#pos-summary").html( summary );
 }
 
 siggymain.prototype.addPOS = function()
