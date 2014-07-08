@@ -11,41 +11,38 @@
 class Controller_Manage_Admin extends Controller_Manage
 {
 
-   public $template = 'template/manage';
+	public $template = 'template/manage';
 
-   public $auth_required = 'gadmin';
+	public $auth_required = 'gadmin';
 
 	public $secure_actions = array(
-	// user actions
-	'members' => array('login','gadmin')
-	// the others are public (forgot, login, register, reset, noaccess)
-	// logout is also public to avoid confusion (e.g. easier to specify and test post-logout page)
+		'members' => array('login','gadmin')
 	);
 
 
-   /**
-    * View: Redirect admins to admin index, users to user profile.
-    */
-   public function action_index() 
-   {
-      if( Auth::$user->isAdmin() ) 
-      {
-         HTTP::redirect('manage/admin/groups');
-      } 
-      else 
-      {
-         HTTP::redirect('manage/admin/noaccess');
-      }
-   }
+	/**
+	* View: Redirect admins to admin index, users to user profile.
+	*/
+	public function action_index() 
+	{
+		if( Auth::$user->isAdmin() ) 
+		{
+			HTTP::redirect('manage/admin/groups');
+		} 
+		else 
+		{
+			HTTP::redirect('manage/admin/noaccess');
+		}
+	}
 
-   /**
-    * View: Access not allowed.
-    */
-   public function action_noaccess() 
-   {
-      $this->template->title = __('Access not allowed');
-      $view = $this->template->content = View::factory('user/noaccess');
-   }
+	/**
+	* View: Access not allowed.
+	*/
+	public function action_noaccess() 
+	{
+		$this->template->title = __('Access not allowed');
+		$view = $this->template->content = View::factory('user/noaccess');
+	}
    
 	public function action_changeGroup()
 	{

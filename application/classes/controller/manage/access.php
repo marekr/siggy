@@ -15,20 +15,20 @@ class Controller_Manage_Access extends Controller_Manage
 	);
 
 
-   /**
-    * View: Redirect admins to admin index, users to user profile.
-    */
-   public function action_index() 
-   {
-      if( Auth::$user->isAdmin() ) 
-      {
-         HTTP::redirect('manage/admin/groups');
-      } 
-      else 
-      {
-         HTTP::redirect('manage/access/denied');
-      }
-   }
+	/**
+	* View: Redirect admins to admin index, users to user profile.
+	*/
+	public function action_index() 
+	{
+		if( Auth::$user->isAdmin() ) 
+		{
+			HTTP::redirect('manage/admin/groups');
+		} 
+		else 
+		{
+			HTTP::redirect('manage/access/denied');
+		}
+	}
 
 	/**
 	* View: Access not allowed.

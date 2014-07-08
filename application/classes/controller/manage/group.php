@@ -7,34 +7,23 @@ require_once APPPATH.'classes/miscUtils.php';
 
 class Controller_Manage_Group extends Controller_Manage
 {
-   /**
+   /*
     * @var string Filename of the template file.
     */
-   public $template = 'template/manage';
+	public $template = 'template/manage';
 
-   /**
+   /*
     * Controls access for the whole controller, if not set to FALSE we will only allow user roles specified.
-    *
-    * See Controller_App for how this implemented.
-    *
-    * Can be set to a string or an array, for example array('login', 'admin') or 'login'
     */
-   public $auth_required = 'gadmin';
+	public $auth_required = 'gadmin';
 
-	/** Controls access for separate actions
-	*
-	*  See Controller_App for how this implemented.
-	*
-	*  Examples:
-	* 'adminpanel' => 'admin' will only allow users with the role admin to access action_adminpanel
-	* 'moderatorpanel' => array('login', 'moderator') will only allow users with the roles login and moderator to access action_moderatorpanel
-	*/
+	/*
+	 * Controls access for separate actions
+	 */
 	public $secure_actions = array(
 		// user actions
 		'members' => array('can_manage_group_members')
 	);
-
-   // USER SELF-MANAGEMENT
 
 	/**
 	* View: Redirect admins to admin index, users to user profile.
