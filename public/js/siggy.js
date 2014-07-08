@@ -23,6 +23,20 @@ function roundNumber(num, dec)
 	return result;
 }
 
+function ucfirst(str) {
+  //  discuss at: http://phpjs.org/functions/ucfirst/
+  // original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+  // bugfixed by: Onno Marsman
+  // improved by: Brett Zamir (http://brett-zamir.me)
+  //   example 1: ucfirst('kevin van zonneveld');
+  //   returns 1: 'Kevin van zonneveld'
+
+  str += '';
+  var f = str.charAt(0)
+    .toUpperCase();
+  return f + str.substr(1);
+}
+
 function array_unique(inputArr) {
   //  discuss at: http://phpjs.org/functions/array_unique/
   // original by: Carlos R. L. Rodrigues (http://www.jsfromhell.com)
@@ -2701,11 +2715,11 @@ siggymain.prototype.updatePOSList = function( data )
 			
 			var row = $("<tr>").attr('id', 'pos-'+pos_id);
 			
+			row.append( $("<td>").text( $this.getPOSStatus(data[i].pos_online) ) );
 			row.append( $("<td>").text( data[i].pos_location_planet + " - " + data[i].pos_location_moon ) );
 			row.append( $("<td>").text( data[i].pos_owner ) );
-			row.append( $("<td>").text( $this.getPOSStatus(data[i].pos_online) ) );
 			row.append( $("<td>").text( data[i].pos_type_name ) );
-			row.append( $("<td>").text( data[i].pos_size ) );
+			row.append( $("<td>").text( ucfirst(data[i].pos_size) ) );
 			row.append( $("<td>").text(siggymain.displayTimeStamp(data[i].pos_added_date)) );
 			row.append( $("<td>").text( data[i].pos_notes ) );
 			
