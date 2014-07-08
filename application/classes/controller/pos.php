@@ -94,7 +94,7 @@ class Controller_Pos extends FrontController
 		miscUtils::increment_stat('pos_updates', $this->groupData);
 		
 		$log_message = sprintf("%s edit POS in system %s", $this->groupData['charName'], $pos['system_name']);
-		groupUtils::log_action($this->groupData['groupID'], 'delpos', $log_message);
+		groupUtils::log_action($this->groupData['groupID'], 'editpos', $log_message);
 	}
 	
 	public function action_remove()
