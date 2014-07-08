@@ -21,8 +21,14 @@ class Controller_Manage_Group extends Controller_Manage
 	 * Controls access for separate actions
 	 */
 	public $secure_actions = array(
-		// user actions
-		'members' => array('can_manage_group_members')
+		'members' => array('can_manage_group_members'),
+		'subgroups' => array('can_manage_group_members'),
+		'addMember' => array('can_manage_group_members'),
+		'addSubGroup' => array('can_manage_group_members'),
+		'editMember' => array('can_manage_group_members'),
+		'editSubGroup' => array('can_manage_group_members'),
+		'removeMember' => array('can_manage_group_members'),
+		'removeSubGroup' => array('can_manage_group_members')
 	);
 
 	/**

@@ -9,12 +9,11 @@ class Controller_Manage_Access extends Controller_Manage
 
 	public $secure_actions = array(
         // user actions
-        'members' => array('login','gadmin'),
+        'members' => array('can_manage_access'),
         'edit' => array('can_manage_access'),
         'remove' => array('can_manage_access')
 	);
-
-
+	
 	/**
 	* View: Redirect admins to admin index, users to user profile.
 	*/
@@ -60,8 +59,7 @@ class Controller_Manage_Access extends Controller_Manage
 			Auth::$user->save();
 		}
       
-	  HTTP::redirect('/manage');
-      
+		HTTP::redirect('/manage');
 	}
 	
 	public function action_configure()

@@ -20,7 +20,7 @@ class Controller_Manage_Billing extends Controller_Manage
 	* Controls access for separate actions
     */
 	public $secure_actions = array(
-		'members' => array('login','gadmin')
+		'overview' => array('can_view_financial')
 	);
 
 	/**

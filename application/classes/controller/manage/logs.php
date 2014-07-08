@@ -29,7 +29,8 @@ class Controller_Manage_Logs extends Controller_App
 	* Controls access for separate actions
 	*/
 	public $secure_actions = array(
-		'members' => array('login','gadmin')
+		'sessions' => array('can_view_logs'),
+		'activity' => array('can_view_logs')
 	);
 
 	/**

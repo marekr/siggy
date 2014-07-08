@@ -6,18 +6,20 @@ require_once APPPATH.'classes/miscUtils.php';
 
 class Controller_Manage_Settings extends Controller_Manage
 {
-	/**
-	* @var string Filename of the template file.
-	*/
+	/*
+	 * @var string Filename of the template file.
+	 */
 	public $template = 'template/manage';
 
-	/**
-	* Controls access for the whole controller, if not set to FALSE we will only allow user roles specified.
-	*/
+	/*
+	 * Controls access for the whole controller, if not set to FALSE we will only allow user roles specified.
+	 */
 	public $auth_required = 'gadmin';
 
 	public $secure_actions = array(
-		'members' => array('login','gadmin')
+		'general' => array('can_manage_settings'),
+		'chain_map' => array('can_manage_settings'),
+		'statistics' => array('can_manage_settings')
 	);
 
 	public function action_index() 
