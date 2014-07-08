@@ -349,6 +349,8 @@ siggyMap.prototype.registerEvents = function()
             $('#chain-map-ec').text('Click to hide');
             setCookie('mapOpen', 1, 365);
             that.showMessage('loading');
+			
+			that.siggymain.updateNow();
         }
     } );
         
