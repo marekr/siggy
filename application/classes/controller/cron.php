@@ -21,7 +21,6 @@ class eveAPIWalletJournalTypes
 	
 class Controller_Cron extends Controller 
 {
-
 	private function processBillingTransactionsResult( $transactions, $previousID, &$maxID, &$fromID )
 	{
 		$stop = FALSE;
@@ -163,7 +162,6 @@ class Controller_Cron extends Controller
 			}
 		}
 
-		//$lastID = substr($lastID, 0, strpos($lastID, '.'
 		$maxID = (string)$maxID;
 		miscUtils::storeDBCacheItem( 'lastProcessedJournalRefID', $maxID );
 	}
@@ -253,7 +251,6 @@ class Controller_Cron extends Controller
 		$this->auto_render = FALSE;
 		//two days?
 		$cutoff = time()-60*60*24*2;
-  //DB::delete('systemsigs')->where('created', '<=', $cutoff)->where('sig', '!=', 'POS')->execute();
   
 		$groups = DB::query(Database::SELECT, "SELECT groupID,skipPurgeHomeSigs,homeSystemIDs FROM groups")->execute()->as_array();	 
 		foreach( $groups as $group )
@@ -292,15 +289,15 @@ class Controller_Cron extends Controller
 
 	public function action_resetStuff()
 	{
-			$this->profiler = NULL;
-			$this->auto_render = FALSE;
-			//two days?
-			$cutoff = time()-60*60*24;
+		$this->profiler = NULL;
+		$this->auto_render = FALSE;
+		//two days?
+		$cutoff = time()-60*60*24;
       
-      DB::update('activesystems')->set(array('displayName' => '', 'activity' => 0, 'lastActive' => 0, 'inUse' => 0))->where('lastActive', '<=', $cutoff)->where('lastActive', '!=', 0)->execute();
-      DB::delete('wormholes')->where('lastJump', '<=', $cutoff)->execute();
+		//DB::update('activesystems')->set(array('displayName' => '', 'activity' => 0, 'lastActive' => 0, 'inUse' => 0))->where('lastActive', '<=', $cutoff)->where('lastActive', '!=', 0)->execute();
+		DB::delete('wormholes')->where('lastJump', '<=', $cutoff)->execute();
       
-      print 'done!';
+		print 'done!';
 	}
 	
 	public function action_hourlyAPIStats()
