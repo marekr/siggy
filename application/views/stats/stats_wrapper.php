@@ -2,9 +2,9 @@
 
 <div class="btn-toolbar" role="toolbar">
 	<div class="btn-group">
-		<a class="btn btn-default<?php echo ( $stats_mode == Date_Pager::MODEWEEKLY ? ' active' : '') ?>" href="<?php echo URL::base(TRUE, TRUE);?>stats/year/<?php echo date("Y");?>/week/<?php echo date("W");?>">Weekly</a>
-		<a class="btn btn-default<?php echo ( $stats_mode == Date_Pager::MODEMONTHLY  ? ' active' : '') ?>" href="<?php echo URL::base(TRUE, TRUE);?>stats/year/<?php echo date("Y");?>/month/<?php echo date("n");?>">Monthly</a>
-		<a class="btn btn-default<?php echo ( $stats_mode == Date_Pager::MODEYEARLY  ? ' active' : '') ?>" href="<?php echo URL::base(TRUE, TRUE);?>stats/year/<?php echo date("Y");?>">Yearly</a>
+		<a class="btn btn-default<?php echo ( $stats_mode == Date_Pager::MODEWEEKLY ? ' active' : '') ?>" href="<?php echo URL::base(TRUE, TRUE);?>stats/<?php echo $sub_page; ?>/year/<?php echo date("Y");?>/week/<?php echo date("W");?>">Weekly</a>
+		<a class="btn btn-default<?php echo ( $stats_mode == Date_Pager::MODEMONTHLY  ? ' active' : '') ?>" href="<?php echo URL::base(TRUE, TRUE);?>stats/<?php echo $sub_page; ?>/year/<?php echo date("Y");?>/month/<?php echo date("n");?>">Monthly</a>
+		<a class="btn btn-default<?php echo ( $stats_mode == Date_Pager::MODEYEARLY  ? ' active' : '') ?>" href="<?php echo URL::base(TRUE, TRUE);?>stats/<?php echo $sub_page; ?>/year/<?php echo date("Y");?>">Yearly</a>
 	</div>
 </div>
 <br />
@@ -12,7 +12,7 @@
 	<div class="btn-group">
 		<a class="btn btn-default<?php echo ( $sub_page == 'overview' ? ' active' : '') ?>" href="<?php echo URL::base(TRUE, TRUE);?>stats/<?php echo $current_date['urlbit']; ?>">Overview</a>
 		<a class="btn btn-default<?php echo ( $sub_page == 'leaderboard' ? ' active' : '') ?>" href="<?php echo URL::base(TRUE, TRUE);?>stats/leaderboard/<?php echo $current_date['urlbit']; ?>">Leaderboard</a>
-		<a class="btn btn-default<?php echo ( $sub_page == 'pos_add' ? ' active' : '') ?>" href="<?php echo URL::base(TRUE, TRUE);?>stats/pos_adds/<?php echo $current_date['urlbit']; ?>">POS Additions</a>
+		<a class="btn btn-default<?php echo ( $sub_page == 'pos_adds' ? ' active' : '') ?>" href="<?php echo URL::base(TRUE, TRUE);?>stats/pos_adds/<?php echo $current_date['urlbit']; ?>">POS Additions</a>
 		<a class="btn btn-default<?php echo ( $sub_page == 'pos_updates' ? ' active' : '') ?>" href="<?php echo URL::base(TRUE, TRUE);?>stats/pos_updates/<?php echo $current_date['urlbit']; ?>">POS Updates</a>
 		<a class="btn btn-default<?php echo ( $sub_page == 'sig_adds' ? ' active' : '') ?>" href="<?php echo URL::base(TRUE, TRUE);?>stats/sig_adds/<?php echo $current_date['urlbit']; ?>">Sig Additions</a>
 		<a class="btn btn-default<?php echo ( $sub_page == 'sig_updates' ? ' active' : '') ?>" href="<?php echo URL::base(TRUE, TRUE);?>stats/sig_updates/<?php echo $current_date['urlbit']; ?>">Sig Updates</a>

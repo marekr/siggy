@@ -1,7 +1,13 @@
 <div class="container">
 	<div class="row">
-		<?php echo $addsHTML; ?>
-		<?php echo $editsHTML; ?>
-		<?php echo $whsHTML; ?>
+        <div class="col-sm-4">
+			<?php echo $addsHTML; ?>
+		</div>
+        <div class="col-sm-4">
+			<?php echo $editsHTML; ?>
+		</div>
+        <div class="col-sm-4">
+			<?php echo $whsHTML; ?>
+		</div>
 	</div>
 </div>
