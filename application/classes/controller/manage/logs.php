@@ -12,7 +12,7 @@ require_once APPPATH.'classes/Zebra_Pagination.php';
  * @version 1.0
  */
 
-class Controller_Manage_Logs extends Controller_App
+class Controller_Manage_Logs extends Controller_Manage
 {
 
 	/**
