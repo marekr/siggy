@@ -2688,7 +2688,7 @@ siggymain.prototype.updatePOSList = function( data )
 	body.empty();
 	
 	var online = 0;
-	var offline = 1;
+	var offline = 0;
 	var summary = '';
 	
 	var owner_names = [];
@@ -2698,6 +2698,7 @@ siggymain.prototype.updatePOSList = function( data )
 		for(var i in data)
 		{
 			var pos_id = data[i].pos_id;
+			
 			var row = $("<tr>").attr('id', 'pos-'+pos_id);
 			
 			row.append( $("<td>").text( data[i].pos_location_planet + " - " + data[i].pos_location_moon ) );
