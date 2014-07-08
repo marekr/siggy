@@ -2,10 +2,7 @@
 	<legend>Group Settings</legend>
 	<?php echo formRenderer::input('Group Name', 'groupName', $data['groupName'], 'The name of your group be it alliance, corp or whatever. This is not important', $errors); ?>
 	<?php echo formRenderer::input('Group Ticker', 'groupTicker', $data['groupTicker'], 'The ticker of your group be it alliance, corp or whatever.', $errors); ?>
-	<legend>Statistics</legend>
-	<?php echo formRenderer::yesNo('Record pilot jump statistics?', 'recordJumps', $data['recordJumps'], 'If yes, siggy will gather per hour, the character jump totals similar to the eve API jumps for systems and display them together as a comparison statistic. Of course this setting depends on users having siggy open in order for the jumps to be recorded.', $errors); ?>
-    <?php echo formRenderer::yesNo('Record scan activity?', 'statsEnabled', $data['statsEnabled'], 'If yes, siggy will record the number of sigs added, number of sigs edited and WHs mapped on a daily basis for each character. The recorded data is only currently avaliable as the in group stats board viewable by anyone who has access to your group.', $errors); ?>
-		
+
 	<legend>Miscellaneous</legend>
 	<?php echo formRenderer::yesNo("Enable 'size' for sig entry?", 'showSigSizeCol', $data['showSigSizeCol'], 'If yes, an additional column and dropdown for entry will appear for sigs to list its calculator size. ', $errors); ?>
   	

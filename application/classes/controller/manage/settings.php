@@ -89,7 +89,81 @@ class Controller_Manage_Settings extends Controller_App
 		$view->set('data', $group->as_array() );
 
 		$this->template->content = $view;
-	}	
+	}
+	
+	public function action_statistics()
+	{
+		$this->template->title = __('Chain Map settings');
+
+		$group = ORM::factory('group', Auth::$user->data['groupID']);
+
+		$errors = array();
+		$view = $this->template->content = View::factory('manage/settings/statistics');
+		
+		$view->bind('errors', $errors);
+					
+		if ($this->request->method() == "POST") 
+		{
+			try 
+			{
+				$group->statsEnabled = intval($_POST['statsEnabled']);
+				$group->recordJumps = intval($_POST['recordJumps']);
+				$group->stats_sig_add_points = $this->__get_point_multiplier($_POST['stats_sig_add_points']);
+				$group->stats_sig_update_points = $this->__get_point_multiplier($_POST['stats_sig_update_points']);
+				$group->stats_wh_map_points = $this->__get_point_multiplier($_POST['stats_wh_map_points']);
+				$group->stats_pos_add_points = $this->__get_point_multiplier($_POST['stats_pos_add_points']);
+				$group->stats_pos_update_points = $this->__get_point_multiplier($_POST['stats_pos_update_points']);
+				
+				$group->save();
+					
+				Message::add('success', __('Chain map settings saved.'));
+				
+				groupUtils::recacheGroup( Auth::$user->data['groupID'] );
+				
+				HTTP::redirect('manage/settings/statistics');
+				return;
+			} 
+			catch (ORM_Validation_Exception $e) 
+			{
+				Message::add('error', __('Error: Values could not be saved.'));
+				$errors = $e->errors('chainMapSettings');
+				$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
+
+				$view->set('data', array(
+										'statsEnabled' => $_POST['statsEnabled'], 
+										'recordJumps' => $_POST['recordJumps'], 
+										'stats_sig_add_points' => $_POST['stats_sig_add_points'], 
+										'stats_sig_update_points' => $_POST['stats_sig_update_points'], 
+										'stats_wh_map_points' => $_POST['stats_wh_map_points'], 
+										'stats_pos_add_points' => $_POST['stats_pos_add_points'], 
+										'stats_pos_update_points' => $_POST['stats_pos_update_points'], 
+									 ) 
+
+				);
+			}
+		}
+
+		$view->set('data', $group->as_array() );
+
+		$this->template->content = $view;
+	}
+	
+	private function __get_point_multiplier($value)
+	{
+		//cast it as a float
+		$value = (float)$value;
+		
+		if( $value > 1000 )
+		{
+			$value = 1000;
+		}
+		else if( $value < 0 )
+		{
+			$value = 0;
+		}
+		
+		return (float)$value;
+	}
    
 	public function action_general()
 	{
@@ -110,7 +184,6 @@ class Controller_Manage_Settings extends Controller_App
 				$group->groupTicker = $_POST['groupTicker'];
 				$group->authMode = $_POST['authMode'];
 				$group->showSigSizeCol = intval($_POST['showSigSizeCol']);
-				$group->statsEnabled = intval($_POST['statsEnabled']);
 				
 				if( !empty($_POST['password']) && !empty($_POST['password_confirm']) )
 				{
@@ -160,7 +233,6 @@ class Controller_Manage_Settings extends Controller_App
 					$group->homeSystemIDs = '';
 				}
 				
-				$group->recordJumps = intval($_POST['recordJumps']);
 				$group->skipPurgeHomeSigs = intval($_POST['skipPurgeHomeSigs']);
 				$group->sysListShowReds = intval($_POST['sysListShowReds']);
 				
@@ -185,7 +257,6 @@ class Controller_Manage_Settings extends Controller_App
 										'groupTicker' => $_POST['groupTicker'], 
 										'authMode' => $_POST['authMode'], 
 										'homeSystems' => $_POST['homeSystems'], 
-										'recordJumps' => $_POST['recordJumps'], 
 										'skipPurgeHomeSigs' => $_POST['skipPurgeHomeSigs'],
 										'sysListShowReds' => $_POST['sysListShowReds']
 									 ) 
