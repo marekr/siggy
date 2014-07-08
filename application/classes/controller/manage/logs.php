@@ -48,7 +48,6 @@ class Controller_Manage_Logs extends Controller_App
 		}
 	}
 	
-	     
 	public function action_sessions()
 	{
 		$sessions = array();
@@ -156,8 +155,7 @@ class Controller_Manage_Logs extends Controller_App
     */
     public function action_noaccess() 
     {
-      $this->template->title = __('Access not allowed');
-      $view = $this->template->content = View::factory('user/noaccess');
+		$this->template->title = __('Access not allowed');
+		$view = $this->template->content = View::factory('user/noaccess');
     }
-
 }

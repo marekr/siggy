@@ -629,7 +629,7 @@ class Controller_Manage_Group extends Controller_Manage
 
 		$this->template->content = $view;
 	}
-   
+
 	public function action_removeSubGroup()
 	{
 		$id = intval($this->request->param('id'));

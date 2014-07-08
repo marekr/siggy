@@ -2,10 +2,9 @@
 
 class Controller_Manage_Access extends Controller_Manage
 {
+	public $template = 'template/manage';
 
-   public $template = 'template/manage';
-
-   public $auth_required = 'gadmin';
+	public $auth_required = 'gadmin';
 
 	public $secure_actions = array(
         // user actions
@@ -195,6 +194,4 @@ class Controller_Manage_Access extends Controller_Manage
             $view->errors = array();
         }
     }
-
-  
 }

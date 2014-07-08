@@ -35,7 +35,7 @@ class Controller_Manage extends Controller
 	public function __construct(Kohana_Request $request, Kohana_Response $response)
 	{
 		Auth::initialize();
-				
+
 		parent::__construct($request, $response);
 	}
 
@@ -65,12 +65,12 @@ class Controller_Manage extends Controller
         {
             return TRUE;
         }
-    
         
         if( !isset( Auth::$user->perms[ Auth::$user->data['groupID'] ] ) )
         {
             return FALSE;
         }
+		
         if( isset( $this->secure_actions[ $action ] ) )
         {
             $perms = Auth::$user->perms[ Auth::$user->data['groupID'] ];
@@ -113,8 +113,6 @@ class Controller_Manage extends Controller
 			Auth::$user->data['groupID'] = $groups[0];
 			Auth::$user->save();
         }
-        
-        
         
 		// Check user auth and role
 		$action_name = Request::current()->action();
@@ -173,5 +171,4 @@ class Controller_Manage extends Controller
 		}
 		parent::after();
    }
-
 }

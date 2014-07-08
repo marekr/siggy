@@ -38,8 +38,8 @@ class Controller_Manage_Billing extends Controller_Manage
 		}
 	}
 
-   public function action_overview()
-   {
+	public function action_overview()
+	{
 		$user = Auth::$user->data;
 		
 										
@@ -53,7 +53,7 @@ class Controller_Manage_Billing extends Controller_Manage
 		$charges = array();
 		$charges = DB::query(Database::SELECT, "SELECT * FROM billing_charges WHERE groupID=:group ORDER BY chargeID DESC LIMIT 0,10")
 										->param(':group', Auth::$user->data['groupID'])->execute()->as_array();
-      
+	  
 		$view = View::factory('manage/billing/overview');
 		$view->bind('payments', $payments);
 		$view->bind('charges', $charges);
@@ -65,15 +65,15 @@ class Controller_Manage_Billing extends Controller_Manage
 		
 		$this->template->content = $view;
 		$this->template->title = "Billing Overview";
-   }
+	}
 
-   /**
-    * View: Access not allowed.
-    */
-   public function action_noaccess() 
-   {
-      $this->template->title = __('Access not allowed');
-      $view = $this->template->content = View::factory('user/noaccess');
-   }
+	/**
+	* View: Access not allowed.
+	*/
+	public function action_noaccess() 
+	{
+		$this->template->title = __('Access not allowed');
+		$view = $this->template->content = View::factory('user/noaccess');
+	}
 
 }

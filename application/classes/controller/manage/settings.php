@@ -271,5 +271,4 @@ class Controller_Manage_Settings extends Controller_Manage
 		$this->template->title = __('Access not allowed');
 		$view = $this->template->content = View::factory('user/noaccess');
     }
-
 }
