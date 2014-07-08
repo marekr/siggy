@@ -36,11 +36,13 @@ class Controller_Stats extends FrontController
 		$dateRange = $datep->getTimestamps();
 		
 		//short names for vars for multipliers
-		$wormhole = (double)$this->groupData['stats_wh_map_points'];
-		$sig_add = (double)$this->groupData['stats_sig_add_points'];
-		$sig_update = (double)$this->groupData['stats_sig_update_points'];
-		$pos_add= (double)$this->groupData['stats_pos_add_points'];
-		$pos_update = (double)$this->groupData['stats_pos_update_points'];
+		$view->wormhole = $wormhole = (double)$this->groupData['stats_wh_map_points'];
+		$view->sig_add = $sig_add = (double)$this->groupData['stats_sig_add_points'];
+		$view->sig_update = $sig_update = (double)$this->groupData['stats_sig_update_points'];
+		$view->pos_add = $pos_add= (double)$this->groupData['stats_pos_add_points'];
+		$view->pos_update = $pos_update = (double)$this->groupData['stats_pos_update_points'];
+		
+		$number_per_page = 25;
 		
 		$resultCount = DB::query(Database::SELECT, "SELECT COUNT(*) as total
 											FROM 
@@ -60,7 +62,7 @@ class Controller_Stats extends FrontController
 								
 		$pagination = new Zebra_Pagination2();
 		$pagination->records($resultCount['total']);
-		$pagination->records_per_page(50);
+		$pagination->records_per_page($number_per_page);
 		
 		$paginationHTML = $pagination->render(true);
 		$offset = $pagination->next_page_offset();
@@ -76,7 +78,7 @@ class Controller_Stats extends FrontController
 											GROUP BY charID
 											HAVING score > 0
 											ORDER BY score DESC
-											LIMIT ".$offset.",50
+											LIMIT ".$offset.",".$number_per_page."
 											")
 								->param(':group', $this->groupData['groupID'])
 								->param(':start', $dateRange['start'])
@@ -87,6 +89,8 @@ class Controller_Stats extends FrontController
 		$view->results = $results;
 		$view->rank_offset = $offset;
 		$view->pagination = $paginationHTML;
+		
+		
 		$wrapper->content = $view;
 		$this->template->content = $wrapper;
 	}

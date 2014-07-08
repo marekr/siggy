@@ -151,7 +151,7 @@ class Controller_Manage_Settings extends Controller_App
 	private function __get_point_multiplier($value)
 	{
 		//cast it as a float
-		$value = (float)$value;
+		$value = (double)$value;
 		
 		if( $value > 1000 )
 		{
@@ -162,7 +162,7 @@ class Controller_Manage_Settings extends Controller_App
 			$value = 0;
 		}
 		
-		return (float)$value;
+		return (double)$value;
 	}
    
 	public function action_general()

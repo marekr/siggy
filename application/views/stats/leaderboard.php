@@ -42,23 +42,23 @@
 			</tr>
 			<tr>
 				<td>Sig Additions</td>
-				<td>1</td>
+				<td><?php echo $sig_add; ?>x</td>
 			</tr>
 			<tr>
 				<td>Sig Updates</td>
-				<td>1</td>
+				<td><?php echo $sig_update; ?>x</td>
 			</tr>
 			<tr>
 				<td>Wormholes</td>
-				<td>1</td>
+				<td><?php echo $wormhole; ?>x</td>
 			</tr>
 			<tr>
 				<td>POS Adds</td>
-				<td>1</td>
+				<td><?php echo $pos_add; ?>x</td>
 			</tr>
 			<tr>
 				<td>POS Edits</td>
-				<td>1</td>
+				<td><?php echo $pos_update; ?>x</td>
 			</tr>
 		</table>
 	</div>
