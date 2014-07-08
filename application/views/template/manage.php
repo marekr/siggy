@@ -76,8 +76,9 @@
                             
                             <?php if( Auth::$user->data['admin'] || $perms['can_manage_settings'] ): ?>
 							<li class="nav-header">Group Settings</li>
-							<li><?php echo Html::anchor('manage/group/settings', __('General')); ?></li>
-							<li><?php echo Html::anchor('manage/group/chainMapSettings', __('Chain Map')); ?></li>
+							<li><?php echo Html::anchor('manage/settings/general', __('General')); ?></li>
+							<li><?php echo Html::anchor('manage/settings/chain_map', __('Chain Map')); ?></li>
+							<li><?php echo Html::anchor('manage/settings/statistics', __('Statistics')); ?></li>
 							<?php endif; ?>
 									
                             <?php if( Auth::$user->data['admin'] || $perms['can_view_financial'] ): ?>
