@@ -506,7 +506,7 @@ final class groupUtils
 		{
 			$sub_group_data = $cache->get('subgroup-'.$sub_group_id);
 			
-			if( $subGroupData == null )
+			if( $sub_group_data == null )
 			{
 				$sub_group_data = DB::query(Database::SELECT, "SELECT * FROM subgroups WHERE subGroupID = :subGroup")
 												->param(':subGroup', $sub_group_id)

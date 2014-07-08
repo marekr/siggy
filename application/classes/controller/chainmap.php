@@ -388,7 +388,7 @@ class Controller_Chainmap extends FrontController
 			$mass = intval($_POST['mass']);	
 			
 						
-			$this->_addSystemToMap($whHash, $fromSysID, $toSysID, $eol, $mass);
+			mapUtils::addSystemToMap($this->groupData['groupID'],$this->groupData['subGroupID'],$whHash, $fromSysID, $toSysID, $eol, $mass);
 
 			$message = $this->groupData['charName'].' added wormhole manually between system IDs' . $fromSysID . ' and ' . $toSysID;
 

@@ -64,7 +64,6 @@ class Controller_Siggy extends FrontController
         $view->statsOpen = $statsOpen;
 		$view->igb = $this->igb;
 		
-		//$sessionID = $this->__generateSession();
 		$view->sessionID = '';
 	
 		$this->template->content = $view;
@@ -424,7 +423,7 @@ class Controller_Siggy extends FrontController
 		if( !isset($connection['hash'] ) )
 		{
 			//new wh
-			$this->_addSystemToMap($whHash, $origin, $dest);
+			mapUtils::addSystemToMap($this->groupData['groupID'],$this->groupData['subGroupID'], $whHash, $origin, $dest);
 			
 			miscUtils::increment_stat('wormholes', $this->groupData);
 		}
@@ -458,137 +457,6 @@ class Controller_Siggy extends FrontController
                 ->execute();
         }
 
-	}
-	
-	private function _addSystemToMap($whHash, $sys1,$sys2, $eol=0, $mass=0)
-	{
-		$sys1Connections = $this->__getConnectedSystems($sys1);	
-		$sys2Connections = $this->__getConnectedSystems($sys2);	
-		
-		$sys1Count = count($sys1Connections);
-		$sys2Count = count($sys2Connections);
-		
-		if( $sys1Count == 0 && $sys2Count != 0 )
-		{
-			$this->__placeSystem($sys2,$sys2Connections, $sys1);
-		}
-		else if( $sys2Count == 0 && $sys1Count != 0 )
-		{
-			//sys2 is "new"
-			 $this->__placeSystem($sys1,$sys1Connections, $sys2);
-		}
-		else if( $sys1Count == 0 && $sys2Count == 0 )
-		{
-			//both are new
-			//we just map one
-			//ensure its not a home system, those stay fixed lol
-			$homeSystems = groupUtils::getHomeSystems($this->groupData['groupID'], $this->groupData['subGroupID']);
-			if( in_array($sys2, $homeSystems) && !in_array($sys1, $homeSystems) )
-			{
-				//sys2 is home system
-				//map sys1 instead
-				$this->__placeSystem($sys2,$sys2Connections,$sys1);
-			}
-			else if( in_array($sys1, $homeSystems) && !in_array($sys2, $homeSystems) )
-			{
-				//sys1 is home system
-				//map sys2 instead
-				$this->__placeSystem($sys1,$sys1Connections,$sys2);
-			}
-			else
-			{
-				//don't mess with the system positions if both are home systems
-			}
-		}
-		
-		//default case is both systems already mapped, so just connect them
-		try
-		{
-			DB::query(Database::INSERT, 'INSERT INTO wormholes (`hash`, `to`, `from`, `groupID`, `subGroupID`, `lastJump`, `eol`, `mass`)
-														 VALUES(:hash, :to, :from, :groupID, :subGroupID, :lastJump, :eol, :mass)')
-							->param(':hash', $whHash )
-							->param(':to', $sys1 )
-							->param(':from', $sys2)
-							->param(':eol', $eol )
-							->param(':mass', $mass )
-							->param(':groupID', $this->groupData['groupID'] )
-							->param(':subGroupID', $this->groupData['subGroupID'] )
-							->param(':lastJump', time() )->execute();
-		}
-		catch( Exception $e )
-		{
-			//do nothing
-			return;
-		}
-		
-		groupUtils::rebuildMapCache($this->groupData['groupID'], $this->groupData['subGroupID']);
-	}
-	
-	private function __getConnectedSystems($system)
-	{
-		return DB::query(Database::SELECT, "SELECT x,y FROM activesystems 
-														WHERE groupID=:group AND
-														subGroupID=:subGroupID AND
-														systemID IN (SELECT
-																		CASE WHEN w.`to`=:sys
-																			THEN w.`from`
-																			ELSE w.`to`
-																		END AS `connected_system` 
-																		FROM wormholes w
-																		WHERE (w.`to`=:sys OR w.`from`=:sys) AND w.groupID=:group AND w.subGroupID=:subGroupID)")
-						->param(':sys', intval($system))
-						->param(':group', intval($this->groupData['groupID']))
-						->param(':subGroupID', intval($this->groupData['subGroupID']))
-						->execute()
-						->as_array();	
-	}
-	
-	private function __placeSystem($originSys, $originSystems, $systemToBePlaced)
-	{
-		$sysPos = NULL;
-		$sysData = DB::query(Database::SELECT, "SELECT * FROM activesystems 
-														WHERE groupID=:group AND
-														subGroupID=:subGroupID AND
-														systemID=:sys")
-						->param(':sys', $originSys)
-						->param(':group', $this->groupData['groupID'])
-						->param(':subGroupID', $this->groupData['subGroupID'])
-						->execute()
-						->current();
-										
-		$spots = mapUtils::generatePossibleSystemLocations($sysData['x'], $sysData['y']);
-
-		foreach($spots as $spot)
-		{
-			$intersect = false;
-			foreach($originSystems as $sys)
-			{
-				if( mapUtils::doBoxesIntersect(mapUtils::coordsToBB($spot['x'],$spot['y']), mapUtils::coordsToBB($sys['x'],$sys['y'])) )
-				{
-					$intersect = true;
-				}
-			}
-			
-			if( !$intersect )
-			{
-				//winnar!
-				$sysPos = $spot;
-				break;
-			}
-		}
-		
-		//if we didnt find a spot, just use the first one and call it a day
-		if( $sysPos == NULL )
-		{
-			$sysPOS = $spots[0];
-		}
-		
-		miscUtils::setActiveSystem($systemToBePlaced, array( 'x' => intval($sysPos['x']),
-															'y' => intval($sysPos['y']),
-															'lastUpdate' => time() ),
-											$this->groupData['groupID'],
-											$this->groupData['subGroupID']
-									);
 	}
 	
 	public function action_getJumpLog()
