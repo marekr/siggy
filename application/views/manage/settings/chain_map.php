@@ -1,4 +1,4 @@
-<form class="form-horizontal" action="<?php echo URL::base(TRUE,TRUE); ?>manage/group/chainMapSettings" method="post">
+<form class="form-horizontal" action="<?php echo URL::base(TRUE,TRUE); ?>manage/settings/chain_map" method="post">
 	<legend>Basic</legend>
 	<?php echo formRenderer::yesNo('Force location broadcasting?', 'alwaysBroadcast', $data['alwaysBroadcast'], 'If yes, broadcasting cannot be disabled by users.', $errors); ?>
     <?php echo formRenderer::yesNo('Display ship types for characters active in systems?', 'chain_map_show_actives_ships', $data['chain_map_show_actives_ships'], 'If yes, ship types will display next to the characters on hover over a system for the full activity list of characters.', $errors); ?>

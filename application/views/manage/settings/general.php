@@ -1,4 +1,4 @@
-<form class="form-horizontal" action="<?php echo URL::base(TRUE,TRUE); ?>manage/group/settings" method="post">
+<form class="form-horizontal" action="<?php echo URL::base(TRUE,TRUE); ?>manage/settings/general" method="post">
 	<legend>Group Settings</legend>
 	<?php echo formRenderer::input('Group Name', 'groupName', $data['groupName'], 'The name of your group be it alliance, corp or whatever. This is not important', $errors); ?>
 	<?php echo formRenderer::input('Group Ticker', 'groupTicker', $data['groupTicker'], 'The ticker of your group be it alliance, corp or whatever.', $errors); ?>
