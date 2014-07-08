@@ -278,10 +278,11 @@ class Controller_Siggy extends FrontController
                                                 p.pos_added_date, p.pos_owner, pt.pos_type_name, p.pos_notes
 												FROM pos_tracker p
                                                 INNER JOIN pos_types pt ON(pt.pos_type_id = p.pos_type)
-                                                WHERE p.group_id=:group_id AND p.pos_system_id=:system_id")
+                                                WHERE p.group_id=:group_id AND p.pos_system_id=:system_id
+												ORDER BY p.pos_location_planet ASC, p.pos_location_moon ASC")
 										->param(':group_id', $this->groupData['groupID'])
                                         ->param(':system_id', $systemID)
-                                        ->execute()->as_array('pos_id');	
+                                        ->execute()->as_array();	
 
         return $poses;
     }
