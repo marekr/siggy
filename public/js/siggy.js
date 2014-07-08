@@ -1129,7 +1129,7 @@ siggymain.prototype.switchSystem = function(systemID, systemName)
     
 	if( this.updateNow() )
 	{
-			$(document).trigger('siggy.switchSystem', systemID );
+		$(document).trigger('siggy.switchSystem', systemID );
 	}
 }
 
@@ -2209,6 +2209,9 @@ siggymain.prototype.saveSystemOptions = function(systemID, label, activity)
 				that.systemList[systemID].displayName = label;
 				that.systemList[systemID].activity = activity;
 			}
+			
+			$this.forceUpdate = true;
+			$this.updateNow();
 		});
 }
 
@@ -2223,7 +2226,6 @@ siggymain.prototype.initializeTabs = function()
     } );
     
     this.changeTab( '#sigs' );
-	
 }
 
 siggymain.prototype.changeTab = function( selectedTab )
@@ -2733,7 +2735,6 @@ siggymain.prototype.updatePOSList = function( data )
 			}
 		}
 		
-		
 		owner_names = array_unique(owner_names);
 		var owner_string = "<b>Residents:</b> "+implode(",",owner_names);
 		
@@ -2821,6 +2822,8 @@ siggymain.prototype.setupPOSForm = function(mode, posID)
 			$.post(action, posData, function ()
 			{
 				$this.forceUpdate = true;
+				$this.updateNow();
+				
 				$.unblockUI();
 			});
 		}
@@ -2836,10 +2839,14 @@ siggymain.prototype.editPOS = function(posID)
 
 siggymain.prototype.removePOS = function(posID)
 {
+	var $this = this;
 	this.confirmDialog("Are you sure you want to delete the POS?", function() {
 		$.post(this.settings.baseUrl + 'pos/remove', {pos_id: posID}, function ()
 		{
 			$('#pos-'+posID).remove();
+			
+			$this.forceUpdate = true;
+			$this.updateNow();
 		});
 	});
 }
