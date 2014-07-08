@@ -2748,13 +2748,13 @@ siggymain.prototype.updatePOSList = function( data )
 			{
 				offline++;
 			}
+			$this.poses[pos_id] = data[i];
 		}
 		
 		owner_names = array_unique(owner_names);
 		var owner_string = "<b>Residents:</b> "+implode(",",owner_names);
 		
 		summary = "<b>Total:</b> " + online + " online towers, " + offline + " offline towers" + "<br />" + owner_string;
-		$this.poses = data;
 	}
 	else
 	{
