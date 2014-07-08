@@ -4,7 +4,7 @@ require_once APPPATH.'classes/groupUtils.php';
 require_once APPPATH.'classes/mapUtils.php';
 require_once APPPATH.'classes/miscUtils.php';
 
-class Controller_Manage_Settings extends Controller_App
+class Controller_Manage_Settings extends Controller_Manage
 {
    /**
     * @var string Filename of the template file.

@@ -3,7 +3,6 @@
 
 require_once APPPATH.'classes/authsystem.php';
 
-
 /**
  * App controller class.
  *
@@ -11,7 +10,7 @@ require_once APPPATH.'classes/authsystem.php';
  * @package default
  * @version 1.0
  */
-class Controller_App extends Controller
+class Controller_Manage extends Controller
 {
 	public $template = 'template/default';
 

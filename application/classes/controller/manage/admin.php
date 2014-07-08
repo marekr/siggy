@@ -8,7 +8,7 @@
  * @version 1.0
  */
 
-class Controller_Manage_Admin extends Controller_App
+class Controller_Manage_Admin extends Controller_Manage
 {
 
    public $template = 'template/manage';

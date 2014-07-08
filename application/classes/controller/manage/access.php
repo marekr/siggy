@@ -1,6 +1,6 @@
 <?php
 
-class Controller_Manage_Access extends Controller_App
+class Controller_Manage_Access extends Controller_Manage
 {
 
    public $template = 'template/manage';
