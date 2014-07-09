@@ -46,7 +46,6 @@ class UserSession
 				
 			}
 			
-			
 			$this->__generateSession($this->sessionID);
 		}
         else
@@ -55,8 +54,8 @@ class UserSession
                 
             if( isset($sess['sessionID']) )
             {
-                $this->__updateSession( $this->sessionID );
                 Auth::$user->loadByID( $sess['userID'] );
+                $this->__updateSession( $this->sessionID );
             }
             else
             {
@@ -66,14 +65,13 @@ class UserSession
                 $passHash = Cookie::get('passHash');
                 if( $memberID && $passHash )
                 {
-                    
                     if( !Auth::autoLogin($memberID, $passHash) )
                     {
                         Cookie::delete('userID');
                         Cookie::delete('passHash');
                     }
-                    
                 }
+				
                 $this->__generateSession($this->sessionID);
             }
         }
@@ -146,11 +144,12 @@ class UserSession
 		{
 			return;
 		}
-
-
-		$update = array( 'lastBeep' => time() );
-
-        
+		
+		$update = array( 'lastBeep' => time(),
+						'groupID' => ( isset(Auth::$user->data['groupID']) ? Auth::$user->data['groupID'] : 0 ),
+						'subGroupID' =>  ( isset(Auth::$user->data['subGroupID']) ? UAuth::$user->ata['subGroupID'] : 0 ),
+		);
+		
 		DB::update('siggysessions')->set( $update )->where('sessionID', '=',  $this->sessionID)->execute();
 	}
 }
