@@ -112,74 +112,74 @@ final class miscUtils
 			foreach( $lines as $line )
 			{
 				$data = explode("\t", $line);
-				
 				if( count($data) < 2 )
 				{
 					continue;
 				}
 				
-				$sigData = array('type' => '', 'sig' => '', 'siteID' => 0);
+				$sigData = array('type' => 'none', 'sig' => '', 'siteID' => 0);
 				
 				$matches = array();
 				
-				preg_match("/^(Cosmic Signature)$/", $data[1], $matches );
-				if( !count($matches) )
+				foreach($data as $k => $item)
 				{
-					continue;	//skip
-				}
-				
-				preg_match("/^([a-zA-Z]{3})-([0-9]{3})$/", $data[0], $matches );
-				if( count($matches) == 3 )	//SIG-NUM, SIG, NUM
-				{
-					$sigData['sig'] = $matches[1];
-				}
-				else
-				{
-					continue;	//skip
-				}
-				
-				preg_match("/^(Wormhole|Data Site|Gas Site|Relic Site|Ore Site)$/", $data[2], $matches );
-				if( count($matches) == 2 )	
-				{
-					switch( $matches[1] )
+					$item = trim($item);
+					preg_match("/^([a-zA-Z]{3})-([0-9]{3})$/", $item, $matches );
+					
+					if( count($matches) == 3 )	//SIG-NUM, SIG, NUM
 					{
-						case 'Wormhole':
-							$sigData['type'] = 'wh';
-							break;
-						case 'Data Site':
-							$sigData['type'] = 'radar';
-							$sigData['siteID'] = self::siteIDLookupByName( $data[3], 'radar' );
-							break;
-						case 'Gas Site':
-							$sigData['type'] = 'ladar';
-							$sigData['siteID'] = self::siteIDLookupByName( $data[3], 'ladar' );
-							break;
-						case 'Relic Site':
-							$sigData['type'] = 'mag';
-							$sigData['siteID'] = self::siteIDLookupByName( $data[3], 'mag' );
-							break;
-						case 'Ore Site':
-							$sigData['type'] = 'grav';
-							$sigData['siteID'] = self::siteIDLookupByName( $data[3], 'grav' );
-							break;
-						case 'Combat Site':
-							$sigData['type'] = 'combat';
-							$sigData['siteID'] = 0;
-							break;
+						$sigData['sig'] = $matches[1];
+						continue;
+					}
+					
+					preg_match("/^(Cosmic Anomaly)$/", $item, $matches );
+					if( count($matches) )
+					{
+						//clear sig so we dont add it
+						$sigData['sig'] = '';
+						//and stop..
+						break;
+					}
+					
+					preg_match("/^(Wormhole|Data Site|Gas Site|Relic Site|Ore Site)$/", $item, $matches );
+					if( count($matches) == 2 )	
+					{
+						switch( $matches[1] )
+						{
+							case 'Wormhole':
+								$sigData['type'] = 'wh';
+								break;
+							case 'Data Site':
+								$sigData['type'] = 'radar';
+								$sigData['siteID'] = self::siteIDLookupByName( $data[$k+1], 'radar' );
+								break;
+							case 'Gas Site':
+								$sigData['type'] = 'ladar';
+								$sigData['siteID'] = self::siteIDLookupByName( $data[$k+1], 'ladar' );
+								break;
+							case 'Relic Site':
+								$sigData['type'] = 'mag';
+								$sigData['siteID'] = self::siteIDLookupByName( $data[$k+1], 'mag' );
+								break;
+							case 'Ore Site':
+								$sigData['type'] = 'grav';
+								$sigData['siteID'] = self::siteIDLookupByName( $data[3], 'grav' );
+								break;
+							case 'Combat Site':
+								$sigData['type'] = 'combat';
+								$sigData['siteID'] = 0;
+								break;
+						}
+						continue;
 					}
 				}
-				else if( $data[2] == "" )
+				
+				if( $sigData['sig'] != '' )
 				{
-					$sigData['type'] = 'none';
-					$sigData['siteID'] = 0;
+					$resultingSigs[] = $sigData;
 				}
-				else
-				{
-					continue;	//skip
-				}
-			
-				$resultingSigs[] = $sigData;
 			}
+			print_r($resultingSigs);
 			return $resultingSigs;
 		}
 		

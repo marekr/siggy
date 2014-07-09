@@ -803,16 +803,17 @@ class Controller_Siggy extends FrontController
 		$this->auto_render = FALSE;
 		header('content-type: application/json');
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-		
+
 		if(	 !$this->siggyAccessGranted() )
 		{
 			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
 			exit();
 		}
-		
+
 		if( isset($_POST['systemID']) && isset($_POST['blob']) && !empty($_POST['blob']) )
 		{
 			$sigs = miscUtils::parseIngameSigExport( $_POST['blob'] );
+			
 			$systemID = intval($_POST['systemID']);
 			
 			$addedSigs = array();
