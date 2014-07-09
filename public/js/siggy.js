@@ -2739,9 +2739,9 @@ siggymain.prototype.updatePOSList = function( data )
 			
 			body.append(row);
 			
-			owner_names.push(data[i].pos_owner);
 			if( parseInt(data[i].pos_online) == 1 )
 			{
+				owner_names.push(data[i].pos_owner);
 				online++;
 			}
 			else
