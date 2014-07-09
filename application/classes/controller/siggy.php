@@ -151,29 +151,6 @@ class Controller_Siggy extends FrontController
 		parent::after();
 	}
 	
-	private function getSystemList()
-	{
-			//removed	 ORDER BY sa.inUse DESC, sa.lastActive DESC because the client sorts it anyway
-			$time = time()-60*60*24;
-			
-			$extra = '';
-			if( !$this->shouldSysListShowReds() )
-			{
-				$extra = 'AND sa.inUse = 1 ';
-			}
-			
-			$systems = DB::query(Database::SELECT, "SELECT sa.systemID,ss.name,ss.sysClass,sa.displayName,sa.inUse,sa.lastActive,sa.activity FROM activesystems sa 
-													INNER JOIN solarsystems ss ON ss.id = sa.systemID
-													WHERE sa.groupID=:group AND sa.subGroupID=:subgroup AND sa.lastActive >=:time ".$extra."AND sa.lastActive != 0")
-										->param(':group', $this->groupData['groupID'])
-										->param(':subgroup', $this->groupData['subGroupID'])
-										->param(':time', $time)
-										->execute()
-										->as_array('systemID');	 
-										
-			return $systems;
-	}
-
 	private function findSystemIDByName( $id )
 	{
 		$systemData = DB::query(Database::SELECT, "SELECT ss.id,ss.name
@@ -833,7 +810,6 @@ class Controller_Siggy extends FrontController
 			exit();
 		}
 		
-		
 		if( isset($_POST['systemID']) && isset($_POST['blob']) && !empty($_POST['blob']) )
 		{
 			$sigs = miscUtils::parseIngameSigExport( $_POST['blob'] );
@@ -1004,6 +980,11 @@ class Controller_Siggy extends FrontController
 											$this->groupData['subGroupID']
 										);
 			echo json_encode('1');
+		
+			$system_data = $this->getSystemData($id);
+			
+			$log_message = sprintf('%s edited system %s; Display Name: %s, Activity Level %d', $this->groupData['charName'], $system_data['name'],  trim($_POST['label']),intval($_POST['activity']) );
+			groupUtils::log_action($this->groupData['groupID'],'editsystem', $log_message );
 			
 			groupUtils::rebuildMapCache($this->groupData['groupID'], $this->groupData['subGroupID']);
 		}
