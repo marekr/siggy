@@ -134,6 +134,7 @@ class Controller_Chainmap extends FrontController
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 		
 		$hashes = json_decode($_POST['hashes']);
+		$log_message = $this->groupData['charName'].' performed a mass delete of the following wormholes: ';
 		if( is_array($hashes) && count($hashes) > 0 )
 		{
 			foreach( $hashes as $k =>	 $v )
@@ -142,7 +143,11 @@ class Controller_Chainmap extends FrontController
 			}
 			$hashes = implode(',', $hashes);
 			
-			$wormholes = DB::query(Database::SELECT, 'SELECT * FROM	 wormholes WHERE hash IN('.$hashes.') AND groupID=:groupID AND subGroupID=:subGroupID')
+			$wormholes = DB::query(Database::SELECT, 'SELECT w.*, sto.name as to_name, sfrom.name as from_name
+														FROM	 wormholes w
+														INNER JOIN solarsystems sto ON sto.id = w.to
+														INNER JOIN solarsystems sfrom ON sfrom.id = w.from
+														WHERE w.hash IN('.$hashes.') AND w.groupID=:groupID AND w.subGroupID=:subGroupID')
 							->param(':groupID', $this->groupData['groupID'])
 							->param(':subGroupID', $this->groupData['subGroupID'])
 							->execute();
@@ -152,6 +157,8 @@ class Controller_Chainmap extends FrontController
 			{
 				$systemIDs[] = $wh['to'];
 				$systemIDs[] = $wh['from'];
+				
+				$log_message .= $wh['to_name'] . ' to ' . $wh['from_name'] . ', ';
 			}
 			$systemIDs = array_unique( $systemIDs );
 			
@@ -166,8 +173,7 @@ class Controller_Chainmap extends FrontController
 							->param(':subGroupID', $this->groupData['subGroupID'])
 							->execute();
 			
-			$message = $this->groupData['charName'].' deleted wormholes with IDs: '.implode(',', $systemIDs);
-			groupUtils::log_action($this->groupData['groupID'],'delwhs', $message );
+			groupUtils::log_action($this->groupData['groupID'],'delwhs', $log_message );
 			
 			$this->sysResetByMap( $systemIDs );
 			
@@ -207,8 +213,8 @@ class Controller_Chainmap extends FrontController
 					miscUtils::setActiveSystem($systemID, array('displayName' => '',
 																'inUse' => 0,
 																'activity' => 0 ),
-												$this->groupData['groupID'],
-												$this->groupData['subGroupID']
+													$this->groupData['groupID'],
+													$this->groupData['subGroupID']
 												);
 				}
 			}
@@ -222,7 +228,11 @@ class Controller_Chainmap extends FrontController
 		
 		$hash = ($_POST['hash']);
 	 
-		$wormhole = DB::query(Database::SELECT, 'SELECT * FROM	wormholes WHERE hash=:hash AND groupID=:groupID AND subGroupID=:subGroupID')
+		$wormhole = DB::query(Database::SELECT, 'SELECT w.*, sto.name as to_name, sfrom.name as from_name
+												 FROM wormholes w
+												 INNER JOIN solarsystems sto ON sto.id = w.to
+												 INNER JOIN solarsystems sfrom ON sfrom.id = w.from
+												 WHERE w.hash=:hash AND w.groupID=:groupID AND w.subGroupID=:subGroupID')
 							->param(':hash',$hash)
 							->param(':groupID', $this->groupData['groupID'])
 							->param(':subGroupID', $this->groupData['subGroupID'])
@@ -246,9 +256,8 @@ class Controller_Chainmap extends FrontController
 								->param(':subGroupID', $this->groupData['subGroupID'])
 								->execute();
 			
-		$message = $this->groupData['charName'].' deleted wormhole between system IDs: '.implode(',', array($wormhole['to'], $wormhole['from']) );
-
-		groupUtils::log_action($this->groupData['groupID'],'delwh', $message );
+		$log_message = $this->groupData['charName'].' deleted wormhole between systems '.$wormhole['to_name'].' and '.$wormhole['from_name'];
+		groupUtils::log_action($this->groupData['groupID'],'delwh', $log_message );
 			
 		$this->sysResetByMap( array($wormhole['to'], $wormhole['from']) );
 		
