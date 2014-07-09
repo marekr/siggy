@@ -35,33 +35,33 @@ final class miscUtils
 							);
 
 		public static $radarsLookup = array( 	1 => array( 0 => "",
-													 1 => "Forgotten Perimeter Coronation Platform",
-													 2 => "Forgotten Perimeter Power Array"
+													 1 => "Unsecured Perimeter Amplifier",
+													 2 => "Unsecured Perimeter Information Center"
 													),
 												2 => array( 
 													0  => "",
-													1  => "Forgotten Perimeter Gateway",
-													2  => "Forgoten Perimeter Habitation Coils"
+													1  => "Unsecured Perimeter Comms Relay",
+													2  => "Unsecured Transponder Farm"
 															),
 												3 => array( 
 													0  => "",
-													1  => "Forgotten Frontier Quarantine Outpost",
-													2  => "Forgotten Frontier Recursive Depot"
+													1  => "Unsecured Frontier Database",
+													2  => "Unsecured Frontier Receiver"
 															),
 												4 => array( 
 													0  => "",
-													1  => "Forgotten Frontier Conversion Module",
-													2  => "Forgotten Frontier Evacuation Center"
+													1  => "Unsecured Frontier Digital Nexus",
+													2  => "Unsecured Frontier Trinary Hub"
 															),
 												5 => array( 
 													0  => "",
-													1  => "Forgotten Core Data Field",
-													2  => "Forgotten Core Information Pen"
+													1  => "Unsecured Frontier Enclave Relay",
+													2  => "Unsecured Frontier Server Bank"
 															),
 												6 => array( 
 													0  => "",
-													1  => "Forgotten Core Assembly Hall",
-													2  => "Forgotten Circuitry Disassembler"
+													1  => "Unsecured Core Backup Array",
+													2  => "Unsecured Core Backup Array"
 															)
 							);
 								
@@ -179,7 +179,6 @@ final class miscUtils
 					$resultingSigs[] = $sigData;
 				}
 			}
-			print_r($resultingSigs);
 			return $resultingSigs;
 		}
 		
