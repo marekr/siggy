@@ -312,8 +312,6 @@ class Auth
 	
 	public static function initialize()
 	{
-		
-		
 		self::$user = new User();
 		self::$session = new UserSession();
 	}
