@@ -172,7 +172,7 @@ MAP */
 	max-width: 140px;
 	min-height:  30px;
 	background-color: #fff;
-	position:absolute;
+	position:absolute !important;
 	border: 3px solid #676767;
 	color: #000;
 	padding:1px;
