@@ -5,14 +5,36 @@
     <title><?php echo $title; ?></title>
 
     <!-- Le styles -->
-    <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/css/admin.css" rel="stylesheet">
-    <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo URL::base(TRUE, TRUE);?>public/css/manage.css" rel="stylesheet">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap3/js/bootstrap.min.js"></script>
+    <script src="<?php echo URL::base(TRUE, TRUE);?>public/js/jquery.metisMenu.js"></script>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+	
+	<script type="text/javascript">
+	$(function() {
+
+		$('#side-menu').metisMenu();
+
+	});
+
+	$(function() {
+		$(window).bind("load resize", function() {
+			width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
+			if (width < 768) {
+				$('div.sidebar-collapse').addClass('collapse')
+			} else {
+				$('div.sidebar-collapse').removeClass('collapse')
+			}
+		})
+	})
+	</script>
+	
 
     <!-- Le fav and touch icons -->
     <link rel="shortcut icon" href="<?php echo URL::base(TRUE, TRUE);?>favicon.ico">
@@ -24,94 +46,110 @@
 
 </head>
 <body>
+	<nav class="navbar navbar-inverse navbar-fixed-top navbar-siggy" role="navigation" style="margin-bottom: 0">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#">siggy</a>
+		</div>
+		<!-- /.navbar-header -->
 
-		<div class="navbar navbar-inverse navbar-fixed-top" style="margin: -1px -1px 0;">
-		  <div class="navbar-inner">
-			<div class="container" style="width: auto; padding: 0 20px;">
-			  <a class="brand" href="#">siggy</a>
-			  <ul class="nav">
-				<li class="active"><a href="<?php echo URL::base(TRUE,TRUE); ?>manage">Admin</a></li>
-			  </ul>
-			  <p class="navbar-text pull-right">
-				<a href="<?php echo URL::base(TRUE,TRUE); ?>">Back to scanning!</a>
-			  </p>
+		<ul class="nav navbar-top-links navbar-right">
+			<li><a>Back to scanning...</a></li>
+		</ul>
+		<!-- /.navbar-top-links -->
+
+		<div class="navbar-inverse navbar-static-side navbar-siggy" role="navigation">
+			<div class="sidebar-collapse">
+				<ul class="nav" id="side-menu">
+					<li>
+						<?php echo Html::anchor('manage/group/dashboard', __('Dashboard')); ?>
+					</li>
+					<?php if( Auth::$user->data['admin'] || $perms['can_manage_group_members'] || $perms['can_manage_access'] ): ?>
+					<li>
+						<a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Access<span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level">
+							<?php if( Auth::$user->data['admin'] || $perms['can_manage_group_members'] ): ?>
+							<li>
+								<?php echo Html::anchor('manage/group/members', __('Group Members')); ?>
+							</li>
+							<li>
+								<?php echo Html::anchor('manage/group/subgroups', __('Subgroups')); ?>
+							</li>
+							<?php endif; ?>
+							<?php if( Auth::$user->data['admin'] || $perms['can_manage_access'] ): ?>
+							<li>
+								<?php echo Html::anchor('manage/access/configure', __('Management Access')); ?>
+							</li>
+							<?php endif; ?>
+						</ul>
+						<!-- /.nav-second-level -->
+					</li>
+					<?php endif; ?>
+					<?php if( Auth::$user->data['admin'] || $perms['can_manage_settings'] ): ?>
+					<li>
+						<a href="#"><i class="fa fa-wrench fa-fw"></i>Settings<span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level">
+							<li>
+								<?php echo Html::anchor('manage/settings/general', __('General')); ?>
+							</li>
+							<li>
+								<?php echo Html::anchor('manage/settings/chain_map', __('Chain Map')); ?>
+							</li>
+							<li>
+								<?php echo Html::anchor('manage/settings/statistics', __('Statistics')); ?>
+							</li>
+						</ul>
+						<!-- /.nav-second-level -->
+					</li>
+					<?php endif; ?>
+					<?php if( Auth::$user->data['admin'] || $perms['can_view_logs'] ): ?>
+					<li>
+						<a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Activity<span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level">
+							<li>
+								<?php echo Html::anchor('manage/logs/activity', __('Usage Logs')); ?>
+							</li>
+							<li>
+								<?php echo Html::anchor('manage/logs/sessions', __('Active Sessions')); ?>
+							</li>
+						</ul>
+						<!-- /.nav-second-level -->
+					</li>
+					<?php endif; ?>
+					<?php if( Auth::$user->data['admin'] || $perms['can_view_financial'] ): ?>
+					<li>
+						<a href="#"><i class="fa fa-sitemap fa-fw"></i>Financial<span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level">
+							<li>
+								<?php echo Html::anchor('manage/billing/overview', __('Billing Overview')); ?>
+							</li>
+						</ul>
+						<!-- /.nav-second-level -->
+					</li>
+					<?php endif; ?>
+				</ul>
+				<!-- /#side-menu -->
 			</div>
-		  </div>
+			<!-- /.sidebar-collapse -->
 		</div>
-		<div id='sidemenu'>
-				<div class='well'>
-						<div id='logoutBox'>
-								<strong>Logged in as <?php echo Auth::$user->data['username']; ?> (<?php echo Html::anchor('account/logout', 'Log out'); ?>)</strong><br />
-								<?php if( count($avaliableGroups) > 1 ): ?>
-								<br />
-								<form action='<?php echo URL::base(TRUE, TRUE);?>manage/admin/changeGroup' method='post'>
-										<select name='group' onchange='submit();'>
-										<?php 
-											$selected = Auth::$user->data['groupID'];
-											foreach( $avaliableGroups as $m ): ?>
-											<option value="<?php echo $m['groupID']; ?>" <?php echo ( ($selected == $m['groupID']) ? "selected='seleced'" : ''); ?>><?php echo $m['groupName']; ?></option>
-										<?php endforeach; ?>
-										</select>
-								</form>
-								<?php endif; ?>
-						</div>
-						<ul class="nav nav-list">
-							<li class="nav-header">Information</li>
-							<li><?php echo Html::anchor('manage/group/dashboard', __('Announcements')); ?></li>
-                            <?php if( Auth::$user->data['admin'] || $perms['can_view_logs'] ): ?>
-							<li><?php echo Html::anchor('manage/logs/activity', __('Usage Logs')); ?></li>
-							<li><?php echo Html::anchor('manage/logs/sessions', __('Active Sessions')); ?></li>
-							<?php endif; ?>
-							
-                            <?php if( Auth::$user->data['admin'] || $perms['can_manage_group_members'] || $perms['can_manage_access'] ): ?>
-							<li class="nav-header">Group Access</li>
-							<?php endif; ?>
-                            <?php if( Auth::$user->data['admin'] || $perms['can_manage_group_members'] ): ?>
-							<li><?php echo Html::anchor('manage/group/members', __('Group Members')); ?></li>
-							<li><?php echo Html::anchor('manage/group/subgroups', __('Subgroups')); ?></li>
-							<?php endif; ?>
-                            <?php if( Auth::$user->data['admin'] || $perms['can_manage_access'] ): ?>
-							<li><?php echo Html::anchor('manage/access/configure', __('Management Access')); ?></li>
-							<?php endif; ?>
-                            
-                            <?php if( Auth::$user->data['admin'] || $perms['can_manage_settings'] ): ?>
-							<li class="nav-header">Group Settings</li>
-							<li><?php echo Html::anchor('manage/settings/general', __('General')); ?></li>
-							<li><?php echo Html::anchor('manage/settings/chain_map', __('Chain Map')); ?></li>
-							<li><?php echo Html::anchor('manage/settings/statistics', __('Statistics')); ?></li>
-							<?php endif; ?>
-									
-                            <?php if( Auth::$user->data['admin'] || $perms['can_view_financial'] ): ?>
-							<li class="nav-header">Financial</li>
-							<li><?php echo Html::anchor('manage/billing/overview', __('Billing Overview')); ?></li>
-							<?php endif; ?>
-							
-							<?php if(Auth::$user->isAdmin()): ?>
-							<li class="nav-header">Admin</li>
-							<li><?php echo Html::anchor('manage/admin/groups', __('Groups')); ?></li>
-							<?php endif; ?>				 
-						</ul> 
-				</div>
+		<!-- /.navbar-static-side -->
+	</nav>
+	<div id="page-wrapper">
+		<?php if(Message::count() > 0): ?>
+		<div class="row">
+			<div class="alert alert-info">
+			<?php echo Message::output(); ?>
+			</div>
 		</div>
-     
-     
-     
-     <div id='content'>
-	  <div class="container-fluid">
-
-		<div class="row-fluid">
-    <?php
-     // output messages
-     if(Message::count() > 0) {
-       echo '<div class="alert alert-info">';
-       echo Message::output();
-       echo '</div>';
-     }
-     ?>
-				<?php echo $content; ?>
+		<?php endif; ?>
+		<div class="row">
+			<?php echo $content; ?>
 		</div>
-		</div>
-     </div>
-   
+   </div>
 </body>
 </html>
