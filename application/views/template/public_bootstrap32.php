@@ -75,8 +75,6 @@
 			</ul>
 		</div>
 	</div>
-	
-	<div class="height:40px;"></div>
 
 	<?php if( $layoutMode == 'blank' ): ?>
 	<div class="container">
