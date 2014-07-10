@@ -57,7 +57,7 @@ class Controller_Manage_Settings extends Controller_Manage
 				$group->chain_map_show_actives_ships = intval($_POST['chain_map_show_actives_ships']);
 				
 				$group->save();
-					
+				
 				Message::add('success', __('Chain map settings saved.'));
 				
 				groupUtils::recacheGroup( Auth::$user->data['groupID'] );

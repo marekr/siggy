@@ -142,11 +142,10 @@
 	<div id="page-wrapper">
 		<?php if(Message::count() > 0): ?>
 		<div class="row">
-			<div class="alert alert-info">
 			<?php echo Message::output(); ?>
-			</div>
 		</div>
 		<?php endif; ?>
+		
 		<div class="row">
 			<?php echo $content; ?>
 		</div>
