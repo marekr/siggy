@@ -88,7 +88,6 @@
 			</li>
 		</ul>
 		<!-- /.navbar-top-links -->
-
 		<div class="navbar-inverse navbar-static-side navbar-siggy" role="navigation">
 			<div class="sidebar-collapse">
 				<ul class="nav" id="side-menu">
@@ -96,7 +95,7 @@
 						<?php echo Html::anchor('manage/group/dashboard', __('<i class="fa fa-sitemap fa-fw"></i>Dashboard')); ?>
 					</li>
 					<?php if( Auth::$user->data['admin'] || $perms['can_manage_group_members'] || $perms['can_manage_access'] ): ?>
-					<li>
+					<li class="<?php echo (Request::initial()->controller() == "Group"?" active" : "") ?>">
 						<a href="#"><i class="fa fa-key fa-fw"></i> Access<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
 							<?php if( Auth::$user->data['admin'] || $perms['can_manage_group_members'] ): ?>
@@ -117,7 +116,7 @@
 					</li>
 					<?php endif; ?>
 					<?php if( Auth::$user->data['admin'] || $perms['can_manage_settings'] ): ?>
-					<li>
+					<li class="<?php echo (Request::initial()->controller() == "Settings"?" active" : "") ?>">
 						<a href="#"><i class="fa fa-wrench fa-fw"></i>Settings<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
 							<li>
@@ -134,7 +133,7 @@
 					</li>
 					<?php endif; ?>
 					<?php if( Auth::$user->data['admin'] || $perms['can_view_logs'] ): ?>
-					<li>
+					<li class="<?php echo (Request::initial()->controller() == "Logs"?" active" : "") ?>">
 						<a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Activity<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
 							<li>
