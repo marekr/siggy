@@ -36,9 +36,9 @@ class formRenderer
 		
 		$attributes['class'] = 'radio_buttons';
 		
-      $result = "<label class='yes radio inline'>";
+      $result = "<label class='yes radio-inline'>";
 			$result .= Kohana_Form::radio($key, 1, ($value == 1 ? TRUE : FALSE), $attributes);	
-      $result .= "Yes </label><label class='no radio inline'>";
+      $result .= "Yes </label><label class='no radio-inline'>";
 			$result .= Kohana_Form::radio($key, 0, ($value == 0 ? TRUE : FALSE), $attributes);	
       $result .= "No </label>";
       
@@ -105,7 +105,6 @@ class formRenderer
 	</div>
 </div>
 OUT;
-
 		return $out;
 	}
 }

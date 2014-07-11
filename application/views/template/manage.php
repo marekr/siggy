@@ -6,6 +6,7 @@
 
     <!-- Le styles -->
     <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo URL::base(TRUE, TRUE);?>public/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="<?php echo URL::base(TRUE, TRUE);?>public/css/manage.css" rel="stylesheet">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap3/js/bootstrap.min.js"></script>
@@ -67,11 +68,11 @@
 			<div class="sidebar-collapse">
 				<ul class="nav" id="side-menu">
 					<li>
-						<?php echo Html::anchor('manage/group/dashboard', __('Dashboard')); ?>
+						<?php echo Html::anchor('manage/group/dashboard', __('<i class="fa fa-sitemap fa-fw"></i>Dashboard')); ?>
 					</li>
 					<?php if( Auth::$user->data['admin'] || $perms['can_manage_group_members'] || $perms['can_manage_access'] ): ?>
 					<li>
-						<a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Access<span class="fa arrow"></span></a>
+						<a href="#"><i class="fa fa-key fa-fw"></i> Access<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
 							<?php if( Auth::$user->data['admin'] || $perms['can_manage_group_members'] ): ?>
 							<li>
@@ -123,7 +124,7 @@
 					<?php endif; ?>
 					<?php if( Auth::$user->data['admin'] || $perms['can_view_financial'] ): ?>
 					<li>
-						<a href="#"><i class="fa fa-sitemap fa-fw"></i>Financial<span class="fa arrow"></span></a>
+						<a href="#"><i class="fa fa-university fa-fw"></i>Financial<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
 							<li>
 								<?php echo Html::anchor('manage/billing/overview', __('Billing Overview')); ?>
@@ -147,7 +148,9 @@
 		<?php endif; ?>
 		
 		<div class="row">
-			<?php echo $content; ?>
+			<div class="col-lg-12">
+				<?php echo $content; ?>
+			</div>
 		</div>
    </div>
 </body>
