@@ -56,6 +56,14 @@ class Controller_Manage_Group extends Controller_Manage
 									->execute()->as_array();
 
 		$view->bind('news', $news);
+		
+		$view->perms = isset(Auth::$user->perms[ Auth::$user->data['groupID'] ]) ? Auth::$user->perms[ Auth::$user->data['groupID'] ] : array();
+		
+		
+		$group = ORM::factory('group', Auth::$user->data['groupID']);
+		$members = $group->groupmembers->where('subGroupID', '=', 0)->find_all();
+		
+		$view->set('member_count', count($members) );
 
 		$this->template->content = $view;
 	}
@@ -101,7 +109,6 @@ class Controller_Manage_Group extends Controller_Manage
 		
 		$id = intval($this->request->param('id'));
 		
-		
 		if( $id == 0 || $id == 1 )
 		{
 			$results = array();
@@ -121,7 +128,6 @@ class Controller_Manage_Group extends Controller_Manage
 				{
 					$results = miscUtils::searchEVEEntityByName( $_POST['searchName'], $_POST['memberType'] );
 					$view->bind('memberType', $_POST['memberType'] );
-
 				}
 			}
 			
@@ -144,34 +150,34 @@ class Controller_Manage_Group extends Controller_Manage
 				{
 					try 
 					{
-							$member = ORM::factory('groupmember');
-							$member->eveID = $_POST['eveID'];
-							$member->accessName = $_POST['accessName'];
-							$member->groupID = Auth::$user->data['groupID'];
-							$member->memberType = $_POST['memberType'];
-							if( isset( $_POST['subGroupID'] ) )
-							{
-									$member->subGroupID = $_POST['subGroupID'];
-							}
-							else
-							{
-									$member->subGroupID = 0;
-							}
-							$member->save();
-							if( $member->memberType == 'corp' )
-							{
-									groupUtils::recacheCorpList();
-									groupUtils::recacheCorp($member->eveID);
-							}
-							elseif( $member->memberType == 'char' )
-							{
-									groupUtils::recacheCharList();
-									groupUtils::recacheChar($member->eveID);
-							}
-							
-							Message::add('sucess', 'Group member added');
-							HTTP::redirect('manage/group/members');
-							return;
+						$member = ORM::factory('groupmember');
+						$member->eveID = $_POST['eveID'];
+						$member->accessName = $_POST['accessName'];
+						$member->groupID = Auth::$user->data['groupID'];
+						$member->memberType = $_POST['memberType'];
+						if( isset( $_POST['subGroupID'] ) )
+						{
+							$member->subGroupID = $_POST['subGroupID'];
+						}
+						else
+						{
+							$member->subGroupID = 0;
+						}
+						$member->save();
+						if( $member->memberType == 'corp' )
+						{
+							groupUtils::recacheCorpList();
+							groupUtils::recacheCorp($member->eveID);
+						}
+						elseif( $member->memberType == 'char' )
+						{
+							groupUtils::recacheCharList();
+							groupUtils::recacheChar($member->eveID);
+						}
+						
+						Message::add('sucess', 'Group member added');
+						HTTP::redirect('manage/group/members');
+						return;
 					} 
 					catch (ORM_Validation_Exception $e) 
 					{
@@ -221,51 +227,49 @@ class Controller_Manage_Group extends Controller_Manage
 			$view->set('mode', 'add');
 			$view->bind('errors', $errors);
 			$view->bind('data', $data);
-
-			
 			
 			if ($this->request->method() == "POST") 
 			{
-					try 
+				try 
+				{
+					$member = ORM::factory('groupmember');
+					$member->eveID = $_POST['eveID'];
+					$member->accessName = $_POST['accessName'];
+					$member->groupID = Auth::$user->data['groupID'];
+					$member->memberType = $_POST['memberType'];
+					if( isset( $_POST['subGroupID'] ) )
 					{
-							$member = ORM::factory('groupmember');
-							$member->eveID = $_POST['eveID'];
-							$member->accessName = $_POST['accessName'];
-							$member->groupID = Auth::$user->data['groupID'];
-							$member->memberType = $_POST['memberType'];
-							if( isset( $_POST['subGroupID'] ) )
-							{
-									$member->subGroupID = $_POST['subGroupID'];
-							}
-							else
-							{
-									$member->subGroupID = 0;
-							}
-							$member->save();
-							if( $member->memberType == 'corp' )
-							{
-									groupUtils::recacheCorpList();
-									groupUtils::recacheCorp($member->eveID);
-							}
-							elseif( $member->memberType == 'char' )
-							{
-									groupUtils::recacheCharList();
-									groupUtils::recacheChar($member->eveID);
-							}
-							HTTP::redirect('manage/group/members');
-							return;
-					} 
-					catch (ORM_Validation_Exception $e) 
-					{
-							// Get errors for display in view
-							// Note how the first param is the path to the message file (e.g. /messages/register.php)
-							Message::add('error', __('Error: Values could not be saved.'));
-							$errors = $e->errors('addMember');
-							$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
-							// Pass on the old form values
-
-							$view->set('data', array('eveID' => $_POST['eveID'], 'accessName' => $_POST['accessName']) );
+							$member->subGroupID = $_POST['subGroupID'];
 					}
+					else
+					{
+							$member->subGroupID = 0;
+					}
+					$member->save();
+					if( $member->memberType == 'corp' )
+					{
+							groupUtils::recacheCorpList();
+							groupUtils::recacheCorp($member->eveID);
+					}
+					elseif( $member->memberType == 'char' )
+					{
+							groupUtils::recacheCharList();
+							groupUtils::recacheChar($member->eveID);
+					}
+					HTTP::redirect('manage/group/members');
+					return;
+				} 
+				catch (ORM_Validation_Exception $e) 
+				{
+					// Get errors for display in view
+					// Note how the first param is the path to the message file (e.g. /messages/register.php)
+					Message::add('error', __('Error: Values could not be saved.'));
+					$errors = $e->errors('addMember');
+					$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
+					// Pass on the old form values
+
+					$view->set('data', array('eveID' => $_POST['eveID'], 'accessName' => $_POST['accessName']) );
+				}
 			}
 			$view->set('user', Auth::$user->data);
 
@@ -307,51 +311,51 @@ class Controller_Manage_Group extends Controller_Manage
 
 				if( !empty($_POST['password']) && !empty($_POST['password_confirm']) )
 				{
-						if( $_POST['password'] == $_POST['password_confirm'] )
-						{
-								$sg->sgAuthPassword = sha1($_POST['password'].$group->authSalt);
-						}
-						else
-						{
-								Message::add( 'error', __('Error: The password was not saved because it did not match between the two fields.') );
-						}
+					if( $_POST['password'] == $_POST['password_confirm'] )
+					{
+						$sg->sgAuthPassword = sha1($_POST['password'].$group->authSalt);
+					}
+					else
+					{
+						Message::add( 'error', __('Error: The password was not saved because it did not match between the two fields.') );
+					}
 				}
 
 
 				$homeSystems = trim($_POST['sgHomeSystems']);
 				if( !empty($homeSystems) )
 				{
-						$homeSystems = explode(',', $homeSystems);
-						$homeSystemIDs = array();
-						if( is_array( $homeSystems ) )
+					$homeSystems = explode(',', $homeSystems);
+					$homeSystemIDs = array();
+					if( is_array( $homeSystems ) )
+					{
+						foreach($homeSystems as $k => $v)
 						{
-								foreach($homeSystems as $k => $v)
+							if( trim($v) != '' )
+							{
+								$id = $this->__findSystemByName(trim($v));
+								if( $id != 0 )
 								{
-										if( trim($v) != '' )
-										{
-												$id = $this->__findSystemByName(trim($v));
-												if( $id != 0 )
-												{
-													$homeSystemIDs[] = $id;
-												}
-												else
-												{
-														unset($homeSystems[ $k ] );
-												}
-										}
-										else
-										{
-												unset($homeSystems[ $k ] );
-										}
+									$homeSystemIDs[] = $id;
 								}
+								else
+								{
+									unset($homeSystems[ $k ] );
+								}
+							}
+							else
+							{
+								unset($homeSystems[ $k ] );
+							}
 						}
-						$sg->sgHomeSystemIDs = implode(',', $homeSystemIDs);
-						$sg->sgHomeSystems = implode(',', $homeSystems);
+					}
+					$sg->sgHomeSystemIDs = implode(',', $homeSystemIDs);
+					$sg->sgHomeSystems = implode(',', $homeSystems);
 				}
 				else
 				{
-						$sg->sgHomeSystems = '';
-						$sg->sgHomeSystemIDs = '';
+					$sg->sgHomeSystems = '';
+					$sg->sgHomeSystemIDs = '';
 				}												
 
 				$sg->sgSkipPurgeHomeSigs = intval($_POST['sgSkipPurgeHomeSigs']);
@@ -396,8 +400,8 @@ class Controller_Manage_Group extends Controller_Manage
 		$member = ORM::factory('groupmember', $id);
 		if( $member->groupID != Auth::$user->data['groupID'] )
 		{
-				Message::add('error', __('Error: You do not have permission to edit that group member.'));
-				HTTP::redirect('manage/group/members');
+			Message::add('error', __('Error: You do not have permission to edit that group member.'));
+			HTTP::redirect('manage/group/members');
 		}
 
 		$errors = array();
@@ -433,6 +437,7 @@ class Controller_Manage_Group extends Controller_Manage
 				{
 					$member->subGroupID = 0;
 				}
+				
 				$member->save();
 				if( $member->memberType == 'corp' )
 				{
@@ -444,6 +449,7 @@ class Controller_Manage_Group extends Controller_Manage
 					groupUtils::recacheCharList();
 					groupUtils::recacheChar($member->eveID);
 				}
+				
 				HTTP::redirect('manage/group/members');
 				return;
 			} 
@@ -501,11 +507,11 @@ class Controller_Manage_Group extends Controller_Manage
 				{
 					if( $_POST['password'] == $_POST['password_confirm'] )
 					{
-							$sg->sgAuthPassword = sha1($_POST['password'].$group->authSalt);
+						$sg->sgAuthPassword = sha1($_POST['password'].$group->authSalt);
 					}
 					else
 					{
-							Message::add( 'error', __('Error: The password was not saved because it did not match between the two fields.') );
+						Message::add( 'error', __('Error: The password was not saved because it did not match between the two fields.') );
 					}
 				}
 
@@ -524,26 +530,26 @@ class Controller_Manage_Group extends Controller_Manage
 								$id = $this->__findSystemByName(trim($v));
 								if( $id != 0 )
 								{
-										$homeSystemIDs[] = $id;
+									$homeSystemIDs[] = $id;
 								}
 								else
 								{
-										unset($homeSystems[ $k ] );
+									unset($homeSystems[ $k ] );
 								}
 							}
 							else
 							{
-									unset($homeSystems[ $k ] );
+								unset($homeSystems[ $k ] );
 							}
 						}
 					}
-						$sg->sgHomeSystemIDs = implode(',', $homeSystemIDs);
-						$sg->sgHomeSystems = implode(',', $homeSystems);
+					$sg->sgHomeSystemIDs = implode(',', $homeSystemIDs);
+					$sg->sgHomeSystems = implode(',', $homeSystems);
 				}
 				else
 				{
-						$sg->sgHomeSystems = '';
-						$sg->sgHomeSystemIDs = '';
+					$sg->sgHomeSystems = '';
+					$sg->sgHomeSystemIDs = '';
 				}						
 
 				$sg->sgSkipPurgeHomeSigs = intval($_POST['sgSkipPurgeHomeSigs']);

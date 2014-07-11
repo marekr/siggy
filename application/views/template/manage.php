@@ -60,7 +60,34 @@
 		<!-- /.navbar-header -->
 
 		<ul class="nav navbar-top-links navbar-right">
-			<li><a>Back to scanning...</a></li>
+			<li>
+				<a href="<?php echo URL::base(TRUE,TRUE); ?>">Back to scanning!</a>
+			</li>
+			<li class="dropdown">
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+					<i class="fa fa-user fa-fw"></i> <?php echo Auth::$user->data['username']; ?> <i class="fa fa-caret-down"></i>
+				</a>
+				<ul class="dropdown-menu dropdown-user">
+					<li>								
+						<?php if( count($avaliableGroups) > 1 ): ?>
+						<form action='<?php echo URL::base(TRUE, TRUE);?>manage/admin/changeGroup' method='post' style="padding: 6px;">
+							<select name='group' class="form-control input-sm " onchange='submit();'>
+							<?php 
+								$selected = Auth::$user->data['groupID'];
+								foreach( $avaliableGroups as $m ): ?>
+								<option value="<?php echo $m['groupID']; ?>" <?php echo ( ($selected == $m['groupID']) ? "selected='seleced'" : ''); ?>><?php echo $m['groupName']; ?></option>
+							<?php endforeach; ?>
+							</select>
+						</form>
+						<?php endif; ?>
+					</li>
+					<li class="divider"></li>
+					<li>
+						<?php echo Html::anchor('account/logout', '<i class="fa fa-sign-out fa-fw"></i>Log out'); ?>
+					</li>
+				</ul>
+				<!-- /.dropdown-user -->
+			</li>
 		</ul>
 		<!-- /.navbar-top-links -->
 
