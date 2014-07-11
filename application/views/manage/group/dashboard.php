@@ -11,5 +11,4 @@
 
 <?php if( defined("SIGGY_VERSION") ): ?>
 <p class="pull-right"><small>siggy version: <?php echo SIGGY_VERSION; ?></small></p>
-
 <?php endif; ?>

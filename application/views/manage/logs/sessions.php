@@ -3,12 +3,14 @@
 <p>Please note, if you change the group password or remove someones access, they will still show as an active session but they will no longer be updating.</p>
 
 <table class="table table-striped">
-	<tr>
-		<th width="5%"></th>
-		<th width="10%">Char. Name</th>
-		<th width="10%">ID</th>
-		<th width="75%">Details</th>
-	</tr>
+	<thead>
+		<tr>
+			<th width="5%"></th>
+			<th width="10%">Char. Name</th>
+			<th width="10%">ID</th>
+			<th width="75%">Details</th>
+		</tr>
+	</thead>
 	
 	<?php if( count($sessions) > 0 ): ?>
 	<?php foreach($sessions as $sess): ?>
@@ -19,29 +21,31 @@
 			</td>
 		<td><?php echo $sess['charID']; ?></td>
 		<td>
-        <table class="table table-condensed">
-          <tr>
-            <th width="10%">Session Type</th>
-            <th width="10%">Account ID</th>
-            <th width="15%">Subgroup</th>
-            <th width="15%">Time created</th>
-            <th width="15%">IP Address</th>
-            <th width="15%">Last update</th>
-          </tr>
-          <?php foreach($sess['data'] as $d): ?>
-          <tr>
-            <td>
-              <?php echo $d['sessionType'] == 'oog' ? 'Out of game' : 'Ingame'; ?>
-            </td>
-            <td><?php echo $d['userID']; ?></td>
-            <td><?php echo $d['sgName']; ?></td>
-            <td><?php echo date("d/m/y @ h:i:s",$d['created']); ?></td>
-            <td>
-              <?php echo $d['ipAddress']; ?>
-            </td>
-            <td><?php echo date("d/m/y @ h:i:s",$d['lastBeep']); ?></td>
-          </tr>
-          <?php endforeach; ?>
+		<table class="table table-condensed">
+			<thead>
+				<tr>
+					<th width="10%">Session Type</th>
+					<th width="10%">Account ID</th>
+					<th width="15%">Subgroup</th>
+					<th width="15%">Time created</th>
+					<th width="15%">IP Address</th>
+					<th width="15%">Last update</th>
+				</tr>
+			</thead>
+			<?php foreach($sess['data'] as $d): ?>
+			<tr>
+				<td>
+				<?php echo $d['sessionType'] == 'oog' ? 'Out of game' : 'Ingame'; ?>
+				</td>
+				<td><?php echo $d['userID']; ?></td>
+				<td><?php echo $d['sgName']; ?></td>
+				<td><?php echo date("d/m/y @ h:i:s",$d['created']); ?></td>
+				<td>
+				<?php echo $d['ipAddress']; ?>
+				</td>
+				<td><?php echo date("d/m/y @ h:i:s",$d['lastBeep']); ?></td>
+			</tr>
+			<?php endforeach; ?>
         </table>
 		
 		

@@ -8,22 +8,25 @@
 			<?php echo Html::anchor('manage/group/addSubGroup', __('<i class="icon-plus-sign"></i>&nbsp;Add New Sub Group'), array('class' => 'btn btn-primary pull-right') ); ?>
 			<div class="clearfix"></div>
 			<br />			
-<?php if( count( $subgroups->as_array() ) > 0 ): ?>
+			<?php if( count( $subgroups->as_array() ) > 0 ): ?>
 			<table class="table table-striped" width="100%">
-				<tr>
-					<th width="60%">Subgroup</th>
-					<th width="15%"># Members</th>
-					<th width="25%">Options</th>
-				</tr>
-      <?php foreach( $subgroups as $s ): ?>
-				<tr>
-					<td><?php echo $s->sgName ?></td>
-					<td><?php echo $s->groupmembers->count_all(); ?></td>
-					<td><?php echo Html::anchor('manage/group/editSubGroup/'.$s->subGroupID, __('<i class="icon-edit"></i>&nbsp;Edit')); ?> <?php echo Html::anchor('manage/group/removeSubGroup/'.$s->subGroupID, __('<i class="icon-trash"></i>&nbsp;Remove')); ?></td>
-				</tr>
-      <?php endforeach ?>
-      </table>
- <?php else: ?>
-	<p>No subgroups currently exist.</p>
- <?php endif; ?>
-<?php // echo View::factory('profiler/stats'); ?>
+				<thead>
+					<tr>
+						<th width="60%">Subgroup</th>
+						<th width="15%"># Members</th>
+						<th width="25%">Options</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach( $subgroups as $s ): ?>
+					<tr>
+						<td><?php echo $s->sgName ?></td>
+						<td><?php echo $s->groupmembers->count_all(); ?></td>
+						<td><?php echo Html::anchor('manage/group/editSubGroup/'.$s->subGroupID, __('<i class="icon-edit"></i>&nbsp;Edit')); ?> <?php echo Html::anchor('manage/group/removeSubGroup/'.$s->subGroupID, __('<i class="icon-trash"></i>&nbsp;Remove')); ?></td>
+					</tr>
+					<?php endforeach ?>
+				</tbody>
+			</table>
+			<?php else: ?>
+				<p>No subgroups currently exist.</p>
+			<?php endif; ?>

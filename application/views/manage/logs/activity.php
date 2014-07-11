@@ -17,12 +17,14 @@
 
 <?php echo $pagination; ?>
 <table class="table table-striped">
-	<tr>
-		<th width="20%">Log Date</th>
-		<th width="10%">Event Type</th>
-		<th width="70%">Log Message</th>
-	</tr>
-	
+	<thead>
+		<tr>
+			<th width="20%">Log Date</th>
+			<th width="10%">Event Type</th>
+			<th width="70%">Log Message</th>
+		</tr>
+	</thead>
+	<tbody>
 	<?php if( count($logs) > 0 ): ?>
 	<?php foreach($logs as $log): ?>
 	<tr>
@@ -32,5 +34,6 @@
 	</tr>
 	<?php endforeach; ?>
 	<?php endif; ?>
+	</tbody>
 </table>
 <?php echo $pagination; ?>
