@@ -9,7 +9,8 @@ if( count( $subgroups->as_array() ) > 0 )
 
 ?>
 <h2><?php echo __('Group Members') ?></h2>
-<p>The EVEID listed on this page are the ids that eve uses in game to reference your corp. You may find these from either your API info or sites such as http://evemaps.dotlan.net</p>
+<p>This page shows all corporations and characters that have access to your siggy group.</p>
+<p>The EVEID listed on this page are the IDs that eve uses in game to reference your corp. You may find these from either your API info or sites such as http://evemaps.dotlan.net</p>
 <div class="pull-right">
 <?php echo Html::anchor('manage/group/addMember', __('<i class="icon-plus-sign"></i>&nbsp;Add New Member'), array('class' => 'btn btn-primary') ); ?>
 </div>
