@@ -92,7 +92,7 @@
 			<div class="sidebar-collapse">
 				<ul class="nav" id="side-menu">
 					<li>
-						<?php echo Html::anchor('manage/group/dashboard', __('<i class="fa fa-sitemap fa-fw"></i>Dashboard')); ?>
+						<?php echo Html::anchor('manage/dashboard', __('<i class="fa fa-sitemap fa-fw"></i>Dashboard')); ?>
 					</li>
 					<?php if( Auth::$user->data['admin'] || $perms['can_manage_group_members'] || $perms['can_manage_access'] ): ?>
 					<li class="<?php echo (Request::initial()->controller() == "Group"?" active" : "") ?>">
@@ -147,7 +147,7 @@
 					</li>
 					<?php endif; ?>
 					<?php if( Auth::$user->data['admin'] || $perms['can_view_financial'] ): ?>
-					<li>
+					<li class="<?php echo (Request::initial()->controller() == "Billing"?" active" : "") ?>">
 						<a href="#"><i class="fa fa-university fa-fw"></i>Financial<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
 							<li>

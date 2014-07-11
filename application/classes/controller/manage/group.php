@@ -38,36 +38,13 @@ class Controller_Manage_Group extends Controller_Manage
 	{
 		if( Auth::$user->isGroupAdmin() || Auth::$user->data['admin'] ) 
 		{
-			HTTP::redirect('manage/group/dashboard');
+			HTTP::redirect('manage/group/members');
 		}
 		else 
 		{
 			HTTP::redirect('account/overview');
 		}
 	}
-   
-	public function action_dashboard()
-	{
-		$this->template->title = __('Manage');
-		$view = View::factory('manage/group/dashboard');
-
-
-		$news = DB::query(Database::SELECT, "SELECT * FROM announcements WHERE visibility = 'manage' OR visibility = 'all' ORDER BY datePublished DESC LIMIT 0,3")
-									->execute()->as_array();
-
-		$view->bind('news', $news);
-		
-		$view->perms = isset(Auth::$user->perms[ Auth::$user->data['groupID'] ]) ? Auth::$user->perms[ Auth::$user->data['groupID'] ] : array();
-		
-		
-		$group = ORM::factory('group', Auth::$user->data['groupID']);
-		$members = $group->groupmembers->where('subGroupID', '=', 0)->find_all();
-		
-		$view->set('member_count', count($members) );
-
-		$this->template->content = $view;
-	}
-
 	/**
 	* View: Access not allowed.
 	*/

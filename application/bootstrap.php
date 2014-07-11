@@ -229,8 +229,8 @@ Kohana::modules(array(
     
    Route::set('manage', 'manage(/<controller>(/<action>(/<id>)))')
     ->defaults(array(
-				'directory'  => 'manage',
-        'controller' => 'group',
+		'directory'  => 'manage',
+        'controller' => 'dashboard',
         'action' => 'index',
     )); 
     
