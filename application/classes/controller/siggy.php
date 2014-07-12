@@ -161,11 +161,11 @@ class Controller_Siggy extends FrontController
 													INNER JOIN systemeffects se ON ss.effect = se.id
 													INNER JOIN regions r ON ss.region = r.regionID
 													INNER JOIN constellations c ON ss.constellation = c.constellationID
-													LEFT OUTER JOIN activesystems sa ON (ss.id = sa.systemID  AND sa.groupID = :group AND sa.subGroupID=:subgroup)
+													LEFT OUTER JOIN activesystems sa ON (ss.id = sa.systemID  AND sa.groupID = :group AND sa.chainmap_id=:chainmap)
 													WHERE ss.id=:id")
 									->param(':id', $id)
 									->param(':group', $this->groupData['groupID'])
-									->param(':subgroup', $this->groupData['subGroupID'])
+									->param(':chainmap', $this->groupData['subGroupID'])
 									->execute()->current();
 		
 		if( !$systemData['id'] )
@@ -622,10 +622,10 @@ class Controller_Siggy extends FrontController
                     $update['chainMap']['lastUpdate'] = $this->mapData['updateTime'];
             }
 					
-            $activeSystemQuery = DB::query(Database::SELECT, 'SELECT lastUpdate FROM activesystems WHERE systemID=:id AND groupID=:group AND subGroupID=:subgroup')
+            $activeSystemQuery = DB::query(Database::SELECT, 'SELECT lastUpdate FROM activesystems WHERE systemID=:id AND groupID=:group AND chainmap_id=:chainmap')
 												->param(':id', $currentSystemID)
 												->param(':group',$this->groupData['groupID'])
-												->param(':subgroup', $this->groupData['subGroupID'])
+												->param(':chainmap', $this->groupData['subGroupID'])
 												->execute();
 
             $activeSystem = $activeSystemQuery->current();
@@ -648,24 +648,12 @@ class Controller_Siggy extends FrontController
                 $update['sigUpdate'] = (int) 1;
             }
 					
-            if( $this->groupData['subGroupID'] != 0 )
-            {
-                if( ( $_POST['lastGlobalNotesUpdate'] ) < $this->groupData['sgNotesTime'] )
-                {
-                    $update['globalNotesUpdate'] = (int) 1;
-                    $update['lastGlobalNotesUpdate'] = (int) $this->groupData['sgNotesTime'];
-                    $update['globalNotes'] = $this->groupData['sgNotes'];
-                }
-            }
-            else
-            {
-                if( ( $_POST['lastGlobalNotesUpdate'] ) < $this->groupData['lastNotesUpdate'] )
-                {
-                    $update['globalNotesUpdate'] = (int) 1;
-                    $update['lastGlobalNotesUpdate'] = (int) $this->groupData['lastNotesUpdate'];
-                    $update['globalNotes'] = $this->groupData['groupNotes'];
-                }
-            }
+			if( ( $_POST['lastGlobalNotesUpdate'] ) < $this->groupData['lastNotesUpdate'] )
+			{
+				$update['globalNotesUpdate'] = (int) 1;
+				$update['lastGlobalNotesUpdate'] = (int) $this->groupData['lastNotesUpdate'];
+				$update['globalNotes'] = $this->groupData['groupNotes'];
+			}
             
             $update['lastUpdate'] = $recordedLastUpdate;
         }
@@ -693,24 +681,12 @@ class Controller_Siggy extends FrontController
 		}			 		
 		
 		$notes = strip_tags($_POST['notes']);
-		if( $this->groupData['subGroupID'] != 0 )
-		{
-			$update['sgNotes'] = $notes;
-			$update['sgNotesTime'] = time();
-			DB::update('subgroups')->set( $update )->where('subGroupID', '=', $this->groupData['subGroupID'])->execute();
-			groupUtils::recacheSubGroup($this->groupData['groupID']);
-			
-			echo json_encode($update['sgNotesTime']);
-		}
-		else
-		{
-			$update['groupNotes'] = $notes;
-			$update['lastNotesUpdate'] = time();
-			DB::update('groups')->set( $update )->where('groupID', '=', $this->groupData['groupID'])->execute();
-			groupUtils::recacheGroup($this->groupData['groupID']);
-			
-			echo json_encode($update['lastNotesUpdate']);
-		}
+		$update['groupNotes'] = $notes;
+		$update['lastNotesUpdate'] = time();
+		DB::update('groups')->set( $update )->where('groupID', '=', $this->groupData['groupID'])->execute();
+		groupUtils::recacheGroup($this->groupData['groupID']);
+		
+		echo json_encode($update['lastNotesUpdate']);
 		exit();
 	}
 	

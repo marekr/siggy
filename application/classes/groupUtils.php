@@ -184,7 +184,7 @@ final class groupUtils
 
 		$cache = Cache::instance( CACHE_METHOD );
 		$group = DB::query(Database::SELECT, "SELECT * FROM groups WHERE groupID = :group")
-										->param(':group', $id)
+								->param(':group', $id)
 								->execute()
 								->current();
 		if( $group['groupID'] )
@@ -287,8 +287,8 @@ final class groupUtils
 
 		$cache = Cache::instance( CACHE_METHOD );
 		$sub_group = DB::query(Database::SELECT, "SELECT * FROM subgroups WHERE subGroupID = :subGroup")
-											->param(':subGroup', $id)
-					  ->execute()->current();
+										->param(':subGroup', $id)
+										->execute()->current();
 				  
 		if( $sub_group['subGroupID'] )
 		{
