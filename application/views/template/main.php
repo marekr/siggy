@@ -46,38 +46,34 @@
 					<img src="https://image.eveonline.com/Character/<?php echo $charID; ?>_64.jpg" height="32px"/>
 					<p class="name"><?php echo $charName; ?> <?php if( $apilogin ): ?>[<a href='<?php echo URL::base(TRUE, TRUE);?>account/logout'>Logout</a>]<?php endif;?>
 					<br />
-					<?php if( ( count( $group['access_groups']) > 1  ) || (count( current( $group['access_groups'] ) ) > 1 ) ):?>							
-							<div class="dropdown" style="display:inline-block;">
-									<a data-toggle="dropdown" href="#">
-										<?php echo $group['groupName']; ?> - 
-										<?php echo $group['groupTicker'] ?>&nbsp;&nbsp;&nbsp;<span style='font-style:normal;font-weight:bold;'>&#x25BC;</span>
-									</a>
-									<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-										<?php foreach( $group['access_groups'] as $g ): ?>
-											<li>
-												
-												<a href="<?php echo URL::base(); ?>access/switch_membership/?k=<?php echo md5($g['group_id']); ?>">
-												<?php echo $g['group_name']; ?>
-												</a>
-											</li>
-										<?php endforeach; ?>
-									</ul>
-									<br clear='all' />
-							</div>
-							<?php else: ?>
-							<span style="font-size:0.9em;font-style:italic;font-weight: normal;" title="Current access"><?php echo $group['groupName']; ?> - <?php echo $group['groupTicker'] ?></span>
-							<?php endif; ?>
+					<?php if( count( $group['access_groups']) > 1  ):?>							
+						<div class="dropdown" style="display:inline-block;">
+								<a data-toggle="dropdown" href="#">
+									<?php echo $group['groupName']; ?>&nbsp;&nbsp;&nbsp;<span style='font-style:normal;font-weight:bold;'>&#x25BC;</span>
+								</a>
+								<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+									<?php foreach( $group['access_groups'] as $g ): ?>
+										<li>
+											<a href="<?php echo URL::base(); ?>access/switch_membership/?k=<?php echo md5($g['group_id']); ?>">
+											<?php echo $g['group_name']; ?>
+											</a>
+										</li>
+									<?php endforeach; ?>
+								</ul>
+								<br clear='all' />
+						</div>
+						<?php else: ?>
+						<span style="font-size:0.9em;font-style:italic;font-weight: normal;" title="Current access"><?php echo $group['groupName']; ?></span>
+						<?php endif; ?>
 					</p>
 				</div>
-				<?php if( $siggyMode ): ?>
-					<div id="update-time">
-						<span id="loading" style="display:none;"><img src="<?php echo URL::base(TRUE, TRUE);?>public/images/ajax-loader.gif" />&nbsp;</span>
-						Selected System: <span id="currentsystem"><b>System</b></span><br />
-						<?php if( $igb ): ?>
-							Your Location: <span id="acsname" title='Your current location'><b>System</b></span>
-						<?php endif; ?>
-					</div>
-				<?php endif; ?>
+				<div id="update-time">
+					<span id="loading" style="display:none;"><img src="<?php echo URL::base(TRUE, TRUE);?>public/images/ajax-loader.gif" />&nbsp;</span>
+					Selected System: <span id="currentsystem"><b>System</b></span><br />
+					<?php if( $igb ): ?>
+						Your Location: <span id="acsname" title='Your current location'><b>System</b></span>
+					<?php endif; ?>
+				</div>
 			</div>
 			<div id="header-tools">
 				<?php echo $headerTools; ?>
@@ -107,7 +103,7 @@
 						Last Update: <span class="updateTime" title='Last update received'>00:00:00</span>
 					</p>
 					<p style="width:33%;float:left;text-align:right;">
-						<?php if( defined("SIGGY_VERSION") ): ?>
+					<?php if( defined("SIGGY_VERSION") ): ?>
 						siggy version: <?php echo SIGGY_VERSION; ?>
 					<?php endif; ?>
 					</p>

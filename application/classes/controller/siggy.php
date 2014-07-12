@@ -125,28 +125,11 @@ class Controller_Siggy extends FrontController
 	
 	public function before()
 	{
-		if( $this->request->action() == 'GroupAuth' || $this->request->action() == "switchMembership" )
-		{
-			$this->noAutoAuthRedirects = TRUE;
-		}
-	
 		parent::before();
 	}
 	
 	public function after()
 	{
-		if( is_object($this->template)  )
-		{
-			if( $this->request->action() == 'GroupAuth' )
-			{
-				$this->template->siggyMode = false;
-			}
-			else
-			{
-				$this->template->siggyMode = true;
-			}
-		}
-	
 		parent::after();
 	}
 	
