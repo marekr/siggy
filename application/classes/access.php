@@ -59,11 +59,9 @@ class access
 						if( $this->accessData['authMode'] == 1 )
 						{
 							$groupID = intval($this->accessData['groupID']);
-							$subGroupID = intval($this->accessData['subGroupID']);
-							$this->authPassword = Cookie::get('authPassword-' .$groupID .'-'.$subGroupID, '');
-							if( (!empty($this->accessData['sgAuthPassword']) && $this->authPassword == $this->accessData['sgAuthPassword'] )	 
-									|| ( empty($this->accessData['sgAuthPassword']) && $this->authPassword == $this->accessData['authPassword']) 
-								) 
+							$this->authPassword = Cookie::get('auth-password-' .$groupID, '');
+							
+							if( $this->authPassword == $this->accessData['authPassword'] ) 
 							{
 								$this->authStatus = AuthStatus::ACCEPTED;
 							}
@@ -74,24 +72,7 @@ class access
 						}
 						else if( $this->accessData['authMode'] == 2 )
 						{
-							if ( Auth::loggedIn() )
-							{
-								if( $this->apiCharInfo = Auth::$user->apiCharCheck() )
-								{
-									if( ( $this->accessData['charID'] == $this->apiCharInfo['charID'] ) && ( $this->accessData['corpID'] == $this->apiCharInfo['corpID'] ) )
-									{
-										$this->authStatus = AuthStatus::ACCEPTED;
-									}
-									else
-									{
-										$this->authStatus = AuthStatus::APILOGINNOACCESS;											
-									}
-								}
-							}
-							else
-							{
-								$this->authStatus = AuthStatus::APILOGINREQUIRED;
-							}
+							return $this->__checkAccountAuth();
 						}
 						else
 						{

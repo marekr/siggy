@@ -27,28 +27,15 @@ class Controller_Access extends FrontController
 		$this->template->headerTools = '';		
 		
 		$groupID = intval($this->groupData['groupID']);
-		$subGroupID = intval($this->groupData['subGroupID']);
 		
 		if( isset($_POST['authPassword']) )
 		{
 			$pass = sha1($_POST['authPassword'].$this->groupData['authSalt']);
-			if( !empty( $this->groupData['sgAuthPassword'] ) )
-			{
-				if( $pass == $this->groupData['sgAuthPassword'] )
-				{
-					Cookie::set('authPassword-' .$groupID .'-'.$subGroupID, $pass, 365*60*60*24);
-					HTTP::redirect('/');
-				}
-				else
-				{
-					$view->wrongPass = true;
-				}
-			}
-			elseif( !empty($this->groupData['authPassword']) )
+			if( !empty($this->groupData['authPassword']) )
 			{
 				if( $pass == $this->groupData['authPassword'] )
 				{
-					Cookie::set('authPassword-' .$groupID .'-'.$subGroupID, $pass, 365*60*60*24);
+					Cookie::set('auth-password-' .$groupID, $pass, 365*60*60*24);
 					HTTP::redirect('/');
 				}
 				else
@@ -58,10 +45,8 @@ class Controller_Access extends FrontController
 			}
 		}
 		
-		
 		$this->template->content = $view;
 	}
-	
 	
 	public function action_switch_membership()
 	{
