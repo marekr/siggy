@@ -116,7 +116,7 @@
 						<!-- /.nav-second-level -->
 					</li>
 					<li class="<?php echo (Request::initial()->controller() == "Group"?" active" : "") ?>">
-						<a href="#"><i class="fa fa-key fa-fw"></i> Chainmaps<span class="fa arrow"></span></a>
+						<a href="#"><i class="fa fa-chain fa-fw"></i> Chainmaps<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
 							<li>
 								<?php echo Html::anchor('manage/chainmaps/list', __('Manage')); ?>

@@ -39,7 +39,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
 	public function action_list()
 	{
-		$this->template->title = __('Group management');
+		$this->template->title = __('Chain Map Management');
 
 		$view = $this->template->content = View::factory('manage/chainmaps/list');
 
@@ -51,7 +51,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
    public function action_add()
    {
-		$this->template->title = __('Subgroup management');
+		$this->template->title = __('Add a Chain Map');
 
 		$group = ORM::factory('group', Auth::$user->data['groupID']);
 
@@ -148,7 +148,6 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				$view->set('data', array(
 											'sgName' => $_POST['sgName'],
 											'sgHomeSystems' => $_POST['sgHomeSystems'],
-											'sgSysListShowReds' => $_POST['sgSysListShowReds'],
 											'sgSkipPurgeHomeSigs' => $_POST['sgSkipPurgeHomeSigs']
 										) 
 						);
@@ -162,7 +161,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 	{
 		$id = intval($this->request->param('id'));
 			
-		$this->template->title = __('Editing sub group');
+		$this->template->title = __('Edit Chain Map');
 
 		$sg = ORM::factory('subgroup', $id);
 		if( $sg->groupID != Auth::$user->data['groupID'] )
@@ -235,7 +234,6 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				}						
 
 				$sg->sgSkipPurgeHomeSigs = intval($_POST['sgSkipPurgeHomeSigs']);
-				$sg->sgSysListShowReds = intval($_POST['sgSysListShowReds']);
 
 				$sg->save();
 
@@ -256,7 +254,6 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
 				$view->set('data', array( 'sgName' => $_POST['sgName'],
 											'sgHomeSystems' => $_POST['sgHomeSystems'],
-											'sgSysListShowReds' => $_POST['sgSysListShowReds'],
 											'sgSkipPurgeHomeSigs' => $_POST['sgSkipPurgeHomeSigs']
 										 ) );
 			}
@@ -272,7 +269,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 	{
 		$id = intval($this->request->param('id'));
 
-		$this->template->title = __('Removing sub group');
+		$this->template->title = __('Remove Chain Map');
 
 		$sg = ORM::factory('subgroup', $id);
 		if( $sg->groupID != Auth::$user->data['groupID'] )
