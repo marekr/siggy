@@ -28,108 +28,108 @@ class AuthStatus
 
 class access
 {
-		private $trusted = false;
-		private $igb = false;
+	private $trusted = false;
+	private $igb = false;
+	
+	private $authPassword = '';
+	private $authStatus = AuthStatus::NOACCESS;
+	public $accessData = array();
+	
+	function __construct()
+	{
+		Cookie::$salt = 'y[$e.swbDs@|Gd(ndtUSy^';
 		
-		private $authPassword = '';
-		private $authStatus = AuthStatus::NOACCESS;
-		public $accessData = array();
-		
-		function __construct()
-		{
-			Cookie::$salt = 'y[$e.swbDs@|Gd(ndtUSy^';
-			
-			$this->trusted = miscUtils::getTrust();
-			$this->igb = miscUtils::isIGB();
-		}
+		$this->trusted = miscUtils::getTrust();
+		$this->igb = miscUtils::isIGB();
+	}
 
-		public function authenticate()
+	public function authenticate()
+	{
+		if( $this->igb )
 		{
-			if( $this->igb )
+			if( $this->trusted )
 			{
-				if( $this->trusted )
+				$this->accessData = $this->getAccessData( $_SERVER['HTTP_EVE_CORPID'], $_SERVER['HTTP_EVE_CHARID'] );
+				$this->accessData['charID'] = $_SERVER['HTTP_EVE_CHARID'];
+				$this->accessData['corpID'] = $_SERVER['HTTP_EVE_CORPID'];
+				$this->accessData['charName'] = $_SERVER['HTTP_EVE_CHARNAME'];
+				
+				if( $this->accessData['groupID'] )
 				{
-					$this->accessData = $this->getAccessData( $_SERVER['HTTP_EVE_CORPID'], $_SERVER['HTTP_EVE_CHARID'] );
-					$this->accessData['charID'] = $_SERVER['HTTP_EVE_CHARID'];
-					$this->accessData['corpID'] = $_SERVER['HTTP_EVE_CORPID'];
-					$this->accessData['charName'] = $_SERVER['HTTP_EVE_CHARNAME'];
-					
-					if( $this->accessData['groupID'] )
+					if( $this->accessData['authMode'] == 1 )
 					{
-						if( $this->accessData['authMode'] == 1 )
+						$groupID = intval($this->accessData['groupID']);
+						$this->authPassword = Cookie::get('auth-password-' .$groupID, '');
+						
+						if( $this->authPassword == $this->accessData['authPassword'] ) 
 						{
-							$groupID = intval($this->accessData['groupID']);
-							$this->authPassword = Cookie::get('auth-password-' .$groupID, '');
-							
-							if( $this->authPassword == $this->accessData['authPassword'] ) 
-							{
-								$this->authStatus = AuthStatus::ACCEPTED;
-							}
-							else
-							{
-								$this->authStatus = AuthStatus::GPASSWRONG;
-							}
-						}
-						else if( $this->accessData['authMode'] == 2 )
-						{
-							return $this->__checkAccountAuth();
+							$this->authStatus = AuthStatus::ACCEPTED;
 						}
 						else
 						{
-							$this->authStatus = AuthStatus::ACCEPTED;	
+							$this->authStatus = AuthStatus::GPASSWRONG;
 						}
+					}
+					else if( $this->accessData['authMode'] == 2 )
+					{
+						return $this->__checkAccountAuth();
 					}
 					else
 					{
-						$this->authStatus = AuthStatus::NOACCESS;
+						$this->authStatus = AuthStatus::ACCEPTED;	
 					}
 				}
 				else
 				{
-					$this->authStatus = AuthStatus::TRUSTREQUIRED;
+					$this->authStatus = AuthStatus::NOACCESS;
 				}
 			}
 			else
 			{
-				return $this->__checkAccountAuth();
+				$this->authStatus = AuthStatus::TRUSTREQUIRED;
 			}
-			
-			return $this->authStatus;
+		}
+		else
+		{
+			return $this->__checkAccountAuth();
 		}
 		
-		private function __checkAccountAuth()
-		{			
-			if ( Auth::loggedIn() )
+		return $this->authStatus;
+	}
+	
+	private function __checkAccountAuth()
+	{			
+		if ( Auth::loggedIn() )
+		{
+			if( $this->apiCharInfo = Auth::$user->apiCharCheck() )
 			{
-				if( $this->apiCharInfo = Auth::$user->apiCharCheck() )
+				$this->accessData = $this->getAccessData( $this->apiCharInfo['corpID'], $this->apiCharInfo['charID'] );
+				$this->accessData['charID'] = $this->apiCharInfo['charID'];
+				$this->accessData['corpID'] = $this->apiCharInfo['corpID'];
+				$this->accessData['charName'] = $this->apiCharInfo['charName'];
+				
+				if( $this->accessData['groupID'] )
 				{
-					$this->accessData = $this->getAccessData( $this->apiCharInfo['corpID'], $this->apiCharInfo['charID'] );
-					$this->accessData['charID'] = $this->apiCharInfo['charID'];
-					$this->accessData['corpID'] = $this->apiCharInfo['corpID'];
-					$this->accessData['charName'] = $this->apiCharInfo['charName'];
-					
-					if( $this->accessData['groupID'] )
-					{
-						$this->authStatus = AuthStatus::ACCEPTED;
-					}
-					else
-					{
-						$this->authStatus = AuthStatus::APILOGINNOACCESS;
-					}
+					$this->authStatus = AuthStatus::ACCEPTED;
 				}
 				else
 				{
-					$this->authStatus = AuthStatus::APILOGININVALID;
+					$this->authStatus = AuthStatus::APILOGINNOACCESS;
 				}
-			} 
-			else 
-			{
-				$this->authStatus = AuthStatus::APILOGINREQUIRED;
 			}
-			
-			return $this->authStatus;
+			else
+			{
+				$this->authStatus = AuthStatus::APILOGININVALID;
+			}
+		} 
+		else 
+		{
+			$this->authStatus = AuthStatus::APILOGINREQUIRED;
 		}
-			
+		
+		return $this->authStatus;
+	}
+	
 	public function getAccessData($corpID = 0, $charID = 0)
 	{
 		$default = array('groupID' =>0, 'authMode' => 0, 'authPassword' => '');
