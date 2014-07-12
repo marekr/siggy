@@ -18,7 +18,6 @@ class Controller_Siggy extends FrontController
 	
 		$mapOpen = ( isset($_COOKIE['mapOpen'] ) ? intval($_COOKIE['mapOpen']) : 0 );
         $statsOpen = ( isset($_COOKIE['system_stats_open'] ) ? intval($_COOKIE['system_stats_open']) : 0 );
-		
 		if( !empty($ssname) )
 		{
 			$sysData = array();

@@ -46,37 +46,26 @@
 					<img src="https://image.eveonline.com/Character/<?php echo $charID; ?>_64.jpg" height="32px"/>
 					<p class="name"><?php echo $charName; ?> <?php if( $apilogin ): ?>[<a href='<?php echo URL::base(TRUE, TRUE);?>account/logout'>Logout</a>]<?php endif;?>
 					<br />
-					<?php if( ( count( $group['groups']) > 1  ) || (count( current( $group['groups'] ) ) > 1 ) ):?>							
-									<div class="dropdown" style="display:inline-block;">
-											<a data-toggle="dropdown" href="#">
-                                                <?php echo $group['accessName']; ?> - <?php echo ($group['subGroupID'] != 0 ) ? $group['sgName'].' - ' : '' ?>
-                                                <?php echo $group['groupTicker'] ?>&nbsp;&nbsp;&nbsp;<span style='font-style:normal;font-weight:bold;'>&#x25BC;</span>
-                                            </a>
-											<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-												<?php foreach( $group['groups'] as $g => $sgs ): ?>
-													<?php foreach( $sgs as $sg ): ?>
-														<?php if( $sg == 0 ): ?>
-															<li>
-																
-																<a href="<?php echo URL::base(); ?>access/switch_membership/?k=<?php echo md5($g.'-'.$sg); ?>">
-																<?php echo $group['groupDetails']['group'][ $g ]['groupName'] ?>
-																</a>
-															</li>
-														<?php else: ?>
-															<li>
-																<a href="<?php echo URL::base(); ?>access/switch_membership/?k=<?php echo md5($g.'-'.$sg); ?>">
-																	<?php echo $group['groupDetails']['subgroup'][ $sg ]['accessName']; ?> - <?php echo $group['groupDetails']['subgroup'][ $sg ]['subGroupName'] ?> - <?php echo $group['groupDetails']['group'][ $g ]['groupName'] ?>
-																</a>
-															</li>										
-														<?php endif; ?>
-													<?php endforeach; ?>
-												<?php endforeach; ?>
+					<?php if( ( count( $group['access_groups']) > 1  ) || (count( current( $group['access_groups'] ) ) > 1 ) ):?>							
+							<div class="dropdown" style="display:inline-block;">
+									<a data-toggle="dropdown" href="#">
+										<?php echo $group['groupName']; ?> - 
+										<?php echo $group['groupTicker'] ?>&nbsp;&nbsp;&nbsp;<span style='font-style:normal;font-weight:bold;'>&#x25BC;</span>
+									</a>
+									<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+										<?php foreach( $group['access_groups'] as $g ): ?>
+											<li>
 												
-											</ul>
-											<br clear='all' />
-									</div>
+												<a href="<?php echo URL::base(); ?>access/switch_membership/?k=<?php echo md5($g['group_id']); ?>">
+												<?php echo $g['group_name']; ?>
+												</a>
+											</li>
+										<?php endforeach; ?>
+									</ul>
+									<br clear='all' />
+							</div>
 							<?php else: ?>
-									<span style="font-size:0.9em;font-style:italic;font-weight: normal;" title="Current access"><?php echo $group['accessName']; ?> - <?php echo $group['groupTicker'] ?></span>
+							<span style="font-size:0.9em;font-style:italic;font-weight: normal;" title="Current access"><?php echo $group['groupName']; ?> - <?php echo $group['groupTicker'] ?></span>
 							<?php endif; ?>
 					</p>
 				</div>

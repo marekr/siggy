@@ -49,7 +49,7 @@ class access
 		{
 			if( $this->trusted )
 			{
-				$this->accessData = $this->getAccessData( $_SERVER['HTTP_EVE_CORPID'], $_SERVER['HTTP_EVE_CHARID'] );
+				$this->accessData = $this->get_access_data( $_SERVER['HTTP_EVE_CORPID'], $_SERVER['HTTP_EVE_CHARID'] );
 				$this->accessData['charID'] = $_SERVER['HTTP_EVE_CHARID'];
 				$this->accessData['corpID'] = $_SERVER['HTTP_EVE_CORPID'];
 				$this->accessData['charName'] = $_SERVER['HTTP_EVE_CHARNAME'];
@@ -103,7 +103,7 @@ class access
 		{
 			if( $this->apiCharInfo = Auth::$user->apiCharCheck() )
 			{
-				$this->accessData = $this->getAccessData( $this->apiCharInfo['corpID'], $this->apiCharInfo['charID'] );
+				$this->accessData = $this->get_access_data( $this->apiCharInfo['corpID'], $this->apiCharInfo['charID'] );
 				$this->accessData['charID'] = $this->apiCharInfo['charID'];
 				$this->accessData['corpID'] = $this->apiCharInfo['corpID'];
 				$this->accessData['charName'] = $this->apiCharInfo['charName'];
@@ -130,207 +130,78 @@ class access
 		return $this->authStatus;
 	}
 	
-	public function getAccessData($corpID = 0, $charID = 0)
+	public function get_access_data($corp_id = 0, $char_id = 0)
 	{
+		/* Result array */
+		$access_data = array();
+		
+		$corp_id = intval($corp_id);
+		$char_id = intval($char_id);
+	
 		$default = array('groupID' =>0, 'authMode' => 0, 'authPassword' => '');
-		$memberData = array();
 		
-		$corpList = groupUtils::getCorpList();
-		$charList = groupUtils::getCharList();
-		
-		$membershipChoice = Cookie::get('membershipChoice', '');
-		$chosenGroupID = 0;
-		$chosenSubGroupID = 0;
-		if( !empty($membershipChoice) )
+		if( empty( $corp_id ) || empty($char_id)  )
 		{
-			$t = explode('-', $membershipChoice);
-			$chosenGroupID = intval($t[0]);
-			$chosenSubGroupID = intval($t[1]);
-		}
-		
-		//corp based members
-		if( !empty( $corpID ) )
-		{
-			$corpID = intval( $corpID );
-		}
-		else
-		{
-			//no corp sent, fuck off with your headers
 			return $default;
 		}
 		
-		//character based members
-		if( !empty($charID) )
-		{
-			$charID = intval($charID);
-		}
-		else
-		{
-			//no char sent, fuck off with your headers
-			return $default;
-		}
+		$chosenGroupID = intval(Cookie::get('membershipChoice', -1));
 		
 		$accessGroupID = 0;
-		$accessSubGroupID = 0;
-		if( empty( $chosenGroupID ) )
+		
+		//start forming a list of possible groups
+		$all_groups = array();
+		$corp_data = groupUtils::getCorpData( $corp_id );
+		$char_data = groupUtils::getCharData( $char_id );
+		
+		if( !$corp_data !== FALSE && $char_data != FALSE )
 		{
-			$corpMemberData = array();
-			if( in_array($corpID, $corpList) )
-			{
-				$corpMemberData = groupUtils::getCorpData( $corpID );
-			}
-			
-			$charMemberData = array();
-			if( in_array($charID, $charList) )
-			{
-				$charMemberData = groupUtils::getCharData( $charID );
-			}
-			
-			//just moved it here
-			if( !empty($corpMemberData) )
-			{
-				$memberData = $corpMemberData;
-			}
-			else
-			{
-				$memberData = $charMemberData;
-				if( !$memberData )
-				{
-					//no access anyway
-					return $default;
-				}
-			}
-			
-			$keys = array_keys($memberData['groups']);
-			$firstGroup = $keys[0];
-			$accessGroupID = $firstGroup;
-			$accessSubGroupID = $memberData['groups'][ $firstGroup ][0];	//picking the first subGroupID
-			
-			if(  isset( $corpMemberData['groups'] ) &&  isset( $charMemberData['groups'] ) )
-			{
-				$memberData['groups'] =  $this->_blah($corpMemberData['groups'],$charMemberData['groups']);
-				$memberData['groupDetails']['group'] =  $corpMemberData['groupDetails']['group'] + $charMemberData['groupDetails']['group'];
-				$memberData['groupDetails']['subgroup'] =  $corpMemberData['groupDetails']['subgroup'] + $charMemberData['groupDetails']['subgroup'];
-			}				
+			$all_groups = array_merge($corp_data['groups'],$char_data['groups']);
 		}
-		else
+		else if( $corp_data !== FALSE )
 		{
-			$corpMemberData = array();
-			if( in_array($corpID, $corpList) )
+			$all_groups = $corp_data['groups'];
+		}
+		else if ($char_data != FALSE )
+		{
+			$all_groups = $char_data['groups'];
+		}
+		
+		//check if we have any groups
+		if( !count($all_groups) )
+		{
+			return $default;
+		}
+		
+		//did we want to select a group? check if we have access :)
+		if( !empty($chosenGroupID) )
+		{
+			if( array_key_exists ($chosenGroupID,$all_groups) )
 			{
-				$corpMemberData = groupUtils::getCorpData( $corpID );
-			}
-			$charMemberData = array();
-			if( in_array($charID, $charList) )
-			{
-				$charMemberData = groupUtils::getCharData( $charID );
-			}				
-			
-			$found = false;
-			if( isset( $corpMemberData['groups'][ $chosenGroupID ] ) )
-			{
-				foreach( $corpMemberData['groups'][ $chosenGroupID ] as $sg )
-				{
-					if( $sg == $chosenSubGroupID )
-					{
-						$accessGroupID = $chosenGroupID;
-						$accessSubGroupID = $sg;
-						$memberData = $corpMemberData;
-						$found  = true;
-						break;
-					}
-				}
-			}
-				
-			if ( !$found && isset( $charMemberData['groups'][ $chosenGroupID ] ) )
-			{
-				foreach( $charMemberData['groups'][ $chosenGroupID ] as $sg )
-				{
-					if( $sg == $chosenSubGroupID )
-					{
-						$accessGroupID = $chosenGroupID;
-						$accessSubGroupID = $sg;
-						$memberData = $charMemberData;
-						$found = true;
-						break;
-					}
-				}
-			}
-			
-			if(  isset( $corpMemberData['groups'] ) &&  isset( $charMemberData['groups'] ) )
-			{
-				$memberData['groups'] =  $this->_blah($corpMemberData['groups'],$charMemberData['groups']);
-				$memberData['groupDetails']['group'] =  $corpMemberData['groupDetails']['group'] + $charMemberData['groupDetails']['group'];
-				$memberData['groupDetails']['subgroup'] =  $corpMemberData['groupDetails']['subgroup'] + $charMemberData['groupDetails']['subgroup'];
-			}
-				
-			//accessGroupID may sitll be empty at this point
-			if ( empty($accessGroupID) )
-			{
-				Cookie::set('membershipChoice', '', 365*60*60*24);
-				
-				if( in_array($corpID, $corpList) )
-				{
-						$memberData = $corpMemberData;
-				}
-				else
-				{
-					if( in_array($charID, $charList) )
-					{
-						$memberData = $charMemberdata;
-					}
-					else
-					{
-						return $default;
-					}
-				}
+				$accessGroupID = $chosenGroupID;
 			}
 		}
-				
-		$groupData = groupUtils::getGroupData( $accessGroupID, $accessSubGroupID );
+		
+		//no group selected? try and pick the first one
+		if( !$accessGroupID  )
+		{
+			$tmp = current($all_groups);
+			$accessGroupID = $tmp['group_id'];
+		}
+		
+		//finally load the group data!
+		$groupData = groupUtils::getGroupData( $accessGroupID );
 		
 		if( !$groupData )
 		{
 			return $default;
 		}
 		
-		$out = array_merge($groupData, $memberData);
-		$out['groupID'] = $accessGroupID;
-		$out['subGroupID'] = $accessSubGroupID;
-		$out['accessName'] = $out['groupDetails']['subgroup'][ $accessSubGroupID ]['accessName'];
+		//store the possible groups
+		$groupData['subGroupID'] = 0;
+		$groupData['access_groups'] = $all_groups;
 		
-		return $out;
-	}
-
-	private function _blah( $arr1, $arr2 )
-	{
-		$keys1 = array_keys( $arr1 );
-		$keys2 = array_keys( $arr2 );
-		$keys = array_merge($keys1, $keys2);
-		
-		$out = array();
-		foreach( $keys as $k )
-		{
-			if( isset( $arr1[ $k ]) )
-			{
-				if( isset( $arr2[ $k] ) )
-				{
-					$out[ $k ] = array_merge($arr1[ $k ], $arr2[ $k ]);
-					$out[ $k ] = array_unique( $out[ $k ] );
-				}
-				else
-				{
-					$out[ $k ] = $arr1[ $k ];
-				}
-			}
-			else
-			{
-				if( isset($arr2[ $k ] ) )
-				{
-					$out[ $k ] = $arr2[ $k ];
-				}
-			}
-		}
+		$out = $groupData;
 		
 		return $out;
 	}

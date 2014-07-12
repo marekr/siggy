@@ -42,9 +42,8 @@ class FrontController extends Controller
 		Auth::initialize();
 		
 		$this->authStatus = $this->access->authenticate();
-		$this->groupData =& $this->access->accessData;			
+		$this->groupData =& $this->access->accessData;
         
-		
 		if( isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' )
 		{
 			$this->ajaxRequest = true;
@@ -80,18 +79,16 @@ class FrontController extends Controller
 		//we are not caching any of our pages insanely
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 		
-		
 		$offline = false;
 		if( $offline == true )
 		{
-				$this->siggyredirect('/offline');
+			$this->siggyredirect('/offline');
 		}
 		
 		if( !$this->noAutoAuthRedirects  )
 		{
 			$this->authCheckAndRedirect();
 		}
-		
 		
 		if( !$this->ajaxRequest && $this->template != '' )
 		{
