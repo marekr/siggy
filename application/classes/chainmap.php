@@ -106,7 +106,8 @@ class chainmap
 											->param(':group', $this->group_id)
 											->param(':chainmap', $this->id)
 											->param(':kill_cutoff', $killCutoff)
-											->execute()->as_array('systemID');	
+											->execute()
+											->as_array('systemID');	
 			
 			foreach( $chainMapSystems as &$sys ) 
 			{
@@ -349,10 +350,7 @@ class chainmap
 				
 				if( !$check['hash'] )
 				{ 
-					$this->update_system($sys_id, array('displayName' => '',
-																'inUse' => 0,
-																'activity' => 0 )
-																);
+					$this->update_system($sys_id, array('displayName' => '', 'inUse' => 0, 'activity' => 0 ) );
 				}
 			}
 		}
