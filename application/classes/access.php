@@ -198,7 +198,7 @@ class access
 		}
 		
 		//store the possible groups
-		$groupData['subGroupID'] = 0;
+		$groupData['subGroupID'] = 1;
 		$groupData['access_groups'] = $all_groups;
 		
 		$out = $groupData;

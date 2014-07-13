@@ -12,24 +12,6 @@ final class groupUtils
 		DB::insert('logs', array_keys($insert) )->values(array_values($insert))->execute();
 	}
 	
-	static function getMapCache($group_id, $sub_group_id)
-	{
-		$cache = Cache::instance( CACHE_METHOD );
-		
-		$cache_name = 'mapCache-'.$group_id.'-'.$sub_group_id;
-		
-		if( $map_data = $cache->get( $cache_name, FALSE ) )
-		{
-			return $map_data;
-		}
-		else
-		{
-			$map_data = self::rebuildMapCache($group_id, $sub_group_id);
-
-			return $map_data;			
-		}
-	}
-	
 	static function getCharacterUsageCount( $group_id )
 	{
 		$num_corps = DB::query(Database::SELECT, "SELECT SUM(DISTINCT c.memberCount) as total FROM groupmembers gm
@@ -123,19 +105,6 @@ final class groupUtils
 		
 		return $return;	
 	}
-
-	static function rebuildMapCache($group_id, $sub_group_id = 0)
-	{
-		$cache = Cache::instance( CACHE_METHOD );
-		$cache_name = 'mapCache-'.$group_id.'-'.$sub_group_id;
-		
-		$home_systems = self::getHomeSystems($group_id, $sub_group_id);
-		$map_data = mapUtils::rebuildMapData($group_id, $sub_group_id, $home_systems);
-		
-		$cache->set($cache_name, $map_data, 1800);		 
-		
-		return $map_data;
-	}
 	
 	static function applyISKCharge($group_id, $amount)
 	{
@@ -145,24 +114,6 @@ final class groupUtils
 	static function applyISKPayment($group_id, $amount)
 	{
 		DB::update('groups')->set( array( 'iskBalance' => DB::expr('iskBalance + :amount'), 'billable' => 1 ) )->param(':amount', $amount)->where('groupID', '=',  $group_id)->execute();
-	}
-
-
-	static function getHomeSystems($group_id, $sub_group_id = 0)
-	{			
-		$groupData = self::getGroupData($group_id);
-		if( empty($groupData) )
-		{
-			return;
-		}
-		
-		$homeSystems = array();
-		if( $groupData['homeSystemIDs'] != '' )
-		{
-			$homeSystems = explode(',', $groupData['homeSystemIDs']);
-		}
-
-		return $homeSystems;
 	}
 
 	static function recacheGroups()

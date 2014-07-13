@@ -14,6 +14,14 @@ class Controller_Chainmap extends FrontController
 	
 	protected $output_array = array();
 	
+	
+	public function before()
+	{
+		parent::before();
+		
+		$this->chainmap = new Chainmap($this->groupData['subGroupID'],$this->groupData['groupID']);
+	}
+	
 	public function action_findNearestExits()
 	{
 		$this->profiler = NULL;
@@ -49,8 +57,6 @@ class Controller_Chainmap extends FrontController
 			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid system'));
 			exit();
 		}
-		
- 
 		
 		$systems = DB::query(Database::SELECT, "( SELECT DISTINCT w.`to` as sys_id,ss.name
 												FROM wormholes w 
@@ -110,21 +116,16 @@ class Controller_Chainmap extends FrontController
 					$system['x'] = 0;
 				}
 				
-				miscUtils::setActiveSystem($system['id'], array('x' => $system['x'],
-																'y' => $system['y']),
-											$this->groupData['groupID'],
-											$this->groupData['subGroupID']
-											);
+				$this->chainmap->update_system($system['id'], array('x' => $system['x'], 'y' => $system['y']));
 			}
 			
 			groupUtils::log_action($this->groupData['groupID'], 'editmap', $this->groupData['charName']. " edited the map");
 		
-			groupUtils::rebuildMapCache($this->groupData['groupID'], $this->groupData['subGroupID']);
+			$this->chainmap->rebuild_map_data_cache();
 		}
 		
 		exit();
 	}
-		
 	
 	public function action_wh_mass_delete()
 	{
@@ -147,9 +148,9 @@ class Controller_Chainmap extends FrontController
 														FROM	 wormholes w
 														INNER JOIN solarsystems sto ON sto.id = w.to
 														INNER JOIN solarsystems sfrom ON sfrom.id = w.from
-														WHERE w.hash IN('.$hashes.') AND w.groupID=:groupID AND w.subGroupID=:subGroupID')
+														WHERE w.hash IN('.$hashes.') AND w.groupID=:groupID AND w.chainmap_id=:chainmap')
 							->param(':groupID', $this->groupData['groupID'])
-							->param(':subGroupID', $this->groupData['subGroupID'])
+							->param(':chainmap', $this->groupData['subGroupID'])
 							->execute();
 			
 			$systemIDs = array();
@@ -162,63 +163,24 @@ class Controller_Chainmap extends FrontController
 			}
 			$systemIDs = array_unique( $systemIDs );
 			
-			DB::query(Database::DELETE, 'DELETE FROM wormholes WHERE hash IN('.$hashes.') AND groupID=:groupID AND subGroupID=:subGroupID')
+			DB::query(Database::DELETE, 'DELETE FROM wormholes WHERE hash IN('.$hashes.') AND groupID=:groupID AND chainmap_id=:chainmap')
 							->param(':groupID', $this->groupData['groupID'])
-							->param(':subGroupID', $this->groupData['subGroupID'])
+							->param(':chainmap', $this->groupData['subGroupID'])
 							->execute();
 			
 			
-			DB::query(Database::DELETE, 'DELETE FROM wormholetracker WHERE whHash IN('.$hashes.') AND groupID=:groupID AND subGroupID=:subGroupID')
+			DB::query(Database::DELETE, 'DELETE FROM wormholetracker WHERE whHash IN('.$hashes.') AND groupID=:groupID AND chainmap_id=:chainmap')
 							->param(':groupID', $this->groupData['groupID'])
-							->param(':subGroupID', $this->groupData['subGroupID'])
+							->param(':chainmap', $this->groupData['subGroupID'])
 							->execute();
 			
 			groupUtils::log_action($this->groupData['groupID'],'delwhs', $log_message );
 			
-			$this->sysResetByMap( $systemIDs );
+			$this->chainmap->reset_systems( $systemIDs );
 			
-			groupUtils::rebuildMapCache($this->groupData['groupID'], $this->groupData['subGroupID']);
+			$this->chainmap->rebuild_map_data_cache();
 		}
 		exit();
-	}
-	
-	private function sysResetByMap($systemIDs)
-	{
-		if( !is_array($systemIDs) || !count($systemIDs)	 )
-		{
-			return;
-		}
-		
-		$homeSystems = groupUtils::getHomeSystems($this->groupData['groupID'], $this->groupData['subGroupID']);
-		
-		//only enable this "Feature" if we have a home system, a.k.a. RAGE INSURANCE
-		if( !count($homeSystems)	)
-		{
-			return;
-		}
-		
-		foreach( $systemIDs as $systemID )
-		{
-			if( !in_array($systemID, $homeSystems) )
-			{
-				$check = DB::query(Database::SELECT, 'SELECT * FROM	 wormholes WHERE groupID=:groupID AND subGroupID=:subGroupID AND (`to`=:id OR `from`=:id)')
-								->param(':groupID', $this->groupData['groupID'])
-								->param(':subGroupID', $this->groupData['subGroupID'])
-								->param(':id', $systemID)
-								->execute()
-								->current();
-				
-				if( !$check['hash'] )
-				{ 
-					miscUtils::setActiveSystem($systemID, array('displayName' => '',
-																'inUse' => 0,
-																'activity' => 0 ),
-													$this->groupData['groupID'],
-													$this->groupData['subGroupID']
-												);
-				}
-			}
-		}
 	}
 	
 	public function action_wh_disconnect()
@@ -232,10 +194,10 @@ class Controller_Chainmap extends FrontController
 												 FROM wormholes w
 												 INNER JOIN solarsystems sto ON sto.id = w.to
 												 INNER JOIN solarsystems sfrom ON sfrom.id = w.from
-												 WHERE w.hash=:hash AND w.groupID=:groupID AND w.subGroupID=:subGroupID')
+												 WHERE w.hash=:hash AND w.groupID=:groupID AND w.chainmap_id=:chainmap')
 							->param(':hash',$hash)
 							->param(':groupID', $this->groupData['groupID'])
-							->param(':subGroupID', $this->groupData['subGroupID'])
+							->param(':chainmap', $this->groupData['subGroupID'])
 							->execute()
 							->current();
 				
@@ -244,24 +206,24 @@ class Controller_Chainmap extends FrontController
 			return;
 		}		 
 				
-		DB::query(Database::DELETE, 'DELETE FROM wormholes WHERE hash=:hash AND groupID=:groupID AND subGroupID=:subGroupID')
+		DB::query(Database::DELETE, 'DELETE FROM wormholes WHERE hash=:hash AND groupID=:groupID AND chainmap_id=:chainmap')
 								->param(':hash',$hash)
 								->param(':groupID', $this->groupData['groupID'])
-								->param(':subGroupID', $this->groupData['subGroupID'])
+								->param(':chainmap', $this->groupData['subGroupID'])
 								->execute();
 		
-		DB::query(Database::DELETE, 'DELETE FROM wormholetracker WHERE whHash=:hash AND groupID=:groupID AND subGroupID=:subGroupID')
+		DB::query(Database::DELETE, 'DELETE FROM wormholetracker WHERE whHash=:hash AND groupID=:groupID AND chainmap_id=:chainmap')
 								->param(':hash',$hash)
 								->param(':groupID', $this->groupData['groupID'])
-								->param(':subGroupID', $this->groupData['subGroupID'])
+								->param(':chainmap', $this->groupData['subGroupID'])
 								->execute();
 			
 		$log_message = $this->groupData['charName'].' deleted wormhole between systems '.$wormhole['to_name'].' and '.$wormhole['from_name'];
 		groupUtils::log_action($this->groupData['groupID'],'delwh', $log_message );
 			
-		$this->sysResetByMap( array($wormhole['to'], $wormhole['from']) );
+		$this->chainmap->reset_systems( array($wormhole['to'], $wormhole['from']) );
 		
-		groupUtils::rebuildMapCache($this->groupData['groupID'], $this->groupData['subGroupID']);
+		$this->chainmap->rebuild_map_data_cache();
 	}
 	
 	
@@ -283,9 +245,10 @@ class Controller_Chainmap extends FrontController
 			$update = array();
 			$hash = ($_POST['hash']);
 			
-			$wormhole = DB::query(Database::SELECT, 'SELECT * FROM	wormholes WHERE hash=:hash AND groupID=:groupID AND subGroupID=:subGroupID')
-								->param(':hash',$hash)->param(':groupID', $this->groupData['groupID'])
-								->param(':subGroupID', $this->groupData['subGroupID'])
+			$wormhole = DB::query(Database::SELECT, 'SELECT * FROM	wormholes WHERE hash=:hash AND groupID=:groupID AND chainmap_id=:chainmap')
+								->param(':hash',$hash)
+								->param(':groupID', $this->groupData['groupID'])
+								->param(':chainmap', $this->groupData['subGroupID'])
 								->execute()
 								->current();
 					
@@ -313,10 +276,10 @@ class Controller_Chainmap extends FrontController
 					->set( $update )
 					->where('hash', '=', $hash)
 					->where('groupID', '=', $this->groupData['groupID'])
-					->where('subGroupID', '=', $this->groupData['subGroupID'])
+					->where('chainmap_id', '=', $this->groupData['subGroupID'])
 					->execute();
 					
-			groupUtils::rebuildMapCache($this->groupData['groupID'], $this->groupData['subGroupID']);
+			$this->chainmap->rebuild_map_data_cache();
 		}
 		else
 		{
@@ -376,10 +339,10 @@ class Controller_Chainmap extends FrontController
 			
 			$whHash = mapUtils::whHashByID($fromSysID , $toSysID);
 			
-			$connection = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE hash=:hash AND groupID=:group AND subGroupID=:subGroupID")
+			$connection = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE hash=:hash AND groupID=:group AND chainmap_id=:chainmap")
 								->param(':hash', $whHash)
 								->param(':group', $this->groupData['groupID'])
-								->param(':subGroupID', $this->groupData['subGroupID'])
+								->param(':chainmap', $this->groupData['subGroupID'])
 								->execute()->current();
 				
 			if( isset($connection['hash']) )
@@ -395,7 +358,6 @@ class Controller_Chainmap extends FrontController
 		
 			$eol = intval($_POST['eol']);
 			$mass = intval($_POST['mass']);	
-			
 						
 			mapUtils::addSystemToMap($this->groupData['groupID'],$this->groupData['subGroupID'],$whHash, $fromSysID, $toSysID, $eol, $mass);
 

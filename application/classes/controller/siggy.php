@@ -7,6 +7,8 @@ class Controller_Siggy extends FrontController
 	public $trusted = false;
 	
 	public $template = 'template/main';
+	
+	public $chainmap = null;
 
 	public function action_index()
 	{
@@ -44,7 +46,7 @@ class Controller_Siggy extends FrontController
 		else
 		{
 			$requested = false;
-			$homeSystems = groupUtils::getHomeSystems($this->groupData['groupID'], $this->groupData['subGroupID']);
+			$homeSystems = $this->chainmap->get_home_systems();
 			
 			if( count($homeSystems) > 0 )
 			{
@@ -126,6 +128,8 @@ class Controller_Siggy extends FrontController
 	public function before()
 	{
 		parent::before();
+		
+		$this->chainmap = new Chainmap($this->groupData['subGroupID'],$this->groupData['groupID']);
 	}
 	
 	public function after()
@@ -383,7 +387,7 @@ class Controller_Siggy extends FrontController
 		if( !isset($connection['hash'] ) )
 		{
 			//new wh
-			mapUtils::addSystemToMap($this->groupData['groupID'],$this->groupData['subGroupID'], $whHash, $origin, $dest);
+			$this->chainmap->add_system_to_map($this->groupData['groupID'],$this->groupData['subGroupID'], $whHash, $origin, $dest);
 			
 			miscUtils::increment_stat('wormholes', $this->groupData);
 		}
@@ -572,7 +576,7 @@ class Controller_Siggy extends FrontController
                     ->param(':lastBeep', time() )->execute();			
             }
 					
-			$this->mapData = groupUtils::getMapCache( $this->groupData['groupID'], $this->groupData['subGroupID'] );
+			$this->mapData = $this->chainmap->get_map_cache();
             if( $chainMapOpen == 1 )
             {
                     $update['chainMap']['actives'] = array();
@@ -638,6 +642,7 @@ class Controller_Siggy extends FrontController
                 {
                         $additional .= ',sigSize';
                 }
+				
                 $update['sigData'] = DB::query(Database::SELECT, "SELECT sigID,sig, type, siteID, description, created, creator,updated,lastUpdater".$additional." FROM systemsigs
 																	WHERE systemID=:id AND groupID=:group")
                                  ->param(':id', $currentSystemID)
@@ -741,10 +746,8 @@ class Controller_Siggy extends FrontController
 			
 			$sigID = DB::insert('systemsigs', array_keys($insert) )->values(array_values($insert))->execute();
 			
-			miscUtils::setActiveSystem($insert['systemID'], array('lastUpdate' => time(),
-																'lastActive' => time() ),
-										$this->groupData['groupID'],
-										$this->groupData['subGroupID']
+			$this->update_system($insert['systemID'], array('lastUpdate' => time(),
+																'lastActive' => time() )
 										);
 			
 			miscUtils::increment_stat('adds', $this->groupData);
@@ -833,9 +836,7 @@ class Controller_Siggy extends FrontController
 				
 				if( $doingUpdate )
 				{
-					miscUtils::setActiveSystem($systemID, array('lastUpdate' => time(),'lastActive' => time() ),
-												$this->groupData['groupID'],
-												$this->groupData['subGroupID']
+					$this->chainmap->update_system($systemID, array('lastUpdate' => time(),'lastActive' => time() )
 												);
 				}
 				
@@ -873,10 +874,8 @@ class Controller_Siggy extends FrontController
 			$id = intval($_POST['sigID']);
 			
 			DB::update('systemsigs')->set( $update )->where('sigID', '=', $id)->execute();
-			miscUtils::setActiveSystem($_POST['systemID'], array('lastUpdate' => time(),
-																 'lastActive' => time() ),
-											$this->groupData['groupID'],
-											$this->groupData['subGroupID']
+			$this->update_system($_POST['systemID'], array('lastUpdate' => time(),
+																 'lastActive' => time() )
 										);
 			
 			miscUtils::increment_stat('updates', $this->groupData);
@@ -906,10 +905,7 @@ class Controller_Siggy extends FrontController
 			
 			DB::delete('systemsigs')->where('sigID', '=', $id)->execute();
 			
-			miscUtils::setActiveSystem($_POST['systemID'], array('lastUpdate' => time() ),
-											$this->groupData['groupID'],
-											$this->groupData['subGroupID']
-										);
+			$this->chainmap->update_system($_POST['systemID'], array('lastUpdate' => time() ));
 			
 			$message = $this->groupData['charName'].' deleted sig "'.$sigData['sig'].'" from system '.$sigData['systemName'];;
 			if( $sigData['type'] != 'none' )
@@ -933,10 +929,8 @@ class Controller_Siggy extends FrontController
 		{
 			$id = intval($_POST['systemID']);
 			
-			miscUtils::setActiveSystem($_POST['systemID'], array('displayName' => trim($_POST['label']), 
-																 'activity' => intval($_POST['activity']) ),
-											$this->groupData['groupID'],
-											$this->groupData['subGroupID']
+			$this->chainmap->update_system($_POST['systemID'], array('displayName' => trim($_POST['label']), 
+																 'activity' => intval($_POST['activity']) )
 										);
 			echo json_encode('1');
 		
@@ -945,7 +939,7 @@ class Controller_Siggy extends FrontController
 			$log_message = sprintf('%s edited system %s; Display Name: %s, Activity Level %d', $this->groupData['charName'], $system_data['name'],  trim($_POST['label']),intval($_POST['activity']) );
 			groupUtils::log_action($this->groupData['groupID'],'editsystem', $log_message );
 			
-			groupUtils::rebuildMapCache($this->groupData['groupID'], $this->groupData['subGroupID']);
+			$this->chainmap->rebuild_map_data_cache();
 		}
 		exit();
 	}
