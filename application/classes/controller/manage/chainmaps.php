@@ -285,7 +285,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				DB::update('groupmembers')->set( array('chainmap_id' => 0 ) )->where( 'chainmap_id', '=', $sg->chainmap_id )->execute();
 				DB::delete('activesystems')->where('chainmap_id', '=', $sg->chainmap_id)->execute();
 
-				groupUtils::deleteSubGroupCache($sg->chainmap_id);
+				//groupUtils::deleteSubGroupCache($sg->chainmap_id);
 				$sg->delete();
 
 				//$this->__recacheCorpMembers();

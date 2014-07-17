@@ -116,15 +116,6 @@ final class groupUtils
 		DB::update('groups')->set( array( 'iskBalance' => DB::expr('iskBalance + :amount'), 'billable' => 1 ) )->param(':amount', $amount)->where('groupID', '=',  $group_id)->execute();
 	}
 
-	static function recacheGroups()
-	{
-		$cache = Cache::instance( CACHE_METHOD );
-		$groups = DB::query(Database::SELECT, "SELECT * FROM groups")
-				  ->execute()->as_array('groupID');  
-
-		$cache->set('groupCache', $groups);         
-	}
-
 	static function recacheGroup( $id )
 	{
 		$id = intval($id);
@@ -138,10 +129,17 @@ final class groupUtils
 								->param(':group', $id)
 								->execute()
 								->current();
+
 		if( $group['groupID'] )
 		{
+			$chainmaps = DB::query(Database::SELECT, "SELECT * FROM chainmaps WHERE group_id = :group")
+								->param(':group', $id)
+								->execute()
+								->as_array();
+			$group['chainmaps'] = $chainmaps;
+		
 			$cache->set('group-'.$group['groupID'], $group);         
-			return TRUE;
+			return $group;
 		}
 		else
 		{
@@ -228,52 +226,21 @@ final class groupUtils
 		}
 	}
 
-	static function recacheSubGroup( $id )
-	{
-		$id = intval($id);
-		if( !$id )
-		{
-			return FALSE;
-		}
-
-		$cache = Cache::instance( CACHE_METHOD );
-		$sub_group = DB::query(Database::SELECT, "SELECT * FROM subgroups WHERE subGroupID = :subGroup")
-										->param(':subGroup', $id)
-										->execute()->current();
-				  
-		if( $sub_group['subGroupID'] )
-		{
-			$cache->set('subGroup-'.$sub_group['subGroupID'], $sub_group);         
-			return TRUE;
-		}
-		else
-		{
-			return FALSE;
-		}
-	}	
-   
-	static function deleteSubGroupCache( $id )
-	{
-		$cache = Cache::instance( CACHE_METHOD );
-		
-		$cache->delete('subGroup-'.$id);
-	}
-   
-	static function deleteCorpCache( $id )
+	static function deleteCorpCache($id)
 	{
 		$cache = Cache::instance( CACHE_METHOD );
 		
 		$cache->delete('corp-'.$id);
 	}
    
-	static function deleteCharCache( $id )
+	static function deleteCharCache($id)
 	{
 		$cache = Cache::instance( CACHE_METHOD );
 
 		$cache->delete('char-'.$id);
 	}
 
-	static function getCorpData( $corpID )
+	static function getCorpData($corpID)
 	{
 		if( !$corpID )
 		{
@@ -294,7 +261,7 @@ final class groupUtils
 		}
 	}
 
-	static function getGroupData( $group_id )
+	static function getGroupData($group_id)
 	{
 		if( !$group_id )
 		{
@@ -307,18 +274,7 @@ final class groupUtils
 		
 		if( $group_data == null )
 		{
-			$group_data = DB::query(Database::SELECT, "SELECT * FROM groups WHERE groupID = :group")
-											->param(':group', $group_id)
-											->execute()->current();
-
-			if( $group_data['groupID'] )
-			{
-				$cache->set('group-'.$group_data['groupID'], $group_data);			
-			}
-			else
-			{
-				return FALSE;
-			}
+			return self::recacheGroup($group_id);
 		}
 		
 		return $group_data;
