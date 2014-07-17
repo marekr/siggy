@@ -4,7 +4,7 @@ class Model_Groupmember extends ORM {
    protected $_table_name = 'groupmembers';
    protected $_primary_key = 'id';
    
-   protected $_belongs_to = array ( 'group' => array ( 'foreign_key' => 'groupID' ), 'subgroup' => array('foreign_key' => 'subGroupID') ); 
+   protected $_belongs_to = array ( 'group' => array ( 'foreign_key' => 'groupID' ), 'chainmap' => array('foreign_key' => 'chainmap_id') ); 
 
 			
 

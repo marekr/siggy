@@ -46,7 +46,9 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		$view->set('user', Auth::$user->data);
 
 		$group = ORM::factory('group', Auth::$user->data['groupID']);
-		$view->set('group', $group );
+		$chainmaps = $group->chainmaps->find_all();
+		
+		$view->set('chainmaps', $chainmaps );
 	}
 
    public function action_add()
@@ -71,7 +73,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		{
 			try 
 			{
-				$sg = ORM::factory('subgroup');
+				$sg = ORM::factory('chainmap');
 				$sg->sgName = $_POST['sgName'];
 				$sg->groupID = Auth::$user->data['groupID'];
 
@@ -140,7 +142,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				// Get errors for display in view
 				// Note how the first param is the path to the message file (e.g. /messages/register.php)
 				Message::add('error', __('Error: Values could not be saved.'));
-				$errors = $e->errors('addSubGroup');
+				$errors = $e->errors('add_chain_map');
 				$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
 				$view->set('errors', $errors);
 				// Pass on the old form values
@@ -163,11 +165,11 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 			
 		$this->template->title = __('Edit Chain Map');
 
-		$sg = ORM::factory('subgroup', $id);
+		$sg = ORM::factory('chainmap', $id);
 		if( $sg->groupID != Auth::$user->data['groupID'] )
 		{
-			Message::add('error', __('Error: You do not have permission to edit that subgroup.'));
-			HTTP::redirect('manage/group/subgroups');
+			Message::add('error', __('Error: You do not have permission to edit that chainmap.'));
+			HTTP::redirect('manage/chinmaps');
 		}
 		$group = ORM::factory('group', Auth::$user->data['groupID']);
 
@@ -247,7 +249,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				// Get errors for display in view
 				// Note how the first param is the path to the message file (e.g. /messages/register.php)
 				Message::add('error', __('Error: Values could not be saved.'));
-				$errors = $e->errors('editSubGroup');
+				$errors = $e->errors('edit_chain_map');
 				$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
 				$view->set('errors', $errors);
 				// Pass on the old form values
@@ -271,11 +273,11 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
 		$this->template->title = __('Remove Chain Map');
 
-		$sg = ORM::factory('subgroup', $id);
+		$sg = ORM::factory('chainmap', $id);
 		if( $sg->groupID != Auth::$user->data['groupID'] )
 		{
-			Message::add('error', __('Error: You do not have permission to remove that subgroup.'));
-			HTTP::redirect('manage/group/subgroups');
+			Message::add('error', __('Error: You do not have permission to remove that chainmap.'));
+			HTTP::redirect('manage/chainmaps');
 		}
 
 		$view = View::factory('manage/chainmaps/delete');
@@ -284,10 +286,10 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		{
 			try 
 			{
-				DB::update('groupmembers')->set( array('subGroupID' => 0 ) )->where( 'subGroupID', '=', $sg->subGroupID )->execute();
-				DB::delete('activesystems')->where('subGroupID', '=', $sg->subGroupID)->execute();
+				DB::update('groupmembers')->set( array('chainmap_id' => 0 ) )->where( 'chainmap_id', '=', $sg->chainmap_id )->execute();
+				DB::delete('activesystems')->where('chainmap_id', '=', $sg->chainmap_id)->execute();
 
-				groupUtils::deleteSubGroupCache($sg->subGroupID);
+				groupUtils::deleteSubGroupCache($sg->chainmap_id);
 				$sg->delete();
 
 				//$this->__recacheCorpMembers();

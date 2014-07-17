@@ -1,11 +1,10 @@
 <?php
 
-class Model_Subgroup extends ORM {
-   protected $_table_name = 'subgroups';
-   protected $_primary_key = 'subGroupID';
-   protected $_has_many = array(
-      // auth
-      'groupmembers' => array('foreign_key' => 'subGroupID'),
-      );
+class Model_Chainmap extends ORM {
+	protected $_table_name = 'chainmaps';
+	protected $_primary_key = 'chainmap_id';
+	protected $_has_many = array(
+		'groupmembers' => array('foreign_key' => 'chainmap_id'),
+	);
 }
 
