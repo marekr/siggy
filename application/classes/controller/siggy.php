@@ -653,7 +653,7 @@ class Controller_Siggy extends FrontController
 
             $activeSystem = $activeSystemQuery->current();
             $recordedLastUpdate = ($activeSystem['lastUpdate'] > 0) ? $activeSystem['lastUpdate']: time();
-
+			//print $recordedLastUpdate;
             if( ($_POST['lastUpdate'] < $recordedLastUpdate) || ( $_POST['lastUpdate'] == 0 ) || $forceUpdate || $update['systemUpdate'] )
             {
                 $additional = '';
@@ -771,7 +771,7 @@ class Controller_Siggy extends FrontController
 			
 			$sigID = DB::insert('systemsigs', array_keys($insert) )->values(array_values($insert))->execute();
 			
-			$this->update_system($insert['systemID'], array('lastUpdate' => time(),
+			$this->chainmap->update_system($insert['systemID'], array('lastUpdate' => time(),
 																'lastActive' => time() )
 										);
 			
