@@ -320,9 +320,10 @@ function siggymain( options )
 	//gnotes
 	this.globalNotesEle = null;
 	this._blinkNotesInterval = null;
-	this.lastGlobalNotesUpdate = 0;
 	this.globalNotes = '';
 	this.editingGlobalNotes = false;
+	
+	this.groupCacheTime = 0;
 	
 	this.defaults = {
 		baseUrl: '',
@@ -370,7 +371,7 @@ siggymain.prototype.update = function ()
 	var request = {
 		systemID: this.systemID,
 		lastUpdate: this.lastUpdate,
-		lastGlobalNotesUpdate: this.lastGlobalNotesUpdate,
+		group_cache_time: this.groupCacheTime,
 		systemName: this.systemName,
 		freezeSystem: this.freezeSystem,
 		acsid: this.acsid,
@@ -438,21 +439,21 @@ siggymain.prototype.update = function ()
                             }				
                             else
                             {
-                                var nlu = that.lastGlobalNotesUpdate;
+                                var nlu = that.group_cache_time;
                             }
                             
-                            if( !that.globalNotesEle.is(':visible') && data.lastGlobalNotesUpdate > nlu && nlu != 0 )
+                            if( !that.globalNotesEle.is(':visible') && data.group_cache_time > nlu && nlu != 0 )
                             {
                                 that.blinkNotes();
                             }
                             
-                            that.lastGlobalNotesUpdate = data.lastGlobalNotesUpdate;
+                            that.groupCacheTime = data.group_cache_time;
                             
-                            setCookie('notesUpdate', data.lastGlobalNotesUpdate, 365);
+                            setCookie('notesUpdate', data.group_cache_time, 365);
                             
                             that.globalNotes = data.globalNotes;
                             $('#global-notes-content').html(that.globalNotes.replace(/\n/g, '<br />'));
-                            $('#global-notes-time').text( siggymain.displayTimeStamp(that.lastGlobalNotesUpdate) );
+                            $('#global-notes-time').text( siggymain.displayTimeStamp(that.groupCacheTime) );
                         }
                     }
                     
@@ -1785,7 +1786,7 @@ siggymain.prototype.initializeGNotes = function()
 	$('#global-notes-save').click(function ()
 	{
 		that.globalNotes = $('#global-notes-edit-box').val();
-		$.post(that.settings.baseUrl + 'doglobalNotesSave', {
+		$.post(that.settings.baseUrl + 'siggy/notes_save', {
 			notes: that.globalNotes
 		}, function (data)
 		{
