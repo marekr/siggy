@@ -53,15 +53,15 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
    public function action_add()
    {
+		$errors = array();
+		
 		$this->template->title = __('Add a Chain Map');
 
 		$group = ORM::factory('group', Auth::$user->data['groupID']);
 
-		$errors = array();
-		$data = array('sgName' => '',
-						'sgHomeSystems' => '',
-						'sgSysListShowReds' => 1,
-						'sgSkipPurgeHomeSigs' => 0,
+		$data = array(	'chainmap_name' => '',
+						'chainmap_homesystems' => '',
+						'chainmap_skip_purge_home_sigs' => 1
 						);
 		$view = View::factory('manage/chainmaps/add_edit_form');
 		$view->bind('errors', $errors);
@@ -74,9 +74,8 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 			try 
 			{
 				$sg = ORM::factory('chainmap');
-				$sg->sgName = $_POST['sgName'];
-				$sg->groupID = Auth::$user->data['groupID'];
-
+				$sg->chainmap_name = $_POST['chainmap_name'];
+				$sg->group_id = Auth::$user->data['groupID'];
 
 				if( !empty($_POST['password']) && !empty($_POST['password_confirm']) )
 				{
@@ -90,8 +89,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 					}
 				}
 
-
-				$homeSystems = trim($_POST['sgHomeSystems']);
+				$homeSystems = trim($_POST['chainmap_homesystems']);
 				if( !empty($homeSystems) )
 				{
 					$homeSystems = explode(',', $homeSystems);
@@ -102,7 +100,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 						{
 							if( trim($v) != '' )
 							{
-								$id = $this->__findSystemByName(trim($v));
+								$id = mapUtils::findSystemByName(trim($v));
 								if( $id != 0 )
 								{
 									$homeSystemIDs[] = $id;
@@ -118,22 +116,23 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 							}
 						}
 					}
-					$sg->sgHomeSystemIDs = implode(',', $homeSystemIDs);
-					$sg->sgHomeSystems = implode(',', $homeSystems);
+					$sg->chainmap_homesystems_ids = implode(',', $chainmap_homesystems_ids);
+					$sg->chainmap_homesystems = implode(',', $homeSystems);
 				}
 				else
 				{
-					$sg->sgHomeSystems = '';
-					$sg->sgHomeSystemIDs = '';
-				}												
+					$sg->chainmap_homesystems = '';
+					$sg->chainmap_homesystems_ids = '';
+				}													
 
-				$sg->sgSkipPurgeHomeSigs = intval($_POST['sgSkipPurgeHomeSigs']);
-				$sg->sgSysListShowReds = intval($_POST['sgSysListShowReds']);
+				$sg->chainmap_skip_purge_home_sigs = intval($_POST['chainmap_skip_purge_home_sigs']);
 
 				$sg->save();
-
-				//$this->__recacheCorpMembers();
-				groupUtils::recacheSubGroup($sg->subGroupID);
+	
+				$chainmap = new chainmap($sg->chainmap_id, Auth::$user->data['groupID']);
+				$chainmap->rebuild_map_data_cache();
+				
+				
 				HTTP::redirect('manage/chainmaps/list');
 				return;
 			} 
@@ -147,12 +146,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				$view->set('errors', $errors);
 				// Pass on the old form values
 
-				$view->set('data', array(
-											'sgName' => $_POST['sgName'],
-											'sgHomeSystems' => $_POST['sgHomeSystems'],
-											'sgSkipPurgeHomeSigs' => $_POST['sgSkipPurgeHomeSigs']
-										) 
-						);
+				$view->set('data', $data);
 			}
 		}
 		  
@@ -166,7 +160,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		$this->template->title = __('Edit Chain Map');
 
 		$sg = ORM::factory('chainmap', $id);
-		if( $sg->groupID != Auth::$user->data['groupID'] )
+		if( $sg->group_id != Auth::$user->data['groupID'] )
 		{
 			Message::add('error', __('Error: You do not have permission to edit that chainmap.'));
 			HTTP::redirect('manage/chinmaps');
@@ -180,11 +174,13 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		$view->set('mode', 'edit');
 		$view->set('id', $id);
 		
+		$chainmap = new chainmap($id, Auth::$user->data['groupID']);
+		
 		if ( !empty($_POST)  ) 
 		{
 			try 
 			{
-				$sg->sgName = $_POST['sgName'];
+				$sg->chainmap_name = $_POST['chainmap_name'];
 
 				if( !empty($_POST['password']) && !empty($_POST['password_confirm']) )
 				{
@@ -199,7 +195,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				}
 
 
-				$homeSystems = trim($_POST['sgHomeSystems']);
+				$homeSystems = trim($_POST['chainmap_homesystems']);
 				if( !empty($homeSystems) )
 				{
 					$homeSystems = explode(',', $homeSystems);
@@ -210,7 +206,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 						{
 							if( trim($v) != '' )
 							{
-								$id = $this->__findSystemByName(trim($v));
+								$id = mapUtils::findSystemByName(trim($v));
 								if( $id != 0 )
 								{
 									$homeSystemIDs[] = $id;
@@ -226,21 +222,21 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 							}
 						}
 					}
-					$sg->sgHomeSystemIDs = implode(',', $homeSystemIDs);
-					$sg->sgHomeSystems = implode(',', $homeSystems);
+					$sg->chainmap_homesystems_ids = implode(',', $chainmap_homesystems_ids);
+					$sg->chainmap_homesystems = implode(',', $homeSystems);
 				}
 				else
 				{
-					$sg->sgHomeSystems = '';
-					$sg->sgHomeSystemIDs = '';
+					$sg->chainmap_homesystems = '';
+					$sg->chainmap_homesystems_ids = '';
 				}						
 
-				$sg->sgSkipPurgeHomeSigs = intval($_POST['sgSkipPurgeHomeSigs']);
+				$sg->chainmap_skip_purge_home_sigs = intval($_POST['chainmap_skip_purge_home_sigs']);
 
 				$sg->save();
 
-				//$this->__recacheCorpMembers();
-				groupUtils::recacheSubGroup($sg->subGroupID);
+				$chainmap->rebuild_map_data_cache();
+				
 				HTTP::redirect('manage/chainmaps/list');
 				return;
 			} 
@@ -254,9 +250,9 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				$view->set('errors', $errors);
 				// Pass on the old form values
 
-				$view->set('data', array( 'sgName' => $_POST['sgName'],
-											'sgHomeSystems' => $_POST['sgHomeSystems'],
-											'sgSkipPurgeHomeSigs' => $_POST['sgSkipPurgeHomeSigs']
+				$view->set('data', array( 'chainmap_name' => $_POST['chainmap_name'],
+											'chainmap_homesystems' => $_POST['chainmap_homesystems'],
+											'chainmap_skip_purge_home_sigs' => $_POST['chainmap_skip_purge_home_sigs']
 										 ) );
 			}
 		}
@@ -274,7 +270,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		$this->template->title = __('Remove Chain Map');
 
 		$sg = ORM::factory('chainmap', $id);
-		if( $sg->groupID != Auth::$user->data['groupID'] )
+		if( $sg->group_id != Auth::$user->data['groupID'] )
 		{
 			Message::add('error', __('Error: You do not have permission to remove that chainmap.'));
 			HTTP::redirect('manage/chainmaps');
