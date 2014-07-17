@@ -672,7 +672,7 @@ class Controller_Siggy extends FrontController
                 $update['sigUpdate'] = (int) 1;
             }
             
-			if( $group_last_cache_time < $this->groupData['cache_time'] )
+			if( $group_last_cache_time < $this->groupData['last_update'] )
 			{
 				$update['chainmaps_update'] = 1;
 				$update['chainmaps'] = $this->groupData['chainmaps'];

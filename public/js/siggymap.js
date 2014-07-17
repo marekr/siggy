@@ -1,7 +1,6 @@
 
 function siggyMap(options)
 {
-
 	this.defaults = {
 			jumpTrackerEnabled: true,
 			jumpTrackerShowNames: true,
