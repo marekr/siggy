@@ -144,6 +144,12 @@ siggymain.prototype.update = function ()
                     {
                         that.systemList = data.systemList;
                     }
+					
+					if(data.chainmaps_update)
+					{
+						that.updateChainMaps(data.chainmaps);
+					}
+					
                     if (data.globalNotesUpdate)
                     {
                         if (!that.editingGlobalNotes)
@@ -215,56 +221,6 @@ siggymain.prototype.update = function ()
 	
 	return true;
 }
-
-
-siggymain.prototype.sortSystemListInUse = function (a, b)
-{
-	if (a[1] > b[1])
-	{
-		return -1;
-	}
-	else
-	{
-		return 1;
-	}
-}
-
-siggymain.prototype.sortSystemListLastActive = function (a, b)
-{
-	if (a[2] > b[2])
-	{
-		return -1;
-	}
-	else
-	{
-		return 1;
-	}
-}
-
-siggymain.prototype.sortSystemList = function (a, b)
-{
-	if (a[1] == b[1])
-	{
-		if (a[2] > b[2])
-		{
-			return -1;
-		}
-		else
-		{
-			return 1;
-		}
-	}
-	//if 1 and 0
-	else if (a[1] > b[1])
-	{
-		return -1;
-	}
-	else if (a[1] < b[1])
-	{
-		return 1;
-	}
-}
-
 
 siggymain.prototype.registerSwitchHandler = function (item, systemID, systemName)
 {
@@ -698,30 +654,46 @@ siggymain.prototype.addSigRow = function (sigData, flashSig)
 		creationInfo += '<br /><b>Updated at:</b> '+siggymain.displayTimeStamp(sigData.updated);
 	}
 	
+	var editIcon = $('<i>').addClass('icon icon-pencil icon-large')
+							.click(function (e)
+									{
+										that.editSigForm(sigData.sigID);
+									});
+	
+	var editTD = $('<td>').addClass('center-text edit').append(editIcon);
 	var row = $('<tr>').attr('id', 'sig-' + sigData.sigID)
-	.append($('<td>').addClass('center-text').addClass('edit') .append($('<i>').addClass('icon').addClass('icon-pencil').addClass('icon-large').click(function (e)
-		{
-			that.editSigForm(sigData.sigID);
-		})
-	))
-	.append($('<td>').addClass('center-text').addClass('sig').text(sigData.sig));
+						.append(editTD)
+						.append($('<td>').addClass('center-text sig').text(sigData.sig));
 	
 	if( this.settings.showSigSizeCol )
 	{
-			row.append( $('<td>').addClass('center-text').addClass('size').text(sigData.sigSize) );
+		row.append( $('<td>').addClass('center-text size').text(sigData.sigSize) );
 	}
 	
-	row.append($('<td>').addClass('center-text').addClass('type').text(this.convertType(sigData.type)))
-	.append(descTD)
-	.append($('<td>').addClass('center-text').addClass('moreinfo')
-			.append($('<i>').addClass('icon').addClass('icon-info-sign').addClass('icon-large').addClass('icon-yellow'))
-			.append($("<div>").addClass('tooltip').attr('id', 'creation-info-' + sigData.sigID).html(creationInfo))
-			)
-	.append($('<td>').addClass('center-text').addClass('age').append($("<span>").text("--")).append($("<div>").addClass('tooltip').attr('id', 'age-timestamp-' + sigData.sigID).text(siggymain.displayTimeStamp(sigData.created))))
-	.append($('<td>').addClass('center-text').addClass('remove').append($('<i>').addClass('icon').addClass('icon-remove-sign').addClass('icon-large').addClass('icon-red')).click(function (e)
-	{
-		that.removeSig(sigData.sigID)
-	}));
+	var typeTD = $('<td>').addClass('center-text type')
+						  .text(this.convertType(sigData.type));
+						  
+	var infoIcon = $('<i>').addClass('icon icon-info-sign icon-large icon-yellow');
+	var infoTD = $('<td>').addClass('center-text moreinfo')
+				.append(infoIcon)
+				.append($("<div>").addClass('tooltip').attr('id', 'creation-info-' + sigData.sigID).html(creationInfo));
+			
+	var ageTDTooltip = $("<div>").addClass('tooltip').attr('id', 'age-timestamp-' + sigData.sigID).text(siggymain.displayTimeStamp(sigData.created));
+	
+	var ageTD = $('<td>').addClass('center-text age').append($("<span>").text("--")).append(ageTDTooltip);
+	
+	var removeIcon = $('<i>').addClass('icon icon-remove-sign icon-large icon-red');
+	var removeTD = $('<td>').addClass('center-text remove')
+							.append(removeIcon)
+							.click(function (e)
+									{
+										that.removeSig(sigData.sigID)
+									});
+	row.append(typeTD)
+		.append(descTD)
+		.append(infoTD)
+		.append(ageTD)
+		.append(removeTD);
 	
 	$("#sig-table tbody").append( row );
 	
@@ -1379,22 +1351,22 @@ siggymain.prototype.initialize = function ()
 
 siggymain.prototype.saveSystemOptions = function(systemID, label, activity)
 {
-		var that = this;
-		$.post(that.settings.baseUrl + 'dosaveSystemOptions', {
-			systemID: systemID,
-			label: label,
-			activity: activity
-		}, function (data)
+	var that = this;
+	$.post(that.settings.baseUrl + 'dosaveSystemOptions', {
+		systemID: systemID,
+		label: label,
+		activity: activity
+	}, function (data)
+	{
+		if (that.systemList[systemID])
 		{
-			if (that.systemList[systemID])
-			{
-				that.systemList[systemID].displayName = label;
-				that.systemList[systemID].activity = activity;
-			}
-			
-			$this.forceUpdate = true;
-			$this.updateNow();
-		});
+			that.systemList[systemID].displayName = label;
+			that.systemList[systemID].activity = activity;
+		}
+		
+		$this.forceUpdate = true;
+		$this.updateNow();
+	});
 }
 
 siggymain.prototype.initializeTabs = function()
@@ -1442,7 +1414,6 @@ siggymain.prototype.changeTab = function( selectedTab )
 siggymain.prototype.initializeGNotes = function()
 {
 	var that = this;
-
     
 	$('#settings-button').click(function ()
 	{
@@ -1472,7 +1443,6 @@ siggymain.prototype.initializeGNotes = function()
     $('#settings-cancel').click( function() {
 		$.unblockUI(); 
     });
-    
     
 	this.globalNotesEle = $('#global-notes');
 	$('#global-notes-button').click(function ()
@@ -2032,4 +2002,24 @@ siggymain.prototype.removePOS = function(posID)
 			$this.updateNow();
 		});
 	});
+}
+
+
+
+siggymain.prototype.updateChainMaps = function(data)
+{	
+	var selBefore = $('#chain-map-tabs li.add');
+	
+	//delete old
+	$('#chainmap-tabs li.map').remove();
+	if( typeof data != "undefined" && Object.size(data) > 0 )
+	{
+		for(var i in data)
+		{
+			var chainmap = data[i];
+			var li = $('<li>').addClass('map');
+			li.text(chainmap.chainmap_name);
+			selBefore.before(li);
+		}
+	}
 }
