@@ -1,9 +1,12 @@
       <!--- chain map -->
       <div id="chain-map-container" class="bordered-wrap">
-				<h2>
-					<p class='left'>Chain map</p>
-					<p id="chain-map-ec" style="display:inline-block;" class="center"><?php echo ( !$mapOpen ? "Click to show" : 'Click to hide' ); ?></p>
-				</h2>
+				<ul id="chain-map-tabs" class="clearfix">
+					<li class="active">Default</li>
+					<li><i class="fa fa-fw fa-lock"></i> Passworded</li>
+					<li> Lowsex</li>
+					<li> <i class="fa fa-fw fa-plus"></i></li>
+					<li class="minimize"><i class="fa fa-fw fa-minus-square"></i></li>
+				</ul>
 				<div id='chain-map-inner' <?php echo ( !$mapOpen ? "style='display:none'" : '' ); ?>>
 					<p class="loading">Loading....<br /><span style='font-size:0.3em;'>(This may take up to 10 seconds.)</span></p>
 					<p class="editing">Editing: Drag systems by clicking on them.</p>
@@ -18,25 +21,26 @@
 						<button id="chain-map-mass-delete-confirm" style="display:none;" class="btn btn-default btn-xs">Confirm Mass Delete</button>
 						<button id="chain-map-mass-delete-cancel" style="display:none;" class="btn btn-default btn-xs">Cancel</button>
 					</div>
-                    <!-- magic buttons -->
-                    <div id='map-footer-bar'>
-                        <!-- options -->
+				</div>
+				<!-- magic buttons -->
+				<div id='map-footer-bar'>
+					<!-- options -->
 
-                            <a href="#" id="chain-map-add-wh" class="btn btn-default btn-xs">Add WH</a>
-                            <a href="#" id="chain-map-edit" class="btn btn-default btn-xs">Edit</a>
-                            <a href="#" id="chain-map-delete-whs" class="btn btn-default btn-xs">Delete WHs</a>
-                            
-                        <div class="clear"></div>
-                        <!--- end options -->
-                        <!--- broadcast -->
-                        <p style='float:right;'>
-                            <?php if( !$group['alwaysBroadcast'] ): ?>
-                            <?php echo ( ( isset($_COOKIE['broadcast']) && $_COOKIE['broadcast'] == 0 ) ? "<span id='broadcastText'>Location broadcasting is disabled.</span> <button id='chainMapBroadcast'>Enable</button>" : "<span id='broadcastText'>Location broadcasting is enabled.</span> <button id='chainMapBroadcast'>Disable</button>" ); ?>
-                            <?php endif; ?>
-                        </p>
-                        <!-- end broadcast -->
-                        <br clear="all" />
-                    </div>
+						<a href="#" id="chain-map-add-wh" class="btn btn-default btn-xs">Add WH</a>
+						<a href="#" id="chain-map-edit" class="btn btn-default btn-xs">Edit</a>
+						<a href="#" id="chain-map-delete-whs" class="btn btn-default btn-xs">Delete WHs</a>
+						<a href="#" id="chain-map-delete-whs" class="btn btn-default btn-xs">Copy WHs</a>
+						
+					<div class="clear"></div>
+					<!--- end options -->
+					<!--- broadcast -->
+					<p style='float:right;'>
+						<?php if( !$group['alwaysBroadcast'] ): ?>
+						<?php echo ( ( isset($_COOKIE['broadcast']) && $_COOKIE['broadcast'] == 0 ) ? "<span id='broadcastText'>Location broadcasting is disabled.</span> <button id='chainMapBroadcast'>Enable</button>" : "<span id='broadcastText'>Location broadcasting is enabled.</span> <button id='chainMapBroadcast'>Disable</button>" ); ?>
+						<?php endif; ?>
+					</p>
+					<!-- end broadcast -->
+					<br clear="all" />
 				</div>
                 
 				<!--- wh editor -->

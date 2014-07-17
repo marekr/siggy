@@ -236,7 +236,7 @@ class chainmap
 			return;
 		}
 		
-		groupUtils::rebuildMapCache($groupID, $subGroupID);
+		$this->rebuild_map_data_cache();
 	}
 	
 	

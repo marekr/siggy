@@ -332,7 +332,7 @@
                                 <input type="text" name="desc"  />
                             </div>
                         </div>
-                        <button name='add' class="btn btn-default" style="margin-top: 15px;line-height: 171%;"><i class="icon-plus-sign"></i>  Add</button>
+                        <button name='add' class="btn btn-default" style="margin-top: 15px;line-height: 171%;"><i class="icon icon-plus-sign"></i>  Add</button>
                     </form>
                 </div>
             </div>

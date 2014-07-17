@@ -103,23 +103,6 @@ MAP */
 }
 
 
-
-#chain-map-container h2
-{
-	text-align:center;
-    position:relative;
-    padding: 5px;
-    font-weight: bold;
-    background-color: @header-background;
-}
-
-#chain-map-container p.left
-{
-	display:inline-block;
-	position:absolute;
-	left:3px;
-}
-
 #chain-map-inner
 {
 	background-color: @chain-map-background;
@@ -410,9 +393,62 @@ MAP */
     background-color: #664402;
 }
 
+/* Tabs */
+:before, :after
+{
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.clearfix:before, .clearfix:after
+{
+	display: table;
+	content: " ";
+}
+
+.clearfix:after
+{
+	clear: both;
+}
+
+#chain-map-tabs
+{
+    padding: 5px;
+    font-weight: bold;
+    background-color: @header-background;
+	list-style-image: none;
+	list-style-position: outside;
+	list-style-type: none;
+	box-sizing: border-box;
+	display: block;
+	padding: 0;
+}
+
+#chain-map-tabs li
+{
+	position: relative;
+	display: block;
+	float: left;
+	padding: 5px 10px 5px 10px;
+    background-color: @box-button-background;
+	margin-right:4px;
+	cursor:pointer;
+}
+
+#chain-map-tabs li.active
+{
+    background-color: @chain-map-background;
+}
+
+#chain-map-tabs li.minimize
+{
+    float:right;
+	background-color: transparent;
+}
+
 .selection-box {
-	position:    relative;
-	border:     1px dotted #fff;
+	position: relative;
+	border: 1px dotted #fff;
 	background: #fff;
 	opacity: 0.4;
 }
