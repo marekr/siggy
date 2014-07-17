@@ -33,11 +33,6 @@ function siggymain( options )
 	//collasped sysInfo
 	this.statsOpened = 0;
 	
-	//afk stuff
-	this.idleMax = 10*60;
-	this.idleTimeout = 0;
-	this.afked = false;
-	
 	//gnotes
 	this.globalNotesEle = null;
 	this._blinkNotesInterval = null;
