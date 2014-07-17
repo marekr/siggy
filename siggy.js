@@ -1597,7 +1597,7 @@ siggymain.prototype.addSigRow = function (sigData, flashSig)
 	}
 	
 	var row = $('<tr>').attr('id', 'sig-' + sigData.sigID)
-	.append($('<td>').addClass('center-text').addClass('edit') .append($('<i>').addClass('icon-pencil').addClass('icon-large').click(function (e)
+	.append($('<td>').addClass('center-text').addClass('edit') .append($('<i>').addClass('icon').addClass('icon-pencil').addClass('icon-large').click(function (e)
 		{
 			that.editSigForm(sigData.sigID);
 		})
@@ -1612,11 +1612,11 @@ siggymain.prototype.addSigRow = function (sigData, flashSig)
 	row.append($('<td>').addClass('center-text').addClass('type').text(this.convertType(sigData.type)))
 	.append(descTD)
 	.append($('<td>').addClass('center-text').addClass('moreinfo')
-			.append($('<i>').addClass('icon-info-sign').addClass('icon-large').addClass('icon-yellow'))
+			.append($('<i>').addClass('icon').addClass('icon-info-sign').addClass('icon-large').addClass('icon-yellow'))
 			.append($("<div>").addClass('tooltip').attr('id', 'creation-info-' + sigData.sigID).html(creationInfo))
 			)
 	.append($('<td>').addClass('center-text').addClass('age').append($("<span>").text("--")).append($("<div>").addClass('tooltip').attr('id', 'age-timestamp-' + sigData.sigID).text(siggymain.displayTimeStamp(sigData.created))))
-	.append($('<td>').addClass('center-text').addClass('remove').append($('<i>').addClass('icon-remove-sign').addClass('icon-large').addClass('icon-red')).click(function (e)
+	.append($('<td>').addClass('center-text').addClass('remove').append($('<i>').addClass('icon').addClass('icon-remove-sign').addClass('icon-large').addClass('icon-red')).click(function (e)
 	{
 		that.removeSig(sigData.sigID)
 	}));
@@ -1772,7 +1772,7 @@ siggymain.prototype.editSig = function (sigID)
 
 	var controlEle = $("#sig-" + sigID + " td.edit");
 	controlEle.text('');
-	controlEle.append($('<i>').addClass('icon-pencil').addClass('icon-large').click(function (e)
+	controlEle.append($('<i>').addClass('icon').addClass('icon-pencil').addClass('icon-large').click(function (e)
 																						{
 																							that.editSigForm(sigID)
 																						})
