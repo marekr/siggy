@@ -131,6 +131,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 	
 				$chainmap = new chainmap($sg->chainmap_id, Auth::$user->data['groupID']);
 				$chainmap->rebuild_map_data_cache();
+				groupUtils::recacheGroup(Auth::$user->data['groupID']);
 				
 				
 				HTTP::redirect('manage/chainmaps/list');
@@ -236,6 +237,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				$sg->save();
 
 				$chainmap->rebuild_map_data_cache();
+				groupUtils::recacheGroup(Auth::$user->data['groupID']);
 				
 				HTTP::redirect('manage/chainmaps/list');
 				return;
@@ -286,6 +288,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				DB::delete('activesystems')->where('chainmap_id', '=', $sg->chainmap_id)->execute();
 
 				//groupUtils::deleteSubGroupCache($sg->chainmap_id);
+				groupUtils::recacheGroup(Auth::$user->data['groupID']);
 				$sg->delete();
 
 				//$this->__recacheCorpMembers();
