@@ -1,10 +1,8 @@
 <!--- chain map -->
+<!--- <i class="fa fa-fw fa-lock"></i>  -->
 <div id="chain-map-container" class="bordered-wrap">
 		<ul id="chain-map-tabs" class="clearfix">
-			<li class="active">Default</li>
-			<li><i class="fa fa-fw fa-lock"></i> Passworded</li>
-			<li> Lowsex</li>
-			<li> <i class="fa fa-fw fa-plus"></i></li>
+			<li class="add"><i class="fa fa-fw fa-plus"></i></li>
 			<li class="minimize"><i class="fa fa-fw fa-minus-square"></i></li>
 		</ul>
 		<div id='chain-map-inner' <?php echo ( !$mapOpen ? "style='display:none'" : '' ); ?>>

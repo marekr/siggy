@@ -497,7 +497,7 @@ class Controller_Siggy extends FrontController
         
         $update = array('systemUpdate' => 0, 'sigUpdate' => 0, 'globalNotesUpdate' => 0, 'mapUpdate' => 0, 'acsid' => 0, 'acsname' =>'');
         
-        
+        $group_last_cache_time = isset($_POST['group_cache_time']) ? intval($_POST['group_cache_time']) : 0;
         if( isset( $_POST['lastUpdate'] ) && isset( $_POST['systemID'] ) && $_POST['systemID'] != 0 )
         {
             $currentSystemID = intval($_POST['systemID']);
@@ -671,14 +671,17 @@ class Controller_Siggy extends FrontController
 
                 $update['sigUpdate'] = (int) 1;
             }
-					
-			if( ( $_POST['lastGlobalNotesUpdate'] ) < $this->groupData['lastNotesUpdate'] )
+            
+			if( $group_last_cache_time < $this->groupData['cache_time'] )
 			{
+				$update['chainmaps_update'] = 1;
+				$update['chainmaps'] = $this->groupData['chainmaps'];
+				
 				$update['globalNotesUpdate'] = (int) 1;
-				$update['lastGlobalNotesUpdate'] = (int) $this->groupData['lastNotesUpdate'];
+				$update['group_cache_time'] = (int) $this->groupData['last_update'];
 				$update['globalNotes'] = $this->groupData['groupNotes'];
 			}
-            
+			
             $update['lastUpdate'] = $recordedLastUpdate;
         }
         else
@@ -691,7 +694,7 @@ class Controller_Siggy extends FrontController
         exit();
 	}
 	
-	public function action_globalNotesSave()
+	public function action_notes_save()
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
@@ -706,11 +709,11 @@ class Controller_Siggy extends FrontController
 		
 		$notes = strip_tags($_POST['notes']);
 		$update['groupNotes'] = $notes;
-		$update['lastNotesUpdate'] = time();
+		$update['last_update'] = time();
 		DB::update('groups')->set( $update )->where('groupID', '=', $this->groupData['groupID'])->execute();
 		groupUtils::recacheGroup($this->groupData['groupID']);
 		
-		echo json_encode($update['lastNotesUpdate']);
+		echo json_encode($update['last_update']);
 		exit();
 	}
 	

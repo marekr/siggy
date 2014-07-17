@@ -137,6 +137,7 @@ final class groupUtils
 								->execute()
 								->as_array();
 			$group['chainmaps'] = $chainmaps;
+			$group['cache_time'] = time();
 		
 			$cache->set('group-'.$group['groupID'], $group);         
 			return $group;
