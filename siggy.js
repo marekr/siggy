@@ -12,7 +12,6 @@ function siggymain( options )
 	this.fatalError = false;
 	this.ajaxErrors = 0;
 
-
 	this.systemID = 0;
 	this.systemClass = 9;
 	this.systemName = '';
@@ -29,6 +28,7 @@ function siggymain( options )
 	this.map = null;
 	this.acsid = 0;
 	this.acsname = '';
+	
 	
 	//collasped sysInfo
 	this.statsOpened = 0;
@@ -83,7 +83,6 @@ siggymain.displayTimeStamp = function (unixTimestamp)
 
 siggymain.prototype.update = function ()
 {
-
 	var request = {
 		systemID: this.systemID,
 		lastUpdate: this.lastUpdate,
@@ -115,92 +114,91 @@ siggymain.prototype.update = function ()
 			{
                 //try
                 //{
-                    if( data.redirect != undefined )
-                    {
-                        window.location = that.settings.baseUrl + data.redirect;
-                        return;
-                    }
-			
-                    if( parseInt( data.acsid ) != 0 )
-                    {
-                        that.acsid = data.acsid;
-                    }
-                    if( data.acsname != '' )
-                    {
-                        that.acsname = data.acsname;
-                        $('#acsname b').text(that.acsname);
-                    }
-                    if (data.systemUpdate)
-                    {
-                        that.updateSystemInfo(data.systemData);
-                        that.updateSystemOptionsForm(data.systemData);
-                    }
-                    if (data.sigUpdate)
-                    {
-                        var flashSigs = ( data.systemUpdate ? false : true );
-                        that.updateSigs(data.sigData, flashSigs);
-                    }
-                    if (data.systemListUpdate)
-                    {
-                        that.systemList = data.systemList;
-                    }
-					
+					if( data.redirect != undefined )
+					{
+						window.location = that.settings.baseUrl + data.redirect;
+						return;
+					}
+
+					if( parseInt( data.acsid ) != 0 )
+					{
+						that.acsid = data.acsid;
+					}
+					if( data.acsname != '' )
+					{
+						that.acsname = data.acsname;
+						$('#acsname b').text(that.acsname);
+					}
+					if (data.systemUpdate)
+					{
+						that.updateSystemInfo(data.systemData);
+						that.updateSystemOptionsForm(data.systemData);
+					}
+					if (data.sigUpdate)
+					{
+						var flashSigs = ( data.systemUpdate ? false : true );
+						that.updateSigs(data.sigData, flashSigs);
+					}
+					if (data.systemListUpdate)
+					{
+						that.systemList = data.systemList;
+					}
+
 					if(data.chainmaps_update)
 					{
 						that.updateChainMaps(data.chainmaps);
 					}
-					
-                    if (data.globalNotesUpdate)
-                    {
-                        if (!that.editingGlobalNotes)
-                        {
-                            
-                            if( getCookie('notesUpdate') != null )
-                            {
-                                var nlu = parseInt(getCookie('notesUpdate'));
-                            }				
-                            else
-                            {
-                                var nlu = that.group_cache_time;
-                            }
-                            
-                            if( !that.globalNotesEle.is(':visible') && data.group_cache_time > nlu && nlu != 0 )
-                            {
-                                that.blinkNotes();
-                            }
-                            
-                            that.groupCacheTime = data.group_cache_time;
-                            
-                            setCookie('notesUpdate', data.group_cache_time, 365);
-                            
-                            that.globalNotes = data.globalNotes;
-                            $('#global-notes-content').html(that.globalNotes.replace(/\n/g, '<br />'));
-                            $('#global-notes-time').text( siggymain.displayTimeStamp(that.groupCacheTime) );
-                        }
-                    }
-                    
-                    if( that.map.isMapOpen()  )
-                    {
-                        if( parseInt(data.mapUpdate) == 1  )
-                        {
-                        
-                            //use temp vars or else chrome chokes badly with async requests
-                            var timestamp = data.chainMap.lastUpdate;
-                            var systems = data.chainMap.systems;
-                            var whs = data.chainMap.wormholes;
-                            that.map.update(timestamp, systems, whs);
-                        }
-                        if( typeof(data.chainMap) != 'undefined' && typeof(data.chainMap.actives) != '' )
-                        {
-                            var actives =  data.chainMap.actives;
-                            that.map.updateActives(data.chainMap.actives);
-                        }
-                    }
 
-                    that.lastUpdate = data.lastUpdate;
-                    //  $.unblockUI();
-                    
-                    delete data;
+					if (data.globalNotesUpdate)
+					{
+						if (!that.editingGlobalNotes)
+						{
+
+							if( getCookie('notesUpdate') != null )
+							{
+								var nlu = parseInt(getCookie('notesUpdate'));
+							}				
+							else
+							{
+								var nlu = that.group_cache_time;
+							}
+
+							if( !that.globalNotesEle.is(':visible') && data.group_cache_time > nlu && nlu != 0 )
+							{
+								that.blinkNotes();
+							}
+
+							that.groupCacheTime = data.group_cache_time;
+
+							setCookie('notesUpdate', data.group_cache_time, 365);
+
+							that.globalNotes = data.globalNotes;
+							$('#global-notes-content').html(that.globalNotes.replace(/\n/g, '<br />'));
+							$('#global-notes-time').text( siggymain.displayTimeStamp(that.groupCacheTime) );
+						}
+					}
+
+					if( that.map.isMapOpen()  )
+					{
+						if( parseInt(data.mapUpdate) == 1  )
+						{
+							//use temp vars or else chrome chokes badly with async requests
+							var timestamp = data.chainMap.lastUpdate;
+							var systems = data.chainMap.systems;
+							var whs = data.chainMap.wormholes;
+							that.map.update(timestamp, systems, whs);
+						}
+						if( typeof(data.chainMap) != 'undefined' && typeof(data.chainMap.actives) != '' )
+						{
+							var actives =  data.chainMap.actives;
+							that.map.updateActives(data.chainMap.actives);
+						}
+					}
+
+					that.lastUpdate = data.lastUpdate;
+					//  $.unblockUI();
+
+					delete data;
                 //}
                 //catch(err)
                // {
@@ -237,7 +235,6 @@ siggymain.prototype.updateNow = function()
 {
 	clearTimeout(this._updateTimeout);
 	return this.update();
-	
 }
 
 siggymain.prototype.switchSystem = function(systemID, systemName)
@@ -260,11 +257,9 @@ siggymain.prototype.switchSystem = function(systemID, systemName)
 	this.editingSig = false;
 	this.sigData = {};
 	
-	
 	$('#sig-add-box select[name=type]').val(0);
 	this.updateSiteSelect('#sig-add-box select[name=site]',this.systemClass, 0, 0);
 	
-    
 	if( this.updateNow() )
 	{
 		$(document).trigger('siggy.switchSystem', systemID );
@@ -290,6 +285,7 @@ siggymain.prototype.updateSigs = function (sigData, flashSigs)
 			{
 				continue;
 			}
+			
 			this.removeSigRow(this.sigData[i]);
 			delete this.sigData[i];
 		}
@@ -312,47 +308,51 @@ siggymain.prototype.updateSigs = function (sigData, flashSigs)
 
 siggymain.prototype.updateSystemInfo = function (systemData)
 {
-    //general info
+	//general info
 	$('#region').text(systemData.regionName + " / " + systemData.constellationName);
 	$('#constellation').text(systemData.constellationName);
 	$('#planetsmoons').text(systemData.planets + "/" + systemData.moons + "/" + systemData.belts);
 	$('#truesec').text(systemData.truesec.substr(0,8));
 	$('#radius').text(systemData.radius + ' AU');
-	
-    //HUB JUMPS
+
+	//HUB JUMPS
 	var hubJumpsStr = '';
-    $('div.hub-jump').destroyContextMenu();
-    $('#hub-jumps').empty();
+	$('div.hub-jump').destroyContextMenu();
+	$('#hub-jumps').empty();
 	for(var index in systemData.hubJumps)
 	{
-        var hub = systemData.hubJumps[index];
-        
-        var hubDiv = $("<div>").addClass('hub-jump').text(hub.destination_name + " (" + hub.num_jumps + " jumps)").data("sysID", hub.system_id).data("sysName", hub.destination_name);
-        hubDiv.contextMenu( { menu: 'system-simple-context' },
-            function(action, el, pos) {
-                var sysID = $(el[0]).data("sysID");
-                var sysName  = $(el[0]).data("sysName");
-                if( action == "setdest" )
-                {
-                    if( typeof(CCPEVE) != "undefined" )
-                    {
-                        CCPEVE.setDestination(sysID);
-                    }
-                }
-                else if( action == "showinfo" )
-                {
-                    if( typeof(CCPEVE) != "undefined" )
-                    {
-                            CCPEVE.showInfo(5, sysID );
-                    }
-                    else
-                    {
-                            window.open('http://evemaps.dotlan.net/system/'+sysName , '_blank');
-                    }
-                }
-        });
-        
-        $('#hub-jumps').append(hubDiv);
+		var hub = systemData.hubJumps[index];
+
+		var hubDiv = $("<div>").addClass('hub-jump')
+							   .text(hub.destination_name + " (" + hub.num_jumps + " jumps)")
+							   .data("sysID", hub.system_id)
+							   .data("sysName", hub.destination_name);
+
+		hubDiv.contextMenu( { menu: 'system-simple-context' },
+			function(action, el, pos) {
+				var sysID = $(el[0]).data("sysID");
+				var sysName  = $(el[0]).data("sysName");
+				if( action == "setdest" )
+				{
+					if( typeof(CCPEVE) != "undefined" )
+					{
+						CCPEVE.setDestination(sysID);
+					}
+				}
+				else if( action == "showinfo" )
+				{
+					if( typeof(CCPEVE) != "undefined" )
+					{
+							CCPEVE.showInfo(5, sysID );
+					}
+					else
+					{
+							window.open('http://evemaps.dotlan.net/system/'+sysName , '_blank');
+					}
+				}
+		});
+
+		$('#hub-jumps').append(hubDiv);
 	}
     
     //EFFECT STUFF
@@ -399,18 +399,21 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 			effectInfo += '<b>'+effData[i][0]+':&nbsp;</b>'+effData[i][1]+'<br />';
 		}
 		
-		effect.append( $("<div>").attr('id', 'system-effects').addClass('tooltip').html(effectInfo) );
+		var tooltip = $("<div>").attr('id', 'system-effects')
+								.addClass('tooltip')
+								.html(effectInfo);
+		effect.append(tooltip);
 		
-        effectTitle.qtip({
-            content: {
-                text: $("#system-effects") // Use the "div" element next to this for the content
-            },
-            position: {
-                target: 'mouse',
-                adjust: { x: 5, y: 5 },
-                viewport: $(window)
-            }
-        });
+		effectTitle.qtip({
+			content: {
+				text: $("#system-effects") // Use the "div" element next to this for the content
+			},
+			position: {
+				target: 'mouse',
+				adjust: { x: 5, y: 5 },
+				viewport: $(window)
+			}
+		});
 	}
 	
 	//
@@ -441,24 +444,27 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 			{
 				destBlurb = " (to Nullsec)";
 			}
+			
 			var staticBit = $("<p>").text(theStatic.staticName + destBlurb);
 			var staticInfo = "<b>" + theStatic.staticName  + destBlurb + "</b><br />" + "Max Mass: " + theStatic.staticMass + " billion<br />" + "Max Jumpable Mass: " + theStatic.staticJumpMass + " million<br />" + "Max Lifetime: " + theStatic.staticLifetime + " hrs<br />" + "Signature Size: " + theStatic.staticSigSize + " <br />";
 
-            
-            var staticTooltip = $("<div>").attr('id', 'static-info-' + theStatic.staticID).addClass('tooltip').html( staticInfo );
-			$('#static-info').append(staticBit).append( staticTooltip );
+			var staticTooltip = $("<div>").attr('id', 'static-info-' + theStatic.staticID)
+										  .addClass('tooltip')
+										  .html( staticInfo );
+										  
+			$('#static-info').append(staticBit)
+							 .append(staticTooltip);
 
-			
-            staticBit.qtip({
-                content: {
-                    text: $('#static-info-' + theStatic.staticID) // Use the "div" element next to this for the content
-                },
-                position: {
-                    target: 'mouse',
-                    adjust: { x: 5, y: 5 },
-                    viewport: $(window)
-                }
-            });
+			staticBit.qtip({
+				content: {
+					text: $('#static-info-' + theStatic.staticID) // Use the "div" element next to this for the content
+				},
+				position: {
+					target: 'mouse',
+					adjust: { x: 5, y: 5 },
+					viewport: $(window)
+				}
+			});
 			
 			counter++;
 		}
@@ -536,25 +542,25 @@ siggymain.prototype.renderStats = function()
 
 		
 		$.plot( $('#jumps'),  [
-        {
-            data: jumps,
-            lines: { show: true, fill: true }
-        },
-        {
-            data: sjumps,
-            lines: { show: true, fill: true }
-         }], options);
-        
+		{
+			data: jumps,
+			lines: { show: true, fill: true }
+		},
+		{
+			data: sjumps,
+			lines: { show: true, fill: true }
+		 }], options);
+		
 		$.plot( $('#shipKills'),  [
-        {
-            data: kills,
-            lines: { show: true, fill: true }
-        }],options);
+		{
+			data: kills,
+			lines: { show: true, fill: true }
+		}],options);
 		$.plot( $('#npcKills'),  [
-        {
-            data: npcKills,
-            lines: { show: true, fill: true }
-        }],options);
+		{
+			data: npcKills,
+			lines: { show: true, fill: true }
+		}],options);
 }
 
 siggymain.prototype.setBearTab = function( bearClass )
@@ -699,16 +705,16 @@ siggymain.prototype.addSigRow = function (sigData, flashSig)
 	
 	this.sigClocks[sigData.sigID] = new CountUp(sigData.created * 1000, '#sig-' + sigData.sigID + ' td.age span', "test");
 
-    $('#sig-' + sigData.sigID + ' td.moreinfo i').qtip({
-        content: {
-            text: $('#creation-info-' + sigData.sigID) // Use the "div" element next to this for the content
-        }
-    });
-    $('#sig-' + sigData.sigID + ' td.age span').qtip({
-        content: {
-            text: $('#age-timestamp-' + sigData.sigID) // Use the "div" element next to this for the content
-        }
-    });
+	$('#sig-' + sigData.sigID + ' td.moreinfo i').qtip({
+		content: {
+			text: $('#creation-info-' + sigData.sigID) // Use the "div" element next to this for the content
+		}
+	});
+	$('#sig-' + sigData.sigID + ' td.age span').qtip({
+		content: {
+			text: $('#age-timestamp-' + sigData.sigID) // Use the "div" element next to this for the content
+		}
+	});
 	this.colorizeSigRows();
 	
 	if( flashSig )
@@ -740,7 +746,9 @@ siggymain.prototype.editSigForm = function (sigID)
 	var sigEle = $("#sig-" + sigID + " td.sig");
 	sigEle.text('');
 
-	var sigInput = $('<input>').val(this.sigData[sigID].sig).attr('maxlength', 3).keypress( function(e) { if(e.which == 13){ that.editSig(sigID)  } } );
+	var sigInput = $('<input>').val(this.sigData[sigID].sig)
+							   .attr('maxlength', 3)
+							   .keypress( function(e) { if(e.which == 13){ that.editSig(sigID)  } } );
 	sigEle.append(sigInput);
 	
 	if( this.settings.showSigSizeCol )
@@ -748,31 +756,42 @@ siggymain.prototype.editSigForm = function (sigID)
 			var sizeEle = $("#sig-" + sigID + " td.size");
 			sizeEle.text('');
 			
-			sizeEle.append(this.generateOrderedSelect( 
-			[ ['', '--'], ['1', '1'], ['2.2','2.2'], ['2.5','2.5'], ['4','4'], ['5', '5'], ['6.67','6.67'], ['10','10'] ]
-			, this.sigData[sigID].sigSize));	
+			sizeEle.append(this.generateOrderedSelect( [ 
+														  ['', '--'], 
+														  ['1', '1'],
+														  ['2.2','2.2'],
+														  ['2.5','2.5'],
+														  ['4','4'],
+														  ['5', '5'],
+														  ['6.67','6.67'],
+														  ['10','10'] 
+														], this.sigData[sigID].sigSize));	
 	}
 
 	var typeEle = $("#sig-" + sigID + " td.type");
 	typeEle.text('');
 
-	typeEle.append(this.generateSelect(
-	{
-		none: '--',
-		wh: 'WH',
-		ladar: 'Gas',
-		radar: 'Data',
-		mag: 'Relic',
-		combat: 'Combat',
-		grav: 'Ore'
-	}, this.sigData[sigID].type).change(function ()
-	{
-		that.editTypeSelectChange(sigID)
-	}));
+	typeEle.append(this.generateSelect({
+											none: '--',
+											wh: 'WH',
+											ladar: 'Gas',
+											radar: 'Data',
+											mag: 'Relic',
+											combat: 'Combat',
+											grav: 'Ore'
+										}, this.sigData[sigID].type)
+										.change(function ()
+												{
+													that.editTypeSelectChange(sigID)
+												}));
 
 	var descEle = $('#sig-' + sigID + ' td.desc');
 	descEle.text('');
-	descEle.append(this.generateSiteSelect(this.systemClass, this.sigData[sigID].type, this.sigData[sigID].siteID)).append($('<br />')).append( $('<input>').val(this.sigData[sigID].description).keypress( function(e) { if(e.which == 13){ that.editSig(sigID)  } } ).css('width', '100%') );
+	descEle.append(this.generateSiteSelect(this.systemClass, this.sigData[sigID].type, this.sigData[sigID].siteID)).append($('<br />'))
+		   .append( $('<input>').val(this.sigData[sigID].description)
+								.keypress( function(e) { if(e.which == 13){ that.editSig(sigID)  } } )
+								.css('width', '100%')
+					);
 
 	sigInput.focus();
 }
@@ -782,7 +801,6 @@ siggymain.prototype.editTypeSelectChange = function (sigID)
 	var newType = $("#sig-" + sigID + " td.type select").val();
 	if (this.sigData[sigID].type != newType)
 	{
-		//$('#sig-' + sigID + ' td.desc select').replaceWith(this.generateSiteSelect(this.systemClass, newType, 0));
 		this.updateSiteSelect( '#sig-' + sigID + ' td.desc select', this.systemClass, newType, 0 );
 	}
 }
@@ -846,11 +864,12 @@ siggymain.prototype.editSig = function (sigID)
 
 	var controlEle = $("#sig-" + sigID + " td.edit");
 	controlEle.text('');
-	controlEle.append($('<i>').addClass('icon').addClass('icon-pencil').addClass('icon-large').click(function (e)
-																						{
-																							that.editSigForm(sigID)
-																						})
-																					);
+	controlEle.append($('<i>').addClass('icon icon-pencil icon-large')
+							  .click(function (e)
+									{
+										that.editSigForm(sigID)
+									})
+								);
 
 }
 
@@ -950,29 +969,35 @@ siggymain.prototype.convertType = function (type)
 {
 	//unknown null case, either way this should surpress it
 	if (type == 'wh')
-        return "WH";
+		return "WH";
 	else if (type == 'grav')
-        return "Ore";
+		return "Ore";
 	else if (type == 'ladar')
-        return "Gas";
+		return "Gas";
 	else if (type == 'radar')
-        return "Data";
+		return "Data";
 	else if (type == 'mag')
-        return "Relic";
+		return "Relic";
 	else if (type == 'combat')
-        return "Combat";
-    else
-        return "";
+		return "Combat";
+	else
+		return "";
 }
 
 siggymain.prototype.convertSiteID = function (whClass, type, siteID)
 {
-	if (type == 'wh') return whLookup[whClass][siteID];
-	else if (type == 'mag') return magsLookup[whClass][siteID];
-	else if (type == 'radar') return radarsLookup[whClass][siteID];
-	else if (type == 'ladar') return ladarsLookup[siteID];
-	else if (type == 'grav') return gravsLookup[siteID];
-	else return "";
+	if (type == 'wh') 
+		return whLookup[whClass][siteID];
+	else if (type == 'mag') 
+		return magsLookup[whClass][siteID];
+	else if (type == 'radar') 
+		return radarsLookup[whClass][siteID];
+	else if (type == 'ladar') 
+		return ladarsLookup[siteID];
+	else if (type == 'grav') 
+		return gravsLookup[siteID];
+	else 
+		return "";
 }
 
 siggymain.prototype.setSystemID = function (systemID)
@@ -1043,24 +1068,24 @@ siggymain.prototype.setupAddBox = function ()
 	$('#mass-add-sigs').click(function ()
 	{
 		$.blockUI({ 
-				message: $('#mass-add-sig-box'),
-				css: { 
-            border: 'none', 
-            padding: '15px', 
-            background: 'transparent', 
-            color: 'inherit',
-            cursor: 'auto',
-            textAlign: 'left',
-            top: '20%',
-						width: 'auto',
-						centerX: true,
-						centerY: false
-        },
-        overlayCSS: {
-            cursor: 'auto'
-        },
-        fadeIn:  0, 
-        fadeOut:  0
+			message: $('#mass-add-sig-box'),
+			css: { 
+				border: 'none', 
+				padding: '15px', 
+				background: 'transparent', 
+				color: 'inherit',
+				cursor: 'auto',
+				textAlign: 'left',
+				top: '20%',
+				width: 'auto',
+				centerX: true,
+				centerY: false
+			},
+			overlayCSS: {
+				cursor: 'auto'
+			},
+			fadeIn:  0, 
+			fadeOut:  0
 		}); 
 		$('.blockOverlay').attr('title','Click to unblock').click($.unblockUI); 
 		return false;
@@ -1103,8 +1128,8 @@ siggymain.prototype.setupAddBox = function ()
 
 		if( $this.settings.showSigSizeCol )
 		{
-				var sizeEle = $('#sig-add-box select[name=size]');
-				postData.sigSize = sizeEle.val();
+			var sizeEle = $('#sig-add-box select[name=size]');
+			postData.sigSize = sizeEle.val();
 		}
 
 		$.post($this.settings.baseUrl + 'dosigAdd', postData, function (newSig)
@@ -1151,41 +1176,40 @@ siggymain.prototype.setupAddBox = function ()
 	}
 	//$('#sigAddBox select[name=site]').live('keypress', this.addBoxEnterHandler);	
 	$( document ).on('keypress', '#sig-add-box select[name=site]', this.addBoxEnterHandler); 
-	
 }
 
 siggymain.prototype.addBoxEnterHandler = function(e)
 {
-			if(e.which == 13) {
-					$('button[name=add]').focus().click();
-			}
+	if(e.which == 13)
+	{
+		$('button[name=add]').focus().click();
+	}
 }
 
 siggymain.prototype.displayFatalError = function(message)
 {
+	$('#fatal-error-message').html(message);
 
-		$('#fatal-error-message').html(message);
-
-		$.blockUI({ 
-				message: $('#fatal-error'),
-				css: { 
-				border: 'none', 
-				padding: '15px', 
-				background: 'transparent', 
-				color: 'inherit',
-				cursor: 'auto',
-				textAlign: 'left',
-				top: '20%',
-				width: 'auto',
-				centerX: true,
-				centerY: true
-        },
-        overlayCSS: {
-            cursor: 'auto'
-        },
+	$.blockUI({ 
+		message: $('#fatal-error'),
+		css: { 
+			border: 'none', 
+			padding: '15px', 
+			background: 'transparent', 
+			color: 'inherit',
+			cursor: 'auto',
+			textAlign: 'left',
+			top: '20%',
+			width: 'auto',
+			centerX: true,
+			centerY: true
+		},
+		overlayCSS: {
+			cursor: 'auto'
+		},
 		fadeIn:  0, 
 		fadeOut:  0
-		}); 
+	}); 
 }
 
 siggymain.prototype.setupFatalErrorHandler = function()
@@ -1215,13 +1239,13 @@ siggymain.prototype.initialize = function ()
 	var that = this;
 	this.setupFatalErrorHandler();
 	
-      $(document).ajaxStart( function() {
-        $(this).show();
-      });
+	$(document).ajaxStart( function() {
+		$(this).show();
+	});
       
-      $(document).ajaxStop( function() {
-        $(this).hide();
-      } );	
+	$(document).ajaxStop( function() {
+		$(this).hide();
+	} );	
 
 
 	if( getCookie('system_stats_open') != null )
@@ -1242,7 +1266,7 @@ siggymain.prototype.initialize = function ()
 	
 	if( this.settings.showSigSizeCol )
 	{
-			var tableSorterHeaders = {
+		var tableSorterHeaders = {
 			0: {
 				sorter: false
 			},
@@ -1256,7 +1280,7 @@ siggymain.prototype.initialize = function ()
 	}
 	else
 	{			
-			var tableSorterHeaders = {
+		var tableSorterHeaders = {
 			0: {
 				sorter: false
 			},
@@ -1312,7 +1336,6 @@ siggymain.prototype.initialize = function ()
 		});
 	});	
 	
-	
 	$('#bear-C1').click(function () { that.setBearTab(1); return false; });
 	$('#bear-C2').click(function () { that.setBearTab(2); return false; });
 	$('#bear-C3').click(function () { that.setBearTab(3); return false; });
@@ -1320,8 +1343,6 @@ siggymain.prototype.initialize = function ()
 	$('#bear-C5').click(function () { that.setBearTab(5); return false; });
 	$('#bear-C6').click(function () { that.setBearTab(6); return false; });
 
-	
-    
     $('#system-stats h2').click( function() {
 		var content = $('#system-stats > div');
 		if( content.is(":visible") )
@@ -1356,7 +1377,8 @@ siggymain.prototype.saveSystemOptions = function(systemID, label, activity)
 		systemID: systemID,
 		label: label,
 		activity: activity
-	}, function (data)
+	},
+	function (data)
 	{
 		if (that.systemList[systemID])
 		{
@@ -1410,40 +1432,39 @@ siggymain.prototype.changeTab = function( selectedTab )
 
 }
 
-
 siggymain.prototype.initializeGNotes = function()
 {
 	var that = this;
-    
+
 	$('#settings-button').click(function ()
 	{
-        $.blockUI({ 
-            message: $('#settings-dialog'),
-            css: { 
-                border: 'none', 
-                padding: '15px', 
-                background: 'transparent', 
-                color: 'inherit',
-                cursor: 'auto',
-                textAlign: 'left',
-                top: '20%',
-                width: 'auto',
-                centerX: true,
-                centerY: false
-            },
-            overlayCSS: {
-                cursor: 'auto'
-            },
-            fadeIn:  0, 
-            fadeOut:  0
+		$.blockUI({ 
+			message: $('#settings-dialog'),
+			css: { 
+				border: 'none', 
+				padding: '15px', 
+				background: 'transparent', 
+				color: 'inherit',
+				cursor: 'auto',
+				textAlign: 'left',
+				top: '20%',
+				width: 'auto',
+				centerX: true,
+				centerY: false
+			},
+			overlayCSS: {
+				cursor: 'auto'
+			},
+			fadeIn:  0, 
+			fadeOut:  0
 		}); 
 		$('.blockOverlay').attr('title','Click to unblock').click($.unblockUI); 
 	});
-    
-    $('#settings-cancel').click( function() {
+
+	$('#settings-cancel').click( function() {
 		$.unblockUI(); 
-    });
-    
+	});
+
 	this.globalNotesEle = $('#global-notes');
 	$('#global-notes-button').click(function ()
 	{
@@ -1488,8 +1509,8 @@ siggymain.prototype.initializeGNotes = function()
 		$('#global-notes-cancel').hide();
 		$(this).hide();
 	});
-	
-	
+
+
 	$('#global-notes-cancel').click(function ()
 	{
 		this.editingGlobalNotes = false;
@@ -1509,6 +1530,7 @@ siggymain.prototype.blinkNotes = function()
 	}
 	
 	$('#globalNotesButton').flash("#A46D00", 3000);
+	
 	this._blinkNotesInterval = setInterval( function() {
 			$('#globalNotesButton').flash("#A46D00", 3000);
 	}, 4000 );		
@@ -1522,7 +1544,6 @@ siggymain.prototype.stopBlinkingNotes = function()
 		this._blinkNotesInterval = null;
 	}
 }
-
 
 siggymain.prototype.freeze = function()
 {
@@ -1584,7 +1605,6 @@ siggymain.prototype.populateExitData = function(data)
 		$('#exit-finder-list').append(item);
 	}
 }
-
 
 siggymain.prototype.initializeExitFinder = function()
 {
@@ -1681,7 +1701,6 @@ siggymain.prototype.openBox = function(ele)
 	return false;
 }
 
-
 siggymain.prototype.setupDScanForm = function(mode, posID)
 {
 	var $this = this;
@@ -1748,16 +1767,24 @@ siggymain.prototype.updateDScan = function( data )
 			row.append( $("<td>").text( data[i].dscan_added_by ) );
 			
 			(function(dscan_id){
-				var view = $("<a>").addClass("btn btn-default btn-xs").text("View").attr("href",$this.settings.baseUrl + 'dscan/view/'+dscan_id).attr("target","_blank");
-				var remove = $("<a>").addClass("btn btn-default btn-xs").text("Remove").click( function() {
-						$this.removeDScan( dscan_id );
-					}
+				var view = $("<a>").addClass("btn btn-default btn-xs")
+								   .text("View")
+								   .attr("href",$this.settings.baseUrl + 'dscan/view/'+dscan_id)
+								   .attr("target","_blank");
+								   
+				var remove = $("<a>").addClass("btn btn-default btn-xs")
+									 .text("Remove")
+									 .click( function() {
+											$this.removeDScan( dscan_id );
+									}
 				);
-				row.append( $("<td>").append(view).append(remove) ).addClass('center-text');
+				row.append(
+							$("<td>").append(view)
+									 .append(remove) 
+						  )
+				.addClass('center-text');
 			})(dscan_id);
-			
-			
-			
+
 			body.append(row);
 		}
 		
@@ -1784,7 +1811,6 @@ siggymain.prototype.confirmDialog = function(message, yesCallback, noCallback)
 	var $this = this;
 	
 	$this.openBox("#confirm-dialog");
-	
 	
 	$("#confirm-dialog-message").text(message);
 	$("#confirm-dialog-yes").unbind('click').click( function() {
@@ -1872,7 +1898,11 @@ siggymain.prototype.updatePOSList = function( data )
 					}
 				);
 			
-				row.append( $("<td>").append(edit).append(remove) ).addClass('center-text');
+				row.append( 
+							$("<td>").append(edit)
+									 .append(remove) 
+						 )
+				   .addClass('center-text');
 			})(pos_id);
 			
 			body.append(row);
@@ -2003,8 +2033,6 @@ siggymain.prototype.removePOS = function(posID)
 		});
 	});
 }
-
-
 
 siggymain.prototype.updateChainMaps = function(data)
 {	
