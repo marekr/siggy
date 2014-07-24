@@ -682,6 +682,8 @@ class Controller_Siggy extends FrontController
 				$update['globalNotes'] = $this->groupData['groupNotes'];
 			}
 			
+			$update['chainmap_id'] = $this->groupData['subGroupID'];
+			
             $update['lastUpdate'] = $recordedLastUpdate;
         }
         else
