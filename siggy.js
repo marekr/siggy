@@ -29,6 +29,8 @@ function siggymain( options )
 	this.acsid = 0;
 	this.acsname = '';
 	
+	this.chainMapID = 0;
+	
 	
 	//collasped sysInfo
 	this.statsOpened = 0;
@@ -119,6 +121,8 @@ siggymain.prototype.update = function ()
 						window.location = that.settings.baseUrl + data.redirect;
 						return;
 					}
+					
+					that.chainMapID = parseInt(data.chainmap_id);
 
 					if( parseInt( data.acsid ) != 0 )
 					{
@@ -2037,7 +2041,7 @@ siggymain.prototype.removePOS = function(posID)
 siggymain.prototype.updateChainMaps = function(data)
 {	
 	var selBefore = $('#chain-map-tabs li.add');
-	
+	var $this = this;
 	//delete old
 	$('#chainmap-tabs li.map').remove();
 	if( typeof data != "undefined" && Object.size(data) > 0 )
@@ -2046,6 +2050,12 @@ siggymain.prototype.updateChainMaps = function(data)
 		{
 			var chainmap = data[i];
 			var li = $('<li>').addClass('map');
+			
+			if( chainmap.chainmap_id == $this.chainMapID )
+			{
+				li.addClass('active');
+			}
+			
 			li.text(chainmap.chainmap_name);
 			selBefore.before(li);
 		}
