@@ -2040,24 +2040,30 @@ siggymain.prototype.removePOS = function(posID)
 
 siggymain.prototype.updateChainMaps = function(data)
 {	
-	var selBefore = $('#chain-map-tabs li.add');
+	var list = $('#chainmap-dropdown');
 	var $this = this;
+	
 	//delete old
-	$('#chainmap-tabs li.map').remove();
+	list.empty();
 	if( typeof data != "undefined" && Object.size(data) > 0 )
 	{
 		for(var i in data)
 		{
 			var chainmap = data[i];
-			var li = $('<li>').addClass('map');
-			
 			if( chainmap.chainmap_id == $this.chainMapID )
 			{
-				li.addClass('active');
+				//li.addClass('active');
+				$('#chain-map-title').html(chainmap.chainmap_name + " &#x25BC;");
 			}
-			
-			li.text(chainmap.chainmap_name);
-			selBefore.before(li);
+			else
+			{
+				var a = $('<a>');
+				var li = $('<li>').append(a);
+				
+				
+				a.text(chainmap.chainmap_name);
+				list.append(li);
+			}
 		}
 	}
 }

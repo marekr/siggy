@@ -424,7 +424,7 @@ MAP */
 	padding: 0;
 }
 
-#chain-map-tabs li
+#chain-map-tabs li.tab
 {
 	position: relative;
 	display: block;
@@ -435,7 +435,7 @@ MAP */
 	cursor:pointer;
 }
 
-#chain-map-tabs li.active
+#chain-map-tabs li.tab-active
 {
     background-color: @chain-map-background;
 }

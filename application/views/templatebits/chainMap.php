@@ -2,8 +2,22 @@
 <!--- <i class="fa fa-fw fa-lock"></i>  -->
 <div id="chain-map-container" class="bordered-wrap">
 		<ul id="chain-map-tabs" class="clearfix">
-			<li class="add"><i class="fa fa-fw fa-plus"></i></li>
-			<li class="minimize"><i class="fa fa-fw fa-minus-square"></i></li>
+			<li class="tab tab-active dropdown">
+				<a data-toggle="dropdown" href="#" id="chain-map-title">
+					Maps<span style='font-style:normal;font-weight:bold;'>&#x25BC;</span>
+				</a>
+				<ul id="chainmap-dropdown" class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+					<li>
+						Test
+					</li>
+					<li>
+						Test 3
+					</li>
+				</ul>
+				<br clear="all" />
+			</li>
+			<!--- <li class="tab add"><i class="fa fa-fw fa-plus"></i></li> --->
+			<li class="tab minimize"><i class="fa fa-fw fa-minus-square"></i></li>
 		</ul>
 		<div id='chain-map-inner' <?php echo ( !$mapOpen ? "style='display:none'" : '' ); ?>>
 			<p class="loading">Loading....<br /><span style='font-size:0.3em;'>(This may take up to 10 seconds.)</span></p>
