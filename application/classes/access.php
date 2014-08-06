@@ -198,11 +198,37 @@ class access
 		}
 		
 		//store the possible groups
-		$groupData['subGroupID'] = 1;
+		$groupData['subGroupID'] = $this->_getChainMapID($groupData);
 		$groupData['access_groups'] = $all_groups;
 		
 		$out = $groupData;
 		
 		return $out;
+	}
+	
+	private function _getChainMapID($groupData)
+	{
+		$desired_chainmap = intval(Cookie::get('chainmap', 0));
+		
+		$default_id = 0;
+		foreach($groupData['chainmaps'] as $c)
+		{
+			if( $c['chainmap_type'] == 'default' )
+			{
+				$default_id = $c['chainmap_id'];
+			}
+			
+			if( $c['chainmap_id'] == $desired_chainmap )
+			{
+				return $c['chainmap_id'];
+			}
+		}
+		
+		if( !$default_id )
+		{
+			throw new Exception("No default chain map found");
+		}
+		
+		return $default_id;
 	}
 }

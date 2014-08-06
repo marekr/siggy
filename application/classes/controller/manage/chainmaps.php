@@ -97,8 +97,8 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 	
 				$chainmap = new chainmap($sg->chainmap_id, Auth::$user->data['groupID']);
 				$chainmap->rebuild_map_data_cache();
+				groupUtils::update_group(Auth::$user->data['groupID']);	//trigger last_update value to change
 				groupUtils::recacheGroup(Auth::$user->data['groupID']);
-				
 				
 				HTTP::redirect('manage/chainmaps/list');
 				return;
@@ -126,10 +126,10 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		$homeSystems = array();
 	
 	
-		$homeSystems = trim($txt);
-		if( !empty($homeSystems) )
+		$txt = trim($txt);
+		if( !empty($txt) )
 		{
-			$homeSystems = explode(',', $homeSystems);
+			$homeSystems = explode(',', $txt);
 			$homeSystemIDs = array();
 			if( is_array( $homeSystems ) )
 			{
@@ -207,6 +207,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				$sg->save();
 
 				$chainmap->rebuild_map_data_cache();
+				groupUtils::update_group(Auth::$user->data['groupID']);	//trigger last_update value to change
 				groupUtils::recacheGroup(Auth::$user->data['groupID']);
 				
 				HTTP::redirect('manage/chainmaps/list');
@@ -264,6 +265,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				DB::delete('activesystems')->where('chainmap_id', '=', $chainmap->chainmap_id)->execute();
 
 				//groupUtils::deleteSubGroupCache($sg->chainmap_id);
+				groupUtils::update_group(Auth::$user->data['groupID']);	//trigger last_update value to change
 				groupUtils::recacheGroup(Auth::$user->data['groupID']);
 				$chainmap->delete();
 

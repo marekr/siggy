@@ -301,5 +301,11 @@ final class groupUtils
 		{
 			return self::recacheChar($char_id);
 		}
-	}		   
+	}
+	
+	static function update_group($group_id, $update = array())
+	{
+		$update['last_update'] = time();
+		DB::update('groups')->set( $update )->where('groupID', '=', $group_id)->execute();
+	}
 }

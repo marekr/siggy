@@ -672,13 +672,13 @@ class Controller_Siggy extends FrontController
                 $update['sigUpdate'] = (int) 1;
             }
             
-			if( $group_last_cache_time < $this->groupData['last_update'] )
+			if( $group_last_cache_time < $this->groupData['cache_time'] )
 			{
 				$update['chainmaps_update'] = 1;
 				$update['chainmaps'] = $this->groupData['chainmaps'];
 				
 				$update['globalNotesUpdate'] = (int) 1;
-				$update['group_cache_time'] = (int) $this->groupData['last_update'];
+				$update['group_cache_time'] = (int) $this->groupData['cache_time'];
 				$update['globalNotes'] = $this->groupData['groupNotes'];
 			}
 			
@@ -710,12 +710,13 @@ class Controller_Siggy extends FrontController
 		}			 		
 		
 		$notes = strip_tags($_POST['notes']);
-		$update['groupNotes'] = $notes;
-		$update['last_update'] = time();
-		DB::update('groups')->set( $update )->where('groupID', '=', $this->groupData['groupID'])->execute();
+		
+		$update = array('groupNotes' => $notes);
+		
+		groupUtils::update_group($this->groupData['groupID'],$update);
 		groupUtils::recacheGroup($this->groupData['groupID']);
 		
-		echo json_encode($update['last_update']);
+		echo json_encode(time());
 		exit();
 	}
 	
