@@ -78,6 +78,18 @@ final class MapUtils
 		}
 	}
 	
+	static function findSystemByEVEName($name)
+	{
+		$systemID = 0;
+		
+		$systemID = DB::query(Database::SELECT, 'SELECT id,name FROM solarsystems WHERE LOWER(name) = :name')
+															->param(':name', $name )
+															->execute()
+															->get('id', 0);
+															
+		return $systemID;
+	}
+	
 	static function findSystemByName($name, $group_id, $chain_map_id = 0)
 	{
 		$systemID = 0;

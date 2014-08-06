@@ -40,7 +40,7 @@ class Controller_Manage_Dashboard extends Controller_Manage
 		
 		
 		$group = ORM::factory('group', Auth::$user->data['groupID']);
-		$members = $group->groupmembers->where('subGroupID', '=', 0)->find_all();
+		$members = $group->groupmembers->where('chainmap_id', '=', 0)->find_all();
 		
 		$view->set('member_count', count($members) );
 

@@ -51,8 +51,8 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		$view->set('chainmaps', $chainmaps );
 	}
 
-   public function action_add()
-   {
+	public function action_add()
+	{
 		$errors = array();
 		
 		$this->template->title = __('Add a Chain Map');
@@ -81,49 +81,15 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				{
 					if( $_POST['password'] == $_POST['password_confirm'] )
 					{
-						$sg->sgAuthPassword = sha1($_POST['password'].$group->authSalt);
+						$sg->chainmap_password = sha1($_POST['password'].$group->authSalt);
 					}
 					else
 					{
 						Message::add( 'error', __('Error: The password was not saved because it did not match between the two fields.') );
 					}
 				}
-
-				$homeSystems = trim($_POST['chainmap_homesystems']);
-				if( !empty($homeSystems) )
-				{
-					$homeSystems = explode(',', $homeSystems);
-					$homeSystemIDs = array();
-					if( is_array( $homeSystems ) )
-					{
-						foreach($homeSystems as $k => $v)
-						{
-							if( trim($v) != '' )
-							{
-								$id = mapUtils::findSystemByName(trim($v));
-								if( $id != 0 )
-								{
-									$homeSystemIDs[] = $id;
-								}
-								else
-								{
-									unset($homeSystems[ $k ] );
-								}
-							}
-							else
-							{
-								unset($homeSystems[ $k ] );
-							}
-						}
-					}
-					$sg->chainmap_homesystems_ids = implode(',', $chainmap_homesystems_ids);
-					$sg->chainmap_homesystems = implode(',', $homeSystems);
-				}
-				else
-				{
-					$sg->chainmap_homesystems = '';
-					$sg->chainmap_homesystems_ids = '';
-				}													
+		
+				list($sg->chainmap_homesystems_ids, $sg->chainmap_homesystems) = $this->__process_home_system_input($_POST['chainmap_homesystems']);
 
 				$sg->chainmap_skip_purge_home_sigs = intval($_POST['chainmap_skip_purge_home_sigs']);
 
@@ -152,7 +118,46 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		}
 		  
 		$this->template->content = $view;
-   }
+	}
+   
+	private function __process_home_system_input($txt)
+	{
+		$homeSystemIDs = array();
+		$homeSystems = array();
+	
+	
+		$homeSystems = trim($txt);
+		if( !empty($homeSystems) )
+		{
+			$homeSystems = explode(',', $homeSystems);
+			$homeSystemIDs = array();
+			if( is_array( $homeSystems ) )
+			{
+				foreach($homeSystems as $k => $v)
+				{
+					$v = trim($v);
+					if( !empty($v) != '' )
+					{
+						$id = mapUtils::findSystemByEVEName($v);
+						if( $id != 0 )
+						{
+							$homeSystemIDs[] = $id;
+						}
+						else
+						{
+							unset($homeSystems[ $k ] );
+						}
+					}
+					else
+					{
+						unset($homeSystems[ $k ] );
+					}
+				}
+			}
+		}
+		
+		return array( implode(',', $homeSystemIDs), implode(',', $homeSystems) );
+	}
    
 	public function action_edit()
 	{
@@ -187,7 +192,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				{
 					if( $_POST['password'] == $_POST['password_confirm'] )
 					{
-						$sg->sgAuthPassword = sha1($_POST['password'].$group->authSalt);
+						$sg->chainmap_password = sha1($_POST['password'].$group->authSalt);
 					}
 					else
 					{
@@ -195,42 +200,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 					}
 				}
 
-
-				$homeSystems = trim($_POST['chainmap_homesystems']);
-				if( !empty($homeSystems) )
-				{
-					$homeSystems = explode(',', $homeSystems);
-					$homeSystemIDs = array();
-					if( is_array( $homeSystems ) )
-					{
-						foreach($homeSystems as $k => $v)
-						{
-							if( trim($v) != '' )
-							{
-								$id = mapUtils::findSystemByName(trim($v));
-								if( $id != 0 )
-								{
-									$homeSystemIDs[] = $id;
-								}
-								else
-								{
-									unset($homeSystems[ $k ] );
-								}
-							}
-							else
-							{
-								unset($homeSystems[ $k ] );
-							}
-						}
-					}
-					$sg->chainmap_homesystems_ids = implode(',', $chainmap_homesystems_ids);
-					$sg->chainmap_homesystems = implode(',', $homeSystems);
-				}
-				else
-				{
-					$sg->chainmap_homesystems = '';
-					$sg->chainmap_homesystems_ids = '';
-				}						
+				list($sg->chainmap_homesystems_ids, $sg->chainmap_homesystems) = $this->__process_home_system_input($_POST['chainmap_homesystems']);
 
 				$sg->chainmap_skip_purge_home_sigs = intval($_POST['chainmap_skip_purge_home_sigs']);
 
@@ -271,10 +241,16 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
 		$this->template->title = __('Remove Chain Map');
 
-		$sg = ORM::factory('chainmap', $id);
-		if( $sg->group_id != Auth::$user->data['groupID'] )
+		$chainmap = ORM::factory('chainmap', $id);
+		if( $chainmap->group_id != Auth::$user->data['groupID'] )
 		{
 			Message::add('error', __('Error: You do not have permission to remove that chainmap.'));
+			HTTP::redirect('manage/chainmaps');
+		}
+		
+		if( $chainmap->chainmap_type == 'default' )
+		{
+			Message::add('error', __('Error: You cannot delete your default chain map'));
 			HTTP::redirect('manage/chainmaps');
 		}
 
@@ -284,12 +260,12 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		{
 			try 
 			{
-				DB::update('groupmembers')->set( array('chainmap_id' => 0 ) )->where( 'chainmap_id', '=', $sg->chainmap_id )->execute();
-				DB::delete('activesystems')->where('chainmap_id', '=', $sg->chainmap_id)->execute();
+				DB::update('groupmembers')->set( array('chainmap_id' => 0 ) )->where( 'chainmap_id', '=', $chainmap->chainmap_id )->execute();
+				DB::delete('activesystems')->where('chainmap_id', '=', $chainmap->chainmap_id)->execute();
 
 				//groupUtils::deleteSubGroupCache($sg->chainmap_id);
 				groupUtils::recacheGroup(Auth::$user->data['groupID']);
-				$sg->delete();
+				$chainmap->delete();
 
 				//$this->__recacheCorpMembers();
 				HTTP::redirect('manage/chainmaps/list');
@@ -307,7 +283,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 			}
 		}
 
-		$view->set('data', $sg->as_array() );
+		$view->set('data', $chainmap->as_array() );
 
 		$this->template->content = $view;
 	}
