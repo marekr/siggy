@@ -1,5 +1,5 @@
 <?php
-$subgroups = $group->subgroups->find_all();
+$subgroups = $group->chainmaps->find_all();
 
 $hasSubgroups = false;
 if( count( $subgroups->as_array() ) > 0 )
@@ -17,7 +17,7 @@ if( count( $subgroups->as_array() ) > 0 )
 <div class="clearfix"></div>
 <?php if( $hasSubgroups ): ?>
 	<?php foreach( $subgroups as $s ): ?>
-		<h2 class="tableHeader"><?php echo $s->sgName ?></h2>
+		<h2 class="tableHeader"><?php echo $s->chainmap_name ?></h2>
 		<table class="table table-striped" width="100%">
 			<thead>
 				<tr>
@@ -29,9 +29,9 @@ if( count( $subgroups->as_array() ) > 0 )
 			</thead>
 			<tbody>
 			<?php 
-				$members = $group->groupmembers->where('subGroupID', '=', $s->subGroupID)->find_all();
+				$members = $group->groupmembers->where('chainmap_id', '=', $s->chainmap_id)->find_all();
 				if( count( $members) > 0 ):
-					foreach( $group->groupmembers->where('subGroupID', '=', $s->subGroupID)->find_all() as $m ): ?>
+					foreach( $group->groupmembers->where('chainmap_id', '=', $s->chainmap_id)->find_all() as $m ): ?>
 				<tr>
 					<td><?php echo ucfirst($m->memberType) ?></td>
 					<td><?php echo $m->eveID ?></td>
@@ -67,7 +67,7 @@ if( count( $subgroups->as_array() ) > 0 )
 		</thead>
 		<tbody>
 		<?php 
-			$members = $group->groupmembers->where('subGroupID', '=', 0)->find_all();
+			$members = $group->groupmembers->where('chainmap_id', '=', 0)->find_all();
 			if( count( $members) > 0 ):
 				foreach( $members as $m ): ?>
 				<tr>
