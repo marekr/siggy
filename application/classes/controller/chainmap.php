@@ -372,8 +372,32 @@ class Controller_Chainmap extends FrontController
 	
 	public function action_switch()
 	{
-		$chainmap_id = intval($_POST['chainmap_id']);
+		$desired_chainmap = intval($_POST['chainmap_id']);
 		
-		Cookie::set('chainmap', $chainmap_id);
+		$selected_id = 0;
+		$default_id = 0;
+		foreach($this->groupData['chainmaps'] as $c)
+		{
+			if( $c['chainmap_type'] == 'default' )
+			{
+				$default_id = $c['chainmap_id'];
+			}
+			
+			if( $c['chainmap_id'] == $desired_chainmap )
+			{
+				$selected_id = $c['chainmap_id'];
+			}
+		}
+		
+		if( !$selected_id )
+		{
+			$selected_id = $default_id;
+		}
+		
+		if( !$selected_id )
+		{
+			throw new Exception("No default chain map found!");
+		}
+		Cookie::set('chainmap', $selected_id);
 	}
 }
