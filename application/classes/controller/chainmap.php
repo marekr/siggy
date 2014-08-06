@@ -22,7 +22,7 @@ class Controller_Chainmap extends FrontController
 		$this->chainmap = new Chainmap($this->groupData['subGroupID'],$this->groupData['groupID']);
 	}
 	
-	public function action_findNearestExits()
+	public function action_find_nearest_exits()
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
@@ -368,5 +368,12 @@ class Controller_Chainmap extends FrontController
 		echo json_encode( array('success' => 1) );
 		
 		exit();
+	}
+	
+	public function action_switch()
+	{
+		$chainmap_id = intval($_POST['chainmap_id']);
+		
+		Cookie::set('chainmap', $chainmap_id);
 	}
 }

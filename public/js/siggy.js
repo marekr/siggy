@@ -1623,7 +1623,7 @@ siggymain.prototype.initializeExitFinder = function()
 	$('#exit-finder button[name=current_location]').click( function() {
 		$("#exit-finder-loading").show();
 		$("#exit-finder-results-wrap").hide();
-		$.post($this.settings.baseUrl + 'chainmap/findNearestExits', {current_system: 1}, function (data)
+		$.post($this.settings.baseUrl + 'chainmap/find_nearest_exits', {current_system: 1}, function (data)
 		{
 			$("#exit-finder-loading").hide();
 			$('#exit-finder-list').empty();
@@ -1637,7 +1637,7 @@ siggymain.prototype.initializeExitFinder = function()
 		var target = $("#exit-finder input[name=target_system]").val();
 		$("#exit-finder-loading").show();
 		$("#exit-finder-results-wrap").hide();
-		$.post($this.settings.baseUrl + 'chainmap/findNearestExits', {target: target}, function (data)
+		$.post($this.settings.baseUrl + 'chainmap/find_nearest_exits', {target: target}, function (data)
 		{
 			$("#exit-finder-loading").hide();
 			$('#exit-finder-list').empty();
@@ -2060,10 +2060,25 @@ siggymain.prototype.updateChainMaps = function(data)
 				var a = $('<a>');
 				var li = $('<li>').append(a);
 				
-				
 				a.text(chainmap.chainmap_name);
+				
+				(function(id) {
+					a.click(function(){$this.handleChainMapSelect(id)});
+				})(chainmap.chainmap_id);
+				
 				list.append(li);
 			}
 		}
 	}
+}
+
+siggymain.prototype.handleChainMapSelect = function(id)
+{
+	var $this = this;
+	
+	$.post(this.settings.baseUrl + 'chainmap/switch', {chainmap_id: id}, function ()
+	{
+		$this.forceUpdate = true;
+		$this.updateNow();
+	});
 }
