@@ -271,7 +271,6 @@ final class groupUtils
 		
 		$cache = Cache::instance(CACHE_METHOD);
 		$group_data = $cache->get('group-'.$group_id);
-		$group_data = null;
 		
 		if( $group_data == null )
 		{
@@ -291,7 +290,6 @@ final class groupUtils
 		$cache = Cache::instance( CACHE_METHOD );
 		
 		$charData = $cache->get('char-'.$char_id);
-		$charData = null;
 		
 		if( $charData != null )
 		{
