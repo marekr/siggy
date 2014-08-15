@@ -176,6 +176,7 @@ var whLookup = {
 		8: "I182 (to C2)",
 		9: "N968 (to C3)",
 		10: "T405 (to C4)",
+		24: "M131 (to C4",
 		11: "N770 (to C5)",
 		12: "A982 (to C6)",
 		13: "K346 (to Nullsec)",
