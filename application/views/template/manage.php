@@ -21,7 +21,7 @@
 	<script type="text/javascript">
 	$(function() {
 
-		$('#side-menu').metisMenu();
+	//	$('#side-menu').metisMenu();
 
 	});
 
@@ -96,7 +96,7 @@
 						<?php echo Html::anchor('manage/dashboard', __('<i class="fa fa-sitemap fa-fw"></i>Dashboard')); ?>
 					</li>
 					<?php if( Auth::$user->data['admin'] || $perms['can_manage_group_members'] || $perms['can_manage_access'] ): ?>
-					<li class="<?php echo (Request::initial()->controller() == "Group"?" active" : "") ?>">
+					<li class="active <?php echo (Request::initial()->controller() == "Group"?" active" : "") ?>">
 						<a href="#"><i class="fa fa-key fa-fw"></i> Access<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
 							<?php if( Auth::$user->data['admin'] || $perms['can_manage_group_members'] ): ?>
@@ -115,7 +115,7 @@
 						</ul>
 						<!-- /.nav-second-level -->
 					</li>
-					<li class="<?php echo (Request::initial()->controller() == "Group"?" active" : "") ?>">
+					<li class="active <?php echo (Request::initial()->controller() == "Group"?" active" : "") ?>">
 						<a href="#"><i class="fa fa-chain fa-fw"></i> Chainmaps<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
 							<li>
@@ -126,7 +126,7 @@
 					</li>
 					<?php endif; ?>
 					<?php if( Auth::$user->data['admin'] || $perms['can_manage_settings'] ): ?>
-					<li class="<?php echo (Request::initial()->controller() == "Settings"?" active" : "") ?>">
+					<li class="active <?php echo (Request::initial()->controller() == "Settings"?" active" : "") ?>">
 						<a href="#"><i class="fa fa-wrench fa-fw"></i>Settings<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
 							<li>
@@ -143,7 +143,7 @@
 					</li>
 					<?php endif; ?>
 					<?php if( Auth::$user->data['admin'] || $perms['can_view_logs'] ): ?>
-					<li class="<?php echo (Request::initial()->controller() == "Logs"?" active" : "") ?>">
+					<li class="active <?php echo (Request::initial()->controller() == "Logs"?" active" : "") ?>">
 						<a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Activity<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
 							<li>
@@ -157,7 +157,7 @@
 					</li>
 					<?php endif; ?>
 					<?php if( Auth::$user->data['admin'] || $perms['can_view_financial'] ): ?>
-					<li class="<?php echo (Request::initial()->controller() == "Billing"?" active" : "") ?>">
+					<li class="active <?php echo (Request::initial()->controller() == "Billing"?" active" : "") ?>">
 						<a href="#"><i class="fa fa-university fa-fw"></i>Financial<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
 							<li>

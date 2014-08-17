@@ -130,9 +130,9 @@ class Controller_Siggy extends FrontController
 	{
 		parent::before();
 		
-		if( $this->groupData['subGroupID'] )
+		if( $this->groupData['active_chain_map'] )
 		{
-			$this->chainmap = new Chainmap($this->groupData['subGroupID'],$this->groupData['groupID']);
+			$this->chainmap = new Chainmap($this->groupData['active_chain_map'],$this->groupData['groupID']);
 		}
 	}
 	
@@ -174,7 +174,7 @@ class Controller_Siggy extends FrontController
 													WHERE ss.id=:id")
 									->param(':id', $id)
 									->param(':group', $this->groupData['groupID'])
-									->param(':chainmap', $this->groupData['subGroupID'])
+									->param(':chainmap', $this->groupData['active_chain_map'])
 									->execute()
 									->current();
 		
@@ -391,17 +391,17 @@ class Controller_Siggy extends FrontController
     
         $whHash = mapUtils::whHashByID($origin, $dest);
 		
-		$connection = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE hash=:hash AND groupID=:group AND subGroupID=:subGroupID")
+		$connection = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE hash=:hash AND groupID=:group AND chainmap_id=:chainmap")
 						->param(':hash', $whHash)
 						->param(':group', $this->groupData['groupID'])
-						->param(':subGroupID', $this->groupData['subGroupID'])
+						->param(':chainmap', $this->groupData['active_chain_map'])
 						->execute()
 						->current();
 
 		if( !isset($connection['hash'] ) )
 		{
 			//new wh
-			$this->chainmap->add_system_to_map($this->groupData['groupID'],$this->groupData['subGroupID'], $whHash, $origin, $dest);
+			$this->chainmap->add_system_to_map($whHash, $origin, $dest);
 			
 			miscUtils::increment_stat('wormholes', $this->groupData);
 		}
@@ -412,7 +412,7 @@ class Controller_Siggy extends FrontController
 				->set( array('lastJump' => time()) )
 				->where('hash', '=', $whHash)
 				->where('groupID', '=', $this->groupData['groupID'])
-				->where('subGroupID', '=', $this->groupData['subGroupID'])
+				->where('chainmap_id', '=', $this->groupData['active_chain_map'])
 				->execute();
 		}
 		
@@ -422,13 +422,13 @@ class Controller_Siggy extends FrontController
             $charName = ( $this->groupData['jumpLogRecordNames'] ? $_SERVER['HTTP_EVE_CHARNAME'] : '' );
             $jumpTime = ( $this->groupData['jumpLogRecordTime'] ? time() : 0 );
 			
-            DB::query(Database::INSERT, 'INSERT INTO wormholetracker (`whHash`, `origin`, `destination`, `groupID`, `subGroupID`, `time`, `shipTypeID`,`charID`, `charName`)
-															   VALUES(:hash, :origin, :dest, :groupID, :subGroupID, :time,:shipTypeID,:charID,:charName)')
+            DB::query(Database::INSERT, 'INSERT INTO wormholetracker (`whHash`, `origin`, `destination`, `groupID`, `chainmap_id`, `time`, `shipTypeID`,`charID`, `charName`)
+															   VALUES(:hash, :origin, :dest, :groupID, :chainmap, :time,:shipTypeID,:charID,:charName)')
 						->param(':hash', $whHash )
 						->param(':dest', $dest)
 						->param(':origin', $origin )
 						->param(':groupID', $this->groupData['groupID'] )
-						->param(':subGroupID', $this->groupData['subGroupID'] )
+						->param(':chainmap', $this->groupData['active_chain_map'] )
 						->param(':time', $jumpTime )
 						->param(':shipTypeID',  $_SERVER['HTTP_EVE_SHIPTYPEID'] )
 						->param(':charID', $charID)
@@ -585,7 +585,7 @@ class Controller_Siggy extends FrontController
                     $broadcast = 1;
                 }
       
-                      DB::query(Database::INSERT, 'INSERT INTO chartracker (`charID`, `charName`, `currentSystemID`,`groupID`,`subGroupID`,`lastBeep`, `broadcast`,`shipType`, `shipName`) VALUES(:charID, :charName, :systemID, :groupID, :subGroupID, :lastBeep, :broadcast, :shipType, :shipName)'
+                      DB::query(Database::INSERT, 'INSERT INTO chartracker (`charID`, `charName`, `currentSystemID`,`groupID`,`chainmap_id`,`lastBeep`, `broadcast`,`shipType`, `shipName`) VALUES(:charID, :charName, :systemID, :groupID, :chainmap, :lastBeep, :broadcast, :shipType, :shipName)'
                                     . 'ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, currentSystemID = :systemID, broadcast = :broadcast, shipType = :shipType, shipName = :shipName')
 								->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )
 								->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
@@ -594,7 +594,7 @@ class Controller_Siggy extends FrontController
 								->param(':groupID', $this->groupData['groupID'] )
 								->param(':shipType', isset($_SERVER['HTTP_EVE_SHIPTYPEID']) ? $_SERVER['HTTP_EVE_SHIPTYPEID'] : 0 )
 								->param(':shipName', isset($_SERVER['HTTP_EVE_SHIPNAME']) ? htmlentities($_SERVER['HTTP_EVE_SHIPNAME']) : '' )
-								->param(':subGroupID', $this->groupData['subGroupID'] )
+								->param(':chainmap', $this->groupData['active_chain_map'] )
 								->param(':lastBeep', time() )->execute();			
             }
 			
@@ -611,12 +611,12 @@ class Controller_Siggy extends FrontController
 							$activesData = array();
 							$activesData = DB::query(Database::SELECT, "SELECT ct.charName, ct.currentSystemID, s.shipName FROM chartracker ct 
 																		LEFT JOIN ships s ON (ct.shipType=s.shipID)
-																		WHERE ct.groupID = :groupID AND ct.subGroupID = :subGroupID AND ct.broadcast=1 AND
+																		WHERE ct.groupID = :groupID AND ct.chainmap_id = :chainmap AND ct.broadcast=1 AND
 																			ct.currentSystemID IN(".implode(',',$this->mapData['systemIDs']).") AND ct.lastBeep >= :lastBeep 
 																			ORDER BY ct.charName ASC")
 												->param(':lastBeep', time()-60)
 												->param(':groupID', $this->groupData['groupID'])
-												->param(':subGroupID', $this->groupData['subGroupID'])
+												->param(':chainmap', $this->groupData['active_chain_map'])
 												->execute()
 												->as_array();
 							
@@ -654,7 +654,7 @@ class Controller_Siggy extends FrontController
             $activeSystemQuery = DB::query(Database::SELECT, 'SELECT lastUpdate FROM activesystems WHERE systemID=:id AND groupID=:group AND chainmap_id=:chainmap')
 												->param(':id', $currentSystemID)
 												->param(':group',$this->groupData['groupID'])
-												->param(':chainmap', $this->groupData['subGroupID'])
+												->param(':chainmap', $this->groupData['active_chain_map'])
 												->execute();
 
             $activeSystem = $activeSystemQuery->current();
@@ -688,7 +688,7 @@ class Controller_Siggy extends FrontController
 				$update['globalNotes'] = $this->groupData['groupNotes'];
 			}
 			
-			$update['chainmap_id'] = $this->groupData['subGroupID'];
+			$update['chainmap_id'] = $this->groupData['active_chain_map'];
 			
             $update['lastUpdate'] = (int)$recordedLastUpdate;
         }
@@ -999,7 +999,7 @@ class Controller_Siggy extends FrontController
 										->on('activesystems.systemID', '=', 'solarsystems.id')
 										->where('displayName','like',$q.'%')
 										->where('groupID', '=', $this->groupData['groupID'])
-										->where('subGroupID', '=', $this->groupData['subGroupID'])
+										->where('chainmap_id', '=', $this->groupData['active_chain_map'])
 										->execute()
 										->as_array();
 									

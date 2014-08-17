@@ -348,13 +348,13 @@ final class miscUtils
 			
 			$duplicate_update_string = $stat .'='. $stat .'+1';
 			
-			DB::query(Database::INSERT, 'INSERT INTO stats (`charID`,`charName`,`groupID`,`subGroupID`,`dayStamp`,`'.$stat.'`) 
-													VALUES(:charID, :charName, :groupID, :subGroupID, :dayStamp, 1)
+			DB::query(Database::INSERT, 'INSERT INTO stats (`charID`,`charName`,`groupID`,`chainmap_id`,`dayStamp`,`'.$stat.'`) 
+													VALUES(:charID, :charName, :groupID, :chainmap, :dayStamp, 1)
 													ON DUPLICATE KEY UPDATE '.$duplicate_update_string)
 								->param(':charID',  $groupData['charID'] )
 								->param(':charName', $groupData['charName'] )
 								->param(':groupID', $groupData['groupID'] )
-								->param(':subGroupID', $groupData['subGroupID'] )
+								->param(':chainmap', $groupData['active_chain_map'] )
 								->param(':dayStamp', miscUtils::getDayStamp() )
 								->execute();	
 		}

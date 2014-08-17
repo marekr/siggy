@@ -52,9 +52,11 @@ class Controller_Manage_Logs extends Controller_Manage
 	{
 		$sessions = array();
 		$sessions = DB::query(Database::SELECT, "SELECT ss.*,sg.sgName FROM siggysessions ss
-		LEFT JOIN subGroups sg ON(sg.subGroupID = ss.subGroupID)
-		WHERE ss.groupID=:group ORDER BY ss.lastBeep DESC")
-					  ->param(':group', Auth::$user->data['groupID'])->execute()->as_array();
+												LEFT JOIN subGroups sg ON(sg.subGroupID = ss.subGroupID)
+												WHERE ss.groupID=:group ORDER BY ss.lastBeep DESC")
+							  ->param(':group', Auth::$user->data['groupID'])
+							  ->execute()
+							  ->as_array();
 
 		$view = View::factory('manage/logs/sessions');
 		

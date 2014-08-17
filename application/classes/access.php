@@ -212,7 +212,7 @@ class access
 		$groupData['corpID'] = $corp_id;
 		$groupData['charID'] = $char_id;
 		$groupData['accessible_chainmaps'] = $this->_buildAccessChainmaps($groupData);
-		$groupData['subGroupID'] = $this->_getChainMapID($groupData);
+		$groupData['active_chain_map'] = $this->_getChainMapID($groupData);
 		$groupData['access_groups'] = $all_groups;
 		
 		

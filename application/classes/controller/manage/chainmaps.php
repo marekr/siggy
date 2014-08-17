@@ -261,10 +261,9 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		{
 			try 
 			{
-				DB::update('groupmembers')->set( array('chainmap_id' => 0 ) )->where( 'chainmap_id', '=', $chainmap->chainmap_id )->execute();
+				DB::delete('chainmaps_access')->where('chainmap_id', '=', $chainmap->chainmap_id)->execute();
 				DB::delete('activesystems')->where('chainmap_id', '=', $chainmap->chainmap_id)->execute();
 
-				//groupUtils::deleteSubGroupCache($sg->chainmap_id);
 				groupUtils::update_group(Auth::$user->data['groupID']);	//trigger last_update value to change
 				groupUtils::recacheGroup(Auth::$user->data['groupID']);
 				$chainmap->delete();
@@ -285,7 +284,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 			}
 		}
 
-		$view->set('data', $chainmap->as_array() );
+		$view->set('data', $chainmap->as_array());
 
 		$this->template->content = $view;
 	}

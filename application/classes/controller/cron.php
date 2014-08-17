@@ -261,19 +261,6 @@ class Controller_Cron extends Controller
 			{
 				$ignoreSys = $group['homeSystemIDs'];
 			}
-		
-			$subGroupsQuery = DB::query(Database::SELECT, "SELECT subGroupID, sgSkipPurgeHomeSigs,sgHomeSystemIDs FROM subgroups WHERE groupID = :groupID")->param(':groupID', $group['groupID'])->execute();	 
-			$subGroups = $subGroupsQuery->as_array();
-			if(	$subGroupsQuery->count() > 0 )
-			{
-				foreach( $subGroups as $subGroup )
-				{
-					if( $subGroup['sgSkipPurgeHomeSigs'] && !empty($subGroup['sgHomeSystemIDs']) )
-					{
-						$ignoreSys .= ( empty($ignoreSys) ? $subGroup['sgHomeSystemIDs'] : ','.$subGroup['sgHomeSystemIDs'] );
-					}
-				}
-			}
 			
 			if( !empty($ignoreSys) )
 			{
@@ -284,7 +271,6 @@ class Controller_Cron extends Controller
 				DB::query(Database::DELETE, "DELETE FROM systemsigs WHERE sig != 'POS' AND groupID=:groupID AND created <= :cutoff")->param(':cutoff',$cutoff)->param(':groupID', $group['groupID'])->execute();
 			}
 		}
-	
 	}
 
 	public function action_resetStuff()

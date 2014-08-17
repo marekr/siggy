@@ -9,7 +9,7 @@ class User
 	public $perms = array();
 	
 	public $groupID = 0;
-	public $subGroupID = 0;
+	public $activeChainMap = 0;
 	
 	public function userLoaded()
 	{
