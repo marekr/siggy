@@ -19,7 +19,10 @@ class Controller_Chainmap extends FrontController
 	{
 		parent::before();
 		
-		$this->chainmap = new Chainmap($this->groupData['subGroupID'],$this->groupData['groupID']);
+		if( $this->groupData['subGroupID'] )
+		{
+			$this->chainmap = new Chainmap($this->groupData['subGroupID'],$this->groupData['groupID']);
+		}
 	}
 	
 	public function action_find_nearest_exits()
@@ -376,28 +379,22 @@ class Controller_Chainmap extends FrontController
 		
 		$selected_id = 0;
 		$default_id = 0;
-		foreach($this->groupData['chainmaps'] as $c)
+		foreach($this->groupData['accessible_chainmaps'] as $c)
 		{
-			if( $c['chainmap_type'] == 'default' )
-			{
-				$default_id = $c['chainmap_id'];
-			}
-			
 			if( $c['chainmap_id'] == $desired_chainmap )
 			{
 				$selected_id = $c['chainmap_id'];
 			}
 		}
 		
-		if( !$selected_id )
+		if( $selected_id )
 		{
-			$selected_id = $default_id;
+			Cookie::set('chainmap', $selected_id);
 		}
 		
 		if( !$selected_id )
 		{
-			throw new Exception("No default chain map found!");
+			throw new Exception("Selected chain map not found!");
 		}
-		Cookie::set('chainmap', $selected_id);
 	}
 }

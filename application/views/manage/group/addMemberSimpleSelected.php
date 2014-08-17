@@ -1,10 +1,9 @@
 <?php
 $select = array();
-$select[0] = 'Default/No sub group';
-$subgroups = $group->subgroups->find_all()->as_array();
-foreach($subgroups as $s )
+$select[0] = 'No chainmap';
+foreach($chainmaps as $c )
 {
-	$select[$s->subGroupID] =$s->sgName;
+	$select[$c['chainmap_id']] = $c['chainmap_name'];
 }
 
 $type = array('corp' => 'Corp', 'char' => 'Character');
@@ -28,10 +27,10 @@ $type = array('corp' => 'Corp', 'char' => 'Character');
 	</p>
 	<?php endif; ?>
 	
-	<?php if( count($subgroups) > 0 ): ?>
-		<?php echo formRenderer::select('Subgroup', 'subGroupID', $select, 0, ''); ?>
+	<?php if( count($chainmaps) > 0 ): ?>
+		<?php echo formRenderer::select('Chainmaps', 'chainmap_id', $select, 0, ''); ?>
 	<?php endif; ?>
-
+	<br />
 	<div class="form-actions">
 		<button type="submit" class="btn btn-primary">Add member</button>
 		<button type="button" class="btn" onclick="history.go(-2);return false;">Cancel</button>

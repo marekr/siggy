@@ -138,7 +138,7 @@ class access
 		$corp_id = intval($corp_id);
 		$char_id = intval($char_id);
 	
-		$default = array('groupID' =>0, 'authMode' => 0, 'authPassword' => '');
+		$default = array('groupID' =>0, 'authMode' => 0, 'authPassword' => '', 'data_type' => 'none');
 		
 		if( empty( $corp_id ) || empty($char_id)  )
 		{
@@ -154,17 +154,26 @@ class access
 		$corp_data = groupUtils::getCorpData( $corp_id );
 		$char_data = groupUtils::getCharData( $char_id );
 		
+		$access_type = 'char';
 		if( !$corp_data !== FALSE && $char_data != FALSE )
 		{
 			$all_groups = array_merge($corp_data['groups'],$char_data['groups']);
+			
+			//helper property for the chain map acl
+			$access_type = 'char_corp';
 		}
 		else if( $corp_data !== FALSE )
 		{
 			$all_groups = $corp_data['groups'];
+			
+			//helper property for the chain map acl
+			$access_type = 'corp';
 		}
 		else if ($char_data != FALSE )
 		{
 			$all_groups = $char_data['groups'];
+			
+			$access_type = 'char';
 		}
 		
 		//check if we have any groups
@@ -191,44 +200,93 @@ class access
 		
 		//finally load the group data!
 		$groupData = groupUtils::getGroupData( $accessGroupID );
-		
 		if( !$groupData )
 		{
 			return $default;
 		}
 		
+		
+		
 		//store the possible groups
+		$groupData['access_type'] = $access_type;
+		$groupData['corpID'] = $corp_id;
+		$groupData['charID'] = $char_id;
+		$groupData['accessible_chainmaps'] = $this->_buildAccessChainmaps($groupData);
 		$groupData['subGroupID'] = $this->_getChainMapID($groupData);
 		$groupData['access_groups'] = $all_groups;
+		
+		
 		
 		$out = $groupData;
 		
 		return $out;
 	}
 	
+	
+	private function _buildAccessChainmaps($groupData)
+	{
+		$accessibleChainmaps = array();
+		foreach($groupData['chainmaps'] as $id => $c)
+		{
+			foreach($c['access'] as $p)
+			{
+				if( ($p['memberType'] == 'corp' && $p['eveID'] == $groupData['corpID'])
+						|| ($p['memberType'] == 'char' && $p['eveID'] == $groupData['charID']) )
+				{
+					$accessibleChainmaps[$c['chainmap_id']] = $c;
+				}
+			}
+		}
+		return $accessibleChainmaps;
+	}
+	
+	private function _getDefaultChainMapID($groupData)
+	{
+		/* find the first chainmap we have permissions for */
+		foreach($groupData['chainmaps'] as $id => $c)
+		{
+			foreach($c['access'] as $p)
+			{
+				if( ($p['memberType'] == 'corp' && $p['eveID'] == $groupData['corpID'])
+						|| ($p['memberType'] == 'char' && $p['eveID'] == $groupData['charID']) )
+				{
+					return $id;
+				}
+			}
+		}
+		
+		return 0;
+	}
+	
 	private function _getChainMapID($groupData)
 	{
-		$desired_chainmap = intval(Cookie::get('chainmap', 0));
-		
+		$desired_id = intval(Cookie::get('chainmap', 0));
 		$default_id = 0;
-		foreach($groupData['chainmaps'] as $c)
+		if( !$desired_id )
 		{
-			if( $c['chainmap_type'] == 'default' )
+			return $this->_getDefaultChainMapID($groupData);
+		}
+		
+		if( isset($groupData['chainmaps'][ $desired_id ]) )
+		{
+			foreach($groupData['chainmaps'][ $desired_id ]['access'] as $p)
 			{
-				$default_id = $c['chainmap_id'];
+				if( ($p['memberType'] == 'corp' && $p['eveID'] == $groupData['corpID'])
+						|| ($p['memberType'] == 'char' && $p['eveID'] == $groupData['charID']) )
+				{
+					return $desired_id;
+				}
 			}
-			
-			if( $c['chainmap_id'] == $desired_chainmap )
+		}
+		else
+		{
+			$desired_id = $this->_getDefaultChainMapID($groupData);
+			if( $desired_id )
 			{
-				return $c['chainmap_id'];
+				Cookie::set('chainmaps',$desired_id);
 			}
 		}
 		
-		if( !$default_id )
-		{
-			throw new Exception("No default chain map found");
-		}
-		
-		return $default_id;
+		return $desired_id;
 	}
 }

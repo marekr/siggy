@@ -129,6 +129,12 @@ final class groupUtils
 								->param(':group', $id)
 								->execute()
 								->current();
+								
+		
+		$group['members'] = DB::query(Database::SELECT, "SELECT * FROM groupmembers WHERE groupID = :group")
+								->param(':group', $id)
+								->execute()
+								->current();
 
 		if( $group['groupID'] )
 		{
@@ -136,7 +142,19 @@ final class groupUtils
 								->param(':group', $id)
 								->execute()
 								->as_array();
+
+			foreach($chainmaps as &$c)
+			{
+				$members = DB::query(Database::SELECT, "SELECT gm.memberType, gm.eveID FROM groupmembers gm 
+													LEFT JOIN chainmaps_access a ON(gm.id=a.groupmember_id) WHERE chainmap_id=:chainmap")
+							->param(':chainmap', $c['chainmap_id'])
+							->execute()
+							->as_array();
+				$c['access'] = $members;
+			}
+			
 			$group['chainmaps'] = $chainmaps;
+			
 			$group['cache_time'] = time();
 		
 			$cache->set('group-'.$group['groupID'], $group);         
@@ -158,11 +176,14 @@ final class groupUtils
 
 		$cache = Cache::instance( CACHE_METHOD );
 
-		$corp_memberships = DB::query(Database::SELECT, "SELECT g.*,gr.groupName, gr.groupTicker FROM groupmembers g 
+		$corp_memberships = DB::query(Database::SELECT, "SELECT g.*,gr.groupName, gr.groupTicker 
+														FROM groupmembers g 
 														LEFT JOIN groups as gr ON(g.groupID=gr.groupID)
 														WHERE g.memberType='corp' AND g.eveID= :id")
 										->param(':id', $id)
-										->execute()->as_array();   
+										->execute()
+										->as_array();
+										
 		if( count($corp_memberships) > 0 )
 		{
 			$corp = array();
@@ -272,6 +293,7 @@ final class groupUtils
 		$cache = Cache::instance(CACHE_METHOD);
 		$group_data = $cache->get('group-'.$group_id);
 		
+		$groupData = null;
 		if( $group_data == null )
 		{
 			return self::recacheGroup($group_id);

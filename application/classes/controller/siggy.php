@@ -20,6 +20,11 @@ class Controller_Siggy extends FrontController
 	
 		$mapOpen = ( isset($_COOKIE['mapOpen'] ) ? intval($_COOKIE['mapOpen']) : 0 );
         $statsOpen = ( isset($_COOKIE['system_stats_open'] ) ? intval($_COOKIE['system_stats_open']) : 0 );
+		
+		// set default
+		$view->systemData = array('id' => 30000142, 'name' => 'Jita');
+		
+		// did we have an url requested system?
 		if( !empty($ssname) )
 		{
 			$sysData = array();
@@ -37,24 +42,19 @@ class Controller_Siggy extends FrontController
 				$requested = true;
 				$view->systemData = $sysData;
 			}
-			else
-			{
-				//default to jita
-				$view->systemData = array('id' => 30000142, 'name' => 'Jita');
-			}
 		}
 		else
 		{
 			$requested = false;
-			$homeSystems = $this->chainmap->get_home_systems();
 			
-			if( count($homeSystems) > 0 )
+			if( $this->chainmap != null )
 			{
-				$view->systemData = array('id' => $homeSystems[0], 'name' => '');
-			}
-			else
-			{
-				$view->systemData = array('id' => 30000142, 'name' => 'Jita');
+				$homeSystems = $this->chainmap->get_home_systems();
+				
+				if( count($homeSystems) > 0 )
+				{
+					$view->systemData = array('id' => $homeSystems[0], 'name' => '');
+				}
 			}
 			$view->initialSystem = true;
 		}
@@ -130,7 +130,10 @@ class Controller_Siggy extends FrontController
 	{
 		parent::before();
 		
-		$this->chainmap = new Chainmap($this->groupData['subGroupID'],$this->groupData['groupID']);
+		if( $this->groupData['subGroupID'] )
+		{
+			$this->chainmap = new Chainmap($this->groupData['subGroupID'],$this->groupData['groupID']);
+		}
 	}
 	
 	public function after()
@@ -594,57 +597,60 @@ class Controller_Siggy extends FrontController
 								->param(':subGroupID', $this->groupData['subGroupID'] )
 								->param(':lastBeep', time() )->execute();			
             }
-					
-			$this->mapData = $this->chainmap->get_map_cache();
-            if( $chainMapOpen == 1 )
-            {
-                    $update['chainMap']['actives'] = array();
-                    $update['chainMap']['systems'] = array();
-                    $update['chainMap']['wormholes'] = array();
-                    if( is_array($this->mapData['systemIDs']) && count($this->mapData['systemIDs'])	 > 0 )
-                    {
-                            $activesData = array();
-                            $activesData = DB::query(Database::SELECT, "SELECT ct.charName, ct.currentSystemID, s.shipName FROM chartracker ct 
-                                                                        LEFT JOIN ships s ON (ct.shipType=s.shipID)
-                                                                        WHERE ct.groupID = :groupID AND ct.subGroupID = :subGroupID AND ct.broadcast=1 AND
-                                                                            ct.currentSystemID IN(".implode(',',$this->mapData['systemIDs']).") AND ct.lastBeep >= :lastBeep 
-                                                                            ORDER BY ct.charName ASC")
-                                                ->param(':lastBeep', time()-60)
-                                                ->param(':groupID', $this->groupData['groupID'])
-                                                ->param(':subGroupID', $this->groupData['subGroupID'])
-                                                ->execute()
-                                                ->as_array();
-                            
-                        if( is_array($activesData) && count($activesData) > 0 )
-                        {
-                            $actives = array();
-                            foreach( $activesData as $act )
-                            {
-                                if( strlen( $act['charName']) > 15 )
-                                {
-                                    $act['charName'] = substr($act['charName'], 0,12).'...';
-                                }
-                                
-                                if( $act['shipName'] == NULL )
-                                {
-                                    $act['shipName'] = "";
-                                }
-                                $actives[ $act['currentSystemID'] ][] = array('name' => $act['charName'], 'ship' => $act['shipName']);
-                            }
+			
+			if( $this->chainmap != null )
+			{
+				$this->mapData = $this->chainmap->get_map_cache();
+				if( $chainMapOpen == 1 )
+				{
+					$update['chainMap']['actives'] = array();
+					$update['chainMap']['systems'] = array();
+					$update['chainMap']['wormholes'] = array();
+					if( is_array($this->mapData['systemIDs']) && count($this->mapData['systemIDs'])	 > 0 )
+					{
+							$activesData = array();
+							$activesData = DB::query(Database::SELECT, "SELECT ct.charName, ct.currentSystemID, s.shipName FROM chartracker ct 
+																		LEFT JOIN ships s ON (ct.shipType=s.shipID)
+																		WHERE ct.groupID = :groupID AND ct.subGroupID = :subGroupID AND ct.broadcast=1 AND
+																			ct.currentSystemID IN(".implode(',',$this->mapData['systemIDs']).") AND ct.lastBeep >= :lastBeep 
+																			ORDER BY ct.charName ASC")
+												->param(':lastBeep', time()-60)
+												->param(':groupID', $this->groupData['groupID'])
+												->param(':subGroupID', $this->groupData['subGroupID'])
+												->execute()
+												->as_array();
+							
+						if( is_array($activesData) && count($activesData) > 0 )
+						{
+							$actives = array();
+							foreach( $activesData as $act )
+							{
+								if( strlen( $act['charName']) > 15 )
+								{
+									$act['charName'] = substr($act['charName'], 0,12).'...';
+								}
+								
+								if( $act['shipName'] == NULL )
+								{
+									$act['shipName'] = "";
+								}
+								$actives[ $act['currentSystemID'] ][] = array('name' => $act['charName'], 'ship' => $act['shipName']);
+							}
 
-                            $update['chainMap']['actives'] = $actives;
-                        }
-                    }
-                    
-                    if( $_POST['mapLastUpdate'] != $this->mapData['updateTime'] )
-                    {
-                        $update['chainMap']['systems'] = $this->mapData['systems'];
-                        $update['chainMap']['wormholes'] = $this->mapData['wormholes'];
-                        $update['mapUpdate'] = (int) 1;
-                    }
-                    $update['chainMap']['lastUpdate'] = $this->mapData['updateTime'];
-            }
+							$update['chainMap']['actives'] = $actives;
+						}
+					}
 					
+					if( $_POST['mapLastUpdate'] != $this->mapData['updateTime'] )
+					{
+						$update['chainMap']['systems'] = $this->mapData['systems'];
+						$update['chainMap']['wormholes'] = $this->mapData['wormholes'];
+						$update['mapUpdate'] = (int) 1;
+					}
+					$update['chainMap']['lastUpdate'] = $this->mapData['updateTime'];
+				}
+			}
+			
             $activeSystemQuery = DB::query(Database::SELECT, 'SELECT lastUpdate FROM activesystems WHERE systemID=:id AND groupID=:group AND chainmap_id=:chainmap')
 												->param(':id', $currentSystemID)
 												->param(':group',$this->groupData['groupID'])
@@ -675,7 +681,7 @@ class Controller_Siggy extends FrontController
 			if( $group_last_cache_time < $this->groupData['cache_time'] )
 			{
 				$update['chainmaps_update'] = 1;
-				$update['chainmaps'] = $this->groupData['chainmaps'];
+				$update['chainmaps'] = $this->groupData['accessible_chainmaps'];
 				
 				$update['globalNotesUpdate'] = (int) 1;
 				$update['group_cache_time'] = (int) $this->groupData['cache_time'];
@@ -684,7 +690,7 @@ class Controller_Siggy extends FrontController
 			
 			$update['chainmap_id'] = $this->groupData['subGroupID'];
 			
-            $update['lastUpdate'] = $recordedLastUpdate;
+            $update['lastUpdate'] = (int)$recordedLastUpdate;
         }
         else
         {

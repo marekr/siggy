@@ -16,7 +16,7 @@ class chainmap
 		$this->id = 0;
 		$this->group_id = 0;
 		$this->data = array();
-	
+		
 		$data = DB::query(Database::SELECT, "SELECT * FROM chainmaps 
 											  WHERE chainmap_id=:chainmap_id")
 						->param(':chainmap_id', $chainmap_id)
