@@ -37,22 +37,17 @@
 		<!-- magic buttons -->
 		<div id='map-footer-bar'>
 			<!-- options -->
-
-				<a href="#" id="chain-map-add-wh" class="btn btn-default btn-xs">Add WH</a>
-				<a href="#" id="chain-map-edit" class="btn btn-default btn-xs">Edit</a>
-				<a href="#" id="chain-map-delete-whs" class="btn btn-default btn-xs">Delete WHs</a>
-				<a href="#" id="chain-map-delete-whs" class="btn btn-default btn-xs">Copy WHs</a>
-				
-			<div class="clear"></div>
+			<a href="#" id="chain-map-add-wh" class="btn btn-default btn-xs">Add WH</a>
+			<a href="#" id="chain-map-edit" class="btn btn-default btn-xs">Edit</a>
+			<a href="#" id="chain-map-delete-whs" class="btn btn-default btn-xs">Delete WHs</a>
+			<a href="#" id="chain-map-delete-whs" class="btn btn-default btn-xs">Copy WHs</a>
 			<!--- end options -->
 			<!--- broadcast -->
-			<p style='float:right;'>
-				<?php if( !$group['alwaysBroadcast'] ): ?>
-				<?php echo ( ( isset($_COOKIE['broadcast']) && $_COOKIE['broadcast'] == 0 ) ? "<span id='broadcastText'>Location broadcasting is disabled.</span> <button id='chainMapBroadcast'>Enable</button>" : "<span id='broadcastText'>Location broadcasting is enabled.</span> <button id='chainMapBroadcast'>Disable</button>" ); ?>
-				<?php endif; ?>
-			</p>
+			<?php if( !$group['alwaysBroadcast'] ): ?>
+			<a href="#" id="chainMapBroadcast" class="btn btn-default btn-xs" style="float:right"><?php echo ( ( isset($_COOKIE['broadcast']) && $_COOKIE['broadcast'] == 0 ) ? "Enable location broadcast" : "Disable location broadcast" ); ?></a>
+			<?php endif; ?>
+			<div class="clearfix"></div>
 			<!-- end broadcast -->
-			<br clear="all" />
 		</div>
 		
 		<!--- wh editor -->

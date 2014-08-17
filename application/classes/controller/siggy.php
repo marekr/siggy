@@ -585,17 +585,17 @@ class Controller_Siggy extends FrontController
                     $broadcast = 1;
                 }
       
-                      DB::query(Database::INSERT, 'INSERT INTO chartracker (`charID`, `charName`, `currentSystemID`,`groupID`,`chainmap_id`,`lastBeep`, `broadcast`,`shipType`, `shipName`) VALUES(:charID, :charName, :systemID, :groupID, :chainmap, :lastBeep, :broadcast, :shipType, :shipName)'
-                                    . 'ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, currentSystemID = :systemID, broadcast = :broadcast, shipType = :shipType, shipName = :shipName')
-								->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )
-								->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
-								->param(':broadcast', $broadcast )
-								->param(':systemID', $actualCurrentSystemID )
-								->param(':groupID', $this->groupData['groupID'] )
-								->param(':shipType', isset($_SERVER['HTTP_EVE_SHIPTYPEID']) ? $_SERVER['HTTP_EVE_SHIPTYPEID'] : 0 )
-								->param(':shipName', isset($_SERVER['HTTP_EVE_SHIPNAME']) ? htmlentities($_SERVER['HTTP_EVE_SHIPNAME']) : '' )
-								->param(':chainmap', $this->groupData['active_chain_map'] )
-								->param(':lastBeep', time() )->execute();			
+				DB::query(Database::INSERT, 'INSERT INTO chartracker (`charID`, `charName`, `currentSystemID`,`groupID`,`chainmap_id`,`lastBeep`, `broadcast`,`shipType`, `shipName`) VALUES(:charID, :charName, :systemID, :groupID, :chainmap, :lastBeep, :broadcast, :shipType, :shipName)'
+							. 'ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, currentSystemID = :systemID, broadcast = :broadcast, shipType = :shipType, shipName = :shipName')
+						->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )
+						->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
+						->param(':broadcast', $broadcast )
+						->param(':systemID', $actualCurrentSystemID )
+						->param(':groupID', $this->groupData['groupID'] )
+						->param(':shipType', isset($_SERVER['HTTP_EVE_SHIPTYPEID']) ? $_SERVER['HTTP_EVE_SHIPTYPEID'] : 0 )
+						->param(':shipName', isset($_SERVER['HTTP_EVE_SHIPNAME']) ? htmlentities($_SERVER['HTTP_EVE_SHIPNAME']) : '' )
+						->param(':chainmap', $this->groupData['active_chain_map'] )
+						->param(':lastBeep', time() )->execute();			
             }
 			
 			if( $this->chainmap != null )
@@ -608,17 +608,17 @@ class Controller_Siggy extends FrontController
 					$update['chainMap']['wormholes'] = array();
 					if( is_array($this->mapData['systemIDs']) && count($this->mapData['systemIDs'])	 > 0 )
 					{
-							$activesData = array();
-							$activesData = DB::query(Database::SELECT, "SELECT ct.charName, ct.currentSystemID, s.shipName FROM chartracker ct 
-																		LEFT JOIN ships s ON (ct.shipType=s.shipID)
-																		WHERE ct.groupID = :groupID AND ct.chainmap_id = :chainmap AND ct.broadcast=1 AND
-																			ct.currentSystemID IN(".implode(',',$this->mapData['systemIDs']).") AND ct.lastBeep >= :lastBeep 
-																			ORDER BY ct.charName ASC")
-												->param(':lastBeep', time()-60)
-												->param(':groupID', $this->groupData['groupID'])
-												->param(':chainmap', $this->groupData['active_chain_map'])
-												->execute()
-												->as_array();
+						$activesData = array();
+						$activesData = DB::query(Database::SELECT, "SELECT ct.charName, ct.currentSystemID, s.shipName FROM chartracker ct 
+																	LEFT JOIN ships s ON (ct.shipType=s.shipID)
+																	WHERE ct.groupID = :groupID AND ct.chainmap_id = :chainmap AND ct.broadcast=1 AND
+																		ct.currentSystemID IN(".implode(',',$this->mapData['systemIDs']).") AND ct.lastBeep >= :lastBeep 
+																		ORDER BY ct.charName ASC")
+											->param(':lastBeep', time()-60)
+											->param(':groupID', $this->groupData['groupID'])
+											->param(':chainmap', $this->groupData['active_chain_map'])
+											->execute()
+											->as_array();
 							
 						if( is_array($activesData) && count($activesData) > 0 )
 						{
