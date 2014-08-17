@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 
-require_once APPPATH.'classes/authsystem.php';
+require_once APPPATH.'classes/auth.php';
 
 /**
  * App controller class.
