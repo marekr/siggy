@@ -2052,8 +2052,17 @@ siggymain.prototype.updateChainMaps = function(data)
 			var chainmap = data[i];
 			if( chainmap.chainmap_id == $this.chainMapID )
 			{
-				//li.addClass('active');
-				$('#chain-map-title').html(chainmap.chainmap_name + " &#x25BC;");
+				var extra = '';
+				if(Object.size(data) > 1 )
+				{
+					$('#chain-map-title').removeClass('disabled');
+					extra = " &#x25BC;";
+				}
+				else
+				{
+					$('#chain-map-title').addClass('disabled');
+				}
+				$('#chain-map-title').html(chainmap.chainmap_name + extra);
 			}
 			else
 			{
@@ -2078,6 +2087,8 @@ siggymain.prototype.handleChainMapSelect = function(id)
 	
 	$.post(this.settings.baseUrl + 'chainmap/switch', {chainmap_id: id}, function ()
 	{
+		//clear group cache time or we dont update properly
+		$this.groupCacheTime = 0;
 		$this.forceUpdate = true;
 		$this.updateNow();
 	});
