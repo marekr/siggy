@@ -61,9 +61,6 @@ function siggyMap(options)
 	}
 	
 	//panning stuff
-    
-	
-	
 	this.massSelect = false;
 	this.massSelectBox = null;
 	
