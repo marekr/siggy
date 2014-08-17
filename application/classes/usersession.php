@@ -1,10 +1,8 @@
 <?php
 
-
 class UserSession
 {
 	private $dataStore = array();
-	
 	
 	public $charID = 0;
 	public $charName = "";
