@@ -82,9 +82,10 @@ siggymain.prototype.initialize = function ()
 
 	// Display states cookie
 	var displayStatesCookie = getCookie('display_states');
+	var dispStates = '';
 	if( displayStatesCookie != null )
 	{
-		var dispStates = $.parseJSON(displayStatesCookie);
+		dispStates = $.parseJSON(displayStatesCookie);
 	}
 	this.displayStates = $.extend(this.defaultDisplayStates, dispStates);
 
@@ -1040,8 +1041,8 @@ siggymain.prototype.editSig = function (sigID)
 
 	if( this.settings.showSigSizeCol )
 	{
-			this.sigData[sigID].sigSize = sizeEle.val();
-			postData.sigSize = this.sigData[sigID].sigSize;
+		this.sigData[sigID].sigSize = sizeEle.val();
+		postData.sigSize = this.sigData[sigID].sigSize;
 	}
 
 	var that = this;
@@ -1055,7 +1056,7 @@ siggymain.prototype.editSig = function (sigID)
 	sigEle.remove();
 	if( this.settings.showSigSizeCol )
 	{
-			sizeEle.remove();
+		sizeEle.remove();
 	}
 	typeEle.remove();
 	descEle.remove();
@@ -1117,10 +1118,9 @@ siggymain.prototype.generateSiteSelect = function (whClass, type, siteID)
 	else if (type == "mag") return this.generateSelect(magsLookup[whClass], siteID);
 	else if (type == "grav") return this.generateSelect(gravsLookup, siteID);
 	else if (type == "radar") return this.generateSelect(radarsLookup[whClass], siteID);
-	else return this.generateSelect(
-	{
-		0: '--'
-	}, 0);
+	else return this.generateSelect({
+										0: '--'
+									}, 0);
 }
 
 
@@ -1248,9 +1248,9 @@ siggymain.prototype.setupAddBox = function ()
 			{
 				$this.addSigRow(newSig[i]);
 			}
+
 			$.extend($this.sigData, newSig);
 			$('#sig-table').trigger('update');
-
 		}, 'json');
 
 		massAddBlob.val('');
@@ -1292,8 +1292,6 @@ siggymain.prototype.setupAddBox = function ()
 		return false;
 	});
 
-
-
 	//override potential form memory
 	$('#sig-add-box select[name=type]').val('none');
 
@@ -1310,13 +1308,10 @@ siggymain.prototype.setupAddBox = function ()
 		}
 
 		//idiot proof for ccp
-		if( typeEle.val() == null )
+		var type = 'none';
+		if( typeEle.val() != null )
 		{
-			var type = 'none';
-		}
-		else
-		{
-			var type = typeEle.val();
+			type = typeEle.val();
 		}
 
 		var postData = {
@@ -1356,7 +1351,6 @@ siggymain.prototype.setupAddBox = function ()
 		sigEle.focus();
 
 		return false;
-
 	});
 
 
@@ -1364,18 +1358,14 @@ siggymain.prototype.setupAddBox = function ()
 	{
 		newType = $(this).val();
 
-		//$('#sigAddBox select[name=site]').replaceWith($this.generateSiteSelect($this.systemClass, newType, 0).attr('name', 'site'));
 		$this.updateSiteSelect( '#sig-add-box select[name=site]', $this.systemClass, newType, 0);
-		// $('#sigAddBox select[name=site]').empty();
-	 // $('#sigAddBox select[name=site]').append($this.generateSiteSelect($this.systemClass, newType, 0).attr('name', 'site'));
-		//$('#sigAddBox select[name=site]').focus();
 	}).keypress(this.addBoxEnterHandler);
 
 	if( this.settings.showSigSizeCol )
 	{
-			$('#sig-add-box select[name=size]').keypress(this.addBoxEnterHandler);
+		$('#sig-add-box select[name=size]').keypress(this.addBoxEnterHandler);
 	}
-	//$('#sigAddBox select[name=site]').live('keypress', this.addBoxEnterHandler);
+
 	$( document ).on('keypress', '#sig-add-box select[name=site]', this.addBoxEnterHandler);
 }
 
@@ -1425,10 +1415,10 @@ siggymain.prototype.setupFatalErrorHandler = function()
 			that.fatalError = true;
 		}
 	} );
+
 	$(document).ajaxSuccess( function() {
 		that.ajaxErrors = 0;
 	} );
-
 
 	$('#fatal-error-refresh').click( function() {
 		location.reload(true);
@@ -1437,7 +1427,7 @@ siggymain.prototype.setupFatalErrorHandler = function()
 
 siggymain.prototype.saveSystemOptions = function(systemID, label, activity)
 {
-	var that = this;
+	var $this = this;
 	$.post(that.settings.baseUrl + 'dosaveSystemOptions', {
 		systemID: systemID,
 		label: label,
@@ -1445,10 +1435,10 @@ siggymain.prototype.saveSystemOptions = function(systemID, label, activity)
 	},
 	function (data)
 	{
-		if (that.systemList[systemID])
+		if ($this.systemList[systemID])
 		{
-			that.systemList[systemID].displayName = label;
-			that.systemList[systemID].activity = activity;
+			$this.systemList[systemID].displayName = label;
+			$this.systemList[systemID].activity = activity;
 		}
 
 		$this.forceUpdate = true;
@@ -1458,48 +1448,47 @@ siggymain.prototype.saveSystemOptions = function(systemID, label, activity)
 
 siggymain.prototype.initializeTabs = function()
 {
-	var that = this;
+	var $this = this;
 
-    $('#system-advanced ul.tabs li a').click( function()
+    $('#system-advanced ul.tabs li a').click(function()
     {
-        that.changeTab( $(this).attr('href') );
+        $this.changeTab( $(this).attr('href') );
         return false;
-    } );
+    });
 
     this.changeTab( '#sigs' );
 }
 
 siggymain.prototype.changeTab = function( selectedTab )
 {
-    var that = this;
+    var $this = this;
     $.each( $('#system-advanced ul.tabs li a'), function()
     {
         var href = $(this).attr('href');
 
         if( href == selectedTab )
         {
-            $( this ).parent().addClass('active');
-            $( href ).show();
+            $(this).parent().addClass('active');
+            $(href).show();
         }
         else
         {
-            $( this ).parent().removeClass('active');
-            $( href ).hide();
+            $(this).parent().removeClass('active');
+            $(href).hide();
         }
 
         if( href == "#system-info" )
         {
-			that.renderStats();
+			$this.renderStats();
         }
 
 		setCookie('system-tab', href, 365);
     } );
-
 }
 
 siggymain.prototype.initializeGNotes = function()
 {
-	var that = this;
+	var $this = this;
 
 	$('#settings-button').click(function ()
 	{
@@ -1530,19 +1519,19 @@ siggymain.prototype.initializeGNotes = function()
 		$.unblockUI();
 	});
 
-	this.globalNotesEle = $('#global-notes');
+	$this.globalNotesEle = $('#global-notes');
 	$('#global-notes-button').click(function ()
 	{
-		if ( that.globalNotesEle.is(":visible") )
+		if ( $this.globalNotesEle.is(":visible") )
 		{
-			that.globalNotesEle.hide();
+			$this.globalNotesEle.hide();
 			$('#global-notes-button').html('Notes &#x25BC;');
 		}
 		else
 		{
-			that.globalNotesEle.show();
+			$this.globalNotesEle.show();
 			$('#global-notes-button').html('Notes &#x25B2;');
-			that.stopBlinkingNotes();
+			$this.stopBlinkingNotes();
 		}
 	});
 
@@ -1550,25 +1539,26 @@ siggymain.prototype.initializeGNotes = function()
 	{
 		$(this).hide();
 		$('#global-notes-content').hide();
-		$('#global-notes-edit-box').val(that.globalNotes).show();
+		$('#global-notes-edit-box').val($this.globalNotes).show();
 		$('#global-notes-save').show();
 		$('#global-notes-cancel').show();
 	});
 
 	$('#global-notes-save').click(function ()
 	{
-		that.globalNotes = $('#global-notes-edit-box').val();
+		$this.globalNotes = $('#global-notes-edit-box').val();
+
 		$.post(that.settings.baseUrl + 'siggy/notes_save', {
-			notes: that.globalNotes
+			notes: $this.globalNotes
 		}, function (data)
 		{
-			that.editingGlobalNotes = false;
-			that.lastGlobalNotesUpdate = data;
-			setCookie('notesUpdate', that.lastGlobalNotesUpdate, 365);
-			$('#global-notes-time').text(siggymain.displayTimeStamp(that.lastGlobalNotesUpdate));
+			$this.editingGlobalNotes = false;
+			$this.lastGlobalNotesUpdate = data;
+			setCookie('notesUpdate', $this.lastGlobalNotesUpdate, 365);
+			$('#global-notes-time').text(siggymain.displayTimeStamp($this.lastGlobalNotesUpdate));
 		});
 
-		$('#global-notes-content').html(that.globalNotes.replace(/\n/g, '<br />')).show();
+		$('#global-notes-content').html($this.globalNotes.replace(/\n/g, '<br />')).show();
 		$('#global-notes-edit-box').hide();
 		$('#global-notes-edit').show();
 		$('#global-notes-cancel').hide();
@@ -1578,7 +1568,7 @@ siggymain.prototype.initializeGNotes = function()
 
 	$('#global-notes-cancel').click(function ()
 	{
-		this.editingGlobalNotes = false;
+		$this.editingGlobalNotes = false;
 		$('#thegnotes').show();
 		$('#global-notes-edit-box').hide();
 		$('#global-notes-edit').show();
@@ -1626,7 +1616,6 @@ siggymain.prototype.unfreeze = function()
 
 siggymain.prototype.populateExitData = function(data)
 {
-
 	if( typeof(data.result) != "undefined" )
 	{
 		for(var i in data.result)
@@ -1721,14 +1710,12 @@ siggymain.prototype.initializeDScan = function()
 {
 	var $this = this;
 
-
 	$('#system-intel-add-dscan').click( function() {
 		//$this.openPOSForm();
 		$this.openBox('#dscan-form');
 		$this.setupDScanForm('add');
 		return false;
 	} );
-
 
 	$('#dscan-form button[name=cancel]').click( function() {
 		$.unblockUI();
@@ -1944,13 +1931,13 @@ siggymain.prototype.updatePOSList = function( data )
 
 			var row = $("<tr>").attr('id', 'pos-'+pos_id);
 
-			row.append( $("<td>").text( $this.getPOSStatus(data[i].pos_online) ) );
-			row.append( $("<td>").text( data[i].pos_location_planet + " - " + data[i].pos_location_moon ) );
-			row.append( $("<td>").text( data[i].pos_owner ) );
-			row.append( $("<td>").text( data[i].pos_type_name ) );
-			row.append( $("<td>").text( ucfirst(data[i].pos_size) ) );
-			row.append( $("<td>").text(siggymain.displayTimeStamp(data[i].pos_added_date)) );
-			row.append( $("<td>").text( data[i].pos_notes ) );
+			row.append($("<td>").text( $this.getPOSStatus(data[i].pos_online) ) );
+			row.append($("<td>").text( data[i].pos_location_planet + " - " + data[i].pos_location_moon ) );
+			row.append($("<td>").text( data[i].pos_owner ) );
+			row.append($("<td>").text( data[i].pos_type_name ) );
+			row.append($("<td>").text( ucfirst(data[i].pos_size) ) );
+			row.append($("<td>").text( siggymain.displayTimeStamp(data[i].pos_added_date)));
+			row.append($("<td>").text( data[i].pos_notes ) );
 
 			(function(pos_id){
 				var edit = $("<a>").addClass("btn btn-default btn-xs").text("Edit").click( function() {
@@ -2001,7 +1988,6 @@ siggymain.prototype.updatePOSList = function( data )
 siggymain.prototype.addPOS = function()
 {
 	this.setupPOSForm('add');
-
 }
 
 siggymain.prototype.setupPOSForm = function(mode, posID)
