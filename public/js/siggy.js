@@ -31,10 +31,6 @@ function siggymain( options )
 
 	this.chainMapID = 0;
 
-
-	//collasped sysInfo
-	this.statsOpened = 0;
-
 	//gnotes
 	this.globalNotesEle = null;
 	this._blinkNotesInterval = null;
@@ -56,12 +52,200 @@ function siggymain( options )
 
 	this.settings = $.extend(this.defaults, options);
 
+	this.defaultDisplayStates = {
+		statsOpen: false,
+		sigsAddOpen: true
+	}
+
+	this.displayStates = this.defaultDisplayStates;
+
 	this.systemName = this.settings.initialSystemName;
     this.setSystemID(this.settings.initialSystemID);
 
 	/* POSes */
 	this.poses = {};
 }
+
+
+siggymain.prototype.initialize = function ()
+{
+	var that = this;
+	this.setupFatalErrorHandler();
+
+	$(document).ajaxStart( function() {
+		$(this).show();
+	});
+
+	$(document).ajaxStop( function() {
+		$(this).hide();
+	} );
+
+	// Display states cookie
+	var displayStatesCookie = getCookie('display_states');
+	if( displayStatesCookie != null )
+	{
+		var dispStates = $.parseJSON(displayStatesCookie);
+	}
+	this.displayStates = $.extend(this.defaultDisplayStates, dispStates);
+
+	// Initialize map
+	this.map = new siggyMap(this.settings.map);
+	this.map.baseUrl = this.settings.baseUrl;
+	this.map.siggymain = this;
+	this.map.initialize();
+
+	this.initializeGNotes();
+
+	this.forceUpdate = true;
+	this.update();
+	$(document).trigger('siggy.switchSystem', this.systemID );
+
+	if( this.settings.showSigSizeCol )
+	{
+		var tableSorterHeaders = {
+			0: {
+				sorter: false
+			},
+			5: {
+				sorter: false
+			},
+			7: {
+				sorter: false
+			}
+		};
+	}
+	else
+	{
+		var tableSorterHeaders = {
+			0: {
+				sorter: false
+			},
+			4: {
+				sorter: false
+			},
+			6: {
+				sorter: false
+			}
+		};
+	}
+
+	$('#sig-table').tablesorter(
+	{
+		headers: tableSorterHeaders
+	});
+
+	$('#sig-table').bind('sortEnd', function() {
+		that.colorizeSigRows();
+	});
+
+	this.setupAddBox();
+
+	$('#system-options-save').click(function ()
+	{
+		var label = $('#system-options input[name=label]').val();
+		var activity = $('#system-options select[name=activity]').val();
+
+		that.saveSystemOptions(that.systemID, label, activity);
+	});
+
+	$('#system-options-reset').click(function ()
+	{
+		$('#system-options input[name=label]').val('');
+		$('#system-options select[name=activity]').val(0);
+
+		$.post(that.settings.baseUrl + 'dosaveSystemOptions', {
+			systemID: that.systemID,
+			label: '',
+			inUse: 0,
+			activity: 0
+		}, function (data)
+		{
+			if (that.systemList[that.systemID])
+			{
+				that.systemList[that.systemID].displayName = '';
+				that.systemList[that.systemID].inUse = 0;
+				that.systemList[that.systemID].activity = 0;
+			}
+		});
+	});
+
+	$('#bear-C1').click(function() { that.setBearTab(1); return false; });
+	$('#bear-C2').click(function() { that.setBearTab(2); return false; });
+	$('#bear-C3').click(function() { that.setBearTab(3); return false; });
+	$('#bear-C4').click(function() { that.setBearTab(4); return false; });
+	$('#bear-C5').click(function() { that.setBearTab(5); return false; });
+	$('#bear-C6').click(function() { that.setBearTab(6); return false; });
+
+	this.initializeCollaspibles();
+	this.initializeTabs();
+
+	this.initializeDScan();
+	this.initializePOSes();
+
+	this.initializeExitFinder();
+}
+
+siggymain.prototype.initializeCollaspibles = function()
+{
+	var $this = this;
+	var systemStatsContent = $('#system-stats > div');
+	var sigAddContent = $('#sig-add-box > div');
+
+	if( $this.displayStates.statsOpen )
+	{
+		systemStatsContent.show();
+	}
+	else
+	{
+		systemStatsContent.hide();
+	}
+
+	if( $this.displayStates.sigsAddOpen )
+	{
+		sigAddContent.show();
+	}
+	else
+	{
+		sigAddContent.hide();
+	}
+
+	$('#system-stats h2').click( function() {
+		if( systemStatsContent.is(":visible") )
+		{
+			systemStatsContent.hide();
+			$this.displayStates.statsOpen = false;
+			$this.saveDisplayState();
+		}
+		else
+		{
+			systemStatsContent.show();
+			$this.renderStats();
+			$this.displayStates.statsOpen = true;
+			$this.saveDisplayState();
+		}
+	});
+
+	$('#sig-add-box h2').click( function() {
+		if( sigAddContent.is(":visible") )
+		{
+			sigAddContent.hide();
+			$this.displayStates.sigsAddOpen = false;
+			$this.saveDisplayState();
+		}
+		else
+		{
+			sigAddContent.show();
+			$this.displayStates.sigsAddOpen = true;
+			$this.saveDisplayState();
+		}
+	});
+}
+
+siggymain.prototype.saveDisplayState = function()
+{
+	setCookie('display_states', JSON.stringify(this.displayStates), 365);
+}
+
 
 siggymain.prototype.getCurrentTime = function ()
 {
@@ -1249,142 +1433,6 @@ siggymain.prototype.setupFatalErrorHandler = function()
 	$('#fatal-error-refresh').click( function() {
 		location.reload(true);
 	} );
-}
-
-siggymain.prototype.initialize = function ()
-{
-	var that = this;
-	this.setupFatalErrorHandler();
-
-	$(document).ajaxStart( function() {
-		$(this).show();
-	});
-
-	$(document).ajaxStop( function() {
-		$(this).hide();
-	} );
-
-
-	if( getCookie('system_stats_open') != null )
-	{
-		this.statsOpened = parseInt( getCookie('system_stats_open') );
-	}
-
-	this.map = new siggyMap(this.settings.map);
-	this.map.baseUrl = this.settings.baseUrl;
-	this.map.siggymain = this;
-	this.map.initialize();
-
-	this.initializeGNotes();
-
-	this.forceUpdate = true;
-	this.update();
-	$(document).trigger('siggy.switchSystem', this.systemID );
-
-	if( this.settings.showSigSizeCol )
-	{
-		var tableSorterHeaders = {
-			0: {
-				sorter: false
-			},
-			5: {
-				sorter: false
-			},
-			7: {
-				sorter: false
-			}
-		};
-	}
-	else
-	{
-		var tableSorterHeaders = {
-			0: {
-				sorter: false
-			},
-			4: {
-				sorter: false
-			},
-			6: {
-				sorter: false
-			}
-		};
-	}
-
-	$('#sig-table').tablesorter(
-	{
-		headers: tableSorterHeaders
-	});
-
-	$('#sig-table').bind('sortEnd', function() {
-		that.colorizeSigRows();
-	});
-
-
-	this.setupAddBox();
-
-	$('#system-options-save').click(function ()
-	{
-		var label = $('#system-options input[name=label]').val();
-		var activity = $('#system-options select[name=activity]').val();
-
-		that.saveSystemOptions(that.systemID, label, activity);
-	});
-
-
-
-	$('#system-options-reset').click(function ()
-	{
-		$('#system-options input[name=label]').val('');
-		$('#system-options select[name=activity]').val(0);
-
-		$.post(that.settings.baseUrl + 'dosaveSystemOptions', {
-			systemID: that.systemID,
-			label: '',
-			inUse: 0,
-			activity: 0
-		}, function (data)
-		{
-			if (that.systemList[that.systemID])
-			{
-				that.systemList[that.systemID].displayName = '';
-				that.systemList[that.systemID].inUse = 0;
-				that.systemList[that.systemID].activity = 0;
-			}
-		});
-	});
-
-	$('#bear-C1').click(function () { that.setBearTab(1); return false; });
-	$('#bear-C2').click(function () { that.setBearTab(2); return false; });
-	$('#bear-C3').click(function () { that.setBearTab(3); return false; });
-	$('#bear-C4').click(function () { that.setBearTab(4); return false; });
-	$('#bear-C5').click(function () { that.setBearTab(5); return false; });
-	$('#bear-C6').click(function () { that.setBearTab(6); return false; });
-
-    $('#system-stats h2').click( function() {
-		var content = $('#system-stats > div');
-		if( content.is(":visible") )
-		{
-			content.hide();
-			that.statsOpened = 0;
-			setCookie('system_stats_open', 0, 365);
-		}
-		else
-		{
-			content.show();
-			that.renderStats();
-			that.statsOpened = 1;
-			setCookie('system_stats_open', 1 , 365);
-		}
-	});
-
-
-	this.initializeTabs();
-
-
-	this.initializeDScan();
-	this.initializePOSes();
-
-	this.initializeExitFinder();
 }
 
 siggymain.prototype.saveSystemOptions = function(systemID, label, activity)

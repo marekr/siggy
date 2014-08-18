@@ -8,9 +8,8 @@
 	<br />
 	<br />
 	<?php endif; ?>
-	
 	<?php echo $chainMap; ?>
-		
+
 	<br />
     <div class="bordered-wrap">
         <div id="system-advanced">
@@ -50,7 +49,7 @@
                     </table>
                 </div>
             </div>
-			
+
             <div id="dscan-box" class="sub-display-group">
                 <h2>DScan</h2>
                 <div>
@@ -69,7 +68,7 @@
                     </table>
                 </div>
             </div>
-			<!---
+			<!--
             <div id="system-notes-box" class="sub-display-group">
                 <h2>Notes</h2>
                 <div>
@@ -77,10 +76,9 @@
                     THIS SYSTEM SUCKS, WTB PORN
                 </div>
             </div>
-			--->
-            
+			-->
         </div>
-      
+
         <div id="system-info" class="tab clear-fix">
             <table id="system-table" cellspacing="1" class='siggy-table'>
                 <tr>
@@ -96,17 +94,16 @@
                     <td class="content" id="constellation"></td>
                 </tr>
             </table>
-            
             <!-- carebear box -->
             <div id="carebear-box" class="sub-display-group">
                 <h2>Carebearing</h2>
                 <div>
                     <div id="bear-class-links">
-                        <a href='#' id='bear-C1'>C1</a> | 
-                        <a href='#' id='bear-C2'>C2</a> |  
-                        <a href='#' id='bear-C3'>C3</a> |  
-                        <a href='#' id='bear-C4'>C4</a> |  
-                        <a href='#' id='bear-C5'>C5</a> |  
+                        <a href='#' id='bear-C1'>C1</a> |
+                        <a href='#' id='bear-C2'>C2</a> |
+                        <a href='#' id='bear-C3'>C3</a> |
+                        <a href='#' id='bear-C4'>C4</a> |
+                        <a href='#' id='bear-C5'>C5</a> |
                         <a href='#' id='bear-C6'>C6</a>
                     </div>
                     <br />
@@ -162,7 +159,7 @@
                             <a href='http://eve-survival.org/wikka.php?wakka=FrontierCommandPost' target='_blank'>Frontier Command Post</a><br />
                             <a href='http://eve-survival.org/wikka.php?wakka=IntegratedTerminus' target='_blank'>Integrated Terminus</a><br />
                             <a href='http://eve-survival.org/wikka.php?wakka=SleeperInformationSanctum' target='_blank'>Sleeper Information Sanctum</a><br />
-                            
+
                             <h3>Magnetometric</h3>
                             <a href='http://eve-survival.org/wikka.php?wakka=ForgottenFrontierConversionModule' target='_blank'>Forgotten Frontier Conversion Module</a><br />
                             <a href='http://eve-survival.org/wikka.php?wakka=ForgottenFrontierEvacuationCenter' target='_blank'>Forgotten Frontier Evacuation Center</a><br />
@@ -205,7 +202,7 @@
                     <br />
                     <p>* All links open a new tab to eve-survival</p>
                 </div>
-            </div>  
+            </div>
             <!-- carebear box -->
         </div>
         <div id="system-options" class="tab">
@@ -234,8 +231,6 @@
                 </tr>
             </table>
         </div>
-    
-    
         <div id="sigs">
             <table id="system-table" cellspacing="1" class='siggy-table'>
                 <tr>
@@ -255,12 +250,10 @@
                     <td class="content" id="pos-summary" colspan="3"></td>
                 </tr>
             </table>
-            
-            
-            <!---start stats--->
+            <!-- start stats -->
             <div id='system-stats' class="sub-display-group">
                 <h2 class="hover">Statistics</h2>
-                <div <?php echo( !$statsOpen ? "style='display:none;'" : "" ); ?>>
+                <div>
                     <div class="system-stats-graph">
                         <h4>Jumps</h4>
                         <div id='jumps'></div>
@@ -276,15 +269,18 @@
                     <div>
                         <div class='system-stats-legend-box system-stats-legend-siggy'></div>
                         <span>siggy</span>
-                        
+
                         <div class='system-stats-legend-box system-stats-legend-api'></div>
                         <span>API</span>
                     </div>
                 </div>
             </div>
-            <!--- end stats -->
+            <!-- end stats -->
             <div id="sig-add-box" class="sub-display-group">
-                <h2>Sigs</h2>
+                <h2>
+					<p style="display:inline-block">Signature Adder</p>
+					<input style="display:inline-block;width: 400px" placeholder="Paste scan results here" type='text' />
+				</h2>
                 <div>
                     <a href="#" id="mass-add-sigs" class="btn btn-xs btn-default">Mass Sig Reader</a>
                     <div class="clear"></div>
@@ -337,7 +333,7 @@
                 </div>
             </div>
             <table id="sig-table" cellspacing="1" class="siggy-table tablesorter">
-                <thead> 
+                <thead>
                     <tr>
                         <th width="2%">&nbsp;</th>
                         <th width="5%">Sig</th>
@@ -360,8 +356,7 @@
         </div>
     </div>
     <br />
-    
-    <!-- mass add box start -->    
+    <!-- mass add box start -->
     <div id="pos-form" class="box" style="display:none;">
         <h3>Add POS</h3>
         <div>
@@ -420,8 +415,8 @@
             </form>
         </div>
     </div>
-  
-    
+
+
     <div id="mass-add-sig-box" class="box">
         <h3>Mass Sig Reader</h3>
         <div>
@@ -435,8 +430,8 @@
             </form>
         </div>
     </div>
-	
-	
+
+
     <div id="dscan-form" class="box" style="display:none;">
         <h3>DScan Results</h3>
         <div>
@@ -457,7 +452,7 @@
             </form>
         </div>
     </div>
-	
+
     <div id="exit-finder" class="box" style="display:none;">
         <h3>Exit Finder</h3>
         <div>
@@ -487,8 +482,8 @@
             </form>
         </div>
     </div>
-	
-	
+
+
     <div id="confirm-dialog" class="box" style="display:none;">
         <h3>Confirm action!</h3>
         <div>
@@ -499,7 +494,7 @@
 			</p>
         </div>
     </div>
-  
+
     <div id="fatal-error" class="box" style="display:none;">
         <h3>Fatal error has ocurred</h3>
         <div>
@@ -509,9 +504,9 @@
             <p style='text-align:center'>
                 <button id="fatal-error-refresh" class="btn btn-default">Refresh</button>
             </p>
-        </div>      
-    </div>  	
-    
+        </div>
+    </div>
+
     <!--- system context menu -->
     <ul id="system-simple-context" class="contextMenu">
         <li class="setdest">
@@ -522,7 +517,7 @@
         </li>
     </ul>
     <script type='text/javascript'>
-        $(document).ready(function() { 
+        $(document).ready(function() {
 
             var options = {
                 baseUrl: '<?php echo URL::base(TRUE, TRUE);?>',
@@ -547,5 +542,5 @@
 
 
 
-        } );         
+        } );
     </script>
