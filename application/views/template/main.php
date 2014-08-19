@@ -5,15 +5,12 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <?php if( Kohana::$environment == Kohana::DEVELOPMENT ): ?>
-	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>theme.php?id=<?php echo $settings['theme_id']; ?>" rel="stylesheet" media="screen" /> 
+	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>theme.php?id=<?php echo $settings['theme_id']; ?>" rel="stylesheet" media="screen" />
     <?php else: ?>
-	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>theme.php?id=<?php echo $settings['theme_id']; ?>" rel="stylesheet" media="screen" /> 
+	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>theme.php?id=<?php echo $settings['theme_id']; ?>" rel="stylesheet" media="screen" />
     <?php endif; ?>
     <link href="<?php echo URL::base(TRUE, TRUE);?>public/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet">
     
-	<?php if( isset($_GET['nyan']) ): ?>
-	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>public/css/rengas.css?28" rel="stylesheet" media="screen" /> 
-	<?php endif; ?>
     <?php if( Kohana::$environment == Kohana::DEVELOPMENT ): ?>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery-1.10.1.min.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery-ui-1.10.3.min.js'></script>
@@ -25,8 +22,8 @@
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery.flot.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery.contextMenu.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery.qtip.js'></script>
-    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery.jsPlumb-1.5.5-min.js'></script> 
-    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/dropdown.js'></script> 
+    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery.jsPlumb-1.5.5-min.js'></script>
+    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/dropdown.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.helpers.js?<?php echo time(); ?>'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.static.js?<?php echo time(); ?>'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.js?<?php echo time(); ?>'></script>
@@ -50,7 +47,7 @@
 					<img src="https://image.eveonline.com/Character/<?php echo $charID; ?>_64.jpg" height="32px"/>
 					<p class="name"><?php echo $charName; ?> <?php if( $apilogin ): ?>[<a href='<?php echo URL::base(TRUE, TRUE);?>account/logout'>Logout</a>]<?php endif;?>
 					<br />
-					<?php if( count( $group['access_groups']) > 1  ):?>							
+					<?php if( count( $group['access_groups']) > 1  ):?>
 						<div class="dropdown" style="display:inline-block;">
 								<a data-toggle="dropdown" href="#">
 									<?php echo $group['groupName']; ?>&nbsp;&nbsp;&nbsp;<span style='font-style:normal;font-weight:bold;'>&#x25BC;</span>
@@ -112,7 +109,7 @@
 					<?php endif; ?>
 					</p>
 				</div>
-			</div>    
+			</div>
 		</div>
 	</body>
 </html>
