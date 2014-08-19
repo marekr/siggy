@@ -277,9 +277,9 @@
             </div>
             <!-- end stats -->
             <div id="sig-add-box" class="sub-display-group">
-                <h2>
+                <h2 class="hover">
 					<p style="display:inline-block">Signature Adder</p>
-					<input style="display:inline-block;width: 400px" placeholder="Paste scan results here" type='text' />
+					<input name='mass_sigs' style="display:inline-block;width: 400px;margin-left:10px" placeholder=" Paste scan results here " type='text' />
 				</h2>
                 <div>
                     <a href="#" id="mass-add-sigs" class="btn btn-xs btn-default">Mass Sig Reader</a>

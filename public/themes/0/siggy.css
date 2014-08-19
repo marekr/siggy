@@ -153,7 +153,7 @@ table.tablesorter thead tr .headerSortDown {
 	background-image: url(public/images/desc.gif) !important;
 	background-repeat: no-repeat;
 	background-position: right center;
-}      
+}
 
 
 
@@ -257,7 +257,7 @@ a {
 }
 
 #update-time
-{    
+{
 	position: absolute;
 	right: 12px;
 	top: 7px;
@@ -383,6 +383,7 @@ label.no {
 .sub-display-group h2.hover:hover
 {
 	background-color: #A27C2B;
+	cursor:pointer;
 }
 
 .sub-display-group
@@ -401,11 +402,6 @@ label.no {
 {
     text-align:center;
     border-bottom:1px dashed #9C9C9C;
-}
-
-#system-stats h2
-{
-    cursor: pointer;
 }
 
 .system-stats-graph
@@ -483,11 +479,11 @@ label.no {
 	display:none;
 	background: @primary-background;
 	border: 1px solid #000;
-	
+
 	position:absolute;
 	top: 0;
 	left: 0;
-	
+
 	z-index: 99999;
 }
 
