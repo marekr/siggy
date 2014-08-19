@@ -1230,6 +1230,27 @@ siggymain.prototype.colorizeSigRows = function()
 	});
 }
 
+siggymain.prototype.massAddHandler = function(systemID, data)
+{
+	var $this = this;
+
+	var postData = {
+		systemID: systemID,
+		blob: data
+	};
+
+	$.post( $this.settings.baseUrl + 'domassSigs', postData, function (newSig)
+	{
+		for (var i in newSig)
+		{
+			$this.addSigRow(newSig[i]);
+		}
+
+		$.extend($this.sigData, newSig);
+		$('#sig-table').trigger('update');
+	}, 'json');
+}
+
 siggymain.prototype.setupAddBox = function ()
 {
 	var $this = this;
@@ -1237,24 +1258,8 @@ siggymain.prototype.setupAddBox = function ()
 	massAddBlob.val('');
 	$('#mass-add-sig-box button[name=add]').click( function()
 	{
-		var postData = {
-			systemID: $this.systemID,
-			blob: massAddBlob.val()
-		};
-
-		$.post( $this.settings.baseUrl + 'domassSigs', postData, function (newSig)
-		{
-			for (var i in newSig)
-			{
-				$this.addSigRow(newSig[i]);
-			}
-
-			$.extend($this.sigData, newSig);
-			$('#sig-table').trigger('update');
-		}, 'json');
-
+		$this.massAddHandler($this.systemID,massAddBlob.val());
 		massAddBlob.val('');
-
 
 		$.unblockUI();
 		return false;
@@ -1294,6 +1299,22 @@ siggymain.prototype.setupAddBox = function ()
 
 	//override potential form memory
 	$('#sig-add-box select[name=type]').val('none');
+
+
+	var massSigEnter = function(e)
+	{
+		//enter key
+		if(e.which == 13)
+		{
+			$this.massAddHandler($this.systemID,$('#sig-add-box input[name=mass_sigs]').val());
+		}
+	}
+
+	$( document ).on('keypress', '#sig-add-box input[name=mass_sigs]', massSigEnter);
+	$('#sig-add-box input[name=mass_sigs]').click(function() {
+		//need this to fix event bubble on the collaspible
+		return false;
+	});
 
 	$('#sig-add-box form').submit(function ()
 	{
