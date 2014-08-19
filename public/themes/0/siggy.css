@@ -389,6 +389,7 @@ label.no {
 .sub-display-group
 {
     background-color: @primary-background;
+	border-bottom:1px dashed #9C9C9C;
 }
 
 .sub-display-group > div
@@ -401,7 +402,6 @@ label.no {
 #system-stats
 {
     text-align:center;
-    border-bottom:1px dashed #9C9C9C;
 }
 
 .system-stats-graph
