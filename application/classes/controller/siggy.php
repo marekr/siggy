@@ -98,7 +98,6 @@ class Controller_Siggy extends FrontController
 
         $charID = $this->groupData['charID'];
 
-
         if( !empty($charID) )
         {
             $themeID = intval($_POST['theme_id']);
@@ -267,85 +266,6 @@ class Controller_Siggy extends FrontController
 
         return $dscans;
     }
-
-	public function action_loadScanProfiles()
-	{
-		if(	 !$this->siggyAccessGranted() )
-		{
-			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
-			exit();
-		}
-
-		$profiles = array();
-		if( isset( $this->groupData['charID'] ) )
-		{
-			$profiles = DB::query(Database::SELECT, "SELECT * FROM scanprofiles WHERE charID=:charID")
-											->param(':charID',  $this->groupData['charID'])
-											->execute()
-											->as_array('profileID');
-
-		}
-		else
-		{
-			$profiles['error'] = 'No char ID';
-		}
-
-		echo json_encode($profiles);
-		die();
-	}
-
-	public function action_tweakScanProfile()
-	{
-		if(	 !$this->siggyAccessGranted() )
-		{
-			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
-			exit();
-		}
-
-		$mode = $_POST['mode'];
-		if( !empty( $this->groupData['charID'] ) )
-		{
-			$update['profileName'] = strip_tags($_POST['profileName']);
-			$update['covertOps'] = intval($_POST['covertOps']);
-			$update['rangeFinding'] = intval($_POST['rangeFinding']);
-			$update['rigs'] = intval($_POST['rigs']);
-			$update['prospector'] = intval($_POST['prospector']);
-			$update['sistersLauncher'] = intval($_POST['sistersLauncher']);
-			$update['sistersProbes'] = intval($_POST['sistersProbes']);
-			$update['preferred'] = intval($_POST['preferred']);
-			$update['charID'] = $this->groupData['charID'];
-
-			if( $update['preferred'] )
-			{
-				DB::update('scanprofiles')->set( array('preferred' => 0) )->where('charID', '=',  $this->groupData['charID'])->execute();
-			}
-
-			if( $mode == 'edit' )
-			{
-				$id = intval($_POST['profileID']);
-
-				DB::update('scanprofiles')->set( $update )->where('profileID', '=', $id)->execute();
-				$update['profileID'] = $id;
-			}
-			else
-			{
-				$ins = DB::insert('scanprofiles', array_keys($update) )->values(array_values($update))->execute();
-				$update['profileID'] = $ins[0];
-			}
-			unset($update['charID']);
-			echo json_encode( $update );
-			die();
-		}
-	}
-
-	public function action_deleteScanProfile()
-	{
-		if( !empty( $this->groupData['charID']) )
-		{
-			$id = intval($_POST['profileID']);
-			DB::delete('scanprofiles')->where('profileID', '=', $id)->where('charID','=',  $this->groupData['charID'] )->execute();
-		}
-	}
 
 	private function isWormholeSystemByName($name)
 	{
