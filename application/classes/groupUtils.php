@@ -11,28 +11,28 @@ final class groupUtils
 						);
 		DB::insert('logs', array_keys($insert) )->values(array_values($insert))->execute();
 	}
-	
+
 	static function getCharacterUsageCount( $group_id )
 	{
 		$num_corps = DB::query(Database::SELECT, "SELECT SUM(DISTINCT c.memberCount) as total FROM groupmembers gm
 										LEFT JOIN corporations c ON(gm.eveID = c.corporationID)
 										WHERE gm.groupID=:group AND gm.memberType='corp'")
 										->param(':group', $group_id)->execute()->current();
-										
+
 		$num_corps = $num_corps['total'];
-		
+
 		$num_chars = DB::query(Database::SELECT, "SELECT COUNT(DISTINCT eveID) as total FROM groupmembers
 										WHERE groupID=:group AND memberType ='char' ")
 										->param(':group', $group_id)->execute()->current();
 		$num_chars = $num_chars['total'];
-		
+
 		return ($num_corps + $num_chars);
 	}
-	
+
 	static function createNewGroup($data)
 	{
 		$home_sys_data = self::parseHomeSystems($data['homeSystems']);
-		
+
 		$salt = miscUtils::generateSalt(10);
 		$password = "";
 		if( $data['groupPassword'] != "" && $data['authMode'] == 1 )
@@ -54,19 +54,19 @@ final class groupUtils
 							'billable' => 1
 						);
 		$result = DB::insert('groups', array_keys($insert) )->values( array_values($insert) )->execute();
-		
+
 		return $result[0];
 	}
-	
+
 	static function hashGroupPassword( $password, $salt )
 	{
 		return sha1($password . $salt);
 	}
-	
+
 	static function parseHomeSystems( $home_systems )
 	{
 		$return = array();
-	
+
 		$home_systems = trim($home_systems);
 		if( !empty($home_systems) )
 		{
@@ -101,11 +101,11 @@ final class groupUtils
 		{
 			$return['homeSystems'] = '';
 			$return['homeSystemIDs'] = '';
-		}	
-		
-		return $return;	
+		}
+
+		return $return;
 	}
-	
+
 	static function applyISKCharge($group_id, $amount)
 	{
 		DB::update('groups')->set( array( 'iskBalance' => DB::expr('iskBalance - :amount') ) )->param(':amount', $amount)->where('groupID', '=',  $group_id)->execute();
@@ -129,8 +129,8 @@ final class groupUtils
 								->param(':group', $id)
 								->execute()
 								->current();
-								
-		
+
+
 		$group['members'] = DB::query(Database::SELECT, "SELECT * FROM groupmembers WHERE groupID = :group")
 								->param(':group', $id)
 								->execute()
@@ -141,23 +141,23 @@ final class groupUtils
 			$chainmaps = DB::query(Database::SELECT, "SELECT * FROM chainmaps WHERE group_id = :group")
 								->param(':group', $id)
 								->execute()
-								->as_array();
+								->as_array('chainmap_id');
 
 			foreach($chainmaps as &$c)
 			{
-				$members = DB::query(Database::SELECT, "SELECT gm.memberType, gm.eveID FROM groupmembers gm 
+				$members = DB::query(Database::SELECT, "SELECT gm.memberType, gm.eveID FROM groupmembers gm
 													LEFT JOIN chainmaps_access a ON(gm.id=a.groupmember_id) WHERE chainmap_id=:chainmap")
 							->param(':chainmap', $c['chainmap_id'])
 							->execute()
 							->as_array();
 				$c['access'] = $members;
 			}
-			
+
 			$group['chainmaps'] = $chainmaps;
-			
+
 			$group['cache_time'] = time();
-		
-			$cache->set('group-'.$group['groupID'], $group);         
+
+			$cache->set('group-'.$group['groupID'], $group);
 			return $group;
 		}
 		else
@@ -176,14 +176,14 @@ final class groupUtils
 
 		$cache = Cache::instance( CACHE_METHOD );
 
-		$corp_memberships = DB::query(Database::SELECT, "SELECT g.*,gr.groupName, gr.groupTicker 
-														FROM groupmembers g 
+		$corp_memberships = DB::query(Database::SELECT, "SELECT g.*,gr.groupName, gr.groupTicker
+														FROM groupmembers g
 														LEFT JOIN groups as gr ON(g.groupID=gr.groupID)
 														WHERE g.memberType='corp' AND g.eveID= :id")
 										->param(':id', $id)
 										->execute()
 										->as_array();
-										
+
 		if( count($corp_memberships) > 0 )
 		{
 			$corp = array();
@@ -198,9 +198,9 @@ final class groupUtils
 															 'group_name' => $cm['groupName']
 															 );
 			}
-			
-			$cache->set('corp-'.$corp['eveID'], $corp);    
-				 
+
+			$cache->set('corp-'.$corp['eveID'], $corp);
+
 			return $corp;
 		}
 		else
@@ -210,7 +210,7 @@ final class groupUtils
 	}
 
 	static function recacheChar( $id )
-	{		
+	{
 		$id = intval($id);
 		if( !$id )
 		{
@@ -218,12 +218,12 @@ final class groupUtils
 		}
 
 		$cache = Cache::instance( CACHE_METHOD );
-		$char_memberships = DB::query(Database::SELECT, "SELECT g.*,gr.groupName, gr.groupTicker FROM groupmembers g 
-													LEFT JOIN groups as gr ON(g.groupID=gr.groupID) 
+		$char_memberships = DB::query(Database::SELECT, "SELECT g.*,gr.groupName, gr.groupTicker FROM groupmembers g
+													LEFT JOIN groups as gr ON(g.groupID=gr.groupID)
 													WHERE g.memberType='char' AND g.eveID= :id")
 										->param(':id', $id)
-										->execute()->as_array();  
-				  
+										->execute()->as_array();
+
 		if( count($char_memberships) > 0 )
 		{
 			$char = array();
@@ -237,9 +237,9 @@ final class groupUtils
 															 'group_name' => $cm['groupName']
 															 );
 			}
-			
+
 			$cache->set('char-'.$char['eveID'], $char);
-				 
+
 			return $char;
 		}
 		else
@@ -251,10 +251,10 @@ final class groupUtils
 	static function deleteCorpCache($id)
 	{
 		$cache = Cache::instance( CACHE_METHOD );
-		
+
 		$cache->delete('corp-'.$id);
 	}
-   
+
 	static function deleteCharCache($id)
 	{
 		$cache = Cache::instance( CACHE_METHOD );
@@ -268,9 +268,9 @@ final class groupUtils
 		{
 			return FALSE;
 		}
-		
+
 		$cache = Cache::instance(CACHE_METHOD);
-		
+
 		$corp_data = $cache->get('corp-'.$corpID);
 		$corp_data = null;
 		if( $corp_data != null )
@@ -289,16 +289,16 @@ final class groupUtils
 		{
 				return FALSE;
 		}
-		
+
 		$cache = Cache::instance(CACHE_METHOD);
 		$group_data = $cache->get('group-'.$group_id);
-		
+
 		$groupData = null;
 		if( $group_data == null )
 		{
 			return self::recacheGroup($group_id);
 		}
-		
+
 		return $group_data;
 	}
 
@@ -308,11 +308,11 @@ final class groupUtils
 		{
 			return FALSE;
 		}
-		
+
 		$cache = Cache::instance( CACHE_METHOD );
-		
+
 		$charData = $cache->get('char-'.$char_id);
-		
+
 		if( $charData != null )
 		{
 			return $charData;
@@ -322,7 +322,7 @@ final class groupUtils
 			return self::recacheChar($char_id);
 		}
 	}
-	
+
 	static function update_group($group_id, $update = array())
 	{
 		$update['last_update'] = time();
