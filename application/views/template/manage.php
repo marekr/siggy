@@ -103,9 +103,6 @@
 							<li>
 								<?php echo Html::anchor('manage/group/members', __('Group Members')); ?>
 							</li>
-							<li>
-								<?php echo Html::anchor('manage/group/subgroups', __('Subgroups')); ?>
-							</li>
 							<?php endif; ?>
 							<?php if( Auth::$user->data['admin'] || $perms['can_manage_access'] ): ?>
 							<li>
