@@ -440,7 +440,6 @@ var whLookup = {
 		8: "I182 (to C2)",
 		9: "N968 (to C3)",
 		10: "T405 (to C4)",
-		24: "M131 (to C4)",
 		11: "N770 (to C5)",
 		12: "A982 (to C6)",
 		13: "K346 (to Nullsec)",
@@ -490,7 +489,6 @@ var whLookup = {
 		7: "Y790 (to C1)",
 		8: "D364 (to C2)",
 		9: "M267 (to C3)",
-		23: "Z380 (to C3)",
 		10: "E175 (to C4)",
 		11: "H296 (to C5)",
 		12: "V753 (to C6)",
@@ -588,173 +586,184 @@ var whLookup = {
 
 var blackHoleEffects = {
 	1: [
-		['Lock range', '-10%'],
-		['Inertia', '+25%'],
-		['Falloff', '-10%'],
-		['Missile Velocity', '-10%'],
-		['Ship Velocity', '+25%'],
-		['Drone control Range', '-10%']
+		['Missile Velocity', '+15%'],
+		['Missile Explosion Velocity', '+30%'],
+		['Ship Velocity', '+30%'],
+		['Statis Webifier Strength', '-15%'],
+		['Inertia', '+15%'],
+		['Lock range', '+30%']
 	],
 	2: [
-		['Lock range', '-19%'],
-		['Inertia', '+44%'],
-		['Falloff', '-19%'],
-		['Missile Velocity', '-19%'],
+		['Missile Velocity', '+22%'],
+		['Missile Explosion Velocity', '+44%'],
 		['Ship Velocity', '+44%'],
-		['Drone control Range', '-19%']
+		['Statis Webifier Strength', '-22%'],
+		['Inertia', '+22%'],
+		['Lock range', '+44%']
 	],
 	3: [
-		['Lock range', '-27%'],
-		['Inertia', '+55%'],
-		['Falloff', '-27%'],
-		['Missile Velocity', '-27%'],
-		['Ship Velocity', '+55%'],
-		['Drone control Range', '-27%']
+		['Missile Velocity', '+29%'],
+		['Missile Explosion Velocity', '+58%'],
+		['Ship Velocity', '+58%'],
+		['Statis Webifier Strength', '-29%'],
+		['Inertia', '+29%'],
+		['Lock range', '+58%']
 	],
 	4: [
-		['Lock range', '-34%'],
-		['Inertia', '+68%'],
-		['Falloff', '-34%'],
-		['Missile Velocity', '-34%'],
-		['Ship Velocity', '+68%'],
-		['Drone control Range', '-34%']
+		['Missile Velocity', '+36%'],
+		['Missile Explosion Velocity', '+72%'],
+		['Ship Velocity', '+72%'],
+		['Statis Webifier Strength', '-36%'],
+		['Inertia', '+36%'],
+		['Lock range', '+72%']
 	], 
 	5: [
-		['Lock range', '-41%'],
-		['Inertia', '+85%'],
-		['Falloff', '-41%'],
-		['Missile Velocity', '-41%'],
-		['Ship Velocity', '+85%'],
-		['Drone control Range', '-41%']
+		['Missile Velocity', '+43%'],
+		['Missile Explosion Velocity', '+86%'],
+		['Ship Velocity', '+86%'],
+		['Statis Webifier Strength', '-43%'],
+		['Inertia', '+43%'],
+		['Lock range', '+86%']
 	],
 	6: [
-		['Lock range', '-50%'],
-		['Inertia', '+100%'],
-		['Falloff', '-50%'],
-		['Missile Velocity', '-50%'],
+		['Missile Velocity', '+50%'],
+		['Missile Explosion Velocity', '+100%'],
 		['Ship Velocity', '+100%'],
-		['Drone control Range', '-50%']
+		['Statis Webifier Strength', '-50%'],
+		['Inertia', '+50%'],
+		['Lock range', '+100%']
 	]
 };
 
 var wolfRayetEffects = {
 	1: [
-		['Armor HP', '+25%'],
-		['Shield Resists', '-10%'],
-		['Small Weapon Damage', '+25%'],
-		['Signature Size', '-10%']
+		['Armor HP', '+30%'],
+		['Shield Resists', '-15%'],
+		['Small Weapon Damage', '+60%'],
+		['Signature Size', '-15%']
 	],
 	2: [
 		['Armor HP', '+44%'],
-		['Shield Resists', '-18%'],
-		['Small Weapon Damage', '+44%'],
-		['Signature Size', '-19%']
+		['Shield Resists', '-22%'],
+		['Small Weapon Damage', '+88%'],
+		['Signature Size', '-22%']
 	],
 	3: [
 		['Armor HP', '+58%'],
-		['Shield Resists', '-22%'],
-		['Small Weapon Damage', '+55%'],
-		['Signature Size', '-27%']
+		['Shield Resists', '-29%'],
+		['Small Weapon Damage', '+116%'],
+		['Signature Size', '-29%']
 	],
 	4: [
-		['Armor HP', '+68%'],
-		['Shield Resists', '-27%'],
-		['Small Weapon Damage', '+68%'],
-		['Signature Size', '-34%']
+		['Armor HP', '+72%'],
+		['Shield Resists', '-36%'],
+		['Small Weapon Damage', '+144%'],
+		['Signature Size', '-36%']
 	], 
 	5: [
-		['Armor HP', '+85%'],
-		['Shield Resists', '-34%'],
-		['Small Weapon Damage', '+85%'],
-		['Signature Size', '-44%']
+		['Armor HP', '+86%'],
+		['Shield Resists', '-43%'],
+		['Small Weapon Damage', '+172%'],
+		['Signature Size', '-43%']
 	],
 	6: [
 		['Armor HP', '+100%'],
 		['Shield Resists', '-50%'],
-		['Small Weapon Damage', '+100%'],
+		['Small Weapon Damage', '+200%'],
 		['Signature Size', '-50%']
 	]
 };
 
 var redGiantEffects = {
 	1: [
-		['Heat Damage', '+10%'],
-		['Overheat Bonus', '+25%'],
-		['Smart Bomb Range', '+25%'],
-		['Smart Bomb Damage', '+25%']
+		['Heat Damage', '+15%'],
+		['Overheat Bonus', '+30%'],
+		['Smart Bomb Range', '+30%'],
+		['Smart Bomb Damage', '+30%'],
+		['Bomb Damage', '+30%']
 	],
 	2: [
-		['Heat Damage', '+18%'],
+		['Heat Damage', '+22%'],
 		['Overheat Bonus', '+44%'],
 		['Smart Bomb Range', '+44%'],
-		['Smart Bomb Damage', '+44%']
+		['Smart Bomb Damage', '+44%'],
+		['Bomb Damage', '+44%']
 	],
 	3: [
-		['Heat Damage', '+22%'],
-		['Overheat Bonus', '+55%'],
-		['Smart Bomb Range', '+55%'],
-		['Smart Bomb Damage', '+55%']
+		['Heat Damage', '+29%'],
+		['Overheat Bonus', '+58%'],
+		['Smart Bomb Range', '+58%'],
+		['Smart Bomb Damage', '+58%'],
+		['Bomb Damage', '+58%']
 	],
 	4: [
-		['Heat Damage', '+27%'],
-		['Overload Bonus', '+68%'],
-		['Smart Bomb Range', '+68%'],
-		['Smart Bomb Damage', '+68%']
+		['Heat Damage', '+36%'],
+		['Overload Bonus', '+72%'],
+		['Smart Bomb Range', '+72%'],
+		['Smart Bomb Damage', '+72%'],
+		['Bomb Damage', '+72%']
 	], 
 	5: [
-		['Heat Damage', '+34%'],
-		['Overheat Bonus', '+85%'],
-		['Smart Bomb Range', '+85%'],
-		['Smart Bomb Damage', '+85%']
+		['Heat Damage', '+43%'],
+		['Overheat Bonus', '+86%'],
+		['Smart Bomb Range', '+86%'],
+		['Smart Bomb Damage', '+86%'],
+		['Bomb Damage', '+86%']
 	],
 	6: [
 		['Heat Damage', '+50%'],
 		['Overheat Bonus', '+100%'],
 		['Smart Bomb Range', '+100%'],
-		['Smart Bomb Damage', '+100%']
+		['Smart Bomb Damage', '+100%'],
+		['Bomb Damage', '+100%']
 	]
 };
 
 var catacylsmicEffects = {
 	1: [
-		['Armor Repair', '-10%'],
-		['Shield Boost', '-10%'],
-		['Shield Transfer', '+25%'],
-		['Remote Repair', '+25%'],
-		['Capacitor capacity', '+25%'],
-		['Capacitor recharge time', '+25%']
+		['Armor Repair', '-15%'],
+		['Shield Boost', '-15%'],
+		['Shield Transfer', '+30%'],
+		['Remote Repair', '+30%'],
+		['Capacitor capacity', '+30%'],
+		['Capacitor recharge time', '+30%'],
+		['Capacitor transfer amount', '-15%']
 	],
 	2: [
-		['Armor Repair', '-19%'],
-		['Shield Boost', '-19%'],
+		['Armor Repair', '-22%'],
+		['Shield Boost', '-22%'],
 		['Shield Transfer', '+44%'],
 		['Remote Repair', '+44%'],
 		['Capacitor capacity', '+44%'],
-		['Capacitor recharge time', '+44%']
+		['Capacitor recharge time', '+44%'],
+		['Capacitor transfer amount', '-22%']
 	],
 	3: [
-		['Armor Repair', '-27%'],
-		['Shield Boost', '-27%'],
+		['Armor Repair', '-29%'],
+		['Shield Boost', '-29%'],
 		['Shield Transfer', '+55%'],
 		['Remote Repair', '+55%'],
-		['Capacitor capacity', '+55%'],
-		['Capacitor recharge time', '+55%']
+		['Capacitor capacity', '+58%'],
+		['Capacitor recharge time', '+55%'],
+		['Capacitor transfer amount', '-29%']
 	],
 	4: [
-		['Armor Repair', '-34%'],
-		['Shield Boost', '-34%'],
-		['Shield Transfer', '+68%'],
-		['Remote Repair', '+68%'],
-		['Capacitor capacity', '+68%'],
-		['Capacitor recharge time', '+68%']
+		['Armor Repair', '-36%'],
+		['Shield Boost', '-36%'],
+		['Shield Transfer', '+72%'],
+		['Remote Repair', '+72%'],
+		['Capacitor capacity', '+72%'],
+		['Capacitor recharge time', '+72%'],
+		['Capacitor transfer amount', '-36%']
 	], 
 	5: [
-		['Armor Repair', '-41%'],
-		['Shield Boost', '-41%'],
-		['Shield Transfer', '+85%'],
-		['Remote Repair', '+85%'],
-		['Capacitor capacity', '+85%'],
-		['Capacitor recharge time', '+85%']
+		['Armor Repair', '-43%'],
+		['Shield Boost', '-43%'],
+		['Shield Transfer', '+86%'],
+		['Remote Repair', '+86%'],
+		['Capacitor capacity', '+86%'],
+		['Capacitor recharge time', '+86%'],
+		['Capacitor transfer amount', '-43%']
 	],
 	6: [
 		['Armor Repair', '-50%'],
@@ -762,97 +771,104 @@ var catacylsmicEffects = {
 		['Shield Transfer', '+100%'],
 		['Remote Repair', '+100%'],
 		['Capacitor capacity', '+100%'],
-		['Capacitor recharge time', '+100%']
+		['Capacitor recharge time', '+100%'],
+		['Capacitor transfer amount', '-50%']
 	]
 };
 
 var magnetarEffects = {
 	1: [
-		['Damage', '+25%'],
-		['Missile Explosion Velocity', '-10%'],
-		['Drone Velocity', '-10%'],
-		['Targeting Range', '-10%'],
-		['Targeting Speed', '-10%']
+		['Damage (weapons and drones)', '+30%'],
+		['Drone Tracking', '-15%'],
+		['Missile Explosion Radius', '+15%'],
+		['Drone Velocity', '-15%'],
+		['Targeting Range', '-15%'],
+		['Tracking Speed (guns and drones)', '-15%']
 	], 
 	2: [
-		['Damage', '+44%'],
-		['Missile Explosion Velocity', '-19%'],
-		['Drone Velocity', '-19%'],
-		['Targeting Range', '-19%'],
-		['Targeting Speed', '-19%']
+		['Damage (weapons and drones)', '+44%'],
+		['Drone Tracking', '-22%'],
+		['Missile Explosion Radius', '+22%'],
+		['Drone Velocity', '-22%'],
+		['Targeting Range', '-22%'],
+		['Tracking Speed (guns and drones)', '-22%']
 	], 
 	3: [
-		['Damage', '+55%'],
-		['Missile Explosion Velocity', '-27%'],
-		['Drone Velocity', '-27%'],
-		['Targeting Range', '-27%'],
-		['Targeting Speed', '-27%']
+		['Damage (weapons and drones)', '+55%'],
+		['Drone Tracking', '-29%'],
+		['Missile Explosion Radius', '+29%'],
+		['Drone Velocity', '-29%'],
+		['Targeting Range', '-29%'],
+		['Tracking Speed (guns and drones)', '-29%']
 	],
-  4: [
-		['Damage', '+68%'],
-		['Missile Explosion Velocity', '-34%'],
-		['Drone Velocity', '-34%'],
-		['Targeting Range', '-34%'],
-		['Targeting Speed', '-34%']
-  ], 
-  5: [
-		['Damage', '+85%'],
-		['Missile Explosion Velocity', '-41%'],
-		['Drone Velocity', '-41%'],
-		['Targeting Range', '-41%'],
-		['Targeting Speed', '-41%']
-  ], 
-  6 :[
-		['Damage', '+100%'],
-		['Missile Explosion Velocity', '-50%'],
+	4: [
+		['Damage (weapons and drones)', '+72%'],
+		['Drone Tracking', '-36%'],
+		['Missile Explosion Radius', '+36%'],
+		['Drone Velocity', '-36%'],
+		['Targeting Range', '-36%'],
+		['Tracking Speed (guns and drones)', '-36%']
+	], 
+	5: [
+		['Damage (weapons and drones)', '+86%'],
+		['Drone Tracking', '-43%'],
+		['Missile Explosion Radius', '+43%'],
+		['Drone Velocity', '-43%'],
+		['Targeting Range', '-43%'],
+		['Tracking Speed (guns and drones)', '-43%']
+	], 
+	6 :[
+		['Damage (weapons and drones)', '+100%'],
+		['Drone Tracking', '-50%'],
+		['Missile Explosion Radius', '+50%'],
 		['Drone Velocity', '-50%'],
 		['Targeting Range', '-50%'],
-		['Targeting Speed', '-50%']
-  ]
+		['Tracking Speed (guns and drones)', '-50%']
+	]
 };
 
 var pulsarEffects = {
 	1: [
-		['Shield HP', '+25%'],
-		['Armor Resists', '-10%'],
-		['Capacitor recharge time', '-10%'],
-		['Targeting Range', '+25%'],
-		['Signature Size', '+25%']
+		['Shield HP', '+30%'],
+		['Armor Resists', '-15%'],
+		['Capacitor recharge time', '-15%'],
+		['Signature Size', '+30%'],
+		['Energy neut/nos bonus', '+30%']
 	], 
 	2: [
 		['Shield HP', '+44%'],
-		['Armor Resists', '-18%'],
-		['Capacitor recharge time', '-19%'],
-		['Targeting Range', '+44%'],
-		['Signature Size', '+44%']
+		['Armor Resists', '-22%'],
+		['Capacitor recharge time', '-22%'],
+		['Signature Size', '+44%'],
+		['Energy neut/nos bonus', '+44%']
 	], 
 	3: [
 		['Shield HP', '+58%'],
-		['Armor Resists', '-22%'],
-		['Capacitor recharge time', '-27%'],
-		['Targeting Range', '+58%'],
-		['Signature Size', '+58%']
+		['Armor Resists', '-29%'],
+		['Capacitor recharge time', '-29%'],
+		['Signature Size', '+58%'],
+		['Energy neut/nos bonus', '+58%']
 	], 
 	4: [
-		['Shield HP', '+68%'],
-		['Armor Resists', '-27%'],
-		['Capacitor recharge time', '-34%'],
-		['Targeting Range', '+68%'],
-		['Signature Size', '+68%']
+		['Shield HP', '+72%'],
+		['Armor Resists', '-36%'],
+		['Capacitor recharge time', '-36%'],
+		['Signature Size', '+72%'],
+		['Energy neut/nos bonus', '+72%']
 	], 
 	5: [
-		['Shield HP', '+85%'],
-		['Armor Resists', '-34%'],
-		['Capacitor recharge time', '-41%'],
-		['Targeting Range', '+85%'],
-		['Signature Size', '+85%']
+		['Shield HP', '+86%'],
+		['Armor Resists', '-43%'],
+		['Capacitor recharge time', '-43%'],
+		['Signature Size', '+86%'],
+		['Energy neut/nos bonus', '+86%']
 	], 
 	6: [
 		['Shield HP', '+100%'],
 		['Armor Resists', '-50%'],
 		['Capacitor recharge time', '-50%'],
-		['Targeting Range', '+100%'],
-		['Signature Size', '+100%']
+		['Signature Size', '+100%'],
+		['Energy neut/nos bonus', '-100%']
 	]
 }
 
