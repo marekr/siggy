@@ -250,7 +250,7 @@ class Controller_Cron extends Controller
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
 		//two days?
-		$cutoff = time()-60*60*24*2;
+		$cutoff = time()-60*60*24*7;
   
 		$groups = DB::query(Database::SELECT, "SELECT groupID,skipPurgeHomeSigs,homeSystemIDs FROM groups")->execute()->as_array();	 
 		foreach( $groups as $group )
