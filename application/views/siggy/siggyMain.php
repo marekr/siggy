@@ -8,10 +8,17 @@
 	<br />
 	<br />
 	<?php endif; ?>
+	<div class="box">
+		<h1>Balance warning</h1>
+		<p>
+		
+		</p>
+	</div>
+
 	<?php echo $chainMap; ?>
 
 	<br />
-    <div class="bordered-wrap">
+    <div id="main-body" class="bordered-wrap">
         <div id="system-advanced">
             <h2>
                 <span id="system-name"><?php echo !empty($systemName) ? $systemName : 'System'; ?></span>

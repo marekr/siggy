@@ -322,6 +322,17 @@ siggymain.prototype.update = function ()
 
 					that.chainMapID = parseInt(data.chainmap_id);
 
+					if( that.chainMapID == 0 )
+					{
+						$('#chain-map-container').hide();
+						$('#main-body').hide();
+					}
+					else
+					{
+						$('#chain-map-container').show();
+						$('#main-body').show();
+					}
+
 					if( parseInt( data.acsid ) != 0 )
 					{
 						that.acsid = data.acsid;
@@ -2113,6 +2124,7 @@ siggymain.prototype.updateChainMaps = function(data)
 
 	//delete old
 	list.empty();
+
 	if( typeof data != "undefined" && Object.size(data) > 0 )
 	{
 		for(var i in data)

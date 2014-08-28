@@ -144,7 +144,9 @@ class Controller_Manage_Group extends Controller_Manage
 															->where('groupID','=', Auth::$user->data['groupID'])
 															->where('memberType','=', $_POST['memberType'])
 															->find();
-						if( $member == null )
+
+
+						if( !$member->id )
 						{
 							$member = ORM::factory('groupmember');
 							$member->eveID = $_POST['eveID'];
