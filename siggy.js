@@ -440,6 +440,7 @@ var whLookup = {
 		8: "I182 (to C2)",
 		9: "N968 (to C3)",
 		10: "T405 (to C4)",
+		24: "M131 (to C4)",
 		11: "N770 (to C5)",
 		12: "A982 (to C6)",
 		13: "K346 (to Nullsec)",
@@ -489,6 +490,7 @@ var whLookup = {
 		7: "Y790 (to C1)",
 		8: "D364 (to C2)",
 		9: "M267 (to C3)",
+		23: "Z380 (to C3)",
 		10: "E175 (to C4)",
 		11: "H296 (to C5)",
 		12: "V753 (to C6)",
@@ -637,37 +639,37 @@ var blackHoleEffects = {
 
 var wolfRayetEffects = {
 	1: [
-		['Armor Resists', '+10%'],
+		['Armor HP', '+25%'],
 		['Shield Resists', '-10%'],
 		['Small Weapon Damage', '+25%'],
 		['Signature Size', '-10%']
 	],
 	2: [
-		['Armor Resists', '+18%'],
+		['Armor HP', '+44%'],
 		['Shield Resists', '-18%'],
 		['Small Weapon Damage', '+44%'],
 		['Signature Size', '-19%']
 	],
 	3: [
-		['Armor Resists', '+22%'],
+		['Armor HP', '+58%'],
 		['Shield Resists', '-22%'],
 		['Small Weapon Damage', '+55%'],
 		['Signature Size', '-27%']
 	],
 	4: [
-		['Armor Resists', '+27%'],
+		['Armor HP', '+68%'],
 		['Shield Resists', '-27%'],
 		['Small Weapon Damage', '+68%'],
 		['Signature Size', '-34%']
 	], 
 	5: [
-		['Armor Resists', '+34%'],
+		['Armor HP', '+85%'],
 		['Shield Resists', '-34%'],
 		['Small Weapon Damage', '+85%'],
-		['Signature Size', '-41%']
+		['Signature Size', '-44%']
 	],
 	6: [
-		['Armor Resists', '+50%'],
+		['Armor HP', '+100%'],
 		['Shield Resists', '-50%'],
 		['Small Weapon Damage', '+100%'],
 		['Signature Size', '-50%']
