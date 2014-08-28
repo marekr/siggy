@@ -262,7 +262,7 @@ class Controller_Chainmap extends FrontController
 			}
 
 			$update['eol'] = intval($_POST['eol']);
-
+			$update['frigate_sized'] = intval($_POST['frigate_sized']);
 
 			$update['mass'] = intval($_POST['mass']);
 

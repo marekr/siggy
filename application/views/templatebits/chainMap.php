@@ -49,7 +49,7 @@
 			<div class="clearfix"></div>
 			<!-- end broadcast -->
 		</div>
-		
+
 		<!--- wh editor -->
 		<div id="wormhole-popup" class="box">
 			<div id="wormholeTabs">
@@ -66,7 +66,7 @@
 					<ul id="jumpLogList" class="itemList">
 						<li><b>No jumps recorded</b></li>
 					</ul>
-				
+
 				</div>
 				<div class="center-text">
 					<button id='jumpLogClose' class="btn btn-default btn-xs">Close</button>
@@ -103,11 +103,15 @@
 				<br />
 				<fieldset>
 					<legend>Options</legend>
-					EOL?: <label class="yes" style="display:inline;float:none;">Yes<input type="radio" name="eol" value="1" /></label>
-						<label class="no" style="display:inline;float:none;">No<input type="radio" name="eol" value="0" /></label>
+					EOL?: 	<label class="yes" style="display:inline;float:none;">Yes<input type="radio" name="eol" value="1" /></label>
+							<label class="no" style="display:inline;float:none;">No<input type="radio" name="eol" value="0" /></label>
 						<br />
 					<br />
-					Mass Stage: 
+					Frigate sized?: <label class="yes" style="display:inline;float:none;">Yes<input type="radio" name="frigate_sized" value="1" /></label>
+									<label class="no" style="display:inline;float:none;">No<input type="radio" name="frigate_sized" value="0" /></label>
+					<br />
+					<br />
+					Mass Stage:
 					<select name='mass'>
 						<option value='0'>Stage 1/Default</option>
 						<option value='1'>Stage 2/Reduced</option>
@@ -131,7 +135,7 @@
 				<b>System label/display name</b>
 				<br />
 				<input type="text" name="label" />
-				
+
 				<br />
 				<br />
 				<b>Activity Level</b>
@@ -145,17 +149,17 @@
 				</select>
 				<br />
 				<br />
-				
-				
+
+
 				<div class="center-text form-actions">
 					<button id="system-editor-save" class="btn btn-xs btn-primary">Save</button>
 					<button id='system-editor-cancel' class="btn btn-default btn-xs">Cancel</button><br />
 				</div>
-			</div>							
-					
+			</div>
+
 		</div>
-		<!-- end wh editor -->				
-		
+		<!-- end wh editor -->
+
 		<!--- system context -->
 		<ul id="systemMenu" class="contextMenu">
 			<li class="edit">
