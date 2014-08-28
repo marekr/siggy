@@ -284,8 +284,9 @@ siggyMap.prototype.initialize = function()
 							conn.setPaintStyle( {
 								   lineWidth:6,
 								   strokeStyle: that.getMassColor(that.wormholes[hash].mass),
-								   outlineColor: that.getTimeColor(that.wormholes[hash].eol),
-								   outlineWidth:3
+								   outlineColor: that.getTimeColor(that.wormholes[hash].eol, that.wormholes[hash].frigate_sized),
+								   outlineWidth:3,
+								   dashstyle: that.getDashStyle(that.wormholes[hash].frigate_sized)
 							});
 						}
 						else
@@ -295,7 +296,8 @@ siggyMap.prototype.initialize = function()
 								   lineWidth:6,
 								   strokeStyle: "#006AFE",
 								   outlineColor: "#006AFE",
-								   outlineWidth:3
+								   outlineWidth:3,
+								   dashstyle: 0,
 							});
 							this.deleteMe = true;
 						}
@@ -427,8 +429,9 @@ siggyMap.prototype.registerEvents = function()
             conn.setPaintStyle( {
                    lineWidth:6,
                    strokeStyle: that.getMassColor(that.wormholes[hash].mass),
-                   outlineColor: that.getTimeColor(that.wormholes[hash].eol),
-                   outlineWidth:3
+                   outlineColor: that.getTimeColor(that.wormholes[hash].eol, that.wormholes[hash].frigate_sized),
+                   outlineWidth:3,
+			       dashstyle: that.getDashStyle(that.wormholes[hash].frigate_sized)
             });
         }
 
@@ -700,8 +703,9 @@ siggyMap.prototype.draw = function()
                             paintStyle:{
                                lineWidth:6,
                                strokeStyle: this.getMassColor(wormhole.mass),
-                               outlineColor: this.getTimeColor(wormhole.eol),
-                               outlineWidth:3
+                               outlineColor: this.getTimeColor(wormhole.eol,wormhole.frigate_sized),
+                               outlineWidth:3,
+							   dashstyle: this.getDashStyle(wormhole.frigate_sized)
                             },
                             endpointStyle:{ fillStyle:"#a7b04b" },
                             parameters: { hash: wormhole.hash, deleteMe: false }
@@ -738,7 +742,7 @@ siggyMap.prototype.draw = function()
                     conn.setPaintStyle( {
                            lineWidth:6,
                            strokeStyle: that.getMassColor(that.wormholes[hash].mass),
-                           outlineColor: that.getTimeColor(that.wormholes[hash].eol),
+                           outlineColor: that.getTimeColor(that.wormholes[hash].eol,that.wormholes[hash].frigate_sized),
                            outlineWidth:3
                     });
                     conn.setParameter('deleteMe', false);
@@ -964,14 +968,32 @@ siggyMap.prototype.getMassColor = function(mass)
 	return inner;
 }
 
-siggyMap.prototype.getTimeColor = function(eol)
+siggyMap.prototype.getTimeColor = function(eol,frig)
 {
+	frig = parseInt(frig);
+	eol = parseInt(eol);
+
 	var outer = '#3d3d3d';
-	if( eol == 1 )
+	if(frig == 1)
+	{
+		outer = '#FFFFFF';
+	}
+	else if( eol == 1 )
 	{
 		outer = '#FF17FE';
 	}
 	return outer;
+}
+
+siggyMap.prototype.getDashStyle = function(frig)
+{
+	frig = parseInt(frig);
+	if(frig == 1)
+	{
+		return '2 2';
+	}
+
+	return '0';
 }
 
 siggyMap.prototype.setupEditor = function()
@@ -1037,6 +1059,7 @@ siggyMap.prototype.setupEditor = function()
 				mode: 'edit',
 				hash: that.editingHash,
 				eol: $('#wormhole-editor input[name=eol]:checked').val(),
+				frigate_sized: $('#wormhole-editor input[name=frigate_sized]:checked').val(),
 				mass: $('#wormhole-editor select[name=mass]').val()
 			};
 
@@ -1060,6 +1083,7 @@ siggyMap.prototype.setupEditor = function()
 				toSys: toSysInput.val(),
 				toSysCurrent: ( toCurrentInput.is(':checked') ? 1 : 0 ),
 				eol: $('#wormhole-editor input[name=eol]:checked').val(),
+				frigate_sized: $('#wormhole-editor input[name=frigate_sized]:checked').val(),
 				mass: $('#wormhole-editor select[name=mass]').val()
 			};
 
@@ -1265,6 +1289,7 @@ siggyMap.prototype.resetWormholeEditor = function()
 
 	$('#wormhole-editor select[name=mass]').val(0);
 	$('#wormhole-editor input[name=eol]').filter('[value=0]').attr('checked', true);
+	$('#wormhole-editor input[name=frigate_sized]').filter('[value=0]').attr('checked', true);
 }
 
 siggyMap.prototype.editWormhole = function(hash)
@@ -1293,6 +1318,7 @@ siggyMap.prototype.editWormhole = function(hash)
 
 	$('#wormhole-editor select[name=mass]').val(wormhole.mass);
 	$('#wormhole-editor input[name=eol]').filter('[value=' + wormhole.eol + ']').attr('checked', true);
+	$('#wormhole-editor input[name=frigate_sized]').filter('[value=' + wormhole.frigate_sized + ']').attr('checked', true);
 
 	this.openWHEditor('edit');
 
