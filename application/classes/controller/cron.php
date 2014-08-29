@@ -143,7 +143,7 @@ class Controller_Cron extends Controller
 		spl_autoload_register( "Pheal::classload" );
 		PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
 		PhealConfig::getInstance()->http_ssl_verifypeer = false;
-		$pheal = new Pheal( "1368854", "EzmkgBrhVjksl2KbzDY8IIa0thRRoPVE26HD7r0cqRcJLQqSYN2wtqYkwIpO28fT", "corp" );
+		$pheal = new Pheal( "3523432", "iBfWRWpwZ9I5l7Ynt2Y7ZlxiesY6b7vVhmpHlhzLDMdCFQnaTus4DBgOGxIfwu4M", "corp" );
 		
 		$previousID = (float)miscUtils::getDBCacheItem( 'lastProcessedJournalRefID' );
 		$transactions = $pheal->WalletJournal( array( 'rowCount' => 100) )->entries;
