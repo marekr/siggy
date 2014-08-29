@@ -22,7 +22,7 @@
 				&nbsp;&nbsp;
 				<?php echo $m['accessName'] ?>
 			</td>
-			<td><?php echo Html::anchor('manage/group/editMember/'.$m['id'], __('<i class="icon-edit"></i>&nbsp;Edit')); ?> <?php echo Html::anchor('manage/group/removeMember/'.$m['id'], __('<i class="icon-trash"></i>&nbsp;Remove')); ?></td>
+			<td><?php echo Html::anchor('manage/group/removeMember/'.$m['id'], __('<i class="fa fa-trash"></i>&nbsp;Remove'), array('class' =>'btn btn-xs btn-danger')); ?></td>
 		</tr>
 		<?php endforeach ?>
 	<?php else: ?>

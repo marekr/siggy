@@ -10,11 +10,9 @@ else
 }
 
 $select = array();
-$select[0] = 'Default/No sub group';
-$subgroups = $group->subgroups->find_all()->as_array();
-foreach($subgroups as $s )
+foreach($chainmaps as $c )
 {
-	$select[$s->subGroupID] =$s->sgName;
+	$select[$c['chainmap_id']] = $c['chainmap_name'];
 }
 
 $type = array('corp' => 'Corp', 'char' => 'Character');

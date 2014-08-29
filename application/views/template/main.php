@@ -9,7 +9,7 @@
     <?php else: ?>
 	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>theme.php?id=<?php echo $settings['theme_id']; ?>" rel="stylesheet" media="screen" />
     <?php endif; ?>
-    <link href="<?php echo URL::base(TRUE, TRUE);?>public/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="<?php echo URL::base(TRUE, TRUE);?>public/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet">
     
     <?php if( Kohana::$environment == Kohana::DEVELOPMENT ): ?>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery-1.10.1.min.js'></script>

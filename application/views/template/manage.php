@@ -7,7 +7,7 @@
 
     <!-- Le styles -->
     <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap3/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?php echo URL::base(TRUE, TRUE);?>public/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="<?php echo URL::base(TRUE, TRUE);?>public/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="<?php echo URL::base(TRUE, TRUE);?>public/css/manage.css" rel="stylesheet">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap3/js/bootstrap.min.js"></script>
