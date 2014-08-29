@@ -326,11 +326,13 @@ siggymain.prototype.update = function ()
 					{
 						$('#chain-map-container').hide();
 						$('#main-body').hide();
+						$('#no-chain-map-warning').show();
 					}
 					else
 					{
 						$('#chain-map-container').show();
 						$('#main-body').show();
+						$('#no-chain-map-warning').hide();
 					}
 
 					if( parseInt( data.acsid ) != 0 )
