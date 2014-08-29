@@ -396,12 +396,13 @@ var whLookup = {
 		14: "J244 (to Lowsec)",
 		15: "N110 (to Highsec)",
 		/* frigate hole range 30 to 39*/
-		32: "L005 (to C2)",
-		33: "Z006 (to C3)",
-		34: "M001 (to C4)",
-		35: "C008 (to C5)",
-		36: "G008 (to C6)",
-		37: "Q003 (to Nullsec)"
+		31: "E004 (to C1, Frigate)",
+		32: "L005 (to C2, Frigate)",
+		33: "Z006 (to C3, Frigate)",
+		34: "M001 (to C4, Frigate)",
+		35: "C008 (to C5, Frigate)",
+		36: "G008 (to C6, Frigate)",
+		37: "Q003 (to Nullsec, Frigate)"
 	},
 	2: {
 		0: "Unstable Wormhole",
@@ -421,12 +422,13 @@ var whLookup = {
 		14: "A239 (to Lowsec)",
 		15: "B274 (to Highsec)",
 		/* frigate hole range 30 to 39*/
-		31: "E004 (to C1)",
-		33: "Z006 (to C3)",
-		34: "M001 (to C4)",
-		35: "C008 (to C5)",
-		36: "G008 (to C6)",
-		37: "Q003 (to Nullsec)"
+		31: "E004 (to C1, Frigate)",
+		32: "L005 (to C2, Frigate)",
+		33: "Z006 (to C3, Frigate)",
+		34: "M001 (to C4, Frigate)",
+		35: "C008 (to C5, Frigate)",
+		36: "G008 (to C6, Frigate)",
+		37: "Q003 (to Nullsec, Frigate)"
 	},
 	3: {
 		0: "Unstable Wormhole",
@@ -446,12 +448,13 @@ var whLookup = {
 		14: "U210 (to Lowsec)",
 		15: "D845 (to Highsec)",
 		/* frigate hole range 30 to 39*/
-		31: "E004 (to C1)",
-		32: "L005 (to C2)",
-		34: "M001 (to C4)",
-		35: "C008 (to C5)",
-		36: "G008 (to C6)",
-		37: "Q003 (to Nullsec)"
+		31: "E004 (to C1, Frigate)",
+		32: "L005 (to C2, Frigate)",
+		33: "Z006 (to C3, Frigate)",
+		34: "M001 (to C4, Frigate)",
+		35: "C008 (to C5, Frigate)",
+		36: "G008 (to C6, Frigate)",
+		37: "Q003 (to Nullsec, Frigate)"
 	},
 	4: {
 		0: "Unstable Wormhole",
@@ -471,12 +474,13 @@ var whLookup = {
 		14: "N290 (to Lowsec)",
 		15: "S047 (to Highsec)",
 		/* frigate hole range 30 to 39*/
-		31: "E004 (to C1)",
-		32: "L005 (to C2)",
-		33: "Z006 (to C3)",
-		35: "C008 (to C5)",
-		36: "G008 (to C6)",
-		37: "Q003 (to Nullsec)"
+		31: "E004 (to C1, Frigate)",
+		32: "L005 (to C2, Frigate)",
+		33: "Z006 (to C3, Frigate)",
+		34: "M001 (to C4, Frigate)",
+		35: "C008 (to C5, Frigate)",
+		36: "G008 (to C6, Frigate)",
+		37: "Q003 (to Nullsec, Frigate)"
 	},
 	5: {
 		0: "Unstable Wormhole",
@@ -496,12 +500,13 @@ var whLookup = {
 		14: "C140 (to Lowsec)",
 		15: "D792 (to Highsec)",
 		/* frigate hole range 30 to 39*/
-		31: "E004 (to C1)",
-		32: "L005 (to C2)",
-		33: "Z006 (to C3)",
-		34: "M001 (to C4)",
-		36: "G008 (to C6)",
-		37: "Q003 (to Nullsec)"
+		31: "E004 (to C1, Frigate)",
+		32: "L005 (to C2, Frigate)",
+		33: "Z006 (to C3, Frigate)",
+		34: "M001 (to C4, Frigate)",
+		35: "C008 (to C5, Frigate)",
+		36: "G008 (to C6, Frigate)",
+		37: "Q003 (to Nullsec, Frigate)"
 	},
 	6: {
 		0: "Unstable Wormhole",
@@ -521,12 +526,13 @@ var whLookup = {
 		14: "C140 (to Lowsec)",
 		15: "D792  (to Highsec)",
 		/* frigate hole range 31 to 39*/
-		31: "E004 (to C1)",
-		32: "L005 (to C2)",
-		33: "Z006 (to C3)",
-		34: "M001 (to C4)",
-		35: "C008 (to C5)",
-		37: "Q003 (to Nullsec)"
+		31: "E004 (to C1, Frigate)",
+		32: "L005 (to C2, Frigate)",
+		33: "Z006 (to C3, Frigate)",
+		34: "M001 (to C4, Frigate)",
+		35: "C008 (to C5, Frigate)",
+		36: "G008 (to C6, Frigate)",
+		37: "Q003 (to Nullsec, Frigate)"
 	},
 	7: {
 		0: "Unstable Wormhole",
