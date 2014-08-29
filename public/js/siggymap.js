@@ -712,18 +712,34 @@ siggyMap.prototype.draw = function()
 
                         };
 
+		var label = '';
         wormhole.eolToggled = parseInt(wormhole.eolToggled);
         if( wormhole.eolToggled != 0 )
         {
-            connectionOptions.overlays = [
+			label += 'EOL set at: '+ siggymain.displayTimeStamp(wormhole.eolToggled);
+        }
+
+
+		if( parseInt(wormhole.frigate_sized) == 1 )
+		{
+			if( label != '' )
+			{
+				label += '<br />';
+			}
+			label += 'Frigate sized wormhole';
+		}
+
+		if( label != '' )
+		{
+			connectionOptions.overlays = [
 											["Label", {
 												cssClass:"map-eol-overlay",
-												label : 'EOL set at: '+ siggymain.displayTimeStamp(wormhole.eolToggled),
+												label : label,
 												location:0.5,
 												id:"label"
 											}]
-                                        ];
-        }
+										];
+		}
 
         var connection = jsPlumb.connect(connectionOptions);
 
@@ -976,7 +992,14 @@ siggyMap.prototype.getTimeColor = function(eol,frig)
 	var outer = '#3d3d3d';
 	if(frig == 1)
 	{
-		outer = '#FFFFFF';
+		if( eol == 1 )
+		{
+			outer = '#00F5FF';
+		}
+		else
+		{
+			outer = '#FFFFFF';
+		}
 	}
 	else if( eol == 1 )
 	{
@@ -987,12 +1010,6 @@ siggyMap.prototype.getTimeColor = function(eol,frig)
 
 siggyMap.prototype.getDashStyle = function(frig)
 {
-	frig = parseInt(frig);
-	if(frig == 1)
-	{
-		return '2 2';
-	}
-
 	return '0';
 }
 

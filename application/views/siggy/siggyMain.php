@@ -8,11 +8,11 @@
 	<br />
 	<br />
 	<?php endif; ?>
-	<div class="box">
-		<h1>Balance warning</h1>
-		<p>
-		
-		</p>
+	<div class="box" style="width:100%;display:none;" id="no-chain-map-warning">
+		<h3>No chain-maps configured</h3>
+		<div>
+			Your group administrators have not configured chain-maps for your corporation or character. Please contact them to fix this.
+		</div>
 	</div>
 
 	<?php echo $chainMap; ?>
