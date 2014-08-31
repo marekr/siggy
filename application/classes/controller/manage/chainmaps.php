@@ -77,18 +77,6 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				$sg->chainmap_name = $_POST['chainmap_name'];
 				$sg->group_id = Auth::$user->data['groupID'];
 
-				if( !empty($_POST['password']) && !empty($_POST['password_confirm']) )
-				{
-					if( $_POST['password'] == $_POST['password_confirm'] )
-					{
-						$sg->chainmap_password = sha1($_POST['password'].$group->authSalt);
-					}
-					else
-					{
-						Message::add( 'error', __('Error: The password was not saved because it did not match between the two fields.') );
-					}
-				}
-
 				list($sg->chainmap_homesystems_ids, $sg->chainmap_homesystems) = $this->__process_home_system_input($_POST['chainmap_homesystems']);
 
 				$sg->chainmap_skip_purge_home_sigs = intval($_POST['chainmap_skip_purge_home_sigs']);
@@ -253,18 +241,6 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 			try
 			{
 				$sg->chainmap_name = $_POST['chainmap_name'];
-
-				if( !empty($_POST['password']) && !empty($_POST['password_confirm']) )
-				{
-					if( $_POST['password'] == $_POST['password_confirm'] )
-					{
-						$sg->chainmap_password = sha1($_POST['password'].$group->authSalt);
-					}
-					else
-					{
-						Message::add( 'error', __('Error: The password was not saved because it did not match between the two fields.') );
-					}
-				}
 
 				list($sg->chainmap_homesystems_ids, $sg->chainmap_homesystems) = $this->__process_home_system_input($_POST['chainmap_homesystems']);
 
