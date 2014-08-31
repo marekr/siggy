@@ -48,7 +48,7 @@ function siggyMap(options)
 	}
 	else
 	{
-		this.mapOpen = 0;
+		this.mapOpen = 1;
 	}
 
 	if( getCookie('broadcast') != null )
