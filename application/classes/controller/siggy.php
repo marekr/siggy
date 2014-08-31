@@ -283,7 +283,7 @@ class Controller_Siggy extends FrontController
 		{
 			return;
 		}
-		
+
         if( $origin == $dest )
         {
             //failure condition that happens sometimes, bad for the JS engine
@@ -830,7 +830,7 @@ class Controller_Siggy extends FrontController
 			$id = intval($_POST['sigID']);
 
 			DB::update('systemsigs')->set( $update )->where('sigID', '=', $id)->execute();
-			$this->update_system($_POST['systemID'], array('lastUpdate' => time(), 'lastActive' => time() ) );
+			$this->chainmap->update_system($_POST['systemID'], array('lastUpdate' => time(), 'lastActive' => time() ) );
 
 			miscUtils::increment_stat('updates', $this->groupData);
 

@@ -339,6 +339,11 @@
                     </form>
                 </div>
             </div>
+			<div class="sub-display-group">
+				<h2>
+					<label><input id="checkbox-show-anomalies" type="checkbox" value="1" checked /> Show Anomalies? (Combat Sites)</label>
+				</h2>
+			</div>
             <table id="sig-table" cellspacing="1" class="siggy-table tablesorter">
                 <thead>
                     <tr>
