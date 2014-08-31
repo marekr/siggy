@@ -40,7 +40,6 @@
 			<a href="#" id="chain-map-add-wh" class="btn btn-default btn-xs">Add WH</a>
 			<a href="#" id="chain-map-edit" class="btn btn-default btn-xs">Edit</a>
 			<a href="#" id="chain-map-delete-whs" class="btn btn-default btn-xs">Delete WHs</a>
-			<a href="#" id="chain-map-delete-whs" class="btn btn-default btn-xs">Copy WHs</a>
 			<!--- end options -->
 			<!--- broadcast -->
 			<?php if( !$group['alwaysBroadcast'] ): ?>
