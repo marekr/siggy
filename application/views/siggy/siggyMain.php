@@ -535,7 +535,9 @@
                 baseUrl: '<?php echo URL::base(TRUE, TRUE);?>',
                 initialSystemID: <?php echo $systemData['id']; ?>,
                 initialSystemName: '<?php echo $systemData['name']; ?>',
-                showSigSizeCol: <?php echo ( $group['showSigSizeCol'] ? 'true' : 'false' ); ?>,
+				sigtable: {
+                	showSigSizeCol: <?php echo ( $group['showSigSizeCol'] ? 'true' : 'false' ); ?>
+				},
                 map: {
                     jumpTrackerEnabled: <?php echo ( $group['jumpLogEnabled'] ? 'true' : 'false' ); ?>,
                     jumpTrackerShowNames:  <?php echo ( $group['jumpLogRecordNames'] ? 'true' : 'false' ); ?>,

@@ -297,7 +297,7 @@ siggyMap.prototype.initialize = function()
 								   strokeStyle: "#006AFE",
 								   outlineColor: "#006AFE",
 								   outlineWidth:3,
-								   dashstyle: 0,
+								   dashstyle: 0
 							});
 							this.deleteMe = true;
 						}
