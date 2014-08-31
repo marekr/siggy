@@ -97,7 +97,7 @@ class UserSession
 
 		$update = array( 'userID' => Auth::$user->data['id'],
 						 'groupID' => Auth::$user->data['groupID'],
-						 'chainmap_id' => Auth::$user->data['active_chain_map'],
+					//	 'chainmap_id' => Auth::$user->data['active_chain_map'],
                          'charName' => Auth::$user->data['apiCharName'],
                          'charID' => Auth::$user->data['apiCharID']
 						 );
@@ -116,7 +116,7 @@ class UserSession
 					'sessionType' => ( $this->igb ? 'igb' : 'oog' ),
 					'userID' => ( isset(Auth::$user->data['id']) ? Auth::$user->data['id'] : 0 ),
 					'groupID' => ( isset(Auth::$user->data['groupID']) ? Auth::$user->data['groupID'] : 0 ),
-					'chainmap_id' =>  ( isset(Auth::$user->data['active_chain_map']) ? Auth::$user->data['active_chain_map'] : 0 ),
+				//	'chainmap_id' =>  ( isset(Auth::$user->data['active_chain_map']) ? Auth::$user->data['active_chain_map'] : 0 ),
 				  );
 
 		DB::insert('siggysessions', array_keys($insert) )->values(array_values($insert))->execute();
@@ -135,7 +135,7 @@ class UserSession
 
 		$update = array( 'lastBeep' => time(),
 						'groupID' => ( isset(Auth::$user->data['groupID']) ? Auth::$user->data['groupID'] : 0 ),
-						'chainmap_id' => ( isset(Auth::$user->data['active_chain_map']) ? Auth::$user->data['active_chain_map'] : 0 ),
+				//		'chainmap_id' => ( isset(Auth::$user->data['active_chain_map']) ? Auth::$user->data['active_chain_map'] : 0 ),
 		);
 
 		DB::update('siggysessions')->set( $update )->where('sessionID', '=',  $this->sessionID)->execute();
