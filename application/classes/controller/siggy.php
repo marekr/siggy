@@ -278,6 +278,12 @@ class Controller_Siggy extends FrontController
 
 	private function __wormholeJump($origin, $dest)
 	{
+		//are we running with a chain map?
+		if( $this->chainmap == NULL )
+		{
+			return;
+		}
+		
         if( $origin == $dest )
         {
             //failure condition that happens sometimes, bad for the JS engine
@@ -434,9 +440,6 @@ class Controller_Siggy extends FrontController
             {
                 if( ($actualCurrentSystemID != $_SERVER['HTTP_EVE_SOLARSYSTEMID'] ) )
                 {
-                    //$newSystemData = $this->getSystemData( $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] );
-                    //fix me once CCP stops being dumb
-
 					$update['acsid'] = $actualCurrentSystemID = $_SERVER['HTTP_EVE_SOLARSYSTEMID'];
 					$update['acsname'] = $actualCurrentSystemName = $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'];
 
@@ -466,8 +469,6 @@ class Controller_Siggy extends FrontController
 
             if( $forceUpdate || ( $this->igb && $_POST['systemID'] != $_SERVER['HTTP_EVE_SOLARSYSTEMID'] ) )
             {
-                //$newSystemData = $this->getSystemData( $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] );
-                //if specific system isn't picked then load new one
                 if( !$freeze && $this->igb )
                 {
                     $update['systemData'] = $this->getSystemData( $_SERVER['HTTP_EVE_SOLARSYSTEMID'] );
@@ -577,13 +578,13 @@ class Controller_Siggy extends FrontController
 
             $activeSystem = $activeSystemQuery->current();
             $recordedLastUpdate = ($activeSystem['lastUpdate'] > 0) ? $activeSystem['lastUpdate']: time();
-			//print $recordedLastUpdate;
+
             if( ($_POST['lastUpdate'] < $recordedLastUpdate) || ( $_POST['lastUpdate'] == 0 ) || $forceUpdate || $update['systemUpdate'] )
             {
                 $additional = '';
                 if( $this->groupData['showSigSizeCol'] )
                 {
-                        $additional .= ',sigSize';
+					$additional .= ',sigSize';
                 }
 
                 $update['sigData'] = DB::query(Database::SELECT, "SELECT sigID,sig, type, siteID, description, created, creator,updated,lastUpdater".$additional." FROM systemsigs
