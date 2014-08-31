@@ -6,7 +6,7 @@ body {
 .centered img { display:block; margin:0 auto; }
 
 .panel-announce > .panel-heading {
-    padding-bottom: 5px; 
+    padding-bottom: 5px;
 }
 .panel-announce > .panel-heading > h3 {
     margin: 0px;
@@ -17,4 +17,14 @@ body {
     color: rgb(153, 153, 153);
     font-size: 12px;
     font-weight: 400;
+}
+
+
+.siggy-jumbotron
+{
+    background-image: url(../images/siggyraw.png);
+    padding-top: 34px;
+    background-repeat: no-repeat;
+    height: 358px;
+    background-position: bottom left;
 }

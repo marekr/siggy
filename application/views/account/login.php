@@ -5,8 +5,8 @@
 
 		<form action='<?php echo URL::base(TRUE, TRUE);?>/account/login' method='POST'>
 			<input type="hidden" name="bounce" value="<?php echo $bounce; ?>" />
-			
-			
+
+
 			
             <?php if( $invalidLogin == true ): ?>
             <div class="alert alert-error">

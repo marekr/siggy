@@ -86,10 +86,10 @@ foreach($headers as $k => $v)
 		$_SERVER['HTTP_' . $k] = $v;
 	}
 }
- 
+
 Kohana::$environment = ($_SERVER['SERVER_NAME'] !== 'localhost') ? Kohana::PRODUCTION : Kohana::DEVELOPMENT;
 
-
+/*
 if( Kohana::$environment == Kohana::DEVELOPMENT && strpos($_SERVER['HTTP_USER_AGENT'],'EVE-IGB') === false )
 {
   $_SERVER['HTTP_EVE_CORPID'] = 389326446;
@@ -110,7 +110,7 @@ if( Kohana::$environment == Kohana::DEVELOPMENT && strpos($_SERVER['HTTP_USER_AG
   $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] = 'J100549';
   $_SERVER['HTTP_EVE_SOLARSYSTEMID'] = 31002019;
 	}
-}
+}*/
 
 
 
@@ -129,9 +129,9 @@ if( Kohana::$environment == Kohana::DEVELOPMENT && strpos($_SERVER['HTTP_USER_AG
  */
 Kohana::init(array(
   'base_url'   => 'http://localhost/evetel',
-  'index_file' => FALSE,  
+  'index_file' => FALSE,
   'profile'    => Kohana::$environment !== Kohana::PRODUCTION,
-  'caching'    => Kohana::$environment === Kohana::PRODUCTION,	
+  'caching'    => Kohana::$environment === Kohana::PRODUCTION,
   'errors' => ( Kohana::$environment === Kohana::PRODUCTION ? FALSE : TRUE )
 ));
 
@@ -170,17 +170,17 @@ Kohana::modules(array(
     ->defaults(array(
         'controller' => 'siggy',
         'action' => 'update',
-    )); 
+    ));
    Route::set('siggyUpdateSilent', 'updateSilent')
     ->defaults(array(
         'controller' => 'siggy',
         'action' => 'updateSilent',
-    )); 
+    ));
    Route::set('siggyGetJumpLog', 'getJumpLog')
     ->defaults(array(
         'controller' => 'siggy',
         'action' => 'getJumpLog',
-    )); 
+    ));
     /*
    Route::set('siggySystemData', 'getSystemData(/<name>)')
     ->defaults(array(
@@ -191,84 +191,84 @@ Kohana::modules(array(
     ->defaults(array(
         'controller' => 'special',
         'action' => 'preProcess',
-    )); 
+    ));
    Route::set('siggyFixGroup', 'fixGroup')
     ->defaults(array(
         'controller' => 'special',
         'action' => 'fixGroup',
-    )); 
+    ));
    Route::set('siggyProcessStatics', 'processStatics(/<region>)')
     ->defaults(array(
         'controller' => 'special',
         'action' => 'processStatics',
-    )); 
-    
+    ));
+
    Route::set('siggyBuildStatic', 'buildStatics')
     ->defaults(array(
         'controller' => 'special',
         'action' => 'buildStatics',
-    )); 
-    
+    ));
+
 
    Route::set('siggySigs', 'do(<action>)')
     ->defaults(array(
         'controller' => 'siggy'
-    ));     
-    
+    ));
+
 
    Route::set('siggy-process', 'process/<action>')
     ->defaults(array(
         'controller' => 'siggy'
-    ));     
+    ));
 
    Route::set('login', 'manage/login')
     ->defaults(array(
         'controller' => 'user',
         'action' => 'login',
-    )); 
-    
+    ));
+
    Route::set('manage', 'manage(/<controller>(/<action>(/<id>)))')
     ->defaults(array(
 		'directory'  => 'manage',
         'controller' => 'dashboard',
         'action' => 'index',
-    )); 
-    	
+    ));
+
     Route::set('account', 'account(/<action>)')
     ->defaults(array(
         'controller' => 'account',
         'action' => 'login'
-    )); 
-    
+    ));
+
     Route::set('cron', 'cron(/<action>)')
     ->defaults(array(
         'controller' => 'cron'
-    )); 
-    
+    ));
+
     Route::set('apiChainMaps', 'api/chainMap(/<action>)')
     ->defaults(array(
         'controller' => 'api'
-    )); 
-    
-    
+    ));
+
+
    Route::set('siggyMain', 'system(/<name>)')
     ->defaults(array(
         'controller' => 'siggy',
         'action' => 'index',
-    )); 
+    ));
 
    Route::set('stats', 'stats(/year/<year>(/month(/<month>))(/week/<week>))')
     ->defaults(array(
         'controller' => 'stats',
         'action' => 'overview',
-    ));     
+    ));
 
    Route::set('stats_specific', 'stats/<action>(/year/<year>(/month(/<month>))(/week/<week>))')
     ->defaults(array(
         'controller' => 'stats',
         'action' => 'index',
-    ));  
-	
+    ));
+
   Route::set('pages', 'pages(/<page>)')
     ->defaults(array(
       'controller' => 'pages',
@@ -280,7 +280,7 @@ Kohana::modules(array(
       'controller' => 'siggy',
       'action'     => 'index',
     ));
-    
+
   //  if( Kohana::$environment !== Kohana::PRODUCTION )
    // {
     //  Route::cache(TRUE);
