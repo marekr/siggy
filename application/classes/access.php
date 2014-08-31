@@ -155,7 +155,7 @@ class access
 		$char_data = groupUtils::getCharData( $char_id );
 
 		$access_type = 'char';
-		if( !$corp_data !== FALSE && $char_data != FALSE )
+		if( $corp_data !== FALSE && $char_data != FALSE )
 		{
 			$all_groups = array_merge($corp_data['groups'],$char_data['groups']);
 
