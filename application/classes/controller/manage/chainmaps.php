@@ -25,13 +25,13 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 	/**
 	* View: Redirect admins to admin index, users to user profile.
 	*/
-	public function action_index() 
+	public function action_index()
 	{
-		if( Auth::$user->isGroupAdmin() ) 
+		if( Auth::$user->isGroupAdmin() )
 		{
 			HTTP::redirect('manage/billing/overview');
 		}
-		else 
+		else
 		{
 			HTTP::redirect('account/overview');
 		}
@@ -47,14 +47,14 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
 		$group = ORM::factory('group', Auth::$user->data['groupID']);
 		$chainmaps = $group->chainmaps->find_all();
-		
+
 		$view->set('chainmaps', $chainmaps );
 	}
 
 	public function action_add()
 	{
 		$errors = array();
-		
+
 		$this->template->title = __('Add a Chain Map');
 
 		$group = ORM::factory('group', Auth::$user->data['groupID']);
@@ -66,12 +66,12 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		$view = View::factory('manage/chainmaps/add_edit_form');
 		$view->bind('errors', $errors);
 		$view->bind('data', $data);
-		
+
 		$view->set('mode', 'add');
-		
-		if ($this->request->method() == "POST") 
+
+		if ($this->request->method() == "POST")
 		{
-			try 
+			try
 			{
 				$sg = ORM::factory('chainmap');
 				$sg->chainmap_name = $_POST['chainmap_name'];
@@ -88,22 +88,22 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 						Message::add( 'error', __('Error: The password was not saved because it did not match between the two fields.') );
 					}
 				}
-		
+
 				list($sg->chainmap_homesystems_ids, $sg->chainmap_homesystems) = $this->__process_home_system_input($_POST['chainmap_homesystems']);
 
 				$sg->chainmap_skip_purge_home_sigs = intval($_POST['chainmap_skip_purge_home_sigs']);
 
 				$sg->save();
-	
+
 				$chainmap = new chainmap($sg->chainmap_id, Auth::$user->data['groupID']);
 				$chainmap->rebuild_map_data_cache();
 				groupUtils::update_group(Auth::$user->data['groupID']);	//trigger last_update value to change
 				groupUtils::recacheGroup(Auth::$user->data['groupID']);
-				
+
 				HTTP::redirect('manage/chainmaps/list');
 				return;
-			} 
-			catch (ORM_Validation_Exception $e) 
+			}
+			catch (ORM_Validation_Exception $e)
 			{
 				// Get errors for display in view
 				// Note how the first param is the path to the message file (e.g. /messages/register.php)
@@ -116,16 +116,15 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				$view->set('data', $data);
 			}
 		}
-		  
+
 		$this->template->content = $view;
 	}
-   
+
 	private function __process_home_system_input($txt)
 	{
 		$homeSystemIDs = array();
 		$homeSystems = array();
-	
-	
+
 		$txt = trim($txt);
 		if( !empty($txt) )
 		{
@@ -155,21 +154,88 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				}
 			}
 		}
-		
+
 		return array( implode(',', $homeSystemIDs), implode(',', $homeSystems) );
 	}
-   
+
+	public function action_remove_access()
+	{
+		$id = $this->request->param('id');
+		list($chainmap_id, $groupMemberID) = explode('-', $id);
+
+		$cm = ORM::factory('chainmap', $chainmap_id);
+		if( $cm->group_id != Auth::$user->data['groupID'] )
+		{
+			Message::add('error', __('Error: You do not have permission for that chainmap.'));
+			HTTP::redirect('manage/chainmaps');
+		}
+
+		$member = ORM::factory('groupmember', $groupMemberID);
+		if( $member->groupID != Auth::$user->data['groupID'] )
+		{
+			Message::add('error', __('Error: The group member does not exist.'));
+			HTTP::redirect('manage/group/members');
+		}
+
+		$view = View::factory('manage/chainmaps/remove_access');
+		$view->set('id', $id);
+		if ($this->request->method() == HTTP_Request::POST)
+		{
+			DB::query(Database::DELETE, 'DELETE FROM chainmaps_access
+											WHERE group_id=:group_id AND chainmap_id=:chainmap
+											AND groupmember_id=:member_id')
+							->param(':group_id', Auth::$user->data['groupID'])
+							->param(':chainmap', $chainmap_id)
+							->param(':member_id', $groupMemberID)
+							->execute();
+
+
+			$count = DB::query(Database::SELECT, 'SELECT COUNT(*) as total
+											FROM chainmaps_access
+											WHERE groupmember_id=:member_id')
+							->param(':member_id', $groupMemberID)
+							->execute()
+							->current();
+
+			$eveID = $member->eveID;
+			$memberType = $member->memberType;
+			if( !isset($count['total']) || $count['total'] == 0)
+			{
+				$member->delete();
+			}
+
+			if( $memberType == 'corp' )
+			{
+				groupUtils::deleteCorpCache( $eveID );
+			}
+			elseif( $memberType == 'char' )
+			{
+				groupUtils::deleteCharCache( $eveID );
+			}
+
+			//trigger last_update value to change
+			groupUtils::update_group(Auth::$user->data['groupID']);
+			groupUtils::recacheGroup(Auth::$user->data['groupID']);
+
+			HTTP::redirect('manage/group/members');
+		}
+
+		$view->set('data', $member->as_array() );
+
+		$this->template->content = $view;
+	}
+
 	public function action_edit()
 	{
 		$id = intval($this->request->param('id'));
-			
+
 		$this->template->title = __('Edit Chain Map');
 
 		$sg = ORM::factory('chainmap', $id);
 		if( $sg->group_id != Auth::$user->data['groupID'] )
 		{
 			Message::add('error', __('Error: You do not have permission to edit that chainmap.'));
-			HTTP::redirect('manage/chinmaps');
+			HTTP::redirect('manage/chainmaps');
 		}
 		$group = ORM::factory('group', Auth::$user->data['groupID']);
 
@@ -179,12 +245,12 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		$view->bind('errors', $errors);
 		$view->set('mode', 'edit');
 		$view->set('id', $id);
-		
+
 		$chainmap = new chainmap($id, Auth::$user->data['groupID']);
-		
-		if ( !empty($_POST)  ) 
+
+		if ( !empty($_POST)  )
 		{
-			try 
+			try
 			{
 				$sg->chainmap_name = $_POST['chainmap_name'];
 
@@ -209,11 +275,11 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				$chainmap->rebuild_map_data_cache();
 				groupUtils::update_group(Auth::$user->data['groupID']);	//trigger last_update value to change
 				groupUtils::recacheGroup(Auth::$user->data['groupID']);
-				
+
 				HTTP::redirect('manage/chainmaps/list');
 				return;
-			} 
-			catch (ORM_Validation_Exception $e) 
+			}
+			catch (ORM_Validation_Exception $e)
 			{
 				// Get errors for display in view
 				// Note how the first param is the path to the message file (e.g. /messages/register.php)
@@ -229,12 +295,12 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 										 ) );
 			}
 		}
-	  
+
 		$view->set('data', $sg->as_array() );
-  
+
 		$this->template->content = $view;
-	}   
-   
+	}
+
 
 	public function action_remove()
 	{
@@ -248,7 +314,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 			Message::add('error', __('Error: You do not have permission to remove that chainmap.'));
 			HTTP::redirect('manage/chainmaps');
 		}
-		
+
 		if( $chainmap->chainmap_type == 'default' )
 		{
 			Message::add('error', __('Error: You cannot delete your default chain map'));
@@ -257,9 +323,9 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
 		$view = View::factory('manage/chainmaps/delete');
 		$view->set('id', $id);
-		if ( !empty($_POST)  ) 
+		if ( !empty($_POST)  )
 		{
-			try 
+			try
 			{
 				DB::delete('chainmaps_access')->where('chainmap_id', '=', $chainmap->chainmap_id)->execute();
 				DB::delete('activesystems')->where('chainmap_id', '=', $chainmap->chainmap_id)->execute();
@@ -271,7 +337,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				//$this->__recacheCorpMembers();
 				HTTP::redirect('manage/chainmaps/list');
 			}
-			catch (Exception $e) 
+			catch (Exception $e)
 			{
 				if($e instanceof HTTP_Exception)
 				{
@@ -288,11 +354,11 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
 		$this->template->content = $view;
 	}
-	
+
 	/**
 	* View: Access not allowed.
 	*/
-	public function action_noaccess() 
+	public function action_noaccess()
 	{
 		$this->template->title = __('Access not allowed');
 		$view = $this->template->content = View::factory('user/noaccess');

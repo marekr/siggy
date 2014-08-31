@@ -272,7 +272,6 @@ final class groupUtils
 		$cache = Cache::instance(CACHE_METHOD);
 
 		$corp_data = $cache->get('corp-'.$corpID);
-		$corp_data = null;
 		if( $corp_data != null )
 		{
 			return $corp_data;
@@ -292,8 +291,6 @@ final class groupUtils
 
 		$cache = Cache::instance(CACHE_METHOD);
 		$group_data = $cache->get('group-'.$group_id);
-
-		$groupData = null;
 		if( $group_data == null )
 		{
 			return self::recacheGroup($group_id);

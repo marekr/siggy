@@ -84,6 +84,7 @@ class Controller_Manage_Group extends Controller_Manage
 							->execute()
 							->as_array();
 			$html->set('members', $members);
+			$html->set('chainmap_id', $c['chainmap_id']);
 
 			$membersHTML[ $c['chainmap_id'] ] = $html;
 		}
@@ -226,10 +227,8 @@ class Controller_Manage_Group extends Controller_Manage
 		}
 	}
 
-
-
-   public function action_editMember()
-   {
+	public function action_editMember()
+	{
 		$id = $this->request->param('id');
 
 		$this->template->title = __('Group management');
@@ -248,7 +247,7 @@ class Controller_Manage_Group extends Controller_Manage
 		$view->set('mode', 'edit');
 		$view->set('id', $id);
 
-		if ($this->request->method() == "POST")
+		if ($this->request->method() == HTTP_Request::POST)
 		{
 			try
 			{
@@ -313,7 +312,7 @@ class Controller_Manage_Group extends Controller_Manage
 		$view->set('group', $group );
 
 		$this->template->content = $view;
-   }
+	}
 
 	public function action_removeMember()
 	{
@@ -330,36 +329,23 @@ class Controller_Manage_Group extends Controller_Manage
 
 		$view = View::factory('manage/group/deleteForm');
 		$view->set('id', $id);
-		if ( !empty($_POST)  )
+		if ($this->request->method() == HTTP_Request::POST)
 		{
-			try
+			/* Delete the cache so it gets rebuilt */
+			if( $member->memberType == 'corp' )
 			{
-				if( $member->memberType == 'corp' )
-				{
-					groupUtils::deleteCorpCache( $member->eveID );
-				}
-				elseif( $member->memberType == 'char' )
-				{
-					groupUtils::deleteCharCache( $member->eveID );
-				}
-				groupUtils::update_group(Auth::$user->data['groupID']);	//trigger last_update value to change
-				groupUtils::recacheGroup(Auth::$user->data['groupID']);
+				groupUtils::deleteCorpCache( $member->eveID );
+			}
+			elseif( $member->memberType == 'char' )
+			{
+				groupUtils::deleteCharCache( $member->eveID );
+			}
 
-				$member->delete();
-				//$this->__recacheCorpMembers();
-				HTTP::redirect('manage/group/members');
-			}
-			catch (Exception $e)
-			{
-				if($e instanceof HTTP_Exception)
-				{
-					throw $e;
-				}
-				else
-				{
-					Message::add('error', __('Error: Removal of member failed for unknown reasons.'));
-				}
-			}
+			//trigger last_update value to change
+			groupUtils::update_group(Auth::$user->data['groupID']);
+			groupUtils::recacheGroup(Auth::$user->data['groupID']);
+
+			HTTP::redirect('manage/group/members');
 		}
 
 		$view->set('data', $member->as_array() );

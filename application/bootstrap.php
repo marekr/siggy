@@ -233,8 +233,7 @@ Kohana::modules(array(
         'controller' => 'dashboard',
         'action' => 'index',
     )); 
-    
-    
+    	
     Route::set('account', 'account(/<action>)')
     ->defaults(array(
         'controller' => 'account',

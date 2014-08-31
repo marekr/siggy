@@ -17,7 +17,7 @@
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-	
+
 	<script type="text/javascript">
 	$(function() {
 
@@ -36,7 +36,7 @@
 		})
 	})
 	</script>
-	
+
 
     <!-- Le fav and touch icons -->
     <link rel="shortcut icon" href="<?php echo URL::base(TRUE, TRUE);?>favicon.ico">
@@ -67,11 +67,11 @@
 					<i class="fa fa-user fa-fw"></i> <?php echo Auth::$user->data['username']; ?> <i class="fa fa-caret-down"></i>
 				</a>
 				<ul class="dropdown-menu dropdown-user">
-					<li>								
+					<li>
 						<?php if( count($avaliableGroups) > 1 ): ?>
 						<form action='<?php echo URL::base(TRUE, TRUE);?>manage/admin/changeGroup' method='post' style="padding: 6px;">
 							<select name='group' class="form-control input-sm " onchange='submit();'>
-							<?php 
+							<?php
 								$selected = Auth::$user->data['groupID'];
 								foreach( $avaliableGroups as $m ): ?>
 								<option value="<?php echo $m['groupID']; ?>" <?php echo ( ($selected == $m['groupID']) ? "selected='seleced'" : ''); ?>><?php echo $m['groupName']; ?></option>
@@ -96,6 +96,15 @@
 						<?php echo Html::anchor('manage/dashboard', __('<i class="fa fa-sitemap fa-fw"></i>Dashboard')); ?>
 					</li>
 					<?php if( Auth::$user->data['admin'] || $perms['can_manage_group_members'] || $perms['can_manage_access'] ): ?>
+                    <li class="active <?php echo (Request::initial()->controller() == "Group"?" active" : "") ?>">
+                        <a href="#"><i class="fa fa-chain fa-fw"></i> Chainmaps<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <?php echo Html::anchor('manage/chainmaps/list', __('Manage')); ?>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
 					<li class="active <?php echo (Request::initial()->controller() == "Group"?" active" : "") ?>">
 						<a href="#"><i class="fa fa-key fa-fw"></i> Access<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
@@ -106,18 +115,9 @@
 							<?php endif; ?>
 							<?php if( Auth::$user->data['admin'] || $perms['can_manage_access'] ): ?>
 							<li>
-								<?php echo Html::anchor('manage/access/configure', __('Management Access')); ?>
+								<?php echo Html::anchor('manage/access/configure', __('Admin Access')); ?>
 							</li>
 							<?php endif; ?>
-						</ul>
-						<!-- /.nav-second-level -->
-					</li>
-					<li class="active <?php echo (Request::initial()->controller() == "Group"?" active" : "") ?>">
-						<a href="#"><i class="fa fa-chain fa-fw"></i> Chainmaps<span class="fa arrow"></span></a>
-						<ul class="nav nav-second-level">
-							<li>
-								<?php echo Html::anchor('manage/chainmaps/list', __('Manage')); ?>
-							</li>
 						</ul>
 						<!-- /.nav-second-level -->
 					</li>
@@ -177,7 +177,7 @@
 			<?php echo Message::output(); ?>
 		</div>
 		<?php endif; ?>
-		
+
 		<div class="row">
 			<div class="col-lg-12">
 				<?php echo $content; ?>
