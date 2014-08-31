@@ -156,7 +156,6 @@ class Controller_Manage_Group extends Controller_Manage
 							$member->memberType = $_POST['memberType'];
 							$member->save();
 						}
-						print_r($member);
 
 						if( isset( $_POST['chainmap_id'] ) && intval($_POST['chainmap_id']) > 0)
 						{
@@ -200,10 +199,42 @@ class Controller_Manage_Group extends Controller_Manage
 					$view = View::factory('manage/group/addMemberSimpleSelected');
 					$group = ORM::factory('group', Auth::$user->data['groupID']);
 
-					$chainmaps = DB::query(Database::SELECT, "SELECT * FROM chainmaps WHERE group_id=:group")
-									->param(':group', Auth::$user->data['groupID'])
-									->execute()
-									->as_array();
+					//see if member exists?
+					$member = ORM::factory('groupmember')->where('eveID','=',$_POST['eveID'])
+														->where('groupID','=', Auth::$user->data['groupID'])
+														->where('memberType','=', $_POST['memberType'])
+														->find();
+
+					$chainmaps = array();
+					if( $member->id )
+					{
+						$chainmaps = DB::query(Database::SELECT, "SELECT * FROM chainmaps
+																	WHERE group_id=:group AND
+																	chainmap_id NOT IN(
+																		SELECT chainmap_id FROM chainmaps_access
+																		WHERE group_id=:group AND groupmember_id=:member
+																	)
+																	")
+										->param(':group', Auth::$user->data['groupID'])
+										->param(':member', $member->id)
+										->execute()
+										->as_array();
+					}
+					else
+					{
+						$chainmaps = DB::query(Database::SELECT, "SELECT * FROM chainmaps
+																	WHERE group_id=:group")
+										->param(':group', Auth::$user->data['groupID'])
+										->execute()
+										->as_array();
+					}
+
+					if( !count($chainmaps) )
+					{
+						Message::add('error', __('This member already has access to all chain maps possible'));
+						HTTP::redirect('manage/group/addMember');
+					}
+
 					$view->set('chainmaps', $chainmaps);
 					$view->set('group', $group );
 

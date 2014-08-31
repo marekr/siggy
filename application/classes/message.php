@@ -45,6 +45,11 @@ class Message
 		{
 			foreach($messages as $type => $messages)
 			{
+				if( $type == 'error' )
+				{
+					$type = 'danger';
+				}
+				
 				foreach($messages as $message)
 				{
 					$str .= '<div class="alert alert-'.$type.'">'.$message.'</div>';
