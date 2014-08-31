@@ -54,7 +54,8 @@ function siggymain( options )
 
 	this.defaultDisplayStates = {
 		statsOpen: false,
-		sigsAddOpen: true
+		sigsAddOpen: true,
+		showAnomalies: true
 	}
 
 	this.displayStates = this.defaultDisplayStates;
@@ -177,6 +178,13 @@ siggymain.prototype.initialize = function ()
 	$('#bear-C5').click(function() { that.setBearTab(5); return false; });
 	$('#bear-C6').click(function() { that.setBearTab(6); return false; });
 
+
+	$('#checkbox-show-anomalies').attr('checked', this.displayStates.showAnomalies);
+	$('#checkbox-show-anomalies').change( function()
+	{
+		that.changeAnomState($(this).is(':checked'));
+	});
+
 	this.initializeCollaspibles();
 	this.initializeTabs();
 
@@ -184,6 +192,22 @@ siggymain.prototype.initialize = function ()
 	this.initializePOSes();
 
 	this.initializeExitFinder();
+}
+
+siggymain.prototype.changeAnomState = function(visible)
+{
+	this.displayStates.showAnomalies = visible;
+	this.saveDisplayState();
+
+	if( visible )
+	{
+		$('#sig-table tbody tr').show();
+	}
+	else
+	{
+		$('#sig-table tbody tr.type-combat').hide();
+	}
+	this.colorizeSigRows();
 }
 
 siggymain.prototype.initializeCollaspibles = function()
@@ -816,6 +840,7 @@ siggymain.prototype.updateSystemOptionsForm = function (systemData)
 
 siggymain.prototype.updateSigRow = function (sigData, flashSig)
 {
+	var baseID = '#sig-' + sigData.sigID;
 	var creationInfo = '<b>Added by:</b> '+sigData.creator;
 	if( sigData.lastUpdater != '' && typeof(sigData.lastUpdater) != "undefined" )
 	{
@@ -823,20 +848,24 @@ siggymain.prototype.updateSigRow = function (sigData, flashSig)
 		creationInfo += '<br /><b>Updated at:</b> '+siggymain.displayTimeStamp(sigData.updated);
 	}
 
-	$('#sig-' + sigData.sigID + ' td.sig').text(sigData.sig);
-	$('#sig-' + sigData.sigID + ' td.type').text(this.convertType(sigData.type));
+	$(baseID + ' td.sig').text(sigData.sig);
+	$(baseID + ' td.type').text(this.convertType(sigData.type));
 
 	if( this.settings.showSigSizeCol )
 	{
-			$('#sig-' + sigData.sigID + ' td.size').text(sigData.sigSize);
+			$(baseID + ' td.size').text(sigData.sigSize);
 	}
 
 	//stupidity part but ah well
-	$('#sig-' + sigData.sigID + ' td.desc').text(this.convertSiteID(this.systemClass, sigData.type, sigData.siteID));
-	$('#sig-' + sigData.sigID + ' td.desc p').remove();
-	$('#sig-' + sigData.sigID + ' td.desc').append($('<p>').text(sigData.description));
+	$(baseID + ' td.desc').text(this.convertSiteID(this.systemClass, sigData.type, sigData.siteID));
+	$(baseID + ' td.desc p').remove();
+	$(baseID + ' td.desc').append($('<p>').text(sigData.description));
 	$('creation-info-' + sigData.sigID).html(creationInfo);
 
+	if( !this.displayStates.showAnomalies && sigData.type == 'combat')
+	{
+		$(baseID).hide();
+	}
 
 	//if( flashSig )
 	///{
@@ -863,6 +892,9 @@ siggymain.prototype.addSigRow = function (sigData, flashSig)
 {
 	var that = this;
 
+	var row = $('<tr>').attr('id', 'sig-' + sigData.sigID);
+	row.addClass('type-'+sigData.type);
+
 	var descTD = $('<td>').addClass('desc');
 
 	descTD.text(this.convertSiteID(this.systemClass, sigData.type, sigData.siteID));
@@ -882,14 +914,7 @@ siggymain.prototype.addSigRow = function (sigData, flashSig)
 									});
 
 	var editTD = $('<td>').addClass('center-text edit').append(editIcon);
-	var row = $('<tr>').attr('id', 'sig-' + sigData.sigID)
-						.append(editTD)
-						.append($('<td>').addClass('center-text sig').text(sigData.sig));
 
-	if( this.settings.showSigSizeCol )
-	{
-		row.append( $('<td>').addClass('center-text size').text(sigData.sigSize) );
-	}
 
 	var typeTD = $('<td>').addClass('center-text type')
 						  .text(this.convertType(sigData.type));
@@ -910,6 +935,13 @@ siggymain.prototype.addSigRow = function (sigData, flashSig)
 									{
 										that.removeSig(sigData.sigID)
 									});
+	row.append(editTD)
+		.append($('<td>').addClass('center-text sig').text(sigData.sig));
+
+	if( this.settings.showSigSizeCol )
+	{
+		row.append( $('<td>').addClass('center-text size').text(sigData.sigSize) );
+	}
 	row.append(typeTD)
 		.append(descTD)
 		.append(infoTD)
@@ -935,6 +967,11 @@ siggymain.prototype.addSigRow = function (sigData, flashSig)
 	if( flashSig )
 	{
 		$('#sig-' + sigData.sigID).fadeOutFlash("#A46D00", 20000);
+	}
+
+	if( !this.displayStates.showAnomalies && sigData.type == 'combat')
+	{
+		row.hide();
 	}
 }
 
@@ -1237,9 +1274,12 @@ siggymain.prototype.colorizeSigRows = function()
 	var i = 0;
 	$('#sig-table tbody tr').each( function() {
 		$( this ).removeClass('alt');
-		if( i % 2 != 0 )
-			$( this ).addClass('alt');
-		i++;
+		if( $(this).is(':visible') )
+		{
+			if( i % 2 != 0 )
+				$( this ).addClass('alt');
+			i++;
+		}
 	});
 }
 
