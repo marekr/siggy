@@ -7,27 +7,27 @@ final class miscUtils
 											 1 => "Forgotten Perimeter Coronation Platform",
 											 2 => "Forgotten Perimeter Power Array"
 											),
-								2 => array( 
+								2 => array(
 									0  => "",
 									1  => "Forgotten Perimeter Gateway",
 									2  => "Forgoten Perimeter Habitation Coils"
 											),
-								3 => array( 
+								3 => array(
 									0  => "",
 									1  => "Forgotten Frontier Quarantine Outpost",
 									2  => "Forgotten Frontier Recursive Depot"
 											),
-								4 => array( 
+								4 => array(
 									0  => "",
 									1  => "Forgotten Frontier Conversion Module",
 									2  => "Forgotten Frontier Evacuation Center"
 											),
-								5 => array( 
+								5 => array(
 									0  => "",
 									1  => "Forgotten Core Data Field",
 									2  => "Forgotten Core Information Pen"
 											),
-								6 => array( 
+								6 => array(
 									0  => "",
 									1  => "Forgotten Core Assembly Hall",
 									2  => "Forgotten Circuitry Disassembler"
@@ -38,35 +38,35 @@ final class miscUtils
 													 1 => "Unsecured Perimeter Amplifier",
 													 2 => "Unsecured Perimeter Information Center"
 													),
-												2 => array( 
+												2 => array(
 													0  => "",
 													1  => "Unsecured Perimeter Comms Relay",
 													2  => "Unsecured Transponder Farm"
 															),
-												3 => array( 
+												3 => array(
 													0  => "",
 													1  => "Unsecured Frontier Database",
 													2  => "Unsecured Frontier Receiver"
 															),
-												4 => array( 
+												4 => array(
 													0  => "",
 													1  => "Unsecured Frontier Digital Nexus",
 													2  => "Unsecured Frontier Trinary Hub"
 															),
-												5 => array( 
+												5 => array(
 													0  => "",
 													1  => "Unsecured Frontier Enclave Relay",
 													2  => "Unsecured Frontier Server Bank"
 															),
-												6 => array( 
+												6 => array(
 													0  => "",
 													1  => "Unsecured Core Backup Array",
 													2  => "Unsecured Core Backup Array"
 															)
 							);
-								
-						
-		public static $gravsLookup = array( 	
+
+
+		public static $gravsLookup = array(
 			0 => "",
 			1 => "Average Frontier Deposit",
 			2 => "Unexceptional Frontier Deposit",
@@ -80,12 +80,12 @@ final class miscUtils
 			10 => "Isolated Core Deposit"
 		);
 
-		public static $ladarsLookup = array( 	
+		public static $ladarsLookup = array(
 			0 => "",
 			1 => "Barren Perimeter Reservoir",
 			2 => "Minor Perimeter Reservoir",
 			3 => "Ordinary Perimeter Reservoir",
-			4 => "Sizable Perimeter Reservoir",
+			4 => "Sizeable Perimeter Reservoir",
 			5 => "Token Perimeter Reservoir",
 			6 => "Bountiful Frontier Reservoir",
 			7 => "Vast Frontier Reservoir",
@@ -103,11 +103,11 @@ final class miscUtils
 			$total = 22420*$memberCount + 283650;
 			return $total*$days;
 		}
-		
+
 		static function parseIngameSigExport( $string )
 		{
 			$resultingSigs = array();
-	
+
 			$lines = explode("\n", $string);
 			foreach( $lines as $line )
 			{
@@ -116,22 +116,22 @@ final class miscUtils
 				{
 					continue;
 				}
-				
+
 				$sigData = array('type' => 'none', 'sig' => '', 'siteID' => 0);
-				
+
 				$matches = array();
-				
+
 				foreach($data as $k => $item)
 				{
 					$item = trim($item);
 					preg_match("/^([a-zA-Z]{3})-([0-9]{3})$/", $item, $matches );
-					
+
 					if( count($matches) == 3 )	//SIG-NUM, SIG, NUM
 					{
 						$sigData['sig'] = $matches[1];
 						continue;
 					}
-					
+
 					preg_match("/^(Cosmic Anomaly)$/", $item, $matches );
 					if( count($matches) )
 					{
@@ -140,9 +140,9 @@ final class miscUtils
 						//and stop..
 						break;
 					}
-					
+
 					preg_match("/^(Wormhole|Data Site|Gas Site|Relic Site|Ore Site)$/", $item, $matches );
-					if( count($matches) == 2 )	
+					if( count($matches) == 2 )
 					{
 						switch( $matches[1] )
 						{
@@ -173,7 +173,7 @@ final class miscUtils
 						continue;
 					}
 				}
-				
+
 				if( $sigData['sig'] != '' )
 				{
 					$resultingSigs[] = $sigData;
@@ -181,7 +181,7 @@ final class miscUtils
 			}
 			return $resultingSigs;
 		}
-		
+
 		static function siteIDLookupByName( $name, $type )
 		{
 			if( $type == 'grav' )
@@ -203,7 +203,7 @@ final class miscUtils
 						return $k;
 					}
 				}
-				
+
 			}
 			else if( $type == 'radar' )
 			{
@@ -231,7 +231,7 @@ final class miscUtils
 					}
 				}
 			}
-				
+
 			return 0;
 		}
 
@@ -251,22 +251,22 @@ final class miscUtils
 				}
 				$querySQL = implode(" OR ", $queryArray);
 				$results = DB::query(Database::SELECT, 'SELECT * FROM corporations WHERE '.$querySQL)->execute()->as_array();
-				
+
 				if( count( $results ) )
 				{
 					return $results;
 				}
 			}
-		
+
 			require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
 			spl_autoload_register( "Pheal::classload" );
 			PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
 			PhealConfig::getInstance()->http_ssl_verifypeer = false;
-			$pheal = new Pheal(null,null,'eve');      
-			
+			$pheal = new Pheal(null,null,'eve');
+
 			$result = $pheal->CharacterID( array( 'names' => $names ) )->toArray();
 			$potentialCorps = $result['result']['characters'];
-			
+
 			if( $type == 'corp' )
 			{
 				$pheal->scope = 'corp';
@@ -275,7 +275,7 @@ final class miscUtils
 			{
 				$pheal->scope = 'eve';
 			}
-			
+
 			$resultArray = array();
 			foreach( $potentialCorps as $corp )
 			{
@@ -294,15 +294,15 @@ final class miscUtils
 												->param(':description', $result['description'] )
 												->param(':ticker', $result['ticker'] )
 												->param(':lastUpdate', time() )
-												->execute();	
-						$resultArray[] = $result;				
-					}	
+												->execute();
+						$resultArray[] = $result;
+					}
 					else
 					{
 						$result = $pheal->CharacterInfo( array( 'characterID' => (int)$corp['characterID'] ) )->toArray();
 						$result = $result['result'];
-						
-						$resultArray[] = $result;				
+
+						$resultArray[] = $result;
 					}
 				}
 				catch( PhealException $e )
@@ -313,19 +313,19 @@ final class miscUtils
 					}
 				}
 			}
-			
+
 			return $resultArray;
-		}		
+		}
 
 		static function getDBCacheItem( $key )
 		{
 			$cache = DB::query(Database::SELECT, "SELECT * FROM cache_store WHERE cacheKey = :key")
 												->param(':key', $key)
 						  ->execute()->current();
-						  
+
 			return $cache['cacheValue'];
 		}
-		
+
 		static function storeDBCacheItem( $key, $value )
 		{
 			DB::query(null, "INSERT INTO cache_store (`cacheKey`,`cacheValue`) VALUES (:key, :value)  ON DUPLICATE KEY UPDATE cacheValue=:value")
@@ -333,22 +333,22 @@ final class miscUtils
 				->param(':value', $value )
 				->execute();
 		}
-		
+
 		static function increment_stat($stat, $groupData)
 		{
 			if( !$groupData['statsEnabled'] )
 			{
 				return;
 			}
-			
+
 			if( !in_array( $stat, array('adds','updates','wormholes','pos_adds','pos_updates') ) )
 			{
 				throw new Exception("invalid stat key");
 			}
-			
+
 			$duplicate_update_string = $stat .'='. $stat .'+1';
-			
-			DB::query(Database::INSERT, 'INSERT INTO stats (`charID`,`charName`,`groupID`,`chainmap_id`,`dayStamp`,`'.$stat.'`) 
+
+			DB::query(Database::INSERT, 'INSERT INTO stats (`charID`,`charName`,`groupID`,`chainmap_id`,`dayStamp`,`'.$stat.'`)
 													VALUES(:charID, :charName, :groupID, :chainmap, :dayStamp, 1)
 													ON DUPLICATE KEY UPDATE '.$duplicate_update_string)
 								->param(':charID',  $groupData['charID'] )
@@ -356,30 +356,30 @@ final class miscUtils
 								->param(':groupID', $groupData['groupID'] )
 								->param(':chainmap', $groupData['active_chain_map'] )
 								->param(':dayStamp', miscUtils::getDayStamp() )
-								->execute();	
+								->execute();
 		}
 
 		static function findSystemByName($name)
 		{
 			$systemID = DB::query(Database::SELECT, 'SELECT id,name FROM solarsystems WHERE LOWER(name) = :name')
 																->param(':name', $name )->execute()->get('id', 0);
-																
-			
+
+
 			return $systemID;
-		}   
-		
+		}
+
 		static function apiFetchCorp( $corpID )
 		{
 			require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
 			spl_autoload_register( "Pheal::classload" );
 			PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
 			PhealConfig::getInstance()->http_ssl_verifypeer = false;
-			$pheal = new Pheal(null,null,'corp');      
-				
+			$pheal = new Pheal(null,null,'corp');
+
 			$result = $pheal->CorporationSheet( array( 'corporationID' => (int)$gm->eveID ) );
 			$count = $result->memberCount;
 		}
-   
+
 
 		static function getDayStamp()
 		{
@@ -387,7 +387,7 @@ final class miscUtils
 			$today = getdate();
 			return gmmktime(0,0,0,$today['mon'],$today['mday'],$today['year']);
 		}
-	
+
 		static function getHourStamp( $offset=0 )
 		{
 			date_default_timezone_set('UTC');
@@ -395,82 +395,82 @@ final class miscUtils
 			$today = getdate($now);
 			return gmmktime($today['hours'],0,0,$today['mon'],$today['mday'],$today['year']);
 		}
-		
 
-	
+
+
 		static function timeToHourString( $timestamp )
 		{
 			$date = getdate($timestamp);
-		
+
 			return str_pad( $date['hours'], 2, '0', STR_PAD_LEFT).':00';
 		}
-	
 
-		static function week_bounds( $date, &$start, &$end ) 
+
+		static function week_bounds( $date, &$start, &$end )
 		{
 			$date = strtotime( $date );
-			
+
 			// Find the start of the week, working backwards
 			$start = $date;
-			while( date( 'w', $start ) > WEEK_START ) 
+			while( date( 'w', $start ) > WEEK_START )
 			{
 				$start -= 86400; // One day
 			}
-			
+
 			// End of the week is simply 6 days from the start
 			$end = date( 'Y-m-d', $start + ( 6 * 86400 ) );
 			$start = date( 'Y-m-d', $start );
-		}			
-		
-		
-		static function isIGB() 
+		}
+
+
+		static function isIGB()
 		{
-			if ( isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'],'EVE-IGB') !== false ) 
+			if ( isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'],'EVE-IGB') !== false )
 			{
 				return TRUE;
 			}
-			
+
 			if ( isset($_SERVER['HTTP_EVE_TRUSTED']) )
 			{
 				return TRUE;
 			}
-			
+
 			return FALSE;
 		}
-		
-		static function generateString($length = 14) 
+
+		static function generateString($length = 14)
 		{
 			$randomString = substr( md5(uniqid(microtime() . rand(), true)), 0 ,14);
 			return $randomString;
 		}
-		
-		static function generateSalt($length = 10) 
+
+		static function generateSalt($length = 10)
 		{
 			$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()';
 			$randomString = '';
-			for ($i = 0; $i < $length; $i++) 
+			for ($i = 0; $i < $length; $i++)
 			{
 				$randomString .= $characters[rand(0, strlen($characters) - 1)];
 			}
-			
+
 			return $randomString;
 		}
-			
-		static function getTrust() 
+
+		static function getTrust()
 		{
-			if ( self::isIGB() ) 
+			if ( self::isIGB() )
 			{
 				//because CCP cant use integers.
-				if (!isset($_SERVER['HTTP_EVE_TRUSTED']) || strtolower($_SERVER['HTTP_EVE_TRUSTED']) == 'no') 
+				if (!isset($_SERVER['HTTP_EVE_TRUSTED']) || strtolower($_SERVER['HTTP_EVE_TRUSTED']) == 'no')
 				{
 					return false;
-				} 
-				else 
+				}
+				else
 				{
 					return true;
 				}
 			}
-			
+
 			return false;
 		}
 
