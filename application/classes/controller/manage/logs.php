@@ -51,8 +51,8 @@ class Controller_Manage_Logs extends Controller_Manage
 	public function action_sessions()
 	{
 		$sessions = array();
-		$sessions = DB::query(Database::SELECT, "SELECT ss.*,sg.sgName FROM siggysessions ss
-												LEFT JOIN subGroups sg ON(sg.subGroupID = ss.subGroupID)
+		$sessions = DB::query(Database::SELECT, "SELECT ss.*,cm.chainmap_name FROM siggysessions ss
+												LEFT JOIN chainmaps cm ON(cm.chainmap_id = ss.chainmap_id)
 												WHERE ss.groupID=:group ORDER BY ss.lastBeep DESC")
 							  ->param(':group', Auth::$user->data['groupID'])
 							  ->execute()
