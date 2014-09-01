@@ -727,6 +727,7 @@ class Controller_Siggy extends FrontController
 		if( isset($_POST['systemID']) && isset($_POST['blob']) && !empty($_POST['blob']) )
 		{
 			$sigs = miscUtils::parseIngameSigExport( $_POST['blob'] );
+			file_put_contents('test.txt', $_POST['blob']);
 
 			$systemID = intval($_POST['systemID']);
 
