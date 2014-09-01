@@ -305,7 +305,45 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 			{
 				DB::delete('chainmaps_access')->where('chainmap_id', '=', $chainmap->chainmap_id)->execute();
 				DB::delete('activesystems')->where('chainmap_id', '=', $chainmap->chainmap_id)->execute();
+				
+				$groupmembers = DB::query(Database::SELECT, 'SELECT *
+									FROM groupmembers
+									WHERE groupID=:group')
+					->param(':group', Auth::$user->data['groupID'])
+					->execute()
+					->as_array();
+				if( count($groupmembers) > 0 )
+				{
+					foreach($groupmembers as $member)
+					{
+						$count = DB::query(Database::SELECT, 'SELECT COUNT(*) as total
+										FROM chainmaps_access
+										WHERE groupmember_id=:member_id')
+						->param(':member_id', $member['id'])
+						->execute()
+						->current();
+						
+						
+						if( !isset($count['total']) || $count['total'] == 0)
+						{
+							DB::query(Database::DELETE, 'DELETE FROM groupmembers
+															WHERE id=:member_id')
+											->param(':member_id', $member['id'])
+											->execute();
 
+						}
+
+						if( $member['memberType'] == 'corp' )
+						{
+							groupUtils::deleteCorpCache( $member['eveID'] );
+						}
+						elseif( $member['memberType'] == 'char' )
+						{
+							groupUtils::deleteCharCache( $member['eveID'] );
+						}
+					}
+				}
+				
 				groupUtils::update_group(Auth::$user->data['groupID']);	//trigger last_update value to change
 				groupUtils::recacheGroup(Auth::$user->data['groupID']);
 				$chainmap->delete();
