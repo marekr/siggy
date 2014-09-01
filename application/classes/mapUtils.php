@@ -99,7 +99,7 @@ final class MapUtils
 		}
 		
 		$name = strtolower($name);
-		$systemID = DB::query(Database::SELECT, "SELECT systemID,displayName FROM activesystems WHERE groupID=:groupID AND chainmap_id=:chainmap AND displayName LIKE 'name'")
+		$systemID = DB::query(Database::SELECT, "SELECT systemID,displayName FROM activesystems WHERE groupID=:groupID AND chainmap_id=:chainmap AND displayName LIKE :name")
 													->param(':name', $name )
 													->param(':groupID', $group_id)
 													->param(':chainmap', $chain_map_id)

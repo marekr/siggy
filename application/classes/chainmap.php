@@ -356,4 +356,33 @@ class chainmap
 			}
 		}
 	}
+	
+	
+	public function find_system_by_name($name)
+	{
+		$systemID = 0;
+		if( empty($name) )
+		{
+			return 0;
+		}
+		
+		$name = strtolower($name);
+		$systemID = DB::query(Database::SELECT, "SELECT systemID,displayName FROM activesystems WHERE groupID=:groupID AND chainmap_id=:chainmap AND displayName LIKE :name")
+													->param(':name', $name )
+													->param(':groupID', $this->group_id)
+													->param(':chainmap', $this->id)
+													->execute()
+													->get('systemID', 0);
+													
+		if( $systemID == 0 )
+		{
+			$systemID = DB::query(Database::SELECT, 'SELECT id,name FROM solarsystems WHERE LOWER(name) = :name')
+																->param(':name', $name )
+																->execute()
+																->get('id', 0);
+																
+		}
+		
+		return $systemID;
+	}
 }

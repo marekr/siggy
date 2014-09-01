@@ -314,7 +314,7 @@ class Controller_Chainmap extends FrontController
 			}
 			elseif( !empty($fromSys) )
 			{
-				$fromSysID = mapUtils::findSystemByName($fromSys, $this->groupData['groupID'], $this->groupData['active_chain_map'] );
+				$fromSysID = $this->chainmap->find_system_by_name($fromSys);
 				if( !$fromSysID )
 				{
 					$errors[] = "The 'from' system could not be looked up by name.";
@@ -328,7 +328,7 @@ class Controller_Chainmap extends FrontController
 			}
 			elseif( !empty($toSys) )
 			{
-				$toSysID = mapUtils::findSystemByName($toSys, $this->groupData['groupID'], $this->groupData['active_chain_map'] );
+				$toSysID = $this->chainmap->find_system_by_name($toSys);
 				if( !$toSysID )
 				{
 					$errors[] = "The 'to' system could not be looked up by name.";
@@ -397,5 +397,58 @@ class Controller_Chainmap extends FrontController
 		{
 			throw new Exception("Selected chain map not found!");
 		}
+	}
+	
+	public function action_autocomplete_wh()
+	{
+		$this->profiler = NULL;
+		$this->auto_render = FALSE;
+
+		$q = '';
+		if ( isset($_GET['q']) )
+		{
+			$q = trim(strtolower($_GET['q']));
+		}
+
+		if ( empty($q) )
+		{
+			return;
+		}
+
+		$customsystems = DB::select( array('solarsystems.name', 'name'), array('activesystems.displayName', 'displayName') )
+										->from('activesystems')
+										->join('solarsystems', 'LEFT')
+										->on('activesystems.systemID', '=', 'solarsystems.id')
+										->where('displayName','like',$q.'%')
+										->where('groupID', '=', $this->groupData['groupID'])
+										->where('chainmap_id', '=', $this->groupData['active_chain_map'])
+										->execute()
+										->as_array();
+
+		foreach($customsystems as $system)
+		{
+			print $system['displayName']."|".$system['name']."\n";
+		}
+
+		$systems = DB::select(array('solarsystems.name', 'name'),array('regions.regionName', 'regionName'), array('solarsystems.sysClass', 'class'))
+								->from('solarsystems')
+								->join('regions', 'LEFT')
+								->on('solarsystems.region', '=', 'regions.regionID')
+								->where('name','like',$q.'%')
+								->execute()
+								->as_array();
+
+		foreach($systems as $system)
+		{
+			if( $system['class'] >= 7 )
+			{
+				print $system['name']."|".$system['regionName']."\n";
+			}
+			else
+			{
+				print $system['name']."|\n";
+			}
+		}
+		die();
 	}
 }
