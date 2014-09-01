@@ -1,6 +1,8 @@
 <!--- chain map -->
-<!--- <i class="fa fa-fw fa-lock"></i>  -->
-<div id="chain-map-container" class="bordered-wrap">
+
+
+<!--- TODO: FIX container style, jquery block breaks the dropdown otherwise ---->
+<div id="chain-map-container" class="bordered-wrap" style="relative !important">
 		<ul id="chain-map-tabs" class="clearfix">
 			<li class="tab tab-active dropdown">
 				<a data-toggle="dropdown" href="#" id="chain-map-title">
