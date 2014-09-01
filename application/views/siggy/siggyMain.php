@@ -286,7 +286,7 @@
             <div id="sig-add-box" class="sub-display-group">
                 <h2 class="hover">
 					<p style="display:inline-block">Signature Adder</p>
-					<textarea name='mass_sigs' style="display:inline-block;width: 400px;margin-left:10px;height:18px;overflow:hidden;" placeholder=" Paste scan results here + Press Enter " type='text'></textarea>
+					<textarea name='mass_sigs' style="display:inline-block;width: 400px;margin-left:10px;height:18px;overflow:hidden;resize: none;" placeholder=" Paste scan results here + Press Enter " type='text'></textarea>
 				</h2>
                 <div>
                     <a href="#" id="mass-add-sigs" class="btn btn-xs btn-default">Mass Sig Reader</a>
