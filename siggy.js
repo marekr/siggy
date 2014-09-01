@@ -1020,7 +1020,7 @@ siggymain.prototype.setupFatalErrorHandler = function()
 siggymain.prototype.saveSystemOptions = function(systemID, label, activity)
 {
 	var $this = this;
-	$.post(that.settings.baseUrl + 'dosaveSystemOptions', {
+	$.post(this.settings.baseUrl + 'dosaveSystemOptions', {
 		systemID: systemID,
 		label: label,
 		activity: activity
