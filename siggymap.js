@@ -1284,7 +1284,7 @@ siggyMap.prototype.registerSystemAutoComplete = function(inputSelector)
     //resets cause fucking browsers
     input.val('');
     input.attr('disabled',false);
-    input.autocomplete({url: that.baseUrl+'doautocompleteWH', minChars: 2,
+    input.autocomplete({url: that.baseUrl+'chainmap/autocomplete_wh', minChars: 2,
         showResult: function(value, data) {
             if( data[0] != '' )
             {
