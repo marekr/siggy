@@ -877,12 +877,13 @@ siggymain.prototype.setupAddBox = function ()
 		//enter key
 		if(e.which == 13)
 		{
-			$this.massAddHandler($this.systemID,$('#sig-add-box input[name=mass_sigs]').val());
+			$this.massAddHandler($this.systemID,$('#sig-add-box textarea[name=mass_sigs]').val());
+			$('#sig-add-box textarea[name=mass_sigs]').val('');
 		}
 	}
 
-	$( document ).on('keypress', '#sig-add-box input[name=mass_sigs]', massSigEnter);
-	$('#sig-add-box input[name=mass_sigs]').click(function() {
+	$( document ).on('keypress', '#sig-add-box textarea[name=mass_sigs]', massSigEnter);
+	$('#sig-add-box textarea[name=mass_sigs]').click(function() {
 		//need this to fix event bubble on the collaspible
 		return false;
 	});
