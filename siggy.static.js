@@ -103,7 +103,7 @@ var ladarsLookup = {
 	1: "Barren Perimeter Reservoir",
 	2: "Minor Perimeter Reservoir",
 	3: "Ordinary Perimeter Reservoir",
-	4: "Sizable Perimeter Reservoir",
+	4: "Sizeable Perimeter Reservoir",
 	5: "Token Perimeter Reservoir",
 	6: "Bountiful Frontier Reservoir",
 	7: "Vast Frontier Reservoir",
