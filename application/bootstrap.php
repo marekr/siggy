@@ -1,10 +1,35 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-define('SIGGY_VERSION', '2.9.1');
-define('WIN_DEV', true);
-define('NEWFRONT', true);
-define('CACHE_METHOD', 'default');
+/**
+ * Fixup $_SERVER headers
+ */
+$headers = apache_request_headers();
+foreach($headers as $k => $v)
+{
+	if( strpos($k,'EVE') == 0 )
+	{
+		$_SERVER['HTTP_' . $k] = $v;
+	}
+}
+
+//CCP putting xml tags in header fix
+if( isset($_SERVER['HTTP_EVE_SHIPTYPENAME']) )
+{
+	$_SERVER['HTTP_EVE_SHIPTYPENAME'] = str_replace('*','',strip_tags($_SERVER['HTTP_EVE_SHIPTYPENAME']));
+}
+
+if( isset($_SERVER['HTTP_EVE_REGIONNAME']) )
+{
+	$_SERVER['HTTP_EVE_REGIONNAME'] = str_replace('*','',strip_tags($_SERVER['HTTP_EVE_REGIONNAME']));
+}
+
+if( isset($_SERVER['HTTP_EVE_SOLARSYSTEMNAME']) )
+{
+	$_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] = str_replace('*','',strip_tags($_SERVER['HTTP_EVE_SOLARSYSTEMNAME']));
+}
+
 // -- Environment setup --------------------------------------------------------
+
 
 // Load the core Kohana class
 require SYSPATH.'classes/kohana/core'.EXT;
@@ -66,28 +91,10 @@ I18n::lang('en-us');
  * Note: If you supply an invalid environment name, a PHP warning will be thrown
  * saying "Couldn't find constant Kohana::<INVALID_ENV_NAME>"
  */
-//if (isset($_SERVER['KOHANA_ENV']))
-//{
-//	Kohana::$environment = constant('Kohana::'.strtoupper($_SERVER['KOHANA_ENV']));
-//}
-
-		Cookie::$salt = 'y[$e.swbDs@|Gd(ndtUSy^';
-/**
- * FUCK the above code, too much work.
- * Set the environment string by the domain (defaults to 'development').
- */
-
-
-$headers = apache_request_headers();
-foreach($headers as $k => $v)
-{
-	if( strpos($k,'EVE') == 0 )
-	{
-		$_SERVER['HTTP_' . $k] = $v;
-	}
-}
-
 Kohana::$environment = ($_SERVER['SERVER_NAME'] !== 'localhost') ? Kohana::PRODUCTION : Kohana::DEVELOPMENT;
+
+Cookie::$salt = 'y[$e.swbDs@|Gd(ndtUSy^';
+
 
 /*
 if( Kohana::$environment == Kohana::DEVELOPMENT && strpos($_SERVER['HTTP_USER_AGENT'],'EVE-IGB') === false )
@@ -112,7 +119,17 @@ if( Kohana::$environment == Kohana::DEVELOPMENT && strpos($_SERVER['HTTP_USER_AG
 	}
 }*/
 
-
+define('SIGGY_VERSION', '2.12b');
+if( Kohana::$environment == Kohana::PRODUCTION)
+{
+	define('WIN_DEV', true);
+	define('CACHE_METHOD', 'memcache');
+}
+else
+{
+	define('WIN_DEV', true);
+	define('CACHE_METHOD', 'default');
+}
 
 /**
  * Initialize Kohana, setting the default options.
@@ -150,139 +167,128 @@ Kohana::$config->attach(new Config_File);
  * Enable modules. Modules are referenced by a relative or absolute path.
  */
 Kohana::modules(array(
-	// 'auth'       => MODPATH.'auth',       // Basic authentication
 	 'cache'      => MODPATH.'cache',      // Caching with multiple backends
-	// 'codebench'  => MODPATH.'codebench',  // Benchmarking tool
 	 'database'   => MODPATH.'database',   // Database access
-	// 'image'      => MODPATH.'image',      // Image manipulation
 	 'orm'        => MODPATH.'orm',        // Object Relationship Mapping
-	// 'unittest'   => MODPATH.'unittest',   // Unit testing
-	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
 	));
+	
+if( Kohana::$environment == Kohana::PRODUCTION)
+{
+	Database::$default = 'production';
+}
+else
+{
+	Database::$default = 'default';
+}
 
 /**
  * Set the routes. Each route must have a minimum of a name, a URI and a set of
  * defaults for the URI.
  */
-//if ( ! Route::cache())
-//{
-   Route::set('siggyUpdate', 'update')
-    ->defaults(array(
-        'controller' => 'siggy',
-        'action' => 'update',
-    ));
-   Route::set('siggyUpdateSilent', 'updateSilent')
-    ->defaults(array(
-        'controller' => 'siggy',
-        'action' => 'updateSilent',
-    ));
-   Route::set('siggyGetJumpLog', 'getJumpLog')
-    ->defaults(array(
-        'controller' => 'siggy',
-        'action' => 'getJumpLog',
-    ));
-    /*
-   Route::set('siggySystemData', 'getSystemData(/<name>)')
-    ->defaults(array(
-        'controller' => 'siggy',
-        'action' => 'systemData',
-    )); */
-   Route::set('siggyPreProcess', 'preProcess(/<start>)')
-    ->defaults(array(
-        'controller' => 'special',
-        'action' => 'preProcess',
-    ));
-   Route::set('siggyFixGroup', 'fixGroup')
-    ->defaults(array(
-        'controller' => 'special',
-        'action' => 'fixGroup',
-    ));
-   Route::set('siggyProcessStatics', 'processStatics(/<region>)')
-    ->defaults(array(
-        'controller' => 'special',
-        'action' => 'processStatics',
-    ));
+if (!Route::cache())
+{
+	Route::set('siggyUpdate', 'update')
+		->defaults(array(
+			'controller' => 'siggy',
+			'action' => 'update',
+		));
+	Route::set('siggyGetJumpLog', 'getJumpLog')
+		->defaults(array(
+			'controller' => 'siggy',
+			'action' => 'getJumpLog',
+		));
+	Route::set('siggyPreProcess', 'preProcess(/<start>)')
+		->defaults(array(
+			'controller' => 'special',
+			'action' => 'preProcess',
+		));
+	Route::set('siggyFixGroup', 'fixGroup')
+		->defaults(array(
+			'controller' => 'special',
+			'action' => 'fixGroup',
+		));
+	Route::set('siggyProcessStatics', 'processStatics(/<region>)')
+		->defaults(array(
+			'controller' => 'special',
+			'action' => 'processStatics',
+		));
+	Route::set('siggyBuildStatic', 'buildStatics')
+		->defaults(array(
+			'controller' => 'special',
+			'action' => 'buildStatics',
+		));
 
-   Route::set('siggyBuildStatic', 'buildStatics')
-    ->defaults(array(
-        'controller' => 'special',
-        'action' => 'buildStatics',
-    ));
+	Route::set('siggySigs', 'do(<action>)')
+		->defaults(array(
+			'controller' => 'siggy'
+		));
 
+	Route::set('siggy-process', 'process/<action>')
+		->defaults(array(
+			'controller' => 'siggy'
+		));
 
-   Route::set('siggySigs', 'do(<action>)')
-    ->defaults(array(
-        'controller' => 'siggy'
-    ));
+	Route::set('login', 'manage/login')
+		->defaults(array(
+			'controller' => 'user',
+			'action' => 'login',
+		));
 
-
-   Route::set('siggy-process', 'process/<action>')
-    ->defaults(array(
-        'controller' => 'siggy'
-    ));
-
-   Route::set('login', 'manage/login')
-    ->defaults(array(
-        'controller' => 'user',
-        'action' => 'login',
-    ));
-
-   Route::set('manage', 'manage(/<controller>(/<action>(/<id>)))')
-    ->defaults(array(
-		'directory'  => 'manage',
-        'controller' => 'dashboard',
-        'action' => 'index',
-    ));
+	Route::set('manage', 'manage(/<controller>(/<action>(/<id>)))')
+		->defaults(array(
+			'directory'  => 'manage',
+			'controller' => 'dashboard',
+			'action' => 'index',
+		));
 
     Route::set('account', 'account(/<action>)')
-    ->defaults(array(
-        'controller' => 'account',
-        'action' => 'login'
-    ));
+		->defaults(array(
+			'controller' => 'account',
+			'action' => 'login'
+		));
 
     Route::set('cron', 'cron(/<action>)')
-    ->defaults(array(
-        'controller' => 'cron'
-    ));
+		->defaults(array(
+			'controller' => 'cron'
+		));
 
     Route::set('apiChainMaps', 'api/chainMap(/<action>)')
-    ->defaults(array(
-        'controller' => 'api'
-    ));
+		->defaults(array(
+			'controller' => 'api'
+		));
 
+	Route::set('siggyMain', 'system(/<name>)')
+		->defaults(array(
+			'controller' => 'siggy',
+			'action' => 'index',
+		));
 
-   Route::set('siggyMain', 'system(/<name>)')
-    ->defaults(array(
-        'controller' => 'siggy',
-        'action' => 'index',
-    ));
+	Route::set('stats', 'stats(/year/<year>(/month(/<month>))(/week/<week>))')
+		->defaults(array(
+			'controller' => 'stats',
+			'action' => 'overview',
+		));
 
-   Route::set('stats', 'stats(/year/<year>(/month(/<month>))(/week/<week>))')
-    ->defaults(array(
-        'controller' => 'stats',
-        'action' => 'overview',
-    ));
+	Route::set('stats_specific', 'stats/<action>(/year/<year>(/month(/<month>))(/week/<week>))')
+		->defaults(array(
+			'controller' => 'stats',
+			'action' => 'index',
+		));
 
-   Route::set('stats_specific', 'stats/<action>(/year/<year>(/month(/<month>))(/week/<week>))')
-    ->defaults(array(
-        'controller' => 'stats',
-        'action' => 'index',
-    ));
+	Route::set('pages', 'pages(/<page>)')
+		->defaults(array(
+		  'controller' => 'pages',
+		  'action'     => 'viewPage',
+		));
 
-  Route::set('pages', 'pages(/<page>)')
-    ->defaults(array(
-      'controller' => 'pages',
-      'action'     => 'viewPage',
-    ));
+	Route::set('default', '(<controller>(/<action>(/<id>)))')
+		->defaults(array(
+		  'controller' => 'siggy',
+		  'action'     => 'index',
+		));
 
-  Route::set('default', '(<controller>(/<action>(/<id>)))')
-    ->defaults(array(
-      'controller' => 'siggy',
-      'action'     => 'index',
-    ));
-
-  //  if( Kohana::$environment !== Kohana::PRODUCTION )
-   // {
-    //  Route::cache(TRUE);
-   // }
-//}
+	if( Kohana::$environment !== Kohana::DEVELOPMENT )
+	{
+		Route::cache(TRUE);
+	}
+}
