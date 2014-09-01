@@ -19,7 +19,6 @@ function siggymain( options )
 	this.freezeSystem = 0;
 	this.lastUpdate = 0;
 	this.sigData = {};
-	this.editingSig = false;
 	this.systemList = {};
 	this.forceUpdate = true;
 	this._updateTimeout = null;
@@ -430,18 +429,19 @@ siggymain.prototype.switchSystem = function(systemID, systemName)
 	this.forceUpdate = true;
 	this.freeze();
 	clearTimeout(this._updateTimeout);
-	for(var i in this.sigClocks)
+	this.sigtable.systemID = systemID;
+	this.sigtable.sigData = {};
+	for(var i in this.sigtable.sigClocks)
 	{
-		this.sigClocks[i].destroy();
-		delete clock;
+		this.sigtable.sigClocks[i].destroy();
+		delete this.sigtable.sigClocks[i];
 	}
 
     $('td.moreinfo img').qtip('destroy');
     $('td.age span').qtip('destroy');
 
 	$("#sig-table tbody").empty();
-	this.editingSig = false;
-	this.sigData = {};
+	this.sigtable.editingSig = false;
 
 	$('#sig-add-box select[name=type]').val(0);
 	this.updateSiteSelect('#sig-add-box select[name=site]',this.systemClass, 0, 0);
