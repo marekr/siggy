@@ -1140,7 +1140,7 @@ siggymain.prototype.initializeGNotes = function()
 	{
 		$this.globalNotes = $('#global-notes-edit-box').val();
 
-		$.post(that.settings.baseUrl + 'siggy/notes_save', {
+		$.post($this.settings.baseUrl + 'siggy/notes_save', {
 			notes: $this.globalNotes
 		}, function (data)
 		{

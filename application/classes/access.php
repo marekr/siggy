@@ -157,7 +157,7 @@ class access
 		$access_type = 'char';
 		if( $corp_data !== FALSE && $char_data != FALSE )
 		{
-			$all_groups = array_merge($corp_data['groups'],$char_data['groups']);
+			$all_groups = array_replace($corp_data['groups'],$char_data['groups']);
 
 			//helper property for the chain map acl
 			$access_type = 'char_corp';
