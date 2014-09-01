@@ -193,7 +193,7 @@ sigtable.prototype.editTypeSelectChange = function (sigID)
 	var newType = $("#sig-" + sigID + " td.type select").val();
 	if (this.sigData[sigID].type != newType)
 	{
-		this.updateSiteSelect( '#sig-' + sigID + ' td.desc select', this.systemClass, newType, 0 );
+		this.siggyMain.updateSiteSelect( '#sig-' + sigID + ' td.desc select', this.systemClass, newType, 0 );
 	}
 }
 
@@ -374,10 +374,8 @@ sigtable.prototype.editSigForm = function (sigID)
 sigtable.prototype.editTypeSelectChange = function (sigID)
 {
 	var newType = $("#sig-" + sigID + " td.type select").val();
-	if (this.sigData[sigID].type != newType)
-	{
-		this.updateSiteSelect( '#sig-' + sigID + ' td.desc select', this.systemClass, newType, 0 );
-	}
+
+	this.siggyMain.updateSiteSelect( '#sig-' + sigID + ' td.desc select', this.systemClass, newType, 0 );
 }
 
 sigtable.prototype.editSig = function (sigID)
