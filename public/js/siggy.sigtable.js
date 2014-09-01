@@ -8,6 +8,7 @@ function sigtable( options )
 	this.siggyMain = null;
 	this.systemID = 0;
 	this.systemClass = 0;
+	this.editingSig = false;
 
 	this.defaults = {
 		showSigSizeCol: false,
