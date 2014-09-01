@@ -7,6 +7,7 @@ function sigtable( options )
 	this.sigClocks = {};
 	this.siggyMain = null;
 	this.systemID = 0;
+	this.systemClass = 0;
 
 	this.defaults = {
 		showSigSizeCol: false,

@@ -645,6 +645,7 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 	$('a.site-evekill').attr('href','http://eve-kill.net/?a=system_detail&sys_name='+systemData.name);
 
 	this.sigtable.systemID = systemData.id;
+	this.sigtable.systemClass = systemData.sysClass;
 	this.setSystemID(systemData.id);
 	this.setSystemClass(systemData.sysClass);
 	this.systemName = systemData.name;
