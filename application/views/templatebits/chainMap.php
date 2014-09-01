@@ -43,7 +43,7 @@
 			<!--- end options -->
 			<!--- broadcast -->
 			<?php if( !$group['alwaysBroadcast'] ): ?>
-			<a href="#" id="chainMapBroadcast" class="btn btn-default btn-xs" style="float:right"><?php echo ( ( isset($_COOKIE['broadcast']) && $_COOKIE['broadcast'] == 0 ) ? "Enable location broadcast" : "Disable location broadcast" ); ?></a>
+			<a href="#" id="chainmap-broadcast-button" class="btn btn-default btn-xs" style="float:right"><?php echo ( ( isset($_COOKIE['broadcast']) && $_COOKIE['broadcast'] == 0 ) ? "Enable location broadcast" : "Disable location broadcast" ); ?></a>
 			<?php endif; ?>
 			<div class="clearfix"></div>
 			<!-- end broadcast -->

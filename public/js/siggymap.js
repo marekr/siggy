@@ -154,6 +154,28 @@ siggyMap.prototype.initialize = function()
 
 	this.showMessage('loading');
 
+	if( this.broadcast )
+	{
+		$('#chainmap-broadcast-button').text('Disable location broadcasting');
+	}
+	else
+	{
+		$('#chainmap-broadcast-button').text('Enable location broadcasting');
+	}
+	$('#chainmap-broadcast-button').click( function(){
+		if( that.broadcast == 1)
+		{
+			that.broadcast = 0;
+			$(this).text('Enable location broadcasting');
+		}
+		else
+		{
+			that.broadcast = 1;
+			$(this).text('Disable location broadcasting');
+		}
+		setCookie('broadcast', that.broadcast, 365);
+	});
+
 	$('#chain-map-add-wh').click( function() {
 		that.resetWormholeEditor();
 		that.openWHEditor('add');
