@@ -39,7 +39,6 @@ if(jQuery)( function() {
 					$(this).mouseup( function(e) {
 						var srcElement = $(this);
 						$(this).unbind('mouseup');
-							console.log(evt.button);
 						if( evt.button == 2 || (o.leftMouse == true && evt.button ==0) ) {
 							evt.stopPropagation();
 							e.stopPropagation();
