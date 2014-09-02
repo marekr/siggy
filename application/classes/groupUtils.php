@@ -54,8 +54,15 @@ final class groupUtils
 							'billable' => 1
 						);
 		$result = DB::insert('groups', array_keys($insert) )->values( array_values($insert) )->execute();
+		$result = $result[0];
+		
+		$insert = array( 'group_id' => $result,
+						 'chainmap_type' => 'default',
+						 'chainmap_name' => 'Default'
+						);
+		DB::insert('chainmaps', array_keys($insert) )->values( array_values($insert) )->execute();
 
-		return $result[0];
+		return $result;
 	}
 
 	static function hashGroupPassword( $password, $salt )
