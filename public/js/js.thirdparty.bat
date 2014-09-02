@@ -11,6 +11,7 @@
 --js=jquery.contextMenu.js ^
 --js=jsBezier-0.6-min.js ^
 --js=jquery.jsPlumb-1.5.5-min.js ^
+--js=jquery.placeholder.js ^
 --js=dropdown.js ^
 --js_output_file=thirdparty.compiled.js
 @pause

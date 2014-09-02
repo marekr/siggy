@@ -295,7 +295,7 @@
                         <div style="float:left">
                             <div class="input-group" style="width:50px" >
                                 <label>Sig ID</label>
-                                <input type="text" name="sig" maxlength="3" />
+                                <input type="text" name="sig" maxlength="3" placeholder="ABC" />
                             </div>
                             <?php if( $group['showSigSizeCol'] ): ?>
                             <div class="input-group"  style="width:100px;">
@@ -332,7 +332,7 @@
                             <br />
                             <div class="input-group" style="width:236px;">
                                 <label>Description</label>
-                                <input type="text" name="desc"  />
+                                <input type="text" name="desc" />
                             </div>
                         </div>
                         <button name='add' class="btn btn-default" style="margin-top: 15px;line-height: 171%;"><i class="icon icon-plus-sign"></i>  Add</button>
