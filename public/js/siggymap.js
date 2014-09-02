@@ -80,12 +80,17 @@ siggyMap.prototype.showMessage = function(what)
 {
 	if( what == 'loading' )
 	{
-		this.loadingMessage.css({'top': this.container.height()/2, left: this.container.width()/2 - this.loadingMessage.width()/2});
+		this.loadingMessage.css({	'top': this.container.height()/2 - this.loadingMessage.height()/2, 
+									'left': this.container.width()/2 - this.loadingMessage.width()/2,
+									'position':'relative',
+									'float':'left'
+								});
 		this.loadingMessage.show();
 	}
 	else if( what == 'editing' )
 	{
-		this.editingMessage.css({left: this.container.width()/2 - this.editingMessage.width()/2});
+		this.editingMessage.css({	'left': this.container.width()/2 - this.editingMessage.width()/2
+								});
 		this.editingMessage.show();
 	}
 	else if( what == 'deleting' )
@@ -115,8 +120,12 @@ siggyMap.prototype.updateMessagePositions = function()
 {
 
 	if( this.loadingMessage.is(':visible') )
-	{
-		this.loadingMessage.css({'top': this.container.height()/2 - this.loadingMessage.height()/2, left: this.container.width()/2 - this.loadingMessage.width()/2});
+	{		
+		this.loadingMessage.css({	'top': this.container.height()/2 - this.loadingMessage.height()/2, 
+									'left': this.container.width()/2 - this.loadingMessage.width()/2,
+									'position':'relative',
+									'float':'left'
+								});
 	}
 	if( this.editingMessage.is(':visible') )
 	{
@@ -230,8 +239,10 @@ siggyMap.prototype.initialize = function()
 			return;
 		}
 		that.massSelect = true;
-		var click_y = e.pageY-110,
-		click_x = e.pageX-20;
+		
+		var chainmapOffset = $(this).offset();
+		var click_y = e.pageY-chainmapOffset.top,
+		click_x = e.pageX-chainmapOffset.left;
 		that.selectionBox.css({
 		  'top':    click_y,
 		  'left':   click_x,
@@ -240,13 +251,17 @@ siggyMap.prototype.initialize = function()
 		  'z-index': 9999
 		});
 
+		console.log("container_x:"+chainmapOffset.left+" container_y:"+chainmapOffset.top);
+		console.log("click_x:"+click_x+" click_y:"+click_y);
+		
 		that.selectionBox.appendTo($container);
 
 		$container.on('mousemove', function(e) {
 			if ( ( that.massSelect )  )
 			{
-				var move_x = e.pageX-20,
-				  move_y = e.pageY-110,
+				var chainmapOffset = $(this).offset();
+				var move_x = e.pageX-chainmapOffset.left,
+				  move_y = e.pageY-chainmapOffset.top,
 				  width  = Math.abs(move_x - click_x),
 				  height = Math.abs(move_y - click_y),
 				  new_x, new_y;
