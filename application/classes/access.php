@@ -242,7 +242,20 @@ class access
 
 	private function _getDefaultChainMapID($groupData)
 	{
-		/* find the first chainmap we have permissions for */
+		//to make usage "neat" for now, we first see if we have access to a default chain map
+		foreach($groupData['chainmaps'] as $id => $c)
+		{
+			foreach($c['access'] as $p)
+			{
+				if( $c['chainmap_type'] == 'default' && ($p['memberType'] == 'corp' && $p['eveID'] == $groupData['corpID'])
+														|| ($p['memberType'] == 'char' && $p['eveID'] == $groupData['charID']) )
+				{
+					return $c['chainmap_id'];
+				}
+			}
+		}
+		
+		//otherwise grab the first one we do have access to
 		foreach($groupData['chainmaps'] as $id => $c)
 		{
 			foreach($c['access'] as $p)
