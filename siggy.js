@@ -4,6 +4,11 @@ if (typeof(CCPEVE) != "undefined")
 	CCPEVE.requestTrust('http://siggy.borkedlabs.com/*');
 }
 
+$( function()
+{
+	$('input, textarea').placeholder();
+});
+
 /**
 * @constructor
 */
