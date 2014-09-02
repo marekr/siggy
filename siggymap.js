@@ -230,6 +230,9 @@ siggyMap.prototype.initialize = function()
 	{
 		that.updateMessagePositions();
 		that.centerButtons();
+		
+		//ulgy hack to make the mass delete selection work for now
+		$("#chain-map").width($("#chain-map")[0].scrollWidth);
 	});
 
 	var $container = $("#chain-map");
@@ -251,9 +254,6 @@ siggyMap.prototype.initialize = function()
 		  'z-index': 9999
 		});
 
-		console.log("container_x:"+chainmapOffset.left+" container_y:"+chainmapOffset.top);
-		console.log("click_x:"+click_x+" click_y:"+click_y);
-		
 		that.selectionBox.appendTo($container);
 
 		$container.on('mousemove', function(e) {
@@ -826,6 +826,9 @@ siggyMap.prototype.draw = function()
 
 		jsPlumb.setDraggable($('.map-system-blob'), false);
 	}
+	
+	//mass selection hack for now
+	$("#chain-map").width($("#chain-map")[0].scrollWidth);
 }
 
 siggyMap.prototype.openSystemEdit = function( sysID )
