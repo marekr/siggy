@@ -58,7 +58,9 @@ final class groupUtils
 		
 		$insert = array( 'group_id' => $result,
 						 'chainmap_type' => 'default',
-						 'chainmap_name' => 'Default'
+						 'chainmap_name' => 'Default',
+						 'chainmap_homesystems' => '',
+						 'chainmap_homesystems_ids' => ''
 						);
 		DB::insert('chainmaps', array_keys($insert) )->values( array_values($insert) )->execute();
 
