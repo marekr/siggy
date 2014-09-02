@@ -244,6 +244,18 @@ class Controller_Account extends FrontController
 			{
 				$errors['apiKey'] = 'An API key must be provided';
 			}
+				
+			if( $mode != 'edit' )
+			{
+				$keyData = DB::query(Database::SELECT, "SELECT * FROM apikeys WHERE apiID=:apiID AND userID=:userID")
+												->param(':apiID', $_POST['apiID'])
+												->param(':userID', Auth::$user->data['id'])
+												->execute()->current();
+				if( isset($keyData['apiID']) )
+				{
+					$errors['apiID'] = 'API ID already on your account';
+				}
+			}
 			
 			if( !(count($errors) > 0 ) )
 			{
