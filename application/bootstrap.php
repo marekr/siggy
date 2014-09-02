@@ -30,7 +30,6 @@ if( isset($_SERVER['HTTP_EVE_SOLARSYSTEMNAME']) )
 
 // -- Environment setup --------------------------------------------------------
 
-
 // Load the core Kohana class
 require SYSPATH.'classes/kohana/core'.EXT;
 
@@ -42,9 +41,8 @@ if (is_file(APPPATH.'classes/kohana'.EXT))
 else
 {
 	// Load empty core extension
-	require SYSPATH.'classes/kohana'.EXT;
+	require SYSPATH.'classes/kohana'.EXT; 
 }
-
 
 /**
  * Set the default time zone.
@@ -84,7 +82,6 @@ ini_set('unserialize_callback_func', 'spl_autoload_call');
  * @link http://www.php.net/manual/function.mb-substitute-character.php
  */
 mb_substitute_character('none');
-
 // -- Configuration and initialization -----------------------------------------
 
 /**
@@ -104,11 +101,14 @@ if (isset($_SERVER['SERVER_PROTOCOL']))
  * Note: If you supply an invalid environment name, a PHP warning will be thrown
  * saying "Couldn't find constant Kohana::<INVALID_ENV_NAME>"
  */
+ 
 Kohana::$environment = ($_SERVER['SERVER_NAME'] !== 'localhost') ? Kohana::PRODUCTION : Kohana::DEVELOPMENT;
 
-Cookie::$salt = 'y[$e.swbDs@|Gd(ndtUSy^';
-
-
+if( !isset($_SERVER['HTTP_EVE_SOLARSYSTEMID']) && isset($_SERVER['HTTP_EVE_SOLARSYSTEMNAME']) )
+{
+	require 'systemReference.php';
+	$_SERVER['HTTP_EVE_SOLARSYSTEMID'] = $systems[ $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] ];
+}
 /*
 if( Kohana::$environment == Kohana::DEVELOPMENT && strpos($_SERVER['HTTP_USER_AGENT'],'EVE-IGB') === false )
 {
@@ -131,8 +131,7 @@ if( Kohana::$environment == Kohana::DEVELOPMENT && strpos($_SERVER['HTTP_USER_AG
   $_SERVER['HTTP_EVE_SOLARSYSTEMID'] = 31002019;
 	}
 }*/
-
-define('SIGGY_VERSION', '2.12b');
+define('SIGGY_VERSION', '2.12.1');
 if( Kohana::$environment == Kohana::PRODUCTION)
 {
 	define('WIN_DEV', true);
@@ -144,6 +143,9 @@ else
 	define('CACHE_METHOD', 'default');
 }
 
+
+
+Cookie::$salt = 'y[$e.swbDs@|Gd(ndtUSy^';
 /**
  * Initialize Kohana, setting the default options.
  *
@@ -157,14 +159,25 @@ else
  * - boolean  profile     enable or disable internal profiling               TRUE
  * - boolean  caching     enable or disable internal caching                 FALSE
  */
-Kohana::init(array(
-  'base_url'   => 'http://localhost/evetel',
-  'index_file' => FALSE,
+$initOptions = array(
+  'base_url'   => 'http://siggy.borkedlabs.com',
+  'index_file' => FALSE,  
   'profile'    => Kohana::$environment !== Kohana::PRODUCTION,
-  'caching'    => Kohana::$environment === Kohana::PRODUCTION,
-  'errors' => ( Kohana::$environment === Kohana::PRODUCTION ? FALSE : TRUE )
-));
+  'caching'    => Kohana::$environment === Kohana::PRODUCTION,	
+  //'errors' => ( Kohana::$environment === Kohana::PRODUCTION ? FALSE : TRUE )
+  'errors' => TRUE
+);
 
+if( Kohana::$environment == Kohana::PRODUCTION)
+{
+	$initOptions['base_url'] = 'http://siggy.borkedlabs.com';
+}
+else
+{
+	$initOptions['base_url'] = 'http://localhost/evetel';
+}
+
+Kohana::init($initOptions);
 
 /**
  * Attach the file write to logging. Multiple writers are supported.
@@ -194,13 +207,18 @@ else
 {
 	Database::$default = 'default';
 }
-
 /**
  * Set the routes. Each route must have a minimum of a name, a URI and a set of
  * defaults for the URI.
  */
 if (!Route::cache())
 {
+	Route::set('system', 'system(/<ssname>)')
+		->defaults(array(
+		  'controller' => 'siggy',
+		  'action'     => 'index',
+		));
+
 	Route::set('siggyUpdate', 'update')
 		->defaults(array(
 			'controller' => 'siggy',
@@ -211,33 +229,13 @@ if (!Route::cache())
 			'controller' => 'siggy',
 			'action' => 'getJumpLog',
 		));
-	Route::set('siggyPreProcess', 'preProcess(/<start>)')
-		->defaults(array(
-			'controller' => 'special',
-			'action' => 'preProcess',
-		));
-	Route::set('siggyFixGroup', 'fixGroup')
-		->defaults(array(
-			'controller' => 'special',
-			'action' => 'fixGroup',
-		));
 	Route::set('siggyProcessStatics', 'processStatics(/<region>)')
 		->defaults(array(
 			'controller' => 'special',
 			'action' => 'processStatics',
 		));
-	Route::set('siggyBuildStatic', 'buildStatics')
-		->defaults(array(
-			'controller' => 'special',
-			'action' => 'buildStatics',
-		));
-
+    
 	Route::set('siggySigs', 'do(<action>)')
-		->defaults(array(
-			'controller' => 'siggy'
-		));
-
-	Route::set('siggy-process', 'process/<action>')
 		->defaults(array(
 			'controller' => 'siggy'
 		));
@@ -247,7 +245,7 @@ if (!Route::cache())
 			'controller' => 'user',
 			'action' => 'login',
 		));
-
+    
 	Route::set('manage', 'manage(/<controller>(/<action>(/<id>)))')
 		->defaults(array(
 			'directory'  => 'manage',
@@ -271,11 +269,6 @@ if (!Route::cache())
 			'controller' => 'api'
 		));
 
-	Route::set('siggyMain', 'system(/<name>)')
-		->defaults(array(
-			'controller' => 'siggy',
-			'action' => 'index',
-		));
 
 	Route::set('stats', 'stats(/year/<year>(/month(/<month>))(/week/<week>))')
 		->defaults(array(
@@ -287,7 +280,7 @@ if (!Route::cache())
 		->defaults(array(
 			'controller' => 'stats',
 			'action' => 'index',
-		));
+		)); 
 
 	Route::set('pages', 'pages(/<page>)')
 		->defaults(array(
@@ -300,7 +293,7 @@ if (!Route::cache())
 		  'controller' => 'siggy',
 		  'action'     => 'index',
 		));
-
+		
 	if( Kohana::$environment !== Kohana::DEVELOPMENT )
 	{
 		Route::cache(TRUE);
