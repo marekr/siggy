@@ -741,7 +741,6 @@ siggyMap.prototype.draw = function()
 			label += 'EOL set at: '+ siggymain.displayTimeStamp(wormhole.eolToggled);
         }
 
-
 		if( parseInt(wormhole.frigate_sized) == 1 )
 		{
 			if( label != '' )
@@ -764,8 +763,7 @@ siggyMap.prototype.draw = function()
 		}
 
         var connection = jsPlumb.connect(connectionOptions);
-
-        if( wormhole.eolToggled != 0 )
+		if( label != '' )
         {
             _listeners(connection);
         }
