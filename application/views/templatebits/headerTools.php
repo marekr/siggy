@@ -27,7 +27,7 @@
 <div id="settings-dialog" class="box" style="display:none;">
 	<h3>Settings</h3>
 	<div>
-        <form action="<?php echo URL::base(); ?>process/savesettings" method="post">
+        <form action="<?php echo URL::base(); ?>siggy/savesettings" method="post">
             <legend>Theme
                 <select name="theme_id">
                 <?php foreach($themes as $theme): ?>
