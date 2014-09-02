@@ -72,7 +72,13 @@ class Controller_Pages extends FrontController
 			$this->template->selectedTab = 'home';
 
 			$this->template->content = $view = View::factory('pages/no_group_access');
-		}
+		} 
+		else if( $page == 'error')
+		{
+			$message = $this->request->param('message');
+			print_r($this->request);
+			$this->template->content = View::factory('errors/http');
+		} 
 		else
 		{
 			$this->template->content = View::factory('pages/home');
@@ -80,6 +86,10 @@ class Controller_Pages extends FrontController
 
 		$this->template->loggedIn = Auth::loggedIn();
 		$this->template->user = Auth::$user->data;
+	}
+	
+	public function action_error()
+	{
 	}
 
 	public function action_createGroup()
