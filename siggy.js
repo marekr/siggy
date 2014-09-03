@@ -71,8 +71,6 @@ function siggymain( options )
 
 	this.displayStates = this.defaultDisplayStates;
 
-	this.systemName = this.settings.initialSystemName;
-    this.setSystemID(this.settings.initialSystemID);
 
 	this.sigtable = new sigtable(this.settings.sigtable);
 	this.sigtable.siggyMain = this;
@@ -85,6 +83,10 @@ function siggymain( options )
 	this.intelposes = new intelposes(this.settings.intel.poses);
 	this.intelposes.siggyMain = this;
 	this.intelposes.settings.baseUrl = this.settings.baseUrl;
+	
+	
+	this.systemName = this.settings.initialSystemName;
+    this.setSystemID(this.settings.initialSystemID);
 }
 
 
@@ -445,7 +447,7 @@ siggymain.prototype.switchSystem = function(systemID, systemName)
 	this.forceUpdate = true;
 	this.freeze();
 	clearTimeout(this._updateTimeout);
-	this.sigtable.systemID = systemID;
+	
 	this.sigtable.clear();
 
 
@@ -650,8 +652,6 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 	$('a.site-wormholes').attr('href', 'http://wh.pasta.gg/'+systemData.name);
 	$('a.site-evekill').attr('href','http://eve-kill.net/?a=system_detail&sys_name='+systemData.name);
 
-	this.sigtable.systemID = systemData.id;
-	this.sigtable.systemClass = systemData.sysClass;
 	this.setSystemID(systemData.id);
 	this.setSystemClass(systemData.sysClass);
 	this.systemName = systemData.name;
@@ -792,11 +792,13 @@ siggymain.prototype.updateSiteSelect = function( ele, whClass, type, siteID )
 siggymain.prototype.setSystemID = function (systemID)
 {
 	this.systemID = systemID;
+	this.sigtable.systemID = systemID;
 }
 
 siggymain.prototype.setSystemClass = function (systemClass)
 {
 	this.systemClass = systemClass;
+	this.sigtable.systemClass = systemClass;
 	if( systemClass <= 6 )
 	{
 		this.setBearTab(systemClass);
