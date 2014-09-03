@@ -1,2 +1,10 @@
-"C:\Program Files (x86)\Java\jre7\bin\java.exe" -jar compiler.jar --js=siggy.helpers.js --js=siggy.static.js --js=siggy.js --js=siggy.sigtable.js --js=siggymap.js --js_output_file=siggy.compiled.js --js_output_file=siggy.compiled.js
+"C:\Program Files (x86)\Java\jre7\bin\java.exe" -jar compiler.jar ^
+--js=siggy.helpers.js ^
+--js=siggy.static.js ^
+--js=siggy.intel.dscan.js ^
+--js=siggy.intel.poses.js ^
+--js=siggy.js ^
+--js=siggy.sigtable.js ^
+--js=siggymap.js ^
+--js_output_file=siggy.compiled.js
 @pause
