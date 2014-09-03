@@ -22,9 +22,9 @@
         <div id="system-advanced">
             <h2>
                 <span id="system-name"><?php echo !empty($systemName) ? $systemName : 'System'; ?></span>
-                <a href='#' target='_blank' class='site-icon site-dotlan click-me'><img src='public/images/dotlan.png' width='16' height='16'/></a>
-                <a href='#' target='_blank' class='site-icon site-wormholes click-me'><img src='public/images/wormholes.png' width='16' height='16'/></a>
-                <a href='#' target='_blank' class='site-icon site-evekill click-me'><img src='public/images/evekill.png' width='16' height='16'/></a>
+                <a href='#' target='_blank' class='site-icon site-dotlan click-me'><img src='<?php echo URL::base(TRUE, TRUE);?>public/images/dotlan.png' width='16' height='16'/></a>
+                <a href='#' target='_blank' class='site-icon site-wormholes click-me'><img src='<?php echo URL::base(TRUE, TRUE);?>public/images/wormholes.png' width='16' height='16'/></a>
+                <a href='#' target='_blank' class='site-icon site-evekill click-me'><img src='<?php echo URL::base(TRUE, TRUE);?>public/images/evekill.png' width='16' height='16'/></a>
             </h2>
             <ul class='option-bar tabs'>
                 <li class="active"><a href='#system-info'>Extra</a></li>

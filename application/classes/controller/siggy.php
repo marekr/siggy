@@ -143,8 +143,8 @@ class Controller_Siggy extends FrontController
 		$systemData = DB::query(Database::SELECT, "SELECT ss.id,ss.name
 													FROM solarsystems ss
 													WHERE ss.name=:name")
-									->param(':id', $id)
-									->execute
+									->param(':name', $id)
+									->execute()
 									->current();
 
 		if( !$systemData['id'] )
