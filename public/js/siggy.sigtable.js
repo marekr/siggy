@@ -200,7 +200,7 @@ sigtable.prototype.removeSig = function (sigID)
 	});
 	$('#sig-table').trigger('update');
 
-	$.post(this.settings.baseUrl + 'dosigRemove', {
+	$.post(this.settings.baseUrl + 'sig/remove', {
 		systemID: this.systemID,
 		sigID: sigID
 	});
@@ -435,7 +435,7 @@ sigtable.prototype.editSig = function (sigID)
 	}
 
 	var that = this;
-	$.post(this.settings.baseUrl + 'dosigEdit', postData, function ( data )
+	$.post(this.settings.baseUrl + 'sig/edit', postData, function ( data )
 	{
 		that.editingSig = false;
 		that.sigData[sigID].editing = false;

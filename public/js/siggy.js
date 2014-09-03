@@ -796,7 +796,7 @@ siggymain.prototype.massAddHandler = function(systemID, data)
 		blob: data
 	};
 
-	$.post( $this.settings.baseUrl + 'domassSigs', postData, function (newSig)
+	$.post( $this.settings.baseUrl + 'sig/mass_add', postData, function (newSig)
 	{
 		for (var i in newSig)
 		{
@@ -907,7 +907,7 @@ siggymain.prototype.setupAddBox = function ()
 			postData.sigSize = sizeEle.val();
 		}
 
-		$.post($this.settings.baseUrl + 'dosigAdd', postData, function (newSig)
+		$.post($this.settings.baseUrl + 'sig/add', postData, function (newSig)
 		{
 			for (var i in newSig)
 			{
