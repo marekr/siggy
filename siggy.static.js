@@ -330,7 +330,7 @@ var blackHoleEffects = {
 		['Missile Velocity', '+15%'],
 		['Missile Explosion Velocity', '+30%'],
 		['Ship Velocity', '+30%'],
-		['Statis Webifier Strength', '-15%'],
+		['Stasis Webifier Strength', '-15%'],
 		['Inertia', '+15%'],
 		['Lock range', '+30%']
 	],
@@ -338,7 +338,7 @@ var blackHoleEffects = {
 		['Missile Velocity', '+22%'],
 		['Missile Explosion Velocity', '+44%'],
 		['Ship Velocity', '+44%'],
-		['Statis Webifier Strength', '-22%'],
+		['Stasis Webifier Strength', '-22%'],
 		['Inertia', '+22%'],
 		['Lock range', '+44%']
 	],
@@ -346,7 +346,7 @@ var blackHoleEffects = {
 		['Missile Velocity', '+29%'],
 		['Missile Explosion Velocity', '+58%'],
 		['Ship Velocity', '+58%'],
-		['Statis Webifier Strength', '-29%'],
+		['Stasis Webifier Strength', '-29%'],
 		['Inertia', '+29%'],
 		['Lock range', '+58%']
 	],
@@ -354,7 +354,7 @@ var blackHoleEffects = {
 		['Missile Velocity', '+36%'],
 		['Missile Explosion Velocity', '+72%'],
 		['Ship Velocity', '+72%'],
-		['Statis Webifier Strength', '-36%'],
+		['Stasis Webifier Strength', '-36%'],
 		['Inertia', '+36%'],
 		['Lock range', '+72%']
 	], 
@@ -362,7 +362,7 @@ var blackHoleEffects = {
 		['Missile Velocity', '+43%'],
 		['Missile Explosion Velocity', '+86%'],
 		['Ship Velocity', '+86%'],
-		['Statis Webifier Strength', '-43%'],
+		['Stasis Webifier Strength', '-43%'],
 		['Inertia', '+43%'],
 		['Lock range', '+86%']
 	],
@@ -370,7 +370,7 @@ var blackHoleEffects = {
 		['Missile Velocity', '+50%'],
 		['Missile Explosion Velocity', '+100%'],
 		['Ship Velocity', '+100%'],
-		['Statis Webifier Strength', '-50%'],
+		['Stasis Webifier Strength', '-50%'],
 		['Inertia', '+50%'],
 		['Lock range', '+100%']
 	]
