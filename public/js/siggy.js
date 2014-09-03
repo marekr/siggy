@@ -34,11 +34,6 @@ function siggymain( options )
 
 	this.chainMapID = 0;
 
-	//gnotes
-	this.globalNotesEle = null;
-	this._blinkNotesInterval = null;
-	this.globalNotes = '';
-	this.editingGlobalNotes = false;
 
 	this.groupCacheTime = 0;
 
@@ -52,6 +47,8 @@ function siggymain( options )
 	    },
 		sigtable: {
 			showSigSizeCol: false
+		},
+		globalnotes: {
 		},
 		intel: {
 			dscan: {
@@ -84,6 +81,9 @@ function siggymain( options )
 	this.intelposes.siggyMain = this;
 	this.intelposes.settings.baseUrl = this.settings.baseUrl;
 	
+	this.globalnotes = new globalnotes(this.settings.globalnotes);
+	this.globalnotes.siggyMain = this;
+	this.globalnotes.settings.baseUrl = this.settings.baseUrl;
 	
 	this.systemName = this.settings.initialSystemName;
     this.setSystemID(this.settings.initialSystemID);
@@ -118,7 +118,9 @@ siggymain.prototype.initialize = function ()
 	this.map.siggymain = this;
 	this.map.initialize();
 
-	this.initializeGNotes();
+	this.inteldscan.initialize();
+	this.intelposes.initialize();
+	this.globalnotes.initialize();
 
 	this.forceUpdate = true;
 	this.update();
@@ -168,8 +170,6 @@ siggymain.prototype.initialize = function ()
 	this.initializeCollaspibles();
 	this.initializeTabs();
 
-	this.inteldscan.initialize();
-	this.intelposes.initialize();
 
 	this.initializeExitFinder();
 }
@@ -354,32 +354,10 @@ siggymain.prototype.update = function ()
 
 					if (data.globalNotesUpdate)
 					{
-						if (!that.editingGlobalNotes)
-						{
-
-							if( getCookie('notesUpdate') != null )
-							{
-								var nlu = parseInt(getCookie('notesUpdate'));
-							}
-							else
-							{
-								var nlu = that.group_cache_time;
-							}
-
-							if( !that.globalNotesEle.is(':visible') && data.group_cache_time > nlu && nlu != 0 )
-							{
-								that.blinkNotes();
-							}
-
-							that.groupCacheTime = data.group_cache_time;
-
-							setCookie('notesUpdate', data.group_cache_time, 365);
-
-							that.globalNotes = data.globalNotes;
-							$('#global-notes-content').html(that.globalNotes.replace(/\n/g, '<br />'));
-							$('#global-notes-time').text( siggymain.displayTimeStamp(that.groupCacheTime) );
-						}
+						that.globalnotes.update(data);
 					}
+					this.groupCacheTime = data.group_cache_time;
+
 
 					if( that.map.isMapOpen()  )
 					{
@@ -1120,86 +1098,8 @@ siggymain.prototype.initializeGNotes = function()
 		$.unblockUI();
 	});
 
-	$this.globalNotesEle = $('#global-notes');
-	$('#global-notes-button').click(function ()
-	{
-		if ( $this.globalNotesEle.is(":visible") )
-		{
-			$this.globalNotesEle.hide();
-			$('#global-notes-button').html('Notes &#x25BC;');
-		}
-		else
-		{
-			$this.globalNotesEle.show();
-			$('#global-notes-button').html('Notes &#x25B2;');
-			$this.stopBlinkingNotes();
-		}
-	});
-
-	$('#global-notes-edit').click(function ()
-	{
-		$(this).hide();
-		$('#global-notes-content').hide();
-		$('#global-notes-edit-box').val($this.globalNotes).show();
-		$('#global-notes-save').show();
-		$('#global-notes-cancel').show();
-	});
-
-	$('#global-notes-save').click(function ()
-	{
-		$this.globalNotes = $('#global-notes-edit-box').val();
-
-		$.post($this.settings.baseUrl + 'siggy/notes_save', {
-			notes: $this.globalNotes
-		}, function (data)
-		{
-			$this.editingGlobalNotes = false;
-			$this.lastGlobalNotesUpdate = data;
-			setCookie('notesUpdate', $this.lastGlobalNotesUpdate, 365);
-			$('#global-notes-time').text(siggymain.displayTimeStamp($this.lastGlobalNotesUpdate));
-		});
-
-		$('#global-notes-content').html($this.globalNotes.replace(/\n/g, '<br />')).show();
-		$('#global-notes-edit-box').hide();
-		$('#global-notes-edit').show();
-		$('#global-notes-cancel').hide();
-		$(this).hide();
-	});
-
-
-	$('#global-notes-cancel').click(function ()
-	{
-		$this.editingGlobalNotes = false;
-		$('#thegnotes').show();
-		$('#global-notes-edit-box').hide();
-		$('#global-notes-edit').show();
-		$('#global-notes-save').hide();
-		$(this).hide();
-	});
 }
 
-siggymain.prototype.blinkNotes = function()
-{
-	if( this._blinkNotesInterval != null )
-	{
-		return;
-	}
-
-	$('#globalNotesButton').flash("#A46D00", 3000);
-
-	this._blinkNotesInterval = setInterval( function() {
-			$('#globalNotesButton').flash("#A46D00", 3000);
-	}, 4000 );
-}
-
-siggymain.prototype.stopBlinkingNotes = function()
-{
-	if( this._blinkNotesInterval != null )
-	{
-		clearInterval(this._blinkNotesInterval);
-		this._blinkNotesInterval = null;
-	}
-}
 
 siggymain.prototype.freeze = function()
 {
