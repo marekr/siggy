@@ -5,6 +5,7 @@
 --js=siggy.intel.poses.js ^
 --js=siggy.js ^
 --js=siggy.sigtable.js ^
+--js=siggy.globalnotes.js ^
 --js=siggymap.js ^
 --js_output_file=siggy.compiled.js
 @pause
