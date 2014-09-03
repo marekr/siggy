@@ -446,18 +446,8 @@ siggymain.prototype.switchSystem = function(systemID, systemName)
 	this.freeze();
 	clearTimeout(this._updateTimeout);
 	this.sigtable.systemID = systemID;
-	this.sigtable.sigData = {};
-	for(var i in this.sigtable.sigClocks)
-	{
-		this.sigtable.sigClocks[i].destroy();
-		delete this.sigtable.sigClocks[i];
-	}
+	this.sigtable.clear();
 
-    $('td.moreinfo img').qtip('destroy');
-    $('td.age span').qtip('destroy');
-
-	$("#sig-table tbody").empty();
-	this.sigtable.editingSig = false;
 
 	$('#sig-add-box select[name=type]').val(0);
 	this.updateSiteSelect('#sig-add-box select[name=site]',this.systemClass, 0, 0);

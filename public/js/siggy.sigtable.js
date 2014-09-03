@@ -68,6 +68,23 @@ sigtable.prototype.initialize = function()
 	});
 }
 
+sigtable.prototype.clear = function()
+{
+	this.sigData = {};
+	
+	for(var i in this.sigClocks)
+	{
+		this.sigClocks[i].destroy();
+		delete this.sigClocks[i];
+	}
+	
+    $('td.moreinfo img').qtip('destroy');
+    $('td.age span').qtip('destroy');
+
+	$("#sig-table tbody").empty();
+	this.editingSig = false;
+}
+
 sigtable.prototype.changeAnomState = function(visible)
 {
 	this.siggyMain.displayStates.showAnomalies = visible;
