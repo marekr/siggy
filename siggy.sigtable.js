@@ -210,13 +210,43 @@ sigtable.prototype.removeSig = function (sigID)
 	});
 }
 
-sigtable.prototype.editTypeSelectChange = function (sigID)
+sigtable.prototype.updateSiteSelect = function( ele, whClass, type, siteID )
 {
-	var newType = $("#sig-" + sigID + " td.type select").val();
-	if (this.sigData[sigID].type != newType)
+	var elem = $( ele );
+	elem.empty();
+
+	var options = [];
+	switch( type )
 	{
-		this.siggyMain.updateSiteSelect( '#sig-' + sigID + ' td.desc select', this.systemClass, newType, 0 );
+		case 'wh':
+			options = whLookup[whClass];
+			break;
+		case 'ladar':
+			options = ladarsLookup;
+			break;
+		case 'mag':
+			options = magsLookup[whClass];
+			break;
+		case 'grav':
+			options = gravsLookup;
+			break;
+		case 'radar':
+			options = radarsLookup[whClass];
+			break;
+		case 'combat':
+			options = anomsLookup[whClass];
+			break;
+		default:
+			options = { 0: '--'};
+			break;
 	}
+
+	for (var i in options)
+	{
+		elem.append($('<option>').attr('value', i).text(options[i]));
+	}
+
+	elem.val(siteID);
 }
 
 sigtable.prototype.removeSigRow = function (sigData)
@@ -397,7 +427,7 @@ sigtable.prototype.editTypeSelectChange = function (sigID)
 {
 	var newType = $("#sig-" + sigID + " td.type select").val();
 
-	this.siggyMain.updateSiteSelect( '#sig-' + sigID + ' td.desc select', this.systemClass, newType, 0 );
+	this.updateSiteSelect( '#sig-' + sigID + ' td.desc select', this.systemClass, newType, 0 );
 }
 
 sigtable.prototype.editSig = function (sigID)
