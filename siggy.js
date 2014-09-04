@@ -189,107 +189,44 @@ siggymain.prototype.initialize = function ()
 siggymain.prototype.initializeCollaspibles = function()
 {
 	var $this = this;
-	var systemStatsContent = $('#system-stats > div');
-	var sigAddContent = $('#sig-add-box > div');
-	var dscanContent = $('#dscan-box > div');
-	var posContent = $('#pos-box > div');
-
-	if( $this.displayStates.statsOpen )
-	{
-		systemStatsContent.show();
-	}
-	else
-	{
-		systemStatsContent.hide();
-	}
-
-	if( $this.displayStates.sigsAddOpen )
-	{
-		sigAddContent.show();
-	}
-	else
-	{
-		sigAddContent.hide();
-	}
 	
-	if( $this.displayStates.dscanOpen )
-	{
-		dscanContent.show();
-	}
-	else
-	{
-		dscanContent.hide();
-	}
+	this.setupCollaspible('#system-stats', 'statsOpen', function() {$this.renderStats();});
+	this.setupCollaspible('#sig-add-box', 'sigsAddOpen');
+	this.setupCollaspible('#dscan-box', 'dscanOpen');
+	this.setupCollaspible('#pos-box', 'posesOpen');
+}
+
+siggymain.prototype.setupCollaspible = function(baseID, displayState, onShow)
+{
+	var $this = this;
+	var content = $(baseID + ' > div');
 	
-	if( $this.displayStates.posesOpen )
+	if( $this.displayStates[displayState] )
 	{
-		posContent.show();
+		content.show();
 	}
 	else
 	{
-		posContent.hide();
+		content.hide();
 	}
 
-	$('#system-stats h2').click( function() {
-		if( systemStatsContent.is(":visible") )
+	$(baseID +' h2').click( function() {
+		if( content.is(":visible") )
 		{
-			systemStatsContent.hide();
-			$this.displayStates.statsOpen = false;
+			content.hide();
+			$this.displayStates[displayState] = false;
 			$this.saveDisplayState();
 		}
 		else
 		{
-			systemStatsContent.show();
-			$this.renderStats();
-			$this.displayStates.statsOpen = true;
-			$this.saveDisplayState();
-		}
-	});
-
-	$('#sig-add-box h2').click( function() {
-		if( sigAddContent.is(":visible") )
-		{
-			sigAddContent.hide();
-			$this.displayStates.sigsAddOpen = false;
-			$this.saveDisplayState();
-		}
-		else
-		{
-			sigAddContent.show();
-			$this.displayStates.sigsAddOpen = true;
+			content.show();
+			if( typeof(onShow) == 'function' )
+				onShow.call();
+			$this.displayStates[displayState] = true;
 			$this.saveDisplayState();
 		}
 	});
 	
-	$('#dscan-box h2').click( function() {
-		if( dscanContent.is(":visible") )
-		{
-			dscanContent.hide();
-			$this.displayStates.dscanOpen = false;
-			$this.saveDisplayState();
-		}
-		else
-		{
-			dscanContent.show();
-			$this.displayStates.dscanOpen = true;
-			$this.saveDisplayState();
-		}
-	});
-	
-	$('#pos-box h2').click( function() {
-		if( posContent.is(":visible") )
-		{
-			posContent.hide();
-			$this.displayStates.posesOpen = false;
-			$this.saveDisplayState();
-		}
-		else
-		{
-			posContent.show();
-			$this.displayStates.posesOpen = true;
-			$this.saveDisplayState();
-		}
-	});
 }
 
 siggymain.prototype.saveDisplayState = function()
