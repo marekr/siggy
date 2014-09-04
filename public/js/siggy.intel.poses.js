@@ -174,7 +174,7 @@ intelposes.prototype.setupPOSForm = function(mode, posID)
 			pos_size: size.val(),
 			pos_online: status.val(),
 			pos_notes: notes.val(),
-			pos_system_id: $this.systemID
+			pos_system_id: $this.siggyMain.systemID
 		};
 
 		if(mode == 'edit')
@@ -186,7 +186,7 @@ intelposes.prototype.setupPOSForm = function(mode, posID)
 		{
 			$.post(action, posData, function ()
 			{
-				$this.forceUpdate = true;
+				$this.siggyMain.forceUpdate = true;
 				$this.siggyMain.updateNow();
 
 				$.unblockUI();
