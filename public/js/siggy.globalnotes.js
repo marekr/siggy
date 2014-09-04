@@ -101,24 +101,27 @@ globalnotes.prototype.update = function(data)
 {
 	if (!this.editingGlobalNotes)
 	{
-		if( getCookie('notesUpdate') != null )
+		if( typeof(data.globalNotes) != 'undefined' && data.globalNotes != null )
 		{
-			var nlu = parseInt(getCookie('notesUpdate'));
-		}
-		else
-		{
-			var nlu = that.group_cache_time;
-		}
+			if( getCookie('notesUpdate') != null )
+			{
+				var nlu = parseInt(getCookie('notesUpdate'));
+			}
+			else
+			{
+				var nlu = that.group_cache_time;
+			}
 
-		if( !this.globalNotesEle.is(':visible') && data.group_cache_time > nlu && nlu != 0 )
-		{
-			this.blinkNotes();
+			if( !this.globalNotesEle.is(':visible') && data.group_cache_time > nlu && nlu != 0 )
+			{
+				this.blinkNotes();
+			}
+
+			setCookie('notesUpdate', data.group_cache_time, 365);
+
+			this.globalNotes = data.globalNotes;
+			$('#global-notes-content').html(this.globalNotes.replace(/\n/g, '<br />'));
+			$('#global-notes-time').text( siggymain.displayTimeStamp(data.group_cache_time) );
 		}
-
-		setCookie('notesUpdate', data.group_cache_time, 365);
-
-		this.globalNotes = data.globalNotes;
-		$('#global-notes-content').html(this.globalNotes.replace(/\n/g, '<br />'));
-		$('#global-notes-time').text( siggymain.displayTimeStamp(data.group_cache_time) );
 	}
 }
