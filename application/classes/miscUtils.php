@@ -2,6 +2,50 @@
 
 final class miscUtils
 {
+	public static $anomsLookup = array( 	1 => array( 0 => "",
+													1 =>  "Perimeter Ambush Point",
+													2 =>  "Perimeter Camp",
+													3 =>  "Phase Catalyst Node",
+													4 =>  "The Line"
+													),
+										2 => array(
+											0 => "",
+											1 => "Perimeter Checkpoint",
+											2 => "Perimeter Hangar",
+											3 => "The Ruins of Enclave Cohort 27",
+											4 => "Sleeper Data Sanctuary"
+											),
+										3 => array(
+											0 => "",
+											1 => "Fortification Frontier Stronghold",
+											2 => "Outpost Frontier Stronghold",
+											3 => "Solar Cell",
+											4 => "The Oruze Construct"
+											),
+										4 => array(
+											0 => "",
+											1 => "Frontier Barracks",
+											2 => "Frontier Command Post",
+											3 => "Integrated Terminus",
+											4 => "Sleeper Information Sanctum"
+											),
+										5 => array(
+											0 => "",
+											1 => "Quarantine Area",
+											2 => "Core Garrison",
+											3 => "Core Stronghold",
+											4 => "Oruze Osobnyk"
+											),
+										6 => array(
+											0  => "",
+											1 => "Core Citadel",
+											2 => "Core Bastion",
+											3 => "Strange Energy Readings",
+											4 => "The Mirror" 
+											),
+									);
+
+
 	public static $magsLookup = array( 	1 => array( 0 => "",
 										 1 => "Forgotten Perimeter Coronation Platform",
 										 2 => "Forgotten Perimeter Power Array"
@@ -122,24 +166,17 @@ final class miscUtils
 			foreach($data as $k => $item)
 			{
 				$item = trim($item);
+				if( empty($item) )
+					continue;
+					
 				preg_match("/^([a-zA-Z]{3})-([0-9]{3})$/", $item, $matches );
-
 				if( count($matches) == 3 )	//SIG-NUM, SIG, NUM
 				{
 					$sigData['sig'] = $matches[1];
 					continue;
 				}
-
-				preg_match("/^(Cosmic Anomaly)$/", $item, $matches );
-				if( count($matches) )
-				{
-					//clear sig so we dont add it
-					$sigData['sig'] = '';
-					//and stop..
-					break;
-				}
-
-				preg_match("/^(Wormhole|Data Site|Gas Site|Relic Site|Ore Site)$/", $item, $matches );
+				
+				preg_match("/^(Wormhole|Data Site|Gas Site|Relic Site|Ore Site|Combat Site)$/", $item, $matches );
 				if( count($matches) == 2 )
 				{
 					switch( $matches[1] )
@@ -165,13 +202,13 @@ final class miscUtils
 							break;
 						case 'Combat Site':
 							$sigData['type'] = 'combat';
-							$sigData['siteID'] = 0;
+							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+1], 'anoms' );
 							break;
 					}
 					continue;
 				}
 			}
-
+			
 			if( $sigData['sig'] != '' )
 			{
 				$resultingSigs[] = $sigData;
@@ -219,6 +256,19 @@ final class miscUtils
 		else if( $type == 'mag' )
 		{
 			foreach( self::$magsLookup as $c  )
+			{
+				foreach( $c as $k => $mag )
+				{
+					if( $mag == $name )
+					{
+						return $k;
+					}
+				}
+			}
+		}
+		else if( $type == 'anoms' )
+		{
+			foreach( self::$anomsLookup as $c  )
 			{
 				foreach( $c as $k => $mag )
 				{
