@@ -138,7 +138,11 @@ sigtable.prototype.convertSiteID = function (whClass, type, siteID)
 {
 	if( siteID == 0 )
 		return "";
-	if (type == 'wh')
+	if( whClass >= 7 )
+		return "";
+	if (type == 'combat')
+		return anomsLookup[whClass][siteID];
+	else if (type == 'wh')
 		return whLookup[whClass][siteID];
 	else if (type == 'mag')
 		return magsLookup[whClass][siteID];
@@ -471,6 +475,7 @@ sigtable.prototype.generateSiteSelect = function (whClass, type, siteID)
 	else if (type == "mag") return this.generateSelect(magsLookup[whClass], siteID);
 	else if (type == "grav") return this.generateSelect(gravsLookup, siteID);
 	else if (type == "radar") return this.generateSelect(radarsLookup[whClass], siteID);
+	else if (type == "combat") return this.generateSelect(anomsLookup[whClass], siteID);
 	else return this.generateSelect({
 										0: '--'
 									}, 0);
