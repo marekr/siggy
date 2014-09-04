@@ -39,7 +39,7 @@
 }
 
 .acLoading {
-	background: #fff url('indicator.gif') right center no-repeat;
+	background: #fff url(public/images/indicator.gif) right center no-repeat;
 }
 
 .acSelect {
