@@ -3,6 +3,7 @@
 --js=siggy.static.js ^
 --js=siggy.intel.dscan.js ^
 --js=siggy.intel.poses.js ^
+--js=siggy.charactersettings.js ^
 --js=siggy.js ^
 --js=siggy.sigtable.js ^
 --js=siggy.globalnotes.js ^
