@@ -230,9 +230,6 @@ siggyMap.prototype.initialize = function()
 	{
 		that.updateMessagePositions();
 		that.centerButtons();
-		
-		//ulgy hack to make the mass delete selection work for now
-		$("#chain-map").width($("#chain-map")[0].scrollWidth);
 	});
 
 	var $container = $("#chain-map");
@@ -241,6 +238,9 @@ siggyMap.prototype.initialize = function()
 		{
 			return;
 		}
+		//ulgy hack to make the mass delete selection work for now
+		$("#chain-map").width($("#chain-map-scrolltainer")[0].scrollWidth);
+		
 		that.massSelect = true;
 		
 		var chainmapOffset = $(this).offset();
@@ -279,6 +279,9 @@ siggyMap.prototype.initialize = function()
 		}).on('mouseup', function(e) {
 			if ( that.massSelect )
 			{
+				//ulgy hack to make the mass delete selection work for now
+				$("#chain-map").width("auto");
+		
 				that.massSelect = false;
 				$container.off('mousemove');
 
@@ -826,9 +829,6 @@ siggyMap.prototype.draw = function()
 
 		jsPlumb.setDraggable($('.map-system-blob'), false);
 	}
-	
-	//mass selection hack for now
-	$("#chain-map").width($("#chain-map")[0].scrollWidth);
 }
 
 siggyMap.prototype.openSystemEdit = function( sysID )
