@@ -1,5 +1,51 @@
 
 //first key is wh class, second is just unique for mag in the class
+var anomsLookup = {
+	1: {
+		0: "",
+		1: "Perimeter Ambush Point",
+		2: "Perimeter Camp",
+		3: "Phase Catalyst Node",
+		4: "The Line"
+	},
+	2: {
+		0: "",
+		1: "Perimeter Checkpoint",
+		2: "Perimeter Hangar",
+		3: "The Ruins of Enclave Cohort 27",
+		4: "Sleeper Data Sanctuary"
+	},
+	3: {
+		0: "",
+		1: "Fortification Frontier Stronghold",
+		2: "Outpost Frontier Stronghold",
+		3: "Solar Cell",
+		4: "The Oruze Construct"
+	},
+	4: {
+		0: "",
+		1: "Frontier Barracks",
+		2: "Frontier Command Post",
+		3: "Integrated Terminus",
+		4: "Sleeper Information Sanctum"
+	},
+	5: {
+		0: "",
+		1: "Quarantine Area",
+		2: "Core Garrison",
+		3: "Core Stronghold",
+		4: "Oruze Osobnyk"
+	},
+	6: {
+		0: "",
+		1: "Core Citadel",
+		2: "Core Bastion",
+		3: "Strange Energy Readings",
+		4: "The Mirror"
+	}
+};
+
+
 var magsLookup = {
 	1: {
 		0: "",
