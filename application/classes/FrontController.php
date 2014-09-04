@@ -121,7 +121,7 @@ class FrontController extends Controller
 
     private function loadSettings()
     {
-        $settings = array('theme_id' => 0 );
+        $default_settings = array('theme_id' => 0,'combine_scan_intel' => 0 );
 
         if( isset($this->groupData['charID']) && $this->groupData['charID'] != 0)
         {
@@ -131,11 +131,11 @@ class FrontController extends Controller
 
 			if( !isset($settings['char_id']) )
 			{
-				$settings = array('theme_id' => 0 );
+				return $default_settings;
 			}
         }
 
-        return $settings;
+		return $default_settings;
     }
 
     public function authCheckAndRedirect()
