@@ -93,6 +93,7 @@ function siggymain( options )
 	this.globalnotes.settings.baseUrl = this.settings.baseUrl;
 	
 	this.charactersettings = new charactersettings(this.settings.charsettings);
+	this.charactersettings.siggyMain = this;
 	this.charactersettings.settings.baseUrl = this.settings.baseUrl;
 	
 	this.systemName = this.settings.initialSystemName;
@@ -190,6 +191,8 @@ siggymain.prototype.initializeCollaspibles = function()
 	var $this = this;
 	var systemStatsContent = $('#system-stats > div');
 	var sigAddContent = $('#sig-add-box > div');
+	var dscanContent = $('#dscan-box > div');
+	var posContent = $('#pos-box > div');
 
 	if( $this.displayStates.statsOpen )
 	{
@@ -207,6 +210,24 @@ siggymain.prototype.initializeCollaspibles = function()
 	else
 	{
 		sigAddContent.hide();
+	}
+	
+	if( $this.displayStates.dscanOpen )
+	{
+		dscanContent.show();
+	}
+	else
+	{
+		dscanContent.hide();
+	}
+	
+	if( $this.displayStates.posesOpen )
+	{
+		posContent.show();
+	}
+	else
+	{
+		posContent.hide();
 	}
 
 	$('#system-stats h2').click( function() {
@@ -236,6 +257,36 @@ siggymain.prototype.initializeCollaspibles = function()
 		{
 			sigAddContent.show();
 			$this.displayStates.sigsAddOpen = true;
+			$this.saveDisplayState();
+		}
+	});
+	
+	$('#dscan-box h2').click( function() {
+		if( dscanContent.is(":visible") )
+		{
+			dscanContent.hide();
+			$this.displayStates.dscanOpen = false;
+			$this.saveDisplayState();
+		}
+		else
+		{
+			dscanContent.show();
+			$this.displayStates.dscanOpen = true;
+			$this.saveDisplayState();
+		}
+	});
+	
+	$('#pos-box h2').click( function() {
+		if( posContent.is(":visible") )
+		{
+			posContent.hide();
+			$this.displayStates.posesOpen = false;
+			$this.saveDisplayState();
+		}
+		else
+		{
+			posContent.show();
+			$this.displayStates.posesOpen = true;
 			$this.saveDisplayState();
 		}
 	});

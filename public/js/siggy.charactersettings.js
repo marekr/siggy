@@ -52,7 +52,7 @@ charactersettings.prototype.initialize = function()
 		$this.changeTheme(themeID);
 	});
 	
-	$("#settings-form input[name=combine_scan_intel]").attr('checked', this.settings.combineScanIntel);
+	$("#settings-form input[name=combine_scan_intel]").attr('checked', this.settings.combineScanIntel ? true : false);
 	
 	$('#settings-form').submit( function() {
 		
@@ -78,6 +78,7 @@ charactersettings.prototype.initialize = function()
 
 charactersettings.prototype.performSettingsRefresh = function()
 {
+	this.siggyMain.changeTab("#sigs");
 	if( this.settings.combineScanIntel )
 	{
 		$("#system-stats").before($("#pos-box"));

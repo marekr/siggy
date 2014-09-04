@@ -1,6 +1,5 @@
-
-            <div id="pos-box" class="sub-display-group">
-                <h2>POSes</h2>
+			<div id="pos-box" class="sub-display-group">
+                <h2 class="hover">POSes</h2>
                 <div>
                     <a href="#" id='system-intel-add-pos' class="btn btn-default btn-xs">Add POS</a><br /><br />
                     <table id="system-intel-poses" cellspacing="1" class='siggy-table bordered-wrap'>
