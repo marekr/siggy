@@ -658,7 +658,7 @@ class Controller_Siggy extends FrontController
 		{
 			$id = intval($_POST['systemID']);
 
-			$this->chainmap->update_system($_POST['systemID'], array('displayName' => trim($_POST['label']), 'activity' => intval($_POST['activity']) ) );
+			$this->chainmap->update_system($_POST['systemID'], array('displayName' => trim(strip_tags($_POST['label'])), 'activity' => intval($_POST['activity']) ) );
 			echo json_encode('1');
 
 			$system_data = $this->getSystemData($id);
