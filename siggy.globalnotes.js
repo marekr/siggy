@@ -10,6 +10,8 @@ function globalnotes(options)
 	this._blinkNotesInterval = null;
 	this.globalNotes = '';
 	this.editingGlobalNotes = false;
+	
+	this.siggyMain = null;
 }
 
 globalnotes.prototype.initialize = function()
@@ -109,7 +111,7 @@ globalnotes.prototype.update = function(data)
 			}
 			else
 			{
-				var nlu = that.group_cache_time;
+				var nlu = this.siggyMain.groupCacheTime;
 			}
 
 			if( !this.globalNotesEle.is(':visible') && data.group_cache_time > nlu && nlu != 0 )
