@@ -441,7 +441,7 @@ siggymain.prototype.switchSystem = function(systemID, systemName)
 
 
 	$('#sig-add-box select[name=type]').val(0);
-	this.updateSiteSelect('#sig-add-box select[name=site]',this.systemClass, 0, 0);
+	this.sigtable.updateSiteSelect('#sig-add-box select[name=site]',this.systemClass, 0, 0);
 
 	if( this.updateNow() )
 	{
@@ -742,42 +742,6 @@ siggymain.prototype.updateSystemOptionsForm = function (systemData)
 }
 
 
-siggymain.prototype.updateSiteSelect = function( ele, whClass, type, siteID )
-{
-	var elem = $( ele );
-	elem.empty();
-
-	var options = [];
-	switch( type )
-	{
-		case 'wh':
-			options = whLookup[whClass];
-			break;
-		case 'ladar':
-			options = ladarsLookup;
-			break;
-		case 'mag':
-			options = magsLookup[whClass];
-			break;
-		case 'grav':
-			options = gravsLookup;
-			break;
-		case 'radar':
-			options = radarsLookup[whClass];
-			break;
-		default:
-			options = { 0: '--'};
-			break;
-	}
-
-	for (var i in options)
-	{
-		elem.append($('<option>').attr('value', i).text(options[i]));
-	}
-
-	elem.val(siteID);
-}
-
 siggymain.prototype.setSystemID = function (systemID)
 {
 	this.systemID = systemID;
@@ -948,7 +912,7 @@ siggymain.prototype.setupAddBox = function ()
 	{
 		newType = $(this).val();
 
-		$this.updateSiteSelect( '#sig-add-box select[name=site]', $this.systemClass, newType, 0);
+		$this.sigtable.updateSiteSelect( '#sig-add-box select[name=site]', $this.systemClass, newType, 0);
 	}).keypress(this.addBoxEnterHandler);
 
 	if( this.settings.showSigSizeCol )
