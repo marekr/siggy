@@ -55,7 +55,7 @@ var magsLookup = {
 	2: {
 		0: "",
 		1: "Forgotten Perimeter Gateway",
-		2: "Forgoten Perimeter Habitation Coils"
+		2: "Forgotten Perimeter Habitation Coils"
 	},
 	3: {
 		0: "",
@@ -97,7 +97,7 @@ var radarsLookup = {
 	2: {
 		0: "",
 		1: "Unsecured Perimeter Comms Relay",
-		2: "Unsecured Transponder Farm"
+		2: "Unsecured Perimeter Transponder Farm"
 	},
 	3: {
 		0: "",

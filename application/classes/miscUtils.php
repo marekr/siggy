@@ -53,7 +53,7 @@ final class miscUtils
 							2 => array(
 								0  => "",
 								1  => "Forgotten Perimeter Gateway",
-								2  => "Forgoten Perimeter Habitation Coils"
+								2  => "Forgotten Perimeter Habitation Coils"
 										),
 							3 => array(
 								0  => "",
@@ -84,7 +84,7 @@ final class miscUtils
 											2 => array(
 												0  => "",
 												1  => "Unsecured Perimeter Comms Relay",
-												2  => "Unsecured Transponder Farm"
+												2  => "Unsecured Perimeter Transponder Farm"
 														),
 											3 => array(
 												0  => "",
