@@ -5,9 +5,9 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <?php if( Kohana::$environment == Kohana::DEVELOPMENT ): ?>
-	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>theme.php?id=<?php echo $settings['theme_id']; ?>&<?php echo time(); ?>" rel="stylesheet" media="screen" />
+	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>theme.php?id=<?php echo $settings['theme_id']; ?>&<?php echo time(); ?>" id="theme-css" rel="stylesheet" media="screen" />
     <?php else: ?>
-	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>theme.php?id=<?php echo $settings['theme_id']; ?>" rel="stylesheet" media="screen" />
+	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>theme.php?id=<?php echo $settings['theme_id']; ?>" id="theme-css" rel="stylesheet" media="screen" />
     <?php endif; ?>
     <link href="<?php echo URL::base(TRUE, TRUE);?>public/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
@@ -32,6 +32,7 @@
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.intel.poses.js?<?php echo time(); ?>'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.intel.dscan.js?<?php echo time(); ?>'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.globalnotes.js?<?php echo time(); ?>'></script>
+    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.charactersettings.js?<?php echo time(); ?>'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggymap.js?<?php echo time(); ?>'></script>
     <?php else: ?>
 	<?php if( isset($_GET['beta']) ): ?>

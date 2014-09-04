@@ -34,47 +34,8 @@
             </ul>
         </div>
         <div id="system-intel" class="tab clear-fix">
-            <div id="pos-box" class="sub-display-group">
-                <h2>POSes</h2>
-                <div>
-                    <a href="#" id='system-intel-add-pos' class="btn btn-default btn-xs">Add POS</a><br /><br />
-                    <table id="system-intel-poses" cellspacing="1" class='siggy-table bordered-wrap'>
-						<thead>
-							<tr>
-								<th width="4%">Status</th>
-								<th width="4%">Location</th>
-								<th width="36%">Corp</th>
-								<th width="4%">Type</th>
-								<th width="4%">Size</th>
-								<th width="8%">Added</th>
-								<th width="32%">Notes</th>
-								<th width="8%">&nbsp;</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div id="dscan-box" class="sub-display-group">
-                <h2>DScan</h2>
-                <div>
-                    <a href="#" id="system-intel-add-dscan" class="btn btn-default btn-xs">Add DScan result</a><br /><br />
-                    <table id="system-intel-dscans" cellspacing="1" class='siggy-table bordered-wrap'>
-						<thead>
-							<tr>
-								<th width="60%">Title</th>
-								<th>Date Added</th>
-								<th>Added by</th>
-								<th>&nbsp;</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-                    </table>
-                </div>
-            </div>
+			<?php echo View::factory('siggy/displaygroups/poses'); ?>
+			<?php echo View::factory('siggy/displaygroups/dscan'); ?>
 			<!--
             <div id="system-notes-box" class="sub-display-group">
                 <h2>Notes</h2>
@@ -535,6 +496,10 @@
                 baseUrl: '<?php echo URL::base(TRUE, TRUE);?>',
                 initialSystemID: <?php echo $systemData['id']; ?>,
                 initialSystemName: '<?php echo $systemData['name']; ?>',
+				charsettings: {
+					themeID: <?php echo $settings['theme_id']; ?>,
+					combineScanIntel: <?php echo $settings['combine_scan_intel']; ?>
+				},
 				sigtable: {
                 	showSigSizeCol: <?php echo ( $group['showSigSizeCol'] ? 'true' : 'false' ); ?>
 				},

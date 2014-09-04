@@ -42,6 +42,11 @@ function siggymain( options )
 		initialSystemID: 0,
 		initialSystemName: '',
 		sessionID: '',
+		charsettings: {
+			themeID: 0,
+			combineScanIntel: false,
+			themeList: {}
+		},
 		map: {
 		  jumpTrackerEnabled: true
 	    },
@@ -63,7 +68,9 @@ function siggymain( options )
 	this.defaultDisplayStates = {
 		statsOpen: false,
 		sigsAddOpen: true,
-		showAnomalies: true
+		showAnomalies: true,
+		posesOpen: true,
+		dscanOpen: true
 	}
 
 	this.displayStates = this.defaultDisplayStates;
@@ -84,6 +91,9 @@ function siggymain( options )
 	this.globalnotes = new globalnotes(this.settings.globalnotes);
 	this.globalnotes.siggyMain = this;
 	this.globalnotes.settings.baseUrl = this.settings.baseUrl;
+	
+	this.charactersettings = new charactersettings(this.settings.charsettings);
+	this.charactersettings.settings.baseUrl = this.settings.baseUrl;
 	
 	this.systemName = this.settings.initialSystemName;
     this.setSystemID(this.settings.initialSystemID);
@@ -118,6 +128,7 @@ siggymain.prototype.initialize = function ()
 	this.map.siggymain = this;
 	this.map.initialize();
 
+	this.charactersettings.initialize();
 	this.inteldscan.initialize();
 	this.intelposes.initialize();
 	this.globalnotes.initialize();
@@ -1064,42 +1075,6 @@ siggymain.prototype.changeTab = function( selectedTab )
 		setCookie('system-tab', href, 365);
     } );
 }
-
-siggymain.prototype.initializeGNotes = function()
-{
-	var $this = this;
-
-	$('#settings-button').click(function ()
-	{
-		$.blockUI({
-			message: $('#settings-dialog'),
-			css: {
-				border: 'none',
-				padding: '15px',
-				background: 'transparent',
-				color: 'inherit',
-				cursor: 'auto',
-				textAlign: 'left',
-				top: '20%',
-				width: 'auto',
-				centerX: true,
-				centerY: false
-			},
-			overlayCSS: {
-				cursor: 'auto'
-			},
-			fadeIn:  0,
-			fadeOut:  0
-		});
-		$('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);
-	});
-
-	$('#settings-cancel').click( function() {
-		$.unblockUI();
-	});
-
-}
-
 
 siggymain.prototype.freeze = function()
 {

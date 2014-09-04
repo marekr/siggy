@@ -62,6 +62,7 @@ class Controller_Siggy extends FrontController
 		$view->group = $this->groupData;
 		$view->requested = $requested;
 		$view->igb = $this->igb;
+        $view->settings = $this->template->settings;
 
 		$view->sessionID = '';
 
@@ -91,7 +92,7 @@ class Controller_Siggy extends FrontController
 		$this->template->headerTools = $headerToolsHTML;
 	}
 
-    public function action_savesettings()
+    public function action_save_character_settings()
     {
         $this->profiler = NULL;
         $this->auto_render = FALSE;
@@ -101,6 +102,7 @@ class Controller_Siggy extends FrontController
         if( !empty($charID) )
         {
             $themeID = intval($_POST['theme_id']);
+            $combineScanIntel = intval($_POST['combine_scan_intel']);
 
             $themes = DB::query(Database::SELECT, "SELECT theme_id, theme_name FROM themes
                                                     WHERE theme_id = :themeID AND (visibility='all' OR (group_id=:group AND visibility='group'))")
@@ -111,14 +113,15 @@ class Controller_Siggy extends FrontController
 
             if( count( $themes ) > 0 )
             {
-                DB::query(Database::INSERT, 'REPLACE INTO character_settings (`char_id`, `theme_id`) VALUES(:charID, :themeID)')
+                DB::query(Database::INSERT, 'REPLACE INTO character_settings (`char_id`, `theme_id`,`combine_scan_intel`) VALUES(:charID, :themeID, :combineScanIntel)')
 							->param(':charID', $charID )
 							->param(':themeID', $themeID)
+							->param(':combineScanIntel', $combineScanIntel)
 							->execute();
             }
         }
 
-        HTTP::redirect('/');
+        //HTTP::redirect('/');
 
         exit();
     }
