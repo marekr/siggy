@@ -17,7 +17,7 @@ if(jQuery)( function() {
 
 	$.extend($.fn, {
 		
-		contextMenu: function(o, callback) {
+		contextMenu: function(o, callback, menuOpenCallback) {
 			// Defaults
 			if( o.menu == undefined ) return false;
 			if( o.inSpeed == undefined ) o.inSpeed = 150;
@@ -71,9 +71,11 @@ if(jQuery)( function() {
 							(e.pageX) ? x = e.pageX : x = e.clientX + d.scrollLeft;
 							(e.pageY) ? y = e.pageY + o.offsetPageY : y = e.clientY + d.scrollTop;
 							
-							
 							// Show the menu
 							$(document).unbind('click');
+							
+							if( menuOpenCallback ) menuOpenCallback($(srcElement));
+							
 							$(menu).css({ top: y, left: x }).fadeIn(o.inSpeed);
 							// Hover events
 							$(menu).find('A').mouseover( function() {
