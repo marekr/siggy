@@ -193,45 +193,7 @@ class Controller_Manage_Settings extends Controller_Manage
 								Message::add( 'error', __('Error: The password was not saved because it did not match between the two fields.') );
 						}
 				}
-			
-				$homeSystems = trim($_POST['homeSystems']);
-				if( !empty($homeSystems) )
-				{
-						$homeSystems = explode(',', $homeSystems);
-						$homeSystemIDs = array();
-						if( is_array( $homeSystems ) )
-						{
-								foreach($homeSystems as $k => $v)
-								{
-										if( trim($v) != '' )
-										{
-												$id = miscUtils::findSystemByName(trim($v));
-												if( $id != 0 )
-												{
-														$homeSystemIDs[] = $id;
-												}
-												else
-												{
-														unset($homeSystems[ $k ] );
-												}
-										}
-										else
-										{
-												unset($homeSystems[ $k ] );
-										}
-								}
-						}
-						$group->homeSystemIDs = implode(',', $homeSystemIDs);
-						$group->homeSystems = implode(',', $homeSystems);
-				}
-				else
-				{
-					$group->homeSystems = '';
-					$group->homeSystemIDs = '';
-				}
 				
-				$group->skipPurgeHomeSigs = intval($_POST['skipPurgeHomeSigs']);
-				$group->sysListShowReds = intval($_POST['sysListShowReds']);
 				
 				$group->save();
 					
@@ -252,10 +214,8 @@ class Controller_Manage_Settings extends Controller_Manage
 
 				$view->set('data',array('groupName' => $_POST['groupName'],
 										'groupTicker' => $_POST['groupTicker'], 
-										'authMode' => $_POST['authMode'], 
-										'homeSystems' => $_POST['homeSystems'], 
-										'skipPurgeHomeSigs' => $_POST['skipPurgeHomeSigs'],
-										'sysListShowReds' => $_POST['sysListShowReds']
+										'authMode' => $_POST['authMode'],
+										'showSigSizeCol' => false
 									 ) 
 				);
 			}

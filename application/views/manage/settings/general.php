@@ -20,11 +20,6 @@
 						", $errors); ?>
 		<?php echo formRenderer::password('Group password', 'password', '', "Only enter in a password here and confirm it below if you are trying to set or change the group password, otherwise leave blank and it won't get reset/changed.", $errors); ?>
 		<?php echo formRenderer::password('Confirm group password', 'password_confirm', '', "Only enter in a password here and confirm it below if you are trying to set or change the group password, otherwise leave blank and it won't get reset/changed.", $errors); ?>
-			
-		<legend>Default subgroup</legend>
-		<?php echo formRenderer::textarea('Home system(s)', 'homeSystems', $data['homeSystems'], 'This setting allows siggy to do some advanced witchcraft relating to chain map management,signature deletion and possibly other things in the future. This is not required, and all eve systems are accepted as home systems and as many as you want/need. For more than one home system, use comma delimated format i.e. "Jita,Amarr,Dodixie" (without the quotes). This only affects the default subgroup!', $errors); ?>
-		<?php echo formRenderer::yesNo('Keep home system sigs that are old when purging?', 'skipPurgeHomeSigs', $data['skipPurgeHomeSigs'], 'If set to yes and if any home system(s) is/are properly set, the signatures within the system(s) will not be purged automatically at around downtime when they are past 24 hours of age.', $errors); ?>
-		<?php echo formRenderer::yesNo("Show 'red' in use status wormholes in the system list?", 'sysListShowReds', $data['sysListShowReds'], "By default both systems set as 'in use' and not in use are shown in the system list just above system info. This option hides red systems until set green either automatically or manually. This is useful if you scan enough to fill the area for the list fast.", $errors); ?>
 	</fieldset>
   			
 	<div class="form-actions">
