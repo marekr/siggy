@@ -138,8 +138,6 @@ sigtable.prototype.convertSiteID = function (whClass, type, siteID)
 {
 	if( siteID == 0 )
 		return "";
-	if( whClass >= 7 )
-		return "";
 	if (type == 'combat')
 		return anomsLookup[whClass][siteID];
 	else if (type == 'wh')

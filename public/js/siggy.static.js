@@ -42,6 +42,15 @@ var anomsLookup = {
 		2: "Core Bastion",
 		3: "Strange Energy Readings",
 		4: "The Mirror"
+	},
+	7: {
+		0: ""
+	},
+	8: {
+		0: ""
+	},
+	9: {
+		0: ""
 	}
 };
 
