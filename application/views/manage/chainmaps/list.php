@@ -3,7 +3,7 @@
 This page lists all the chainmaps that are setup. There is a "default" chain map which cannot ever be deleted but can have its settings modified. All other chainmaps can be freely modified and removed.
 </div>
 
-<?php echo Html::anchor('manage/chainmaps/add', __('<i class="fa fa-plus-circle fa-fw"></i>&nbsp;Add New Sub Group'), array('class' => 'btn btn-primary pull-right') ); ?>
+<?php echo Html::anchor('manage/chainmaps/add', __('<i class="fa fa-plus-circle fa-fw"></i>&nbsp;Add New Chainmap'), array('class' => 'btn btn-primary pull-right') ); ?>
 <br />
 <br />
 <br />
@@ -11,7 +11,7 @@ This page lists all the chainmaps that are setup. There is a "default" chain map
 <table class="table table-striped" width="100%">
 	<thead>
 		<tr>
-			<th width="60%">Subgroup</th>
+			<th width="60%">Chainmap</th>
 			<th width="15%"># Members</th>
 			<th width="25%">Options</th>
 		</tr>
@@ -32,5 +32,5 @@ This page lists all the chainmaps that are setup. There is a "default" chain map
 	</tbody>
 </table>
 <?php else: ?>
-<p>No subgroups currently exist.</p>
+<p>No chainmaps currently exist.</p>
 <?php endif; ?>
