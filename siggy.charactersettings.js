@@ -8,7 +8,6 @@ function charactersettings(options)
 	};
 
 	this.settings = $.extend(this.defaults, options);
-	console.log(this.settings);
 	this.dscans = {};
 }
 
