@@ -63,7 +63,6 @@ function siggyMap(options)
 
 	this.selectedSystemRect = null;
 	this.selectedSystemID = 0;
-	this.infoicon = null;
 
 	//systemeditor
 	this.editingSystem = 0;
@@ -190,11 +189,6 @@ siggyMap.prototype.initialize = function()
 		that.editing = true;
 		$('#chain-map-save').show();
 		that.centerButtons();
-
-		if( that.infoicon != null )
-		{
-				that.infoicon.disabled = true;
-		}
 
 		$('div.map-system-blob').qtip('disable');
 
@@ -388,12 +382,8 @@ siggyMap.prototype.registerEvents = function()
         that.editing = false;
         $(this).hide();
         that.hideMessage('editing');
-        if( that.infoicon != null )
-        {
-			that.infoicon.disabled = false;
-        }
+		
         $('div.map-system-blob').qtip('enable');
-
     } );
 
 
