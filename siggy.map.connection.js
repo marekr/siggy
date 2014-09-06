@@ -138,22 +138,44 @@ mapconnection.prototype.create = function()
 
 mapconnection.prototype.whContextMenuHandler = function(action)
 {
+	var $this = this;
+	var saveData = {};
+	
 	switch( action )
 	{
 		case 'set-stage-1':
+			saveData.mass = 0;
 			break;
 		case 'set-stage-2':
+			saveData.mass = 1;
 			break;
 		case 'set-stage-3':
+			saveData.mass = 2;
 			break;
 		case 'set-eol':
+			saveData.eol = 1;
 			break;
 		case 'clear-eol':
+			saveData.eol = 0;
 			break;
 		case 'set-frigate':
+			saveData.frigate_sized = 1;
 			break;
 		case 'unmark-frigate':
+			saveData.frigate_sized = 0;
 			break;
+	}
+	
+	if( Object.size(saveData) > 0 )
+	{
+		saveData.mode = 'edit';
+		saveData.hash = this.settings.hash;
+		
+
+		$.post($this.map.baseUrl + 'chainmap/wh_save', saveData, function()
+		{
+			$this.map.siggymain.updateNow();
+		});
 	}
 }
 
