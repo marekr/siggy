@@ -51,7 +51,7 @@ charactersettings.prototype.initialize = function()
 		$this.changeTheme(themeID);
 	});
 	
-	$("#settings-form input[name=combine_scan_intel]").attr('checked', this.settings.combineScanIntel ? true : false);
+	$("#settings-form input[name=combine_scan_intel]").prop('checked', this.settings.combineScanIntel ? true : false);
 	
 	$('#settings-form').submit( function() {
 		

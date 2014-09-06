@@ -61,7 +61,7 @@ sigtable.prototype.initialize = function()
 	});
 
 
-	$('#checkbox-show-anomalies').attr('checked', this.siggyMain.displayStates.showAnomalies);
+	$('#checkbox-show-anomalies').prop('checked', this.siggyMain.displayStates.showAnomalies);
 	$('#checkbox-show-anomalies').change( function()
 	{
 		$this.changeAnomState($(this).is(':checked'));
