@@ -940,14 +940,13 @@ siggyMap.prototype.setupEditor = function()
 		if( that.editorMode == 'edit' )
 		{
 			data = {
-				mode: 'edit',
 				hash: that.editingHash,
 				eol: $('#wormhole-editor input[name=eol]:checked').val(),
 				frigate_sized: $('#wormhole-editor input[name=frigate_sized]:checked').val(),
 				mass: $('#wormhole-editor select[name=mass]').val()
 			};
 
-			$.post(that.baseUrl + 'chainmap/wh_save', data, function()
+			$.post(that.baseUrl + 'chainmap/connection_edit', data, function()
 			{
 				that.siggymain.updateNow();
 			});
@@ -961,7 +960,6 @@ siggyMap.prototype.setupEditor = function()
 			var errors = [];
 
 			data = {
-				mode: 'add',
 				fromSys: fromSysInput.val(),
 				fromSysCurrent: ( fromCurrentInput.is(':checked') ? 1 : 0 ),
 				toSys: toSysInput.val(),
@@ -971,7 +969,7 @@ siggyMap.prototype.setupEditor = function()
 				mass: $('#wormhole-editor select[name=mass]').val()
 			};
 
-			$.post(that.baseUrl + 'chainmap/wh_save', data, function(resp)
+			$.post(that.baseUrl + 'chainmap/connection_add', data, function(resp)
 			{
 				if( parseInt(resp.success) == 1 )
 				{
