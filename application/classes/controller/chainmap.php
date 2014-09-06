@@ -260,29 +260,42 @@ class Controller_Chainmap extends FrontController
 				echo json_encode(array('error' => 1, 'errorMsg' => 'Wormhole does not exist.'));
 				exit();
 			}
-
-			$update['eol'] = intval($_POST['eol']);
-			$update['frigate_sized'] = intval($_POST['frigate_sized']);
-
-			$update['mass'] = intval($_POST['mass']);
-
-			if( !$wormhole['eol'] && $update['eol'] )
+			
+			if( isset($_POST['eol']) )
 			{
-				$update['eolToggled'] = time();
+				$update['eol'] = intval($_POST['eol']);
+				
+				if( !$wormhole['eol'] && $update['eol'] )
+				{
+					$update['eolToggled'] = time();
+				}
+				elseif( $wormhole['eol'] && !$update['eol'] )
+				{
+					$update['eolToggled'] = 0;
+				}
 			}
-			elseif( $wormhole['eol'] && !$update['eol'] )
+			
+			if( isset($_POST['frigate_sized']) )
 			{
-				$update['eolToggled'] = 0;
+				$update['frigate_sized'] = intval($_POST['frigate_sized']);
 			}
 
-			DB::update('wormholes')
-					->set( $update )
-					->where('hash', '=', $hash)
-					->where('groupID', '=', $this->groupData['groupID'])
-					->where('chainmap_id', '=', $this->groupData['active_chain_map'])
-					->execute();
+			if( isset($_POST['mass']) )
+			{
+				$update['mass'] = intval($_POST['mass']);
+			}
+			
+			if( !empty($update) )
+			{
+				DB::update('wormholes')
+						->set( $update )
+						->where('hash', '=', $hash)
+						->where('groupID', '=', $this->groupData['groupID'])
+						->where('chainmap_id', '=', $this->groupData['active_chain_map'])
+						->execute();
 
-			$this->chainmap->rebuild_map_data_cache();
+				$this->chainmap->rebuild_map_data_cache();
+			}
 		}
 		else
 		{
