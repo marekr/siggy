@@ -57,8 +57,11 @@ class chainmap
 
 		$data = array();
 
-		$wormholes = DB::query(Database::SELECT, "SELECT `hash`, `to`, `from`, eol, mass, eol_date_set, frigate_sized
-			 										FROM wormholes 
+		$wormholes = DB::query(Database::SELECT, "SELECT w.`hash`, w.`to`, w.`from`, w.eol, w.mass, w.eol_date_set, w.frigate_sized,
+														s.`mass` as wh_mass, s.`jump_mass` as wh_jump_mass, s.`lifetime` as wh_lifetime,
+														s.`regen` as wh_regen
+			 										FROM wormholes AS w
+													LEFT JOIN statics AS s ON(s.id=w.wh_type_id)
 													WHERE group_id=:group
 													AND chainmap_id=:chainmap")
 								 ->param(':group', $this->group_id)
