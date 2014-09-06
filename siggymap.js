@@ -966,7 +966,8 @@ siggyMap.prototype.setupEditor = function()
 				toSysCurrent: ( toCurrentInput.is(':checked') ? 1 : 0 ),
 				eol: $('#wormhole-editor input[name=eol]:checked').val(),
 				frigate_sized: $('#wormhole-editor input[name=frigate_sized]:checked').val(),
-				mass: $('#wormhole-editor select[name=mass]').val()
+				mass: $('#wormhole-editor select[name=mass]').val(),
+				wh_type_name: $('#wormhole-editor input[name=wh_type_name]').val()
 			};
 
 			$.post(that.baseUrl + 'chainmap/connection_add', data, function(resp)

@@ -576,10 +576,10 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 				destBlurb = " (to Nullsec)";
 			}
 
-			var staticBit = $("<p>").text(theStatic.staticName + destBlurb);
-			var staticInfo = "<b>" + theStatic.staticName  + destBlurb + "</b><br />" + "Max Mass: " + theStatic.staticMass + " billion<br />" + "Max Jumpable Mass: " + theStatic.staticJumpMass + " million<br />" + "Max Lifetime: " + theStatic.staticLifetime + " hrs<br />" + "Signature Size: " + theStatic.staticSigSize + " <br />";
+			var staticBit = $("<p>").text(theStatic.name + destBlurb);
+			var staticInfo = "<b>" + theStatic.name  + destBlurb + "</b><br />" + "Max Mass: " + theStatic.mass + " billion<br />" + "Max Jumpable Mass: " + theStatic.jump_mass + " million<br />" + "Max Lifetime: " + theStatic.lifetime + " hrs<br />" + "Signature Size: " + theStatic.sig_size + " <br />";
 
-			var staticTooltip = $("<div>").attr('id', 'static-info-' + theStatic.staticID)
+			var staticTooltip = $("<div>").attr('id', 'static-info-' + theStatic.id)
 										  .addClass('tooltip')
 										  .html( staticInfo );
 
@@ -588,7 +588,7 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 
 			staticBit.qtip({
 				content: {
-					text: $('#static-info-' + theStatic.staticID) // Use the "div" element next to this for the content
+					text: $('#static-info-' + theStatic.id) // Use the "div" element next to this for the content
 				},
 				position: {
 					target: 'mouse',
