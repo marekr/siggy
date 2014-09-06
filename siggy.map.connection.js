@@ -244,7 +244,7 @@ mapconnection.prototype.setupOverlay = function(connectionOptions)
 		this.label += 'EOL set at: '+ siggymain.displayTimeStamp(this.settings.wormhole.eolDateSet);
 	}
 
-	if( parseInt(this.settings.wormhole.frigate_sized) == 1 )
+	if( parseInt(this.settings.wormhole.frigateSized) == 1 )
 	{
 		if( this.label != '' )
 		{
