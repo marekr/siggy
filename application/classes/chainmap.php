@@ -58,7 +58,9 @@ class chainmap
 		$data = array();
 
 		$wormholes = DB::query(Database::SELECT, "SELECT `hash`, `to`, `from`, eol, mass, eolToggled, frigate_sized
-			 										FROM wormholes WHERE groupID=:group AND chainmap_id=:chainmap")
+			 										FROM wormholes 
+													WHERE groupID=:group
+													AND chainmap_id=:chainmap")
 								 ->param(':group', $this->group_id)
 								 ->param(':chainmap', $this->id)
 								 ->execute()
@@ -174,7 +176,7 @@ class chainmap
 						->as_array();
 	}
 
-	public function add_system_to_map($whHash, $sys1,$sys2, $eol=0, $mass=0)
+	public function add_system_to_map($whHash, $sys1,$sys2, $eol=0, $mass=0, $wh_type_id)
 	{
 		$sys1Connections = $this->get_connected_system($sys1);
 		$sys2Connections = $this->get_connected_system($sys2);
@@ -218,8 +220,8 @@ class chainmap
 		//default case is both systems already mapped, so just connect them
 		try
 		{
-			DB::query(Database::INSERT, 'INSERT INTO wormholes (`hash`, `to`, `from`, `groupID`, `chainmap_id`, `lastJump`, `eol`, `mass`)
-														 VALUES(:hash, :to, :from, :groupID, :chainmap, :lastJump, :eol, :mass)')
+			DB::query(Database::INSERT, 'INSERT INTO wormholes (`hash`, `to`, `from`, `groupID`, `chainmap_id`, `lastJump`, `eol`, `mass`,`wh_type_id`)
+														 VALUES(:hash, :to, :from, :groupID, :chainmap, :lastJump, :eol, :mass,:wh_type)')
 							->param(':hash', $whHash )
 							->param(':to', $sys1 )
 							->param(':from', $sys2)
@@ -227,6 +229,7 @@ class chainmap
 							->param(':mass', $mass )
 							->param(':groupID', $this->group_id )
 							->param(':chainmap', $this->id )
+							->param(':wh_type', $wh_type_id)
 							->param(':lastJump', time() )
 							->execute();
 		}

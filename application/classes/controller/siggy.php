@@ -186,7 +186,7 @@ class Controller_Siggy extends FrontController
 		$systemData['staticData'] = array();
 
 		$staticData = DB::query(Database::SELECT, "SELECT st.* FROM staticmap sm
-													INNER JOIN statics st ON sm.staticID = st.staticID
+													INNER JOIN statics st ON sm.staticID = st.id
 													WHERE sm.systemID=:id")
 									->param(':id', $systemData['id'])
 									->execute()

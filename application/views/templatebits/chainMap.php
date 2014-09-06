@@ -39,9 +39,9 @@
 		<!-- magic buttons -->
 		<div id='map-footer-bar'>
 			<!-- options -->
-			<a href="#" id="chain-map-add-wh" class="btn btn-default btn-xs">Add WH</a>
+			<a href="#" id="chain-map-add-wh" class="btn btn-default btn-xs">Add Connection</a>
 			<a href="#" id="chain-map-edit" class="btn btn-default btn-xs">Edit</a>
-			<a href="#" id="chain-map-delete-whs" class="btn btn-default btn-xs">Delete WHs</a>
+			<a href="#" id="chain-map-delete-whs" class="btn btn-default btn-xs">Delete Connections</a>
 			<!--- end options -->
 			<!--- broadcast -->
 			<?php if( !$group['alwaysBroadcast'] ): ?>
@@ -103,6 +103,7 @@
 				</ul>
 				<br />
 				<fieldset>
+					<label>WH Type Name <input type='text' name='wh_type_name' style='width:40px'/></label><br /><br /><br />
 					<legend>Options</legend>
 					EOL?: 	<label class="yes" style="display:inline;float:none;">Yes<input type="radio" name="eol" value="1" /></label>
 							<label class="no" style="display:inline;float:none;">No<input type="radio" name="eol" value="0" /></label>

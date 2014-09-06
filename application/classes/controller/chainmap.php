@@ -300,6 +300,20 @@ class Controller_Chainmap extends FrontController
 			$this->chainmap->rebuild_map_data_cache();
 		}
 	}
+	
+	private function lookupWHTypeByName($name)
+	{
+		$static = DB::query(Database::SELECT, "SELECT `id` FROM statics WHERE LOWER(name)=:name")
+							->param(':name', strtolower($name))
+							->execute()
+							
+							->current();
+		if( isset($static['id']) )
+		{
+			return $static['id'];
+		}
+		return 0;
+	}
 
 	public function action_connection_add()
 	{
@@ -318,6 +332,7 @@ class Controller_Chainmap extends FrontController
 		$fromSysCurrent = intval($_POST['fromSysCurrent']);
 		$toSys	= trim($_POST['toSys']);
 		$toSysCurrent = intval($_POST['toSysCurrent']);
+		$whTypeName = $_POST['wh_type_name'];
 
 		$errors = array();
 		if( !$fromSysCurrent && empty($fromSys) )
@@ -367,6 +382,16 @@ class Controller_Chainmap extends FrontController
 		{
 			$errors[] = "You cannot link a system to itself!";
 		}
+		
+		$whTypeID = 0;
+		if( !empty($whTypeName) )
+		{
+			$whTypeID = $this->lookupWHTypeByName($whTypeName);
+			if(!$whTypeID)
+			{
+				$errors[] = "Invalid WH Type Name";
+			}
+		}
 
 		$whHash = mapUtils::whHashByID($fromSysID , $toSysID);
 
@@ -390,7 +415,7 @@ class Controller_Chainmap extends FrontController
 		$eol = intval($_POST['eol']);
 		$mass = intval($_POST['mass']);
 
-		$this->chainmap->add_system_to_map($whHash, $fromSysID, $toSysID, $eol, $mass);
+		$this->chainmap->add_system_to_map($whHash, $fromSysID, $toSysID, $eol, $mass, $whTypeID);
 
 		$message = $this->groupData['charName'].' added wormhole manually between system IDs' . $fromSysID . ' and ' . $toSysID;
 
