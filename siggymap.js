@@ -15,8 +15,7 @@ function siggyMap(options)
 	this.systems = {};
 	this.wormholes = {};
 
-	this.drawnSystems = {};
-	this.drawnConnections = [];
+	this.mapConnections = {};
 
 	this.baseUrl = '';
 	this.container = null;
@@ -60,10 +59,7 @@ function siggyMap(options)
 		this.broadcast = 1;
 	}
 
-	//panning stuff
 	this.massSelect = false;
-	this.massSelectBox = null;
-
 
 	this.selectedSystemRect = null;
 	this.selectedSystemID = 0;
@@ -204,15 +200,12 @@ siggyMap.prototype.initialize = function()
 
 		jsPlumb.setDraggable($('.map-system-blob'), true);
 
-
 		that.showMessage('editing');
-
-
 	});
 
 	$('#chain-map-delete-whs').click( function() {
 		that.showMessage('deleting');
-		that.massDelete = true;
+		that.massSelect = true;
 
 
 		$('#chain-map-mass-delete-confirm').show();
@@ -234,7 +227,7 @@ siggyMap.prototype.initialize = function()
 
 	var $container = $("#chain-map");
 	$container.on('mousedown', function(e) {
-		if( !that.massDelete || that.massSelect )
+		if( !that.massSelect )
 		{
 			return;
 		}
@@ -245,7 +238,8 @@ siggyMap.prototype.initialize = function()
 		
 		var chainmapOffset = $(this).offset();
 		var click_y = e.pageY-chainmapOffset.top,
-		click_x = e.pageX-chainmapOffset.left;
+			click_x = e.pageX-chainmapOffset.left;
+			
 		that.selectionBox.css({
 		  'top':    click_y,
 		  'left':   click_x,
@@ -292,56 +286,34 @@ siggyMap.prototype.initialize = function()
 					 y: that.selectionBox.position().top
 				};
 
-				if( bb.w < 1 || bb.h < 1 )
-					return;
-
-
 				that.selectionBox.remove();
-
-				var connectionList = jsPlumb.getConnections();
-				for (i in connectionList)
+				
+				if( bb.w < 1 || bb.h < 1 )
 				{
-					var conn = connectionList[i];
-					var hash = conn.getParameter('hash');
+					console.log("too small!");
+					return;
+				}
+				for(var i in that.mapConnections)
+				{
+					var conn = that.mapConnections[i];
 					var ele = $( conn.id );
 
-					var inside = false;
-					var internalconn = conn.getConnector();
+					var internalconn = conn.connection.getConnector();
 					var compareBB = {
 						h: internalconn.h,
 						x: internalconn.x,
 						y: internalconn.y,
 						w: internalconn.w
 					};
-					inside = jsPlumbGeom.intersects( bb, compareBB );
-
+					
+					var inside = jsPlumbGeom.intersects( bb, compareBB );
+					
 					if( inside )
 					{
-
-						if( conn.getParameter('deleteMe') )
-						{
-							conn.setParameter('deleteMe', false);
-							conn.setPaintStyle( {
-								   lineWidth:6,
-								   strokeStyle: that.getMassColor(that.wormholes[hash].mass),
-								   outlineColor: that.getTimeColor(that.wormholes[hash].eol, that.wormholes[hash].frigate_sized),
-								   outlineWidth:3,
-								   dashstyle: that.getDashStyle(that.wormholes[hash].frigate_sized)
-							});
-						}
-						else
-						{
-							conn.setParameter('deleteMe', true);
-							conn.setPaintStyle( {
-								   lineWidth:6,
-								   strokeStyle: "#006AFE",
-								   outlineColor: "#006AFE",
-								   outlineWidth:3,
-								   dashstyle: 0
-							});
-							this.deleteMe = true;
-						}
+						conn.selected = !conn.selected;
 					}
+					
+					conn.refresh();
 				}
 			}
 		});
@@ -418,7 +390,7 @@ siggyMap.prototype.registerEvents = function()
         that.hideMessage('editing');
         if( that.infoicon != null )
         {
-                that.infoicon.disabled = false;
+			that.infoicon.disabled = false;
         }
         $('div.map-system-blob').qtip('enable');
 
@@ -427,18 +399,14 @@ siggyMap.prototype.registerEvents = function()
 
     $('#chain-map-mass-delete-confirm').click( function() {
         var deleteHashes = [];
-
-
-        var connectionList = jsPlumb.getConnections();
-        for (i in connectionList)
+		
+        for (var i in that.mapConnections)
         {
-            var conn = connectionList[i];
-
-            if( conn.getParameter('deleteMe') == true )
-            {
-                deleteHashes.push( conn.getParameter('hash') );
-                jsPlumb.detach(conn);
-            }
+			if( that.mapConnections[i].selected )
+			{
+                deleteHashes.push( that.mapConnections[i].settings.hash );
+				//jsPlumb.detach(conn);
+			}
         }
 
         if( deleteHashes.length > 0 )
@@ -459,20 +427,10 @@ siggyMap.prototype.registerEvents = function()
 
     $('#chain-map-mass-delete-cancel').click( function() {
 
-        var connectionList = jsPlumb.getConnections();
-        for (i in connectionList)
+        for (i in that.mapConnections)
         {
-            var conn = connectionList[i];
-            var hash = conn.getParameter('hash');
-
-            conn.setParameter('deleteMe', false);
-            conn.setPaintStyle( {
-                   lineWidth:6,
-                   strokeStyle: that.getMassColor(that.wormholes[hash].mass),
-                   outlineColor: that.getTimeColor(that.wormholes[hash].eol, that.wormholes[hash].frigate_sized),
-                   outlineWidth:3,
-			       dashstyle: that.getDashStyle(that.wormholes[hash].frigate_sized)
-            });
+			that.mapConnections[i].selected = false;
+			that.mapConnections[i].refresh();
         }
 
         that.hideMessage('deleting');
@@ -577,9 +535,16 @@ siggyMap.prototype.draw = function()
     $('div.map-system-blob').qtip('destroy');
     $('div.map-system-blob').destroyContextMenu();
     $('div.map-full-actives').remove();
+	
+	for( var i  in this.mapconnections )
+	{
+		this.mapconnections[i].destroy();
+		delete this.mapconnections[i];
+	}
+	
     jsPlumb.deleteEveryEndpoint();
     $('#chain-map').empty();
-
+	
     for( var i in this.systems )
     {
         //local variable assignment
@@ -711,113 +676,29 @@ siggyMap.prototype.draw = function()
         });
     }
 
-    var _listeners = function(e) {
-        e.bind("mouseenter", function(c) {
-            if( that.editing || that.massDelete )
-            {
-                return false;
-            }
-            c.showOverlay("label");
-        });
-        e.bind("mouseexit", function(c) {
-            c.hideOverlay("label");
-        });
-    };
-
     for( var w in this.wormholes )
     {
         //local variable to make code smaller
         var wormhole = this.wormholes[w];
-
-        var connectionOptions = { source: wormhole.from,
-                            target: wormhole.to,
-                            anchor:"Continuous",
-                            endpointsOnTop:false,
-                            endpoint:"Blank",
-                            detachable:false,
-                            connector:["StateMachine", { curviness:0.001 }],
-                            connectorTooltip: "aSDASDA",
-                            tooltip: "aSDASDA",
-                            anchor:[ "Perimeter", { shape:"Ellipse" } ],
-
-                            paintStyle:{
-                               lineWidth:6,
-                               strokeStyle: this.getMassColor(wormhole.mass),
-                               outlineColor: this.getTimeColor(wormhole.eol,wormhole.frigate_sized),
-                               outlineWidth:3,
-							   dashstyle: this.getDashStyle(wormhole.frigate_sized)
-                            },
-                            endpointStyle:{ fillStyle:"#a7b04b" },
-                            parameters: { hash: wormhole.hash, deleteMe: false }
-
-                        };
-
-		var label = '';
-        wormhole.eolToggled = parseInt(wormhole.eolToggled);
-        if( wormhole.eolToggled != 0 )
-        {
-			label += 'EOL set at: '+ siggymain.displayTimeStamp(wormhole.eolToggled);
-        }
-
-		if( parseInt(wormhole.frigate_sized) == 1 )
-		{
-			if( label != '' )
-			{
-				label += '<br />';
+		
+		var options = {
+			to: wormhole.to,
+			from: wormhole.from,
+			hash: wormhole.hash,
+			type: 'wh',
+			wormhole: {
+				mass: parseInt(wormhole.mass),
+				eolDateSet: parseInt(wormhole.eolToggled),
+				eol:  parseInt(wormhole.eol),
+				frigateSized: parseInt(wormhole.frigate_sized)
 			}
-			label += 'Frigate sized wormhole';
-		}
-
-		if( label != '' )
-		{
-			connectionOptions.overlays = [
-											["Label", {
-												cssClass:"map-eol-overlay",
-												label : label,
-												location:0.5,
-												id:"label"
-											}]
-										];
-		}
-
-        var connection = jsPlumb.connect(connectionOptions);
-		if( label != '' )
-        {
-            _listeners(connection);
-        }
-
-        connection.bind("click", function(conn)
-        {
-            var hash = conn.getParameter('hash');
-            if( that.massDelete )
-            {
-                if( conn.getParameter('deleteMe') )
-                {
-                    conn.setPaintStyle( {
-                           lineWidth:6,
-                           strokeStyle: that.getMassColor(that.wormholes[hash].mass),
-                           outlineColor: that.getTimeColor(that.wormholes[hash].eol,that.wormholes[hash].frigate_sized),
-                           outlineWidth:3
-                    });
-                    conn.setParameter('deleteMe', false);
-                }
-                else
-                {
-                    conn.setPaintStyle( {
-                           lineWidth:6,
-                           strokeStyle: "#006AFE",
-                           outlineColor: "#006AFE",
-                           outlineWidth:3
-                    });
-                    conn.setParameter('deleteMe', true);
-                }
-            }
-            else
-            {
-                that.editWormhole(hash);
-            }
-			return false;
-        });
+		};
+		
+		var connection = new mapconnection(jsPlumb,options);
+		connection.map = this;
+		connection.create();
+		
+		this.mapConnections[wormhole.hash] = connection;
     }
 
     if( Object.size(this.systems) > 0 )
@@ -1008,48 +889,6 @@ siggyMap.prototype.getActivityColor = function(activity)
     return color;
 }
 
-siggyMap.prototype.getMassColor = function(mass)
-{
-	var inner = '#676767';
-	if( mass == 1 )
-	{
-		inner = '#e2cb06';
-	}
-	else if( mass == 2 )
-	{
-		inner = '#9a0808';
-	}
-	return inner;
-}
-
-siggyMap.prototype.getTimeColor = function(eol,frig)
-{
-	frig = parseInt(frig);
-	eol = parseInt(eol);
-
-	var outer = '#3d3d3d';
-	if(frig == 1)
-	{
-		if( eol == 1 )
-		{
-			outer = '#00F5FF';
-		}
-		else
-		{
-			outer = '#FFFFFF';
-		}
-	}
-	else if( eol == 1 )
-	{
-		outer = '#FF17FE';
-	}
-	return outer;
-}
-
-siggyMap.prototype.getDashStyle = function(frig)
-{
-	return '0';
-}
 
 siggyMap.prototype.setupEditor = function()
 {
