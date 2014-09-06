@@ -678,7 +678,7 @@ siggyMap.prototype.draw = function()
 			type: 'wh',
 			wormhole: {
 				mass: parseInt(wormhole.mass),
-				eolDateSet: parseInt(wormhole.eolToggled),
+				eolDateSet: parseInt(wormhole.eol_date_set),
 				eol:  parseInt(wormhole.eol),
 				frigateSized: parseInt(wormhole.frigate_sized)
 			}

@@ -318,7 +318,7 @@ class Controller_Siggy extends FrontController
 
         $whHash = mapUtils::whHashByID($origin, $dest);
 
-		$connection = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE hash=:hash AND groupID=:group AND chainmap_id=:chainmap")
+		$connection = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE hash=:hash AND group_id=:group AND chainmap_id=:chainmap")
 						->param(':hash', $whHash)
 						->param(':group', $this->groupData['groupID'])
 						->param(':chainmap', $this->groupData['active_chain_map'])
@@ -338,7 +338,7 @@ class Controller_Siggy extends FrontController
 			DB::update('wormholes')
 				->set( array('lastJump' => time()) )
 				->where('hash', '=', $whHash)
-				->where('groupID', '=', $this->groupData['groupID'])
+				->where('group_id', '=', $this->groupData['groupID'])
 				->where('chainmap_id', '=', $this->groupData['active_chain_map'])
 				->execute();
 		}
@@ -349,7 +349,7 @@ class Controller_Siggy extends FrontController
             $charName = ( $this->groupData['jumpLogRecordNames'] ? $_SERVER['HTTP_EVE_CHARNAME'] : '' );
             $jumpTime = ( $this->groupData['jumpLogRecordTime'] ? time() : 0 );
 
-            DB::query(Database::INSERT, 'INSERT INTO wormholetracker (`whHash`, `origin`, `destination`, `groupID`, `chainmap_id`, `time`, `shipTypeID`,`charID`, `charName`)
+            DB::query(Database::INSERT, 'INSERT INTO wormholetracker (`wormhole_hash`, `origin`, `destination`, `group_id`, `chainmap_id`, `time`, `shipTypeID`,`charID`, `charName`)
 															   VALUES(:hash, :origin, :dest, :groupID, :chainmap, :time,:shipTypeID,:charID,:charName)')
 						->param(':hash', $whHash )
 						->param(':dest', $dest)

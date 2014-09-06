@@ -57,9 +57,9 @@ class chainmap
 
 		$data = array();
 
-		$wormholes = DB::query(Database::SELECT, "SELECT `hash`, `to`, `from`, eol, mass, eolToggled, frigate_sized
+		$wormholes = DB::query(Database::SELECT, "SELECT `hash`, `to`, `from`, eol, mass, eol_date_set, frigate_sized
 			 										FROM wormholes 
-													WHERE groupID=:group
+													WHERE group_id=:group
 													AND chainmap_id=:chainmap")
 								 ->param(':group', $this->group_id)
 								 ->param(':chainmap', $this->id)
@@ -168,7 +168,7 @@ class chainmap
 																			ELSE w.`to`
 																		END AS `connected_system`
 																		FROM wormholes w
-																		WHERE (w.`to`=:sys OR w.`from`=:sys) AND w.groupID=:group AND w.chainmap_id=:chain)")
+																		WHERE (w.`to`=:sys OR w.`from`=:sys) AND w.group_id=:group AND w.chainmap_id=:chain)")
 						->param(':sys', intval($system))
 						->param(':group', $this->group_id)
 						->param(':chain', $this->id)
@@ -220,7 +220,7 @@ class chainmap
 		//default case is both systems already mapped, so just connect them
 		try
 		{
-			DB::query(Database::INSERT, 'INSERT INTO wormholes (`hash`, `to`, `from`, `groupID`, `chainmap_id`, `lastJump`, `eol`, `mass`,`wh_type_id`)
+			DB::query(Database::INSERT, 'INSERT INTO wormholes (`hash`, `to`, `from`, `group_id`, `chainmap_id`, `lastJump`, `eol`, `mass`,`wh_type_id`)
 														 VALUES(:hash, :to, :from, :groupID, :chainmap, :lastJump, :eol, :mass,:wh_type)')
 							->param(':hash', $whHash )
 							->param(':to', $sys1 )
@@ -345,7 +345,7 @@ class chainmap
 		{
 			if( !in_array($sys_id, $home_systems) )
 			{
-				$check = DB::query(Database::SELECT, 'SELECT * FROM	 wormholes WHERE groupID=:groupID AND chainmap_id=:chain_map AND (`to`=:id OR `from`=:id)')
+				$check = DB::query(Database::SELECT, 'SELECT * FROM	 wormholes WHERE group_id=:groupID AND chainmap_id=:chain_map AND (`to`=:id OR `from`=:id)')
 								->param(':groupID', $this->group_id)
 								->param(':chain_map', $this->id)
 								->param(':id', $sys_id)
