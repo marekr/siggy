@@ -174,5 +174,31 @@
 			</li>
 		</ul>
 		<!--- system context -->
+		
+		<!--- wh context -->
+		<ul id="wh-menu" class="contextMenu">
+			<li class="set-stage-1">
+				<a href="#set-stage-1">Set Stage 1</a>
+			</li>
+			<li class="set-stage-2">
+				<a href="#set-stage-2">Set Stage 2</a>
+			</li>
+			<li class="set-stage-3">
+				<a href="#set-stage-3">Set Stage 3</a>
+			</li>
+			<li class="set-eol">
+				<a href="#set-eol">Set EOL</a>
+			</li>
+			<li class="clear-eol">
+				<a href="#clear-eol">Clear EOL</a>
+			</li>
+			<li class="set-frigate">
+				<a href="#set-frigate">Set as Frigate hole</a>
+			</li>
+			<li class="unmark-frigate">
+				<a href="#unmark-frigate">Unmark as Frigate Hole</a>
+			</li>
+		</ul>
+		<!--- wh context -->
 </div>
 <!--- end chain map -->
