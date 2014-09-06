@@ -168,11 +168,9 @@ mapconnection.prototype.whContextMenuHandler = function(action)
 	
 	if( Object.size(saveData) > 0 )
 	{
-		saveData.mode = 'edit';
 		saveData.hash = this.settings.hash;
 		
-
-		$.post($this.map.baseUrl + 'chainmap/wh_save', saveData, function()
+		$.post($this.map.baseUrl + 'chainmap/connection_edit', saveData, function()
 		{
 			$this.map.siggymain.updateNow();
 		});

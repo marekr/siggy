@@ -229,8 +229,79 @@ class Controller_Chainmap extends FrontController
 		$this->chainmap->rebuild_map_data_cache();
 	}
 
+	public function action_connection_edit()
+	{
+		$this->profiler = NULL;
+		$this->auto_render = FALSE;
+		header('content-type: application/json');
+		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 
-	public function action_wh_save()
+		if(	 !$this->siggyAccessGranted() )
+		{
+			echo json_encode(array('error' => 1, 'error_message' => 'Invalid auth'));
+			exit();
+		}
+		
+		$update = array();
+		$hash = ($_POST['hash']);
+		
+		if( empty($hash) )
+		{
+			echo json_encode(array('error' => 1, 'error_message' => 'Missing wormhole hash'));
+			exit();
+		}
+
+		$wormhole = DB::query(Database::SELECT, 'SELECT * FROM	wormholes WHERE hash=:hash AND groupID=:groupID AND chainmap_id=:chainmap')
+							->param(':hash',$hash)
+							->param(':groupID', $this->groupData['groupID'])
+							->param(':chainmap', $this->groupData['active_chain_map'])
+							->execute()
+							->current();
+
+		if( !$wormhole['hash'] )
+		{
+			echo json_encode(array('error' => 1, 'error_message' => 'Wormhole does not exist.'));
+			exit();
+		}
+		
+		if( isset($_POST['eol']) )
+		{
+			$update['eol'] = intval($_POST['eol']);
+			
+			if( !$wormhole['eol'] && $update['eol'] )
+			{
+				$update['eolToggled'] = time();
+			}
+			elseif( $wormhole['eol'] && !$update['eol'] )
+			{
+				$update['eolToggled'] = 0;
+			}
+		}
+		
+		if( isset($_POST['frigate_sized']) )
+		{
+			$update['frigate_sized'] = intval($_POST['frigate_sized']);
+		}
+
+		if( isset($_POST['mass']) )
+		{
+			$update['mass'] = intval($_POST['mass']);
+		}
+		
+		if( !empty($update) )
+		{
+			DB::update('wormholes')
+					->set( $update )
+					->where('hash', '=', $hash)
+					->where('groupID', '=', $this->groupData['groupID'])
+					->where('chainmap_id', '=', $this->groupData['active_chain_map'])
+					->execute();
+
+			$this->chainmap->rebuild_map_data_cache();
+		}
+	}
+
+	public function action_connection_add()
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
@@ -242,145 +313,89 @@ class Controller_Chainmap extends FrontController
 			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
 			exit();
 		}
-		$mode = trim($_POST['mode']);
-		if( $mode == 'edit' )
+		
+		$fromSys = trim($_POST['fromSys']);
+		$fromSysCurrent = intval($_POST['fromSysCurrent']);
+		$toSys	= trim($_POST['toSys']);
+		$toSysCurrent = intval($_POST['toSysCurrent']);
+
+		$errors = array();
+		if( !$fromSysCurrent && empty($fromSys) )
 		{
-			$update = array();
-			$hash = ($_POST['hash']);
+			$errors[] = "No 'from' system selected!";
+		}
 
-			$wormhole = DB::query(Database::SELECT, 'SELECT * FROM	wormholes WHERE hash=:hash AND groupID=:groupID AND chainmap_id=:chainmap')
-								->param(':hash',$hash)
-								->param(':groupID', $this->groupData['groupID'])
-								->param(':chainmap', $this->groupData['active_chain_map'])
-								->execute()
-								->current();
+		if( !$toSysCurrent && empty($toSys) )
+		{
+			$errors[] = "No 'to' system selected!";
+		}
 
-			if( !$wormhole['hash'] )
-			{
-				echo json_encode(array('error' => 1, 'errorMsg' => 'Wormhole does not exist.'));
-				exit();
-			}
-			
-			if( isset($_POST['eol']) )
-			{
-				$update['eol'] = intval($_POST['eol']);
-				
-				if( !$wormhole['eol'] && $update['eol'] )
-				{
-					$update['eolToggled'] = time();
-				}
-				elseif( $wormhole['eol'] && !$update['eol'] )
-				{
-					$update['eolToggled'] = 0;
-				}
-			}
-			
-			if( isset($_POST['frigate_sized']) )
-			{
-				$update['frigate_sized'] = intval($_POST['frigate_sized']);
-			}
+		if( $toSys == $fromSys || ($toSysCurrent && $fromSysCurrent ) )
+		{
+			$errors[] = "You cannot link a system to itself!";
+		}
 
-			if( isset($_POST['mass']) )
+		$fromSysID = 0;
+		if( $fromSysCurrent )
+		{
+			$fromSysID = $_SERVER['HTTP_EVE_SOLARSYSTEMID'];
+		}
+		elseif( !empty($fromSys) )
+		{
+			$fromSysID = $this->chainmap->find_system_by_name($fromSys);
+			if( !$fromSysID )
 			{
-				$update['mass'] = intval($_POST['mass']);
-			}
-			
-			if( !empty($update) )
-			{
-				DB::update('wormholes')
-						->set( $update )
-						->where('hash', '=', $hash)
-						->where('groupID', '=', $this->groupData['groupID'])
-						->where('chainmap_id', '=', $this->groupData['active_chain_map'])
-						->execute();
-
-				$this->chainmap->rebuild_map_data_cache();
+				$errors[] = "The 'from' system could not be looked up by name.";
 			}
 		}
-		else
+
+		$toSysID = 0;
+		if( $toSysCurrent )
 		{
-			$fromSys = trim($_POST['fromSys']);
-			$fromSysCurrent = intval($_POST['fromSysCurrent']);
-			$toSys	= trim($_POST['toSys']);
-			$toSysCurrent = intval($_POST['toSysCurrent']);
-
-			$errors = array();
-			if( !$fromSysCurrent && empty($fromSys) )
-			{
-				$errors[] = "No 'from' system selected!";
-			}
-
-			if( !$toSysCurrent && empty($toSys) )
-			{
-				$errors[] = "No 'to' system selected!";
-			}
-
-			if( $toSys == $fromSys || ($toSysCurrent && $fromSysCurrent ) )
-			{
-				$errors[] = "You cannot link a system to itself!";
-			}
-
-			$fromSysID = 0;
-			if( $fromSysCurrent )
-			{
-				$fromSysID = $_SERVER['HTTP_EVE_SOLARSYSTEMID'];
-			}
-			elseif( !empty($fromSys) )
-			{
-				$fromSysID = $this->chainmap->find_system_by_name($fromSys);
-				if( !$fromSysID )
-				{
-					$errors[] = "The 'from' system could not be looked up by name.";
-				}
-			}
-
-			$toSysID = 0;
-			if( $toSysCurrent )
-			{
-				$toSysID = $_SERVER['HTTP_EVE_SOLARSYSTEMID'];
-			}
-			elseif( !empty($toSys) )
-			{
-				$toSysID = $this->chainmap->find_system_by_name($toSys);
-				if( !$toSysID )
-				{
-					$errors[] = "The 'to' system could not be looked up by name.";
-				}
-			}
-
-            if( $fromSysID == $toSysID )
-            {
-				$errors[] = "You cannot link a system to itself!";
-            }
-
-			$whHash = mapUtils::whHashByID($fromSysID , $toSysID);
-
-			$connection = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE hash=:hash AND groupID=:group AND chainmap_id=:chainmap")
-								->param(':hash', $whHash)
-								->param(':group', $this->groupData['groupID'])
-								->param(':chainmap', $this->groupData['active_chain_map'])
-								->execute()->current();
-
-			if( isset($connection['hash']) )
-			{
-				$errors[] = "Wormhole already exists";
-			}
-
-			if( count($errors) > 0 )
-			{
-				echo json_encode(array('success' => 0, 'dataErrorMsgs' => $errors ) );
-				exit();
-			}
-
-			$eol = intval($_POST['eol']);
-			$mass = intval($_POST['mass']);
-
-			$this->chainmap->add_system_to_map($whHash, $fromSysID, $toSysID, $eol, $mass);
-
-			$message = $this->groupData['charName'].' added wormhole manually between system IDs' . $fromSysID . ' and ' . $toSysID;
-
-			groupUtils::log_action($this->groupData['groupID'],'addwh', $message );
+			$toSysID = $_SERVER['HTTP_EVE_SOLARSYSTEMID'];
 		}
+		elseif( !empty($toSys) )
+		{
+			$toSysID = $this->chainmap->find_system_by_name($toSys);
+			if( !$toSysID )
+			{
+				$errors[] = "The 'to' system could not be looked up by name.";
+			}
+		}
+
+		if( $fromSysID == $toSysID )
+		{
+			$errors[] = "You cannot link a system to itself!";
+		}
+
+		$whHash = mapUtils::whHashByID($fromSysID , $toSysID);
+
+		$connection = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE hash=:hash AND groupID=:group AND chainmap_id=:chainmap")
+							->param(':hash', $whHash)
+							->param(':group', $this->groupData['groupID'])
+							->param(':chainmap', $this->groupData['active_chain_map'])
+							->execute()->current();
+
+		if( isset($connection['hash']) )
+		{
+			$errors[] = "Wormhole already exists";
+		}
+
+		if( count($errors) > 0 )
+		{
+			echo json_encode(array('success' => 0, 'dataErrorMsgs' => $errors ) );
+			exit();
+		}
+
+		$eol = intval($_POST['eol']);
+		$mass = intval($_POST['mass']);
+
+		$this->chainmap->add_system_to_map($whHash, $fromSysID, $toSysID, $eol, $mass);
+
+		$message = $this->groupData['charName'].' added wormhole manually between system IDs' . $fromSysID . ' and ' . $toSysID;
+
+		groupUtils::log_action($this->groupData['groupID'],'addwh', $message );
+			
 		echo json_encode( array('success' => 1) );
 
 		exit();
