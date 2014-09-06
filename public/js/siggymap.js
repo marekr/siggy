@@ -290,9 +290,9 @@ siggyMap.prototype.initialize = function()
 				
 				if( bb.w < 1 || bb.h < 1 )
 				{
-					console.log("too small!");
 					return;
 				}
+				
 				for(var i in that.mapConnections)
 				{
 					var conn = that.mapConnections[i];
