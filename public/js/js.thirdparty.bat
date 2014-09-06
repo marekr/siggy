@@ -1,5 +1,5 @@
 "C:\Program Files (x86)\Java\jre7\bin\java.exe" -jar compiler.jar ^
---js=jquery-1.10.1.min.js ^
+--js=jquery-1.11.1.min.js ^
 --js=jquery-migrate-core.js ^
 --js=jquery-ui-1.10.3.min.js ^
 --js=jquery.qtip.js ^
