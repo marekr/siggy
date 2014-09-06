@@ -2,15 +2,25 @@ function mapconnection(plumb, options)
 {
 	this.jsPlumb = plumb;
 	
+	this.whMenuID = '#wh-menu';
+	
 	this.defaults = {
 			to: '',
 			from: '',
 			hash: '',
+			creator: '',
+			creatorCharID: 0,
 			wormhole: {
 				mass: 0,
 				eol: false,
 				eolDateSet: 0,
-				frigateSized: false
+				frigateSized: false,
+				staticInfo: {
+					name: '',
+					mass: 0,
+					lifetime: 0,
+					maxJumpMass: 0
+				}
 			},
 			type: 'wh'
 	};
@@ -116,18 +126,93 @@ mapconnection.prototype.create = function()
 	});
 	
 	this.connection = connection;
-	/*
+
 	$(connection.canvas).contextMenu( { menu: 'wh-menu' },
 		function(action, el, pos) {
+			$this.whContextMenuHandler(action);
 			
 	}, function(el) {
-		console.log(el);
-	});*/
+		$this.contextMenuOpenHandler(el);
+	});
+}
+
+mapconnection.prototype.whContextMenuHandler = function(action)
+{
+	switch( action )
+	{
+		case 'set-stage-1':
+			break;
+		case 'set-stage-2':
+			break;
+		case 'set-stage-3':
+			break;
+		case 'set-eol':
+			break;
+		case 'clear-eol':
+			break;
+		case 'set-frigate':
+			break;
+		case 'unmark-frigate':
+			break;
+	}
+}
+
+
+mapconnection.prototype.contextMenuOpenHandler = function(el)
+{
+	var stage1 = $(this.whMenuID).find('li.set-stage-1');
+	var stage2 = $(this.whMenuID).find('li.set-stage-2');
+	var stage3 = $(this.whMenuID).find('li.set-stage-3');
+	var setEOL = $(this.whMenuID).find('li.set-eol');
+	var clearEOL = $(this.whMenuID).find('li.clear-eol');
+	var setFrigate = $(this.whMenuID).find('li.set-frigate');
+	var unmarkFrigate = $(this.whMenuID).find('li.unmark-frigate');
+	
+	switch( this.settings.wormhole.mass )
+	{
+		case 0:
+			stage1.hide();
+			stage2.show();
+			stage3.show();
+			break;
+		case 1:
+			stage1.show();
+			stage2.hide();
+			stage3.show();
+			break;
+		case 2:
+			stage1.show();
+			stage2.show();
+			stage3.hide();
+			break;
+	}
+	
+	if( this.settings.wormhole.eol )
+	{
+		setEOL.hide();
+		clearEOL.show();
+	}
+	else
+	{
+		setEOL.show();
+		clearEOL.hide();
+	}
+	
+	if( this.settings.wormhole.frigateSized )
+	{
+		setFrigate.hide();
+		unmarkFrigate.show();
+	}
+	else
+	{
+		setFrigate.show();
+		unmarkFrigate.hide();
+	}
 }
 
 mapconnection.prototype.destroy = function()
 {
-	//$(connection.canvas).destroyContextMenu();
+	$(connection.canvas).destroyContextMenu();
 }
 
 mapconnection.prototype.setupOverlay = function(connectionOptions)
@@ -158,12 +243,6 @@ mapconnection.prototype.setupOverlay = function(connectionOptions)
 									];
 	}
 }
-
-
-mapconnection.resetDrawSettings = function()
-{
-}
-
 
 mapconnection.prototype.getMassColor = function(mass)
 {
