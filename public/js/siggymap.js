@@ -910,37 +910,37 @@ siggyMap.prototype.setupEditor = function()
 
 	var fromCurrentInput = $('#wormhole-editor input[name=fromCurrent]');
 	//resets cause fucking browsers
-	fromCurrentInput.attr('disabled', false);
-	fromCurrentInput.attr('checked', false);
+	fromCurrentInput.prop('disabled', false);
+	fromCurrentInput.prop('checked', false);
 
 	var toCurrentInput = $('#wormhole-editor input[name=toCurrent]');
 	//resets cause fucking browsers
-	toCurrentInput.attr('disabled', false);
-	toCurrentInput.attr('checked', false);
+	toCurrentInput.prop('disabled', false);
+	toCurrentInput.prop('checked', false);
 
 	fromCurrentInput.change( function() {
 		if( $(this).is(':checked') )
 		{
-			fromSysInput.attr('disabled',true);
-			toCurrentInput.attr('disabled',true);
+			fromSysInput.prop('disabled',true);
+			toCurrentInput.prop('disabled',true);
 		}
 		else
 		{
-			fromSysInput.attr('disabled',false);
-			toCurrentInput.attr('disabled',false);
+			fromSysInput.prop('disabled',false);
+			toCurrentInput.prop('disabled',false);
 		}
 	});
 
 	toCurrentInput.change( function() {
 		if( $(this).is(':checked') )
 		{
-			toSysInput.attr('disabled',true);
-			fromCurrentInput.attr('disabled',true);
+			toSysInput.prop('disabled',true);
+			fromCurrentInput.prop('disabled',true);
 		}
 		else
 		{
-			toSysInput.attr('disabled',false);
-			fromCurrentInput.attr('disabled',false);
+			toSysInput.prop('disabled',false);
+			fromCurrentInput.prop('disabled',false);
 		}
 	});
 
@@ -1138,7 +1138,7 @@ siggyMap.prototype.registerSystemAutoComplete = function(inputSelector)
     var input = $(inputSelector);
     //resets cause fucking browsers
     input.val('');
-    input.attr('disabled',false);
+    input.prop('disabled',false);
     input.autocomplete({url: that.baseUrl+'chainmap/autocomplete_wh', minChars: 2,
         showResult: function(value, data) {
             if( data[0] != '' )
@@ -1163,27 +1163,27 @@ siggyMap.prototype.resetWormholeEditor = function()
 
 	var fromCurrentInput = $('#wormhole-editor input[name=fromCurrent]');
 	//resets cause fucking browsers
-	fromCurrentInput.attr('disabled', false);
-	fromCurrentInput.attr('checked', false);
+	fromCurrentInput.prop('disabled', false);
+	fromCurrentInput.prop('checked', false);
 
 	var toCurrentInput = $('#wormhole-editor input[name=toCurrent]');
 	//resets cause fucking browsers
-	toCurrentInput.attr('disabled', false);
-	toCurrentInput.attr('checked', false);
+	toCurrentInput.prop('disabled', false);
+	toCurrentInput.prop('checked', false);
 
 	var fromSysInput = $("#wormhole-editor input[name=from-sys]");
 	//resets cause fucking browsers
 	fromSysInput.val('');
-	fromSysInput.attr('disabled',false);
+	fromSysInput.prop('disabled',false);
 
 	var toSysInput = $("#wormhole-editor input[name=to-sys]");
 	//resets cause fucking browsers
 	toSysInput.val('');
-	toSysInput.attr('disabled',false);
+	toSysInput.prop('disabled',false);
 
 	$('#wormhole-editor select[name=mass]').val(0);
-	$('#wormhole-editor input[name=eol]').filter('[value=0]').attr('checked', true);
-	$('#wormhole-editor input[name=frigate_sized]').filter('[value=0]').attr('checked', true);
+	$('#wormhole-editor input[name=eol]').filter('[value=0]').prop('checked', true);
+	$('#wormhole-editor input[name=frigate_sized]').filter('[value=0]').prop('checked', true);
 }
 
 siggyMap.prototype.editWormhole = function(hash)
@@ -1211,8 +1211,8 @@ siggyMap.prototype.editWormhole = function(hash)
 	$('#whEditTo').text(this.systems[wormhole.to].name+toDName);
 
 	$('#wormhole-editor select[name=mass]').val(wormhole.mass);
-	$('#wormhole-editor input[name=eol]').filter('[value=' + wormhole.eol + ']').attr('checked', true);
-	$('#wormhole-editor input[name=frigate_sized]').filter('[value=' + wormhole.frigate_sized + ']').attr('checked', true);
+	$('#wormhole-editor input[name=eol]').filter('[value=' + wormhole.eol + ']').prop('checked', true);
+	$('#wormhole-editor input[name=frigate_sized]').filter('[value=' + wormhole.frigate_sized + ']').prop('checked', true);
 
 	this.openWHEditor('edit');
 
