@@ -534,8 +534,7 @@ class Controller_Siggy extends FrontController
 						$activesData = DB::query(Database::SELECT, "SELECT ct.charName, ct.currentSystemID, s.shipName FROM chartracker ct
 																	LEFT JOIN ships s ON (ct.shipType=s.shipID)
 																	WHERE ct.groupID = :groupID AND ct.chainmap_id = :chainmap AND ct.broadcast=1 AND
-																		ct.currentSystemID IN(".implode(',',$this->mapData['systemIDs']).") AND ct.lastBeep >= :lastBeep
-																		ORDER BY ct.charName ASC")
+																		ct.currentSystemID IN(".implode(',',$this->mapData['systemIDs']).") AND ct.lastBeep >= :lastBeep")
 											->param(':lastBeep', time()-60)
 											->param(':groupID', $this->groupData['groupID'])
 											->param(':chainmap', $this->groupData['active_chain_map'])
