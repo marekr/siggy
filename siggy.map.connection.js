@@ -15,7 +15,7 @@ function mapconnection(plumb, options)
 				eol: false,
 				eolDateSet: 0,
 				frigateSized: false,
-				staticInfo: {
+				typeInfo: {
 					name: '',
 					mass: 0,
 					lifetime: 0,
@@ -24,8 +24,10 @@ function mapconnection(plumb, options)
 			},
 			type: 'wh'
 	};
-
-	this.settings = $.extend(this.defaults, options);
+	
+	this.settings = $.extend({}, this.defaults, options);
+	this.settings.wormhole = $.extend({}, this.defaults.wormhole, options.wormhole);
+	this.settings.wormhole.typeInfo = $.extend({}, this.defaults.wormhole.typeInfo, options.wormhole.typeInfo);
 	
 	this.map = null;
 	
@@ -237,6 +239,15 @@ mapconnection.prototype.destroy = function()
 
 mapconnection.prototype.setupOverlay = function(connectionOptions)
 {
+	console.log(this.settings);
+	if( this.settings.wormhole.typeInfo.name )
+	{
+		this.label += "<b>" + this.settings.wormhole.typeInfo.name + "</b><br />";
+		this.label += number_format(this.settings.wormhole.typeInfo.mass*1000000000,0) + " kg +-10% mass<br />"
+		this.label += this.settings.wormhole.typeInfo.lifetime + " hr lifetime<br />"
+		this.label += number_format(this.settings.wormhole.typeInfo.maxJumpMass*1000000,0) + " kg<br />"
+	}
+	
 	if( this.settings.wormhole.eol != 0 )
 	{
 		this.label += 'EOL set at: '+ siggymain.displayTimeStamp(this.settings.wormhole.eolDateSet);
