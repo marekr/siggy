@@ -79,9 +79,29 @@ mapconnection.prototype.getDefaultPaintStyle = function()
 		return {
 				   lineWidth:6,
 				   strokeStyle: '#fff',
-				   outlineColor: '',
-				   outlineWidth:0,
+				   outlineColor: 'transparent',
+				   outlineWidth:1,
 					dashstyle: "0.5 1"
+				};
+	}
+	else if( this.settings.type == 'jumpbridge' )
+	{
+		return {
+				   lineWidth:6,
+				   strokeStyle: '#3fafaf',
+				   outlineColor: 'transparent',
+				   outlineWidth:1,
+					dashstyle: "0.9 2"
+				};
+	}
+	else if( this.settings.type == 'cyno' )
+	{
+		return {
+				   lineWidth:6,
+				   strokeStyle: '#F2B672',
+				   outlineColor: 'transparent',
+				   outlineWidth:1,
+					dashstyle: "0.9 3"
 				};
 	}
 }
@@ -89,7 +109,7 @@ mapconnection.prototype.getDefaultPaintStyle = function()
 mapconnection.prototype.create = function()
 {
 	var $this = this;
-	
+	console.log($this.settings);
 	var connectionOptions = { source: this.settings.from,
 						target: this.settings.to,
 						anchor:"Continuous",
@@ -294,6 +314,14 @@ mapconnection.prototype.setupOverlay = function(connectionOptions)
 	else if( this.settings.type == 'stargate' )
 	{
 		this.label = 'Stargate';
+	}
+	else if( this.settings.type == 'jumpbridge' )
+	{
+		this.label = 'Jumpbridge';
+	}
+	else if( this.settings.type == 'cyno' )
+	{
+		this.label = 'Cyno';
 	}
 
 	if( this.label != '' )
