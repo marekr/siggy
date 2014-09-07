@@ -526,6 +526,7 @@ class Controller_Chainmap extends FrontController
 
 		$hash = ($_GET['whHash']);
 
+		/* Include all the group tracked jumps from all chainmaps since this is important not to trap oneself out */
 		$jumpData = array();
 		$jumpData  = DB::query(Database::SELECT, "SELECT wt.shipTypeID, wt.charName, wt.charID, wt.origin, wt.destination, wt.time, s.shipName, s.mass, s.shipClass 
 													FROM wormholetracker wt

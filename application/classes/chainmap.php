@@ -71,8 +71,20 @@ class chainmap
 
 		$systemsToPoll = array();
 		$wormholeHashes = array();
-		foreach( $wormholes as $wormhole )
+		foreach( $wormholes as &$wormhole )
 		{
+			/* Include all the group tracked jumps from all chainmaps since this is important not to trap oneself out */
+			$jumpTotal  = DB::query(Database::SELECT, "SELECT COALESCE(SUM(s.mass),0) as total 
+														FROM wormholetracker wt
+														LEFT JOIN ships as s ON s.shipID = wt.shipTypeID
+														WHERE wt.group_id = :groupID AND wt.wormhole_hash = :hash")
+											->param(':groupID', $this->group_id)
+											->param(':hash', $wormhole['hash'])
+											->execute()
+											->current();
+											
+			$wormhole['total_tracked_mass'] = $jumpTotal['total'];
+			
 			$systemsToPoll[] = $wormhole['to'];
 			$systemsToPoll[] = $wormhole['from'];
 			$wormholeHashes[] = $wormhole['hash'];
