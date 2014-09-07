@@ -24,7 +24,7 @@ function mapconnection(plumb, options)
 					regen: 0,
 				}
 			},
-			type: 'wh'
+			type: 'wormhole'
 	};
 	
 	this.settings = $.extend({}, this.defaults, options);
@@ -124,7 +124,7 @@ mapconnection.prototype.create = function()
 		}
 		else
 		{
-			$this.map.editWormhole($this.settings.hash);
+			$this.map.editWormhole($this);
 		}
 		return false;
 	});
