@@ -9,7 +9,7 @@ function siggyMap(options)
 	};
 
 
-	this.settings = $.extend(this.defaults, options);
+	this.settings = $.extend({}, this.defaults, options);
 
 
 	this.systems = {};
@@ -683,6 +683,16 @@ siggyMap.prototype.draw = function()
 				frigateSized: parseInt(wormhole.frigate_sized)
 			}
 		};
+		
+		if( wormhole.wh_name != null )
+		{
+			options.wormhole.typeInfo = {
+				name: wormhole.wh_name,
+				mass: wormhole.wh_mass,
+				lifetime: wormhole.wh_lifetime,
+				maxJumpMass: wormhole.wh_jump_mass
+			}
+		}
 		
 		var connection = new mapconnection(jsPlumb,options);
 		connection.map = this;
