@@ -28,8 +28,11 @@ function mapconnection(plumb, options)
 	};
 	
 	this.settings = $.extend({}, this.defaults, options);
-	this.settings.wormhole = $.extend({}, this.defaults.wormhole, options.wormhole);
-	this.settings.wormhole.typeInfo = $.extend({}, this.defaults.wormhole.typeInfo, options.wormhole.typeInfo);
+	if( this.settings.type == 'wormhole' )
+	{
+		this.settings.wormhole = $.extend({}, this.defaults.wormhole, options.wormhole);
+		this.settings.wormhole.typeInfo = $.extend({}, this.defaults.wormhole.typeInfo, options.wormhole.typeInfo);
+	}
 	
 	this.map = null;
 	
@@ -44,14 +47,7 @@ mapconnection.prototype.refresh = function()
 {
 	if( !this.selected )
 	{
-		this.connection.setPaintStyle( {
-			   lineWidth:6,
-			   strokeStyle: this.getMassColor(this.settings.wormhole.mass),
-			   outlineColor: this.getTimeColor(this.settings.wormhole.eol,
-												this.settings.wormhole.frigateSized),
-			   outlineWidth:3,
-			   dashstyle: this.getDashStyle(this.settings.wormhole.frigateSized)
-		});
+		this.connection.setPaintStyle(this.getDefaultPaintStyle());
 	}
 	else
 	{
@@ -62,6 +58,31 @@ mapconnection.prototype.refresh = function()
 			   outlineWidth:3,
 			   dashstyle: 0
 		});
+	}
+}
+
+mapconnection.prototype.getDefaultPaintStyle = function()
+{
+	if( this.settings.type == 'wormhole' )
+	{
+		return {
+				   lineWidth:6,
+				   strokeStyle: this.getMassColor(this.settings.wormhole.mass),
+				   outlineColor: this.getTimeColor(this.settings.wormhole.eol,
+													this.settings.wormhole.frigateSized),
+				   outlineWidth:3,
+				   dashstyle: this.getDashStyle(this.settings.wormhole.frigateSized)
+				};
+	}
+	else if( this.settings.type == 'stargate' )
+	{
+		return {
+				   lineWidth:6,
+				   strokeStyle: '#fff',
+				   outlineColor: '',
+				   outlineWidth:0,
+					dashstyle: "0.5 1"
+				};
 	}
 }
 
@@ -80,14 +101,7 @@ mapconnection.prototype.create = function()
 						tooltip: "aSDASDA",
 						anchor:[ "Perimeter", { shape:"Ellipse" } ],
 
-						paintStyle:{
-						   lineWidth:6,
-						   strokeStyle: this.getMassColor(this.settings.wormhole.mass),
-						   outlineColor: this.getTimeColor(this.settings.wormhole.eol,
-															this.settings.wormhole.frigateSized),
-						   outlineWidth:3,
-						   dashstyle: this.getDashStyle(this.settings.wormhole.frigateSized)
-						},
+						paintStyle: this.getDefaultPaintStyle(),
 						endpointStyle:{ fillStyle:"#a7b04b" },
 						parameters: { hash: this.settings.hash, deleteMe: false }
 					};
@@ -131,13 +145,16 @@ mapconnection.prototype.create = function()
 	
 	this.connection = connection;
 
-	$(connection.canvas).contextMenu( { menu: 'wh-menu' },
-		function(action, el, pos) {
-			$this.whContextMenuHandler(action);
-			
-	}, function(el) {
-		$this.contextMenuOpenHandler(el);
-	});
+	if( this.settings.type == 'wormhole' )
+	{
+		$(connection.canvas).contextMenu( { menu: 'wh-menu' },
+			function(action, el, pos) {
+				$this.whContextMenuHandler(action);
+				
+		}, function(el) {
+			$this.contextMenuOpenHandler(el);
+		});
+	}
 }
 
 mapconnection.prototype.whContextMenuHandler = function(action)
@@ -236,38 +253,47 @@ mapconnection.prototype.contextMenuOpenHandler = function(el)
 
 mapconnection.prototype.destroy = function()
 {
-	$(connection.canvas).destroyContextMenu();
+	if( this.settings.type == 'wormhole' )
+	{
+		$(connection.canvas).destroyContextMenu();
+	}
 }
 
 mapconnection.prototype.setupOverlay = function(connectionOptions)
 {
-	console.log(this.settings);
-	if( this.settings.wormhole.typeInfo.name )
+	if( this.settings.type == 'wormhole' )
 	{
-		this.label += "<b>" + this.settings.wormhole.typeInfo.name + "</b><br />";
-		this.label += number_format(this.settings.wormhole.typeInfo.mass*1000000000,0) + " kg +-10% mass<br />";
-		this.label += this.settings.wormhole.typeInfo.lifetime + " hr lifetime<br />";
-		this.label += number_format(this.settings.wormhole.typeInfo.maxJumpMass*1000000,0) + " kg max jump<br />";
-	
-		if( this.settings.wormhole.typeInfo.regen != 0 )
+		if( this.settings.wormhole.typeInfo.name )
 		{
-			this.label += number_format(this.settings.wormhole.typeInfo.regen*1000000,0) + " kg mass regen<br />";
+			this.label += "<b>" + this.settings.wormhole.typeInfo.name + "</b><br />";
+			this.label += number_format(this.settings.wormhole.typeInfo.mass*1000000000,0) + " kg +-10% mass<br />";
+			this.label += this.settings.wormhole.typeInfo.lifetime + " hr lifetime<br />";
+			this.label += number_format(this.settings.wormhole.typeInfo.maxJumpMass*1000000,0) + " kg max jump<br />";
+		
+			if( this.settings.wormhole.typeInfo.regen != 0 )
+			{
+				this.label += number_format(this.settings.wormhole.typeInfo.regen*1000000,0) + " kg mass regen<br />";
+			}
+		}
+		
+		if( this.settings.wormhole.totalTrackedMass )
+		{
+			this.label += "Approx." + number_format(this.settings.wormhole.totalTrackedMass,0) + " kg jumped<br />"
+		}
+		
+		if( this.settings.wormhole.eol != 0 )
+		{
+			this.label += 'EOL set at: '+ siggymain.displayTimeStamp(this.settings.wormhole.eolDateSet) + "<br />";
+		}
+
+		if( parseInt(this.settings.wormhole.frigateSized) == 1 )
+		{
+			this.label += 'Frigate sized wormhole';
 		}
 	}
-	
-	if( this.settings.wormhole.totalTrackedMass )
+	else if( this.settings.type == 'stargate' )
 	{
-		this.label += "Approx." + number_format(this.settings.wormhole.totalTrackedMass,0) + " kg jumped<br />"
-	}
-	
-	if( this.settings.wormhole.eol != 0 )
-	{
-		this.label += 'EOL set at: '+ siggymain.displayTimeStamp(this.settings.wormhole.eolDateSet) + "<br />";
-	}
-
-	if( parseInt(this.settings.wormhole.frigateSized) == 1 )
-	{
-		this.label += 'Frigate sized wormhole';
+		this.label = 'Stargate';
 	}
 
 	if( this.label != '' )
