@@ -483,6 +483,7 @@ class Controller_Siggy extends FrontController
 					$update['chainMap']['actives'] = array();
 					$update['chainMap']['systems'] = array();
 					$update['chainMap']['wormholes'] = array();
+					$update['chainMap']['stargates'] = array();
 					if( is_array($this->mapData['systemIDs']) && count($this->mapData['systemIDs'])	 > 0 )
 					{
 						$activesData = array();
@@ -521,6 +522,7 @@ class Controller_Siggy extends FrontController
 					{
 						$update['chainMap']['systems'] = $this->mapData['systems'];
 						$update['chainMap']['wormholes'] = $this->mapData['wormholes'];
+						$update['chainMap']['stargates'] = $this->mapData['stargates'];
 						$update['mapUpdate'] = (int) 1;
 					}
 					$update['chainMap']['lastUpdate'] = $this->mapData['updateTime'];

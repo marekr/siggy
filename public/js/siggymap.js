@@ -14,6 +14,7 @@ function siggyMap(options)
 
 	this.systems = {};
 	this.wormholes = {};
+	this.stargates = {};
 
 	this.mapConnections = {};
 
@@ -432,7 +433,7 @@ siggyMap.prototype.registerEvents = function()
 }
 
 
-siggyMap.prototype.update = function(timestamp, systems, wormholes)
+siggyMap.prototype.update = function(timestamp, systems, wormholes, stargates)
 {
 	if( this.editing || this.massDelete )
 	{
@@ -443,6 +444,7 @@ siggyMap.prototype.update = function(timestamp, systems, wormholes)
 
 	this.systems = systems;
 	this.wormholes = wormholes;
+	this.stargates = stargates;
 
 	this.draw();
 
@@ -701,6 +703,25 @@ siggyMap.prototype.draw = function()
 		connection.create();
 		
 		this.mapConnections[wormhole.hash] = connection;
+    }
+	
+    for( var s in this.stargates )
+    {
+        //local variable to make code smaller
+        var stargate = this.stargates[s];
+		
+		var options = {
+			to: stargate.to_system_id,
+			from: stargate.from_system_id,
+			hash: wormhole.hash,
+			type: 'stargate'
+		};
+		
+		var connection = new mapconnection(jsPlumb,options);
+		connection.map = this;
+		connection.create();
+		
+		this.mapConnections[stargate.hash] = connection;
     }
 
     if( Object.size(this.systems) > 0 )
@@ -962,6 +983,7 @@ siggyMap.prototype.setupEditor = function()
 				fromSysCurrent: ( fromCurrentInput.is(':checked') ? 1 : 0 ),
 				toSys: toSysInput.val(),
 				toSysCurrent: ( toCurrentInput.is(':checked') ? 1 : 0 ),
+				type: type
 			};
 			
 			if( type == 'wormhole' )
@@ -1272,6 +1294,7 @@ siggyMap.prototype.openWHEditor = function(mode)
 	}
 	else
 	{
+		$('#connection-editor-options-wh').show();
 		$('#connection-popup ul.box-tabs').hide();
 		$('#connection-editor-add').show();
 		$('#connection-editor-edit').hide();

@@ -366,7 +366,8 @@ siggymain.prototype.update = function ()
 							var timestamp = data.chainMap.lastUpdate;
 							var systems = data.chainMap.systems;
 							var whs = data.chainMap.wormholes;
-							that.map.update(timestamp, systems, whs);
+							var stargates = data.chainMap.stargates;
+							that.map.update(timestamp, systems, whs,stargates);
 						}
 						if( typeof(data.chainMap) != 'undefined' && typeof(data.chainMap.actives) != '' )
 						{

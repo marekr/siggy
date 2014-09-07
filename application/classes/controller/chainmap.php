@@ -336,11 +336,12 @@ class Controller_Chainmap extends FrontController
 			exit();
 		}
 		
+		$type = $_POST['type'];
+		
 		$fromSys = trim($_POST['fromSys']);
 		$fromSysCurrent = intval($_POST['fromSysCurrent']);
 		$toSys	= trim($_POST['toSys']);
 		$toSysCurrent = intval($_POST['toSysCurrent']);
-		$whTypeName = $_POST['wh_type_name'];
 
 		$errors = array();
 		if( !$fromSysCurrent && empty($fromSys) )
@@ -390,41 +391,48 @@ class Controller_Chainmap extends FrontController
 		{
 			$errors[] = "You cannot link a system to itself!";
 		}
-		
-		$whTypeID = 0;
-		if( !empty($whTypeName) )
-		{
-			$whTypeID = $this->lookupWHTypeByName($whTypeName);
-			if(!$whTypeID)
-			{
-				$errors[] = "Invalid WH Type Name";
-			}
-		}
-
 		$whHash = mapUtils::whHashByID($fromSysID , $toSysID);
 
-		$connection = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE hash=:hash AND group_id=:group AND chainmap_id=:chainmap")
-							->param(':hash', $whHash)
-							->param(':group', $this->groupData['groupID'])
-							->param(':chainmap', $this->groupData['active_chain_map'])
-							->execute()->current();
 
-		if( isset($connection['hash']) )
+		if( $type == 'wormhole' )
 		{
-			$errors[] = "Wormhole already exists";
-		}
+			$whTypeName = $_POST['wh_type_name'];
+			$whTypeID = 0;
+			if( !empty($whTypeName) )
+			{
+				$whTypeID = $this->lookupWHTypeByName($whTypeName);
+				if(!$whTypeID)
+				{
+					$errors[] = "Invalid WH Type Name";
+				}
+			}
 
-		if( count($errors) > 0 )
+			$connection = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE hash=:hash AND group_id=:group AND chainmap_id=:chainmap")
+								->param(':hash', $whHash)
+								->param(':group', $this->groupData['groupID'])
+								->param(':chainmap', $this->groupData['active_chain_map'])
+								->execute()->current();
+
+			if( isset($connection['hash']) )
+			{
+				$errors[] = "Wormhole already exists";
+			}
+
+			if( count($errors) > 0 )
+			{
+				echo json_encode(array('success' => 0, 'dataErrorMsgs' => $errors ) );
+				exit();
+			}
+
+			$eol = intval($_POST['eol']);
+			$mass = intval($_POST['mass']);
+
+			$this->chainmap->add_system_to_map($whHash, $fromSysID, $toSysID, $eol, $mass, $whTypeID);
+		}
+		else if( $type == 'stargate' )
 		{
-			echo json_encode(array('success' => 0, 'dataErrorMsgs' => $errors ) );
-			exit();
+			$this->chainmap->add_stargate_to_map($whHash, $fromSysID, $toSysID);
 		}
-
-		$eol = intval($_POST['eol']);
-		$mass = intval($_POST['mass']);
-
-		$this->chainmap->add_system_to_map($whHash, $fromSysID, $toSysID, $eol, $mass, $whTypeID);
-
 		$message = $this->groupData['charName'].' added wormhole manually between system IDs' . $fromSysID . ' and ' . $toSysID;
 
 		groupUtils::log_action($this->groupData['groupID'],'addwh', $message );

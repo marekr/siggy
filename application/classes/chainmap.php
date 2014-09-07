@@ -89,7 +89,24 @@ class chainmap
 			$systemsToPoll[] = $wormhole['from'];
 			$wormholeHashes[] = $wormhole['hash'];
 		}
+		
+		
+		$stargates = DB::query(Database::SELECT, "SELECT s.`hash`,s.`to_system_id`, s.`from_system_id`
+			 										FROM chainmap_stargates AS s
+													WHERE s.group_id=:group
+													AND s.chainmap_id=:chainmap")
+								 ->param(':group', $this->group_id)
+								 ->param(':chainmap', $this->id)
+								 ->execute()
+								 ->as_array('hash');
+		$data['stargates'] = $stargates;
 
+		foreach( $stargates as $stargate )
+		{
+			$systemsToPoll[] = $stargate['to_system_id'];
+			$systemsToPoll[] = $stargate['from_system_id'];
+		}
+		
 		$data['systems'] = array();
 		$data['systemIDs'] = array();
 
@@ -257,7 +274,50 @@ class chainmap
 
 		$this->rebuild_map_data_cache();
 	}
+	
+	public function add_stargate_to_map($whHash, $sys1, $sys2)
+	{
+		$sys1Connections = $this->get_connected_system($sys1);
+		$sys2Connections = $this->get_connected_system($sys2);
 
+		$sys1Count = count($sys1Connections);
+		$sys2Count = count($sys2Connections);
+
+		if( $sys1Count == 0 && $sys2Count != 0 )
+		{
+			$this->_placeSystem($sys2,$sys2Connections, $sys1);
+		}
+		else if( $sys2Count == 0 && $sys1Count != 0 )
+		{
+			//sys2 is "new"
+			$this->_placeSystem($sys1,$sys1Connections, $sys2);
+		}
+		else if( $sys1Count == 0 && $sys2Count == 0 )
+		{
+			$this->_placeSystem($sys2,$sys2Connections,$sys1);
+		}
+
+		//default case is both systems already mapped, so just connect them
+		try
+		{
+			DB::query(Database::INSERT, 'INSERT INTO chainmap_stargates (`hash`, `to_system_id`, `from_system_id`, `group_id`, `chainmap_id`)
+														 VALUES(:hash, :to, :from, :groupID, :chainmap)')
+							->param(':hash', $whHash )
+							->param(':to', $sys1 )
+							->param(':from', $sys2)
+							->param(':groupID', $this->group_id )
+							->param(':chainmap', $this->id )
+							->execute();
+		}
+		catch( Exception $e )
+		{
+			//do nothing
+			throw new Exception("HALO");
+			return;
+		}
+
+		$this->rebuild_map_data_cache();
+	}
 
 	private function _placeSystem($originSys, $originSystems, $systemToBePlaced)
 	{
