@@ -174,6 +174,18 @@ mapconnection.prototype.create = function()
 		}, function(el) {
 			$this.contextMenuOpenHandler(el);
 		});
+		
+		if( this.label != '' )
+		{
+			var label = connection.getOverlay("label");
+			$(label.canvas).contextMenu( { menu: 'wh-menu' },
+				function(action, el, pos) {
+					$this.whContextMenuHandler(action);
+					
+			}, function(el) {
+				$this.contextMenuOpenHandler(el);
+			});
+		}
 	}
 }
 
@@ -277,6 +289,12 @@ mapconnection.prototype.destroy = function()
 	{
 		$(connection.canvas).destroyContextMenu();
 	}
+	
+	if( this.label != '' )
+	{
+		var label = connection.getOverlay("label");
+		$(label.canvas).destroyContextMenu();
+	}
 }
 
 mapconnection.prototype.setupOverlay = function(connectionOptions)
@@ -328,7 +346,7 @@ mapconnection.prototype.setupOverlay = function(connectionOptions)
 	{
 		connectionOptions.overlays = [
 										["Label", {
-											cssClass:"map-eol-overlay",
+											cssClass:"map-connection-overlay",
 											label : this.label,
 											location:0.5,
 											id:"label"

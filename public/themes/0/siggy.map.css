@@ -2,7 +2,7 @@
 .contextMenu {
 	position: absolute;
 	width: 120px;
-	z-index: 9998;
+	z-index: 99999;
 	border: solid 1px #CFCFCF;
 	background: #fcfcfc;
 	padding: 0px;
@@ -138,14 +138,15 @@ MAP */
 	font-size: 11px;
 }
 
-.map-eol-overlay
+.map-connection-overlay
 {
-    z-index:99999999;
+    z-index:9999;
     background-color:#262626;
     color: #fff;
     font-size:11px;
     padding: 1px;
     display:none;
+	cursor: default;
 }
 
 .map-system-blob-selected
