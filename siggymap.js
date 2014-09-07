@@ -706,7 +706,7 @@ siggyMap.prototype.draw = function()
 		connection.map = this;
 		connection.create();
 		
-		this.mapConnections[wormhole.hash] = connection;
+		this.mapConnections['wormhole-'+wormhole.hash] = connection;
     }
 	
     for( var s in this.stargates )
@@ -725,7 +725,7 @@ siggyMap.prototype.draw = function()
 		connection.map = this;
 		connection.create();
 		
-		this.mapConnections[stargate.hash] = connection;
+		this.mapConnections['stargate-'+stargate.hash] = connection;
     }
 	
     for( var s in this.cynos )
@@ -744,7 +744,7 @@ siggyMap.prototype.draw = function()
 		connection.map = this;
 		connection.create();
 		
-		this.mapConnections[cyno.hash] = connection;
+		this.mapConnections['cyno-'+cyno.hash] = connection;
     }
 	
 	
@@ -764,7 +764,7 @@ siggyMap.prototype.draw = function()
 		connection.map = this;
 		connection.create();
 		
-		this.mapConnections[jumpbridge.hash] = connection;
+		this.mapConnections['jumpbridges'+jumpbridge.hash] = connection;
     }
 
     if( Object.size(this.systems) > 0 )
