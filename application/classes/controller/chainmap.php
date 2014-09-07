@@ -428,14 +428,25 @@ class Controller_Chainmap extends FrontController
 			$mass = intval($_POST['mass']);
 
 			$this->chainmap->add_system_to_map($whHash, $fromSysID, $toSysID, $eol, $mass, $whTypeID);
+			
+			$message = $this->groupData['charName'].' added wormhole manually between system IDs' . $fromSysID . ' and ' . $toSysID;
+
+			groupUtils::log_action($this->groupData['groupID'],'addwh', $message );
 		}
 		else if( $type == 'stargate' )
 		{
 			$this->chainmap->add_stargate_to_map($whHash, $fromSysID, $toSysID);
-		}
-		$message = $this->groupData['charName'].' added wormhole manually between system IDs' . $fromSysID . ' and ' . $toSysID;
 
-		groupUtils::log_action($this->groupData['groupID'],'addwh', $message );
+		}
+		else if( $type == 'jumpbridge' )
+		{			
+			$this->chainmap->add_jumpbridge_to_map($whHash, $fromSysID, $toSysID);
+		}
+		else if( $type == 'cyno' )
+		{			
+			$this->chainmap->add_cyno_to_map($whHash, $fromSysID, $toSysID);
+		}
+		
 			
 		echo json_encode( array('success' => 1) );
 

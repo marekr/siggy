@@ -69,6 +69,8 @@ class chainmap
 								 ->execute()
 								 ->as_array('hash');
 
+		$data['wormholes'] = $wormholes;
+		
 		$systemsToPoll = array();
 		$wormholeHashes = array();
 		foreach( $wormholes as &$wormhole )
@@ -90,7 +92,7 @@ class chainmap
 			$wormholeHashes[] = $wormhole['hash'];
 		}
 		
-		
+		/* Stargates */
 		$stargates = DB::query(Database::SELECT, "SELECT s.`hash`,s.`to_system_id`, s.`from_system_id`
 			 										FROM chainmap_stargates AS s
 													WHERE s.group_id=:group
@@ -106,6 +108,42 @@ class chainmap
 			$systemsToPoll[] = $stargate['to_system_id'];
 			$systemsToPoll[] = $stargate['from_system_id'];
 		}
+		
+		/* Jump bridges */
+		$jumpbridges = DB::query(Database::SELECT, "SELECT s.`hash`,s.`to_system_id`, s.`from_system_id`
+			 										FROM chainmap_jumpbridges AS s
+													WHERE s.group_id=:group
+													AND s.chainmap_id=:chainmap")
+								 ->param(':group', $this->group_id)
+								 ->param(':chainmap', $this->id)
+								 ->execute()
+								 ->as_array('hash');
+		$data['jumpbridges'] = $jumpbridges;
+
+		foreach( $jumpbridges as $jumpbridge )
+		{
+			$systemsToPoll[] = $jumpbridge['to_system_id'];
+			$systemsToPoll[] = $jumpbridge['from_system_id'];
+		}
+		
+		/* Cynos */
+		$cynos = DB::query(Database::SELECT, "SELECT s.`hash`,s.`to_system_id`, s.`from_system_id`
+			 										FROM chainmap_cynos AS s
+													WHERE s.group_id=:group
+													AND s.chainmap_id=:chainmap")
+								 ->param(':group', $this->group_id)
+								 ->param(':chainmap', $this->id)
+								 ->execute()
+								 ->as_array('hash');
+		$data['cynos'] = $cynos;
+
+		foreach( $cynos as $cyno )
+		{
+			$systemsToPoll[] = $cyno['to_system_id'];
+			$systemsToPoll[] = $cyno['from_system_id'];
+		}
+		
+		/* Systems */
 		
 		$data['systems'] = array();
 		$data['systemIDs'] = array();
@@ -160,7 +198,6 @@ class chainmap
 		}
 
 		$data['wormholeHashes'] = $wormholeHashes;
-		$data['wormholes'] = $wormholes;
 		$data['updateTime'] = time();
 
 		return $data;
@@ -210,6 +247,35 @@ class chainmap
 
 	public function add_system_to_map($whHash, $sys1,$sys2, $eol=0, $mass=0, $wh_type_id)
 	{
+		$this->_placeSystems($sys1,$sys2);
+
+		try
+		{
+			$insert = array('hash' => $whHash,
+							'to' => $sys1,
+							'from' => $sys2,
+							'eol' => $eol,
+							'mass' => $mass,
+							'group_id' => $this->group_id,
+							'wh_type_id' => $wh_type_id,
+							'chainmap_id' => $this->id,
+							'lastJump' => time()
+							);
+							
+			DB::insert('wormholes', array_keys($insert) )->values(array_values($insert))->execute();
+		}
+		catch( Exception $e )
+		{
+			//do nothing
+			throw new Exception("Failed to insert wormhole, probably a duplicate of paralle processing multiple people jumping :/");
+			return;
+		}
+
+		$this->rebuild_map_data_cache();
+	}
+	
+	private function _placeSystems($sys1, $sys2)
+	{
 		$sys1Connections = $this->get_connected_system($sys1);
 		$sys2Connections = $this->get_connected_system($sys2);
 
@@ -248,77 +314,80 @@ class chainmap
 				//don't mess with the system positions if both are home systems
 			}
 		}
-
-		//default case is both systems already mapped, so just connect them
+	}
+	
+	public function add_stargate_to_map($whHash, $sys1, $sys2)
+	{
+		$this->_placeSystems($sys1,$sys2);
 		try
 		{
-			DB::query(Database::INSERT, 'INSERT INTO wormholes (`hash`, `to`, `from`, `group_id`, `chainmap_id`, `lastJump`, `eol`, `mass`,`wh_type_id`)
-														 VALUES(:hash, :to, :from, :groupID, :chainmap, :lastJump, :eol, :mass,:wh_type)')
-							->param(':hash', $whHash )
-							->param(':to', $sys1 )
-							->param(':from', $sys2)
-							->param(':eol', $eol )
-							->param(':mass', $mass )
-							->param(':groupID', $this->group_id )
-							->param(':chainmap', $this->id )
-							->param(':wh_type', $wh_type_id)
-							->param(':lastJump', time() )
-							->execute();
+			$insert = array('hash' => $whHash,
+							'to_system_id' => $sys1,
+							'from_system_id' => $sys2,
+							'group_id' => $this->group_id,
+							'chainmap_id' => $this->id
+							);
+							
+			DB::insert('chainmap_stargates', array_keys($insert) )->values(array_values($insert))->execute();
 		}
 		catch( Exception $e )
 		{
 			//do nothing
-			throw new Exception("HALO");
+			throw new Exception("Stargate already exists");
+			return;
+		}
+
+		$this->rebuild_map_data_cache();
+	}
+
+	public function add_jumpbridge_to_map($whHash, $sys1, $sys2)
+	{
+		$this->_placeSystems($sys1,$sys2);
+		try
+		{
+			$insert = array('hash' => $whHash,
+							'to_system_id' => $sys1,
+							'from_system_id' => $sys2,
+							'group_id' => $this->group_id,
+							'chainmap_id' => $this->id
+							);
+							
+			DB::insert('chainmap_jumpbridges', array_keys($insert) )->values(array_values($insert))->execute();
+		}
+		catch( Exception $e )
+		{
+			//do nothing
+			throw new Exception("Jumpbridge already exists");
 			return;
 		}
 
 		$this->rebuild_map_data_cache();
 	}
 	
-	public function add_stargate_to_map($whHash, $sys1, $sys2)
+	public function add_cyno_to_map($whHash, $sys1, $sys2)
 	{
-		$sys1Connections = $this->get_connected_system($sys1);
-		$sys2Connections = $this->get_connected_system($sys2);
-
-		$sys1Count = count($sys1Connections);
-		$sys2Count = count($sys2Connections);
-
-		if( $sys1Count == 0 && $sys2Count != 0 )
-		{
-			$this->_placeSystem($sys2,$sys2Connections, $sys1);
-		}
-		else if( $sys2Count == 0 && $sys1Count != 0 )
-		{
-			//sys2 is "new"
-			$this->_placeSystem($sys1,$sys1Connections, $sys2);
-		}
-		else if( $sys1Count == 0 && $sys2Count == 0 )
-		{
-			$this->_placeSystem($sys2,$sys2Connections,$sys1);
-		}
-
-		//default case is both systems already mapped, so just connect them
+		$this->_placeSystems($sys1,$sys2);
 		try
 		{
-			DB::query(Database::INSERT, 'INSERT INTO chainmap_stargates (`hash`, `to_system_id`, `from_system_id`, `group_id`, `chainmap_id`)
-														 VALUES(:hash, :to, :from, :groupID, :chainmap)')
-							->param(':hash', $whHash )
-							->param(':to', $sys1 )
-							->param(':from', $sys2)
-							->param(':groupID', $this->group_id )
-							->param(':chainmap', $this->id )
-							->execute();
+			$insert = array('hash' => $whHash,
+							'to_system_id' => $sys1,
+							'from_system_id' => $sys2,
+							'group_id' => $this->group_id,
+							'chainmap_id' => $this->id
+							);
+							
+			DB::insert('chainmap_cynos', array_keys($insert) )->values(array_values($insert))->execute();
 		}
 		catch( Exception $e )
 		{
 			//do nothing
-			throw new Exception("HALO");
+			throw new Exception("Stargate already exists");
 			return;
 		}
 
 		$this->rebuild_map_data_cache();
 	}
-
+	
 	private function _placeSystem($originSys, $originSystems, $systemToBePlaced)
 	{
 		$sysPos = NULL;

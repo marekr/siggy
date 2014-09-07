@@ -378,7 +378,6 @@ class Controller_Siggy extends FrontController
             exit();
         }
 
-        $chainMapOpen = ( isset($_POST['mapOpen']) ? intval($_POST['mapOpen']) : 0 );
 
         $update = array('systemUpdate' => 0, 'sigUpdate' => 0, 'globalNotesUpdate' => 0, 'mapUpdate' => 0, 'acsid' => 0, 'acsname' =>'');
 
@@ -475,59 +474,7 @@ class Controller_Siggy extends FrontController
 						->param(':lastBeep', time() )->execute();
             }
 
-			if( $this->chainmap != null )
-			{
-				$this->mapData = $this->chainmap->get_map_cache();
-				if( $chainMapOpen == 1 )
-				{
-					$update['chainMap']['actives'] = array();
-					$update['chainMap']['systems'] = array();
-					$update['chainMap']['wormholes'] = array();
-					$update['chainMap']['stargates'] = array();
-					if( is_array($this->mapData['systemIDs']) && count($this->mapData['systemIDs'])	 > 0 )
-					{
-						$activesData = array();
-						$activesData = DB::query(Database::SELECT, "SELECT ct.charName, ct.currentSystemID, s.shipName FROM chartracker ct
-																	LEFT JOIN ships s ON (ct.shipType=s.shipID)
-																	WHERE ct.groupID = :groupID AND ct.chainmap_id = :chainmap AND ct.broadcast=1 AND
-																		ct.currentSystemID IN(".implode(',',$this->mapData['systemIDs']).") AND ct.lastBeep >= :lastBeep")
-											->param(':lastBeep', time()-60)
-											->param(':groupID', $this->groupData['groupID'])
-											->param(':chainmap', $this->groupData['active_chain_map'])
-											->execute()
-											->as_array();
-
-						if( is_array($activesData) && count($activesData) > 0 )
-						{
-							$actives = array();
-							foreach( $activesData as $act )
-							{
-								if( strlen( $act['charName']) > 15 )
-								{
-									$act['charName'] = substr($act['charName'], 0,12).'...';
-								}
-
-								if( $act['shipName'] == NULL )
-								{
-									$act['shipName'] = "";
-								}
-								$actives[ $act['currentSystemID'] ][] = array('name' => $act['charName'], 'ship' => $act['shipName']);
-							}
-
-							$update['chainMap']['actives'] = $actives;
-						}
-					}
-
-					if( $_POST['mapLastUpdate'] != $this->mapData['updateTime'] )
-					{
-						$update['chainMap']['systems'] = $this->mapData['systems'];
-						$update['chainMap']['wormholes'] = $this->mapData['wormholes'];
-						$update['chainMap']['stargates'] = $this->mapData['stargates'];
-						$update['mapUpdate'] = (int) 1;
-					}
-					$update['chainMap']['lastUpdate'] = $this->mapData['updateTime'];
-				}
-			}
+			$this->_update_process_map($update);
 
             $activeSystemQuery = DB::query(Database::SELECT, 'SELECT lastUpdate FROM activesystems WHERE systemID=:id AND groupID=:group AND chainmap_id=:chainmap')
 												->param(':id', $currentSystemID)
@@ -578,6 +525,69 @@ class Controller_Siggy extends FrontController
         echo json_encode( $update );
 
         exit();
+	}
+	
+	private function _update_process_map(&$update)
+	{			
+        $chainMapOpen = ( isset($_POST['mapOpen']) ? intval($_POST['mapOpen']) : 0 );
+		
+		if( $this->chainmap != null )
+		{
+			$this->mapData = $this->chainmap->get_map_cache();
+			if( $chainMapOpen == 1 )
+			{
+				$update['chainMap']['actives'] = array();
+				$update['chainMap']['systems'] = array();
+				$update['chainMap']['wormholes'] = array();
+				$update['chainMap']['stargates'] = array();
+				$update['chainMap']['jumpbridges'] = array();
+				$update['chainMap']['cynos'] = array();
+				if( is_array($this->mapData['systemIDs']) && count($this->mapData['systemIDs'])	 > 0 )
+				{
+					$activesData = array();
+					$activesData = DB::query(Database::SELECT, "SELECT ct.charName, ct.currentSystemID, s.shipName FROM chartracker ct
+																LEFT JOIN ships s ON (ct.shipType=s.shipID)
+																WHERE ct.groupID = :groupID AND ct.chainmap_id = :chainmap AND ct.broadcast=1 AND
+																	ct.currentSystemID IN(".implode(',',$this->mapData['systemIDs']).") AND ct.lastBeep >= :lastBeep")
+										->param(':lastBeep', time()-60)
+										->param(':groupID', $this->groupData['groupID'])
+										->param(':chainmap', $this->groupData['active_chain_map'])
+										->execute()
+										->as_array();
+
+					if( is_array($activesData) && count($activesData) > 0 )
+					{
+						$actives = array();
+						foreach( $activesData as $act )
+						{
+							if( strlen( $act['charName']) > 15 )
+							{
+								$act['charName'] = substr($act['charName'], 0,12).'...';
+							}
+
+							if( $act['shipName'] == NULL )
+							{
+								$act['shipName'] = "";
+							}
+							$actives[ $act['currentSystemID'] ][] = array('name' => $act['charName'], 'ship' => $act['shipName']);
+						}
+
+						$update['chainMap']['actives'] = $actives;
+					}
+				}
+
+				if( $_POST['mapLastUpdate'] != $this->mapData['updateTime'] )
+				{
+					$update['chainMap']['systems'] = $this->mapData['systems'];
+					$update['chainMap']['wormholes'] = $this->mapData['wormholes'];
+					$update['chainMap']['stargates'] = $this->mapData['stargates'];
+					$update['chainMap']['jumpbridges'] = $this->mapData['jumpbridges'];
+					$update['chainMap']['cynos'] = $this->mapData['cynos'];
+					$update['mapUpdate'] = (int) 1;
+				}
+				$update['chainMap']['lastUpdate'] = $this->mapData['updateTime'];
+			}
+		}
 	}
 
 	public function action_notes_save()

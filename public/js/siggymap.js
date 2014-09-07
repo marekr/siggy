@@ -15,6 +15,8 @@ function siggyMap(options)
 	this.systems = {};
 	this.wormholes = {};
 	this.stargates = {};
+	this.jumpbridges = {};
+	this.cynos = {};
 
 	this.mapConnections = {};
 
@@ -433,7 +435,7 @@ siggyMap.prototype.registerEvents = function()
 }
 
 
-siggyMap.prototype.update = function(timestamp, systems, wormholes, stargates)
+siggyMap.prototype.update = function(timestamp, systems, wormholes, stargates, jumpbridges, cynos)
 {
 	if( this.editing || this.massDelete )
 	{
@@ -445,6 +447,8 @@ siggyMap.prototype.update = function(timestamp, systems, wormholes, stargates)
 	this.systems = systems;
 	this.wormholes = wormholes;
 	this.stargates = stargates;
+	this.jumpbridges = jumpbridges;
+	this.cynos = cynos;
 
 	this.draw();
 
@@ -713,7 +717,7 @@ siggyMap.prototype.draw = function()
 		var options = {
 			to: stargate.to_system_id,
 			from: stargate.from_system_id,
-			hash: wormhole.hash,
+			hash: stargate.hash,
 			type: 'stargate'
 		};
 		
@@ -722,6 +726,45 @@ siggyMap.prototype.draw = function()
 		connection.create();
 		
 		this.mapConnections[stargate.hash] = connection;
+    }
+	
+    for( var s in this.cynos )
+    {
+        //local variable to make code smaller
+        var cyno = this.cynos[s];
+		
+		var options = {
+			to: cyno.to_system_id,
+			from: cyno.from_system_id,
+			hash: cyno.hash,
+			type: 'cyno'
+		};
+		
+		var connection = new mapconnection(jsPlumb,options);
+		connection.map = this;
+		connection.create();
+		
+		this.mapConnections[cyno.hash] = connection;
+    }
+	
+	
+    for( var s in this.jumpbridges )
+    {
+        //local variable to make code smaller
+        var jumpbridge = this.jumpbridges[s];
+		
+		var options = {
+			to: jumpbridge.to_system_id,
+			from: jumpbridge.from_system_id,
+			hash: jumpbridge.hash,
+			type: 'jumpbridge'
+		};
+		
+		var connection = new mapconnection(jsPlumb,options);
+		connection.map = this;
+		connection.create();
+		
+		this.mapConnections[jumpbridge.hash] = connection;
     }
 
     if( Object.size(this.systems) > 0 )
