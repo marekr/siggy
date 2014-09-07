@@ -1,32 +1,3 @@
-
-/*****
-whpopup tabs
-*******/
-#wormholeTabs
-{
-	background-color: #1f1f1f;
-}
-
-#wormholeTabs div
-{
-	display: inline-block;
-	background-color: #0E0E0E;
-	padding:5px;
-	margin:0;
-	font-size:1.1em;
-	font-weight:bold;
-}
-
-#wormholeTabs div:hover
-{
-	background-color: #AB5907;
-}
-
-#wormhole-popup div.tabcontent
-{
-	padding:5px;
-}
-
 /* Generic context menu styles */
 .contextMenu {
 	position: absolute;

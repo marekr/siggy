@@ -578,7 +578,8 @@ select:focus
     vertical-align:middle;
 }
 
-ul.option-bar
+ul.option-bar,
+ul.box-tabs
 {
     margin: 0;
     padding: 0;
@@ -586,14 +587,23 @@ ul.option-bar
     text-align: right;
 }
 
-ul.option-bar a
+
+ul.box-tabs
+{
+	text-align: left;
+}
+
+ul.option-bar a,
+ul.box-tabs a
 {
     color: #fff;
     display:block;
     width: 100%;
+	font-weight:bold;
 }
 
-ul.option-bar li
+ul.option-bar li,
+ul.box-tabs li
 {
     display:inline-block;
     min-width:60px;
@@ -604,6 +614,11 @@ ul.option-bar li
 }
 
 ul.option-bar li.active
+{
+    background-color: @primary-background;
+}
+
+ul.box-tabs li.active
 {
     background-color: @primary-background;
 }
@@ -722,8 +737,67 @@ ul.box-simple-list
 	font-weight: bold;
 }
 
+.box-tabbed,
+.box-tab
+{
+	padding:0 !important;
+}
+
+.box-tabs
+{
+	background-color: #1f1f1f;
+}
+
+.box-tabs div
+{
+	display: inline-block;
+	background-color: #0E0E0E;
+	padding:5px;
+	margin:0;
+	font-size:1.1em;
+	font-weight:bold;
+}
+
+.box-tabs div:hover
+{
+	background-color: #AB5907;
+}
+
 .site-icon
 {
 	position:relative;
 	top: 3px;
+}
+
+
+div.connection-editor-group
+{
+	margin-bottom:5px;
+}
+
+div.connection-editor-group > div
+{
+	padding:10px;
+}
+
+
+/* Form group stuff */
+
+.form-group {
+	margin-bottom: 15px;
+}
+.form-horizontal .form-group {
+	margin-right: -15px;
+	margin-left: -15px;
+}
+
+.form-group label
+{
+	font-weight:bold;
+}
+
+.form-group label.yes,
+.form-group label.no
+{
+	font-weight:normal;
 }

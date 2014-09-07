@@ -50,18 +50,19 @@
 			<div class="clearfix"></div>
 			<!-- end broadcast -->
 		</div>
-
-		<!--- wh editor -->
-		<div id="wormhole-popup" class="box">
-			<div id="wormholeTabs">
-				<div id="whEdit">Edit</div>
+		
+		<div id="connection-popup" class="box box-tabbed" style="display:none">
+			<ul class="box-tabs">
+				<li id="whEdit" class="active"><a>Edit</a></li>
 				<?php if( $group['jumpLogEnabled'] ): ?>
-				<div id="jumpLog">Jump Log</div>
+				<li id="jumpLog"><a>Jump Log</a></li>
 				<?php endif; ?>
-			</div>
+			</ul>
 			<?php if( $group['jumpLogEnabled'] ): ?>
-			<div id="jumpLogViewer" class="tabcontent">
-				<div style='text-align:center;margin-bottom: 10px;'><span id='refreshJumpLog' style='font-weight:bold;color: #FF4C00;'>X Refresh Log</span></div>
+			<div id="jumpLogViewer" style="display:none" class="box-tab">
+				<div style='text-align:center;margin-bottom: 10px;'>
+					<span id='refreshJumpLog' style='font-weight:bold;color: #FF4C00;'>X Refresh Log</span>
+				</div>
 				<b>Recorded and Approximate Mass:</b> <span id='totalJumpedMass'>0.00</span>mil<br /><br />
 				<div id="jumpLogWrap" style='height:210px;overflow: auto;'>
 					<ul id="jumpLogList" class="itemList">
@@ -74,60 +75,83 @@
 				</div>
 			</div>
 			<?php endif; ?>
-			<div id="wormhole-editor" class="tabcontent">
-				<div id="wh-editor-add">
-					<h3>Create a wormhole link</h3>
-					<br />
-					<div style="float:left;text-align:right;">
-						From <input type='text' name='from-sys' /><br />
-						<label style="display:block;margin-top:3px;">
-							<input type='checkbox' name='fromCurrent' value='1' />  Current Location
-						</label>
+			<div id="connection-editor" class="box-tab">
+				<div id="connection-editor-add" class="connection-editor-group">
+					<h3>Create a connection</h3>
+					<div>
+						<div style="float:left;text-align:right;">
+							From <input type='text' name='from-sys' /><br />
+							<label style="display:block;margin-top:3px;">
+								<input type='checkbox' name='from-current-location' value='1' />  Current Location
+							</label>
 						</div>
-					<div style="float:right;text-align:right;">
-						To <input type='text' name='to-sys' /><br />
-						<label style="display:block;margin-top:3px;">
-							<input type='checkbox' name='toCurrent' value='1' />  Current Location
-						</label>
+						<div style="float:right;text-align:right;">
+							To <input type='text' name='to-sys' /><br />
+							<label style="display:block;margin-top:3px;">
+								<input type='checkbox' name='to-current-location' value='1' />  Current Location
+							</label>
+						</div>
+						<div class="clearfix"></div>
+						<br />
+						<div class="form-group">
+							<label>Connection Type
+								<select name="connection-editor-type">
+									<option value="wormhole">Wormhole</option>
+									<option value="stargate">Stargate</option>
+									<option value="jumpbridge">Jumpbridge</option>
+									<option value="cyno">Cyno</option>
+								</select>
+							</label>
+						</div>
 					</div>
-					<br clear="all" />
 				</div>
-				<div id="wh-editor-edit" class='center-text'>
-					<h3 class="text-left">Editing Wormhole</h3>
-					<p>
-						<span id="whEditFrom"></span> to <span id="whEditTo"></span>
-					</p>
-					<button class="btn btn-default btn-xs" id="wormhole-editor-disconnect" >Close Wormhole</button>
+				<div id="connection-editor-edit" class='connection-editor-group center-text'>
+					<h3 class="text-left">Editing Connection</h3>
+					<div>
+						<p>
+							<span id="connection-editor-from"></span> to <span id="connection-editor-to"></span>
+						</p>
+						<button class="btn btn-default btn-xs" id="connection-editor-disconnect" >Disconnect Connection</button>
+					</div>
 				</div>
 				<ul class="errors">
 				</ul>
-				<br />
-				<fieldset>
-					<label>WH Type Name <input type='text' name='wh_type_name' style='width:40px'/></label><br /><br /><br />
-					<legend>Options</legend>
-					EOL?: 	<label class="yes" style="display:inline;float:none;">Yes<input type="radio" name="eol" value="1" /></label>
-							<label class="no" style="display:inline;float:none;">No<input type="radio" name="eol" value="0" /></label>
-						<br />
-					<br />
-					Frigate sized?: <label class="yes" style="display:inline;float:none;">Yes<input type="radio" name="frigate_sized" value="1" /></label>
-									<label class="no" style="display:inline;float:none;">No<input type="radio" name="frigate_sized" value="0" /></label>
-					<br />
-					<br />
-					Mass Stage:
-					<select name='mass'>
-						<option value='0'>Stage 1/Default</option>
-						<option value='1'>Stage 2/Reduced</option>
-						<option value='2'>Stage 3/Critical</option>
-					</select><br /><br />
-					<div class="center-text">
-						<button id="wormhole-editor-save" class="btn btn-primary btn-xs">Save</button>
-						<button id='wormhole-editor-cancel' class="btn btn-default btn-xs">Cancel</button>
-						<br />
+				<div id="connection-editor-options-wh" class="connection-editor-group" style="background-color:#00279A">
+					<h3>Options</h3>
+					<div>
+						<div class="form-group">
+							<label>WH Type Name <input type='text' name='wh_type_name' style='width:40px'/></label>
+						</div>
+						<div class="form-group">
+							<label>EOL?: 	
+									<label class="yes" style="display:inline;float:none;">Yes<input type="radio" name="eol" value="1" /></label>
+									<label class="no" style="display:inline;float:none;">No<input type="radio" name="eol" value="0" /></label>
+							</label>
+						</div>
+						<div class="form-group">
+							<label>
+							Frigate sized?: <label class="yes" style="display:inline;float:none;">Yes<input type="radio" name="frigate_sized" value="1" /></label>
+											<label class="no" style="display:inline;float:none;">No<input type="radio" name="frigate_sized" value="0" /></label>
+							</label>
+						</div>
+						<div class="form-group">		
+							<label>
+								Mass Stage:
+								<select name='mass'>
+									<option value='0'>Stage 1/Default</option>
+									<option value='1'>Stage 2/Reduced</option>
+									<option value='2'>Stage 3/Critical</option>
+								</select>
+							</label>
+						</div>
 					</div>
-				</fieldset>
+				</div>
+				<div class="center-text connection-editor-group">
+					<button id="connection-editor-save" class="btn btn-primary btn-xs">Save</button>
+					<button id='connection-editor-cancel' class="btn btn-default btn-xs">Cancel</button>
+				</div>
 			</div>
 		</div>
-		<!-- end wh editor -->
 
 		<div id="system-options-popup" class="box">
 			<h3>Editing System: <span id="editingSystemName">System</span></h3>

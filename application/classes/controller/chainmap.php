@@ -244,6 +244,7 @@ class Controller_Chainmap extends FrontController
 		
 		$update = array();
 		$hash = ($_POST['hash']);
+		$whTypeName = $_POST['wh_type_name'];
 		
 		if( empty($hash) )
 		{
@@ -286,6 +287,13 @@ class Controller_Chainmap extends FrontController
 		if( isset($_POST['mass']) )
 		{
 			$update['mass'] = intval($_POST['mass']);
+		}
+		
+		$whTypeID = 0;
+		if( !empty($whTypeName) )
+		{
+			$whTypeID = $this->lookupWHTypeByName($whTypeName);
+			$update['wh_type_id'] = $whTypeID;
 		}
 		
 		if( !empty($update) )
