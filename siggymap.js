@@ -1067,7 +1067,7 @@ siggyMap.prototype.updateJumpLog = function( hash )
 		}
 
 		var that = this;
-		$.get(this.baseUrl + 'getJumpLog', request, function (data)
+		$.get(this.baseUrl + 'chainmap/jump_log', request, function (data)
 		{
 			data.totalMass = parseInt(data.totalMass);
 			var displayMass = roundNumber(data.totalMass/1000000,2);
