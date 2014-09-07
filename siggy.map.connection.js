@@ -15,11 +15,13 @@ function mapconnection(plumb, options)
 				eol: false,
 				eolDateSet: 0,
 				frigateSized: false,
+				totalTrackedMass: 0,
 				typeInfo: {
 					name: '',
 					mass: 0,
 					lifetime: 0,
-					maxJumpMass: 0
+					maxJumpMass: 0,
+					regen: 0,
 				}
 			},
 			type: 'wh'
@@ -243,22 +245,28 @@ mapconnection.prototype.setupOverlay = function(connectionOptions)
 	if( this.settings.wormhole.typeInfo.name )
 	{
 		this.label += "<b>" + this.settings.wormhole.typeInfo.name + "</b><br />";
-		this.label += number_format(this.settings.wormhole.typeInfo.mass*1000000000,0) + " kg +-10% mass<br />"
-		this.label += this.settings.wormhole.typeInfo.lifetime + " hr lifetime<br />"
-		this.label += number_format(this.settings.wormhole.typeInfo.maxJumpMass*1000000,0) + " kg<br />"
+		this.label += number_format(this.settings.wormhole.typeInfo.mass*1000000000,0) + " kg +-10% mass<br />";
+		this.label += this.settings.wormhole.typeInfo.lifetime + " hr lifetime<br />";
+		this.label += number_format(this.settings.wormhole.typeInfo.maxJumpMass*1000000,0) + " kg max jump<br />";
+	
+		if( this.settings.wormhole.typeInfo.regen != 0 )
+		{
+			this.label += number_format(this.settings.wormhole.typeInfo.regen*1000000,0) + " kg mass regen<br />";
+		}
+	}
+	
+	if( this.settings.wormhole.totalTrackedMass )
+	{
+		this.label += "Approx." + number_format(this.settings.wormhole.totalTrackedMass,0) + " kg jumped<br />"
 	}
 	
 	if( this.settings.wormhole.eol != 0 )
 	{
-		this.label += 'EOL set at: '+ siggymain.displayTimeStamp(this.settings.wormhole.eolDateSet);
+		this.label += 'EOL set at: '+ siggymain.displayTimeStamp(this.settings.wormhole.eolDateSet) + "<br />";
 	}
 
 	if( parseInt(this.settings.wormhole.frigateSized) == 1 )
 	{
-		if( this.label != '' )
-		{
-			this.label += '<br />';
-		}
 		this.label += 'Frigate sized wormhole';
 	}
 

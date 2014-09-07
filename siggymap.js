@@ -680,7 +680,8 @@ siggyMap.prototype.draw = function()
 				mass: parseInt(wormhole.mass),
 				eolDateSet: parseInt(wormhole.eol_date_set),
 				eol:  parseInt(wormhole.eol),
-				frigateSized: parseInt(wormhole.frigate_sized)
+				frigateSized: parseInt(wormhole.frigate_sized),
+				totalTrackedMass: wormhole.total_tracked_mass
 			}
 		};
 		
@@ -690,7 +691,8 @@ siggyMap.prototype.draw = function()
 				name: wormhole.wh_name,
 				mass: wormhole.wh_mass,
 				lifetime: wormhole.wh_lifetime,
-				maxJumpMass: wormhole.wh_jump_mass
+				maxJumpMass: wormhole.wh_jump_mass,
+				regen: wormhole.wh_regen
 			}
 		}
 		
