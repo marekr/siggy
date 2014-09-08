@@ -109,7 +109,6 @@ mapconnection.prototype.getDefaultPaintStyle = function()
 mapconnection.prototype.create = function()
 {
 	var $this = this;
-	console.log($this.settings);
 	var connectionOptions = { source: this.settings.from,
 						target: this.settings.to,
 						anchor:"Continuous",

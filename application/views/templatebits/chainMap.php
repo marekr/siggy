@@ -32,20 +32,20 @@
 			<!-- magic buttons -->
 			<div class="buttons">
 				<button id="chain-map-save" style="display:none;" class="btn btn-default btn-xs">Save Map Changes</button>
-				<button id="chain-map-mass-delete-confirm" style="display:none;" class="btn btn-default btn-xs">Confirm Mass Delete</button>
-				<button id="chain-map-mass-delete-cancel" style="display:none;" class="btn btn-default btn-xs">Cancel</button>
+				<button id="chain-map-mass-delete-confirm" style="display:none;" class="btn btn-default btn-danger btn-xs">Confirm Mass Delete</button>
+				<button id="chain-map-mass-delete-cancel" style="display:none;" class="btn btn-default btn-primary btn-xs">Cancel</button>
 			</div>
 		</div>
 		<!-- magic buttons -->
 		<div id='map-footer-bar'>
 			<!-- options -->
-			<a href="#" id="chain-map-add-wh" class="btn btn-default btn-xs">Add Connection</a>
-			<a href="#" id="chain-map-edit" class="btn btn-default btn-xs">Edit</a>
-			<a href="#" id="chain-map-delete-whs" class="btn btn-default btn-xs">Delete Connections</a>
+			<a href="#" id="chain-map-add-wh" class="btn btn-default btn-xs btn-primary"><i class="fa fa-link"></i> Add Connection</a>
+			<a href="#" id="chain-map-edit" class="btn btn-default btn-xs btn-warning"><i class="fa fa-pencil"></i> Edit</a>
+			<a href="#" id="chain-map-delete-whs" class="btn btn-default btn-xs btn-danger"><i class="fa fa-chain-broken"></i> Delete Connections</a>
 			<!--- end options -->
 			<!--- broadcast -->
 			<?php if( !$group['alwaysBroadcast'] ): ?>
-			<a href="#" id="chainmap-broadcast-button" class="btn btn-default btn-xs" style="float:right"><?php echo ( ( isset($_COOKIE['broadcast']) && $_COOKIE['broadcast'] == 0 ) ? "Enable location broadcast" : "Disable location broadcast" ); ?></a>
+			<a href="#" id="chainmap-broadcast-button" class="btn btn-default btn-xs" style="float:right"><i class="fa fa-wifi"></i><?php echo ( ( isset($_COOKIE['broadcast']) && $_COOKIE['broadcast'] == 0 ) ? "Enable location broadcast" : "Disable location broadcast" ); ?></a>
 			<?php endif; ?>
 			<div class="clearfix"></div>
 			<!-- end broadcast -->
@@ -53,15 +53,15 @@
 		
 		<div id="connection-popup" class="box box-tabbed" style="display:none">
 			<ul class="box-tabs">
-				<li id="whEdit" class="active"><a>Edit</a></li>
+				<li class="active"><a href="#connection-editor">Edit</a></li>
 				<?php if( $group['jumpLogEnabled'] ): ?>
-				<li id="jumpLog"><a>Jump Log</a></li>
+				<li><a href="#jump-log">Jump Log</a></li>
 				<?php endif; ?>
 			</ul>
 			<?php if( $group['jumpLogEnabled'] ): ?>
-			<div id="jumpLogViewer" style="display:none" class="box-tab">
-				<div style='text-align:center;margin-bottom: 10px;'>
-					<span id='refreshJumpLog' style='font-weight:bold;color: #FF4C00;'>X Refresh Log</span>
+			<div id="jump-log" style="display:none;padding: 10px !important;" class="box-tab">
+				<div class="center-text" style="margin:10px;">
+					<a id='jump-log-refresh' class="btn btn-primary btn-sm"><i class="fa fa-refresh"></i> Refresh Log</a>
 				</div>
 				<b>Recorded and Approximate Mass:</b> <span id='totalJumpedMass'>0.00</span>mil<br /><br />
 				<div id="jumpLogWrap" style='height:210px;overflow: auto;'>
@@ -111,7 +111,7 @@
 						<p>
 							<span id="connection-editor-from"></span> to <span id="connection-editor-to"></span>
 						</p>
-						<button class="btn btn-default btn-xs" id="connection-editor-disconnect" >Disconnect Connection</button>
+						<button class="btn btn-default btn-xs btn-danger" id="connection-editor-disconnect"><i class="fa fa-chain-broken"></i> Disconnect Connection</button>
 					</div>
 				</div>
 				<ul class="errors">
@@ -146,7 +146,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="center-text connection-editor-group">
+				<div id="connection-editor-button-bar" class="center-text connection-editor-group">
 					<button id="connection-editor-save" class="btn btn-primary btn-xs">Save</button>
 					<button id='connection-editor-cancel' class="btn btn-default btn-xs">Cancel</button>
 				</div>

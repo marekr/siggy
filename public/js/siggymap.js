@@ -152,7 +152,6 @@ siggyMap.prototype.initialize = function()
 	var that = this;
 	this.container = $('#chain-map-container');
 
-
 	this.loadingMessage = this.container.find('p.loading');
 	this.editingMessage = this.container.find('p.editing');
 	this.deletingMessage = this.container.find('p.deleting');
@@ -163,22 +162,22 @@ siggyMap.prototype.initialize = function()
 
 	if( this.broadcast )
 	{
-		$('#chainmap-broadcast-button').text('Disable location broadcasting');
+		$('#chainmap-broadcast-button').html('<i class="fa fa-wifi"></i> Disable location broadcasting');
 	}
 	else
 	{
-		$('#chainmap-broadcast-button').text('Enable location broadcasting');
+		$('#chainmap-broadcast-button').html('<i class="fa fa-eye-slash"></i> Enable location broadcasting');
 	}
 	$('#chainmap-broadcast-button').click( function(){
 		if( that.broadcast == 1)
 		{
 			that.broadcast = 0;
-			$(this).text('Enable location broadcasting');
+			$('#chainmap-broadcast-button').html('<i class="fa fa-eye-slash"></i> Enable location broadcasting');
 		}
 		else
 		{
 			that.broadcast = 1;
-			$(this).text('Disable location broadcasting');
+			$('#chainmap-broadcast-button').html('<i class="fa fa-wifi"></i> Disable location broadcasting');
 		}
 		setCookie('broadcast', that.broadcast, 365);
 	});
@@ -319,6 +318,10 @@ siggyMap.prototype.initialize = function()
 	$(document).bind('siggy.switchSystem', function(e, systemID) {
 		that.setSelectedSystem( systemID );
 		e.stopPropagation();
+	});
+	
+	$('#jump-log-refresh').click( function() {
+        that.updateJumpLog(that.editingConnection.settings.hash);
 	});
 }
 
@@ -1107,22 +1110,6 @@ siggyMap.prototype.setupSystemEditor = function()
 		$('#chain-map-container').unblock();
 	});
 }
-siggyMap.prototype.initializeTabs = function()
-{
-	var that = this;
-	$('#whEdit').click( function() {
-      that.setWHPopupTab('editor');
-	} );
-
-	if( this.settings.jumpTrackerEnabled )
-	{
-      $('#jumpLog').click( function() {
-        that.setWHPopupTab('jumpLog');
-        that.updateJumpLog(that.editingConnection.settings.hash);
-      } );
-	}
-}
-
 siggyMap.prototype.updateJumpLog = function( hash )
 {
 		var logList = $('#jumpLogList');
@@ -1280,35 +1267,71 @@ siggyMap.prototype.editWormhole = function(conn)
 
 	if( conn.settings.type == 'wormhole' )
 	{
+		$('#connection-editor-options-wh').show();
+		$('#connection-editor-save').show();
+		$('#connection-popup ul.box-tabs').show();
 		$('#connection-editor select[name=mass]').val(conn.settings.wormhole.mass);
 		$('#connection-editor input[name=eol]').filter('[value=' + conn.settings.wormhole.eol + ']').prop('checked', true);
 		$('#connection-editor input[name=frigate_sized]').filter('[value=' + conn.settings.wormhole.frigateSized + ']').prop('checked', true);
 		$('#connection-editor input[name=wh_type_name]').val(conn.settings.wormhole.typeInfo.name);
 	}
+	else
+	{
+		$('#connection-editor-save').hide();
+		$('#connection-popup ul.box-tabs').hide();
+		$('#connection-editor-options-wh').hide();
+	}
 	
 	this.openWHEditor('edit');
 }
 
-siggyMap.prototype.setWHPopupTab = function (state)
+siggyMap.prototype.initializeTabs = function()
 {
-	if( state == 'editor' )
+	var $this = this;
+
+    $('#connection-popup ul.box-tabs li a').click(function()
+    {
+        $this.setWHPopupTab( $(this).attr('href') );
+        return false;
+    });
+
+    this.setWHPopupTab( '#connection-editor' );
+}
+
+
+siggyMap.prototype.setWHPopupTab = function( selectedTab )
+{
+	if( selectedTab == "#jump-log" )
 	{
-		$('#connection-editor').show();
-		$('#jumpLogViewer').hide();
+		if( this.settings.jumpTrackerEnabled )
+		{
+			this.updateJumpLog(this.editingConnection.settings.hash);
+		}
 	}
-	else if( state =='jumpLog' )
-	{
-		$('#connection-editor').hide();
-		$('#jumpLogViewer').show();
-	}
-	$('#connection-popup ul.box-tabs').show();
-	return;
+	
+    var $this = this;
+    $('#connection-popup ul.box-tabs li a').each(function()
+    {
+        var href = $(this).attr('href');
+
+		
+        if( href == selectedTab )
+        {
+            $(this).parent().addClass('active');
+            $(href).show();
+        }
+        else
+        {
+            $(this).parent().removeClass('active');
+            $(href).hide();
+        }
+    } );
 }
 
 
 siggyMap.prototype.openWHEditor = function(mode)
 {
-	this.setWHPopupTab('editor');
+	this.setWHPopupTab('#connection-editor');
 	$('#chain-map-container').block({
 		message: $('#connection-popup'),
 		css: {
@@ -1324,6 +1347,7 @@ siggyMap.prototype.openWHEditor = function(mode)
 				cursor: 'auto'
 		},
 		centerX: true,
+		centerY: true,
 		fadeIn:  0,
 		fadeOut:  0
 	});
@@ -1337,6 +1361,7 @@ siggyMap.prototype.openWHEditor = function(mode)
 	}
 	else
 	{
+		$('#connection-editor-save').show();
 		$('#connection-editor-options-wh').show();
 		$('#connection-popup ul.box-tabs').hide();
 		$('#connection-editor-add').show();
