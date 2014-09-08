@@ -1007,7 +1007,7 @@ siggymain.prototype.initializeTabs = function()
 siggymain.prototype.changeTab = function( selectedTab )
 {
     var $this = this;
-    $.each( $('#system-advanced ul.tabs li a'), function()
+    $('#system-advanced ul.tabs li a').each(function()
     {
         var href = $(this).attr('href');
 
