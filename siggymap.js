@@ -63,6 +63,7 @@ function siggyMap(options)
 	}
 
 	this.massSelect = false;
+	this.selectionInProgress = false;
 
 	this.selectedSystemRect = null;
 	this.selectedSystemID = 0;
@@ -230,7 +231,7 @@ siggyMap.prototype.initialize = function()
 		//ulgy hack to make the mass delete selection work for now
 		$("#chain-map").width($("#chain-map-scrolltainer")[0].scrollWidth);
 		
-		that.massSelect = true;
+		that.selectionInProgress = true;
 		
 		var chainmapOffset = $(this).offset();
 		var click_y = e.pageY-chainmapOffset.top,
@@ -247,7 +248,7 @@ siggyMap.prototype.initialize = function()
 		that.selectionBox.appendTo($container);
 
 		$container.on('mousemove', function(e) {
-			if ( ( that.massSelect )  )
+			if ( that.selectionInProgress  )
 			{
 				var chainmapOffset = $(this).offset();
 				var move_x = e.pageX-chainmapOffset.left,
@@ -267,12 +268,12 @@ siggyMap.prototype.initialize = function()
 				});
 		  }
 		}).on('mouseup', function(e) {
-			if ( that.massSelect )
+			if ( that.selectionInProgress )
 			{
 				//ulgy hack to make the mass delete selection work for now
 				$("#chain-map").width("auto");
 		
-				that.massSelect = false;
+				that.selectionInProgress = false;
 				$container.off('mousemove');
 
 				var bb = {
