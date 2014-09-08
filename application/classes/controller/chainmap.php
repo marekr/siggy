@@ -129,29 +129,78 @@ class Controller_Chainmap extends FrontController
 
 		exit();
 	}
+	
+	private function _hash_array_to_string($arr)
+	{
+		foreach( $arr as $k => $v )
+		{
+			$arr[$k] = "'".($v)."'";
+		}
+		return implode(',', $arr);
+	}
 
-	public function action_wh_mass_delete()
+	public function action_connection_mass_delete()
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
 		header('content-type: application/json');
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 
-		$hashes = json_decode($_POST['hashes']);
-		$log_message = $this->groupData['charName'].' performed a mass delete of the following wormholes: ';
-		if( is_array($hashes) && count($hashes) > 0 )
+		$wormholeHashes = json_decode($_POST['wormhole_hashes']);
+		$stargateHashes = json_decode($_POST['stargate_hashes']);
+		$jumpbridgeHashes = json_decode($_POST['jumpbridge_hashes']);
+		$cynoHashes = json_decode($_POST['cyno_hashes']);
+		
+		
+		if( is_array($stargateHashes) && count($stargateHashes) > 0 )
 		{
-			foreach( $hashes as $k =>	 $v )
+			$log_message = $this->groupData['charName'].' performed a mass delete of the following stargates: ';
+			
+			$stargateHashes = $this->_hash_array_to_string($stargateHashes);
+
+			$stargates = DB::query(Database::SELECT, 'SELECT s.*, sto.name as to_name, sfrom.name as from_name
+														FROM chainmap_stargates s
+														INNER JOIN solarsystems sto ON sto.id = s.to_system_id
+														INNER JOIN solarsystems sfrom ON sfrom.id = s.from_system_id
+														WHERE s.hash IN('.$stargateHashes.') AND s.group_id=:groupID AND s.chainmap_id=:chainmap')
+							->param(':groupID', $this->groupData['groupID'])
+							->param(':chainmap', $this->groupData['active_chain_map'])
+							->execute();
+
+			$systemIDs = array();
+			foreach( $stargates as $sg )
 			{
-				$hashes[$k] = "'".($v)."'";
+				$systemIDs[] = $sg['to_system_id'];
+				$systemIDs[] = $sg['from_system_id'];
+
+				$log_message .= $sg['to_name'] . ' to ' . $sg['from_name'] . ', ';
 			}
-			$hashes = implode(',', $hashes);
+			$systemIDs = array_unique( $systemIDs );
+			
+			DB::query(Database::DELETE, 'DELETE FROM chainmap_stargates WHERE hash IN('.$stargateHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
+							->param(':groupID', $this->groupData['groupID'])
+							->param(':chainmap', $this->groupData['active_chain_map'])
+							->execute();
+
+			groupUtils::log_action($this->groupData['groupID'],'delwhs', $log_message );
+
+			$this->chainmap->reset_systems( $systemIDs );
+
+			$this->chainmap->rebuild_map_data_cache();
+		}
+		
+		
+		if( is_array($wormholeHashes) && count($wormholeHashes) > 0 )
+		{
+			$log_message = $this->groupData['charName'].' performed a mass delete of the following wormholes: ';
+			
+			$wormholeHashes = $this->_hash_array_to_string($wormholeHashes);
 
 			$wormholes = DB::query(Database::SELECT, 'SELECT w.*, sto.name as to_name, sfrom.name as from_name
 														FROM wormholes w
 														INNER JOIN solarsystems sto ON sto.id = w.to
 														INNER JOIN solarsystems sfrom ON sfrom.id = w.from
-														WHERE w.hash IN('.$hashes.') AND w.group_id=:groupID AND w.chainmap_id=:chainmap')
+														WHERE w.hash IN('.$wormholeHashes.') AND w.group_id=:groupID AND w.chainmap_id=:chainmap')
 							->param(':groupID', $this->groupData['groupID'])
 							->param(':chainmap', $this->groupData['active_chain_map'])
 							->execute();
@@ -166,13 +215,13 @@ class Controller_Chainmap extends FrontController
 			}
 			$systemIDs = array_unique( $systemIDs );
 
-			DB::query(Database::DELETE, 'DELETE FROM wormholes WHERE hash IN('.$hashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
+			DB::query(Database::DELETE, 'DELETE FROM wormholes WHERE hash IN('.$wormholeHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
 							->param(':groupID', $this->groupData['groupID'])
 							->param(':chainmap', $this->groupData['active_chain_map'])
 							->execute();
 
 
-			DB::query(Database::DELETE, 'DELETE FROM wormholetracker WHERE wormhole_hash IN('.$hashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
+			DB::query(Database::DELETE, 'DELETE FROM wormholetracker WHERE wormhole_hash IN('.$wormholeHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
 							->param(':groupID', $this->groupData['groupID'])
 							->param(':chainmap', $this->groupData['active_chain_map'])
 							->execute();

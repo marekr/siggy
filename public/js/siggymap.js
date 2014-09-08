@@ -394,20 +394,50 @@ siggyMap.prototype.registerEvents = function()
 
 
     $('#chain-map-mass-delete-confirm').click( function() {
-        var deleteHashes = [];
+        var wormholeDeleteHashes = [];
+        var stargateDeleteHashes = [];
+        var jumpbridgeDeleteHashes = [];
+        var cynoDeleteHashes = [];
 		
+		//var to get set true if we actualyl ahve anything selected
+		var deleteValid = false;
         for (var i in that.mapConnections)
         {
 			if( that.mapConnections[i].selected )
 			{
-                deleteHashes.push( that.mapConnections[i].settings.hash );
+				switch( that.mapConnections[i].settings.type )
+				{
+					case 'wormhole':
+						wormholeDeleteHashes.push( that.mapConnections[i].settings.hash );
+						deleteValid = true;
+						break;
+					case 'stargate':
+						stargateDeleteHashes.push( that.mapConnections[i].settings.hash );
+						deleteValid = true;
+						break;
+					case 'jumpbridge':
+						jumpbridgeDeleteHashes.push( that.mapConnections[i].settings.hash );
+						deleteValid = true;
+						break;
+					case 'cynos':
+						cynoDeleteHashes.push( that.mapConnections[i].settings.hash );
+						deleteValid = true;
+						break;
+						
+				}
 				//jsPlumb.detach(conn);
 			}
         }
-
-        if( deleteHashes.length > 0 )
+		
+        if( deleteValid )
         {
-            $.post(that.baseUrl + 'chainmap/wh_mass_delete', { hashes: JSON.stringify(deleteHashes) },
+            $.post(that.baseUrl + 'chainmap/connection_mass_delete', 
+				{ 
+					wormhole_hashes: JSON.stringify(wormholeDeleteHashes),
+					stargate_hashes:JSON.stringify(stargateDeleteHashes),
+					jumpbridge_hashes:JSON.stringify(jumpbridgeDeleteHashes),
+					cyno_hashes: JSON.stringify(cynoDeleteHashes)
+				},
                 function() {
                 that.siggymain.updateNow();
             });
@@ -1240,6 +1270,7 @@ siggyMap.prototype.resetWormholeEditor = function()
 	$('#connection-editor select[name=mass]').val(0);
 	$('#connection-editor input[name=eol]').filter('[value=0]').prop('checked', true);
 	$('#connection-editor input[name=frigate_sized]').filter('[value=0]').prop('checked', true);
+	$('#connection-editor input[name=wh_type_name]').val('');
 	
 	$('select[name=connection-editor-type]').val('wormhole');
 }
