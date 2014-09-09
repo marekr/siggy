@@ -1349,12 +1349,13 @@ siggyMap.prototype.resetWormholeEditor = function()
 	errorsUL.empty();
 	errorsUL.hide();
 
-	var fromCurrentInput = $('#connection-editor input[name=fromCurrent]');
+	var fromCurrentInput = $('#connection-editor input[name=from-current-location]');
 	//resets cause fucking browsers
 	fromCurrentInput.prop('disabled', false);
 	fromCurrentInput.prop('checked', false);
 
-	var toCurrentInput = $('#connection-editor input[name=toCurrent]');
+
+	var toCurrentInput = $('#connection-editor input[name=to-current-location]');
 	//resets cause fucking browsers
 	toCurrentInput.prop('disabled', false);
 	toCurrentInput.prop('checked', false);
@@ -1368,6 +1369,12 @@ siggyMap.prototype.resetWormholeEditor = function()
 	//resets cause fucking browsers
 	toSysInput.val('');
 	toSysInput.prop('disabled',false);
+	
+	if( !this.siggymain.igb )
+	{
+		fromCurrentInput.parent().hide();
+		toCurrentInput.parent().hide();
+	}
 
 	$('#connection-editor select[name=mass]').val(0);
 	$('#connection-editor input[name=eol]').filter('[value=0]').prop('checked', true);

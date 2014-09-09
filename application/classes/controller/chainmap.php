@@ -426,8 +426,15 @@ class Controller_Chainmap extends FrontController
 
 		$fromSysID = 0;
 		if( $fromSysCurrent )
-		{
-			$fromSysID = $_SERVER['HTTP_EVE_SOLARSYSTEMID'];
+		{				
+			if( isset($_SERVER['HTTP_EVE_SOLARSYSTEMID']) )
+			{
+				$fromSysID = $_SERVER['HTTP_EVE_SOLARSYSTEMID'];
+			}
+			else
+			{
+				$errors[] = "'From current location' will not work out of game";
+			}
 		}
 		elseif( !empty($fromSys) )
 		{
@@ -441,7 +448,14 @@ class Controller_Chainmap extends FrontController
 		$toSysID = 0;
 		if( $toSysCurrent )
 		{
-			$toSysID = $_SERVER['HTTP_EVE_SOLARSYSTEMID'];
+			if( isset($_SERVER['HTTP_EVE_SOLARSYSTEMID']) )
+			{
+				$toSysID = $_SERVER['HTTP_EVE_SOLARSYSTEMID'];
+			}
+			else
+			{
+				$errors[] = "'To current location' will not work out of game";
+			}
 		}
 		elseif( !empty($toSys) )
 		{
