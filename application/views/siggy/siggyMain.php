@@ -498,7 +498,8 @@
                 initialSystemName: '<?php echo $systemData['name']; ?>',
 				charsettings: {
 					themeID: <?php echo $settings['theme_id']; ?>,
-					combineScanIntel: <?php echo $settings['combine_scan_intel']; ?>
+					combineScanIntel: <?php echo $settings['combine_scan_intel']; ?>,
+					zoom: <?php echo $settings['zoom']; ?>
 				},
 				sigtable: {
                 	showSigSizeCol: <?php echo ( $group['showSigSizeCol'] ? 'true' : 'false' ); ?>

@@ -45,7 +45,8 @@ function siggymain( options )
 		charsettings: {
 			themeID: 0,
 			combineScanIntel: false,
-			themeList: {}
+			themeList: {},
+			zoom: 1.0
 		},
 		map: {
 		  jumpTrackerEnabled: true
