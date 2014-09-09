@@ -155,7 +155,7 @@ mapconnection.prototype.create = function()
 			
 			$this.refresh();
 		}
-		else
+		else if( !$this.map.editing )
 		{
 			$this.map.editWormhole($this);
 		}

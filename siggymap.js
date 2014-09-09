@@ -399,6 +399,7 @@ siggyMap.prototype.registerEvents = function()
 
         that.hideMessage('deleting');
         that.massDelete = false;
+		that.massSelect = false;
 
         $(this).hide();
         $('#chain-map-mass-delete-cancel').hide();
@@ -415,6 +416,7 @@ siggyMap.prototype.registerEvents = function()
 
         that.hideMessage('deleting');
         that.massDelete = false;
+		that.massSelect = false;
 
         $(this).hide();
         $('#chain-map-mass-delete-confirm').hide();
@@ -469,7 +471,7 @@ siggyMap.prototype.getSelectedHashes = function()
 					hashes.jumpbridges.push( this.mapConnections[i].settings.hash );
 					hashes.count++;
 					break;
-				case 'cynos':
+				case 'cyno':
 					hashes.cynos.push( this.mapConnections[i].settings.hash );
 					hashes.count++;
 					break;
