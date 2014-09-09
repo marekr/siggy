@@ -4,7 +4,13 @@ function hotkeyhelper()
 
 hotkeyhelper.prototype.initialize = function()
 {
-	$("#hotkey-helper-close").click( function()
+	var $this = this;
+	$('#hotkey-button').click( function()
+	{
+		$this.siggyMain.openBox("#hotkey-helper");
+	});
+	
+	$('#hotkey-helper-close').click( function()
 	{
 		$.unblockUI();
 	});
