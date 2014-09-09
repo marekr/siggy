@@ -129,23 +129,7 @@ mapconnection.prototype.create = function()
 
 	var connection = this.jsPlumb.connect(connectionOptions);
 	
-    var _listeners = function(e) {
-        e.bind("mouseenter", function(c) {
-            if( $this.map.editing || $this.map.massSelect )
-            {
-                return false;
-            }
-            c.showOverlay("label");
-        });
-        e.bind("mouseexit", function(c) {
-            c.hideOverlay("label");
-        });
-    };
-	
-	if( this.label != '' )
-	{
-		_listeners(connection);
-	}
+		
 	
 	connection.bind("click", function(conn)
 	{
@@ -163,6 +147,21 @@ mapconnection.prototype.create = function()
 	});
 	
 	this.connection = connection;
+	
+	
+	 $(connection.canvas).qtip({
+		content: {
+			text: this.label
+		},
+		show: {
+			delay: 500
+		},
+		position: {
+			target: 'mouse',
+			adjust: { x: 5, y: 5 },
+			viewport: $(window)
+		}
+	});
 
 	if( this.settings.type == 'wormhole' )
 	{
@@ -173,18 +172,6 @@ mapconnection.prototype.create = function()
 		}, function(el) {
 			$this.contextMenuOpenHandler(el);
 		});
-		
-		if( this.label != '' )
-		{
-			var label = connection.getOverlay("label");
-			$(label.canvas).contextMenu( { menu: 'wh-menu' },
-				function(action, el, pos) {
-					$this.whContextMenuHandler(action);
-					
-			}, function(el) {
-				$this.contextMenuOpenHandler(el);
-			});
-		}
 	}
 }
 
@@ -289,10 +276,11 @@ mapconnection.prototype.destroy = function()
 		$(connection.canvas).destroyContextMenu();
 	}
 	
+	$(connection.canvas).qtip('destroy');
+	
 	if( this.label != '' )
 	{
-		var label = connection.getOverlay("label");
-		$(label.canvas).destroyContextMenu();
+		$(connection.canvas).qtip('destroy');
 	}
 }
 
