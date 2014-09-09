@@ -64,7 +64,7 @@ class Controller_Chainmap extends FrontController
 		$systems = DB::query(Database::SELECT, "( SELECT DISTINCT w.`to` as sys_id,ss.name
 												FROM wormholes w
 												LEFT JOIN solarsystems ss ON (ss.id = w.`to`)
-												WHERE w.`to`< 31000000 AND w.groupID=:group AND w.chainmap_id=:chainmap)
+												WHERE w.`to`< 31000000 AND w.group_id=:group AND w.chainmap_id=:chainmap)
 												UNION DISTINCT
 											( SELECT DISTINCT w.`from` as sys_id, ss.name
 											FROM wormholes w
