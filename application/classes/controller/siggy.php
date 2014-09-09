@@ -616,7 +616,7 @@ class Controller_Siggy extends FrontController
 		exit();
 	}
 
-	public function action_saveSystemOptions()
+	public function action_save_system()
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
@@ -625,13 +625,42 @@ class Controller_Siggy extends FrontController
 		if( isset($_POST['systemID']) )
 		{
 			$id = intval($_POST['systemID']);
+			if( !$id )
+			{
+				exit();
+			}
+			
+			$update = array();
+			
+			$system_data = $this->getSystemData($id);
+			$log_message = sprintf('%s edited system %s; ', $this->groupData['charName'], $system_data['name'] );
+			if( isset($_POST['label']) )
+			{
+				$update['displayName'] = trim(strip_tags($_POST['label']));
+				$log_message += " Display Name:" . $update['displayName'] . ";";
+			}
+			
+			if( isset($_POST['activity']) )
+			{
+				$update['activity'] = intval($_POST['activity']);
+				$log_message += " Activity Level:" . $update['activity'] . ";";
+			}
 
-			$this->chainmap->update_system($_POST['systemID'], array('displayName' => trim(strip_tags($_POST['label'])), 'activity' => intval($_POST['activity']) ) );
+			if( isset($_POST['rally']) )
+			{
+				$update['rally'] = intval($_POST['rally']);
+				$log_message += " Rally:" . $update['rally'] . ";";
+			}
+
+			if( empty($update) )
+			{
+				exit();
+			}
+			
+			$this->chainmap->update_system($_POST['systemID'], $update);
 			echo json_encode('1');
 
-			$system_data = $this->getSystemData($id);
 
-			$log_message = sprintf('%s edited system %s; Display Name: %s, Activity Level %d', $this->groupData['charName'], $system_data['name'],  trim($_POST['label']),intval($_POST['activity']) );
 			groupUtils::log_action($this->groupData['groupID'],'editsystem', $log_message );
 
 			$this->chainmap->rebuild_map_data_cache();

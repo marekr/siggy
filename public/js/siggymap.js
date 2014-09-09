@@ -706,37 +706,14 @@ siggyMap.prototype.draw = function()
 
         $("#chain-map").append( sysBlob );
 
-        sysBlob.contextMenu( { menu: 'systemMenu' },
-            function(action, el, pos) {
-                if( action == "edit" )
-                {
-                    that.openSystemEdit( el[0].id );
-                }
-                else if( action == "setdest" )
-                {
-                    if( typeof(CCPEVE) != "undefined" )
-                    {
-                        CCPEVE.setDestination(el[0].id);
-                    }
-                }
-                else if( action == "showinfo" )
-                {
-                    if( typeof(CCPEVE) != "undefined" )
-                    {
-						CCPEVE.showInfo(5, el[0].id );
-                    }
-                    else
-                    {
-						window.open('http://evemaps.dotlan.net/system/'+ that.systems[el[0].id].name , '_blank');
-                    }
-                }
-        }, function()
-		{   
-			if( typeof(CCPEVE) == "undefined" )
-			{
-				$("a[href=#setdest]").hide();
-			}
-		});
+		( function(system) {
+			sysBlob.contextMenu( { menu: 'systemMenu' },
+				function(action, el, pos) {
+					that.systemContextMenuHandler(action, system);
+			}, function(el) {
+				that.systemContextMenuOpenHandler(el, system);
+			});
+		})(systemData);
 
         sysBlob.click( function() {
             if( that.editing || that.massDelete )
@@ -868,6 +845,71 @@ siggyMap.prototype.draw = function()
 		});
 
 		jsPlumb.setDraggable($('.map-system-blob'), false);
+	}
+}
+
+siggyMap.prototype.systemContextMenuOpenHandler = function(el, system)
+{
+	if( typeof(CCPEVE) == "undefined" )
+	{
+		$("a[href=#setdest]").hide();
+	}
+	
+	var setRally = $('#systemMenu').find('li.set-rally');
+	var clearRally = $('#systemMenu').find('li.clear-rally');
+	if( parseInt(system.rally) == 1 )
+	{
+		setRally.hide();
+		clearRally.show();
+	}
+	else
+	{
+		setRally.show();
+		clearRally.hide();
+	}
+	
+}
+siggyMap.prototype.systemContextMenuHandler = function(action, system)
+{
+	var $this = this;
+	
+	if( action == "edit" )
+	{
+		$this.openSystemEdit( system.systemID );
+	}
+	else if( action == "setdest" )
+	{
+		if( typeof(CCPEVE) != "undefined" )
+		{
+			CCPEVE.setDestination(system.systemID);
+		}
+	}
+	else if( action == "showinfo" )
+	{
+		if( typeof(CCPEVE) != "undefined" )
+		{
+			CCPEVE.showInfo(5, system.systemID );
+		}
+		else
+		{
+			window.open('http://evemaps.dotlan.net/system/'+ system.name , '_blank');
+		}
+	}
+	else if( action == "set-rally" )
+	{
+		var data = {
+			rally: 1
+		};
+		
+		$this.siggymain.saveSystemOptions(system.systemID, data);
+	}
+	else if( action == "clear-rally" )
+	{
+		var data = {
+			rally: 0
+		};
+		
+		$this.siggymain.saveSystemOptions(system.systemID, data);
 	}
 }
 
@@ -1189,11 +1231,12 @@ siggyMap.prototype.setupSystemEditor = function()
 	});
 
 	$('#system-editor-save').click( function() {
-		var label = $('#system-editor input[name=label]').val();
-		var activity = $('#system-editor select[name=activity]').val();
-
-
-		that.siggymain.saveSystemOptions(that.editingSystem, label, activity);
+		var data = {
+			label: $('#system-editor input[name=label]').val(),
+			activity: $('#system-editor select[name=activity]').val()
+		};
+		
+		that.siggymain.saveSystemOptions(that.editingSystem, data);
 		$('#chain-map-container').unblock();
 	});
 }

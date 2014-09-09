@@ -172,12 +172,9 @@
 					<option value='2'>Occupied</option>
 					<option value='3'>Active</option>
 					<option value='4'>Friendly</option>
-					<option value='5'>Rally Here</option>
 				</select>
 				<br />
 				<br />
-
-
 				<div class="center-text form-actions">
 					<button id="system-editor-save" class="btn btn-xs btn-primary">Save</button>
 					<button id='system-editor-cancel' class="btn btn-default btn-xs">Cancel</button><br />
@@ -194,6 +191,12 @@
 			</li>
 			<li class="setdest">
 				<a href="#setdest">Set Destination</a>
+			</li>
+			<li class="set-rally">
+				<a href="#set-rally">Set Rally</a>
+			</li>
+			<li class="clear-rally">
+				<a href="#clear-rally">Clear Rally</a>
 			</li>
 			<li class="showinfo">
 				<a href="#showinfo">Show Info</a>
