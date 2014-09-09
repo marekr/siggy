@@ -340,6 +340,8 @@ siggyMap.prototype.initializeHotkeys = function()
 	$(document).bind('keydown', 'ctrl+m', function(){
 		$(document).scrollTop( 0 );  
 	});
+	
+	this.siggymain.hotkeyhelper.registerHotkey('Ctrl+M', 'Jump to map');
 }
 
 siggyMap.prototype.setSelectedSystem = function( systemID )

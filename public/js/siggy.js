@@ -97,6 +97,10 @@ function siggymain( options )
 	this.charactersettings.siggyMain = this;
 	this.charactersettings.settings.baseUrl = this.settings.baseUrl;
 	
+	this.hotkeyhelper = new hotkeyhelper();
+	this.hotkeyhelper.siggyMain = this;
+	this.hotkeyhelper.initialize();
+	
 	this.systemName = this.settings.initialSystemName;
     this.setSystemID(this.settings.initialSystemID);
 }

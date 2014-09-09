@@ -121,6 +121,11 @@ charactersettings.prototype.initializeHotkeys = function()
 	$(document).bind('keydown', 'ctrl+z', function(){
 		$this.resetZoom();
 	});
+	
+	this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+-', 'Zoom page in');
+	this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+=', 'Zoom page out');
+	this.siggyMain.hotkeyhelper.registerHotkey('+', 'Zoom page in');
+	this.siggyMain.hotkeyhelper.registerHotkey('-', 'Zoom page out');
 }
 
 charactersettings.prototype.performSettingsRefresh = function()

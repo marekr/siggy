@@ -82,6 +82,9 @@ sigtable.prototype.initializeHotkeys = function()
 		$(document).scrollTop( $("#sig-add-box textarea[name=mass_sigs]").offset().top );  
 		$("#sig-add-box textarea[name=mass_sigs]").focus();
 	});
+	
+	this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+S', 'Jump to signatue table');
+	this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+B', 'Focus on signature adder');
 }
 
 sigtable.prototype.clear = function()

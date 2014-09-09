@@ -458,6 +458,7 @@
 
 	<?php echo View::factory('siggy/boxes/fatal_error'); ?>
 	<?php echo View::factory('siggy/boxes/confirm'); ?>
+	<?php echo View::factory('siggy/boxes/hotkey_helper'); ?>
 
     <!--- system context menu -->
     <ul id="system-simple-context" class="contextMenu">
