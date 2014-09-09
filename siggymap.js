@@ -395,54 +395,7 @@ siggyMap.prototype.registerEvents = function()
 
 
     $('#chain-map-mass-delete-confirm').click( function() {
-        var wormholeDeleteHashes = [];
-        var stargateDeleteHashes = [];
-        var jumpbridgeDeleteHashes = [];
-        var cynoDeleteHashes = [];
-		
-		//var to get set true if we actualyl ahve anything selected
-		var deleteValid = false;
-        for (var i in that.mapConnections)
-        {
-			if( that.mapConnections[i].selected )
-			{
-				switch( that.mapConnections[i].settings.type )
-				{
-					case 'wormhole':
-						wormholeDeleteHashes.push( that.mapConnections[i].settings.hash );
-						deleteValid = true;
-						break;
-					case 'stargate':
-						stargateDeleteHashes.push( that.mapConnections[i].settings.hash );
-						deleteValid = true;
-						break;
-					case 'jumpbridge':
-						jumpbridgeDeleteHashes.push( that.mapConnections[i].settings.hash );
-						deleteValid = true;
-						break;
-					case 'cynos':
-						cynoDeleteHashes.push( that.mapConnections[i].settings.hash );
-						deleteValid = true;
-						break;
-						
-				}
-				//jsPlumb.detach(conn);
-			}
-        }
-		
-        if( deleteValid )
-        {
-            $.post(that.baseUrl + 'chainmap/connection_mass_delete', 
-				{ 
-					wormhole_hashes: JSON.stringify(wormholeDeleteHashes),
-					stargate_hashes:JSON.stringify(stargateDeleteHashes),
-					jumpbridge_hashes:JSON.stringify(jumpbridgeDeleteHashes),
-					cyno_hashes: JSON.stringify(cynoDeleteHashes)
-				},
-                function() {
-                that.siggymain.updateNow();
-            });
-        }
+		that.processConnectionDelete();
 
         that.hideMessage('deleting');
         that.massDelete = false;
@@ -466,6 +419,66 @@ siggyMap.prototype.registerEvents = function()
         $(this).hide();
         $('#chain-map-mass-delete-confirm').hide();
     });
+}
+
+siggyMap.prototype.processConnectionDelete = function(hashes)
+{
+	var $this = this;
+	
+	var hashes = this.getSelectedHashes();
+	
+	if( hashes.count > 0 )
+	{
+		$.post(this.baseUrl + 'chainmap/connection_delete', 
+			{ 
+				wormhole_hashes: JSON.stringify(hashes.wormholes),
+				stargate_hashes:JSON.stringify(hashes.stargates),
+				jumpbridge_hashes:JSON.stringify(hashes.jumpbridges),
+				cyno_hashes: JSON.stringify(hashes.cynos)
+			},
+			function() {
+				$this.siggymain.updateNow();
+		});
+	}
+}
+
+siggyMap.prototype.getSelectedHashes = function()
+{
+	var hashes = {	wormholes: [],
+					stargates: [],
+					jumpbridges: [],
+					cynos: [],
+					count: 0
+				};
+				
+	for (var i in this.mapConnections)
+	{
+		if( this.mapConnections[i].selected )
+		{
+			switch( this.mapConnections[i].settings.type )
+			{
+				case 'wormhole':
+					hashes.wormholes.push( this.mapConnections[i].settings.hash );
+					hashes.count++;
+					break;
+				case 'stargate':
+					hashes.stargates.push( this.mapConnections[i].settings.hash );
+					hashes.count++;
+					break;
+				case 'jumpbridge':
+					hashes.jumpbridges.push( this.mapConnections[i].settings.hash );
+					hashes.count++;
+					break;
+				case 'cynos':
+					hashes.cynos.push( this.mapConnections[i].settings.hash );
+					hashes.count++;
+					break;
+					
+			}
+		}
+	}
+	
+	return hashes;
 }
 
 
@@ -993,14 +1006,11 @@ siggyMap.prototype.setupEditor = function()
 {
 	var that = this;
 	$('#connection-editor-disconnect').click( function() {
-		$.post(that.baseUrl + 'chainmap/wh_disconnect',
-		{
-			hash: that.editingConnection.settings.hash
-		},
-		function()
-		{
-			that.siggymain.updateNow();
-		});
+		//we select the connection to trick the delete function
+		//to reduce code
+		that.editingConnection.selected = true;
+		that.editingConnection.refresh();
+		that.processConnectionDelete();
 		$('#chain-map-container').unblock();
 	} );
 
