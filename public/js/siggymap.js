@@ -645,11 +645,11 @@ siggyMap.prototype.draw = function()
             var sysID = $(this).parent().parent().attr("id");
             if( typeof(CCPEVE) != "undefined" )
             {
-                    CCPEVE.showInfo(5, sysID );
+			   CCPEVE.showInfo(5, sysID );
             }
             else
             {
-                    window.open('http://evemaps.dotlan.net/system/'+that.systems[sysID].name , '_blank');
+				window.open('http://evemaps.dotlan.net/system/'+that.systems[sysID].name , '_blank');
             }
         });
 
@@ -703,14 +703,20 @@ siggyMap.prototype.draw = function()
                 {
                     if( typeof(CCPEVE) != "undefined" )
                     {
-                            CCPEVE.showInfo(5, el[0].id );
+						CCPEVE.showInfo(5, el[0].id );
                     }
                     else
                     {
-                            window.open('http://evemaps.dotlan.net/system/'+ that.systems[el[0].id].name , '_blank');
+						window.open('http://evemaps.dotlan.net/system/'+ that.systems[el[0].id].name , '_blank');
                     }
                 }
-        });
+        }, function()
+		{   
+			if( typeof(CCPEVE) == "undefined" )
+			{
+				$("a[href=#setdest]").hide();
+			}
+		});
 
         sysBlob.click( function() {
             if( that.editing || that.massDelete )
