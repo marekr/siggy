@@ -1423,11 +1423,14 @@ siggyMap.prototype.openWHEditor = function(mode)
 	}
 	else
 	{
+		
 		$('#connection-editor-save').show();
 		$('#connection-editor-options-wh').show();
 		$('#connection-popup ul.box-tabs').hide();
 		$('#connection-editor-add').show();
 		$('#connection-editor-edit').hide();
+		
+		$("#connection-editor input[name=from-sys]").focus();
 		this.editorMode = 'add';
 		this.editorOpen = true;
 	}
