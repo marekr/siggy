@@ -10,7 +10,7 @@
 	<li><a href="<?php echo URL::base(TRUE, TRUE);?>manage">Admin</a></li>
 	<?php endif; ?>
     <li><a target="_blank" href="http://wiki.siggy.borkedlabs.com">Guide</a></li>
-    <li id="hotkey-button" style="float:right"><i class="fa fa-keyboard-o"></i></li>
+    <li id="hotkey-button" style="float:right"><i class="fa fa-keyboard-o "></i></li>
 </ul>
 
 <div id="global-notes">

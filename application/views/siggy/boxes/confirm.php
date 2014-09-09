@@ -1,5 +1,5 @@
     <div id="confirm-dialog" class="box" style="display:none;">
-        <h3>Confirm action!</h3>
+        <h3><i class="fa fa-question-circle"></i> Confirm action!</h3>
         <div>
             <p id="confirm-dialog-message"></p>
 			<p class="center-text">
