@@ -245,7 +245,7 @@ class chainmap
 						->as_array();
 	}
 
-	public function add_system_to_map($whHash, $sys1,$sys2, $eol=0, $mass=0, $wh_type_id)
+	public function add_system_to_map($whHash, $sys1,$sys2, $eol=0, $mass=0, $wh_type_id = 0)
 	{
 		$this->_placeSystems($sys1,$sys2);
 
