@@ -145,12 +145,77 @@ class Controller_Chainmap extends FrontController
 		$this->auto_render = FALSE;
 		header('content-type: application/json');
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+		
+		$systemIDs = array();
 
 		$wormholeHashes = json_decode($_POST['wormhole_hashes']);
 		$stargateHashes = json_decode($_POST['stargate_hashes']);
 		$jumpbridgeHashes = json_decode($_POST['jumpbridge_hashes']);
 		$cynoHashes = json_decode($_POST['cyno_hashes']);
 		
+		if( is_array($cynoHashes) && count($cynoHashes) > 0 )
+		{
+			$log_message = $this->groupData['charName'].' performed a mass delete of the following stargates: ';
+			
+			$cynoHashes = $this->_hash_array_to_string($cynoHashes);
+
+			$stargates = DB::query(Database::SELECT, 'SELECT s.*, sto.name as to_name, sfrom.name as from_name
+														FROM chainmap_cynos s
+														INNER JOIN solarsystems sto ON sto.id = s.to_system_id
+														INNER JOIN solarsystems sfrom ON sfrom.id = s.from_system_id
+														WHERE s.hash IN('.$cynoHashes.') AND s.group_id=:groupID AND s.chainmap_id=:chainmap')
+							->param(':groupID', $this->groupData['groupID'])
+							->param(':chainmap', $this->groupData['active_chain_map'])
+							->execute();
+
+			foreach( $stargates as $sg )
+			{
+				$systemIDs[] = $sg['to_system_id'];
+				$systemIDs[] = $sg['from_system_id'];
+
+				$log_message .= $sg['to_name'] . ' to ' . $sg['from_name'] . ', ';
+			}
+			$systemIDs = array_unique( $systemIDs );
+			
+			DB::query(Database::DELETE, 'DELETE FROM chainmap_cynos WHERE hash IN('.$cynoHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
+							->param(':groupID', $this->groupData['groupID'])
+							->param(':chainmap', $this->groupData['active_chain_map'])
+							->execute();
+
+			groupUtils::log_action($this->groupData['groupID'],'delwhs', $log_message );
+		}
+		
+		if( is_array($jumpbridgeHashes) && count($jumpbridgeHashes) > 0 )
+		{
+			$log_message = $this->groupData['charName'].' performed a mass delete of the following stargates: ';
+			
+			$jumpbridgeHashes = $this->_hash_array_to_string($jumpbridgeHashes);
+
+			$stargates = DB::query(Database::SELECT, 'SELECT s.*, sto.name as to_name, sfrom.name as from_name
+														FROM chainmap_jumpbridges s
+														INNER JOIN solarsystems sto ON sto.id = s.to_system_id
+														INNER JOIN solarsystems sfrom ON sfrom.id = s.from_system_id
+														WHERE s.hash IN('.$jumpbridgeHashes.') AND s.group_id=:groupID AND s.chainmap_id=:chainmap')
+							->param(':groupID', $this->groupData['groupID'])
+							->param(':chainmap', $this->groupData['active_chain_map'])
+							->execute();
+
+			foreach( $stargates as $sg )
+			{
+				$systemIDs[] = $sg['to_system_id'];
+				$systemIDs[] = $sg['from_system_id'];
+
+				$log_message .= $sg['to_name'] . ' to ' . $sg['from_name'] . ', ';
+			}
+			$systemIDs = array_unique( $systemIDs );
+			
+			DB::query(Database::DELETE, 'DELETE FROM chainmap_jumpbridges WHERE hash IN('.$jumpbridgeHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
+							->param(':groupID', $this->groupData['groupID'])
+							->param(':chainmap', $this->groupData['active_chain_map'])
+							->execute();
+
+			groupUtils::log_action($this->groupData['groupID'],'delwhs', $log_message );
+		}
 		
 		if( is_array($stargateHashes) && count($stargateHashes) > 0 )
 		{
@@ -167,7 +232,6 @@ class Controller_Chainmap extends FrontController
 							->param(':chainmap', $this->groupData['active_chain_map'])
 							->execute();
 
-			$systemIDs = array();
 			foreach( $stargates as $sg )
 			{
 				$systemIDs[] = $sg['to_system_id'];
@@ -183,10 +247,6 @@ class Controller_Chainmap extends FrontController
 							->execute();
 
 			groupUtils::log_action($this->groupData['groupID'],'delwhs', $log_message );
-
-			$this->chainmap->reset_systems( $systemIDs );
-
-			$this->chainmap->rebuild_map_data_cache();
 		}
 		
 		
@@ -205,7 +265,6 @@ class Controller_Chainmap extends FrontController
 							->param(':chainmap', $this->groupData['active_chain_map'])
 							->execute();
 
-			$systemIDs = array();
 			foreach( $wormholes as $wh )
 			{
 				$systemIDs[] = $wh['to'];
@@ -227,7 +286,10 @@ class Controller_Chainmap extends FrontController
 							->execute();
 
 			groupUtils::log_action($this->groupData['groupID'],'delwhs', $log_message );
-
+		}
+		
+		if(!empty($systemIDs))
+		{
 			$this->chainmap->reset_systems( $systemIDs );
 
 			$this->chainmap->rebuild_map_data_cache();
