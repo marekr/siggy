@@ -77,6 +77,11 @@ sigtable.prototype.initializeHotkeys = function()
 	$(document).bind('keydown', 'ctrl+s', function(){
 		$(document).scrollTop( $('#sig-table').offset().top );  
 	});
+	
+	$(document).bind('keydown', 'ctrl+b', function(){
+		$(document).scrollTop( $("#sig-add-box textarea[name=mass_sigs]").offset().top );  
+		$("#sig-add-box textarea[name=mass_sigs]").focus();
+	});
 }
 
 sigtable.prototype.clear = function()
