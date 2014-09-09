@@ -189,15 +189,7 @@ siggyMap.prototype.initialize = function()
 	});
 
 	$('#chain-map-edit').click( function() {
-		that.editing = true;
-		$('#chain-map-save').show();
-		that.centerButtons();
-
-		$('div.map-system-blob').qtip('disable');
-
-		jsPlumb.setDraggable($('.map-system-blob'), true);
-
-		that.showMessage('editing');
+		that.startMapEdit();
 	});
 
 	$('#chain-map-delete-whs').click( function() {
@@ -323,6 +315,30 @@ siggyMap.prototype.initialize = function()
 	
 	$('#jump-log-refresh').click( function() {
         that.updateJumpLog(that.editingConnection.settings.hash);
+	});
+	
+	this.initializeHotkeys();
+}
+
+siggyMap.prototype.startMapEdit = function()
+{
+	this.editing = true;
+	$('#chain-map-save').show();
+	this.centerButtons();
+
+	$('div.map-system-blob').qtip('disable');
+
+	jsPlumb.setDraggable($('.map-system-blob'), true);
+
+	this.showMessage('editing');
+}
+
+siggyMap.prototype.initializeHotkeys = function()
+{
+	var $this = this;
+	
+	$(document).bind('keydown', 'ctrl+m', function(){
+		$(document).scrollTop( 0 );  
 	});
 }
 

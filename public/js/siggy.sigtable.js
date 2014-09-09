@@ -66,6 +66,17 @@ sigtable.prototype.initialize = function()
 	{
 		$this.changeAnomState($(this).is(':checked'));
 	});
+	
+	$this.initializeHotkeys();
+}
+
+sigtable.prototype.initializeHotkeys = function()
+{
+	var $this = this;
+	
+	$(document).bind('keydown', 'ctrl+s', function(){
+		$(document).scrollTop( $('#sig-table').offset().top );  
+	});
 }
 
 sigtable.prototype.clear = function()
