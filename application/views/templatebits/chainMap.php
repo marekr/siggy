@@ -114,10 +114,10 @@
 						<button class="btn btn-default btn-xs btn-danger" id="connection-editor-disconnect"><i class="fa fa-chain-broken"></i> Disconnect Connection</button>
 					</div>
 				</div>
-				<ul class="errors">
-				</ul>
 				<div id="connection-editor-options-wh" class="connection-editor-group" style="background-color:#00279A">
 					<h3>Options</h3>
+					<ul class="errors">
+					</ul>
 					<div>
 						<div class="form-group">
 							<label>WH Type Name <input type='text' name='wh_type_name' style='width:40px'/></label>
