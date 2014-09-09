@@ -74,16 +74,16 @@ sigtable.prototype.initializeHotkeys = function()
 {
 	var $this = this;
 	
-	$(document).bind('keydown', 'ctrl+s', function(){
-		$(document).scrollTop( $('#sig-table').offset().top );  
+	$(document).bind('keydown', 'ctrl+q', function(){
+		$(document).scrollTop( $('#sig-table').offset().top-100 );  
 	});
 	
 	$(document).bind('keydown', 'ctrl+b', function(){
-		$(document).scrollTop( $("#sig-add-box textarea[name=mass_sigs]").offset().top );  
+		$(document).scrollTop( $("#sig-add-box textarea[name=mass_sigs]").offset().top-100);  
 		$("#sig-add-box textarea[name=mass_sigs]").focus();
 	});
 	
-	this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+S', 'Jump to signatue table');
+	this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+Q', 'Jump to signatue table');
 	this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+B', 'Focus on signature adder');
 }
 
