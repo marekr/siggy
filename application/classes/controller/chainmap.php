@@ -139,7 +139,7 @@ class Controller_Chainmap extends FrontController
 		return implode(',', $arr);
 	}
 
-	public function action_connection_mass_delete()
+	public function action_connection_delete()
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
@@ -233,49 +233,6 @@ class Controller_Chainmap extends FrontController
 			$this->chainmap->rebuild_map_data_cache();
 		}
 		exit();
-	}
-
-	public function action_wh_disconnect()
-	{
-		$this->profiler = NULL;
-		$this->auto_render = FALSE;
-
-		$hash = ($_POST['hash']);
-
-		$wormhole = DB::query(Database::SELECT, 'SELECT w.*, sto.name as to_name, sfrom.name as from_name
-												 FROM wormholes w
-												 INNER JOIN solarsystems sto ON sto.id = w.to
-												 INNER JOIN solarsystems sfrom ON sfrom.id = w.from
-												 WHERE w.hash=:hash AND w.group_id=:groupID AND w.chainmap_id=:chainmap')
-							->param(':hash',$hash)
-							->param(':groupID', $this->groupData['groupID'])
-							->param(':chainmap', $this->groupData['active_chain_map'])
-							->execute()
-							->current();
-
-		if( !$wormhole['hash'] )
-		{
-			return;
-		}
-
-		DB::query(Database::DELETE, 'DELETE FROM wormholes WHERE hash=:hash AND groupID=:groupID AND chainmap_id=:chainmap')
-								->param(':hash',$hash)
-								->param(':groupID', $this->groupData['groupID'])
-								->param(':chainmap', $this->groupData['active_chain_map'])
-								->execute();
-
-		DB::query(Database::DELETE, 'DELETE FROM wormholetracker WHERE wormhole_hash=:hash AND group_id=:groupID AND chainmap_id=:chainmap')
-								->param(':hash',$hash)
-								->param(':groupID', $this->groupData['groupID'])
-								->param(':chainmap', $this->groupData['active_chain_map'])
-								->execute();
-
-		$log_message = $this->groupData['charName'].' deleted wormhole between systems '.$wormhole['to_name'].' and '.$wormhole['from_name'];
-		groupUtils::log_action($this->groupData['groupID'],'delwh', $log_message );
-
-		$this->chainmap->reset_systems( array($wormhole['to'], $wormhole['from']) );
-
-		$this->chainmap->rebuild_map_data_cache();
 	}
 
 	public function action_connection_edit()
