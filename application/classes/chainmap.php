@@ -69,11 +69,10 @@ class chainmap
 								 ->execute()
 								 ->as_array('hash');
 
-		$data['wormholes'] = $wormholes;
 		
 		$systemsToPoll = array();
 		$wormholeHashes = array();
-		foreach( $wormholes as &$wormhole )
+		foreach( $wormholes as $k => $wormhole )
 		{
 			/* Include all the group tracked jumps from all chainmaps since this is important not to trap oneself out */
 			$jumpTotal  = DB::query(Database::SELECT, "SELECT COALESCE(SUM(s.mass),0) as total 
@@ -85,12 +84,13 @@ class chainmap
 											->execute()
 											->current();
 											
-			$wormhole['total_tracked_mass'] = $jumpTotal['total'];
+			$wormholes[$k]['total_tracked_mass'] = $jumpTotal['total'];
 			
 			$systemsToPoll[] = $wormhole['to'];
 			$systemsToPoll[] = $wormhole['from'];
 			$wormholeHashes[] = $wormhole['hash'];
 		}
+		$data['wormholes'] = $wormholes;
 		
 		/* Stargates */
 		$stargates = DB::query(Database::SELECT, "SELECT s.`hash`,s.`to_system_id`, s.`from_system_id`
@@ -196,7 +196,6 @@ class chainmap
 			$data['systems'] = $chainMapSystems;
 			$data['systemIDs'] = explode(',', $systemsToPoll);
 		}
-
 		$data['wormholeHashes'] = $wormholeHashes;
 		$data['updateTime'] = time();
 
