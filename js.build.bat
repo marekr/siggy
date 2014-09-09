@@ -8,6 +8,7 @@
 --js=siggy.sigtable.js ^
 --js=siggy.globalnotes.js ^
 --js=siggy.map.connection.js ^
+--js=siggy.hotkeyhelper.js ^
 --js=siggymap.js ^
 --js_output_file=siggy.compiled.js
 @pause
