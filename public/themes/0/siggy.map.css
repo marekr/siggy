@@ -480,3 +480,8 @@ ul.itemList
 {
 	border: 1px solid #000;
 }
+
+#connection-editor-options-wh
+{
+	background-color:@alt-primary-background;
+}

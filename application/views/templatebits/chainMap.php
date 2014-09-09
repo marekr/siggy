@@ -114,7 +114,7 @@
 						<button class="btn btn-default btn-xs btn-danger" id="connection-editor-disconnect"><i class="fa fa-chain-broken"></i> Disconnect Connection</button>
 					</div>
 				</div>
-				<div id="connection-editor-options-wh" class="connection-editor-group" style="background-color:#00279A">
+				<div id="connection-editor-options-wh" class="connection-editor-group">
 					<h3>Options</h3>
 					<ul class="errors">
 					</ul>
