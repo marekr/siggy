@@ -4,10 +4,11 @@ function charactersettings(options)
 	this.defaults = {
 		baseUrl: '',
 		themeID: 0,
-		combineScanIntel: false
+		combineScanIntel: false,
+		zoom: 1.0
 	};
 
-	this.settings = $.extend(this.defaults, options);
+	this.settings = $.extend({}, this.defaults, options);
 	this.dscans = {};
 }
 
@@ -57,26 +58,71 @@ charactersettings.prototype.initialize = function()
 		
 		var data = {
 			theme_id: $("#settings-form select[name=theme_id]").val(),
-			combine_scan_intel: $("#settings-form input[name=combine_scan_intel]").is(':checked') ? 1 : 0
+			combine_scan_intel: $("#settings-form input[name=combine_scan_intel]").is(':checked') ? 1 : 0,
+			zoom: $this.settings.zoom
 		};
 		
-		$.post($this.settings.baseUrl + 'siggy/save_character_settings', data, function (ret)
-		{
-			$this.settings.themeID = data.theme_id;
-			$this.settings.combineScanIntel = data.combine_scan_intel;
-			
-			$this.performSettingsRefresh();
-			$.unblockUI();
-		});
+		$this.save(data);
 		
 		return false;
 	});
 	
 	$this.performSettingsRefresh();
+	
+	$this.initializeHotkeys();
+}
+
+charactersettings.prototype.save = function(data)
+{
+	var $this = this;
+	
+	$.post($this.settings.baseUrl + 'siggy/save_character_settings', data, function (ret)
+	{
+		$this.settings.themeID = data.theme_id;
+		$this.settings.combineScanIntel = data.combine_scan_intel;
+		
+		$this.performSettingsRefresh();
+		$.unblockUI();
+	});
+}
+
+
+charactersettings.prototype.saveAll = function()
+{
+	var $this = this;
+	
+	var data = {
+		theme_id: $this.settings.themeID,
+		combine_scan_intel: $this.settings.combineScanIntel,
+		zoom: $this.settings.zoom
+	};
+	
+	$this.save(data);
+}
+
+charactersettings.prototype.initializeHotkeys = function()
+{
+	var $this = this;
+	
+	$(document).bind('keydown', 'ctrl+-', function(){
+		$this.zoomOut();
+	});
+	$(document).bind('keydown', '-', function(){
+		$this.zoomOut();
+	});
+	
+	$(document).bind('keydown', 'ctrl+=', function(){
+		$this.zoomIn();
+	});
+	$(document).bind('keydown', '+', function(){
+		$this.zoomIn();
+	});
 }
 
 charactersettings.prototype.performSettingsRefresh = function()
 {
+	var $this = this;
+	
 	this.siggyMain.changeTab("#sigs");
 	if( this.settings.combineScanIntel )
 	{
@@ -90,6 +136,23 @@ charactersettings.prototype.performSettingsRefresh = function()
 		$("#dscan-box").detach().appendTo($('#system-intel'));
 		$('li a[href="#system-intel"]').parent().show();
 	}
+	
+	$("body").css("zoom", this.settings.zoom);
+}
+
+charactersettings.prototype.zoomOut = function()
+{
+	this.settings.zoom -= 0.05;
+	$("body").css("zoom", this.settings.zoom);
+	
+	this.saveAll();
+}
+charactersettings.prototype.zoomIn = function()
+{
+	this.settings.zoom += 0.05;
+	$("body").css("zoom", this.settings.zoom);
+	
+	this.saveAll();
 }
 
 charactersettings.prototype.changeTheme = function(themeID)
