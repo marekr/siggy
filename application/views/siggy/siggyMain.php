@@ -456,29 +456,8 @@
         </div>
     </div>
 
-
-    <div id="confirm-dialog" class="box" style="display:none;">
-        <h3>Confirm action!</h3>
-        <div>
-            <p id="confirm-dialog-message"></p>
-			<p class="center-text">
-				<button id="confirm-dialog-yes">Yes</button>
-				<button id="confirm-dialog-no">No</button>
-			</p>
-        </div>
-    </div>
-
-    <div id="fatal-error" class="box" style="display:none;">
-        <h3>Fatal error has ocurred</h3>
-        <div>
-            <br />
-            <p id="fatal-error-message"></p>
-            <br />
-            <p style='text-align:center'>
-                <button id="fatal-error-refresh" class="btn btn-default">Refresh</button>
-            </p>
-        </div>
-    </div>
+	<?php echo View::factory('siggy/boxes/fatal_error'); ?>
+	<?php echo View::factory('siggy/boxes/confirm'); ?>
 
     <!--- system context menu -->
     <ul id="system-simple-context" class="contextMenu">
