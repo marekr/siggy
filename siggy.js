@@ -150,10 +150,12 @@ siggymain.prototype.initialize = function ()
 
 	$('#system-options-save').click(function ()
 	{
-		var label = $('#system-options input[name=label]').val();
-		var activity = $('#system-options select[name=activity]').val();
-
-		that.saveSystemOptions(that.systemID, label, activity);
+		var data = {
+			label: $('#system-options input[name=label]').val(),
+			activity: $('#system-options select[name=activity]').val()
+		};
+		
+		that.saveSystemOptions(that.systemID, data);
 	});
 
 	$('#system-options-reset').click(function ()
@@ -161,20 +163,12 @@ siggymain.prototype.initialize = function ()
 		$('#system-options input[name=label]').val('');
 		$('#system-options select[name=activity]').val(0);
 
-		$.post(that.settings.baseUrl + 'dosaveSystemOptions', {
-			systemID: that.systemID,
+		var data = {
 			label: '',
-			inUse: 0,
 			activity: 0
-		}, function (data)
-		{
-			if (that.systemList[that.systemID])
-			{
-				that.systemList[that.systemID].displayName = '';
-				that.systemList[that.systemID].inUse = 0;
-				that.systemList[that.systemID].activity = 0;
-			}
-		});
+		};
+		
+		that.saveSystemOptions(that.systemID, data);
 	});
 
 	$('#bear-C1').click(function() { that.setBearTab(1); return false; });
@@ -976,20 +970,26 @@ siggymain.prototype.setupFatalErrorHandler = function()
 	} );
 }
 
-siggymain.prototype.saveSystemOptions = function(systemID, label, activity)
+siggymain.prototype.saveSystemOptions = function(systemID, newData)
 {
 	var $this = this;
-	$.post(this.settings.baseUrl + 'dosaveSystemOptions', {
-		systemID: systemID,
-		label: label,
-		activity: activity
-	},
+	
+	newData.systemID = systemID;
+	
+	$.post(this.settings.baseUrl + 'siggy/save_system', newData,
 	function (data)
 	{
 		if ($this.systemList[systemID])
 		{
-			$this.systemList[systemID].displayName = label;
-			$this.systemList[systemID].activity = activity;
+			if( typeof(newData.label) != 'undefined' )
+			{
+				$this.systemList[systemID].displayName = newData.label;
+			}
+			
+			if( typeof(newData.activity) != 'undefined' )
+			{
+				$this.systemList[systemID].activity = newData.activity;
+			}
 		}
 
 		$this.forceUpdate = true;
