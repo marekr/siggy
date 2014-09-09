@@ -560,17 +560,17 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 		{
 			var theStatic = systemData.staticData[i];
 			var destBlurb = '';
-			theStatic.staticDestClass = Number(theStatic.staticDestClass);
+			theStatic.dest_class = parseInt(theStatic.dest_class);
 
-			if (theStatic.staticDestClass <= 6)
+			if (theStatic.dest_class <= 6)
 			{
-				destBlurb = " (to C" + theStatic.staticDestClass + ")";
+				destBlurb = " (to C" + theStatic.dest_class + ")";
 			}
-			else if (theStatic.staticDestClass == 7)
+			else if (theStatic.dest_class == 7)
 			{
 				destBlurb = " (to Highsec)";
 			}
-			else if (theStatic.staticDestClass == 8)
+			else if (theStatic.dest_class == 8)
 			{
 				destBlurb = " (to Lowsec)";
 			}
