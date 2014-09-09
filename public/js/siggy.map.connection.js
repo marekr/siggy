@@ -21,7 +21,7 @@ function mapconnection(plumb, options)
 					mass: 0,
 					lifetime: 0,
 					maxJumpMass: 0,
-					regen: 0,
+					regen: 0
 				}
 			},
 			type: 'wormhole'
