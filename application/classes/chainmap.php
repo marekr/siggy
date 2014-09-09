@@ -169,6 +169,7 @@ class chainmap
 															COALESCE(sa.y,10) as y,
 															COALESCE(sa.activity,0) as activity,
 															COALESCE(sa.inUse,0) as inUse,
+															COALESCE(sa.rally,0) as rally,
 															ss.sysClass,
 															ss.effect,
 															(SELECT SUM(kills) FROM apihourlymapdata WHERE systemID=ss.id AND hourStamp >= :kill_cutoff) as kills_in_last_2_hours,

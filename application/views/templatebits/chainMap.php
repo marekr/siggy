@@ -172,6 +172,7 @@
 					<option value='2'>Occupied</option>
 					<option value='3'>Active</option>
 					<option value='4'>Friendly</option>
+					<option value='5'>Rally Here</option>
 				</select>
 				<br />
 				<br />

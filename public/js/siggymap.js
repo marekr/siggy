@@ -617,6 +617,7 @@ siggyMap.prototype.draw = function()
 
         //blob time for the title
         var systemName = $("<span>").text(systemData.displayName == "" ? systemData.name : systemData.displayName).addClass('map-system-blob-sysname');
+		
 
         var titleClassBit = "";
         if( systemData.sysClass >= 7 || ( systemData.sysClass < 7 && systemData.displayName == "") )
@@ -669,7 +670,18 @@ siggyMap.prototype.draw = function()
 			}
 		}
 
-        var systemBlobTitle = $("<p>").addClass('map-system-blob-title').append(titleClassBit).append(effectBit).append(killBit).append(systemName);
+		var rallyIcon = '';
+		if( parseInt(systemData.rally) )
+		{
+			rallyIcon = $('<i>').addClass('fa fa-exclamation-triangle');
+		}
+        var systemBlobTitle = $("<p>").addClass('map-system-blob-title')
+																		.append(titleClassBit)
+																		.append(effectBit)
+																		.append(killBit)
+																		.append($(rallyIcon).clone())
+																		.append(systemName)
+																		.append(rallyIcon);
 
         //add empty paragraph for the active chars
         var systemBlobActives = $("<p>").addClass('map-system-blob-actives');
@@ -681,8 +693,16 @@ siggyMap.prototype.draw = function()
         }
 
         // get the activity color class
-        var activityClass = this.getActivityColor( parseInt(systemData.activity) );
-        sysBlob.addClass( activityClass) ;
+		var activityClass = '';
+		if( !parseInt(systemData.rally) )
+		{
+			activityClass = this.getActivityColor( parseInt(systemData.activity) );
+		}
+		else
+		{
+			activityClass = 'map-activity-rally-here';
+		}
+		sysBlob.addClass( activityClass) ;
 
         $("#chain-map").append( sysBlob );
 
@@ -1008,16 +1028,16 @@ siggyMap.prototype.getActivityColor = function(activity)
     {
         case 1:
             color = 'map-activity-empty';
-        break;
+			break;
         case 2:
             color = 'map-activity-occupied';
-        break;
+			break;
         case 3:
             color = 'map-activity-active';
-        break;
+			break;
         case 4:
             color = 'map-activity-friendly';
-        break;
+			break;
         default:    //default is grey
             color = '';
         break;

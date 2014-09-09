@@ -224,6 +224,16 @@ MAP */
 	border: 3px solid #FFE205 !important;
 }
 
+.map-activity-rally-here
+{
+	border: 3px solid #8D00FF !important;
+}
+
+.map-activity-rally-here p.map-system-blob-title
+{
+	color: red !important;
+}
+
 .map-class-unknown
 {
 	color: #2783D9;
