@@ -104,28 +104,32 @@ charactersettings.prototype.initializeHotkeys = function()
 {
 	var $this = this;
 	
-	$(document).bind('keydown', 'ctrl+-', function(){
-		$this.zoomOut();
-	});
-	$(document).bind('keydown', '-', function(){
-		$this.zoomOut();
-	});
+	if( this.siggyMain.settings.igb )
+	{
+		$(document).bind('keydown', 'ctrl+-', function(){
+			$this.zoomOut();
+		});
+		$(document).bind('keydown', '-', function(){
+			$this.zoomOut();
+		});
+		
+		$(document).bind('keydown', 'ctrl+=', function(){
+			$this.zoomIn();
+		});
+		$(document).bind('keydown', '+', function(){
+			$this.zoomIn();
+		});
+		
+		$(document).bind('keydown', 'ctrl+z', function(){
+			$this.resetZoom();
+		});
 	
-	$(document).bind('keydown', 'ctrl+=', function(){
-		$this.zoomIn();
-	});
-	$(document).bind('keydown', '+', function(){
-		$this.zoomIn();
-	});
-	
-	$(document).bind('keydown', 'ctrl+z', function(){
-		$this.resetZoom();
-	});
-	
-	this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+-', 'Zoom page in');
-	this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+=', 'Zoom page out');
-	this.siggyMain.hotkeyhelper.registerHotkey('+', 'Zoom page in');
-	this.siggyMain.hotkeyhelper.registerHotkey('-', 'Zoom page out');
+		this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+Z', 'Reset page zoom');
+		this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+-', 'Zoom page in');
+		this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+=', 'Zoom page out');
+		this.siggyMain.hotkeyhelper.registerHotkey('+', 'Zoom page in');
+		this.siggyMain.hotkeyhelper.registerHotkey('-', 'Zoom page out');
+	}
 }
 
 charactersettings.prototype.performSettingsRefresh = function()

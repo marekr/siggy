@@ -61,7 +61,8 @@ function siggymain( options )
 			},
 			poses: {
 			}
-		}
+		},
+		igb: true
 	};
 
 	this.settings = $.extend(this.defaults, options);
