@@ -347,7 +347,7 @@ mapconnection.prototype.setupOverlay = function(connectionOptions)
 										["Label", {
 											cssClass:"map-connection-overlay",
 											label : this.label,
-											location:0.5,
+											location:0.25,
 											id:"label"
 										}]
 									];
