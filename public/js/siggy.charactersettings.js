@@ -117,6 +117,10 @@ charactersettings.prototype.initializeHotkeys = function()
 	$(document).bind('keydown', '+', function(){
 		$this.zoomIn();
 	});
+	
+	$(document).bind('keydown', 'ctrl+z', function(){
+		$this.resetZoom();
+	});
 }
 
 charactersettings.prototype.performSettingsRefresh = function()
@@ -140,6 +144,14 @@ charactersettings.prototype.performSettingsRefresh = function()
 	$("body").css("zoom", this.settings.zoom);
 }
 
+charactersettings.prototype.resetZoom = function()
+{
+	this.settings.zoom = 1.0;
+	$("body").css("zoom", this.settings.zoom);
+	
+	this.saveAll();
+}
+
 charactersettings.prototype.zoomOut = function()
 {
 	this.settings.zoom -= 0.05;
@@ -147,6 +159,7 @@ charactersettings.prototype.zoomOut = function()
 	
 	this.saveAll();
 }
+
 charactersettings.prototype.zoomIn = function()
 {
 	this.settings.zoom += 0.05;
