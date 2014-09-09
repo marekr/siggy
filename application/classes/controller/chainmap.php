@@ -610,13 +610,13 @@ class Controller_Chainmap extends FrontController
 			exit();
 		}
 
-		if( !isset($_GET['whHash']) || empty( $_GET['whHash'] ) )
+		if( !isset($_GET['wormhole_hash']) || empty( $_GET['wormhole_hash'] ) )
 		{
-			echo json_encode(array('error' => 1, 'errorMsg' => 'Missing whHash parameter.'));
+			echo json_encode(array('error' => 1, 'errorMsg' => 'Missing wormhole_hash parameter.'));
 			exit();
 		}
 
-		$hash = ($_GET['whHash']);
+		$hash = $_GET['wormhole_hash'];
 
 		/* Include all the group tracked jumps from all chainmaps since this is important not to trap oneself out */
 		$jumpData = array();
