@@ -1164,7 +1164,7 @@ siggyMap.prototype.updateJumpLog = function( hash )
 		}
 
 		var request = {
-			whHash: hash
+			wormhole_hash: hash
 		}
 
 		var that = this;
@@ -1176,6 +1176,8 @@ siggyMap.prototype.updateJumpLog = function( hash )
 
 			if( data.totalMass > 0 )
 			{
+				console.log(data);
+				console.log(that.systems);
 				for( var i in data.jumpItems )
 				{
 					var item = data.jumpItems[i];
