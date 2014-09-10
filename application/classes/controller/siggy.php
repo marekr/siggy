@@ -104,6 +104,7 @@ class Controller_Siggy extends FrontController
             $themeID = intval($_POST['theme_id']);
             $combineScanIntel = intval($_POST['combine_scan_intel']);
             $zoom = $_POST['zoom'];
+            $language = $_POST['language'];
 
             $themes = DB::query(Database::SELECT, "SELECT theme_id, theme_name FROM themes
                                                     WHERE theme_id = :themeID AND (visibility='all' OR (group_id=:group AND visibility='group'))")
@@ -114,10 +115,11 @@ class Controller_Siggy extends FrontController
 
             if( count( $themes ) > 0 )
             {
-                DB::query(Database::INSERT, 'REPLACE INTO character_settings (`char_id`, `theme_id`,`combine_scan_intel`,`zoom`) VALUES(:charID, :themeID, :combineScanIntel, :zoom)')
+                DB::query(Database::INSERT, 'REPLACE INTO character_settings (`char_id`, `theme_id`,`combine_scan_intel`,`zoom`,`language`) VALUES(:charID, :themeID, :combineScanIntel, :zoom,:language)')
 							->param(':charID', $charID )
 							->param(':themeID', $themeID)
 							->param(':zoom', $zoom)
+							->param(':language', $language)
 							->param(':combineScanIntel', $combineScanIntel)
 							->execute();
             }

@@ -5,7 +5,8 @@ function charactersettings(options)
 		baseUrl: '',
 		themeID: 0,
 		combineScanIntel: false,
-		zoom: 1.0
+		zoom: 1.0,
+		language: 'en'
 	};
 
 	this.settings = $.extend({}, this.defaults, options);
@@ -54,12 +55,14 @@ charactersettings.prototype.initialize = function()
 	
 	$("#settings-form input[name=combine_scan_intel]").prop('checked', this.settings.combineScanIntel ? true : false);
 	
+	$('#settings-form select[name=language]').val( this.settings.language );
 	$('#settings-form').submit( function() {
 		
 		var data = {
-			theme_id: $("#settings-form select[name=theme_id]").val(),
-			combine_scan_intel: $("#settings-form input[name=combine_scan_intel]").is(':checked') ? 1 : 0,
-			zoom: $this.settings.zoom
+			theme_id: $('#settings-form select[name=theme_id]').val(),
+			combine_scan_intel: $('#settings-form input[name=combine_scan_intel]').is(':checked') ? 1 : 0,
+			zoom: $this.settings.zoom,
+			language: $('#settings-form select[name=language]').val()
 		};
 		
 		$this.save(data);
@@ -80,6 +83,7 @@ charactersettings.prototype.save = function(data)
 	{
 		$this.settings.themeID = data.theme_id;
 		$this.settings.combineScanIntel = data.combine_scan_intel;
+		$this.settings.language = data.language;
 		
 		$this.performSettingsRefresh();
 		$.unblockUI();
@@ -151,6 +155,16 @@ charactersettings.prototype.performSettingsRefresh = function()
 	}
 	
 	$("body").css("zoom", this.settings.zoom);
+	
+	/* init localisations  */
+	if( this.settings.language != 'en' )
+	{
+		LazyLoad.js(this.settings.baseUrl + 'public/js/locale/siggy.static.'+this.settings.language+'.js');
+	}
+	else if( this.settings.language == 'en' )
+	{
+		LazyLoad.js(this.settings.baseUrl + 'public/js/siggy.static.js');
+	}
 }
 
 charactersettings.prototype.resetZoom = function()

@@ -480,7 +480,8 @@
 				charsettings: {
 					themeID: <?php echo $settings['theme_id']; ?>,
 					combineScanIntel: <?php echo $settings['combine_scan_intel']; ?>,
-					zoom: <?php echo $settings['zoom']; ?>
+					zoom: <?php echo $settings['zoom']; ?>,
+					language: '<?php echo $settings['language']; ?>'
 				},
 				sigtable: {
                 	showSigSizeCol: <?php echo ( $group['showSigSizeCol'] ? 'true' : 'false' ); ?>

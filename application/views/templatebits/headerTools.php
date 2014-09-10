@@ -39,7 +39,15 @@
 			<br />
 			<br />
 			<label>Combine Scan & Intel tabs? <input type="checkbox" name="combine_scan_intel" value="1" <?php echo( $settings['combine_scan_intel'] ? 'checked="checked"' : '' ); ?>/></label>
-            
+            <br />
+			<br />
+			<label>
+				EVE Client Language 
+				<select name="language">
+					<option value="en">English</option>
+					<option value="de">Deutsch</option>
+				</select>
+			</label>
             
             <div class="center-text form-actions">
                 <button id="settings-save" type="submit" class="btn btn-primary btn-xs">Save</button>

@@ -46,7 +46,8 @@ function siggymain( options )
 			themeID: 0,
 			combineScanIntel: false,
 			themeList: {},
-			zoom: 1.0
+			zoom: 1.0,
+			language: 'en'
 		},
 		map: {
 		  jumpTrackerEnabled: true
@@ -76,7 +77,6 @@ function siggymain( options )
 	}
 
 	this.displayStates = this.defaultDisplayStates;
-
 
 	this.sigtable = new sigtable(this.settings.sigtable);
 	this.sigtable.siggyMain = this;

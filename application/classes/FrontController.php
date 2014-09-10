@@ -121,7 +121,7 @@ class FrontController extends Controller
 
     private function loadSettings()
     {
-        $default_settings = array('theme_id' => 0,'combine_scan_intel' => 0, 'zoom' => '1.0' );
+        $default_settings = array('theme_id' => 0,'combine_scan_intel' => 0, 'zoom' => '1.0', 'language' => 'en' );
 
         if( isset($this->groupData['charID']) && $this->groupData['charID'] != 0)
         {
