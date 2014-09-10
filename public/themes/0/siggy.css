@@ -540,7 +540,8 @@ ul.errors
 
 
 input:focus,
-select:focus
+select:focus,
+textarea:focus
 {
 	outline:#FF8308 solid 2px;
 }
