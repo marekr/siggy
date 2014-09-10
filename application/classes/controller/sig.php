@@ -75,6 +75,9 @@ class Controller_Sig extends FrontController
 			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
 			exit();
 		}
+		
+		//load settings to trigger localization
+		$this->loadSettings();
 
 		if( isset($_POST['systemID']) && isset($_POST['blob']) && !empty($_POST['blob']) )
 		{

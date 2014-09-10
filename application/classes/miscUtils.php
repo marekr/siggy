@@ -2,7 +2,7 @@
 
 final class miscUtils
 {
-	public static $anomsLookup = array( 	1 => array( 0 => "",
+	public static $anomsLookup = array( 1 => array( 0 => "",
 													1 =>  "Perimeter Ambush Point",
 													2 =>  "Perimeter Camp",
 													3 =>  "Phase Catalyst Node",
@@ -134,8 +134,7 @@ final class miscUtils
 		8 => "Instrumental Core Reservoir",
 		9 => "Vital Core Reservoir"
 	);
-
-
+	
 	const TIER1COST = 33000;
 	const TIER2COST = 29000;
 	const TIER3COST = 25000;
@@ -153,8 +152,8 @@ final class miscUtils
 		$lines = explode("\n", $string);
 		foreach( $lines as $line )
 		{
-			$data = explode("\t", $line);
-			if( count($data) < 2 )
+			$rawdata = explode("\t", $line);
+			if( count($rawdata) < 2 )
 			{
 				continue;
 			}
@@ -163,6 +162,17 @@ final class miscUtils
 
 			$matches = array();
 
+			/*eliminate junk items, :CCP: sometimes 
+			inject mix spaces/tabs that cause the tab split to not be clean */
+			$data = array();
+			foreach($rawdata as $item)
+			{
+				$item = trim($item);
+				if( empty($item) )
+					continue;
+				$data[] = $item;
+			}
+			
 			foreach($data as $k => $item)
 			{
 				$item = trim($item);
@@ -186,23 +196,23 @@ final class miscUtils
 							break;
 						case 'Data Site':
 							$sigData['type'] = 'radar';
-							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+1], 'radar' );
+							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+2], 'radar' );
 							break;
 						case 'Gas Site':
 							$sigData['type'] = 'ladar';
-							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+1], 'ladar' );
+							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+2], 'ladar' );
 							break;
 						case 'Relic Site':
 							$sigData['type'] = 'mag';
-							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+1], 'mag' );
+							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+2], 'mag' );
 							break;
 						case 'Ore Site':
 							$sigData['type'] = 'grav';
-							$sigData['siteID'] = self::siteIDLookupByName( $data[3], 'grav' );
+							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+2], 'grav' );
 							break;
 						case 'Combat Site':
 							$sigData['type'] = 'combat';
-							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+1], 'anoms' );
+							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+2], 'anoms' );
 							break;
 					}
 					continue;
@@ -223,7 +233,7 @@ final class miscUtils
 		{
 			foreach( self::$gravsLookup as $k => $grav )
 			{
-				if( $grav == $name )
+				if( __($grav) == $name )
 				{
 					return $k;
 				}
@@ -233,7 +243,7 @@ final class miscUtils
 		{
 			foreach( self::$ladarsLookup as $k => $ladar )
 			{
-				if( $ladar == $name )
+				if( __($ladar) == $name )
 				{
 					return $k;
 				}
@@ -246,7 +256,7 @@ final class miscUtils
 			{
 				foreach( $c as $k => $radar )
 				{
-					if( $radar == $name )
+					if( __($radar) == $name )
 					{
 						return $k;
 					}
@@ -259,7 +269,7 @@ final class miscUtils
 			{
 				foreach( $c as $k => $mag )
 				{
-					if( $mag == $name )
+					if( __($mag) == $name )
 					{
 						return $k;
 					}
@@ -272,7 +282,7 @@ final class miscUtils
 			{
 				foreach( $c as $k => $mag )
 				{
-					if( $mag == $name )
+					if( __($anom) == $name )
 					{
 						return $k;
 					}
