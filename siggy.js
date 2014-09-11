@@ -451,7 +451,7 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 	$('#constellation').text(systemData.constellationName);
 	$('#planetsmoons').text(systemData.planets + "/" + systemData.moons + "/" + systemData.belts);
 	$('#truesec').text(systemData.truesec.substr(0,8));
-	$('#radius').text(systemData.radius + ' AU');
+	$('#radius').text(systemData.radius + ' '+ _('AU'));
 
 	//HUB JUMPS
 	var hubJumpsStr = '';
@@ -462,7 +462,7 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 		var hub = systemData.hubJumps[index];
 
 		var hubDiv = $("<div>").addClass('hub-jump')
-							   .text(hub.destination_name + " (" + hub.num_jumps + " jumps)")
+							   .text(hub.destination_name + " (" + hub.num_jumps + " "+_('Jumps')+")")
 							   .data("sysID", hub.system_id)
 							   .data("sysName", hub.destination_name);
 
