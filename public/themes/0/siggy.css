@@ -407,13 +407,11 @@ label.no {
 {
 	line-height: 22px;
 	vertical-align:top;
-	text-align:center;
 }
 
 /* Alignment css for "Signature Adder" text and the mass add input box */
 #sig-add-box h2 span
 {
-	float: left;
 }
 
 #sig-add-box h2 textarea
