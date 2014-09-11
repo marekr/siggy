@@ -72,6 +72,8 @@ return array(
 	"Ore" => "Mineraliengebiet",
 	"Combat Site" => "Kampfgebiet",
 	"Ore Site" => "Mineraliengebiet",
+	"Data Site" => "Datenseite",
+	"Wormhole" => "Wurmloch",
 	"Cosmic Anomaly" => "Kosmische Anomalie",
 	"Cosmic Signature" => "Kosmische Signatur"
 );

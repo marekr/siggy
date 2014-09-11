@@ -186,7 +186,7 @@ final class miscUtils
 					continue;
 				}
 				
-				$regex = "/^(Wormhole|Data Site|Gas Site|Relic Site|".__('Ore Site')."|".__('Combat Site').")$/";
+				$regex = "/^(".__('Wormhole')."|".__('Data Site')."|Gas Site|Relic Site|".__('Ore Site')."|".__('Combat Site').")$/";
 				
 				preg_match($regex, $item, $matches );
 				if( count($matches) == 2 )
@@ -195,6 +195,7 @@ final class miscUtils
 					{
 						case 'Wormhole':
 							$sigData['type'] = 'wh';
+							$sigData['siteID'] = 0;
 							break;
 						case 'Data Site':
 							$sigData['type'] = 'radar';
