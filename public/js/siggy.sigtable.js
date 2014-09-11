@@ -158,17 +158,17 @@ sigtable.prototype.convertSiteID = function (whClass, type, siteID)
 	if( siteID == 0 )
 		return "";
 	if (type == 'combat')
-		return anomsLookup[whClass][siteID];
+		return _(anomsLookup[whClass][siteID]);
 	else if (type == 'wh')
-		return whLookup[whClass][siteID];
+		return _(whLookup[whClass][siteID]);
 	else if (type == 'mag')
-		return magsLookup[whClass][siteID];
+		return _(magsLookup[whClass][siteID]);
 	else if (type == 'radar')
-		return radarsLookup[whClass][siteID];
+		return _(radarsLookup[whClass][siteID]);
 	else if (type == 'ladar')
-		return ladarsLookup[siteID];
+		return _(ladarsLookup[siteID]);
 	else if (type == 'grav')
-		return gravsLookup[siteID];
+		return _(gravsLookup[siteID]);
 	else
 		return "";
 }
@@ -260,7 +260,7 @@ sigtable.prototype.updateSiteSelect = function( ele, whClass, type, siteID )
 
 	for (var i in options)
 	{
-		elem.append($('<option>').attr('value', i).text(options[i]));
+		elem.append($('<option>').attr('value', i).text(_(options[i])));
 	}
 
 	elem.val(siteID);
@@ -549,7 +549,7 @@ sigtable.prototype.generateSelect = function (options, select)
 
 	for (var i in options)
 	{
-		newSelect.append($('<option>').attr('value', i).text(options[i]));
+		newSelect.append($('<option>').attr('value', i).text(_(options[i])));
 	}
 
 	newSelect.val(select);

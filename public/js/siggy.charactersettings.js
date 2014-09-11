@@ -159,11 +159,10 @@ charactersettings.prototype.performSettingsRefresh = function()
 	/* init localisations  */
 	if( this.settings.language != 'en' )
 	{
-		LazyLoad.js(this.settings.baseUrl + 'public/js/locale/siggy.static.'+this.settings.language+'.js');
-	}
-	else if( this.settings.language == 'en' )
-	{
-		LazyLoad.js(this.settings.baseUrl + 'public/js/siggy.static.js');
+		LazyLoad.js(this.settings.baseUrl + 'public/js/locale/siggy.locale.'+this.settings.language+'.js', function() 
+		{
+			_.setTranslation(translation);
+		});
 	}
 }
 

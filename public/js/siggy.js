@@ -1,4 +1,8 @@
-//when opened with system in url
+/* 
+ * @license Proprietary
+ * @copyright Copyright (c) 2014 borkedLabs - All Rights Reserved
+ */
+ 
 if (typeof(CCPEVE) != "undefined")
 {
 	CCPEVE.requestTrust('http://siggy.borkedlabs.com/*');
