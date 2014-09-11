@@ -20,6 +20,7 @@ charactersettings.prototype.initialize = function()
 	
 	$('#settings-button').click(function ()
 	{
+		$this.initForm();
 		$.blockUI({
 			message: $('#settings-dialog'),
 			css: {
@@ -53,9 +54,8 @@ charactersettings.prototype.initialize = function()
 		$this.changeTheme(themeID);
 	});
 	
-	$("#settings-form input[name=combine_scan_intel]").prop('checked', this.settings.combineScanIntel ? true : false);
+	this.initForm();
 	
-	$('#settings-form select[name=language]').val( this.settings.language );
 	$('#settings-form').submit( function() {
 		
 		var data = {
@@ -73,6 +73,13 @@ charactersettings.prototype.initialize = function()
 	$this.performSettingsRefresh();
 	
 	$this.initializeHotkeys();
+}
+
+charactersettings.prototype.initForm = function()
+{
+	$("#settings-form input[name=combine_scan_intel]").prop('checked', this.settings.combineScanIntel ? true : false);
+	
+	$('#settings-form select[name=language]').val( this.settings.language );
 }
 
 charactersettings.prototype.save = function(data)
