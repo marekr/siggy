@@ -186,26 +186,26 @@ final class miscUtils
 					continue;
 				}
 				
-				$regex = "/^(".__('Wormhole')."|".__('Data Site')."|Gas Site|Relic Site|".__('Ore Site')."|".__('Combat Site').")$/";
+				$regex = "/^(".__('Wormhole')."|".__('Data Site')."|Gas Site|".__('Relic Site')."|".__('Ore Site')."|".__('Combat Site').")$/";
 				
 				preg_match($regex, $item, $matches );
 				if( count($matches) == 2 )
 				{
 					switch( $matches[1] )
 					{
-						case 'Wormhole':
+						case __('Wormhole'):
 							$sigData['type'] = 'wh';
 							$sigData['siteID'] = 0;
 							break;
-						case 'Data Site':
+						case __('Data Site'):
 							$sigData['type'] = 'radar';
 							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+1], 'radar' );
 							break;
-						case 'Gas Site':
+						case __('Gas Site'):
 							$sigData['type'] = 'ladar';
 							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+1], 'ladar' );
 							break;
-						case 'Relic Site':
+						case __('Relic Site'):
 							$sigData['type'] = 'mag';
 							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+1], 'mag' );
 							break;
