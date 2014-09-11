@@ -1,4 +1,5 @@
 "C:\Program Files (x86)\Java\jre7\bin\java.exe" -jar compiler.jar ^
+--js=translate.js ^
 --js=jquery/jquery-1.11.1.min.js ^
 --js=jquery/jquery-migrate-core.js ^
 --js=jquery/jquery-ui-1.10.3.min.js ^
