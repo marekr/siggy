@@ -140,15 +140,15 @@ sigtable.prototype.convertType = function (type)
 	if (type == 'wh')
 		return "WH";
 	else if (type == 'grav')
-		return "Ore";
+		return _("Ore");
 	else if (type == 'ladar')
-		return "Gas";
+		return _("Gas");
 	else if (type == 'radar')
 		return "Data";
 	else if (type == 'mag')
 		return "Relic";
 	else if (type == 'combat')
-		return "Combat";
+		return _("Combat");
 	else
 		return "";
 }
