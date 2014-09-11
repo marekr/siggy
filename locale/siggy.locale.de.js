@@ -72,9 +72,13 @@ var translation = {
 	"Instrumental Core Reservoir": "Nützliche grundlegende Erzvorkommen",
 	"Vital Core Reservoir": "Wichtige grundlegende Erzvorkommen",
 	"Combat": "Kampfgebiet",
-	"Ore": "Mineraliengebiet",
 	"Combat Site": "Kampfgebiet",
+	"Ore": "Mineraliengebiet",
 	"Ore Site": "Mineraliengebiet",
+	"Data": "Datenseite",
+	"Data Site": "Datenseite",
+	"WH": "Wurmloch",
+	"Wormhole": "Wurmloch",
 	"Cosmic Anomaly": "Kosmische Anomalie",
 	"Cosmic Signature": "Kosmische Signatur"
 };

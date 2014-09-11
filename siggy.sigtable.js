@@ -138,13 +138,13 @@ sigtable.prototype.convertType = function (type)
 {
 	//unknown null case, either way this should surpress it
 	if (type == 'wh')
-		return "WH";
+		return _("WH");
 	else if (type == 'grav')
 		return _("Ore");
 	else if (type == 'ladar')
 		return _("Gas");
 	else if (type == 'radar')
-		return "Data";
+		return _("Data");
 	else if (type == 'mag')
 		return "Relic";
 	else if (type == 'combat')
