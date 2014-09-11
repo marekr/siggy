@@ -164,6 +164,10 @@ charactersettings.prototype.performSettingsRefresh = function()
 			_.setTranslation(translation);
 		});
 	}
+	
+	//force a update to refresh
+	$this.siggyMain.forceUpdate = 1;
+	//do not call updateNow as on page load this will cause quirkyness/race condition with another update call
 }
 
 charactersettings.prototype.resetZoom = function()
