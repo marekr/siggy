@@ -70,5 +70,11 @@ var translation = {
 	"Bountiful Frontier Reservoir": "Üppiges Erzgebiet",
 	"Vast Frontier Reservoir": "Große Erzvorkommen im Grenzgebiet",
 	"Instrumental Core Reservoir": "Nützliche grundlegende Erzvorkommen",
-	"Vital Core Reservoir": "Wichtige grundlegende Erzvorkommen"
+	"Vital Core Reservoir": "Wichtige grundlegende Erzvorkommen",
+	"Combat": "Kampfgebiet",
+	"Ore": "Mineraliengebiet",
+	"Combat Site": "Kampfgebiet",
+	"Ore Site": "Mineraliengebiet",
+	"Cosmic Anomaly": "Kosmische Anomalie",
+	"Cosmic Signature": "Kosmische Signatur"
 };
