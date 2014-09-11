@@ -82,5 +82,7 @@ var translation = {
 	"WH": "Wurmloch",
 	"Wormhole": "Wurmloch",
 	"Cosmic Anomaly": "Kosmische Anomalie",
-	"Cosmic Signature": "Kosmische Signatur"
+	"Cosmic Signature": "Kosmische Signatur",
+	"Jumps": "Sprünge",
+	"AU": "AE"
 };

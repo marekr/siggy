@@ -58,7 +58,7 @@
                 <tr>
                     <td class="title">True Sec</td>
                     <td class="content" id="truesec"></td>
-                    <td class="title">Constellation</td>
+                    <td class="title"><?php echo __('Constellation'); ?></td>
                     <td class="content" id="constellation"></td>
                 </tr>
             </table>
@@ -202,7 +202,7 @@
         <div id="sigs">
             <table id="system-table" cellspacing="1" class='siggy-table'>
                 <tr>
-                    <td class="title">Region / Constellation</td>
+                    <td class="title">Region / <?php echo __('Constellation'); ?></td>
                     <td class="content" id="region"></td>
                     <td class="title">System Effect</td>
                     <td class="content" id="system-effect"></td>
@@ -277,12 +277,12 @@
                                 <label>Type</label>
                                 <select name="type">
                                     <option value="none" selected="selected"> -- </option>
-                                    <option value="wh">WH</option>
-                                    <option value="ladar">Gas</option>
-                                    <option value="grav">Ore</option>
-                                    <option value="radar">Data</option>
-                                    <option value="mag">Relic</option>
-                                    <option value="combat">Combat</option>
+                                    <option value="wh"><?php echo __('WH');?></option>
+                                    <option value="ladar"><?php echo __('Gas');?></option>
+                                    <option value="grav"><?php echo __('Ore');?></option>
+                                    <option value="radar"><?php echo __('Data');?></option>
+                                    <option value="mag"><?php echo __('Relic');?></option>
+                                    <option value="combat"><?php echo __('Combat');?></option>
                                 </select>
                             </div>
                             <div class="input-group" style="width: auto;">
@@ -302,7 +302,7 @@
             </div>
 			<div class="sub-display-group">
 				<h2>
-					<label><input id="checkbox-show-anomalies" type="checkbox" value="1" checked /> Show Anomalies? (Combat Sites)</label>
+					<label><input id="checkbox-show-anomalies" type="checkbox" value="1" checked /> <?php echo __('Show anomalies'); ?> (<?php echo __('Combat Sites'); ?>)</label>
 				</h2>
 			</div>
             <table id="sig-table" cellspacing="1" class="siggy-table tablesorter">

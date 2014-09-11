@@ -96,7 +96,7 @@
 						<div class="form-group">
 							<label>Connection Type
 								<select name="connection-editor-type">
-									<option value="wormhole">Wormhole</option>
+									<option value="wormhole"><?php echo __('Wormhole');?></option>
 									<option value="stargate">Stargate</option>
 									<option value="jumpbridge">Jumpbridge</option>
 									<option value="cyno">Cyno</option>

@@ -70,8 +70,9 @@ return array(
 	"Vital Core Reservoir" => "Wichtige grundlegende Erzvorkommen",
 	"Combat" => "Kampfgebiet",
 	"Combat Site" => "Kampfgebiet",
+	"Combat Sites" => "Kampfgebieten",
 	"Ore" => "Mineraliengebiet",
-	"Ore Site": "Mineraliengebiet",
+	"Ore Site"=> "Mineraliengebiet",
 	"Data" => "Daten",
 	"Data Site" => "Datenseite",
 	"Relic" => "Relikt",
@@ -79,5 +80,8 @@ return array(
 	"WH" => "Wurmloch",
 	"Wormhole" => "Wurmloch",
 	"Cosmic Anomaly" => "Kosmische Anomalie",
-	"Cosmic Signature" => "Kosmische Signatur"
+	"Cosmic Signature" => "Kosmische Signatur",
+	"Constellation" => "Konstellation",
+	"Show anomalies" => "Anomalien zeigen",
+	"jumps" => "sprünge" 
 );
