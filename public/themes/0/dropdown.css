@@ -1,6 +1,7 @@
 
 .dropdown {
   position: relative;
+  text-align:left;
 }
 
 .dropdown-toggle:focus {
