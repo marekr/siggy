@@ -105,7 +105,8 @@ charactersettings.prototype.saveAll = function()
 	var data = {
 		theme_id: $this.settings.themeID,
 		combine_scan_intel: $this.settings.combineScanIntel,
-		zoom: $this.settings.zoom
+		zoom: $this.settings.zoom,
+		language: $this.settings.language
 	};
 	
 	$this.save(data);
