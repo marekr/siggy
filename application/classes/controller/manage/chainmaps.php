@@ -76,6 +76,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				$sg = ORM::factory('chainmap');
 				$sg->chainmap_name = $_POST['chainmap_name'];
 				$sg->group_id = Auth::$user->data['groupID'];
+				$sg->chainmap_type = 'fixed';
 
 				list($sg->chainmap_homesystems_ids, $sg->chainmap_homesystems) = $this->__process_home_system_input($_POST['chainmap_homesystems']);
 
