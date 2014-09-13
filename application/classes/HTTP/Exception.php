@@ -15,7 +15,6 @@ class HTTP_Exception extends Kohana_HTTP_Exception {
         // Lets log the Exception, Just in case it's important!
         Kohana_Exception::log($this);
  
-		Kohana::$environment = Kohana::PRODUCTION;
         if (Kohana::$environment >= Kohana::DEVELOPMENT)
         {
             // Show the normal Kohana error page.
