@@ -514,15 +514,33 @@ class Controller_Chainmap extends FrontController
 		}
 		else if( $type == 'stargate' )
 		{
-			$this->chainmap->add_stargate_to_map($whHash, $fromSysID, $toSysID);
+			if( count($errors) > 0 )
+			{
+				echo json_encode(array('success' => 0, 'dataErrorMsgs' => $errors ) );
+				exit();
+			}
 
+			
+			$this->chainmap->add_stargate_to_map($whHash, $fromSysID, $toSysID);
 		}
 		else if( $type == 'jumpbridge' )
 		{			
+			if( count($errors) > 0 )
+			{
+				echo json_encode(array('success' => 0, 'dataErrorMsgs' => $errors ) );
+				exit();
+			}
+
 			$this->chainmap->add_jumpbridge_to_map($whHash, $fromSysID, $toSysID);
 		}
 		else if( $type == 'cyno' )
 		{			
+			if( count($errors) > 0 )
+			{
+				echo json_encode(array('success' => 0, 'dataErrorMsgs' => $errors ) );
+				exit();
+			}
+
 			$this->chainmap->add_cyno_to_map($whHash, $fromSysID, $toSysID);
 		}
 		
