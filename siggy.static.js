@@ -312,6 +312,7 @@ var whLookup = {
 		11: "V911 (to C5)",
 		12: "W237 (to C6)",
 		13: "Z142 (to Nullsec)",
+		47: "C248 (to Nullsec, 48hr)",
 		14: "C140 (to Lowsec)",
 		48: "C391 (to Lowsec, 48hr)",
 		15: "D792  (to Highsec)",
