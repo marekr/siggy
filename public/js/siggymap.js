@@ -251,6 +251,9 @@ siggyMap.prototype.initialize = function()
 
 				new_x = (move_x < click_x) ? (click_x - width) : click_x;
 				new_y = (move_y < click_y) ? (click_y - height) : click_y;
+				
+				new_x -= 5;
+				new_y -= 5;
 
 				that.selectionBox.css({
 				'width': width,
