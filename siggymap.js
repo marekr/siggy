@@ -236,6 +236,7 @@ siggyMap.prototype.initialize = function()
 		  'height': 0,
 		  'z-index': 9999
 		});
+		that.selectionBox.hide();
 
 		that.selectionBox.appendTo($container);
 
@@ -255,6 +256,8 @@ siggyMap.prototype.initialize = function()
 				new_x -= 5;
 				new_y -= 5;
 
+				that.selectionBox.show();
+				
 				that.selectionBox.css({
 				'width': width,
 				'height': height,
