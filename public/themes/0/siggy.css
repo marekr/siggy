@@ -150,17 +150,6 @@ table td.desc p{
 }
 
 
-table.tablesorter thead tr .headerSortUp {
-	background-image: url(public/images/asc.gif) !important;
-	background-repeat: no-repeat;
-	background-position: right center;
-}
-table.tablesorter thead tr .headerSortDown {
-	background-image: url(public/images/desc.gif) !important;
-	background-repeat: no-repeat;
-	background-position: right center;
-}
-
 
 
 td.desc input
@@ -821,4 +810,17 @@ div.connection-editor-group > div
 .form-group label.no
 {
 	font-weight:normal;
+}
+
+/* tablesorter styling */
+
+.tablesorter-headerAsc {
+	background-image: url(public/images/asc.gif) !important;
+	background-repeat: no-repeat  !important;
+	background-position: right center  !important;
+}
+.tablesorter-headerDesc {
+	background-image: url(public/images/desc.gif) !important;
+	background-repeat: no-repeat  !important;
+	background-position: right center  !important;
 }

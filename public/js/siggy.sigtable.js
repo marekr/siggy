@@ -28,6 +28,9 @@ sigtable.prototype.initialize = function()
 			0: {
 				sorter: false
 			},
+			1: {
+				sortInitialOrder: 'desc'
+			},
 			5: {
 				sorter: false
 			},
@@ -55,6 +58,8 @@ sigtable.prototype.initialize = function()
 	{
 		headers: tableSorterHeaders
 	});
+	
+	$('#sig-table').trigger("sorton", [ [[1,0]] ]);
 
 	$('#sig-table').bind('sortEnd', function() {
 		$this.colorizeSigRows();
