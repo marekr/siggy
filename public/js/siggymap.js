@@ -226,8 +226,8 @@ siggyMap.prototype.initialize = function()
 		that.selectionInProgress = true;
 		
 		var chainmapOffset = $(this).offset();
-		var click_y = e.pageY-chainmapOffset.top,
-			click_x = e.pageX-chainmapOffset.left;
+		var click_y = e.pageY-chainmapOffset.top-5,
+			click_x = e.pageX-chainmapOffset.left-5;
 			
 		that.selectionBox.css({
 		  'top':    click_y,
