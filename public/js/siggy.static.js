@@ -360,7 +360,7 @@ var whLookup = {
 		46: "U319 (to C6)",	/* mass regen type */
 		13: "S199  (to Nullsec)",
 		14: "N944  (to Lowsec)",
-		15: "B499  (to Highsec)"
+		15: "B449  (to Highsec)"
 	},
 	9: {
 		0: "Unstable Wormhole",
