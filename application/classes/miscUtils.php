@@ -141,6 +141,11 @@ final class miscUtils
 
 	static function computeCostPerDays( $memberCount, $days )
 	{
+		if( $memberCount == 0 )
+		{
+			return 0;
+		}
+		
 		$total = 22420*$memberCount + 283650;
 		return $total*$days;
 	}
