@@ -147,8 +147,8 @@ intelposes.prototype.setupPOSForm = function(mode, posID)
 					pos_location_moon: '',
 					pos_owner: '',
 					pos_type: 1,
-					pos_size: 'small',
-					pos_status: 0,
+					pos_size: 'large',
+					pos_online: 1,
 					pos_notes: '',
 					pos_system_id: 0
 				};
