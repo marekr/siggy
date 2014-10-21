@@ -188,6 +188,42 @@ siggymain.prototype.initialize = function ()
 
 
 	this.initializeExitFinder();
+	
+	this.initializeHubJumpContextMenu();
+}
+
+siggymain.prototype.initializeHubJumpContextMenu = function()
+{
+	$(document).contextMenu({
+		selector: '.hub-jump', 
+		callback: function(key, options) {
+			var sysID = $(this).data("sysID");
+			var sysName  = $(this).data("sysName");
+			if( key == "setdest" )
+			{
+				if( typeof(CCPEVE) != "undefined" )
+				{
+					CCPEVE.setDestination(sysID);
+				}
+			}
+			else if( key == "showinfo" )
+			{
+				if( typeof(CCPEVE) != "undefined" )
+				{
+						CCPEVE.showInfo(5, sysID);
+				}
+				else
+				{
+						window.open('http://evemaps.dotlan.net/system/'+sysName , '_blank');
+				}
+			}
+		},
+		items: {
+			"setdest": {name: "Set Destination", icon: "setdest"},
+			"sep1": "---------",
+			"showinfo": {name: "Show Info", icon: "showinfo"}
+		}
+	});
 }
 
 siggymain.prototype.initializeCollaspibles = function()
@@ -455,8 +491,8 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 
 	//HUB JUMPS
 	var hubJumpsStr = '';
-	$('div.hub-jump').destroyContextMenu();
 	$('#hub-jumps').empty();
+	
 	for(var index in systemData.hubJumps)
 	{
 		var hub = systemData.hubJumps[index];
@@ -465,8 +501,8 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 							   .text(hub.destination_name + " (" + hub.num_jumps + " "+_('Jumps')+")")
 							   .data("sysID", hub.system_id)
 							   .data("sysName", hub.destination_name);
-
-		hubDiv.contextMenu( { menu: 'system-simple-context' },
+    
+	/*	hubDiv.contextMenu( { menu: 'system-simple-context' },
 			function(action, el, pos) {
 				var sysID = $(el[0]).data("sysID");
 				var sysName  = $(el[0]).data("sysName");
@@ -488,10 +524,11 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 							window.open('http://evemaps.dotlan.net/system/'+sysName , '_blank');
 					}
 				}
-		});
+		});*/
 
 		$('#hub-jumps').append(hubDiv);
 	}
+	
 
     //EFFECT STUFF
 	//effect info
@@ -1068,7 +1105,7 @@ siggymain.prototype.populateExitData = function(data)
 			item.data("sysID", data.result[i].system_id);
 			item.data("sysName",data.result[i].system_name);
 
-			item.contextMenu( { menu: 'system-simple-context', leftMouse: true },
+/*			item.contextMenu( { menu: 'system-simple-context', leftMouse: true },
 				function(action, el, pos) {
 					var sysID = $(el[0]).data("sysID");
 					var sysName  = $(el[0]).data("sysName");
@@ -1090,7 +1127,7 @@ siggymain.prototype.populateExitData = function(data)
 								window.open('http://evemaps.dotlan.net/system/'+sysName , '_blank');
 						}
 					}
-			});
+			});*/
 		}
 	}
 	else
