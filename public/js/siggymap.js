@@ -733,10 +733,10 @@ siggyMap.prototype.draw = function()
     $('div.map-system-blob').off();
     $('div.map-full-actives').remove();
 	
-	for( var i  in this.mapconnections )
+	for( var i  in this.mapConnections )
 	{
-		this.mapconnections[i].destroy();
-		delete this.mapconnections[i];
+		this.mapConnections[i].destroy();
+		delete this.mapConnections[i];
 	}
 	
     $('#chain-map').empty();
