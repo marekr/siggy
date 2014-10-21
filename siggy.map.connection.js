@@ -254,6 +254,9 @@ mapconnection.prototype.contextMenuBuildItems = function()
 mapconnection.prototype.destroy = function()
 {
 	$(this.connection.canvas).qtip('destroy');
+	//remove data to avoid refs, normally jquery clears on remove()
+	//but we dont get to use remove()
+	$(this.connection.canvas).removeData();
 	//remove any other events
 	$(this.connection.canvas).off();
 	
