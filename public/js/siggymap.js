@@ -324,7 +324,126 @@ siggyMap.prototype.initialize = function()
 	});
 	
 	this.initializeHotkeys();
+	this.initializeSystemBlobContextMenu();
+	this.initializeConnectionContextMenu();
 }
+
+
+siggyMap.prototype.initializeConnectionContextMenu = function()
+{
+	var $this = this;
+	$(document).contextMenu({
+		selector: '._jsPlumb_connector ', 
+		
+        build: function($trigger, e) {
+			var connection = $($trigger).data('siggy_connection');
+			
+			var items = connection.contextMenuBuildItems();
+			
+			if( Object.size(items) != 0 )
+			{
+				return {
+					callback: function(key, options) {
+						var connection = $(this).data('siggy_connection');
+						connection.contextMenuHandler(key);
+					},
+					items: items
+				};
+			}
+			else
+			{
+				return false;
+			}
+			
+        }
+	});
+}
+
+
+siggyMap.prototype.initializeSystemBlobContextMenu = function()
+{
+	var $this = this;
+	$(document).contextMenu({
+		selector: '.map-system-blob', 
+		
+        build: function($trigger, e) {
+			var sysID = $($trigger).data('system_id');
+			
+			var sysData = $this.systems[sysID];
+			
+			var items = { 'showinfo': {name: 'Show Info', icon: 'showinfo'} };
+			
+			if( typeof(CCPEVE) != "undefined" )
+			{
+				items.setdest = {name:'Set Destination', icon: 'setdest'}
+			}
+			
+			if( parseInt(sysData.rally) == 1 )
+			{
+				items.clearrally = {name:'Clear Rally', icon: 'clearrally'}
+			}
+			else
+			{
+				items.setrally = {name:'Set Rally', icon: 'setrally'}
+			}
+			
+            return {
+                callback: function(key, options) {
+					var sysID = $(this).data('system_id');
+					var sysData = $this.systems[sysID];
+					$this.systemContextMenuHandler(key,sysData);
+                },
+                items: items
+            };
+        }
+	});
+}
+
+
+siggyMap.prototype.systemContextMenuHandler = function(action, system)
+{
+	var $this = this;
+	
+	if( action == "edit" )
+	{
+		$this.openSystemEdit( system.systemID );
+	}
+	else if( action == "setdest" )
+	{
+		if( typeof(CCPEVE) != "undefined" )
+		{
+			CCPEVE.setDestination(system.systemID);
+		}
+	}
+	else if( action == "showinfo" )
+	{
+		if( typeof(CCPEVE) != "undefined" )
+		{
+			CCPEVE.showInfo(5, system.systemID );
+		}
+		else
+		{
+			window.open('http://evemaps.dotlan.net/system/'+ system.name , '_blank');
+		}
+	}
+	else if( action == "setrally" )
+	{
+		var data = {
+			rally: 1
+		};
+		
+		$this.siggymain.saveSystemOptions(system.systemID, data);
+	}
+	else if( action == "clearrally" )
+	{
+		var data = {
+			rally: 0
+		};
+		
+		$this.siggymain.saveSystemOptions(system.systemID, data);
+	}
+}
+
 
 siggyMap.prototype.startMapEdit = function()
 {
@@ -602,7 +721,8 @@ siggyMap.prototype.draw = function()
     var that = this;
 
     $('div.map-system-blob').qtip('destroy');
-    $('div.map-system-blob').destroyContextMenu();
+    $('div.map-system-blob').off();
+  //  $('div.map-system-blob').contextMenu('destroy');
     $('div.map-full-actives').remove();
 	
 	for( var i  in this.mapconnections )
@@ -620,6 +740,8 @@ siggyMap.prototype.draw = function()
         var systemData = this.systems[i];
 
         var sysBlob = $("<div>").addClass('map-system-blob').offset({ top: systemData.y, left: systemData.x}).attr("id", systemData.systemID);
+		
+		sysBlob.data('system_id', systemData.systemID);
 
         //blob time for the title
         var systemName = $("<span>").text(systemData.displayName == "" ? systemData.name : systemData.displayName).addClass('map-system-blob-sysname');
@@ -712,14 +834,6 @@ siggyMap.prototype.draw = function()
 
         $("#chain-map").append( sysBlob );
 
-		( function(system) {
-			sysBlob.contextMenu( { menu: 'systemMenu' },
-				function(action, el, pos) {
-					that.systemContextMenuHandler(action, system);
-			}, function(el) {
-				that.systemContextMenuOpenHandler(el, system);
-			});
-		})(systemData);
 
         sysBlob.click( function() {
             if( that.editing || that.massDelete )
@@ -851,71 +965,6 @@ siggyMap.prototype.draw = function()
 		});
 
 		jsPlumb.setDraggable($('.map-system-blob'), false);
-	}
-}
-
-siggyMap.prototype.systemContextMenuOpenHandler = function(el, system)
-{
-	if( typeof(CCPEVE) == "undefined" )
-	{
-		$("a[href=#setdest]").hide();
-	}
-	
-	var setRally = $('#systemMenu').find('li.set-rally');
-	var clearRally = $('#systemMenu').find('li.clear-rally');
-	if( parseInt(system.rally) == 1 )
-	{
-		setRally.hide();
-		clearRally.show();
-	}
-	else
-	{
-		setRally.show();
-		clearRally.hide();
-	}
-	
-}
-siggyMap.prototype.systemContextMenuHandler = function(action, system)
-{
-	var $this = this;
-	
-	if( action == "edit" )
-	{
-		$this.openSystemEdit( system.systemID );
-	}
-	else if( action == "setdest" )
-	{
-		if( typeof(CCPEVE) != "undefined" )
-		{
-			CCPEVE.setDestination(system.systemID);
-		}
-	}
-	else if( action == "showinfo" )
-	{
-		if( typeof(CCPEVE) != "undefined" )
-		{
-			CCPEVE.showInfo(5, system.systemID );
-		}
-		else
-		{
-			window.open('http://evemaps.dotlan.net/system/'+ system.name , '_blank');
-		}
-	}
-	else if( action == "set-rally" )
-	{
-		var data = {
-			rally: 1
-		};
-		
-		$this.siggymain.saveSystemOptions(system.systemID, data);
-	}
-	else if( action == "clear-rally" )
-	{
-		var data = {
-			rally: 0
-		};
-		
-		$this.siggymain.saveSystemOptions(system.systemID, data);
 	}
 }
 

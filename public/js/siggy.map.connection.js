@@ -148,6 +148,7 @@ mapconnection.prototype.create = function()
 	
 	this.connection = connection;
 	
+	$(connection.canvas).data('siggy_connection', this);
 	
 	 $(connection.canvas).qtip({
 		content: {
@@ -162,45 +163,34 @@ mapconnection.prototype.create = function()
 			viewport: $(window)
 		}
 	});
-
-	if( this.settings.type == 'wormhole' )
-	{
-		$(connection.canvas).contextMenu( { menu: 'wh-menu' },
-			function(action, el, pos) {
-				$this.whContextMenuHandler(action);
-				
-		}, function(el) {
-			$this.contextMenuOpenHandler(el);
-		});
-	}
 }
 
-mapconnection.prototype.whContextMenuHandler = function(action)
+mapconnection.prototype.contextMenuHandler = function(action)
 {
 	var $this = this;
 	var saveData = {};
 	
 	switch( action )
 	{
-		case 'set-stage-1':
+		case 'setstage1':
 			saveData.mass = 0;
 			break;
-		case 'set-stage-2':
+		case 'setstage2':
 			saveData.mass = 1;
 			break;
-		case 'set-stage-3':
+		case 'setstage3':
 			saveData.mass = 2;
 			break;
-		case 'set-eol':
+		case 'seteol':
 			saveData.eol = 1;
 			break;
-		case 'clear-eol':
+		case 'cleareol':
 			saveData.eol = 0;
 			break;
-		case 'set-frigate':
+		case 'setfrigate':
 			saveData.frigate_sized = 1;
 			break;
-		case 'unmark-frigate':
+		case 'clearfrigate':
 			saveData.frigate_sized = 0;
 			break;
 	}
@@ -217,71 +207,57 @@ mapconnection.prototype.whContextMenuHandler = function(action)
 }
 
 
-mapconnection.prototype.contextMenuOpenHandler = function(el)
+mapconnection.prototype.contextMenuBuildItems = function()
 {
-	var stage1 = $(this.whMenuID).find('li.set-stage-1');
-	var stage2 = $(this.whMenuID).find('li.set-stage-2');
-	var stage3 = $(this.whMenuID).find('li.set-stage-3');
-	var setEOL = $(this.whMenuID).find('li.set-eol');
-	var clearEOL = $(this.whMenuID).find('li.clear-eol');
-	var setFrigate = $(this.whMenuID).find('li.set-frigate');
-	var unmarkFrigate = $(this.whMenuID).find('li.unmark-frigate');
+	var items = {};
+	
+	if( this.settings.type != 'wormhole' )
+	{
+		return items;
+	}
 	
 	switch( this.settings.wormhole.mass )
 	{
 		case 0:
-			stage1.hide();
-			stage2.show();
-			stage3.show();
+			items.setstage2 = { name: "Set Stage 2", icon: "stage-2" };
+			items.setstage3 = { name: "Set Stage 3", icon: "stage-3" };
 			break;
 		case 1:
-			stage1.show();
-			stage2.hide();
-			stage3.show();
+			items.setstage1 = { name: "Set Stage 1", icon: "stage-1" };
+			items.setstage3 = { name: "Set Stage 3", icon: "stage-3" };
 			break;
 		case 2:
-			stage1.show();
-			stage2.show();
-			stage3.hide();
+			items.setstage1 = { name: "Set Stage 1", icon: "stage-1" };
+			items.setstage2 = { name: "Set Stage 2", icon: "stage-2" };
 			break;
 	}
 	
 	if( this.settings.wormhole.eol )
 	{
-		setEOL.hide();
-		clearEOL.show();
+		items.cleareol = { name: "Clear EOL", icon: "clear-eol" };
 	}
 	else
 	{
-		setEOL.show();
-		clearEOL.hide();
+		items.seteol = { name: "Set EOL", icon: "set-eol" };
 	}
 	
 	if( this.settings.wormhole.frigateSized )
 	{
-		setFrigate.hide();
-		unmarkFrigate.show();
+		items.clearfrigate = { name: "Unmark as Frigate Hole", icon: "set-frigate" };
 	}
 	else
 	{
-		setFrigate.show();
-		unmarkFrigate.hide();
+		items.setfrigate = { name: "Mark as Frigate Hole", icon: "set-frigate" };
 	}
+	
+	return items;
 }
 
 mapconnection.prototype.destroy = function()
 {
-	if( this.settings.type == 'wormhole' )
-	{
-		$(connection.canvas).destroyContextMenu();
-	}
-	
 	$(connection.canvas).qtip('destroy');
-	
-	if( this.label != '' )
-	{
-		$(connection.canvas).qtip('destroy');
-	}
+	//remove any other events
+	$(connection.canvas).off();
 }
 
 mapconnection.prototype.setupOverlay = function(connectionOptions)

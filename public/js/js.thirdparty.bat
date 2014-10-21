@@ -10,6 +10,7 @@
 --js=jquery/jquery.autocomplete.js ^
 --js=jquery/jquery.tablesorter.js ^
 --js=jquery/jquery.flot.js ^
+--js=jquery/jquery.ui.position.js ^
 --js=jquery/jquery.contextMenu.js ^
 --js=jquery/jquery.hotkeys.js ^
 --js=jquery/jsBezier-0.6-min.js ^
