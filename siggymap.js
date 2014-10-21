@@ -338,6 +338,9 @@ siggyMap.prototype.initializeConnectionContextMenu = function()
         build: function($trigger, e) {
 			var connection = $($trigger).data('siggy_connection');
 			
+			if( typeof(connection) == "undefined" )
+				return false;
+			
 			var items = connection.contextMenuBuildItems();
 			
 			if( Object.size(items) != 0 )
@@ -370,6 +373,9 @@ siggyMap.prototype.initializeSystemBlobContextMenu = function()
 			var sysID = $($trigger).data('system_id');
 			
 			var sysData = $this.systems[sysID];
+			
+			if( typeof(sysData) == "undefined" )
+				return false;
 			
 			var items = { 'showinfo': {name: 'Show Info', icon: 'showinfo'} };
 			
@@ -720,9 +726,11 @@ siggyMap.prototype.draw = function()
 {
     var that = this;
 
+	//reset jsplumb to nuke all events
+	jsPlumb.reset();
+	
     $('div.map-system-blob').qtip('destroy');
     $('div.map-system-blob').off();
-  //  $('div.map-system-blob').contextMenu('destroy');
     $('div.map-full-actives').remove();
 	
 	for( var i  in this.mapconnections )
@@ -731,7 +739,6 @@ siggyMap.prototype.draw = function()
 		delete this.mapconnections[i];
 	}
 	
-    jsPlumb.deleteEveryEndpoint();
     $('#chain-map').empty();
 	
     for( var i in this.systems )
