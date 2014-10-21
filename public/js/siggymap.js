@@ -377,7 +377,9 @@ siggyMap.prototype.initializeSystemBlobContextMenu = function()
 			if( typeof(sysData) == "undefined" )
 				return false;
 			
-			var items = { 'showinfo': {name: 'Show Info', icon: 'showinfo'} };
+			var items = { 'edit': {name: 'Edit', icon: 'edit' },
+						  'showinfo': {name: 'Show Info', icon: 'showinfo'} 
+						};
 			
 			if( typeof(CCPEVE) != "undefined" )
 			{
