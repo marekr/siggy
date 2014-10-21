@@ -465,6 +465,16 @@ class Controller_Chainmap extends FrontController
 				$errors[] = "The 'to' system could not be looked up by name.";
 			}
 		}
+		
+		if( !$fromSysID )
+		{
+			$errors[] = "The 'to' system cannot be blank.";
+		}
+		
+		if( !$toSysID )
+		{
+			$errors[] = "The 'to' system cannot be blank.";
+		}
 
 		if( $fromSysID == $toSysID )
 		{
