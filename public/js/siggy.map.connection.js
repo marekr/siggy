@@ -2,8 +2,6 @@ function mapconnection(plumb, options)
 {
 	this.jsPlumb = plumb;
 	
-	this.whMenuID = '#wh-menu';
-	
 	this.defaults = {
 			to: '',
 			from: '',
@@ -255,9 +253,13 @@ mapconnection.prototype.contextMenuBuildItems = function()
 
 mapconnection.prototype.destroy = function()
 {
-	$(connection.canvas).qtip('destroy');
+	$(this.connection.canvas).qtip('destroy');
 	//remove any other events
-	$(connection.canvas).off();
+	$(this.connection.canvas).off();
+	
+	this.connection = null;
+	this.jsPlumb = null;
+	this.map = null;
 }
 
 mapconnection.prototype.setupOverlay = function(connectionOptions)
