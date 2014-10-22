@@ -65,14 +65,12 @@ function siggyMap(options)
 	this.massSelect = false;
 	this.selectionInProgress = false;
 
-	this.selectedSystemRect = null;
 	this.selectedSystemID = 0;
 
 	//systemeditor
 	this.editingSystem = 0;
 
     this.selectionBox = $('<div>').addClass('selection-box');
-    this.selectedSystemBox = $('<div>').addClass('selected-system');
 }
 
 siggyMap.prototype.showMessage = function(what)
