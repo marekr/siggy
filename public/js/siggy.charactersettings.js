@@ -17,7 +17,7 @@ function charactersettings(options)
 charactersettings.prototype.initialize = function()
 {
 	var $this = this;
-	
+
 	$('#settings-button').click(function ()
 	{
 		$this.initForm();
@@ -30,10 +30,8 @@ charactersettings.prototype.initialize = function()
 				color: 'inherit',
 				cursor: 'auto',
 				textAlign: 'left',
-				top: '20%',
-				width: 'auto',
 				centerX: true,
-				centerY: false
+				centerY: true
 			},
 			overlayCSS: {
 				cursor: 'auto'
@@ -47,51 +45,51 @@ charactersettings.prototype.initialize = function()
 	$('#settings-cancel').click( function() {
 		$.unblockUI();
 	});
-	
+
 	$("#settings-form select[name=theme_id]").change( function() {
 		var themeID = $("#settings-form select[name=theme_id]").val();
-		
+
 		$this.changeTheme(themeID);
 	});
-	
+
 	this.initForm();
-	
+
 	$('#settings-form').submit( function() {
-		
+
 		var data = {
 			theme_id: $('#settings-form select[name=theme_id]').val(),
 			combine_scan_intel: $('#settings-form input[name=combine_scan_intel]').is(':checked') ? 1 : 0,
 			zoom: $this.settings.zoom,
 			language: $('#settings-form select[name=language]').val()
 		};
-		
+
 		$this.save(data);
-		
+
 		return false;
 	});
-	
+
 	$this.performSettingsRefresh();
-	
+
 	$this.initializeHotkeys();
 }
 
 charactersettings.prototype.initForm = function()
 {
 	$("#settings-form input[name=combine_scan_intel]").prop('checked', this.settings.combineScanIntel ? true : false);
-	
+
 	$('#settings-form select[name=language]').val( this.settings.language );
 }
 
 charactersettings.prototype.save = function(data)
 {
 	var $this = this;
-	
+
 	$.post($this.settings.baseUrl + 'siggy/save_character_settings', data, function (ret)
 	{
 		$this.settings.themeID = data.theme_id;
 		$this.settings.combineScanIntel = data.combine_scan_intel;
 		$this.settings.language = data.language;
-		
+
 		$this.performSettingsRefresh();
 		$.unblockUI();
 	});
@@ -101,21 +99,21 @@ charactersettings.prototype.save = function(data)
 charactersettings.prototype.saveAll = function()
 {
 	var $this = this;
-	
+
 	var data = {
 		theme_id: $this.settings.themeID,
 		combine_scan_intel: $this.settings.combineScanIntel,
 		zoom: $this.settings.zoom,
 		language: $this.settings.language
 	};
-	
+
 	$this.save(data);
 }
 
 charactersettings.prototype.initializeHotkeys = function()
 {
 	var $this = this;
-	
+
 	if( this.siggyMain.settings.igb )
 	{
 		$(document).bind('keydown', 'ctrl+-', function(){
@@ -124,18 +122,18 @@ charactersettings.prototype.initializeHotkeys = function()
 		$(document).bind('keydown', '-', function(){
 			$this.zoomOut();
 		});
-		
+
 		$(document).bind('keydown', 'ctrl+=', function(){
 			$this.zoomIn();
 		});
 		$(document).bind('keydown', '+', function(){
 			$this.zoomIn();
 		});
-		
+
 		$(document).bind('keydown', 'ctrl+z', function(){
 			$this.resetZoom();
 		});
-	
+
 		this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+Z', 'Reset page zoom');
 		this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+-', 'Zoom page in');
 		this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+=', 'Zoom page out');
@@ -147,7 +145,7 @@ charactersettings.prototype.initializeHotkeys = function()
 charactersettings.prototype.performSettingsRefresh = function()
 {
 	var $this = this;
-	
+
 	this.siggyMain.changeTab("#sigs");
 	if( this.settings.combineScanIntel )
 	{
@@ -161,18 +159,18 @@ charactersettings.prototype.performSettingsRefresh = function()
 		$("#dscan-box").detach().appendTo($('#system-intel'));
 		$('li a[href="#system-intel"]').parent().show();
 	}
-	
+
 	$("body").css("zoom", this.settings.zoom);
-	
+
 	/* init localisations  */
 	if( this.settings.language != 'en' )
 	{
-		LazyLoad.js(this.settings.baseUrl + 'public/js/locale/siggy.locale.'+this.settings.language+'.js', function() 
+		LazyLoad.js(this.settings.baseUrl + 'public/js/locale/siggy.locale.'+this.settings.language+'.js', function()
 		{
 			_.setTranslation(translation);
 		});
 	}
-	
+
 	//force a update to refresh
 	$this.siggyMain.forceUpdate = 1;
 	//do not call updateNow as on page load this will cause quirkyness/race condition with another update call
@@ -182,7 +180,7 @@ charactersettings.prototype.resetZoom = function()
 {
 	this.settings.zoom = 1.0;
 	$("body").css("zoom", this.settings.zoom);
-	
+
 	this.saveAll();
 }
 
@@ -190,7 +188,7 @@ charactersettings.prototype.zoomOut = function()
 {
 	this.settings.zoom -= 0.05;
 	$("body").css("zoom", this.settings.zoom);
-	
+
 	this.saveAll();
 }
 
@@ -198,7 +196,7 @@ charactersettings.prototype.zoomIn = function()
 {
 	this.settings.zoom += 0.05;
 	$("body").css("zoom", this.settings.zoom);
-	
+
 	this.saveAll();
 }
 
