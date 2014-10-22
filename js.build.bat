@@ -10,5 +10,11 @@
 --js=siggy.map.connection.js ^
 --js=siggy.hotkeyhelper.js ^
 --js=siggymap.js ^
+--source_map_format=V3 ^
+--create_source_map siggy.compiled.js.map ^
 --js_output_file=siggy.compiled.js
+
+
+echo //# sourceMappingURL=siggy.compiled.js.map >> siggy.compiled.js
+
 @pause

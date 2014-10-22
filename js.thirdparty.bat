@@ -17,5 +17,9 @@
 --js=jquery/jquery.jsPlumb-1.5.5-min.js ^
 --js=jquery/jquery.placeholder.js ^
 --js=dropdown.js ^
+--source_map_format=V3 ^
+--create_source_map thirdparty.compiled.js.map ^
 --js_output_file=thirdparty.compiled.js
+
+echo //# sourceMappingURL=thirdparty.compiled.js.map >> thirdparty.compiled.js
 @pause
