@@ -195,7 +195,7 @@ siggymain.prototype.initialize = function ()
 siggymain.prototype.initializeHubJumpContextMenu = function()
 {
 	$(document).contextMenu({
-		selector: '.hub-jump', 
+		selector: '.basic-system-context', 
 		callback: function(key, options) {
 			var sysID = $(this).data("sysID");
 			var sysName  = $(this).data("sysName");
@@ -497,34 +497,10 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 	{
 		var hub = systemData.hubJumps[index];
 
-		var hubDiv = $("<div>").addClass('hub-jump')
+		var hubDiv = $("<div>").addClass('hub-jump').addClass('basic-system-context')
 							   .text(hub.destination_name + " (" + hub.num_jumps + " "+_('Jumps')+")")
 							   .data("sysID", hub.system_id)
 							   .data("sysName", hub.destination_name);
-    
-	/*	hubDiv.contextMenu( { menu: 'system-simple-context' },
-			function(action, el, pos) {
-				var sysID = $(el[0]).data("sysID");
-				var sysName  = $(el[0]).data("sysName");
-				if( action == "setdest" )
-				{
-					if( typeof(CCPEVE) != "undefined" )
-					{
-						CCPEVE.setDestination(sysID);
-					}
-				}
-				else if( action == "showinfo" )
-				{
-					if( typeof(CCPEVE) != "undefined" )
-					{
-							CCPEVE.showInfo(5, sysID );
-					}
-					else
-					{
-							window.open('http://evemaps.dotlan.net/system/'+sysName , '_blank');
-					}
-				}
-		});*/
 
 		$('#hub-jumps').append(hubDiv);
 	}
@@ -1104,30 +1080,7 @@ siggymain.prototype.populateExitData = function(data)
 
 			item.data("sysID", data.result[i].system_id);
 			item.data("sysName",data.result[i].system_name);
-
-/*			item.contextMenu( { menu: 'system-simple-context', leftMouse: true },
-				function(action, el, pos) {
-					var sysID = $(el[0]).data("sysID");
-					var sysName  = $(el[0]).data("sysName");
-					if( action == "setdest" )
-					{
-						if( typeof(CCPEVE) != "undefined" )
-						{
-							CCPEVE.setDestination(sysID);
-						}
-					}
-					else if( action == "showinfo" )
-					{
-						if( typeof(CCPEVE) != "undefined" )
-						{
-								CCPEVE.showInfo(5, sysID );
-						}
-						else
-						{
-								window.open('http://evemaps.dotlan.net/system/'+sysName , '_blank');
-						}
-					}
-			});*/
+			item.addClass('basic-system-context');
 		}
 	}
 	else
