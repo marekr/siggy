@@ -1,8 +1,8 @@
-/* 
+/*
  * @license Proprietary
  * @copyright Copyright (c) 2014 borkedLabs - All Rights Reserved
  */
- 
+
 if (typeof(CCPEVE) != "undefined")
 {
 	CCPEVE.requestTrust('http://siggy.borkedlabs.com/*');
@@ -85,27 +85,27 @@ function siggymain( options )
 	this.sigtable = new sigtable(this.settings.sigtable);
 	this.sigtable.siggyMain = this;
 	this.sigtable.settings.baseUrl = this.settings.baseUrl;
-	
+
 	this.inteldscan = new inteldscan(this.settings.intel.dscan);
 	this.inteldscan.siggyMain = this;
 	this.inteldscan.settings.baseUrl = this.settings.baseUrl;
-	
+
 	this.intelposes = new intelposes(this.settings.intel.poses);
 	this.intelposes.siggyMain = this;
 	this.intelposes.settings.baseUrl = this.settings.baseUrl;
-	
+
 	this.globalnotes = new globalnotes(this.settings.globalnotes);
 	this.globalnotes.siggyMain = this;
 	this.globalnotes.settings.baseUrl = this.settings.baseUrl;
-	
+
 	this.charactersettings = new charactersettings(this.settings.charsettings);
 	this.charactersettings.siggyMain = this;
 	this.charactersettings.settings.baseUrl = this.settings.baseUrl;
-	
+
 	this.hotkeyhelper = new hotkeyhelper();
 	this.hotkeyhelper.siggyMain = this;
 	this.hotkeyhelper.initialize();
-	
+
 	this.systemName = this.settings.initialSystemName;
     this.setSystemID(this.settings.initialSystemID);
 }
@@ -158,7 +158,7 @@ siggymain.prototype.initialize = function ()
 			label: $('#system-options input[name=label]').val(),
 			activity: $('#system-options select[name=activity]').val()
 		};
-		
+
 		that.saveSystemOptions(that.systemID, data);
 	});
 
@@ -171,7 +171,7 @@ siggymain.prototype.initialize = function ()
 			label: '',
 			activity: 0
 		};
-		
+
 		that.saveSystemOptions(that.systemID, data);
 	});
 
@@ -188,14 +188,14 @@ siggymain.prototype.initialize = function ()
 
 
 	this.initializeExitFinder();
-	
+
 	this.initializeHubJumpContextMenu();
 }
 
 siggymain.prototype.initializeHubJumpContextMenu = function()
 {
 	$(document).contextMenu({
-		selector: '.basic-system-context', 
+		selector: '.basic-system-context',
 		callback: function(key, options) {
 			var sysID = $(this).data("sysID");
 			var sysName  = $(this).data("sysName");
@@ -229,7 +229,7 @@ siggymain.prototype.initializeHubJumpContextMenu = function()
 siggymain.prototype.initializeCollaspibles = function()
 {
 	var $this = this;
-	
+
 	this.setupCollaspible('#system-stats', 'statsOpen', function() {$this.renderStats();});
 	this.setupCollaspible('#sig-add-box', 'sigsAddOpen');
 	this.setupCollaspible('#dscan-box', 'dscanOpen');
@@ -240,7 +240,7 @@ siggymain.prototype.setupCollaspible = function(baseID, displayState, onShow)
 {
 	var $this = this;
 	var content = $(baseID + ' > div');
-	
+
 	if( $this.displayStates[displayState] )
 	{
 		content.show();
@@ -266,7 +266,7 @@ siggymain.prototype.setupCollaspible = function(baseID, displayState, onShow)
 			$this.saveDisplayState();
 		}
 	});
-	
+
 }
 
 siggymain.prototype.saveDisplayState = function()
@@ -467,7 +467,7 @@ siggymain.prototype.switchSystem = function(systemID, systemName)
 	this.forceUpdate = true;
 	this.freeze();
 	clearTimeout(this._updateTimeout);
-	
+
 	this.sigtable.clear();
 
 
@@ -492,7 +492,7 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 	//HUB JUMPS
 	var hubJumpsStr = '';
 	$('#hub-jumps').empty();
-	
+
 	for(var index in systemData.hubJumps)
 	{
 		var hub = systemData.hubJumps[index];
@@ -504,7 +504,7 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 
 		$('#hub-jumps').append(hubDiv);
 	}
-	
+
 
     //EFFECT STUFF
 	//effect info
@@ -990,9 +990,9 @@ siggymain.prototype.setupFatalErrorHandler = function()
 siggymain.prototype.saveSystemOptions = function(systemID, newData)
 {
 	var $this = this;
-	
+
 	newData.systemID = systemID;
-	
+
 	$.post(this.settings.baseUrl + 'siggy/save_system', newData,
 	function (data)
 	{
@@ -1002,7 +1002,7 @@ siggymain.prototype.saveSystemOptions = function(systemID, newData)
 			{
 				$this.systemList[systemID].displayName = newData.label;
 			}
-			
+
 			if( typeof(newData.activity) != 'undefined' )
 			{
 				$this.systemList[systemID].activity = newData.activity;
@@ -1152,7 +1152,6 @@ siggymain.prototype.openBox = function(ele)
 			cursor: 'auto',
 			textAlign: 'left',
 			top: '20%',
-			width: 'auto',
 			centerX: true,
 			centerY: false
 		},
