@@ -145,7 +145,11 @@ class FrontController extends Controller
     {
 		if( $this->igb )
 		{
-			if( $this->authStatus == AuthStatus::GPASSWRONG )
+			if( $this->authStatus == AuthStatus::TRUSTREQUIRED )
+			{
+				$this->siggyredirect('/pages/trust-required');
+			}
+			elseif( $this->authStatus == AuthStatus::GPASSWRONG )
 			{
 				$this->siggyredirect('/access/group_password');
 			}
@@ -165,14 +169,7 @@ class FrontController extends Controller
 				}
 				else
 				{
-					if( $this->authStatus == AuthStatus::TRUSTREQUIRED )
-					{
-						$this->siggyredirect('/pages/trust-required');
-					}
-					else
-					{
-						$this->siggyredirect('/pages/no-group-access');
-					}
+					$this->siggyredirect('/pages/no-group-access');
 				}
 			}
 		}
