@@ -3,10 +3,6 @@
  * @copyright Copyright (c) 2014 borkedLabs - All Rights Reserved
  */
 
-if (typeof(CCPEVE) != "undefined")
-{
-	CCPEVE.requestTrust('http://siggy.borkedlabs.com/*');
-}
 
 $( function()
 {
@@ -18,6 +14,7 @@ $( function()
 */
 function siggymain( options )
 {
+
 	this.fatalError = false;
 	this.ajaxErrors = 0;
 
@@ -70,7 +67,7 @@ function siggymain( options )
 		igb: true
 	};
 
-	this.settings = $.extend(this.defaults, options);
+	this.settings = $.extend({}, this.defaults, options);
 
 	this.defaultDisplayStates = {
 		statsOpen: false,
