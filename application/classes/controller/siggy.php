@@ -374,7 +374,7 @@ class Controller_Siggy extends FrontController
         $this->auto_render = FALSE;
         header('content-type: application/json');
         header("Cache-Control: no-cache, must-revalidate");
-      //  ob_start( 'ob_gzhandler' );
+        ob_start( 'ob_gzhandler' );
 
         if(	!$this->siggyAccessGranted() )
         {
