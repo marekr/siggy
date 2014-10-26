@@ -376,6 +376,7 @@ var whLookup = {
 		10: "O128  (to C4)",
 		11: "N432 (to C5)",
 		12: "B041 (to C6)",
+		46: "U319 (to C6)",	/* mass regen type */
 		13: "S199 (to Nullsec)",
 		14: "N944 (to Lowsec)",
 		15: "B449 (to Highsec)"
