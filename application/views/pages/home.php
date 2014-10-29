@@ -62,14 +62,5 @@
 		</div>
 	</div>
 
-	<hr class="featurette-divider">
 
-	<!-- FOOTER -->
-	<footer>
-		<p class="pull-right"><a href="#">Back to top</a></p>
-		<p>&copy; 2011-<?php echo date("Y"); ?> borkedLabs.<br />
-			All artwork, screenshots, characters, vehicles, storylines, world facts or other recognizable features of the intellectual property relating to these trademarks are likewise the intellectual property of CCP hf. "EVE", "EVE Online", "CCP", and all related logos and images are trademarks or registered trademarks of CCP hf.
-		</p>
-	</footer>
-
-    </div>
+</div>

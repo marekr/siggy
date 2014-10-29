@@ -7,7 +7,7 @@ class Controller_Account extends FrontController
 {
 	private $auth;
 	private $user;
-	public $template = 'template/public';
+	public $template = 'template/public_bootstrap32';
 	protected $noAutoAuthRedirects = true;
 
 	function __construct(Kohana_Request $request, Kohana_Response $response)
@@ -684,7 +684,7 @@ class Controller_Account extends FrontController
 			HTTP::redirect('/');
 		}
 		
-		if( isset($_POST['login']) )
+		if( $this->request->method() == "POST" )
 		{
 			$rememberMe = (isset($_POST['rememberMe']) ? TRUE : FALSE);
 			if( Auth::processLogin($_POST['username'], $_POST['password'], $rememberMe) === Auth::LOGIN_SUCCESS )

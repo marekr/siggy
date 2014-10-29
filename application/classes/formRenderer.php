@@ -22,6 +22,8 @@ class formRenderer
 		{
 			$value = Arr::get($_REQUEST, $key, $value);
 		}
+		
+		$attributes = array('class' => 'form-control');
 	
 		return self::wrap($name, $key, Form::input($key, $value, $attributes), $desc, $errors);
 	}
@@ -47,6 +49,8 @@ class formRenderer
 
 	public static function password($name, $key, $value, $desc = '', $errors = NULL, array $attributes = NULL)
 	{
+		$attributes = array('class' => 'form-control');
+		
 		return self::wrap($name, $key, Form::password($key, $value, $attributes), $desc, $errors);
 	}
 
@@ -56,6 +60,7 @@ class formRenderer
 		{
 			$value = Arr::get($_REQUEST, $key, $value);
 		}	
+		$attributes = array('class' => 'form-control');
 		
 		return self::wrap($name, $key, Form::textarea($key, $value, $attributes, $double_encode), $desc, $errors);
 	}
@@ -67,6 +72,8 @@ class formRenderer
 			$selected = Arr::get($_REQUEST, $key, $selected);
 		}	
 	
+		$attributes = array('class' => 'form-control');
+		
 		return self::wrap($name, $key, Form::select($key, $options, $selected, $attributes), $desc, $errors);
 	}
 
@@ -83,6 +90,8 @@ class formRenderer
             $checked = TRUE;
         }
 	
+		$attributes = array('class' => 'form-control');
+		
 		return self::wrap($name, $key, Form::checkbox($key, "1", $checked, $attributes), $desc, $errors);
 	}
 	 
@@ -97,9 +106,9 @@ class formRenderer
 		$i18n_name = __($name);
 
 		$out = <<<OUT
-<div class="control-group{$error_class}">
-	<label for="{$key}" class="control-label">{$i18n_name}</label>
-	<div class="controls">
+<div class="form-group{$error_class}">
+	<label for="{$key}">{$i18n_name}</label>
+	<div class="input-group">
 		{$form_element}{$error_html}
 		{$desc_html}
 	</div>

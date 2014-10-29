@@ -36,13 +36,14 @@ class Controller_Pages extends FrontController
 				HTTP::redirect('/');
 			}
 		}
-		$this->template->title = 'siggy - getting siggy';
+		$this->template->title = 'siggy';
 
 		$this->template->selectedTab = 'home';
 		$this->template->layoutMode = 'blank';
 
 		if( $page == 'getting-siggy' )
 		{
+		$this->template->title = 'siggy: getting siggy';
 			$this->template->content = View::factory('pages/gettingSiggy');
 		}
 		else if( $page == 'create-group' || $page == 'createGroup' )
@@ -56,6 +57,7 @@ class Controller_Pages extends FrontController
 		}
 		else if( $page == 'about' )
 		{
+			$this->template->title = 'siggy: about';
 			$this->template->selectedTab = 'about';
 			$this->template->content = View::factory('pages/about');
 		}

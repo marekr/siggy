@@ -1,7 +1,7 @@
-	<div>
-		<h2>Character Select</h2>
+
+		<h3>Character Select</h3>
 		<?php if( $apiError ): ?>
-		<div class="alert alert-error">
+		<div class="alert alert-danger">
 		  <h5>Error</h5> There was an issue obtaining your character information from the EVE API. Please ensure your key is correct or try again another time.
 		</div>
 		<?php else: ?>
@@ -31,4 +31,3 @@
 			<div class="alert alert-danger">Sorry, you have no characters with access on your API key. If your corporation or character is already supposed to have access, verify your API key is not expired and has your character included, otherwise contact the person in charge. If you want siggy but don't have access, read the guide here: <a href="http://wiki.siggy.borkedlabs.com/getting_siggy">http://wiki.siggy.borkedlabs.com/getting_siggy</a></div>
 			<?php endif; ?>
 		<?php endif; ?>
-    </div>

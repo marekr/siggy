@@ -1,25 +1,17 @@
 
-    <div class="well">
-					<h1>Complete Password Reset</h1>
-						<p>Please enter your account's email address and the reset token provided in the email sent to you.</p>
-						<form action='<?php echo URL::base(TRUE, TRUE);?>account/completePasswordReset' method='POST' class='form-horizontal'>	
-							<br />
-							<div class="control-group">
-								<label class="control-label" for="inputEmail">Account Email</label>
-								<div class="controls">
-									<input type="text" id="inputEmail" name='reset_email' placeholder="">
-								</div>
-							</div>
-							
-							<div class="control-group">
-								<label class="control-label" for="inputToken">Reset Token</label>
-								<div class="controls">
-									<input type="text" id="inputToken" name='reset_token' placeholder="">
-								</div>
-							</div>
-							
-							<div class="form-actions">
-								<button type="submit" name='proceed' class="btn btn-primary">Proceed with Reset</button>
-							</div>
-						</form>
-    </div>
+<div class="container">
+    <div class="row">
+		<div class="well">
+			<h2>Complete Password Reset</h2>
+			<p>Please enter your account's email address and the reset token provided in the email sent to you.</p>
+			<form action='<?php echo URL::base(TRUE, TRUE);?>account/completePasswordReset' method='POST'>	
+				<?php echo formRenderer::input('Account Email', 'reset_email', '', ''); ?>
+				<?php echo formRenderer::input('Reset Token', 'reset_token', '', ''); ?>
+				
+				<div class="form-group">
+					<button type="submit" name='proceed' class="btn btn-primary">Proceed with Reset</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

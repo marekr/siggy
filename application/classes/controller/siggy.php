@@ -89,6 +89,16 @@ class Controller_Siggy extends FrontController
 		$headerToolsHTML->group = $this->groupData;
         $headerToolsHTML->themes = $themes;
         $headerToolsHTML->settings = $this->template->settings;
+	
+		if( $this->igb && isset($this->groupData['authMode']) )
+		{
+			$headerToolsHTML->apilogin = ( $this->groupData['authMode'] == 2 ? true : false);
+		}
+		else
+		{
+			$headerToolsHTML->apilogin = true;
+		}
+			
 		$this->template->headerTools = $headerToolsHTML;
 	}
 

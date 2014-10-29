@@ -11,6 +11,7 @@
     <link href="<?php echo URL::base(TRUE, TRUE);?>public/css/public.css" rel="stylesheet">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap3/js/bootstrap.min.js"></script>
+    <link href="<?php echo URL::base(TRUE, TRUE);?>public/css/public_bootstrap32.css" rel="stylesheet">
 
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -80,17 +81,30 @@
 		<?php echo $content; ?>
 	<?php elseif( $layoutMode == 'leftMenu' ): ?>
 
-	<div class="container">
+		<div class="container">
 
-		<div class="row">
-			<div class="sidenav span3">
-			<?php echo $leftMenu; ?>
-			</div>
-			<div class="span9">
-			<?php echo $content; ?>
+			<div class="row">
+				<div class="sidenav col-lg-3">
+				<?php echo $leftMenu; ?>
+				</div>
+				<div class=" col-lg-9">
+				<?php echo $content; ?>
+				</div>
 			</div>
 		</div>
 		<?php endif; ?>
+		
+	<hr class="featurette-divider">
+	<div class="container">
+		<div class="row">
+			<!-- FOOTER -->
+			<footer>
+				<p class="pull-right"><a href="#">Back to top</a></p>
+				<p>&copy; 2011-<?php echo date("Y"); ?> borkedLabs.<br />
+					All artwork, screenshots, characters, vehicles, storylines, world facts or other recognizable features of the intellectual property relating to these trademarks are likewise the intellectual property of CCP hf. "EVE", "EVE Online", "CCP", and all related logos and images are trademarks or registered trademarks of CCP hf.
+				</p>
+			</footer>
+		</div>
 	</div>
 </body>
 </html>

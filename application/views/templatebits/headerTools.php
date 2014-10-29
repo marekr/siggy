@@ -16,6 +16,16 @@
 		<li><a target="_blank" href="http://wiki.siggy.borkedlabs.com/support">Contact</a></li>
 	  </ul>
 	</li>
+	<?php if( $apilogin ): ?>
+	<li class="dropdown">
+	  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <i class="fa fa-caret-square-o-down"></i></a>
+	  <ul class="dropdown-menu" role="menu">
+		<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/apiKeys">API Keys</a></li>
+		<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/characterSelect">Switch Character</a></li>
+		<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/changePassword">Change Password</a></li>
+	  </ul>
+	</li>
+	<?php endif; ?>
     <li id="hotkey-button" style="position: absolute;right: 0;"><i class="fa fa-keyboard-o "></i></li>
 </ul>
 
