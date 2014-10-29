@@ -34,14 +34,14 @@
 	</script>
 </head>
 <body>
-	<div class="navbar navbar-default navbar-inverse navbar-fixed-top">
+	<div class="navbar navbar-default navbar-fixed-top">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="<?php echo URL::base(TRUE, TRUE);?>">siggy</a>
+			<a class="navbar-brand" href="<?php echo URL::base(TRUE, TRUE);?>"><img alt="Brand" width="24" src="<?php echo URL::base(TRUE, TRUE);?>public/images/siggy.png">siggy</a>
 		</div>
 		<div class="navbar-collapse collapse navbar-responsive-collapse">
 			<ul class="nav navbar-nav">
@@ -72,7 +72,7 @@
 				<li  <?php echo ($selectedTab == 'register' ? 'class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>account/register">Register</a></li>
 				<li  <?php echo ($selectedTab == 'login' ? 'class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>account/login">Login</a></li>
 				<?php endif; ?>
-                <li>aa</li>
+				<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
 			</ul>
 		</div>
 	</div>

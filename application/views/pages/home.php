@@ -1,13 +1,75 @@
 <div class="jumbotron">
 	<div class="container">
-		<h1>siggy</h1>
+		<h1><img alt="Brand" width="150" src="<?php echo URL::base(TRUE, TRUE);?>public/images/siggy-blue.png">siggy</h1>
 		<p>One of EVE's oldest WH scanning tool now 2 years old and counting! It has aided countless explorers of WH Space.</p>
 	</div>
 </div>
-<div class="container">
+<div class="container marketing">
+
 	<div class="row featurette">
-	      <h2 class="featurette-heading">Getting access</h2>
-		<p class="lead">Looking to gain access to your corp or alliance siggy? <a href="<?php echo URL::base(TRUE, TRUE);?>account/register" />Register here</a></p>
-		<p class="lead">Looking to start using siggy for the first time?  <a href="http://wiki.siggy.borkedlabs.com/getting_siggy" />Click here for info</a></p>
+		<div class="col-md-5">
+			<img class="featurette-image img-responsive" width="500" src="<?php echo URL::base(TRUE, TRUE);?>public/images/intro/intro-igboog.png">
+		</div>
+		<div class="col-md-7">
+			<h2 class="featurette-heading">IGB and OOG Support. <span class="text-muted">Works ingame and out of game!</span></h2>
+			<p class="lead">Use the in-game browser(IGB) to take advantage of location tracking features and make scanning easier! siggy also works in all major modern browsers are supported out of game(OOG) minus the tracking.</p>
+		</div>
 	</div>
-</div>
+
+	<hr class="featurette-divider">
+	
+	<div class="row featurette">
+		<div class="col-md-7">
+			<h2 class="featurette-heading">Chainmaps. <span class="text-muted">Navigate wormholes with ease!</span></h2>
+			<p class="lead">Wormholes automatically get mapped as you jump systems with siggy open. The map allows editing of system and wormhole states and positions on the map</p>
+		</div>
+		<div class="col-md-5">
+			<img class="featurette-image img-responsive" width="500" src="<?php echo URL::base(TRUE, TRUE);?>public/images/intro/intro-chainmap.png">
+		</div>
+	</div>
+
+	<hr class="featurette-divider">
+
+	<div class="row featurette">
+		<div class="col-md-5">
+			<img class="featurette-image img-responsive" width="500" src="<?php echo URL::base(TRUE, TRUE);?>public/images/intro/intro-sigs.png">
+		</div>
+		<div class="col-md-7">
+			<h2 class="featurette-heading">Signature Log.<span class="text-muted">Track signatures in systems.</span></h2>
+			<p class="lead">Record signatureas as you can. You are allowed to categorize signatures down to the site type and sort the table! Signatures are preserved for weeks allowing you to quickly skip old signatures in 	wormholes you have already visited.</p>
+		</div>
+	</div>
+
+	<hr class="featurette-divider">
+
+	<div class="row featurette">
+		<div class="col-md-7">
+			<h2 class="featurette-heading">Non-English EVE Client Support. <span class="text-muted">Play in your language!</span></h2>
+			<p class="lead">Non-english text is supported by default in siggy. Additionally, Deutsch language users are able to paste the EVE client's signatures into siggy and the Deutsch names of sites are handled properly.</p>
+		</div>
+		<div class="col-md-5">
+			<img class="featurette-image img-responsive" width="500" src="<?php echo URL::base(TRUE, TRUE);?>public/images/intro/intro-language.png">
+		</div>
+	</div>
+
+	<hr class="featurette-divider">
+
+	<div class="row featurette" style="text-align:center">
+		<div class="col-md-12">
+			<h2 class="featurette-heading">Getting Access</h2>
+			<p class="lead">Looking to gain access to your corp or alliance siggy?&nbsp;<a href="<?php echo URL::base(TRUE, TRUE);?>account/register" class="btn btn-default btn-primary btn-sm" />Register here</a></p>
+			<p class="lead">Looking to start using siggy for the first time?&nbsp;<a href="http://wiki.siggy.borkedlabs.com/getting_siggy" class="btn btn-default btn-sm" />Click here for info</a></p>
+		</div>
+	</div>
+
+	<hr class="featurette-divider">
+
+	<!-- FOOTER -->
+	<footer>
+		<p class="pull-right"><a href="#">Back to top</a></p>
+		<p>&copy; 2011-<?php echo date("Y"); ?> borkedLabs.<br />
+			All artwork, screenshots, characters, vehicles, storylines, world facts or other recognizable features of the intellectual property relating to these trademarks are likewise the intellectual property of CCP hf. "EVE", "EVE Online", "CCP", and all related logos and images are trademarks or registered trademarks of CCP hf.
+		</p>
+	</footer>
+
+    </div>
