@@ -155,7 +155,7 @@ class access
 		$corp_id = intval($corp_id);
 		$char_id = intval($char_id);
 
-		$default = array('groupID' =>0, 'authMode' => 0, 'authPassword' => '', 'data_type' => 'none');
+		$default = array('groupID' =>0, 'group_password_required' => false, 'group_password' => '', 'api_login_required' => false, 'data_type' => 'none');
 
 		if( empty( $corp_id ) || empty($char_id)  )
 		{

@@ -214,7 +214,8 @@ class Controller_Manage_Settings extends Controller_Manage
 
 				$view->set('data',array('groupName' => $_POST['groupName'],
 										'groupTicker' => $_POST['groupTicker'], 
-										'authMode' => $_POST['authMode'],
+										'api_login_required' => $_POST['api_login_required'],
+										'group_password_required' => $_POST['group_password_required'],
 										'showSigSizeCol' => false
 									 ) 
 				);

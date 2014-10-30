@@ -122,22 +122,20 @@ class Controller_Pages extends FrontController
 				$validator = Validation::factory($_POST)
 							->rule('groupName', 'not_empty')
 							->rule('groupTicker', 'not_empty')
-							->rule('ingameContact', 'not_empty')
-							->rule('confirmGroupPassword',  'matches', array(':validation', 'groupPassword', 'confirmGroupPassword'));
+							->rule('confirm_group_password',  'matches', array(':validation', 'group_password', 'confirm_group_password'));
 
-				if( intval($_POST['authMode']) == 1 )
+				if( intval($_POST['group_password_required']) == 1 )
 				{
-					$validator->rule('groupPassword', 'not_empty');
+					$validator->rule('group_password', 'not_empty');
 				}
 
 				if ( $validator->check() )
 				{
 						$groupID = groupUtils::createNewGroup( array( 'groupName' => $_POST['groupName'],
 															'groupTicker' => $_POST['groupTicker'],
-															'groupPassword' => $_POST['groupPassword'],
-															'authMode' => intval($_POST['authMode']),
-															'homeSystems' => $_POST['homeSystems'],
-															'ingameContact' => $_POST['ingameContact']
+															'group_password' => $_POST['group_password'],
+															'group_password_required' => intval($_POST['group_password_required']),
+															'api_login_required' => intval($_POST['api_login_required'])
 														)
 													);
 

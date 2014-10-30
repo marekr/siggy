@@ -31,24 +31,20 @@ final class groupUtils
 
 	static function createNewGroup($data)
 	{
-		$home_sys_data = self::parseHomeSystems($data['homeSystems']);
-
 		$salt = miscUtils::generateSalt(10);
 		$password = "";
-		if( $data['groupPassword'] != "" && $data['authMode'] == 1 )
+		if( $data['group_password'] != "" && $data['group_password_required'] == 1 )
 		{
-			$password = self::hashGroupPassword( $data['groupPassword'], $salt );
+			$password = self::hashGroupPassword( $data['group_password'], $salt );
 		}
 
 		$insert = array(
 							'groupName' => $data['groupName'],
 							'groupTicker' => $data['groupTicker'],
-							'billingContact' => $data['ingameContact'],
-							'authMode' => $data['authMode'],
-							'authSalt' => $salt,
-							'authPassword' => $password,
-							'homeSystems' => $home_sys_data['homeSystems'],
-							'homeSystemIDs' => $home_sys_data['homeSystemIDs'],
+							'group_password_required' => $data['group_password_required'],
+							'api_login_required' => $data['api_login_required'],
+							'group_password_salt' => $salt,
+							'group_password' => $password,
 							'dateCreated' => time(),
 							'paymentCode' => miscUtils::generateString(14),
 							'billable' => 1
