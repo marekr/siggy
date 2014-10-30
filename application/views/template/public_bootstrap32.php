@@ -7,11 +7,11 @@
     <title><?php echo $title; ?></title>
 
     <!-- Le styles -->
-    <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap3/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?php echo URL::base(TRUE, TRUE);?>public/css/public.css" rel="stylesheet">
+    <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap3/css/bootstrap.min.css?<?php echo SIGGY_VERSION; ?>" rel="stylesheet">
+    <link href="<?php echo URL::base(TRUE, TRUE);?>public/css/public.css?<?php echo SIGGY_VERSION; ?>" rel="stylesheet">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap3/js/bootstrap.min.js"></script>
-    <link href="<?php echo URL::base(TRUE, TRUE);?>public/css/public_bootstrap32.css" rel="stylesheet">
+    <link href="<?php echo URL::base(TRUE, TRUE);?>public/css/public_bootstrap32.css?<?php echo SIGGY_VERSION; ?>" rel="stylesheet">
 
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
