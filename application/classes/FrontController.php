@@ -107,14 +107,7 @@ class FrontController extends Controller
 			$this->template->charName = isset($this->groupData['charName']) ? $this->groupData['charName'] : '';
 			$this->template->group = $this->groupData;
 
-			if( $this->igb && isset($this->groupData['authMode']) )
-			{
-				$this->template->apilogin = ( $this->groupData['authMode'] == 2 ? true : false);
-			}
-			else
-			{
-				$this->template->apilogin = true;
-			}
+			$this->template->apilogin = Auth::loggedIn();
 		}
     }
 
@@ -175,6 +168,10 @@ class FrontController extends Controller
 		}
 		else
 		{
+			if( $this->authStatus == AuthStatus::GPASSWRONG )
+			{
+				$this->siggyredirect('/access/group_password');
+			}
 			if( $this->authStatus == AuthStatus::APILOGINREQUIRED )
 			{
 				$this->siggyredirect('/pages/welcome');

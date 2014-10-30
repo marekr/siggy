@@ -1,4 +1,4 @@
-<form class="form-horizontal" action="<?php echo URL::base(TRUE,TRUE); ?>manage/settings/general" method="post">
+<form action="<?php echo URL::base(TRUE,TRUE); ?>manage/settings/general" method="post">
 	<fieldset>
 		<legend>Group Settings</legend>
 		<?php echo formRenderer::input('Group Name', 'groupName', $data['groupName'], 'The name of your group be it alliance, corp or whatever. This is not important', $errors); ?>
@@ -12,14 +12,13 @@
   	
 	<fieldset>
 	<legend>Auth</legend>
-		<?php echo formRenderer::select('Auth Mode', 'authMode', array(0 =>'No auth', 1 => 'Group password', 2 => 'API based Login'), $data['authMode'], "
-		There are currently three states for auth, no auth and group password. <br />
-						<b>No auth:</b> No authenication measures are taken when a person tries to access siggy. This isn't the best mode to use as people can spoof their corporation ID among other things.<br />
-						<b>Group Password:</b> The password set below or in individual subgroups will be prompted the first time a user attempts to use siggy on a computer. The password will be remembered by their client until it is changed or client deletes its cookies.<br />
-						<b>API based login:</b> Utilizing the same accounts as out of game login, this requires an siggy account with valid API key to access your group.
-						", $errors); ?>
+		<?php echo formRenderer::yesNo("API login required?", 'api_login_required', $data['api_login_required'], 'If yes, users will have to log into an siggy account with an valid EVE API key to prove their identity.', $errors); ?>
+
+		<?php echo formRenderer::yesNo("Group password required?", 'group_password_required', $data['group_password_required'], 'If yes, siggy will prompt for a password from all users, this is highly recommended.', $errors); ?>
+
 		<?php echo formRenderer::password('Group password', 'password', '', "Only enter in a password here and confirm it below if you are trying to set or change the group password, otherwise leave blank and it won't get reset/changed.", $errors); ?>
 		<?php echo formRenderer::password('Confirm group password', 'password_confirm', '', "Only enter in a password here and confirm it below if you are trying to set or change the group password, otherwise leave blank and it won't get reset/changed.", $errors); ?>
+	
 	</fieldset>
   			
 	<div class="form-actions">

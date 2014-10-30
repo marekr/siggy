@@ -12,7 +12,7 @@ class Controller_Access extends FrontController
 	public function action_group_password()
 	{
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-		if( !$this->trusted )
+		if( $this->igb && !$this->trusted )
 		{
 			return;
 		}
@@ -28,12 +28,12 @@ class Controller_Access extends FrontController
 		
 		$groupID = intval($this->groupData['groupID']);
 		
-		if( isset($_POST['authPassword']) )
+		if( isset($_POST['group_password']) )
 		{
-			$pass = sha1($_POST['authPassword'].$this->groupData['authSalt']);
-			if( !empty($this->groupData['authPassword']) )
+			$pass = sha1($_POST['group_password'].$this->groupData['group_password_salt']);
+			if( !empty($this->groupData['group_password']) )
 			{
-				if( $pass == $this->groupData['authPassword'] )
+				if( $pass == $this->groupData['group_password'] )
 				{
 					Cookie::set('auth-password-' .$groupID, $pass, 365*60*60*24);
 					HTTP::redirect('/');

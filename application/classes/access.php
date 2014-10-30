@@ -56,12 +56,16 @@ class access
 
 				if( $this->accessData['groupID'] )
 				{
-					if( $this->accessData['authMode'] == 1 )
+					if( $this->accessData['api_login_required'] )
+					{
+						return $this->__checkAccountAuth();
+					}
+					else if( $this->accessData['group_password_required'] )	//group password only?
 					{
 						$groupID = intval($this->accessData['groupID']);
 						$this->authPassword = Cookie::get('auth-password-' .$groupID, '');
 
-						if( $this->authPassword == $this->accessData['authPassword'] )
+						if( $this->authPassword == $this->accessData['group_password'] )
 						{
 							$this->authStatus = AuthStatus::ACCEPTED;
 						}
@@ -69,10 +73,6 @@ class access
 						{
 							$this->authStatus = AuthStatus::GPASSWRONG;
 						}
-					}
-					else if( $this->accessData['authMode'] == 2 )
-					{
-						return $this->__checkAccountAuth();
 					}
 					else
 					{
@@ -110,7 +110,24 @@ class access
 
 				if( $this->accessData['groupID'] )
 				{
-					$this->authStatus = AuthStatus::ACCEPTED;
+					if( $this->accessData['group_password_required'] )
+					{
+						$groupID = intval($this->accessData['groupID']);
+						$this->authPassword = Cookie::get('auth-password-' .$groupID, '');
+
+						if( $this->authPassword == $this->accessData['group_password'] )
+						{
+							$this->authStatus = AuthStatus::ACCEPTED;
+						}
+						else
+						{
+							$this->authStatus = AuthStatus::GPASSWRONG;
+						}
+					}
+					else
+					{
+						$this->authStatus = AuthStatus::ACCEPTED;
+					}
 				}
 				else
 				{

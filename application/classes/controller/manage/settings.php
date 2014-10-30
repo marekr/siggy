@@ -179,21 +179,21 @@ class Controller_Manage_Settings extends Controller_Manage
 			{
 				$group->groupName = $_POST['groupName'];
 				$group->groupTicker = $_POST['groupTicker'];
-				$group->authMode = $_POST['authMode'];
+				$group->api_login_required = intval($_POST['api_login_required']);
+				$group->group_password_required = intval($_POST['group_password_required']);
 				$group->showSigSizeCol = intval($_POST['showSigSizeCol']);
 				
 				if( !empty($_POST['password']) && !empty($_POST['password_confirm']) )
 				{
-						if( $_POST['password'] == $_POST['password_confirm'] )
-						{
-								$group->authPassword = sha1($_POST['password'].$group->authSalt);
-						}
-						else
-						{
-								Message::add( 'error', __('Error: The password was not saved because it did not match between the two fields.') );
-						}
+					if( $_POST['password'] == $_POST['password_confirm'] )
+					{
+						$group->group_password = sha1($_POST['password'].$group->group_password_salt);
+					}
+					else
+					{
+						Message::add( 'error', __('Error: The password was not saved because it did not match between the two fields.') );
+					}
 				}
-				
 				
 				$group->save();
 					

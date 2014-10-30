@@ -128,6 +128,7 @@ class Auth
 	public static function processLogout()
 	{
 		self::$session->destroy();
+		
 		Cookie::delete('userID');
 		Cookie::delete('passHash');
 	}
