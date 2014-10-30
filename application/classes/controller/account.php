@@ -1,5 +1,10 @@
 <?php
 
+require Kohana::find_file('vendor', 'OAuth\bootstrap');
+use OAuth\OAuth2\Service\Eve;
+use OAuth\Common\Storage\Session;
+use OAuth\Common\Consumer\Credentials;
+
 require_once APPPATH.'classes/FrontController.php';
 require_once APPPATH.'classes/access.php';
 
@@ -19,6 +24,7 @@ class Controller_Account extends FrontController
 	{
 		switch( $this->request->action() )
 		{
+			case 'sso':
 			case 'login':
 			case 'register':
 			case 'forgotPassword':
@@ -60,6 +66,52 @@ class Controller_Account extends FrontController
 		$this->template->user = Auth::$user->data;
 
 		parent::after();
+	}
+	
+	public function action_sso()
+	{
+
+		/** @var $serviceFactory \OAuth\ServiceFactory An OAuth service factory. */
+		$serviceFactory = new \OAuth\ServiceFactory();
+		// Session storage
+		$storage = new Session();
+
+				
+		/**
+		 * Create a new instance of the URI class with the current URI, stripping the query string
+		 */
+		$uriFactory = new \OAuth\Common\Http\Uri\UriFactory();
+		$currentUri = $uriFactory->createFromSuperGlobalArray($_SERVER);
+		$currentUri->setQuery('');
+		
+		
+		$credentials = new Credentials(
+			'730bb7cdbf314c59abcc7556d24aa6e0',
+			'kAXcJDfClth6hMVjywkSPCwZDRyDemVXNZnp0rxM',
+			 'http://localhost/evetel/account/sso'
+		);
+
+		$eveService = $serviceFactory->createService('Eve', $credentials, $storage);
+		if (!empty($_GET['code'])) {
+			// retrieve the CSRF state parameter
+			$state = isset($_GET['state']) ? $_GET['state'] : null;
+
+			// This was a callback request from reddit, get the token
+			$eveService->requestAccessToken($_GET['code'], $state);
+
+			$result = json_decode($eveService->request('https://sisilogin.testeveonline.com/oauth/verify'), true);
+
+			print_r($result);
+
+		} elseif (!empty($_GET['go']) && $_GET['go'] === 'go') {
+			$url = $eveService->getAuthorizationUri();
+			header('Location: ' . $url);
+
+		} else {
+			$url = $currentUri->getRelativeUri() . '?go=go';
+			echo "<a href='$url'>Login with Reddit!</a>";
+		}
+		die();
 	}
 		
 	public function action_overview()

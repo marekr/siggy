@@ -1,12 +1,49 @@
-
+<style type='text/css'>
+  .login-or {
+    position: relative;
+    font-size: 18px;
+    color: #aaa;
+    margin-top: 10px;
+            margin-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .span-or {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: -2px;
+    margin-left: -25px;
+    background-color: #303030;
+    width: 50px;
+    text-align: center;
+  }
+  .hr-or {
+    background-color: #cdcdcd;
+    height: 1px;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+  }
+</style>
 <div class="container">
 	<div class="row colored">
 		<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<strong> Login in to continue</strong>
+					<strong> Login to continue</strong>
 				</div>
 				<div class="panel-body">
+				<!---
+				  <div class="row">
+					<div class="text-center">
+					  
+					<a href="#"><img src='https://images.contentful.com/idjq7aai9ylm/4PTzeiAshqiM8osU2giO0Y/5cc4cb60bac52422da2e45db87b6819c/EVE_SSO_Login_Buttons_Large_White.png?w=270&h=45' /></a>
+					</div>
+				  </div>
+				  <div class="login-or">
+					<hr class="hr-or">
+					<span class="span-or">or</span>
+				  </div> -->
 					<form role='form' action='<?php echo URL::base(TRUE, TRUE);?>/account/login' method='POST'>
 						<input type="hidden" name="bounce" value="<?php echo $bounce; ?>" />
 						
