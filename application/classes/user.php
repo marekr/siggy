@@ -63,6 +63,19 @@ class User
 		}
 	}
 	
+	public static function create($data)
+	{
+		$insert = array();
+		$insert = $data;
+		
+		$insert['password'] = self::hash($insert['password']);
+		$insert['active'] = TRUE;
+		
+		$userID = DB::insert('users', array_keys($insert) )->values(array_values($insert))->execute();
+		
+		return TRUE;
+	}
+	
 	public function getAPIKeys()
 	{
 		if( !$this->userLoaded() )

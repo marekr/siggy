@@ -172,7 +172,8 @@ class Controller_Account extends FrontController
 									 'active' => 1,
 									 'created' => time()
 									 );
-					if( Auth::createUser( $userData ) )
+
+					if( User::create( $userData ) )
 					{
 						Auth::processLogin($_POST['username'], $_POST['password']);
 						HTTP::redirect('account/apiKeys');

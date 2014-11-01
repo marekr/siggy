@@ -77,18 +77,6 @@ class Auth
 		return FALSE;
 	}
 	
-	public static function createUser($data)
-	{
-		$insert = array();
-		$insert = $data;
-		
-		$insert['password'] = self::hash($insert['password']);
-		$insert['active'] = TRUE;
-		
-		$sigID = DB::insert('users', array_keys($insert) )->values(array_values($insert))->execute();
-		
-		return TRUE;
-	}
 	
 	public static function processLogin($username, $password, $rememberMe = FALSE)
 	{
