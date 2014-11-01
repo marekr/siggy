@@ -17,6 +17,7 @@ class UserSession
 		$this->charID = isset($_SERVER['HTTP_EVE_CHARID']) ? $_SERVER['HTTP_EVE_CHARID'] : 0;
 		$this->charName = isset($_SERVER['HTTP_EVE_CHARNAME']) ? $_SERVER['HTTP_EVE_CHARNAME'] : '';
 		$this->corpID = isset($_SERVER['HTTP_EVE_CORPID']) ? $_SERVER['HTTP_EVE_CORPID'] : 0;
+		
 		$this->igb = miscUtils::isIGB();
 		$this->trusted = miscUtils::getTrust();
 
@@ -47,8 +48,8 @@ class UserSession
 		}
         else
         {
-            $sess = DB::query(Database::SELECT, 'SELECT sessionID,userID,groupID FROM siggysessions WHERE sessionID=:id')->param(':id', $this->sessionID)->execute()->current();
-
+            $sess = DB::query(Database::SELECT, 'SELECT sessionID,userID,groupID,char_id,char_name,corp_id FROM siggysessions WHERE sessionID=:id')->param(':id', $this->sessionID)->execute()->current();
+			
             if( isset($sess['sessionID']) )
             {
                 Auth::$user->loadByID( $sess['userID'] );
@@ -71,6 +72,9 @@ class UserSession
 
                 $this->__generateSession($this->sessionID);
             }
+			$this->charID = $sess['char_id'];
+			$this->charName = $sess['char_name'];
+			$this->corpID = $sess['corp_id'];
         }
 	}
 
@@ -97,8 +101,9 @@ class UserSession
 		$update = array( 'userID' => Auth::$user->data['id'],
 						 'groupID' => Auth::$user->data['groupID'],
 					//	 'chainmap_id' => Auth::$user->data['active_chain_map'],
-                         'charName' => Auth::$user->data['apiCharName'],
-                         'charID' => Auth::$user->data['apiCharID']
+                         'char_name' => Auth::$user->data['char_name'],
+                         'char_id' => Auth::$user->data['char_id'],
+                         'corp_id' => Auth::$user->data['corp_id']
 						 );
 
 		DB::update('siggysessions')->set( $update )->where('sessionID', '=',  $this->sessionID)->execute();
@@ -107,7 +112,7 @@ class UserSession
 	private function __generateSession()
 	{
 		$insert = array( 'sessionID' => $this->sessionID,
-					'charID' => $this->charID,
+					'char_id' => $this->charID,
 					'charName' => $this->charName,
 					'created' => time(),
 					'ipAddress' => Request::$client_ip,

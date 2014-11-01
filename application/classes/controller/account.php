@@ -70,48 +70,74 @@ class Controller_Account extends FrontController
 	
 	public function action_sso()
 	{
+		$sso_type = $this->request->param('id');
+		
+		if( $sso_type == 'eve' )
+		{
+			/** @var $serviceFactory \OAuth\ServiceFactory An OAuth service factory. */
+			$serviceFactory = new \OAuth\ServiceFactory();
+			// Session storage
+			$storage = new Session();
 
-		/** @var $serviceFactory \OAuth\ServiceFactory An OAuth service factory. */
-		$serviceFactory = new \OAuth\ServiceFactory();
-		// Session storage
-		$storage = new Session();
+					
+			/**
+			 * Create a new instance of the URI class with the current URI, stripping the query string
+			 */
+			$uriFactory = new \OAuth\Common\Http\Uri\UriFactory();
+			$currentUri = $uriFactory->createFromSuperGlobalArray($_SERVER);
+			$currentUri->setQuery('');
+			
+			
+			$credentials = new Credentials(
+				Kohana::$config->load('sso.eve.key'),
+				Kohana::$config->load('sso.eve.secret'),
+				 'http://localhost/evetel/account/sso/eve'
+			);
 
+			$eveService = $serviceFactory->createService('Eve', $credentials, $storage);
+			if ( !empty($_GET['code']) )
+			{
+				// retrieve the CSRF state parameter
+				$state = isset($_GET['state']) ? $_GET['state'] : null;
+
+				// This was a callback request from reddit, get the token
+				$eveService->requestAccessToken($_GET['code'], $state);
+
+				$result = json_decode($eveService->request('https://sisilogin.testeveonline.com/oauth/verify'), true);
+
+				print_r($result);
 				
-		/**
-		 * Create a new instance of the URI class with the current URI, stripping the query string
-		 */
-		$uriFactory = new \OAuth\Common\Http\Uri\UriFactory();
-		$currentUri = $uriFactory->createFromSuperGlobalArray($_SERVER);
-		$currentUri->setQuery('');
-		
-		
-		$credentials = new Credentials(
-			'730bb7cdbf314c59abcc7556d24aa6e0',
-			'kAXcJDfClth6hMVjywkSPCwZDRyDemVXNZnp0rxM',
-			 'http://localhost/evetel/account/sso'
-		);
-
-		$eveService = $serviceFactory->createService('Eve', $credentials, $storage);
-		if (!empty($_GET['code'])) {
-			// retrieve the CSRF state parameter
-			$state = isset($_GET['state']) ? $_GET['state'] : null;
-
-			// This was a callback request from reddit, get the token
-			$eveService->requestAccessToken($_GET['code'], $state);
-
-			$result = json_decode($eveService->request('https://sisilogin.testeveonline.com/oauth/verify'), true);
-
-			print_r($result);
-
-		} elseif (!empty($_GET['go']) && $_GET['go'] === 'go') {
-			$url = $eveService->getAuthorizationUri();
-			header('Location: ' . $url);
-
-		} else {
-			$url = $currentUri->getRelativeUri() . '?go=go';
-			echo "<a href='$url'>Login with Reddit!</a>";
+				//find username by CharacterOwnerHash
+				if( $userID = Auth::usernameExists( $result['CharacterName'] ) )
+				{
+					
+				}
+				else
+				{
+					$data = array( 'email' => '',
+									'username' => $result['CharacterName'],
+									'char_id' => $result['CharacterID'],
+									'char_name' => $result['CharacterName'],
+									'password' => $result['CharacterOwnerHash'],		//we aren't using password but this is a good placeholder (non blank)
+									'provider' => 1			//provider 1 == eve sso for now
+									);
+				}
+				
+				//if not create
+				//CharacterOwnerHash
+				//CharacterID
+				//CharacterName
+				//
+			}
+			else
+			{
+				print 'hi';
+				$url = $eveService->getAuthorizationUri();
+				header('Location: ' . $url);
+			} 
 		}
-		die();
+		
+		exit();
 	}
 		
 	public function action_overview()
@@ -254,9 +280,9 @@ class Controller_Account extends FrontController
 		
 		if( Auth::$user->data['apiKeyEntryID'] == $keyData['entryID'] )
 		{
-			Auth::$user->data['apiCorpID'] = 0;
-			Auth::$user->data['apiCharID'] = 0;
-			Auth::$user->data['apiCharName'] = '';
+			Auth::$user->data['corp_id'] = 0;
+			Auth::$user->data['char_id'] = 0;
+			Auth::$user->data['char_name'] = '';
 			Auth::$user->data['apiKeyEntryID'] = 0;
 			
 			Auth::$user->save();
@@ -347,9 +373,9 @@ class Controller_Account extends FrontController
 						
 						if( Auth::$user->data['apiKeyEntryID'] == $entryID )
 						{
-							Auth::$user->data['apiCorpID'] = 0;
-							Auth::$user->data['apiCharID'] = 0;
-							Auth::$user->data['apiCharName'] = '';
+							Auth::$user->data['corp_id'] = 0;
+							Auth::$user->data['char_id'] = 0;
+							Auth::$user->data['char_name'] = '';
 							Auth::$user->data['apiKeyEntryID'] = 0;
 							
 							Auth::$user->save();
@@ -612,7 +638,7 @@ class Controller_Account extends FrontController
 			Auth::$user->save();
 		}
 	
-		if( Auth::$user->data['apiKeyEntryID'] && ( Auth::$user->data['apiCharID'] == 0 || Auth::$user->data['apiCorpID'] == 0 ) )
+		if( Auth::$user->data['apiKeyEntryID'] && ( Auth::$user->data['char_id'] == 0 || Auth::$user->data['corp_id'] == 0 ) )
 		{
 			//char select
 			$view->messageType = 'selectChar';
@@ -652,7 +678,7 @@ class Controller_Account extends FrontController
 		
 		Auth::$user->loadByID(Auth::$user->data['id']);
 		Auth::$user->save();
-		$charID =  Auth::$user->data['apiCharID'];
+		$charID =  Auth::$user->data['char_id'];
 		
 		require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
 		spl_autoload_register( "Pheal::classload" );
@@ -705,9 +731,9 @@ class Controller_Account extends FrontController
 			$charID = intval($_POST['charID']);
 			if( $charID && isset( $chars[ $charID ] ) )
 			{
-				Auth::$user->data['apiCorpID'] = $chars[ $charID ]['corpID'];
-				Auth::$user->data['apiCharName'] = $chars[ $charID ]['name'];
-				Auth::$user->data['apiCharID'] = $charID;
+				Auth::$user->data['corp_id'] = $chars[ $charID ]['corpID'];
+				Auth::$user->data['char_name'] = $chars[ $charID ]['name'];
+				Auth::$user->data['char_id'] = $charID;
 				Auth::$user->data['apiKeyEntryID'] = $chars[ $charID ]['entryID'];
 				
 				Auth::$user->data['apiLastCheck'] = 0;

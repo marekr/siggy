@@ -33,10 +33,11 @@ class User
 							'last_login' => $this->data['last_login'],
 							'admin' => $this->data['admin'],
 							'ip_address' => $this->data['ip_address'],
-							'apiCharID' => $this->data['apiCharID'],
-							'apiCharName' => $this->data['apiCharName'],
-							'apiCorpID' => $this->data['apiCorpID'],
-							'apiKeyEntryID' => $this->data['apiKeyEntryID']
+							'char_id' => $this->data['char_id'],
+							'char_name' => $this->data['char_name'],
+							'corp_id' => $this->data['corp_id'],
+							'apiKeyEntryID' => $this->data['apiKeyEntryID'],
+							'provider' => $this->data['provider']
 						 );
 						 
 		DB::update('users')->set( $userArray )->where('id', '=',  $this->data['id'])->execute();
@@ -199,10 +200,10 @@ class User
 		
 		if( $this->data['apiLastCheck'] < time()-60*120 )
 		{
-			if( $this->data['apiID'] == 0 ||  $this->data['apiKey'] == '' || $this->data['apiCharID'] == 0 || $this->data['apiKeyInvalid'] || ($this->data['apiFailures'] >= 3) )
+			if( $this->data['apiID'] == 0 ||  $this->data['apiKey'] == '' || $this->data['char_id'] == 0 || $this->data['apiKeyInvalid'] || ($this->data['apiFailures'] >= 3) )
 			{
-				$this->data['apiCharID'] = 0;
-				$this->data['apiCorpID'] = 0;		
+				$this->data['char_id'] = 0;
+				$this->data['corp_id'] = 0;		
 				$this->save();
 									
 				return FALSE;
@@ -220,16 +221,16 @@ class User
 				$result = $pheal->accountScope->Characters();
 				foreach($result->characters as $char )
 				{
-					if( $char->characterID == $this->data['apiCharID'] )
+					if( $char->characterID == $this->data['char_id'] )
 					{
-						$this->data['apiCorpID'] = $char->corporationID;								
+						$this->data['corp_id'] = $char->corporationID;								
 						
 						$this->data['apiLastCheck'] = time();
 						$this->data['apiFailures'] = 0;
 						$this->data['apiKeyInvalid'] = 0;
 						$this->save();
 				
-						return array( 'corpID' => $this->data['apiCorpID'], 'charID' => $this->data['apiCharID'], 'charName' => $this->data['apiCharName'] );
+						return array( 'corpID' => $this->data['corp_id'], 'charID' => $this->data['char_id'], 'charName' => $this->data['char_name'] );
 					}
 				}
 			
@@ -247,8 +248,8 @@ class User
 						case 105:
 							//$this->update_user( $this->data['id'], array('apiCharID' => 0, 'apiCorpID' => 0 ) );
 							//$this->reload_user();
-							$this->data['apiCharID'] = 0;
-							$this->data['apiCorpID'] = 0;
+							$this->data['char_id'] = 0;
+							$this->data['corp_id'] = 0;
 							$this->save();
 							return FALSE;
 							break;
@@ -303,7 +304,7 @@ class User
 		}
 		else
 		{
-			return array( 'corpID' => $this->data['apiCorpID'], 'charID' => $this->data['apiCharID'], 'charName' => $this->data['apiCharName'] );
+			return array( 'corpID' => $this->data['corp_id'], 'charID' => $this->data['char_id'], 'charName' => $this->data['char_name'] );
 		}
 		return FALSE;
     }
