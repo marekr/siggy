@@ -81,7 +81,7 @@ class Controller_Siggy extends FrontController
         $themes = DB::query(Database::SELECT, "SELECT theme_id, theme_name FROM themes
                                                 WHERE visibility='all' OR (group_id=:group AND visibility='group')
                                                 ORDER BY theme_id ASC")
-								->param(':group', $this->groupData['groupID'])
+								->param(':group', Auth::$session->groupID)
 								->execute()
 								->as_array();
 
@@ -100,7 +100,7 @@ class Controller_Siggy extends FrontController
         $this->profiler = NULL;
         $this->auto_render = FALSE;
 
-        $charID = $this->groupData['charID'];
+        $charID = Auth::$session->charID;
 
         if( !empty($charID) )
         {
@@ -112,7 +112,7 @@ class Controller_Siggy extends FrontController
             $themes = DB::query(Database::SELECT, "SELECT theme_id, theme_name FROM themes
                                                     WHERE theme_id = :themeID AND (visibility='all' OR (group_id=:group AND visibility='group'))")
 									->param(':themeID', $themeID)
-									->param(':group', $this->groupData['groupID'])
+									->param(':group', Auth::$session->groupID)
 									->execute()
 									->as_array();
 
@@ -139,7 +139,7 @@ class Controller_Siggy extends FrontController
 
 		if( $this->groupData['active_chain_map'] )
 		{
-			$this->chainmap = new Chainmap($this->groupData['active_chain_map'],$this->groupData['groupID']);
+			$this->chainmap = new Chainmap($this->groupData['active_chain_map'],Auth::$session->groupID);
 		}
 	}
 
@@ -180,7 +180,7 @@ class Controller_Siggy extends FrontController
 													LEFT OUTER JOIN activesystems sa ON (ss.id = sa.systemID  AND sa.groupID = :group AND sa.chainmap_id=:chainmap)
 													WHERE ss.id=:id")
 									->param(':id', $id)
-									->param(':group', $this->groupData['groupID'])
+									->param(':group', Auth::$session->groupID)
 									->param(':chainmap', $this->groupData['active_chain_map'])
 									->execute()
 									->current();
@@ -215,7 +215,7 @@ class Controller_Siggy extends FrontController
 
 		$trackedJumps = DB::query(Database::SELECT, "SELECT hourStamp, jumps FROM jumpstracker WHERE systemID=:system AND groupID=:group AND hourStamp >= :start AND hourStamp <= :end ORDER BY hourStamp asc LIMIT 0,24")
 									->param(':system', $systemData['id'])
-									->param(':group', $this->groupData['groupID'])
+									->param(':group', Auth::$session->groupID)
 									->param(':start', $start)
 									->param(':end', $end)
 									->execute()->as_array('hourStamp');
@@ -256,7 +256,7 @@ class Controller_Siggy extends FrontController
                                                 INNER JOIN pos_types pt ON(pt.pos_type_id = p.pos_type)
                                                 WHERE p.group_id=:group_id AND p.pos_system_id=:system_id
 												ORDER BY p.pos_location_planet ASC, p.pos_location_moon ASC")
-										->param(':group_id', $this->groupData['groupID'])
+										->param(':group_id', Auth::$session->groupID)
                                         ->param(':system_id', $systemID)
                                         ->execute()
 										->as_array();
@@ -269,7 +269,7 @@ class Controller_Siggy extends FrontController
         $dscans = DB::query(Database::SELECT, "SELECT dscan_id, dscan_title, dscan_date
 												FROM dscan
                                                 WHERE group_id=:group_id AND system_id=:system_id")
-										->param(':group_id', $this->groupData['groupID'])
+										->param(':group_id', Auth::$session->groupID)
                                         ->param(':system_id', $systemID)
                                         ->execute()
 										->as_array();
@@ -327,7 +327,7 @@ class Controller_Siggy extends FrontController
 
 		$connection = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE hash=:hash AND group_id=:group AND chainmap_id=:chainmap")
 						->param(':hash', $whHash)
-						->param(':group', $this->groupData['groupID'])
+						->param(':group', Auth::$session->groupID)
 						->param(':chainmap', $this->groupData['active_chain_map'])
 						->execute()
 						->current();
@@ -345,7 +345,7 @@ class Controller_Siggy extends FrontController
 			DB::update('wormholes')
 				->set( array('lastJump' => time()) )
 				->where('hash', '=', $whHash)
-				->where('group_id', '=', $this->groupData['groupID'])
+				->where('group_id', '=', Auth::$session->groupID)
 				->where('chainmap_id', '=', $this->groupData['active_chain_map'])
 				->execute();
 		}
@@ -361,7 +361,7 @@ class Controller_Siggy extends FrontController
 						->param(':hash', $whHash )
 						->param(':dest', $dest)
 						->param(':origin', $origin )
-						->param(':groupID', $this->groupData['groupID'] )
+						->param(':groupID', Auth::$session->groupID )
 						->param(':chainmap', $this->groupData['active_chain_map'] )
 						->param(':time', $jumpTime )
 						->param(':shipTypeID',  $_SERVER['HTTP_EVE_SHIPTYPEID'] )
@@ -377,7 +377,7 @@ class Controller_Siggy extends FrontController
         $this->auto_render = FALSE;
         header('content-type: application/json');
         header("Cache-Control: no-cache, must-revalidate");
-        ob_start( 'ob_gzhandler' );
+       // ob_start( 'ob_gzhandler' );
 
         if(	!$this->siggyAccessGranted() )
         {
@@ -411,16 +411,19 @@ class Controller_Siggy extends FrontController
                     if( $this->groupData['recordJumps'] && $actualCurrentSystemID != 0 && $lastSystemID != 0 )
                     {
 						$hourStamp = miscUtils::getHourStamp();
+						
+						
+						
 						DB::query(Database::INSERT, 'INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`) VALUES(:systemID, :groupID, :hourStamp, 1) ON DUPLICATE KEY UPDATE jumps=jumps+1')
 											->param(':hourStamp', $hourStamp )
 											->param(':systemID', $lastSystemID )
-											->param(':groupID', $this->groupData['groupID'] )
+											->param(':groupID', Auth::$session->groupID )
 											->execute();
 
 						DB::query(Database::INSERT, 'INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`) VALUES(:systemID, :groupID, :hourStamp, 1) ON DUPLICATE KEY UPDATE jumps=jumps+1')
 											->param(':hourStamp', $hourStamp )
 											->param(':systemID', $actualCurrentSystemID )
-											->param(':groupID', $this->groupData['groupID'] )
+											->param(':groupID', Auth::$session->groupID )
 											->execute();
                     }
 
@@ -474,7 +477,7 @@ class Controller_Siggy extends FrontController
 						->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
 						->param(':broadcast', $broadcast )
 						->param(':systemID', $actualCurrentSystemID )
-						->param(':groupID', $this->groupData['groupID'] )
+						->param(':groupID', Auth::$session->groupID )
 						->param(':shipType', isset($_SERVER['HTTP_EVE_SHIPTYPEID']) ? $_SERVER['HTTP_EVE_SHIPTYPEID'] : 0 )
 						->param(':shipName', isset($_SERVER['HTTP_EVE_SHIPNAME']) ? htmlentities($_SERVER['HTTP_EVE_SHIPNAME']) : '' )
 						->param(':chainmap', $this->groupData['active_chain_map'] )
@@ -485,7 +488,7 @@ class Controller_Siggy extends FrontController
 
             $activeSystemQuery = DB::query(Database::SELECT, 'SELECT lastUpdate FROM activesystems WHERE systemID=:id AND groupID=:group AND chainmap_id=:chainmap')
 												->param(':id', $currentSystemID)
-												->param(':group',$this->groupData['groupID'])
+												->param(':group',Auth::$session->groupID)
 												->param(':chainmap', $this->groupData['active_chain_map'])
 												->execute();
 
@@ -503,7 +506,7 @@ class Controller_Siggy extends FrontController
                 $update['sigData'] = DB::query(Database::SELECT, "SELECT sigID,sig, type, siteID, description, created, creator,updated,lastUpdater".$additional." FROM systemsigs
 																	WHERE systemID=:id AND groupID=:group")
                                  ->param(':id', $currentSystemID)
-								 ->param(':group', $this->groupData['groupID'])
+								 ->param(':group', Auth::$session->groupID)
 								 ->execute()
 								 ->as_array('sigID');
 
@@ -557,7 +560,7 @@ class Controller_Siggy extends FrontController
 																WHERE ct.groupID = :groupID AND ct.chainmap_id = :chainmap AND ct.broadcast=1 AND
 																	ct.currentSystemID IN(".implode(',',$this->mapData['systemIDs']).") AND ct.lastBeep >= :lastBeep")
 										->param(':lastBeep', time()-60)
-										->param(':groupID', $this->groupData['groupID'])
+										->param(':groupID', Auth::$session->groupID)
 										->param(':chainmap', $this->groupData['active_chain_map'])
 										->execute()
 										->as_array();
@@ -614,8 +617,8 @@ class Controller_Siggy extends FrontController
 
 		$update = array('groupNotes' => $notes);
 
-		groupUtils::update_group($this->groupData['groupID'],$update);
-		groupUtils::recacheGroup($this->groupData['groupID']);
+		groupUtils::update_group(Auth::$session->groupID,$update);
+		groupUtils::recacheGroup(Auth::$session->groupID);
 
 		echo json_encode(time());
 		exit();
@@ -638,7 +641,7 @@ class Controller_Siggy extends FrontController
 			$update = array();
 			
 			$system_data = $this->getSystemData($id);
-			$log_message = sprintf('%s edited system %s; ', $this->groupData['charName'], $system_data['name'] );
+			$log_message = sprintf('%s edited system %s; ', Auth::$session->charName, $system_data['name'] );
 			if( isset($_POST['label']) )
 			{
 				$update['displayName'] = trim(strip_tags($_POST['label']));
@@ -666,7 +669,7 @@ class Controller_Siggy extends FrontController
 			echo json_encode('1');
 
 
-			groupUtils::log_action($this->groupData['groupID'],'editsystem', $log_message );
+			groupUtils::log_action(Auth::$session->groupID,'editsystem', $log_message );
 
 			$this->chainmap->rebuild_map_data_cache();
 		}

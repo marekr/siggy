@@ -54,7 +54,7 @@ class Controller_Stats extends FrontController
 												HAVING score > 0
 												ORDER BY score DESC
 											) u")
-								->param(':group', $this->groupData['groupID'])
+								->param(':group', Auth::$session->groupID)
 								->param(':start', $dateRange['start'])
 								->param(':end', $dateRange['end'])
 								->execute()
@@ -80,7 +80,7 @@ class Controller_Stats extends FrontController
 											ORDER BY score DESC
 											LIMIT ".$offset.",".$number_per_page."
 											")
-								->param(':group', $this->groupData['groupID'])
+								->param(':group', Auth::$session->groupID)
 								->param(':start', $dateRange['start'])
 								->param(':end', $dateRange['end'])
 								->execute()
@@ -163,7 +163,7 @@ class Controller_Stats extends FrontController
 													GROUP BY charID  
 													ORDER BY value DESC
 											) u")
-								->param(':group', $this->groupData['groupID'])
+								->param(':group', Auth::$session->groupID)
 								->param(':start', $dateRange['start'])
 								->param(':end', $dateRange['end'])
 								->execute()
@@ -181,7 +181,7 @@ class Controller_Stats extends FrontController
 													GROUP BY charID  
 													ORDER BY value DESC
 													LIMIT ".$offset.",50")
-										->param(':group', $this->groupData['groupID'])
+										->param(':group', Auth::$session->groupID)
 										->param(':start', $dateRange['start'])
 										->param(':end', $dateRange['end'])
 										->execute()
@@ -275,7 +275,7 @@ class Controller_Stats extends FrontController
 													WHERE groupID=:group AND dayStamp >= :start AND dayStamp < :end AND ".$key." != 0 
 													GROUP BY charID  
 													ORDER BY value DESC LIMIT 0,10")
-										->param(':group', $this->groupData['groupID'])
+										->param(':group', Auth::$session->groupID)
 										->param(':start', $start)
 										->param(':end', $end)
 										->execute()

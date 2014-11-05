@@ -27,7 +27,7 @@ class Controller_Pos extends FrontController
 			'pos_online' => intval($_POST['pos_online']),
 			'pos_size' => $_POST['pos_size'],
 			'pos_notes' => $_POST['pos_notes'],
-			'group_id' => $this->groupData['groupID'],
+			'group_id' => Auth::$session->groupID,
 			'pos_added_date' => time(),
 			'pos_system_id' => intval($_POST['pos_system_id'])
 		);
@@ -57,7 +57,7 @@ class Controller_Pos extends FrontController
 										FROM pos_tracker pos
 										INNER JOIN solarsystems ss ON ss.id = pos.pos_system_id
 										WHERE pos.pos_id=:pos_id AND pos.group_id=:group_id")
-								->param(':group_id', $this->groupData['groupID'])
+								->param(':group_id', Auth::$session->groupID)
 								->param(':pos_id', $id)
 								->execute()->current();
 								
@@ -93,8 +93,8 @@ class Controller_Pos extends FrontController
 		
 		miscUtils::increment_stat('pos_updates', $this->groupData);
 		
-		$log_message = sprintf("%s edit POS in system %s", $this->groupData['charName'], $pos['system_name']);
-		groupUtils::log_action($this->groupData['groupID'], 'editpos', $log_message);
+		$log_message = sprintf("%s edit POS in system %s", Auth::$session->charName, $pos['system_name']);
+		groupUtils::log_action(Auth::$session->groupID, 'editpos', $log_message);
 	}
 	
 	public function action_remove()
@@ -105,7 +105,7 @@ class Controller_Pos extends FrontController
 										FROM pos_tracker pos
 										INNER JOIN solarsystems ss ON ss.id = pos.pos_system_id
 										WHERE pos.pos_id=:pos_id AND pos.group_id=:group_id")
-								->param(':group_id', $this->groupData['groupID'])
+								->param(':group_id', Auth::$session->groupID)
 								->param(':pos_id', $id)
 								->execute()->current();
 								
@@ -117,7 +117,7 @@ class Controller_Pos extends FrontController
 		
 		DB::delete('pos_tracker')->where('pos_id', '=', $id)->execute();
 		
-		$log_message = sprintf("%s deleted POS from system %s", $this->groupData['charName'], $pos['system_name']);
-		groupUtils::log_action($this->groupData['groupID'], 'delpos', $log_message);
+		$log_message = sprintf("%s deleted POS from system %s", Auth::$session->charName, $pos['system_name']);
+		groupUtils::log_action(Auth::$session->groupID, 'delpos', $log_message);
 	}
 }

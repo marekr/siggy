@@ -1,6 +1,5 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-require_once APPPATH.'classes/access.php';
 require_once APPPATH.'classes/groupUtils.php';
 require_once APPPATH.'classes/mapUtils.php';
 require_once APPPATH.'classes/miscUtils.php';
@@ -9,8 +8,6 @@ require_once APPPATH.'classes/auth.php';
 
 class FrontController extends Controller
 {
-	protected $access=null;
-
 	protected $groupData = array();
 	protected $trusted = false;
 	protected $igb = false;
@@ -37,12 +34,9 @@ class FrontController extends Controller
 		$this->igb = miscUtils::isIGB();
 		$this->trusted = miscUtils::getTrust();
 
-		$this->access = new access();
-
 		Auth::initialize();
-
-		$this->authStatus = $this->access->authenticate();
-		$this->groupData =& $this->access->accessData;
+		$this->authStatus = Auth::authenticate();
+		$this->groupData =& Auth::$session->accessData;
 
 		if( isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' )
 		{
@@ -136,57 +130,35 @@ class FrontController extends Controller
 
     public function authCheckAndRedirect()
     {
-		if( $this->igb )
+		if( $this->authStatus == AuthStatus::TRUSTREQUIRED )
 		{
-			if( $this->authStatus == AuthStatus::TRUSTREQUIRED )
-			{
-				$this->siggyredirect('/pages/trust-required');
-			}
-			elseif( $this->authStatus == AuthStatus::GPASSWRONG )
-			{
-				$this->siggyredirect('/access/group_password');
-			}
-			elseif( $this->authStatus == AuthStatus::APILOGINNOACCESS )
+			$this->siggyredirect('/pages/trust-required');
+		}
+		elseif( $this->authStatus == AuthStatus::GPASSWRONG )
+		{
+			$this->siggyredirect('/access/group_password');
+		}
+		elseif( $this->authStatus == AuthStatus::APILOGINNOACCESS )
+		{
+			$this->siggyredirect('/account/noAPIAccess');
+		}
+		elseif( $this->authStatus == AuthStatus::APILOGINREQUIRED )
+		{
+			$this->siggyredirect('/account/login');
+		}
+		elseif( $this->authStatus != AuthStatus::ACCEPTED )
+		{
+			if( Auth::loggedIn() )
 			{
 				$this->siggyredirect('/account/noAPIAccess');
 			}
-			elseif( $this->authStatus == AuthStatus::APILOGINREQUIRED )
-			{
-				$this->siggyredirect('/account/login');
-			}
-			elseif( $this->authStatus != AuthStatus::ACCEPTED )
-			{
-				if( Auth::loggedIn() )
-				{
-					$this->siggyredirect('/account/noAPIAccess');
-				}
-				else
-				{
-					$this->siggyredirect('/pages/no-group-access');
-				}
-			}
-		}
-		else
-		{
-			if( $this->authStatus == AuthStatus::GPASSWRONG )
-			{
-				$this->siggyredirect('/access/group_password');
-			}
-			if( $this->authStatus == AuthStatus::APILOGINREQUIRED )
+			else if( $this->authStatus  == AuthStatus::GUEST )
 			{
 				$this->siggyredirect('/pages/welcome');
 			}
-			elseif ( $this->authStatus == AuthStatus::APILOGININVALID )
-			{
-				$this->siggyredirect('/account/noAPIAccess');
-			}
-			else if( $this->authStatus == AuthStatus::APILOGINNOACCESS )
-			{
-				$this->siggyredirect('/account/noAPIAccess');
-			}
 			else
 			{
-			//	$this->siggyredirect('/account/noAPIAccess');
+				$this->siggyredirect('/pages/no-group-access');
 			}
 		}
     }

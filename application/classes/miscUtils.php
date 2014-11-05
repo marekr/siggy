@@ -149,6 +149,7 @@ final class miscUtils
 		$total = 22420*$memberCount + 283650;
 		return $total*$days;
 	}
+	
 
 	static function parseIngameSigExport( $string )
 	{

@@ -57,7 +57,7 @@
 				<div>
 					<img src="https://image.eveonline.com/Corporation/<?php echo $corpID; ?>_64.png" height="32px" />
 					<img src="https://image.eveonline.com/Character/<?php echo $charID; ?>_64.jpg" height="32px"/>
-					<p class="name"><?php echo $charName; ?> <?php if( $apilogin ): ?>[<a href='<?php echo URL::base(TRUE, TRUE);?>account/logout'>Logout</a>]<?php endif;?>
+					<p class="name"><?php echo Auth::$session->charName; ?> <?php if( $apilogin ): ?>[<a href='<?php echo URL::base(TRUE, TRUE);?>account/logout'>Logout</a>]<?php endif;?>
 					<br />
 					<?php if( count( $group['access_groups']) > 1  ):?>
 						<div class="dropdown" style="display:inline-block;">

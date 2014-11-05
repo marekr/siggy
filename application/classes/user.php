@@ -14,6 +14,11 @@ class User
 		return (isset($this->data['id']) && $this->data['id'] > 0);
 	}
 	
+	public function isLocal()
+	{
+		return ($this->data['provider'] == 0);
+	}
+	
 	public function save()
 	{
 		if( !$this->userLoaded() )
@@ -64,12 +69,47 @@ class User
 		}
 	}
 	
+	public function validateCorpChar()
+	{
+		if( $this->isLocal() )
+		{
+			$apiCharInfo = $this->apiKeyCheck();
+			
+			if( $apiCharInfo !== FALSE )
+			{
+				/* update the corp id */
+				if( $this->data['corp_id'] != $apiCharInfo['corpID'] )
+				{
+					$this->data['corp_id'] = $corpID;
+					$this->save();
+				}
+			}
+			else
+			{
+				return FALSE;
+			}
+		}
+		else
+		{
+			$corpID = $this->apiCharacterAffiliationGetCorp();
+			
+			/* update the corp id */
+			if( $corpID != $this->data['corp_id'] )
+			{
+				$this->data['corp_id'] = $corpID;
+				$this->save();
+			}
+		}
+		
+		return TRUE;
+	}
+	
 	public static function create($data)
 	{
 		$insert = array();
 		$insert = $data;
 		
-		$insert['password'] = self::hash($insert['password']);
+		$insert['password'] = Auth::hash($insert['password']);
 		$insert['active'] = TRUE;
 		
 		$userID = DB::insert('users', array_keys($insert) )->values(array_values($insert))->execute();
@@ -185,7 +225,29 @@ class User
         return FALSE;
 	}
 	
-    public function apiCharCheck()
+	public function apiCharacterAffiliationGetCorp()
+	{
+		//recheck
+		require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
+		spl_autoload_register( "Pheal::classload" );
+		PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
+		$pheal = new Pheal( null, null, 'eve' );
+		
+		
+		$result = $pheal->eveScope->CharacterAffiliation(array('ids' => $this->data['char_id']));
+		if( isset ($result->characters[0]) )
+		{
+			if( $this->data['char_id'] == $result->characters[0]['characterID'] )
+			{
+				return $result->characters[0]['corporationID'];
+			}
+		}
+		
+		return 0;
+	}
+	
+	
+    public function apiKeyCheck()
     {
 		if( !self::userLoaded() )
 		{
@@ -233,7 +295,6 @@ class User
 						return array( 'corpID' => $this->data['corp_id'], 'charID' => $this->data['char_id'], 'charName' => $this->data['char_name'] );
 					}
 				}
-			
 				
 				//key no longer exists?
 				return FALSE;

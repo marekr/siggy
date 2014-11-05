@@ -57,10 +57,11 @@
 
 					<?php if( count(Auth::$user->perms) > 0 ): ?>
 				<li <?php echo ($selectedTab == 'admin' ? 'class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>manage">Admin</a></li>
-					<?php elseif( !$igb): ?>
+					<?php elseif( !$igb && Auth::$user->isLocal() ): ?>
 				<li><a href="<?php echo URL::base(TRUE, TRUE);?>pages/createGroup">Create Siggy Group</a></li>
 					<?php endif; ?>
-
+				
+					<?php if( Auth::$user->isLocal() ): ?>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Logged in as <?php echo $user['username']; ?><b class="caret"></b></a>
 					<ul class="dropdown-menu" role="menu">
@@ -69,6 +70,14 @@
 						<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/logout">Logout</a></li>
 					</ul>
 				</li>
+					<?php else: ?>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Logged in as <?php echo $user['char_name']; ?><b class="caret"></b></a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/logout">Logout</a></li>
+					</ul>
+				</li>
+					<?php endif; ?>
 				<?php else: ?>
 				<li  <?php echo ($selectedTab == 'register' ? 'class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>account/register">Register</a></li>
 				<li  <?php echo ($selectedTab == 'login' ? 'class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>account/login">Login</a></li>

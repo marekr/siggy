@@ -12,7 +12,7 @@ class Controller_Sig extends FrontController
 
 		if( $this->groupData['active_chain_map'] )
 		{
-			$this->chainmap = new Chainmap($this->groupData['active_chain_map'],$this->groupData['groupID']);
+			$this->chainmap = new Chainmap($this->groupData['active_chain_map'], Auth::$session->groupID);
 		}
 	}
 	
@@ -37,17 +37,14 @@ class Controller_Sig extends FrontController
 			$insert['created'] = time();
 			$insert['siteID'] = intval($_POST['siteID']);
 			$insert['type'] = $_POST['type'];
-			$insert['groupID'] = $this->groupData['groupID'];
+			$insert['groupID'] = Auth::$session->groupID;
 
 			if( $this->groupData['showSigSizeCol'] )
 			{
 				$insert['sigSize'] = ( is_numeric( $_POST['sigSize'] ) ? $_POST['sigSize'] : '' );
 			}
 
-			if( !empty( $this->groupData['charName'] ) )
-			{
-				$insert['creator'] = $this->groupData['charName'];
-			}
+			$insert['creator'] = Auth::$session->charName;
 
 			$sigID = DB::insert('systemsigs', array_keys($insert) )->values(array_values($insert))->execute();
 
@@ -94,7 +91,7 @@ class Controller_Sig extends FrontController
 				{
 					$sigData = DB::query(Database::SELECT, "SELECT sigID,sig, type, siteID, description, created FROM systemsigs WHERE systemID=:id AND groupID=:group AND sig=:sig")
 												->param(':id', $systemID)
-												->param(':group',$this->groupData['groupID'])
+												->param(':group',Auth::$session->groupID)
 												->param(':sig', $sig['sig'] )
 												->execute()
 												->current();
@@ -107,13 +104,10 @@ class Controller_Sig extends FrontController
 							$update = array(
 											'updated' => time(),
 											'siteID' => ( $sig['siteID'] != 0 ) ? $sig['siteID'] : $sigData['siteID'],
-											'type' => $sig['type']
+											'type' => $sig['type'],
+											'creator' => Auth::$session->charName
 											);
 
-							if( !empty( $this->groupData['charName']) )
-							{
-								$update['lastUpdater'] = $this->groupData['charName'];
-							}
 							DB::update('systemsigs')->set( $update )->where('sigID', '=', $sigData['sigID'])->execute();
 						}
 					}
@@ -126,13 +120,10 @@ class Controller_Sig extends FrontController
 						$insert['created'] = time();
 						$insert['siteID'] = intval($sig['siteID']);
 						$insert['type'] = $sig['type'];
-						$insert['groupID'] = $this->groupData['groupID'];
+						$insert['groupID'] = Auth::$session->groupID;
 						$insert['sigSize'] = "";	//need to return this value for JS to fail gracefully
 
-						if( !empty( $this->groupData['charName'] ) )
-						{
-							$insert['creator'] = $this->groupData['charName'];
-						}
+							
 						$sigID = DB::insert('systemsigs', array_keys($insert) )->values(array_values($insert))->execute();
 
 						$insert['sigID'] = $sigID[0];
@@ -177,10 +168,7 @@ class Controller_Sig extends FrontController
 					$update['sigSize'] = ( is_numeric( $_POST['sigSize'] ) ? $_POST['sigSize'] : ''  );
 			}
 
-			if( !empty( $this->groupData['charName']) )
-			{
-				$update['lastUpdater'] = $this->groupData['charName'];
-			}
+			$update['lastUpdater'] = Auth::$session->charName;
 
 			$id = intval($_POST['sigID']);
 
@@ -207,7 +195,7 @@ class Controller_Sig extends FrontController
 			$sigData = DB::query(Database::SELECT, 'SELECT *,ss.name as systemName FROM	 systemsigs s
 													INNER JOIN solarsystems ss ON ss.id = s.systemID
 													WHERE s.sigID=:sigID AND s.groupID=:groupID')
-									->param(':groupID', $this->groupData['groupID'])
+									->param(':groupID', Auth::$session->groupID)
 									->param(':sigID', $id)
 									->execute()
 									->current();
@@ -216,13 +204,13 @@ class Controller_Sig extends FrontController
 
 			$this->chainmap->update_system($_POST['systemID'], array('lastUpdate' => time() ));
 
-			$message = $this->groupData['charName'].' deleted sig "'.$sigData['sig'].'" from system '.$sigData['systemName'];;
+			$message = Auth::$session->charName.' deleted sig "'.$sigData['sig'].'" from system '.$sigData['systemName'];;
 			if( $sigData['type'] != 'none' )
 			{
 				$message .= '" which was of type '.strtoupper($sigData['type']);
 			}
 
-			groupUtils::log_action($this->groupData['groupID'], 'delsig', $message);
+			groupUtils::log_action(Auth::$session->groupID, 'delsig', $message);
 			echo json_encode('1');
 		}
 		die();

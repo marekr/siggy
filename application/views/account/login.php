@@ -33,17 +33,16 @@
 					<strong> Login to continue</strong>
 				</div>
 				<div class="panel-body">
-				<!---
 				  <div class="row">
 					<div class="text-center">
 					  
-					<a href="#"><img src='https://images.contentful.com/idjq7aai9ylm/4PTzeiAshqiM8osU2giO0Y/5cc4cb60bac52422da2e45db87b6819c/EVE_SSO_Login_Buttons_Large_White.png?w=270&h=45' /></a>
+					<a href="<?php echo URL::base(TRUE, TRUE); ?>/account/sso/eve"><img src='https://images.contentful.com/idjq7aai9ylm/4PTzeiAshqiM8osU2giO0Y/5cc4cb60bac52422da2e45db87b6819c/EVE_SSO_Login_Buttons_Large_White.png?w=270&h=45' /></a>
 					</div>
 				  </div>
 				  <div class="login-or">
 					<hr class="hr-or">
 					<span class="span-or">or</span>
-				  </div> -->
+				  </div>
 					<form role='form' action='<?php echo URL::base(TRUE, TRUE);?>/account/login' method='POST'>
 						<input type="hidden" name="bounce" value="<?php echo $bounce; ?>" />
 						

@@ -26,6 +26,7 @@ class Controller_Account extends FrontController
 		{
 			case 'sso':
 			case 'login':
+			case 'logout':
 			case 'register':
 			case 'forgotPassword':
 			case 'completePasswordReset':
@@ -37,6 +38,7 @@ class Controller_Account extends FrontController
 				}
 				break;
 		}
+		
 		parent::before();
 	}
 	
@@ -103,24 +105,42 @@ class Controller_Account extends FrontController
 				// This was a callback request from reddit, get the token
 				$eveService->requestAccessToken($_GET['code'], $state);
 
-				$result = json_decode($eveService->request('https://sisilogin.testeveonline.com/oauth/verify'), true);
+				$result = json_decode($eveService->request('https://login.eveonline.com/oauth/verify'), true);
 
-				print_r($result);
-				
 				//find username by CharacterOwnerHash
-				if( $userID = Auth::usernameExists( $result['CharacterName'] ) )
+				if( !is_array($result) )
 				{
-					
+					HTTP::redirect('/');
+				}
+				
+				$fakeEmail = $result['CharacterOwnerHash'].'@eveonline.com';
+				if( $userID = Auth::usernameExists( $fakeEmail ) )
+				{
+					$fakeEmail = $result['CharacterOwnerHash'].'@eveonline.com';
+					$status = Auth::processLogin($fakeEmail, $result['CharacterOwnerHash']);
+					HTTP::redirect('/');
 				}
 				else
 				{
-					$data = array( 'email' => '',
-									'username' => $result['CharacterName'],
+					
+					$data = array( 'email' => $fakeEmail,
+									'username' => $fakeEmail,
 									'char_id' => $result['CharacterID'],
 									'char_name' => $result['CharacterName'],
 									'password' => $result['CharacterOwnerHash'],		//we aren't using password but this is a good placeholder (non blank)
 									'provider' => 1			//provider 1 == eve sso for now
 									);
+									
+					
+					if( User::create( $data ) )
+					{
+						Auth::processLogin($fakeEmail, $result['CharacterOwnerHash']);
+						HTTP::redirect('/');
+					}
+					else
+					{
+						$errors['username'] = 'Unknown error has occured.';
+					}
 				}
 				
 				//if not create
@@ -142,19 +162,18 @@ class Controller_Account extends FrontController
 		
 	public function action_overview()
 	{
+		if( !Auth::$user->isLocal() )
+		{
+			HTTP::redirect('/');
+		}
+
+
 		$this->template->title = "Account overview";
 
 		$view = View::factory('account/overview');
 		$view->user = Auth::$user->data;
 
 		$this->template->content = $view;
-	}
-
-	public function action_changeEmailAddress()
-	{
-		$this->template->title = __('Change Email Address');
-
-		$this->template->content = View::factory('account/changeEmail');
 	}
 
 	public function action_register()
@@ -227,6 +246,11 @@ class Controller_Account extends FrontController
 			return;
 		}
 		
+		if( !Auth::$user->isLocal() )
+		{
+			HTTP::redirect('/');
+		}
+		
 		$view = View::factory('account/apiKeys');
 		$view->set('keys', Auth::$user->getAPIKeys());
 		$this->template->content = $view;
@@ -240,6 +264,11 @@ class Controller_Account extends FrontController
 			HTTP::redirect('/');
 			return;
 		}
+		
+		if( !Auth::$user->isLocal() )
+		{
+			HTTP::redirect('/');
+		}
 
 		$this->apiKeyForm('add');
 	}
@@ -252,6 +281,11 @@ class Controller_Account extends FrontController
 			HTTP::redirect('/');
 			return;
 		}
+		
+		if( !Auth::$user->isLocal() )
+		{
+			HTTP::redirect('/');
+		}
 
 		$this->apiKeyForm('edit');
 	}
@@ -262,6 +296,11 @@ class Controller_Account extends FrontController
 		{
 			HTTP::redirect('/');
 			return;
+		}
+		
+		if( !Auth::$user->isLocal() )
+		{
+			HTTP::redirect('/');
 		}
 		
 		
@@ -408,7 +447,12 @@ class Controller_Account extends FrontController
 		{
 			HTTP::redirect('/');
 			return;
-		}		
+		}
+
+		if( !Auth::$user->isLocal() )
+		{
+			HTTP::redirect('/');
+		}
 		
 		$this->template->title = __('siggy: change password');
 		$view = View::factory('account/changePassword');
@@ -443,17 +487,6 @@ class Controller_Account extends FrontController
 		
 		$view->bind('errors',$errors);
 		$this->template->content = $view;
-	}
-	
-	public function action_changeEmail()
-	{
-		if( !Auth::loggedIn() )
-		{
-			HTTP::redirect('/');
-			return;
-		}		
-		
-		$this->template->title = __('siggy: change email');
 	}
 	
 	public function action_forgotPassword()
@@ -666,6 +699,11 @@ class Controller_Account extends FrontController
 		{
 			HTTP::redirect('/');
 			return;
+		}
+
+		if( !Auth::$user->isLocal() )
+		{
+			HTTP::redirect('/');
 		}
 
 		$keys = Auth::$user->getAPIKeys();
