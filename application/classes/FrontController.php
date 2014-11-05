@@ -36,7 +36,6 @@ class FrontController extends Controller
 
 		Auth::initialize();
 		$this->authStatus = Auth::authenticate();
-		$this->groupData =& Auth::$session->accessData;
 
 		if( isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' )
 		{
@@ -96,10 +95,7 @@ class FrontController extends Controller
 			$settings = $this->loadSettings();
 			$this->template->settings = $settings;
 
-			$this->template->charID = isset($this->groupData['charID']) ? $this->groupData['charID'] : 0;
-			$this->template->corpID = isset($this->groupData['corpID']) ?  $this->groupData['corpID'] : 0;
-			$this->template->charName = isset($this->groupData['charName']) ? $this->groupData['charName'] : '';
-			$this->template->group = $this->groupData;
+			$this->template->group = Auth::$session->accessData;
 
 			$this->template->apilogin = Auth::loggedIn();
 		}
@@ -113,7 +109,10 @@ class FrontController extends Controller
         {
 			$settings = DB::query(Database::SELECT, "SELECT * FROM character_settings
 							WHERE char_id=:charID")
-						->param(':charID', $this->groupData['charID'])->execute()->current();
+						->param(':charID', Auth::$session->charID)
+						->execute()
+						->current();
+						
 			if( isset($settings['char_id']) )
 			{
 				if( $settings['language'] != 'en' )

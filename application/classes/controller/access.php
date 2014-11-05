@@ -18,7 +18,7 @@ class Controller_Access extends FrontController
 		}
 		
 		$view = View::factory('access/groupPassword');
-		$view->groupData = $this->groupData;
+		$view->groupData = Auth::$session->accessData;
 		$view->trusted = $this->trusted;
 		$view->wrongPass = false;
 		$this->template->siggyMode = false;
@@ -26,14 +26,14 @@ class Controller_Access extends FrontController
 		//load header tools
 		$this->template->headerTools = '';		
 		
-		$groupID = intval($this->groupData['groupID']);
+		$groupID = intval(Auth::$session->groupID);
 		
 		if( isset($_POST['group_password']) )
 		{
-			$pass = sha1($_POST['group_password'].$this->groupData['group_password_salt']);
-			if( !empty($this->groupData['group_password']) )
+			$pass = sha1($_POST['group_password'].Auth::$session->accessData['group_password_salt']);
+			if( !empty(Auth::$session->accessData['group_password']) )
 			{
-				if( $pass == $this->groupData['group_password'] )
+				if( $pass == Auth::$session->accessData['group_password'] )
 				{
 					Cookie::set('auth-password-' .$groupID, $pass, 365*60*60*24);
 					HTTP::redirect('/');
@@ -51,9 +51,9 @@ class Controller_Access extends FrontController
 	public function action_switch_membership()
 	{
 		$k = $_GET['k'];
-        if( count( $this->groupData['access_groups'] ) > 1 || count( current($this->groupData['access_groups']) > 1) )
+        if( count( Auth::$session->accessData['access_groups'] ) > 1 || count( current(Auth::$session->accessData['access_groups']) > 1) )
         {
-            foreach( $this->groupData['access_groups'] as $g )
+            foreach( Auth::$session->accessData['access_groups'] as $g )
             {
 				if( md5($g['group_id']) == $k )
 				{

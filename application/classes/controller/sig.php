@@ -10,9 +10,9 @@ class Controller_Sig extends FrontController
 	{
 		parent::before();
 
-		if( $this->groupData['active_chain_map'] )
+		if( Auth::$session->accessData['active_chain_map'] )
 		{
-			$this->chainmap = new Chainmap($this->groupData['active_chain_map'], Auth::$session->groupID);
+			$this->chainmap = new Chainmap(Auth::$session->accessData['active_chain_map'], Auth::$session->groupID);
 		}
 	}
 	
@@ -39,7 +39,7 @@ class Controller_Sig extends FrontController
 			$insert['type'] = $_POST['type'];
 			$insert['groupID'] = Auth::$session->groupID;
 
-			if( $this->groupData['showSigSizeCol'] )
+			if( Auth::$session->accessData['showSigSizeCol'] )
 			{
 				$insert['sigSize'] = ( is_numeric( $_POST['sigSize'] ) ? $_POST['sigSize'] : '' );
 			}
@@ -52,7 +52,7 @@ class Controller_Sig extends FrontController
 																'lastActive' => time() )
 										);
 
-			miscUtils::increment_stat('adds', $this->groupData);
+			miscUtils::increment_stat('adds', Auth::$session->accessData);
 
 			$insert['sigID'] = $sigID[0];
 			echo json_encode(array($sigID[0] => $insert ));
@@ -132,7 +132,7 @@ class Controller_Sig extends FrontController
 
 						if( $insert['type'] != 'none' )
 						{
-							miscUtils::increment_stat('adds', $this->groupData);
+							miscUtils::increment_stat('adds', Auth::$session->accessData);
 						}
 					}
 				}
@@ -163,7 +163,7 @@ class Controller_Sig extends FrontController
 			$update['siteID'] = isset($_POST['siteID']) ? intval($_POST['siteID']) : 0;
 			$update['type'] = $_POST['type'];
 
-			if( $this->groupData['showSigSizeCol'] )
+			if( Auth::$session->accessData['showSigSizeCol'] )
 			{
 					$update['sigSize'] = ( is_numeric( $_POST['sigSize'] ) ? $_POST['sigSize'] : ''  );
 			}
@@ -175,7 +175,7 @@ class Controller_Sig extends FrontController
 			DB::update('systemsigs')->set( $update )->where('sigID', '=', $id)->execute();
 			$this->chainmap->update_system($_POST['systemID'], array('lastUpdate' => time(), 'lastActive' => time() ) );
 
-			miscUtils::increment_stat('updates', $this->groupData);
+			miscUtils::increment_stat('updates', Auth::$session->accessData);
 
 			echo json_encode('1');
 		}

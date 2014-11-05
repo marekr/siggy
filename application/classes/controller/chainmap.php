@@ -19,9 +19,9 @@ class Controller_Chainmap extends FrontController
 	{
 		parent::before();
 
-		if( $this->groupData['active_chain_map'] )
+		if( Auth::$session->accessData['active_chain_map'] )
 		{
-			$this->chainmap = new Chainmap($this->groupData['active_chain_map'],Auth::$session->groupID);
+			$this->chainmap = new Chainmap(Auth::$session->accessData['active_chain_map'],Auth::$session->groupID);
 		}
 	}
 
@@ -52,7 +52,7 @@ class Controller_Chainmap extends FrontController
 		}
 		else if (!empty($target))
 		{
-			$targetID = mapUtils::findSystemByName($target, Auth::$session->groupID, $this->groupData['active_chain_map'] );
+			$targetID = mapUtils::findSystemByName($target, Auth::$session->groupID, Auth::$session->accessData['active_chain_map'] );
 		}
 
 		if( $targetID == 0 || $targetID >= 31000000 )
@@ -71,7 +71,7 @@ class Controller_Chainmap extends FrontController
 											LEFT JOIN solarsystems ss ON (ss.id = w.`from`)
 											WHERE w.`from` < 31000000 AND w.group_id=:group AND w.chainmap_id=:chainmap)")
 						->param(':group', Auth::$session->groupID)
-						->param(':chainmap', $this->groupData['active_chain_map'])
+						->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 						->execute()->as_array();
 
 		$pather = new SystemPathFinder();
@@ -165,7 +165,7 @@ class Controller_Chainmap extends FrontController
 														INNER JOIN solarsystems sfrom ON sfrom.id = s.from_system_id
 														WHERE s.hash IN('.$cynoHashes.') AND s.group_id=:groupID AND s.chainmap_id=:chainmap')
 							->param(':groupID', Auth::$session->groupID)
-							->param(':chainmap', $this->groupData['active_chain_map'])
+							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 							->execute();
 
 			foreach( $stargates as $sg )
@@ -179,7 +179,7 @@ class Controller_Chainmap extends FrontController
 			
 			DB::query(Database::DELETE, 'DELETE FROM chainmap_cynos WHERE hash IN('.$cynoHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
 							->param(':groupID', Auth::$session->groupID)
-							->param(':chainmap', $this->groupData['active_chain_map'])
+							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 							->execute();
 
 			groupUtils::log_action(Auth::$session->groupID,'delwhs', $log_message );
@@ -197,7 +197,7 @@ class Controller_Chainmap extends FrontController
 														INNER JOIN solarsystems sfrom ON sfrom.id = s.from_system_id
 														WHERE s.hash IN('.$jumpbridgeHashes.') AND s.group_id=:groupID AND s.chainmap_id=:chainmap')
 							->param(':groupID', Auth::$session->groupID)
-							->param(':chainmap', $this->groupData['active_chain_map'])
+							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 							->execute();
 
 			foreach( $stargates as $sg )
@@ -211,7 +211,7 @@ class Controller_Chainmap extends FrontController
 			
 			DB::query(Database::DELETE, 'DELETE FROM chainmap_jumpbridges WHERE hash IN('.$jumpbridgeHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
 							->param(':groupID', Auth::$session->groupID)
-							->param(':chainmap', $this->groupData['active_chain_map'])
+							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 							->execute();
 
 			groupUtils::log_action(Auth::$session->groupID,'delwhs', $log_message );
@@ -229,7 +229,7 @@ class Controller_Chainmap extends FrontController
 														INNER JOIN solarsystems sfrom ON sfrom.id = s.from_system_id
 														WHERE s.hash IN('.$stargateHashes.') AND s.group_id=:groupID AND s.chainmap_id=:chainmap')
 							->param(':groupID', Auth::$session->groupID)
-							->param(':chainmap', $this->groupData['active_chain_map'])
+							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 							->execute();
 
 			foreach( $stargates as $sg )
@@ -243,7 +243,7 @@ class Controller_Chainmap extends FrontController
 			
 			DB::query(Database::DELETE, 'DELETE FROM chainmap_stargates WHERE hash IN('.$stargateHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
 							->param(':groupID', Auth::$session->groupID)
-							->param(':chainmap', $this->groupData['active_chain_map'])
+							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 							->execute();
 
 			groupUtils::log_action(Auth::$session->groupID,'delwhs', $log_message );
@@ -262,7 +262,7 @@ class Controller_Chainmap extends FrontController
 														INNER JOIN solarsystems sfrom ON sfrom.id = w.from
 														WHERE w.hash IN('.$wormholeHashes.') AND w.group_id=:groupID AND w.chainmap_id=:chainmap')
 							->param(':groupID', Auth::$session->groupID)
-							->param(':chainmap', $this->groupData['active_chain_map'])
+							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 							->execute();
 
 			foreach( $wormholes as $wh )
@@ -276,13 +276,13 @@ class Controller_Chainmap extends FrontController
 
 			DB::query(Database::DELETE, 'DELETE FROM wormholes WHERE hash IN('.$wormholeHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
 							->param(':groupID', Auth::$session->groupID)
-							->param(':chainmap', $this->groupData['active_chain_map'])
+							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 							->execute();
 
 
 			DB::query(Database::DELETE, 'DELETE FROM wormholetracker WHERE wormhole_hash IN('.$wormholeHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
 							->param(':groupID', Auth::$session->groupID)
-							->param(':chainmap', $this->groupData['active_chain_map'])
+							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 							->execute();
 
 			groupUtils::log_action(Auth::$session->groupID,'delwhs', $log_message );
@@ -322,7 +322,7 @@ class Controller_Chainmap extends FrontController
 		$wormhole = DB::query(Database::SELECT, 'SELECT * FROM	wormholes WHERE hash=:hash AND group_id=:groupID AND chainmap_id=:chainmap')
 							->param(':hash',$hash)
 							->param(':groupID', Auth::$session->groupID)
-							->param(':chainmap', $this->groupData['active_chain_map'])
+							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 							->execute()
 							->current();
 
@@ -367,7 +367,7 @@ class Controller_Chainmap extends FrontController
 					->set( $update )
 					->where('hash', '=', $hash)
 					->where('group_id', '=', Auth::$session->groupID)
-					->where('chainmap_id', '=', $this->groupData['active_chain_map'])
+					->where('chainmap_id', '=', Auth::$session->accessData['active_chain_map'])
 					->execute();
 
 			$this->chainmap->rebuild_map_data_cache();
@@ -499,7 +499,7 @@ class Controller_Chainmap extends FrontController
 			$connection = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE hash=:hash AND group_id=:group AND chainmap_id=:chainmap")
 								->param(':hash', $whHash)
 								->param(':group', Auth::$session->groupID)
-								->param(':chainmap', $this->groupData['active_chain_map'])
+								->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 								->execute()->current();
 
 			if( isset($connection['hash']) )
@@ -566,7 +566,7 @@ class Controller_Chainmap extends FrontController
 
 		$selected_id = 0;
 		$default_id = 0;
-		foreach($this->groupData['accessible_chainmaps'] as $c)
+		foreach(Auth::$session->accessData['accessible_chainmaps'] as $c)
 		{
 			if( $c['chainmap_id'] == $desired_chainmap )
 			{
@@ -608,7 +608,7 @@ class Controller_Chainmap extends FrontController
 										->on('activesystems.systemID', '=', 'solarsystems.id')
 										->where('displayName','like',$q.'%')
 										->where('groupID', '=', Auth::$session->groupID)
-										->where('chainmap_id', '=', $this->groupData['active_chain_map'])
+										->where('chainmap_id', '=', Auth::$session->accessData['active_chain_map'])
 										->execute()
 										->as_array();
 
