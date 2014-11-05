@@ -56,7 +56,7 @@ class Eve extends AbstractService
      */
     public function getAuthorizationEndpoint()
     {
-        return new Uri('https://sisilogin.testeveonline.com/oauth/authorize');
+        return new Uri('https://login.eveonline.com/oauth/authorize');
     }
 
     /**
@@ -64,7 +64,7 @@ class Eve extends AbstractService
      */
     public function getAccessTokenEndpoint()
     {
-        return new Uri('https://sisilogin.testeveonline.com/oauth/token');
+        return new Uri('https://login.eveonline.com/oauth/token');
     }
 
     /**
