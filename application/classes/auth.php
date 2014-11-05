@@ -110,11 +110,6 @@ class Auth
 		return hash_hmac("sha256", $str, self::$hashKey);
 	} 
 	
-	public static function loadMember($userID)
-	{
-		//User::$data = array();
-	}
-	
 	public static function autoLogin($id, $passHash)
 	{
 		$tmp = new User();
@@ -159,11 +154,6 @@ class Auth
 		}
 		
 		return FALSE;
-	}
-	
-	public static function processProviderLogin()
-	{
-		
 	}
 	
 	public static function processLogin($username, $password, $rememberMe = FALSE)
