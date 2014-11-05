@@ -71,20 +71,18 @@ class Auth
 			return self::$authStatus;
 		}
 		
-		$accessData = self::$session->accessData;
-
-		if( $accessData['groupID'] )
+		if( self::$session->accessData['groupID'] )
 		{
-			if( $accessData['api_login_required'] && !self::loggedIn() )
+			if( self::$session->accessData['api_login_required'] && !self::loggedIn() )
 			{
 				self::$authStatus = AuthStatus::APILOGINREQUIRED;
 			}
-			else if( $accessData['group_password_required'] )	//group password only?
+			else if( self::$session->accessData['group_password_required'] )	//group password only?
 			{
-				$groupID = intval($accessData['groupID']);
+				$groupID = intval(self::$session->accessData['groupID']);
 				$authPassword = Cookie::get('auth-password-' .$groupID, '');
 
-				if( $authPassword == $accessData['group_password'] )
+				if( $authPassword === self::$session->accessData['group_password'] )
 				{
 					self::$authStatus = AuthStatus::ACCEPTED;
 				}
