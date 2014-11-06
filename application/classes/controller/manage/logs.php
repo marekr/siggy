@@ -64,18 +64,14 @@ class Controller_Manage_Logs extends Controller_Manage
 		$sessData = array();
 		foreach( $sessions as $sess )
 		{
-			$charID = $sess['charID'];
+			$charID = $sess['char_id'];
 			if( !isset($sessData[ $charID ] ) )
 			{
 				$sessData[ $charID ]['charID'] = $charID;
-				$sessData[ $charID ]['charName'] = $sess['charName'];
+				$sessData[ $charID ]['charName'] = $sess['char_name'];
 				$sessData[ $charID ]['lastBeep'] = $sess['lastBeep'];
 			}
 			
-			if( empty($sess['sgName']) )
-			{
-				$sess['sgName'] = 'Default';
-			} 
 			$sessData[ $charID ]['data'][] = $sess;
 		}
 

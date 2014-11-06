@@ -50,6 +50,7 @@ class UserSession
 
 			$this->__generateSession();
 		}
+		
 
 		//attempt to find existing session
 		$sess = $this->__fetchSessionData();

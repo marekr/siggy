@@ -38,7 +38,7 @@
 				<?php echo $d['sessionType'] == 'oog' ? 'Out of game' : 'Ingame'; ?>
 				</td>
 				<td><?php echo $d['userID']; ?></td>
-				<td><?php echo $d['sgName']; ?></td>
+				<td><?php echo $d['chainmap_name']; ?></td>
 				<td><?php echo date("d/m/y @ h:i:s",$d['created']); ?></td>
 				<td>
 				<?php echo $d['ipAddress']; ?>
