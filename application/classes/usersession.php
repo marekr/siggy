@@ -17,6 +17,7 @@ class UserSession
 
 	public function __construct()
 	{
+		// default char,corp id
 		$this->charID = isset($_SERVER['HTTP_EVE_CHARID']) ? $_SERVER['HTTP_EVE_CHARID'] : 0;
 		$this->charName = isset($_SERVER['HTTP_EVE_CHARNAME']) ? $_SERVER['HTTP_EVE_CHARNAME'] : '';
 		$this->corpID = isset($_SERVER['HTTP_EVE_CORPID']) ? $_SERVER['HTTP_EVE_CORPID'] : 0;
@@ -24,7 +25,7 @@ class UserSession
 		$this->igb = miscUtils::isIGB();
 		$this->trusted = miscUtils::getTrust();
 
-
+		//try to find existing session
 		$this->sessionID = Cookie::get('sessionID');
 		if( $this->sessionID == NULL )
 		{
@@ -47,41 +48,56 @@ class UserSession
 
 			}
 
-			$this->__generateSession($this->sessionID);
+			$this->__generateSession();
 		}
-        else
-        {
-            $sess = DB::query(Database::SELECT, 'SELECT sessionID,userID,groupID,char_id,char_name,corp_id FROM siggysessions WHERE sessionID=:id')->param(':id', $this->sessionID)->execute()->current();
+
+		//attempt to find existing session
+		$sess = $this->__fetchSessionData();
+		
+		if( !isset($sess['sessionID']) )
+		{
+			$this->sessionID = $this->__generateSessionID();
+
+			$memberID = Cookie::get('userID');
+			$passHash = Cookie::get('passHash');
+			if( $memberID && $passHash )
+			{
+				if( !Auth::autoLogin($memberID, $passHash) )
+				{
+					Cookie::delete('userID');
+					Cookie::delete('passHash');
+				}
+			}
+
+			$this->__generateSession();
 			
-            if( isset($sess['sessionID']) )
-            {
-                Auth::$user->loadByID( $sess['userID'] );
-                $this->__updateSession( $this->sessionID );
-            }
-            else
-            {
-                $this->sessionID = $this->__generateSessionID();
-
-                $memberID = Cookie::get('userID');
-                $passHash = Cookie::get('passHash');
-                if( $memberID && $passHash )
-                {
-                    if( !Auth::autoLogin($memberID, $passHash) )
-                    {
-                        Cookie::delete('userID');
-                        Cookie::delete('passHash');
-                    }
-                }
-
-                $this->__generateSession($this->sessionID);
-            }
-			$this->charID = $sess['char_id'];
-			$this->charName = $sess['char_name'];
-			$this->corpID = $sess['corp_id'];
-			$this->groupID = $sess['groupID'];
-        }
+			$sess = $this->__fetchSessionData();
+		}
+		
+		// finally load user ID
+		if( $sess['userID'] != 0 )
+		{
+			Auth::$user->loadByID( $sess['userID'] );
+		}
+		
+		$this->charID = $sess['char_id'];
+		$this->charName = $sess['char_name'];
+		$this->corpID = $sess['corp_id'];
+		$this->groupID = $sess['groupID'];
 		
 		$this->getAccessData();
+		
+		$this->__updateSession();
+	}
+	
+	private function __fetchSessionData()
+	{			
+		$sess = DB::query(Database::SELECT, 'SELECT sessionID,userID,groupID,char_id,char_name,corp_id FROM siggysessions WHERE sessionID=:id')
+					->param(':id', $this->sessionID)
+					->execute()
+					->current();
+		
+		return $sess;
 	}
 
 	public function destroy()
@@ -149,10 +165,30 @@ class UserSession
 			return;
 		}
 
+		$type = '';
+		
+		if( $this->igb )
+		{
+			$type = 'igb';
+		}
+		
+		if( Auth::loggedIn() )
+		{
+			if( Auth::$user->isLocal() )
+			{
+				$type = 'siggy';
+			}
+			else
+			{
+				$type = 'sso';
+			}
+		}
+		
 		$update = array( 'lastBeep' => time(),
-						'groupID' => ( isset(Auth::$user->data['groupID']) ? Auth::$user->data['groupID'] : 0 ),
-				//		'chainmap_id' => ( isset(Auth::$user->data['active_chain_map']) ? Auth::$user->data['active_chain_map'] : 0 ),
-		);
+						 'groupID' => ( isset($this->groupID) ? $this->groupID : 0 ),
+						 'sessionType' => $type,
+						 'chainmap_id' => ( isset($this->accessData['active_chain_map']) ? $this->accessData['active_chain_map'] : 0 )
+						);
 
 		DB::update('siggysessions')->set( $update )->where('sessionID', '=',  $this->sessionID)->execute();
 	}
@@ -242,6 +278,8 @@ class UserSession
 		$groupData['access_groups'] = $all_groups;
 
 		$this->accessData = $groupData;
+		
+		$this->groupID = $accessGroupID;
 	}
 
 
