@@ -1,7 +1,6 @@
 <?php
 
 require_once APPPATH.'classes/FrontController.php';
-require_once APPPATH.'classes/access.php';
 require_once APPPATH.'classes/Zebra_Pagination2.php';
 
 class Controller_Announcements extends FrontController

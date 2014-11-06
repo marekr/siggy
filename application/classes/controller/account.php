@@ -6,7 +6,6 @@ use OAuth\Common\Storage\Session;
 use OAuth\Common\Consumer\Credentials;
 
 require_once APPPATH.'classes/FrontController.php';
-require_once APPPATH.'classes/access.php';
 
 class Controller_Account extends FrontController
 {

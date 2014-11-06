@@ -1,7 +1,6 @@
 <?php
 
 require_once APPPATH.'classes/FrontController.php';
-require_once APPPATH.'classes/access.php';
 require_once APPPATH.'classes/astar.php';
 require_once APPPATH.'classes/systempathfinder.php';
 

@@ -1,7 +1,6 @@
 <?php 
 
 require_once APPPATH.'classes/FrontController.php';
-require_once APPPATH.'classes/access.php';
 
 class Controller_Sig extends FrontController
 {
