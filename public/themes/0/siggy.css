@@ -621,6 +621,8 @@ ul.box-tabs li
     background-color: @box-button-background;
     text-align: center;
     cursor:pointer;
+	padding-right: 5px;
+	padding-left: 5px;
 }
 
 ul.option-bar li.active

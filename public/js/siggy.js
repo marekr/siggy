@@ -74,7 +74,10 @@ function siggymain( options )
 		sigsAddOpen: true,
 		showAnomalies: true,
 		posesOpen: true,
-		dscanOpen: true
+		dscanOpen: true,
+		map: {
+			open: true
+		}
 	}
 
 	this.displayStates = this.defaultDisplayStates;
@@ -128,7 +131,7 @@ siggymain.prototype.initialize = function ()
 	{
 		dispStates = $.parseJSON(displayStatesCookie);
 	}
-	this.displayStates = $.extend(this.defaultDisplayStates, dispStates);
+	this.displayStates = $.extend({}, this.defaultDisplayStates, dispStates);
 
 	// Initialize map
 	this.map = new siggyMap(this.settings.map);
@@ -315,7 +318,7 @@ siggymain.prototype.update = function ()
 		freezeSystem: this.freezeSystem,
 		acsid: this.acsid,
 		acsname: this.acsname,
-		mapOpen: this.map.isMapOpen(),
+		mapOpen: this.displayStates.map.open,
 		mapLastUpdate: this.map.lastUpdate,
 		forceUpdate: this.forceUpdate
 	};
@@ -395,7 +398,7 @@ siggymain.prototype.update = function ()
 					this.groupCacheTime = data.group_cache_time;
 
 
-					if( that.map.isMapOpen()  )
+					if( that.displayStates.map.open  )
 					{
 						if( parseInt(data.mapUpdate) == 1  )
 						{

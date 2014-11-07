@@ -21,7 +21,7 @@
 			<!--- <li class="tab add"><i class="fa fa-fw fa-plus"></i></li> --->
 			<li class="tab minimize"><i class="fa fa-fw fa-minus-square"></i></li>
 		</ul>
-		<div id='chain-map-inner' <?php echo ( !$mapOpen ? "style='display:none'" : '' ); ?>>
+		<div id='chain-map-inner'>
 			<p class="loading">Loading....<br /><span style='font-size:0.3em;'>(This may take up to 10 seconds.)</span></p>
 			<p class="editing">Editing: Drag systems by clicking on them.</p>
 			<p class="deleting">Click on(or mouse drag) wormhole links to select for deletion</p>
@@ -53,9 +53,9 @@
 		
 		<div id="connection-popup" class="box box-tabbed" style="display:none">
 			<ul class="box-tabs">
-				<li class="active"><a href="#connection-editor">Edit</a></li>
+				<li class="active"><a href="#connection-editor"><i class="fa fa-pencil"></i> Edit</a></li>
 				<?php if( $group['jumpLogEnabled'] ): ?>
-				<li><a href="#jump-log">Jump Log</a></li>
+				<li><a href="#jump-log"><i class="fa fa-list"></i> Jump Log</a></li>
 				<?php endif; ?>
 			</ul>
 			<?php if( $group['jumpLogEnabled'] ): ?>
@@ -77,7 +77,7 @@
 			<?php endif; ?>
 			<div id="connection-editor" class="box-tab">
 				<div id="connection-editor-add" class="connection-editor-group">
-					<h3>Create a connection</h3>
+					<h3><i class="fa fa-link"></i> Create a connection</h3>
 					<div>
 						<div style="float:left;text-align:right;">
 							From <input type='text' name='from-sys' /><br />
@@ -106,7 +106,7 @@
 					</div>
 				</div>
 				<div id="connection-editor-edit" class='connection-editor-group center-text'>
-					<h3 class="text-left">Editing Connection</h3>
+					<h3 class="text-left"><i class="fa fa-link"></i> Editing Connection</h3>
 					<div>
 						<p>
 							<span id="connection-editor-from"></span> to <span id="connection-editor-to"></span>

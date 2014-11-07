@@ -42,7 +42,7 @@
 </div>
 
 <div id="settings-dialog" class="box" style="display:none;">
-	<h3>Settings</h3>
+	<h3><i class="fa fa-gear"></i> Settings</h3>
 	<div>
         <form action="#" id="settings-form" method="post">
             <label>Theme

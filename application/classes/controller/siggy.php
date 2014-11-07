@@ -18,8 +18,6 @@ class Controller_Siggy extends FrontController
 
 		$ssname = $this->request->param('ssname', '');
 
-		$mapOpen = ( isset($_COOKIE['mapOpen'] ) ? intval($_COOKIE['mapOpen']) : 0 );
-
 		// set default
 		$view->systemData = array('id' => 30000142, 'name' => 'Jita');
 
@@ -70,7 +68,6 @@ class Controller_Siggy extends FrontController
 
 		//load chain map html
 		$chainMapHTML = View::factory('templatebits/chainMap');
-		$chainMapHTML->mapOpen = $mapOpen;
 		$chainMapHTML->group = Auth::$session->accessData;
 		$view->chainMap = $chainMapHTML;
 
@@ -539,12 +536,12 @@ class Controller_Siggy extends FrontController
 	
 	private function _update_process_map(&$update)
 	{			
-        $chainMapOpen = ( isset($_POST['mapOpen']) ? intval($_POST['mapOpen']) : 0 );
+        $chainMapOpen = ( isset($_POST['mapOpen']) ? filter_var($_POST['mapOpen'], FILTER_VALIDATE_BOOLEAN) : false );
 		
 		if( $this->chainmap != null )
 		{
 			$this->mapData = $this->chainmap->get_map_cache();
-			if( $chainMapOpen == 1 )
+			if( $chainMapOpen == true )
 			{
 				$update['chainMap']['actives'] = array();
 				$update['chainMap']['systems'] = array();
