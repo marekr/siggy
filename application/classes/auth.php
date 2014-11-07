@@ -63,7 +63,11 @@ class Auth
 			}
 		}
 		
-		$success = self::$user->validateCorpChar();
+		$success = TRUE;
+		if( self::loggedIn() )
+		{
+			$success = self::$user->validateCorpChar();
+		}
 		
 		if( !$success || !self::$session->charID || !self::$session->corpID )
 		{

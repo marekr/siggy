@@ -71,6 +71,11 @@ class User
 	
 	public function validateCorpChar()
 	{
+		if( !self::userLoaded() )
+		{
+			return FALSE;
+		}
+
 		if( $this->isLocal() )
 		{
 			$apiCharInfo = $this->apiKeyCheck();

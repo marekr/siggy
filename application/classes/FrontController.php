@@ -151,7 +151,7 @@ class FrontController extends Controller
 			{
 				$this->siggyredirect('/account/noAPIAccess');
 			}
-			else if( $this->authStatus  == AuthStatus::GUEST )
+			else if( $this->authStatus == AuthStatus::GUEST )
 			{
 				$this->siggyredirect('/pages/welcome');
 			}

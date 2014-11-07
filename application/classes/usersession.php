@@ -140,9 +140,12 @@ class UserSession
 
 	private function __generateSession()
 	{
+		// corp_id will most likely only be "valid" for IGB/non-auth user sessions
+		// so we must update it too
 		$insert = array( 'sessionID' => $this->sessionID,
 					'char_id' => $this->charID,
 					'char_name' => $this->charName,
+					'corp_id' => $this->corpID,
 					'created' => time(),
 					'ipAddress' => Request::$client_ip,
 					'userAgent' => Request::$user_agent,
