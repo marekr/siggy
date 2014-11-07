@@ -1205,7 +1205,7 @@ siggymain.prototype.updateChainMaps = function(data)
 				if(Object.size(data) > 1 )
 				{
 					$('#chain-map-title').removeClass('disabled');
-					extra = " &#x25BC;";
+					extra = " <i class='fa fa-caret-down'></i>";
 				}
 				else
 				{

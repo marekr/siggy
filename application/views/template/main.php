@@ -62,7 +62,7 @@
 					<?php if( count( $group['access_groups']) > 1  ):?>
 						<div class="dropdown" style="display:inline-block;">
 								<a data-toggle="dropdown" href="#">
-									<?php echo $group['groupName']; ?>&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-square-o-down"></i>
+									<?php echo $group['groupName']; ?>&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-down"></i>
 								</a>
 								<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 									<?php foreach( $group['access_groups'] as $g ): ?>

@@ -6,7 +6,7 @@
 		<ul id="chain-map-tabs" class="clearfix">
 			<li class="tab tab-active dropdown">
 				<a data-toggle="dropdown" href="#" id="chain-map-title">
-					Maps<span style='font-style:normal;font-weight:bold;'>&#x25BC;</span>
+					Maps<span style='font-style:normal;font-weight:bold;'><i class="fa fa-caret-down"></i></span>
 				</a>
 				<ul id="chainmap-dropdown" class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 					<li>

@@ -1,15 +1,15 @@
 <ul id="header-tools-button-bar">
-	<li id="global-notes-button">Notes <i class="fa fa-caret-square-o-down"></i></li>
+	<li id="global-notes-button">Notes <i class="fa fa-caret-down"></i></li>
 	<?php if( $group['statsEnabled'] ): ?>
 		<li id="stats-button"><a target="_blank" href="<?php echo URL::base(); ?>stats">Stats</a></li>
 	<?php endif; ?>
-    <li id="settings-button"><a title="Settings"><i class="icon icon-settings"></i></a></li>
+    <li id="settings-button"><a title="Settings"><i class="fa fa-cog fa-lg"></i></a></li>
     <li id="exit-finder-button">Exit Finder</li>
 	<?php if( count(Auth::$user->perms) > 0 ): ?>
 	<li><a href="<?php echo URL::base(TRUE, TRUE);?>manage">Admin</a></li>
 	<?php endif; ?>
 	<li class="dropdown">
-	  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Support <i class="fa fa-caret-square-o-down"></i></a>
+	  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Support <i class="fa fa-caret-down"></i></a>
 	  <ul class="dropdown-menu" role="menu">
 		<li><a target="_blank" href="http://wiki.siggy.borkedlabs.com">Guide</a></li>
 		<li><a target="_blank" href="http://siggy.borkedlabs.com/announcements">Changelog</a></li>
@@ -18,7 +18,7 @@
 	</li>
 	<?php if( $apilogin ): ?>
 	<li class="dropdown">
-	  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <i class="fa fa-caret-square-o-down"></i></a>
+	  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <i class="fa fa-caret-down"></i></a>
 	  <ul class="dropdown-menu" role="menu">
 		<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/apiKeys">API Keys</a></li>
 		<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/characterSelect">Switch Character</a></li>
