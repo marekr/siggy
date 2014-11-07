@@ -48,6 +48,7 @@ class Controller_Manage_Dashboard extends Controller_Manage
 						->current();
 							
 		$view->set('member_count', $members['total'] );
+		$view->set('group', $group );
 
 		$this->template->content = $view;
 	}

@@ -2,9 +2,23 @@
 <?php if( !$member_count && (Auth::$user->data['admin'] || $perms['can_manage_group_members'] || $perms['can_manage_access']) ): ?>
 <h3>Complete your setup!</h3>
 <div class="well">
+	<p>
 	Looks like you didn't add any group members yet, if you want to be able to use siggy you must do so.
-	
-	<?php echo Html::anchor('manage/group/members', __('Manage Group Members'),array('class' => 'btn btn-primary btn-sm')); ?>
+	</p>
+	<?php echo Html::anchor('manage/group/members', __('Manage Group Members'),array('class' => 'btn btn-primary btn-xs')); ?>
+</div>
+<?php endif; ?>
+
+
+<?php if( !$group->group_password_required ): ?>
+<h3>Security warning!</h3>
+<div class="alert alert-warning">
+	<p>
+	You don't have a group password set! It is highly encouraged you add one for your own security. People <i>may</i> use stolen API keys or spoof browser headers to otherwise pretend a legitimate user. 
+	This is optional and you may ignore this warning.
+	</p>
+	<br />
+	<?php echo Html::anchor('manage/settings/general', __('Edit Settings'),array('class' => 'btn btn-primary btn-xs')); ?>
 </div>
 <?php endif; ?>
 
