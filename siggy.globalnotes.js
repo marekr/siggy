@@ -24,12 +24,12 @@ globalnotes.prototype.initialize = function()
 		if ( $this.globalNotesEle.is(":visible") )
 		{
 			$this.globalNotesEle.hide();
-			$('#global-notes-button').html('Notes <i class="fa fa-caret-square-o-down"></i>');
+			$('#global-notes-button').html('Notes <i class="fa fa-caret-down"></i>');
 		}
 		else
 		{
 			$this.globalNotesEle.show();
-			$('#global-notes-button').html('Notes <i class="fa fa-caret-square-o-up"></i>');
+			$('#global-notes-button').html('Notes <i class="fa fa-caret-up"></i>');
 			$this.stopBlinkingNotes();
 		}
 	});
