@@ -24,7 +24,7 @@ This page lists all the chainmaps that are setup. There is a "default" chain map
 			<td>
 				<?php echo Html::anchor('manage/chainmaps/edit/'.$s->chainmap_id, __('<i class="icon-edit"></i>&nbsp;Edit'),array('class' => 'btn btn-default btn-xs')); ?>
 				<?php if( $s->chainmap_type != 'default' ): ?>
-				<?php echo Html::anchor('manage/chainmaps/remove/'.$s->chainmap_id, __('<i class="icon-trash"></i>&nbsp;Remove'),array('class' => 'btn btn-default btn-xs')); ?>
+				<?php echo Html::anchor('manage/chainmaps/remove/'.$s->chainmap_id, __('<i class="icon-trash"></i>&nbsp;Remove'),array('class' => 'btn btn-danger btn-xs')); ?>
 				<?php endif; ?>
 			</td>
 		</tr>

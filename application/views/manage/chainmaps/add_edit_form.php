@@ -11,7 +11,7 @@ else
 
 ?>
 <h2><?php echo ($mode == 'edit' ?  __('Edit Chain Map') : __('Add Chain Map') ); ?></h2>
-<form class="form-horizontal" action="<?php echo URL::base(TRUE,TRUE); ?><?php echo $formUrl; ?>" method="post">
+<form role="form" action="<?php echo URL::base(TRUE,TRUE); ?><?php echo $formUrl; ?>" method="POST">
 	<legend>General</legend>
 	<?php echo formRenderer::input('Name', 'chainmap_name', $data['chainmap_name'], '', $errors); ?>
 	<?php echo formRenderer::textarea('Home system(s)', 'chainmap_homesystems', $data['chainmap_homesystems'], 'This setting allows siggy to do some advanced witchcraft relating to chain map management,signature deletion and possibly other things in the future. This is not required, and all eve systems are accepted as home systems and as many as you want/need. For more than one home system, use comma delimated format i.e. "Jita,Amarr,Dodixie" (without the quotes). ', $errors); ?>

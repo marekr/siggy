@@ -11,7 +11,7 @@ else
 
 
 ?>
-   <form class="form-horizontal" action="<?php echo $formUrl; ?>" method="post">
+   <form role="form" action="<?php echo $formUrl; ?>" method="POST">
    <h2><?php echo ($mode == 'edit' ?  __('Editing Access') : __('Adding Access') ); ?> for <?php echo $data['username']; ?></h2>
         <?php if( $mode == 'add' ): ?>
         

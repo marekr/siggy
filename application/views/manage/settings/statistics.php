@@ -1,4 +1,4 @@
-<form class="form-horizontal" action="<?php echo URL::base(TRUE,TRUE); ?>manage/settings/statistics" method="post">
+<form role="form" action="<?php echo URL::base(TRUE,TRUE); ?>manage/settings/statistics" method="POST">
 	<fieldset>
 		<legend>Statistics</legend>
 		<?php echo formRenderer::yesNo('Record pilot jump statistics?', 'recordJumps', $data['recordJumps'], 'If yes, siggy will gather per hour, the character jump totals similar to the eve API jumps for systems and display them together as a comparison statistic. Of course this setting depends on users having siggy open in order for the jumps to be recorded.', $errors); ?>

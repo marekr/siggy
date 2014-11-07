@@ -90,7 +90,7 @@ class formRenderer
             $checked = TRUE;
         }
 	
-		$attributes = array('class' => 'form-control');
+		$attributes = array('class' => 'checkbox');
 		
 		return self::wrap($name, $key, Form::checkbox($key, "1", $checked, $attributes), $desc, $errors);
 	}

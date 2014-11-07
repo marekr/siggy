@@ -1,4 +1,4 @@
-<form action="<?php echo URL::base(TRUE,TRUE); ?>manage/settings/general" method="post">
+<form role="form" action="<?php echo URL::base(TRUE,TRUE); ?>manage/settings/general" method="POST">
 	<fieldset>
 		<legend>Group Settings</legend>
 		<?php echo formRenderer::input('Group Name', 'groupName', $data['groupName'], 'The name of your group be it alliance, corp or whatever. This is not important', $errors); ?>

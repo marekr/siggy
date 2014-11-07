@@ -1,4 +1,4 @@
-<form class="form-horizontal" action="<?php echo URL::base(TRUE,TRUE); ?>manage/settings/chain_map" method="post">
+<form role="form" action="<?php echo URL::base(TRUE,TRUE); ?>manage/settings/chain_map" method="POST">
 	<fieldset>
 		<legend>Basic</legend>
 
