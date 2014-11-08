@@ -154,7 +154,7 @@ class Controller_Chainmap extends FrontController
 		
 		if( is_array($cynoHashes) && count($cynoHashes) > 0 )
 		{
-			$log_message = Auth::$session->charName.' performed a mass delete of the following stargates: ';
+			$log_message = Auth::$session->charName.' performed a mass delete of the following cynos: ';
 			
 			$cynoHashes = $this->_hash_array_to_string($cynoHashes);
 
@@ -181,12 +181,13 @@ class Controller_Chainmap extends FrontController
 							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 							->execute();
 
+			$log_message .= ' from the chainmap "'. $this->chainmap->data['chainmap_name'].'"';
 			groupUtils::log_action(Auth::$session->groupID,'delwhs', $log_message );
 		}
 		
 		if( is_array($jumpbridgeHashes) && count($jumpbridgeHashes) > 0 )
 		{
-			$log_message = Auth::$session->charName.' performed a mass delete of the following stargates: ';
+			$log_message = Auth::$session->charName.' performed a mass delete of the following jumpbridges: ';
 			
 			$jumpbridgeHashes = $this->_hash_array_to_string($jumpbridgeHashes);
 
@@ -213,6 +214,7 @@ class Controller_Chainmap extends FrontController
 							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 							->execute();
 
+			$log_message .= ' from the chainmap "'. $this->chainmap->data['chainmap_name'].'"';
 			groupUtils::log_action(Auth::$session->groupID,'delwhs', $log_message );
 		}
 		
@@ -245,6 +247,7 @@ class Controller_Chainmap extends FrontController
 							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 							->execute();
 
+			$log_message .= ' from the chainmap "'. $this->chainmap->data['chainmap_name'].'"';
 			groupUtils::log_action(Auth::$session->groupID,'delwhs', $log_message );
 		}
 		
@@ -284,6 +287,7 @@ class Controller_Chainmap extends FrontController
 							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 							->execute();
 
+			$log_message .= ' from the chainmap "'. $this->chainmap->data['chainmap_name'].'"';
 			groupUtils::log_action(Auth::$session->groupID,'delwhs', $log_message );
 		}
 		
