@@ -146,7 +146,7 @@ final class miscUtils
 			return 0;
 		}
 		
-		$total = 22420*$memberCount + 283650;
+		$total = 25420*$memberCount + 283650;
 		return $total*$days;
 	}
 	
