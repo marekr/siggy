@@ -639,22 +639,23 @@ class Controller_Siggy extends FrontController
 			
 			$system_data = $this->getSystemData($id);
 			$log_message = sprintf('%s edited system %s; ', Auth::$session->charName, $system_data['name'] );
+		
 			if( isset($_POST['label']) )
 			{
 				$update['displayName'] = trim(strip_tags($_POST['label']));
-				$log_message += " Display Name:" . $update['displayName'] . ";";
+				$log_message .= " Display Name:" . $update['displayName'] . ";";
 			}
 			
 			if( isset($_POST['activity']) )
 			{
 				$update['activity'] = intval($_POST['activity']);
-				$log_message += " Activity Level:" . $update['activity'] . ";";
+				$log_message .= " Activity Level:" . $update['activity'] . ";";
 			}
 
 			if( isset($_POST['rally']) )
 			{
 				$update['rally'] = intval($_POST['rally']);
-				$log_message += " Rally:" . $update['rally'] . ";";
+				$log_message .= " Rally:" . $update['rally'] . ";";
 			}
 
 			if( empty($update) )
