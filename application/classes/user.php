@@ -41,20 +41,20 @@ class User
 							'char_id' => $this->data['char_id'],
 							'char_name' => $this->data['char_name'],
 							'corp_id' => $this->data['corp_id'],
-							'apiKeyEntryID' => $this->data['apiKeyEntryID'],
+							'selected_apikey_id' => $this->data['selected_apikey_id'],
 							'provider' => $this->data['provider']
 						 );
 						 
 		DB::update('users')->set( $userArray )->where('id', '=',  $this->data['id'])->execute();
 		
 		
-		if( $this->data['apiKeyEntryID'] != 0 )
+		if( $this->data['selected_apikey_id'] != 0 )
 		{
 			$apiArray = array( 'apiKeyInvalid' => $this->data['apiKeyInvalid'],
 								'apiFailures' => $this->data['apiFailures'],
                                 'apiLastCheck' => $this->data['apiLastCheck']
 							 );
-			DB::update('apikeys')->set( $apiArray )->where('entryID', '=',  $this->data['apiKeyEntryID'])->execute();
+			DB::update('apikeys')->set( $apiArray )->where('entryID', '=',  $this->data['selected_apikey_id'])->execute();
 		}
 		
 		//are we the current user?
@@ -181,7 +181,7 @@ class User
 					COALESCE(ak.apiFailures,0) as apiFailures, 
 					COALESCE(ak.apiLastCheck,0) as apiLastCheck 
 					FROM users u
-					LEFT JOIN apikeys ak ON(ak.entryID = u.apiKeyEntryID)";
+					LEFT JOIN apikeys ak ON(ak.entryID = u.selected_apikey_id)";
 					
 		if( $identifier == 'username' )
 		{

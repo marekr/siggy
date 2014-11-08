@@ -316,12 +316,12 @@ class Controller_Account extends FrontController
 		
 		DB::delete('apikeys')->where('entryID', '=', $entryID)->execute();
 		
-		if( Auth::$user->data['apiKeyEntryID'] == $keyData['entryID'] )
+		if( Auth::$user->data['selected_apikey_id'] == $keyData['entryID'] )
 		{
 			Auth::$user->data['corp_id'] = 0;
 			Auth::$user->data['char_id'] = 0;
 			Auth::$user->data['char_name'] = '';
-			Auth::$user->data['apiKeyEntryID'] = 0;
+			Auth::$user->data['selected_apikey_id'] = 0;
 			
 			Auth::$user->save();
 		}
@@ -409,12 +409,12 @@ class Controller_Account extends FrontController
 						DB::update('apikeys')->set( $data )->where('entryID', '=',  $entryID)->execute();
 						
 						
-						if( Auth::$user->data['apiKeyEntryID'] == $entryID )
+						if( Auth::$user->data['selected_apikey_id'] == $entryID )
 						{
 							Auth::$user->data['corp_id'] = 0;
 							Auth::$user->data['char_id'] = 0;
 							Auth::$user->data['char_name'] = '';
-							Auth::$user->data['apiKeyEntryID'] = 0;
+							Auth::$user->data['selected_apikey_id'] = 0;
 							
 							Auth::$user->save();
 						}
@@ -664,13 +664,13 @@ class Controller_Account extends FrontController
 				
 		$view = View::factory('siggy/noAPIAccess');
 	
-		if(	!isset(Auth::$user->data['apiKeyEntryID']) )
+		if(	!isset(Auth::$user->data['selected_apikey_id']) )
 		{
 			Auth::$user->loadByID(Auth::$user->data['id']);
 			Auth::$user->save();
 		}
 	
-		if( Auth::$user->data['apiKeyEntryID'] && ( Auth::$user->data['char_id'] == 0 || Auth::$user->data['corp_id'] == 0 ) )
+		if( Auth::$user->data['selected_apikey_id'] && ( Auth::$user->data['char_id'] == 0 || Auth::$user->data['corp_id'] == 0 ) )
 		{
 			//char select
 			$view->messageType = 'selectChar';
@@ -771,7 +771,7 @@ class Controller_Account extends FrontController
 				Auth::$user->data['corp_id'] = $chars[ $charID ]['corpID'];
 				Auth::$user->data['char_name'] = $chars[ $charID ]['name'];
 				Auth::$user->data['char_id'] = $charID;
-				Auth::$user->data['apiKeyEntryID'] = $chars[ $charID ]['entryID'];
+				Auth::$user->data['selected_apikey_id'] = $chars[ $charID ]['entryID'];
 				
 				Auth::$user->data['apiLastCheck'] = 0;
 				Auth::$user->data['apiInvalid'] = 0;
