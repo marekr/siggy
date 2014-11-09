@@ -23,6 +23,8 @@ class AuthStatus
 	//api char has no access/group
 	const APILOGINNOACCESS = 7;
 	
+	const BLACKLISTED = 9;
+	
 	const GUEST = 8;
 }
 
@@ -80,6 +82,10 @@ class Auth
 			if( self::$session->accessData['api_login_required'] && !self::loggedIn() )
 			{
 				self::$authStatus = AuthStatus::APILOGINREQUIRED;
+			}
+			else if( array_key_exists( self::$session->charID, self::$session->accessData['character_blacklist'] ) )
+			{
+				self::$authStatus = AuthStatus::BLACKLISTED;
 			}
 			else if( self::$session->accessData['group_password_required'] )	//group password only?
 			{

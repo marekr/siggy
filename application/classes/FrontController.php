@@ -145,6 +145,10 @@ class FrontController extends Controller
 		{
 			$this->siggyredirect('/account/login');
 		}
+		elseif( $this->authStatus == AuthStatus::BLACKLISTED )
+		{
+			$this->siggyredirect('/access/blacklisted');
+		}
 		elseif( $this->authStatus != AuthStatus::ACCEPTED )
 		{
 			if( Auth::loggedIn() )

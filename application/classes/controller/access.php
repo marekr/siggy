@@ -48,6 +48,18 @@ class Controller_Access extends FrontController
 		$this->template->content = $view;
 	}
 	
+	public function action_blacklisted()
+	{
+		//load header tools
+		$this->template->headerTools = '';		
+		
+		$view = View::factory('access/blacklisted');
+		
+		$view->groupName = Auth::$session->accessData['groupName'];
+		$view->reason = Auth::$session->accessData['character_blacklist'][ Auth::$session->charID ]['reason'];
+		$this->template->content = $view;
+	}
+	
 	public function action_switch_membership()
 	{
 		$k = $_GET['k'];
@@ -67,7 +79,7 @@ class Controller_Access extends FrontController
 	
 	public function before()
 	{
-		if( $this->request->action() == 'group_password' || $this->request->action() == "switch_membership" )
+		if( $this->request->action() == 'group_password' || $this->request->action() == 'blacklisted'  || $this->request->action() == "switch_membership" )
 		{
 			$this->noAutoAuthRedirects = TRUE;
 		}
