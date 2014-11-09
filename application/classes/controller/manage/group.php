@@ -178,7 +178,7 @@ class Controller_Manage_Group extends Controller_Manage
 						groupUtils::update_group(Auth::$user->data['groupID']);	//trigger last_update value to change
 						groupUtils::recacheGroup(Auth::$user->data['groupID']);
 
-						Message::add('sucess', 'Group member added');
+						Message::add('success', 'Group member added');
 						HTTP::redirect('manage/group/members');
 						return;
 					}

@@ -97,7 +97,7 @@ class Controller_Manage_Access extends Controller_Manage
         $id = $this->request->param('id');
         
         DB::delete('users_group_acl')->where('user_id', '=', $id)->where('group_id','=', Auth::$user->data['groupID'])->execute();
-        Message::add('sucess', 'User access removed succesfully');
+        Message::add('success', 'User access removed succesfully');
         HTTP::redirect('manage/access/configure');
     }
     
@@ -138,7 +138,7 @@ class Controller_Manage_Access extends Controller_Manage
                 
                 DB::insert('users_group_acl', array_keys($save) )->values(array_values($save))->execute();
                 
-                Message::add('sucess', 'User access added succesfully');
+                Message::add('success', 'User access added succesfully');
                 HTTP::redirect('manage/access/configure');
             }
         }
@@ -182,7 +182,7 @@ class Controller_Manage_Access extends Controller_Manage
             DB::update('users_group_acl')->set( $update )->where( 'user_id', '=', $id )->where('group_id','=',Auth::$user->data['groupID'])->execute();
             
             
-            Message::add('sucess', 'User access edited succesfully');
+            Message::add('success', 'User access edited succesfully');
 			HTTP::redirect('manage/access/configure');
         }
         else
