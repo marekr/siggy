@@ -463,7 +463,10 @@ final class miscUtils
 		return gmmktime($today['hours'],0,0,$today['mon'],$today['mday'],$today['year']);
 	}
 
-
+	static function getDateTimeString( $timestamp )
+	{
+		return date('Y-n-j H:i:s', $timestamp);
+	}
 
 	static function timeToHourString( $timestamp )
 	{

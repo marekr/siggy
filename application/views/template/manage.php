@@ -112,6 +112,9 @@
 							<li>
 								<?php echo Html::anchor('manage/group/members', __('Group Members')); ?>
 							</li>
+							<li>
+								<?php echo Html::anchor('manage/blacklist/list', __('Character Blacklist')); ?>
+							</li>
 							<?php endif; ?>
 							<?php if( Auth::$user->data['admin'] || $perms['can_manage_access'] ): ?>
 							<li>
