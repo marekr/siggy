@@ -465,7 +465,7 @@ final class miscUtils
 
 	static function getDateTimeString( $timestamp )
 	{
-		return date('Y-n-j H:i:s', $timestamp);
+		return date('Y-m-d H:i:s', $timestamp);
 	}
 
 	static function timeToHourString( $timestamp )
