@@ -136,13 +136,18 @@ final class groupUtils
 								->current();
 
 
-		$group['members'] = DB::query(Database::SELECT, "SELECT * FROM groupmembers WHERE groupID = :group")
-								->param(':group', $id)
-								->execute()
-								->current();
-
 		if( $group['groupID'] )
 		{
+			$group['members'] = DB::query(Database::SELECT, "SELECT * FROM groupmembers WHERE groupID = :group")
+									->param(':group', $id)
+									->execute()
+									->current();
+									
+			$group['character_blacklist'] = DB::query(Database::SELECT, "SELECT * FROM group_character_blacklist WHERE group_id = :group")
+									->param(':group', $id)
+									->execute()
+									->as_array('character_id');
+									
 			$chainmaps = DB::query(Database::SELECT, "SELECT * FROM chainmaps WHERE group_id = :group")
 								->param(':group', $id)
 								->execute()

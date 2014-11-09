@@ -36,30 +36,6 @@ class Controller_Manage_Blacklist extends Controller_Manage
 		$this->template->title = __('Access not allowed');
 		$view = $this->template->content = View::factory('manage/access/denied');
 	}
-   
-	public function action_set()
-	{
-		if( !isset( $_POST['group'] ) )
-		{
-			HTTP::redirect('manage');
-		}
-		
-		$group = intval($_POST['group']);
-		
-		if( !Auth::$user->isAdmin()  && !isset( Auth::$user->perms[ $group ] ) &&
-			!( Auth::$user->perms[ $group ]['canManage'] == 1)
-		) 
-		{
-			HTTP::redirect('manage/access/denied');
-		}
-		else
-		{
-			Auth::$user->data['groupID'] = intval($_POST['group']);
-			Auth::$user->save();
-		}
-      
-		HTTP::redirect('/manage');
-	}
 	
 	public function action_list()
 	{
@@ -84,6 +60,9 @@ class Controller_Manage_Blacklist extends Controller_Manage
         $id = $this->request->param('id');
         
         DB::delete('group_character_blacklist')->where('id', '=', $id)->where('group_id','=', Auth::$user->data['groupID'])->execute();
+		
+		groupUtils::recacheGroup( Auth::$user->data['groupID'] );
+				
         Message::add('success', 'Blacklisted character removed succesfully');
         HTTP::redirect('manage/blacklist/list');
     }
@@ -137,9 +116,10 @@ class Controller_Manage_Blacklist extends Controller_Manage
 							'created' => time()
                         );
                 
-                
                 DB::insert('group_character_blacklist', array_keys($save) )->values(array_values($save))->execute();
                 
+				groupUtils::recacheGroup( Auth::$user->data['groupID'] );
+				
                 Message::add('success', 'Character added to blacklist succesfully');
                 HTTP::redirect('manage/blacklist/list');
             }
