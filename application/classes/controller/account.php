@@ -153,18 +153,10 @@ class Controller_Account extends FrontController
 						$errors['username'] = 'Unknown error has occured.';
 					}
 				}
-				
-				//if not create
-				//CharacterOwnerHash
-				//CharacterID
-				//CharacterName
-				//
 			}
 			else
 			{
-				print 'hi';
-				$url = $eveService->getAuthorizationUri();
-				header('Location: ' . $url);
+				HTTP::redirect($eveService->getAuthorizationUri());
 			} 
 		}
 		
