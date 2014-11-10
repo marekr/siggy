@@ -83,7 +83,8 @@ class Auth
 			{
 				self::$authStatus = AuthStatus::APILOGINREQUIRED;
 			}
-			else if( array_key_exists( self::$session->charID, self::$session->accessData['character_blacklist'] ) )
+			else if( isset( self::$session->accessData['character_blacklist'] ) && 
+						array_key_exists( self::$session->charID, self::$session->accessData['character_blacklist'] ) )
 			{
 				self::$authStatus = AuthStatus::BLACKLISTED;
 			}

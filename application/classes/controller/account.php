@@ -92,7 +92,7 @@ class Controller_Account extends FrontController
 			$credentials = new Credentials(
 				Kohana::$config->load('sso.eve.key'),
 				Kohana::$config->load('sso.eve.secret'),
-				 'http://localhost/evetel/account/sso/eve'
+				 URL::base(TRUE).'account/sso/eve'
 			);
 
 			$eveService = $serviceFactory->createService('Eve', $credentials, $storage);
