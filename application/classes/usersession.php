@@ -47,8 +47,9 @@ class UserSession
 				}
 
 			}
-
+			
 			$this->__generateSession();
+			$this->reloadUserSession();
 		}
 		
 
@@ -72,6 +73,8 @@ class UserSession
 
 			$this->__generateSession();
 			
+			
+			$this->reloadUserSession();
 			$sess = $this->__fetchSessionData();
 		}
 		
@@ -116,7 +119,7 @@ class UserSession
 
 	public function reloadUserSession()
 	{
-		if( empty($this->sessionID) )
+		if( empty($this->sessionID) || !Auth::loggedIn() )
 		{
 			return;
 		}
