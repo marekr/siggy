@@ -496,7 +496,7 @@ sigtable.prototype.editSig = function (sigID)
 		that.editingSig = false;
 		that.sigData[sigID].editing = false;
 
-	},"json").fail( function(xhr, textStatus, errorThrown) { alert(xhr.responseText) } );
+	},"json").fail( function(xhr, textStatus, errorThrown) { alert('Error') } );
 
 	sigEle.remove();
 	if( this.settings.showSigSizeCol )
