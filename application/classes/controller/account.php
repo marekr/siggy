@@ -89,11 +89,23 @@ class Controller_Account extends FrontController
 			$currentUri->setQuery('');
 			
 			
-			$credentials = new Credentials(
-				Kohana::$config->load('sso.eve.key'),
-				Kohana::$config->load('sso.eve.secret'),
-				 URL::base(TRUE).'account/sso/eve'
-			);
+			$credentials = null;
+			if( Kohana::$environment == Kohana::PRODUCTION )
+			{
+				$credentials = new Credentials(
+					Kohana::$config->load('sso.production.eve.key'),
+					Kohana::$config->load('sso.production.eve.secret'),
+					 URL::base(TRUE).'account/sso/eve'
+				);
+			}
+			else
+			{
+				$credentials = new Credentials(
+					Kohana::$config->load('sso.development.eve.key'),
+					Kohana::$config->load('sso.development.eve.secret'),
+					 URL::base(TRUE).'account/sso/eve'
+				);
+			}
 
 			$eveService = $serviceFactory->createService('Eve', $credentials, $storage);
 			if ( !empty($_GET['code']) )
