@@ -139,6 +139,8 @@ class UserSession
 		$this->charName = $update['char_name'];
 		$this->corpID = $update['corp_id'];
 		$this->groupID = $update['groupID'];
+
+		$this->getAccessData();
 	}
 
 	private function __generateSession()

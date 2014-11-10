@@ -146,6 +146,11 @@ class User
 			{
 				$this->data['corp_id'] = $corpID;
 				$this->save();
+
+				if( $this->data['id'] == Auth::$user->data['id'] )
+				{
+					Auth::$session->reloadUserSession();
+				}
 			}
 		}
 		
