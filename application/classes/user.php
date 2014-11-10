@@ -69,6 +69,49 @@ class User
 		}
 	}
 	
+	public function savePassword( $groupID, $pass )
+	{
+		$passes = DB::query(Database::INSERT, "REPLACE INTO user_group_passwords (user_id, group_id, group_password) VALUES(:user, :group, :pass)")
+									->param(':user', $this->data['id'])
+									->param(':group', $groupID)
+									->param(':pass', $pass)
+									->execute();
+		$this->recacheSavedPasswords();
+	}
+	
+	public function getSavedPassword( $groupID )
+	{
+		$cache = Cache::instance(CACHE_METHOD);
+
+		$saved_passwords = $cache->get('user-'.$this->data['id'].'-group-passwords');
+		if( $saved_passwords == null )
+		{
+			$saved_passwords = $this->recacheSavedPasswords();
+		}
+		
+		return isset( $saved_passwords[ $groupID ] ) ? $saved_passwords[ $groupID ] : '';
+	}
+	
+	public function recacheSavedPasswords()
+	{
+		$saved_passwords = array();
+	
+		$cache = Cache::instance(CACHE_METHOD);
+		$passes = DB::query(Database::SELECT, "SELECT * FROM user_group_passwords WHERE user_id=:userid")
+									->param(':userid', $this->data['id'])
+									->execute()
+									->as_array();
+
+		foreach($passes as $p)
+		{
+			$saved_passwords[ $p['group_id'] ] = $p['group_password'];
+		}
+		
+		$cache->set('user-'.$this->data['id'].'-group-passwords', $saved_passwords);
+		
+		return $saved_passwords;
+	}
+	
 	public function validateCorpChar()
 	{
 		if( !self::userLoaded() )

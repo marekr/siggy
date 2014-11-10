@@ -90,7 +90,16 @@ class Auth
 			else if( self::$session->accessData['group_password_required'] )	//group password only?
 			{
 				$groupID = intval(self::$session->accessData['groupID']);
-				$authPassword = Cookie::get('auth-password-' .$groupID, '');
+				$authPassword = '';
+				
+				if( self::loggedIn() )
+				{
+					$authPassword = self::$user->getSavedPassword( $groupID );
+				}
+				else
+				{
+					$authPassword = Cookie::get('auth-password-' .$groupID, '');
+				}
 
 				if( $authPassword === self::$session->accessData['group_password'] )
 				{

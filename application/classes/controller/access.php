@@ -35,7 +35,14 @@ class Controller_Access extends FrontController
 			{
 				if( $pass == Auth::$session->accessData['group_password'] )
 				{
-					Cookie::set('auth-password-' .$groupID, $pass, 365*60*60*24);
+					if( Auth::loggedIn() )
+					{
+						Auth::$user->savePassword( $groupID, $pass );
+					}
+					else
+					{
+						Cookie::set('auth-password-' .$groupID, $pass, 365*60*60*24);
+					}
 					HTTP::redirect('/');
 				}
 				else
