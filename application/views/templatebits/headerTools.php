@@ -16,7 +16,7 @@
 		<li><a target="_blank" href="http://wiki.siggy.borkedlabs.com/support">Contact</a></li>
 	  </ul>
 	</li>
-	<?php if( $apilogin ): ?>
+	<?php if( Auth::loggedIn() && Auth::$user->isLocal() ): ?>
 	<li class="dropdown">
 	  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <i class="fa fa-caret-down"></i></a>
 	  <ul class="dropdown-menu" role="menu">
