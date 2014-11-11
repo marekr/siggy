@@ -20,7 +20,7 @@
 		<tr>
 			<td><?php echo $char['character_id']; ?></td>
 			<td>
-				<img src="http://image.eveonline.com/Character/<?php echo $char['character_id']; ?>_32.jpg" width="32" height="32" />
+				<img src="https://image.eveonline.com/Character/<?php echo $char['character_id']; ?>_32.jpg" width="32" height="32" />
 				<?php echo $char['character_name']; ?>
 			</td>
 			<td><?php echo $char['reason']; ?></td>
