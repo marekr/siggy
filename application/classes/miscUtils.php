@@ -418,9 +418,9 @@ final class miscUtils
 		DB::query(Database::INSERT, 'INSERT INTO stats (`charID`,`charName`,`groupID`,`chainmap_id`,`dayStamp`,`'.$stat.'`)
 												VALUES(:charID, :charName, :groupID, :chainmap, :dayStamp, 1)
 												ON DUPLICATE KEY UPDATE '.$duplicate_update_string)
-							->param(':charID',  $groupData['charID'] )
-							->param(':charName', $groupData['charName'] )
-							->param(':groupID', $groupData['groupID'] )
+							->param(':charID',  Auth::$session->charID )
+							->param(':charName', Auth::$session->charName )
+							->param(':groupID', Auth::$session->groupID )
 							->param(':chainmap', $groupData['active_chain_map'] )
 							->param(':dayStamp', miscUtils::getDayStamp() )
 							->execute();
