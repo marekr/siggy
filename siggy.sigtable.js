@@ -70,6 +70,7 @@ sigtable.prototype.initialize = function()
 	$('#checkbox-show-anomalies').change( function()
 	{
 		$this.changeAnomState($(this).is(':checked'));
+		$this.updateSigTotal();
 	});
 	
 	$this.initializeHotkeys();
@@ -216,6 +217,13 @@ sigtable.prototype.updateSigs = function (sigData, flashSigs)
 	{
 		$('#sig-table').trigger('update');
 	}
+	
+	this.updateSigTotal();
+}
+
+sigtable.prototype.updateSigTotal = function()
+{
+	$('#number-sigs').text(	$('#sig-table tr.sig:visible').length );
 }
 
 sigtable.prototype.removeSig = function (sigID)
@@ -225,6 +233,7 @@ sigtable.prototype.removeSig = function (sigID)
 		sigID: sigID
 	});
 	$('#sig-table').trigger('update');
+	this.updateSigTotal();
 
 	$.post(this.settings.baseUrl + 'sig/remove', {
 		systemID: this.systemID,
@@ -290,7 +299,7 @@ sigtable.prototype.addSigRow = function (sigData, flashSig)
 {
 	var that = this;
 
-	var row = $('<tr>').attr('id', 'sig-' + sigData.sigID);
+	var row = $('<tr>').attr('id', 'sig-' + sigData.sigID).addClass('sig');
 	row.addClass('type-'+sigData.type);
 
 	var descTD = $('<td>').addClass('desc');
