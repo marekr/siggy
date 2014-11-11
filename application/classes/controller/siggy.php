@@ -374,8 +374,12 @@ class Controller_Siggy extends FrontController
         $this->auto_render = FALSE;
         header('content-type: application/json');
         header("Cache-Control: no-cache, must-revalidate");
-       // ob_start( 'ob_gzhandler' );
-
+		
+		if( Kohana::$environment == Kohana::PRODUCTION )
+		{
+			ob_start( 'ob_gzhandler' );
+		}
+		
         if(	!$this->siggyAccessGranted() )
         {
             echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
