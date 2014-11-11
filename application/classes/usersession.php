@@ -282,8 +282,8 @@ class UserSession
 		$groupData['access_type'] = $access_type;
 		$groupData['corpID'] = $this->corpID;
 		$groupData['charID'] = $this->charID;
-		$groupData['accessible_chainmaps'] = $this->_buildAccessChainmaps($groupData);
-		$groupData['active_chain_map'] = $this->_getChainMapID($groupData);
+		$groupData['accessible_chainmaps'] = $this->_buildAccessChainmaps($groupData['chainmaps']);
+		$groupData['active_chain_map'] = $this->_getChainMapID($groupData['chainmaps']);
 		$groupData['access_groups'] = $all_groups;
 
 		$this->accessData = $groupData;
@@ -292,15 +292,15 @@ class UserSession
 	}
 
 
-	private function _buildAccessChainmaps($groupData)
+	private function _buildAccessChainmaps($chainmaps)
 	{
 		$accessibleChainmaps = array();
-		foreach($groupData['chainmaps'] as $id => $c)
+		foreach($chainmaps as $id => $c)
 		{
 			foreach($c['access'] as $p)
 			{
-				if( ($p['memberType'] == 'corp' && $p['eveID'] == $groupData['corpID'])
-						|| ($p['memberType'] == 'char' && $p['eveID'] == $groupData['charID']) )
+				if( ($p['memberType'] == 'corp' && $p['eveID'] == $this->corpID)
+						|| ($p['memberType'] == 'char' && $p['eveID'] == $this->charID) )
 				{
 					$accessibleChainmaps[$c['chainmap_id']] = $c;
 				}
@@ -309,15 +309,15 @@ class UserSession
 		return $accessibleChainmaps;
 	}
 
-	private function _getDefaultChainMapID($groupData)
+	private function _getDefaultChainMapID($chainmaps)
 	{
 		//to make usage "neat" for now, we first see if we have access to a default chain map
-		foreach($groupData['chainmaps'] as $id => $c)
+		foreach($chainmaps as $id => $c)
 		{
 			foreach($c['access'] as $p)
 			{
-				if( $c['chainmap_type'] == 'default' && ($p['memberType'] == 'corp' && $p['eveID'] == $groupData['corpID'])
-														|| ($p['memberType'] == 'char' && $p['eveID'] == $groupData['charID']) )
+				if( $c['chainmap_type'] == 'default' && ( ($p['memberType'] == 'corp' && $p['eveID'] == $this->corpID)
+														|| ($p['memberType'] == 'char' && $p['eveID'] == $this->charID) ) )
 				{
 					return $c['chainmap_id'];
 				}
@@ -325,12 +325,12 @@ class UserSession
 		}
 		
 		//otherwise grab the first one we do have access to
-		foreach($groupData['chainmaps'] as $id => $c)
+		foreach($chainmaps as $id => $c)
 		{
 			foreach($c['access'] as $p)
 			{
-				if( ($p['memberType'] == 'corp' && $p['eveID'] == $groupData['corpID'])
-						|| ($p['memberType'] == 'char' && $p['eveID'] == $groupData['charID']) )
+				if( ($p['memberType'] == 'corp' && $p['eveID'] == $this->corpID)
+						|| ($p['memberType'] == 'char' && $p['eveID'] == $this->charID) )
 				{
 					return $c['chainmap_id'];
 				}
@@ -340,21 +340,21 @@ class UserSession
 		return 0;
 	}
 
-	private function _getChainMapID($groupData)
+	private function _getChainMapID($chainmaps)
 	{
 		$desired_id = intval(Cookie::get('chainmap', 0));
 		$default_id = 0;
 		if( !$desired_id )
 		{
-			return $this->_getDefaultChainMapID($groupData);
+			return $this->_getDefaultChainMapID($chainmaps);
 		}
 
-		if( isset($groupData['chainmaps'][ $desired_id ]) )
+		if( isset($chainmaps[ $desired_id ]) )
 		{
-			foreach($groupData['chainmaps'][ $desired_id ]['access'] as $p)
+			foreach($chainmaps[ $desired_id ]['access'] as $p)
 			{
-				if( ($p['memberType'] == 'corp' && $p['eveID'] == $groupData['corpID'])
-						|| ($p['memberType'] == 'char' && $p['eveID'] == $groupData['charID']) )
+				if( ($p['memberType'] == 'corp' && $p['eveID'] == $this->corpID)
+						|| ($p['memberType'] == 'char' && $p['eveID'] == $this->charID) )
 				{
 					return $desired_id;
 				}
@@ -362,7 +362,7 @@ class UserSession
 		}
 		else
 		{
-			$desired_id = $this->_getDefaultChainMapID($groupData);
+			$desired_id = $this->_getDefaultChainMapID($chainmaps);
 			if( $desired_id )
 			{
 				Cookie::set('chainmaps',$desired_id);
@@ -371,6 +371,6 @@ class UserSession
 			return $desired_id;
 		}
 
-		return $this->_getDefaultChainMapID($groupData);
+		return $this->_getDefaultChainMapID($chainmaps);
 	}
 }
