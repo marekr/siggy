@@ -317,7 +317,8 @@
             </div>
 			<div class="sub-display-group">
 				<h2>
-					<label><input id="checkbox-show-anomalies" type="checkbox" value="1" checked /> <?php echo __('Show anomalies'); ?> (<?php echo __('Combat Sites'); ?>)</label>
+					<span id='number-sigs'>0</span> signatures shown
+					<label style="float:right"><input id="checkbox-show-anomalies" type="checkbox" value="1" checked /> <?php echo __('Show anomalies'); ?> (<?php echo __('Combat Sites'); ?>)</label>
 				</h2>
 			</div>
             <table id="sig-table" cellspacing="1" class="siggy-table tablesorter">
