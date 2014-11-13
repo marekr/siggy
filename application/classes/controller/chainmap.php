@@ -108,7 +108,7 @@ class Controller_Chainmap extends FrontController
 		{
 			foreach( $systemData as $system )
 			{
-				if( !isset($system['y']) || $system['y'] < 0 || $system['y'] > 400 )
+				if( !isset($system['y']) || $system['y'] < 0 )
 				{
 					$system['y'] = 0;
 				}

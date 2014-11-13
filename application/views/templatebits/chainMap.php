@@ -21,20 +21,23 @@
 			<!--- <li class="tab add"><i class="fa fa-fw fa-plus"></i></li> --->
 			<li class="tab minimize"><i class="fa fa-fw fa-minus-square"></i></li>
 		</ul>
-		<div id='chain-map-inner'>
+		<div class="chain-map-messages">
 			<p class="loading">Loading....<br /><span style='font-size:0.3em;'>(This may take up to 10 seconds.)</span></p>
 			<p class="editing">Editing: Drag systems by clicking on them.</p>
 			<p class="deleting">Click on(or mouse drag) wormhole links to select for deletion</p>
+		</div>
+		<div id="chain-map-inner">
 			<div id="chain-map-scrolltainer">
 				<div id="chain-map">
 				</div>
 			</div>
-			<!-- magic buttons -->
-			<div class="buttons">
-				<button id="chain-map-save" style="display:none;" class="btn btn-default btn-xs">Save Map Changes</button>
-				<button id="chain-map-mass-delete-confirm" style="display:none;" class="btn btn-default btn-danger btn-xs">Confirm Mass Delete</button>
-				<button id="chain-map-mass-delete-cancel" style="display:none;" class="btn btn-default btn-primary btn-xs">Cancel</button>
-			</div>
+		</div>
+
+		<!-- magic buttons -->
+		<div class="buttons">
+			<button id="chain-map-save" style="display:none;" class="btn btn-default btn-xs">Save Map Changes</button>
+			<button id="chain-map-mass-delete-confirm" style="display:none;" class="btn btn-default btn-danger btn-xs">Confirm Mass Delete</button>
+			<button id="chain-map-mass-delete-cancel" style="display:none;" class="btn btn-default btn-primary btn-xs">Cancel</button>
 		</div>
 		<!-- magic buttons -->
 		<div id='map-footer-bar'>
@@ -50,7 +53,7 @@
 			<div class="clearfix"></div>
 			<!-- end broadcast -->
 		</div>
-		
+
 		<div id="connection-popup" class="box box-tabbed" style="display:none">
 			<ul class="box-tabs">
 				<li class="active"><a href="#connection-editor"><i class="fa fa-pencil"></i> Edit</a></li>
@@ -183,6 +186,5 @@
 
 		</div>
 		<!-- end wh editor -->
-
 </div>
 <!--- end chain map -->
