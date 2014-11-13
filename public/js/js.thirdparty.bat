@@ -2,7 +2,6 @@
 --js=translate.js ^
 --js=lazyload.js ^
 --js=jquery/jquery-1.11.1.min.js ^
---js=jquery/jquery-migrate-core.js ^
 --js=jquery/jquery-ui-1.10.3.min.js ^
 --js=jquery/jquery.qtip.js ^
 --js=jquery/jquery.blockUI.js ^
