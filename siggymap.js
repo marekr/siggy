@@ -25,6 +25,7 @@ function siggyMap(options)
 
 
 	this.container = $('#chain-map-container');
+	this.innerContainer = $('#chain-map-inner');
 
 	this.loadingMessage = this.container.find('p.loading');
 	this.editingMessage = this.container.find('p.editing');
@@ -205,7 +206,19 @@ siggyMap.prototype.initialize = function()
 	{
 		this.mapHide();
 	}
-
+	
+	
+	this.innerContainer.height(that.siggymain.displayStates.map.height);
+	this.innerContainer.resizable({ 
+							handles:'s', 
+							maxHeight:800, 
+							minHeight:400 })
+						.on( "resizestop", function( event, ui ) 
+						{
+							that.siggymain.displayStates.map.height = that.innerContainer.height();
+							that.siggymain.saveDisplayState();
+						} );
+	
 	var $container = $("#chain-map");
 	$container.on('mousedown', function(e) {
 		if( !that.massSelect )

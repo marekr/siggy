@@ -76,7 +76,8 @@ function siggymain( options )
 		posesOpen: true,
 		dscanOpen: true,
 		map: {
-			open: true
+			open: true,
+			height: 400
 		}
 	}
 
