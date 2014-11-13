@@ -912,24 +912,24 @@
             if (axis.position == 'bottom'){
                 top = box.top + box.padding;
                 if (angle < 0) {
-                    if (!$.browser.msie)
+                    if (!(navigator.userAgent.match(/msie/i) || navigator.userAgent.match(/trident/i)))
                         oLeft = -dims.a_left.x;
                     else
                         oLeft = dims.a_left.x;
                 } else {
                     align = "right";
                     oLeft = -dims.a_right.x;
-                    if (!$.browser.msie)
+                    if (!(navigator.userAgent.match(/msie/i) || navigator.userAgent.match(/trident/i)))
                         top += dims.topmost.y;
                 }
             } else if (axis.position == 'top') {
                 top = box.top; 
-                if (!$.browser.msie && angle > 0)
+                if (!(navigator.userAgent.match(/msie/i) || navigator.userAgent.match(/trident/i)) && angle > 0)
                     top += box.height - box.padding + dims.bottommost.y;
 
                 if (angle < 0)
                     align = "right";
-                if ($.browser.msie && angle < 0){
+                if ((navigator.userAgent.match(/msie/i) || navigator.userAgent.match(/trident/i)) && angle < 0){
                     oLeft = -dims.width - dims.a_left.x;
                 } else {
                     if (angle < 0)
@@ -942,10 +942,10 @@
                 left = box.left;
                 if (angle < 0) {
                     oTop = dims.a_right.y;
-                    if (!$.browser.msie)
+                    if (!(navigator.userAgent.match(/msie/i) || navigator.userAgent.match(/trident/i)))
                         left -= dims.leftmost.x;
                 } else {
-                    if ($.browser.msie)
+                    if (navigator.userAgent.match(/msie/i) || navigator.userAgent.match(/trident/i))
                         oTop = -dims.a_left.y;
                     else
                         oTop = dims.a_right.y;
@@ -954,11 +954,11 @@
                 align = "left";
                 left = box.left + box.padding;
                 if (angle < 0) {
-                    if (!$.browser.msie)
+                    if (!(navigator.userAgent.match(/msie/i) || navigator.userAgent.match(/trident/i)))
                         left -= dims.leftmost.x;
                     oTop = -dims.a_left.y;
                 } else {
-                    if ($.browser.msie)
+                    if (navigator.userAgent.match(/msie/i) || navigator.userAgent.match(/trident/i))
                         oTop = -dims.height + dims.a_left.y;
                     else
                         oTop = -dims.a_left.y;
@@ -1790,19 +1790,12 @@
 
         function insertAxisLabels() {
             var addRotateLabelStyles = function(styles,axis){
-                var b = '';
-                if ($.browser.safari || $.browser.webkit)
-                    b = 'webkit';
-                else if ($.browser.mozilla)
-                    b = 'moz';
-                else if ($.browser.opera)
-                    b = 'o';
                 //flip the angle so IE/non-IE do the same thing
-                styles.push("-"+b+"-transform:rotate("+-axis.options.labelAngle+"deg)");
-                styles.push("-"+b+"-transform-origin:top left");
+                styles.push("transform:rotate("+-axis.options.labelAngle+"deg)");
+                styles.push("transform-origin:top left");
             }
 
-            if ($.browser.msie) 
+            if (navigator.userAgent.match(/msie/i) || navigator.userAgent.match(/trident/i)) 
               addRotateLabelStyles = function(styles,axis) {
                     var rad = axis.options.labelAngle * Math.PI / 180,
                     cos = Math.cos(rad),
