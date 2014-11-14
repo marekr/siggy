@@ -13,7 +13,7 @@ class UserSession
 	private $sessionID = "";
 	
 	public $accessData = array();
-	
+	public $sessionData = array();
 
 	public function __construct()
 	{
@@ -21,7 +21,7 @@ class UserSession
 		$this->charID = isset($_SERVER['HTTP_EVE_CHARID']) ? $_SERVER['HTTP_EVE_CHARID'] : 0;
 		$this->charName = isset($_SERVER['HTTP_EVE_CHARNAME']) ? $_SERVER['HTTP_EVE_CHARNAME'] : '';
 		$this->corpID = isset($_SERVER['HTTP_EVE_CORPID']) ? $_SERVER['HTTP_EVE_CORPID'] : 0;
-		
+
 		$this->igb = miscUtils::isIGB();
 		$this->trusted = miscUtils::getTrust();
 
@@ -42,8 +42,8 @@ class UserSession
 
 				if( !Auth::autoLogin($memberID, $passHash) )
 				{
-                    Cookie::delete('userID');
-                    Cookie::delete('passHash');
+					Cookie::delete('userID');
+					Cookie::delete('passHash');
 				}
 
 			}
@@ -54,9 +54,9 @@ class UserSession
 		
 
 		//attempt to find existing session
-		$sess = $this->__fetchSessionData();
+		$this->sessionData = $this->__fetchSessionData();
 		
-		if( !isset($sess['sessionID']) )
+		if( !isset($this->sessionData['sessionID']) )
 		{
 			$this->sessionID = $this->__generateSessionID();
 
@@ -75,23 +75,29 @@ class UserSession
 			
 			
 			$this->reloadUserSession();
-			$sess = $this->__fetchSessionData();
+			$this->sessionData = $this->__fetchSessionData();
 		}
 		
 		// finally load user ID
-		if( $sess['userID'] != 0 )
+		if( $this->sessionData['userID'] != 0 )
 		{
-			Auth::$user->loadByID( $sess['userID'] );
+			Auth::$user->loadByID( $this->sessionData['userID'] );
 		}
 		
-		$this->charID = $sess['char_id'];
-		$this->charName = $sess['char_name'];
-		$this->corpID = $sess['corp_id'];
-		$this->groupID = $sess['groupID'];
+		/* Don't use session data for char name, id and corp id to avoid
+		   IGB header issues */
+		$this->groupID = $this->sessionData['groupID'];
+		if( $this->__determineSessionType() != 'igb' )
+		{
+			$this->charName = $this->sessionData['char_name'];
+			$this->charID = $this->sessionData['char_id'];
+			$this->corpID = $this->sessionData['corp_id'];
+		}
+		
+		$this->__updateSession();
 		
 		$this->getAccessData();
 		
-		$this->__updateSession();
 	}
 	
 	private function __fetchSessionData()
@@ -166,14 +172,9 @@ class UserSession
 
 		return TRUE;
 	}
-
-	private function __updateSession()
+	
+	private function __determineSessionType()
 	{
-		if( empty($this->sessionID) )
-		{
-			return;
-		}
-
 		$type = '';
 		
 		if( $this->igb )
@@ -193,11 +194,32 @@ class UserSession
 			}
 		}
 		
+		return $type;
+	}
+
+	private function __updateSession()
+	{
+		if( empty($this->sessionID) )
+		{
+			return;
+		}
+
+		$type = $this->__determineSessionType();
+		
 		$update = array( 'lastBeep' => time(),
 						 'groupID' => ( isset($this->groupID) ? $this->groupID : 0 ),
 						 'sessionType' => $type,
 						 'chainmap_id' => ( isset($this->accessData['active_chain_map']) ? $this->accessData['active_chain_map'] : 0 )
 						);
+		
+		/* Buggy IGB fix, sometimes we could create
+			a session without a proper char or corp ID.
+			In IGB header only mode we need to compensate for this ~issue~ */
+		if( $type == 'igb' )
+		{
+			$update['char_id'] = $this->charID;
+			$update['corp_id'] = $this->corpID;
+		}
 
 		DB::update('siggysessions')->set( $update )->where('sessionID', '=',  $this->sessionID)->execute();
 	}
