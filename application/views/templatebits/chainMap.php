@@ -34,22 +34,29 @@
 		</div>
 
 		<!-- magic buttons -->
-		<div class="buttons">
-			<button id="chain-map-save" style="display:none;" class="btn btn-default btn-xs">Save Map Changes</button>
-			<button id="chain-map-mass-delete-confirm" style="display:none;" class="btn btn-default btn-danger btn-xs">Confirm Mass Delete</button>
-			<button id="chain-map-mass-delete-cancel" style="display:none;" class="btn btn-default btn-primary btn-xs">Cancel</button>
-		</div>
-		<!-- magic buttons -->
 		<div id='map-footer-bar'>
-			<!-- options -->
-			<a href="#" id="chain-map-add-wh" class="btn btn-default btn-xs btn-primary"><i class="fa fa-link"></i> Add Connection</a>
-			<a href="#" id="chain-map-edit" class="btn btn-default btn-xs btn-warning"><i class="fa fa-pencil"></i> Edit</a>
-			<a href="#" id="chain-map-delete-whs" class="btn btn-default btn-xs btn-danger"><i class="fa fa-chain-broken"></i> Delete Connections</a>
-			<!--- end options -->
-			<!--- broadcast -->
-			<?php if( !$group['alwaysBroadcast'] ): ?>
-			<a href="#" id="chainmap-broadcast-button" class="btn btn-default btn-xs" style="float:right"><i class="fa fa-wifi"></i><?php echo ( ( isset($_COOKIE['broadcast']) && $_COOKIE['broadcast'] == 0 ) ? "Enable location broadcast" : "Disable location broadcast" ); ?></a>
-			<?php endif; ?>
+			<div style="float:left">
+				<!-- options -->
+				<a href="#" id="chain-map-add-wh" class="btn btn-default btn-xs btn-primary"><i class="fa fa-link"></i> Add Connection</a>
+				<a href="#" id="chain-map-edit" class="btn btn-default btn-xs btn-warning"><i class="fa fa-pencil"></i> Edit</a>
+				<a href="#" id="chain-map-delete-whs" class="btn btn-default btn-xs btn-danger"><i class="fa fa-chain-broken"></i> Delete Connections</a>
+				<!--- end options -->
+			</div>
+			<div style="float:right">
+				<!--- broadcast -->
+				<?php if( !$group['alwaysBroadcast'] ): ?>
+				<a href="#" id="chainmap-broadcast-button" class="btn btn-default btn-xs"><i class="fa fa-wifi"></i><?php echo ( ( isset($_COOKIE['broadcast']) && $_COOKIE['broadcast'] == 0 ) ? "Enable location broadcast" : "Disable location broadcast" ); ?></a>
+				<?php endif; ?>
+			</div>
+			<!-- magic buttons -->
+			<div class="buttons">
+
+				<button id="chain-map-edit-save" style="display:none;" class="btn btn-danger btn-xs">Save Map Changes</button>
+							<!---
+				<button id="chain-map-edit-cancel" style="display:none;" class="btn btn-default btn-primary btn-xs">Cancel</button> -->
+				<button id="chain-map-mass-delete-confirm" style="display:none;" class="btn btn-default btn-danger btn-xs">Confirm Mass Delete</button>
+				<button id="chain-map-mass-delete-cancel" style="display:none;" class="btn btn-default btn-primary btn-xs">Cancel</button>
+			</div>
 			<div class="clearfix"></div>
 			<!-- end broadcast -->
 		</div>

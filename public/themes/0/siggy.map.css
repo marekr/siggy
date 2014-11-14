@@ -9,6 +9,11 @@ MAP */
 	background-color: @chain-map-background;
 }
 
+#chain-map-inner
+{
+	padding-bottom:5px; /* this fixes the scrollbar being covered up slightly*/
+}
+
 #chain-map-container p.editing,
 #chain-map-container p.loading,
 #chain-map-container p.deleting
@@ -33,13 +38,12 @@ MAP */
 #chain-map-container div.buttons
 {
 	position:relative;
-	text-align:center;
+	display:inline-block;
 }
 
 #chain-map
 {
 	width: 100%;
-	min-height: 400px;
 	height:100%;
 	position:relative;
 	-webkit-touch-callout: none;
@@ -259,6 +263,7 @@ MAP */
 	background-color: @header-background;
     padding-left:10px;
     padding-top:6px;
+	text-align:center;
 }
 
 #chain-map-inner div.buttons
