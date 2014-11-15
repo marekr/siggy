@@ -1791,8 +1791,12 @@
         function insertAxisLabels() {
             var addRotateLabelStyles = function(styles,axis){
                 var b = '';
-                if (navigator.userAgent.match(/eve-igb/i))
+                if (navigator.userAgent.match(/webkit/i) || navigator.userAgent.match(/safari/i))
                     b = 'webkit';
+                else if (navigator.userAgent.match(/firefox/i))
+                    b = 'moz';
+                else if (navigator.userAgent.match(/opera/i))
+                    b = 'o';
                 //flip the angle so IE/non-IE do the same thing
                 styles.push("-"+b+"-transform:rotate("+-axis.options.labelAngle+"deg)");
                 styles.push("-"+b+"-transform-origin:top left");
