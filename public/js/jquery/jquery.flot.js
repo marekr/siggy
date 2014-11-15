@@ -1790,9 +1790,12 @@
 
         function insertAxisLabels() {
             var addRotateLabelStyles = function(styles,axis){
+                var b = '';
+                if (navigator.userAgent.match(/eve-igb/i))
+                    b = 'webkit';
                 //flip the angle so IE/non-IE do the same thing
-                styles.push("transform:rotate("+-axis.options.labelAngle+"deg)");
-                styles.push("transform-origin:top left");
+                styles.push("-"+b+"-transform:rotate("+-axis.options.labelAngle+"deg)");
+                styles.push("-"+b+"-transform-origin:top left");
             }
 
             if (navigator.userAgent.match(/msie/i) || navigator.userAgent.match(/trident/i)) 
