@@ -11,7 +11,7 @@ MAP */
 
 #chain-map-inner
 {
-	padding-bottom:5px; /* this fixes the scrollbar being covered up slightly*/
+	padding-bottom:6px; /* this fixes the scrollbar being covered up slightly*/
 }
 
 #chain-map-container p.editing,
@@ -52,6 +52,7 @@ MAP */
 	-moz-user-select: moz-none;
 	-ms-user-select: none;
 	user-select: none;
+	margin-top:-10px;
 }
 
 .map-system-blob
@@ -288,7 +289,8 @@ MAP */
 /* Let's get this party started */
 #chain-map-scrolltainer::-webkit-scrollbar
 {
-	width: 12px;
+	width: 10px;
+	height:10px;
 }
  
 /* Track */
