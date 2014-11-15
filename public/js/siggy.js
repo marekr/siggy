@@ -132,7 +132,9 @@ siggymain.prototype.initialize = function ()
 	{
 		dispStates = $.parseJSON(displayStatesCookie);
 	}
+
 	this.displayStates = $.extend({}, this.defaultDisplayStates, dispStates);
+	this.displayStates.map = $.extend({}, this.defaultDisplayStates.map, dispStates.map);
 
 	// Initialize map
 	this.map = new siggyMap(this.settings.map);
