@@ -104,7 +104,7 @@ class Controller_Sig extends FrontController
 											'updated' => time(),
 											'siteID' => ( $sig['siteID'] != 0 ) ? $sig['siteID'] : $sigData['siteID'],
 											'type' => $sig['type'],
-											'creator' => Auth::$session->charName
+											'lastUpdater' => Auth::$session->charName
 											);
 
 							DB::update('systemsigs')->set( $update )->where('sigID', '=', $sigData['sigID'])->execute();
@@ -121,7 +121,7 @@ class Controller_Sig extends FrontController
 						$insert['type'] = $sig['type'];
 						$insert['groupID'] = Auth::$session->groupID;
 						$insert['sigSize'] = "";	//need to return this value for JS to fail gracefully
-
+						$insert['creator'] = Auth::$session->charName;
 							
 						$sigID = DB::insert('systemsigs', array_keys($insert) )->values(array_values($insert))->execute();
 
