@@ -35,14 +35,14 @@
 
 		<!-- magic buttons -->
 		<div id='map-footer-bar'>
-			<div style="float:left">
+			<div style="left: 0;position: absolute;">
 				<!-- options -->
 				<a href="#" id="chain-map-add-wh" class="btn btn-default btn-xs btn-primary"><i class="fa fa-link"></i> Add Connection</a>
 				<a href="#" id="chain-map-edit" class="btn btn-default btn-xs btn-warning"><i class="fa fa-pencil"></i> Edit</a>
 				<a href="#" id="chain-map-delete-whs" class="btn btn-default btn-xs btn-danger"><i class="fa fa-chain-broken"></i> Delete Connections</a>
 				<!--- end options -->
 			</div>
-			<div style="float:right">
+			<div style="right: 0;position: absolute;">
 				<!--- broadcast -->
 				<?php if( !$group['alwaysBroadcast'] ): ?>
 				<a href="#" id="chainmap-broadcast-button" class="btn btn-default btn-xs"><i class="fa fa-wifi"></i><?php echo ( ( isset($_COOKIE['broadcast']) && $_COOKIE['broadcast'] == 0 ) ? "Enable location broadcast" : "Disable location broadcast" ); ?></a>
