@@ -502,6 +502,7 @@ siggyMap.prototype.mapHide = function()
 	$('#chainPanTrackX').hide();
 	this.lastUpdate = 0;
 	
+	$('#chain-map-tabs i.expand-collapse-indicator').removeClass('fa-caret-down').addClass('fa-caret-up');
 	this.siggymain.displayStates.map.open = false;
 	this.siggymain.saveDisplayState();
 }
@@ -512,6 +513,7 @@ siggyMap.prototype.mapShow = function()
 	$('#chain-map-ec').text('Click to hide');
 	this.showMessage('loading');
 	
+	$('#chain-map-tabs i.expand-collapse-indicator').removeClass('fa-caret-up').addClass('fa-caret-down');
 	this.siggymain.displayStates.map.open = true;
 	this.siggymain.saveDisplayState();
 }

@@ -239,30 +239,48 @@ siggymain.prototype.initializeCollaspibles = function()
 	this.setupCollaspible('#pos-box', 'posesOpen');
 }
 
+siggymain.prototype.ecSetExpandedArrow = function(ele)
+{
+	$(ele).children('.expand-collapse-indicator').removeClass('fa-caret-down').addClass('fa-caret-up');
+}
+
+siggymain.prototype.ecSetCollaspedArrow = function(ele)
+{
+	$(ele).children('.expand-collapse-indicator').removeClass('fa-caret-up').addClass('fa-caret-down');
+}
+
 siggymain.prototype.setupCollaspible = function(baseID, displayState, onShow)
 {
 	var $this = this;
 	var content = $(baseID + ' > div');
+	var h2 = $(baseID +' h2');
 
 	if( $this.displayStates[displayState] )
 	{
+		$this.ecSetExpandedArrow(h2);
 		content.show();
 	}
 	else
 	{
+		this.ecSetCollaspedArrow(h2);
 		content.hide();
 	}
 
-	$(baseID +' h2').click( function() {
+	h2.click( function() {
 		if( content.is(":visible") )
 		{
 			content.hide();
+			$this.ecSetCollaspedArrow(this);
+			
+			
 			$this.displayStates[displayState] = false;
 			$this.saveDisplayState();
 		}
 		else
 		{
 			content.show();
+			$this.ecSetExpandedArrow(this);
+			
 			if( typeof(onShow) == 'function' )
 				onShow.call();
 			$this.displayStates[displayState] = true;
