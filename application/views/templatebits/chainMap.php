@@ -19,7 +19,7 @@
 				<br clear="all" />
 			</li>
 			<!--- <li class="tab add"><i class="fa fa-fw fa-plus"></i></li> --->
-			<li class="tab minimize"><i class="fa fa-fw fa-minus-square"></i></li>
+			<li class="tab minimize"><i class="expand-collapse-indicator fa fa-caret-down pull-right fa-lg"></i></li>
 		</ul>
 		<div class="chain-map-messages">
 			<p class="loading">Loading....<br /><span style='font-size:0.3em;'>(This may take up to 10 seconds.)</span></p>

@@ -235,7 +235,7 @@
             </table>
             <!-- start stats -->
             <div id='system-stats' class="sub-display-group">
-                <h2 class="hover">Statistics</h2>
+                <h2 class="hover">Statistics<i class="expand-collapse-indicator fa fa-caret-down pull-right fa-lg"></i></h2>
                 <div>
                     <div class="system-stats-graph">
                         <h4>Jumps</h4>
@@ -263,6 +263,7 @@
                 <h2 class="hover">
 					<span>Signature Adder</span>
 					<textarea name='mass_sigs' placeholder=" Paste scan results here + Press Enter " type='text'></textarea>
+					<i class="expand-collapse-indicator fa fa-caret-down pull-right fa-lg"></i>
 				</h2>
                 <div>
                     <a href="#" id="mass-add-sigs" class="btn btn-xs btn-default">Mass Sig Reader</a>
