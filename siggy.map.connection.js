@@ -217,35 +217,35 @@ mapconnection.prototype.contextMenuBuildItems = function()
 	switch( this.settings.wormhole.mass )
 	{
 		case 0:
-			items.setstage2 = { name: "Set Stage 2", icon: "stage-2" };
-			items.setstage3 = { name: "Set Stage 3", icon: "stage-3" };
+			items.setstage2 = { name: "Set Stage 2" };
+			items.setstage3 = { name: "Set Stage 3" };
 			break;
 		case 1:
-			items.setstage1 = { name: "Set Stage 1", icon: "stage-1" };
-			items.setstage3 = { name: "Set Stage 3", icon: "stage-3" };
+			items.setstage1 = { name: "Set Stage 1" };
+			items.setstage3 = { name: "Set Stage 3" };
 			break;
 		case 2:
-			items.setstage1 = { name: "Set Stage 1", icon: "stage-1" };
-			items.setstage2 = { name: "Set Stage 2", icon: "stage-2" };
+			items.setstage1 = { name: "Set Stage 1" };
+			items.setstage2 = { name: "Set Stage 2" };
 			break;
 	}
 	
 	if( this.settings.wormhole.eol )
 	{
-		items.cleareol = { name: "Clear EOL", icon: "clear-eol" };
+		items.cleareol = { name: "Clear EOL" };
 	}
 	else
 	{
-		items.seteol = { name: "Set EOL", icon: "set-eol" };
+		items.seteol = { name: "Set EOL" };
 	}
 	
 	if( this.settings.wormhole.frigateSized )
 	{
-		items.clearfrigate = { name: "Unmark as Frigate Hole", icon: "set-frigate" };
+		items.clearfrigate = { name: "Unmark as Frigate Hole" };
 	}
 	else
 	{
-		items.setfrigate = { name: "Mark as Frigate Hole", icon: "set-frigate" };
+		items.setfrigate = { name: "Mark as Frigate Hole" };
 	}
 	
 	return items;

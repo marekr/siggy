@@ -382,22 +382,22 @@ siggyMap.prototype.initializeSystemBlobContextMenu = function()
 			if( typeof(sysData) == "undefined" )
 				return false;
 			
-			var items = { 'edit': {name: 'Edit', icon: 'edit' },
-						  'showinfo': {name: 'Show Info', icon: 'showinfo'} 
+			var items = { 'edit': {name: 'Edit' },
+						  'showinfo': {name: 'Show Info'} 
 						};
 			
 			if( typeof(CCPEVE) != "undefined" )
 			{
-				items.setdest = {name:'Set Destination', icon: 'setdest'}
+				items.setdest = {name:'Set Destination'};
 			}
 			
 			if( parseInt(sysData.rally) == 1 )
 			{
-				items.clearrally = {name:'Clear Rally', icon: 'clearrally'}
+				items.clearrally = {name:'Clear Rally'};
 			}
 			else
 			{
-				items.setrally = {name:'Set Rally', icon: 'setrally'}
+				items.setrally = {name:'Set Rally'};
 			}
 			
             return {
