@@ -196,6 +196,7 @@ siggyMap.prototype.initialize = function()
 	{
 		that.updateMessagePositions();
 		that.centerButtons();
+		$("#chain-map").width($("#chain-map-scrolltainer")[0].scrollWidth);
 	});
 	
 	if( this.siggymain.displayStates.map.open )
@@ -682,6 +683,7 @@ siggyMap.prototype.update = function(timestamp, systems, wormholes, stargates, j
 	this.cynos = cynos;
 
 	this.draw();
+	$("#chain-map").width($("#chain-map-scrolltainer")[0].scrollWidth);
 
 	this.hideMessage('loading');
 }
