@@ -222,9 +222,9 @@ siggymain.prototype.initializeHubJumpContextMenu = function()
 			}
 		},
 		items: {
-			"setdest": {name: "Set Destination", icon: "setdest"},
+			"setdest": {name: "Set Destination"},
 			"sep1": "---------",
-			"showinfo": {name: "Show Info", icon: "showinfo"}
+			"showinfo": {name: "Show Info"}
 		}
 	});
 }
