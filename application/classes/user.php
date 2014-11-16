@@ -283,7 +283,9 @@ class User
 		//recheck
 		require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
 		spl_autoload_register( "Pheal::classload" );
+		PhealConfig::getInstance()->http_ssl_verifypeer = false;
 		PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
+		PhealConfig::getInstance()->http_user_agent = 'siggy '.SIGGY_VERSION.' borkedlabs@gmail.com';
 		$pheal = new Pheal( null, null, 'eve' );
 		
 		
@@ -327,7 +329,9 @@ class User
 			//recheck
 			require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
 			spl_autoload_register( "Pheal::classload" );
+			PhealConfig::getInstance()->http_ssl_verifypeer = false;
 			PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
+			PhealConfig::getInstance()->http_user_agent = 'siggy '.SIGGY_VERSION.' borkedlabs@gmail.com';
 			$pheal = new Pheal( $this->data['apiID'], $this->data['apiKey'], 'eve' );
 			
 			try 

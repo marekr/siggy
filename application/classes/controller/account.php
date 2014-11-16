@@ -384,6 +384,7 @@ class Controller_Account extends FrontController
 				spl_autoload_register( "Pheal::classload" );
 				PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
 				PhealConfig::getInstance()->http_ssl_verifypeer = false;
+				PhealConfig::getInstance()->http_user_agent = 'siggy '.SIGGY_VERSION.' borkedlabs@gmail.com';
 				$pheal = new Pheal( $_POST['apiID'], $_POST['apiKey'] );
 				
 				
@@ -725,6 +726,7 @@ class Controller_Account extends FrontController
 		spl_autoload_register( "Pheal::classload" );
 		PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
 		PhealConfig::getInstance()->http_ssl_verifypeer = false;
+		PhealConfig::getInstance()->http_user_agent = 'siggy '.SIGGY_VERSION.' borkedlabs@gmail.com';
 		
 		$chars = array();
 		foreach($keys as $key)
