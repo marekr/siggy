@@ -55,6 +55,7 @@ class Controller_Manage_Settings extends Controller_Manage
 				$group->jumpLogDisplayShipType = intval($_POST['jumpLogDisplayShipType']);
 				$group->alwaysBroadcast = intval($_POST['alwaysBroadcast']);
 				$group->chain_map_show_actives_ships = intval($_POST['chain_map_show_actives_ships']);
+				$group->allow_map_height_expand = intval($_POST['allow_map_height_expand']);
 				
 				$group->save();
 				
@@ -76,7 +77,8 @@ class Controller_Manage_Settings extends Controller_Manage
 										'jumpLogRecordTime' => $_POST['jumpLogRecordTime'], 
 										'jumpLogDisplayShipType' => $_POST['jumpLogDisplayShipType'], 
 										'alwaysBroadcast' => $_POST['alwaysBroadcast'],
-										'chain_map_show_actives_ships' => $_POST['chain_map_show_actives_ships']
+										'chain_map_show_actives_ships' => $_POST['chain_map_show_actives_ships'],
+										'allow_map_height_expand' => $_POST['allow_map_height_expand']
 									 ) 
 
 				);
