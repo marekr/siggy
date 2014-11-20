@@ -5,7 +5,8 @@ function siggyMap(options)
 			jumpTrackerEnabled: true,
 			jumpTrackerShowNames: true,
 			jumpTrackerShowTime: true,
-            showActivesShips: false
+            showActivesShips: false,
+			allowMapHeightExpand: true
 	};
 
 
@@ -211,16 +212,19 @@ siggyMap.prototype.initialize = function()
 	var $container = $("#chain-map");
 	
 	this.innerContainer.height(that.siggymain.displayStates.map.height);
-	this.innerContainer.resizable({ 
-							handles:'s', 
-							maxHeight:800, 
-							minHeight:400 })
-						.on( "resizestop", function( event, ui ) 
-						{
-							that.siggymain.displayStates.map.height = that.innerContainer.height();
-							that.siggymain.saveDisplayState();
-						} );
 	
+	if( this.settings.allowMapHeightExpand )
+	{
+		this.innerContainer.resizable({ 
+								handles:'s', 
+								maxHeight:800, 
+								minHeight:400 })
+							.on( "resizestop", function( event, ui ) 
+							{
+								that.siggymain.displayStates.map.height = that.innerContainer.height();
+								that.siggymain.saveDisplayState();
+							} );
+	}
 	$container.on('mousedown', function(e) {
 		if( !that.massSelect )
 		{
