@@ -117,6 +117,11 @@ class Controller_Chainmap extends FrontController
 				{
 					$system['x'] = 0;
 				}
+				
+				if( !Auth::$session->accessData['allow_map_height_expand'] && $system['y'] > 400 )
+				{
+					$system['y'] = 380;
+				}
 
 				$this->chainmap->update_system($system['id'], array('x' => $system['x'], 'y' => $system['y']));
 			}
