@@ -51,7 +51,7 @@ function siggymain( options )
 			language: 'en'
 		},
 		map: {
-		  jumpTrackerEnabled: true,
+		  jumpTrackerEnabled: true
 	    },
 		sigtable: {
 			showSigSizeCol: false
