@@ -105,7 +105,7 @@ class FrontController extends Controller
     {
         $default_settings = array('theme_id' => 0,'combine_scan_intel' => 0, 'zoom' => '1.0', 'language' => 'en' );
 
-        if( isset($this->groupData['charID']) && $this->groupData['charID'] != 0)
+        if( Auth::$session->charID != 0)
         {
 			$settings = DB::query(Database::SELECT, "SELECT * FROM character_settings
 							WHERE char_id=:charID")
