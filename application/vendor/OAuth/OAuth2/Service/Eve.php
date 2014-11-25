@@ -116,7 +116,6 @@ class Eve extends AbstractService
      */
     protected function getExtraApiHeaders()
     {
-        return array('Accept' => 'application/json',
-					'Authorization' => 'Bearer ' . $this->credentials->getConsumerSecret());
+        return array('Accept' => 'application/json');
     }
 }
