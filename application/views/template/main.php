@@ -66,7 +66,7 @@
 								<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 									<?php foreach( $group['access_groups'] as $g ): ?>
 										<li>
-											<a href="<?php echo URL::base(); ?>access/switch_membership/?k=<?php echo md5($g['group_id']); ?>">
+											<a href="<?php echo URL::base(TRUE, TRUE); ?>access/switch_membership/?k=<?php echo md5($g['group_id']); ?>">
 											<?php echo $g['group_name']; ?>
 											</a>
 										</li>
