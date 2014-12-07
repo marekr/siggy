@@ -23,7 +23,7 @@ final class MapUtils
 			
 			
 			//limited horizontal span
-			if( $newy < 380 && $newy > 0 && $newx > 0 )
+			if( $newy < 780 && $newy > 0 && $newx > 0 )
 			{
 				$ret[] = array('x' => $newx, 'y' => $newy);
 			}
