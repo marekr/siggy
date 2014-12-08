@@ -2,11 +2,12 @@
 function siggyMap(options)
 {
 	this.defaults = {
-			jumpTrackerEnabled: true,
-			jumpTrackerShowNames: true,
-			jumpTrackerShowTime: true,
-            showActivesShips: false,
-			allowMapHeightExpand: true
+		jumpTrackerEnabled: true,
+		jumpTrackerShowNames: true,
+		jumpTrackerShowTime: true,
+		showActivesShips: false,
+		allowMapHeightExpand: true,
+		alwaysShowClass: false
 	};
 
 
@@ -789,7 +790,7 @@ siggyMap.prototype.draw = function()
 		
 
         var titleClassBit = "";
-        if( systemData.sysClass >= 7 || ( systemData.sysClass < 7 && systemData.displayName == "") )
+        if( this.settings.alwaysShowClass || systemData.sysClass >= 7 || ( systemData.sysClass < 7 && systemData.displayName == "") )
         {
             titleClassBit = $("<span>").addClass('map-system-blob-class').addClass( this.getClassColor( parseInt(systemData.sysClass) ) ).text( this.getClassText( parseInt(systemData.sysClass) ) );
         }
