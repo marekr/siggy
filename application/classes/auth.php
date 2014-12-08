@@ -71,7 +71,7 @@ class Auth
 			$success = self::$user->validateCorpChar();
 		}
 		
-		if( !$success || !self::$session->charID || !self::$session->corpID )
+		if( !$success || !self::$session->charID || !self::$session->corpID || empty(self::$session->accessData) )
 		{
 			self::$authStatus = AuthStatus::NOACCESS;
 			return self::$authStatus;
