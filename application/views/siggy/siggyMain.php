@@ -499,7 +499,8 @@
                     jumpTrackerShowNames:  <?php echo ( $group['jumpLogRecordNames'] ? 'true' : 'false' ); ?>,
                     jumpTrackerShowTime:  <?php echo ( $group['jumpLogRecordTime'] ? 'true' : 'false' ); ?>,
                     showActivesShips:  <?php echo ( $group['chain_map_show_actives_ships'] ? 'true' : 'false' ); ?>,
-					allowMapHeightExpand: <?php echo $group['allow_map_height_expand'] ? 'true' : 'false'; ?>
+					allowMapHeightExpand: <?php echo $group['allow_map_height_expand'] ? 'true' : 'false'; ?>,
+					alwaysShowClass: <?php echo $group['chainmap_always_show_class'] ? 'true' : 'false'; ?>
                 }
             };
 
