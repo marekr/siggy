@@ -541,31 +541,38 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 	{
 		effectInfo += '<b>Class '+systemData.sysClass+' Effects</b><br /><br />';
 
+		var effData = [];
 		if( systemData.effectTitle == 'Black Hole' )
 		{
-			var effData = blackHoleEffects[systemData.sysClass];
+			effData = blackHoleEffects[systemData.sysClass];
 		}
 		else if(systemData.effectTitle == 'Wolf-Rayet Star')
 		{
-			var effData = wolfRayetEffects[systemData.sysClass];
+			effData = wolfRayetEffects[systemData.sysClass];
 		}
 		else if(systemData.effectTitle == 'Red Giant')
 		{
-			var effData = redGiantEffects[systemData.sysClass];
+			effData = redGiantEffects[systemData.sysClass];
 		}
 		else if(systemData.effectTitle == 'Cataclysmic Variable')
 		{
-			var effData = catacylsmicEffects[systemData.sysClass];
+			effData = catacylsmicEffects[systemData.sysClass];
 		}
 		else if(systemData.effectTitle == 'Magnetar')
 		{
-			var effData = magnetarEffects[systemData.sysClass];
+			effData = magnetarEffects[systemData.sysClass];
 		}
 		else if(systemData.effectTitle == 'Pulsar')
 		{
-			var effData = pulsarEffects[systemData.sysClass];
+			effData = pulsarEffects[systemData.sysClass];
 		}
 
+		if( typeof(effData) == 'undefined' )
+		{
+			effData = [];
+		}
+		
+		
 		for( var i = 0; i < effData.length; i++ )
 		{
 			effectInfo += '<b>'+effData[i][0]+':&nbsp;</b>'+effData[i][1]+'<br />';
