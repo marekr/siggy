@@ -311,7 +311,7 @@ class Controller_Special extends Controller {
 	//protect agaisnt stupid later
 	public function action_preProcess()
 	{
-		$start = $this->request->param('start',0);
+		$start = isset($_GET['start']) ? $_GET['start'] : 0;
 	
 		if( !isset($_GET['key']) || $_GET['key'] != 'PIZZAMOFO' )
 		{
@@ -377,7 +377,7 @@ class Controller_Special extends Controller {
 		}
 		else
 		{
-			print '<meta http-equiv="refresh" content="2; url=http://localhost/evetel/preProcess/'.$start.'?key=PIZZAMOFO" />';
+			print '<meta http-equiv="refresh" content="2; url=http://localhost/evetel/special/preProcess/?start='.$start.'&key=PIZZAMOFO" />';
 		}
 		die();
 	}	 
