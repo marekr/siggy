@@ -1032,9 +1032,13 @@ siggyMap.prototype.openSystemEdit = function( sysID )
 		fadeIn:  0,
 		fadeOut:  0
 	});
+	
 	$('#editingSystemName').text(this.systems[ sysID ].name);
 
-	$('#system-editor input[name=label]').val( this.systems[ sysID ].displayName );
+	var label = this.systems[ sysID ].displayName == '' ? this.systems[ sysID ].name : this.systems[ sysID ].displayName;
+	
+	$('#system-editor input[name=label]').val( label );
+	$('#system-editor input[name=label]').select();
 	$('#system-editor select[name=activity]').val(this.systems[ sysID ].activity);
 }
 
@@ -1328,8 +1332,16 @@ siggyMap.prototype.setupSystemEditor = function()
 	});
 
 	$('#system-editor-save').click( function() {
+		var label = $('#system-editor input[name=label]').val();
+
+		/* don't save the label if they didn't change the name */
+		if( that.systems[that.editingSystem].name == label )
+		{
+			label = '';
+		}
+		
 		var data = {
-			label: $('#system-editor input[name=label]').val(),
+			label: label,
 			activity: $('#system-editor select[name=activity]').val()
 		};
 		
