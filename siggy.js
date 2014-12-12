@@ -109,6 +109,9 @@ function siggymain( options )
 
 	this.systemName = this.settings.initialSystemName;
     this.setSystemID(this.settings.initialSystemID);
+	
+	this.templateEffectTooltip = Handlebars.compile( $("#template-effect-tooltip").html() );
+	this.templateStaticsTooltip = Handlebars.compile( $("#template-statics-tooltip").html() );
 }
 
 
@@ -535,12 +538,9 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 
 	var effectTitle = $("<p>").text(systemData.effectTitle);
 	var effect = $('#system-effect').append(effectTitle);
-	var effectInfo = '';
 
 	if( systemData.effectTitle != 'None' )
 	{
-		effectInfo += '<b>Class '+systemData.sysClass+' Effects</b><br /><br />';
-
 		var effData = [];
 		if( systemData.effectTitle == 'Black Hole' )
 		{
@@ -572,15 +572,11 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 			effData = [];
 		}
 		
+		var tooltip = this.templateEffectTooltip({
+												  sysClass: systemData.sysClass, 
+												  effects: effData
+												  });
 		
-		for( var i = 0; i < effData.length; i++ )
-		{
-			effectInfo += '<b>'+effData[i][0]+':&nbsp;</b>'+effData[i][1]+'<br />';
-		}
-
-		var tooltip = $("<div>").attr('id', 'system-effects')
-								.addClass('tooltip')
-								.html(effectInfo);
 		effect.append(tooltip);
 
 		effectTitle.qtip({
@@ -625,11 +621,9 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 			}
 
 			var staticBit = $("<p>").text(theStatic.name + destBlurb);
-			var staticInfo = "<b>" + theStatic.name  + destBlurb + "</b><br />" + "Max Mass: " + theStatic.mass + " billion<br />" + "Max Jumpable Mass: " + theStatic.jump_mass + " million<br />" + "Max Lifetime: " + theStatic.lifetime + " hrs<br />" + "Signature Size: " + theStatic.sig_size + " <br />";
-
-			var staticTooltip = $("<div>").attr('id', 'static-info-' + theStatic.id)
-										  .addClass('tooltip')
-										  .html( staticInfo );
+			
+			theStatic.destBlurb = destBlurb;
+			var staticTooltip = this.templateStaticsTooltip(theStatic);
 
 			$('#static-info').append(staticBit)
 							 .append(staticTooltip);
