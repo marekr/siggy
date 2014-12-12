@@ -15,6 +15,7 @@
 --js=jquery/jsBezier-0.6-min.js ^
 --js=jquery/jquery.jsPlumb-1.5.5-min.js ^
 --js=jquery/jquery.placeholder.js ^
+--js=handlebars-v2.0.0.js ^
 --js=dropdown.js ^
 --source_map_format=V3 ^
 --create_source_map thirdparty.compiled.js.map ^
