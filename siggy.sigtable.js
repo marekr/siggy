@@ -353,34 +353,34 @@ sigtable.prototype.addSigRow = function (sigData, flashSig)
 	var row = this.templateSigRow(sigData);
 	$("#sig-table tbody").append( row );
 	
-	this.sigClocks[sigData.sigID] = new CountUp(sigData.created * 1000, '#sig-' + sigData.sigID + ' td.age span', "test");
-
-	$('#sig-' + sigData.sigID + ' td.moreinfo i').qtip({
-		content: {
-			text: $('#creation-info-' + sigData.sigID) // Use the "div" element next to this for the content
-		}
-	});
-	$('#sig-' + sigData.sigID + ' td.age span').qtip({
-		content: {
-			text: $('#age-timestamp-' + sigData.sigID) // Use the "div" element next to this for the content
-		}
-	});
-	/*
-	$('#sig-' + sigData.sigID + ' td.edit i').click(function (e)
-									{
-										$this.editSigForm(sigData.sigID);
-									});
-	$('#sig-' + sigData.sigID + ' td.remove i').click(function (e)
-									{
-										$this.removeSig(sigData.sigID)
-									});
-	*/
+	this.sigRowMagic(sigData);
+	
 	this.colorizeSigRows();
 
 	if( flashSig )
 	{
 		$('#sig-' + sigData.sigID).fadeOutFlash("#A46D00", 20000);
 	}
+}
+
+sigtable.prototype.sigRowMagic = function(sigData)
+{	
+	delete this.sigClocks[sigData.sigID];
+	this.sigClocks[sigData.sigID] = new CountUp(sigData.created * 1000, '#sig-' + sigData.sigID + ' td.age span', "test");
+
+	$('#sig-' + sigData.sigID + ' td.moreinfo i').qtip('destroy');
+	$('#sig-' + sigData.sigID + ' td.moreinfo i').qtip({
+		content: {
+			text: $('#creation-info-' + sigData.sigID) // Use the "div" element next to this for the content
+		}
+	});
+	
+	$('#sig-' + sigData.sigID + ' td.age span').qtip('destroy');
+	$('#sig-' + sigData.sigID + ' td.age span').qtip({
+		content: {
+			text: $('#age-timestamp-' + sigData.sigID) // Use the "div" element next to this for the content
+		}
+	});
 }
 
 sigtable.prototype.editSigForm = function (sigID)
@@ -575,34 +575,13 @@ sigtable.prototype.generateSelect = function (options, select)
 sigtable.prototype.updateSigRow = function (sigData, flashSig)
 {
 	var baseID = '#sig-' + sigData.sigID;
-	var creationInfo = '<b>Added by:</b> '+sigData.creator;
-	if( sigData.lastUpdater != '' && typeof(sigData.lastUpdater) != "undefined" )
-	{
-		creationInfo += '<br /><b>Updated by:</b> '+sigData.lastUpdater;
-		creationInfo += '<br /><b>Updated at:</b> '+siggymain.displayTimeStamp(sigData.updated);
-	}
-
-	$(baseID + ' td.sig').text(sigData.sig);
-	$(baseID + ' td.type').text(this.convertType(sigData.type));
-
-	if( this.settings.showSigSizeCol )
-	{
-			$(baseID + ' td.size').text(sigData.sigSize);
-	}
-
-	//stupidity part but ah well
-	$(baseID + ' td.desc').text(this.convertSiteID(this.systemClass, sigData.type, sigData.siteID));
-	$(baseID + ' td.desc p').remove();
-	$(baseID + ' td.desc').append($('<p>').text(sigData.description));
-	$('creation-info-' + sigData.sigID).html(creationInfo);
-
-	if( !this.siggyMain.displayStates.showAnomalies && sigData.type == 'combat')
-	{
-		$(baseID).hide();
-	}
-
-	//if( flashSig )
-	///{
-		//$('#sig-' + sigData.sigID).fadeOutFlash("#A46D00", 10000);
-	//}
+	sigData.showSigSizeCol = this.settings.showSigSizeCol;
+	sigData.sysClass = this.systemClass;
+	
+	var row = this.templateSigRow(sigData);
+	$(baseID).replaceWith(row);
+	
+	
+	this.sigRowMagic(sigData);
+	this.colorizeSigRows();
 }
