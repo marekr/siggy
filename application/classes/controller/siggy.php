@@ -14,7 +14,7 @@ class Controller_Siggy extends FrontController
 	{
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 
-		$view = View::factory('siggy/siggyMain');
+		$view = View::factory('siggy/siggy_main');
 
 		$ssname = $this->request->param('ssname', '');
 
