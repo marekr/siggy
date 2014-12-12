@@ -15,7 +15,7 @@ else
 	<legend>General</legend>
 	<?php echo formRenderer::input('Name', 'chainmap_name', $data['chainmap_name'], '', $errors); ?>
 	<?php echo formRenderer::textarea('Home system(s)', 'chainmap_homesystems', $data['chainmap_homesystems'], 'This setting allows siggy to do some advanced witchcraft relating to chain map management,signature deletion and possibly other things in the future. This is not required, and all eve systems are accepted as home systems and as many as you want/need. For more than one home system, use comma delimated format i.e. "Jita,Amarr,Dodixie" (without the quotes). ', $errors); ?>
-	<?php echo formRenderer::yesNo('Purge home system sigs?', 'chainmap_skip_purge_home_sigs', $data['chainmap_skip_purge_home_sigs'], 'If yes, siggy will gather per hour, the character jump totals similar to the eve API jumps for systems and display them together as a comparison statistic. Of course this setting depends on users having siggy open in order for the jumps to be recorded.', $errors); ?>
+	<?php echo formRenderer::yesNo('Do not purge home system sigs?', 'chainmap_skip_purge_home_sigs', $data['chainmap_skip_purge_home_sigs'], 'If yes, any signatures in your home system will not be deleted. The exception is wormholes which are deleted after 48 hours. If no, your home system sigs are treated like any other system.', $errors); ?>
 
 	<div class="form-actions">
 		<?php

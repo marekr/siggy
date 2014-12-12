@@ -252,26 +252,47 @@ class Controller_Cron extends Controller
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
 		//two days?
-		$cutoff = time()-60*60*24*7;
+		$cutoff = time()-60*60*24*26;
+		$whCutoff = time()-60*60*24*2;
   
-		$groups = DB::query(Database::SELECT, "SELECT groupID,skipPurgeHomeSigs,homeSystemIDs FROM groups")->execute()->as_array();	 
+		$groups = DB::query(Database::SELECT, "SELECT groupID,skipPurgeHomeSigs FROM groups")->execute()->as_array();	 
 		foreach( $groups as $group )
 		{
 			$ignoreSys = '';
-			
-			if( $group['skipPurgeHomeSigs'] && !empty($group['homeSystemIDs']) )
+			$chains = DB::query(Database::SELECT, "SELECT chainmap_homesystems_ids FROM chainmaps 
+													WHERE group_id = :groupID AND
+													chainmap_skip_purge_home_sigs=1")
+							->param(':groupID', $group['groupID'])
+							->execute()
+							->as_array();
+			if( count($chains) > 0 )
 			{
-				$ignoreSys = $group['homeSystemIDs'];
+				$ignoreSys = array();
+				foreach( $chains as $c )
+				{
+					if( !empty($c['chainmap_homesystems_ids']) )
+					{
+						$ignoreSys[] = $c['chainmap_homesystems_ids'];
+					}
+				}
+				
+				$ignoreSys = implode(',', $ignoreSys);
 			}
 			
+			$ignoreSysExtra = '';
 			if( !empty($ignoreSys) )
 			{
-				DB::query(Database::DELETE, "DELETE FROM systemsigs WHERE sig != 'POS' AND groupID=:groupID AND systemID NOT IN(".$ignoreSys.") AND created <= :cutoff")->param(':cutoff',$cutoff)->param(':groupID', $group['groupID'])->execute();
+				$ignoreSysExtra = "systemID NOT IN(".$ignoreSys.") AND ";
 			}
-			else
-			{
-				DB::query(Database::DELETE, "DELETE FROM systemsigs WHERE sig != 'POS' AND groupID=:groupID AND created <= :cutoff")->param(':cutoff',$cutoff)->param(':groupID', $group['groupID'])->execute();
-			}
+			
+			$query = DB::query(Database::DELETE, "DELETE FROM systemsigs WHERE sig != 'POS' AND 
+																		groupID=:groupID AND 
+																		{$ignoreSysExtra}
+																		( created <= :cutoff OR (type = 'wh' AND created <= :whcutoff))")
+				->param(':cutoff',$cutoff)
+				->param(':groupID', $group['groupID'])
+				->param(':whcutoff', $whCutoff)
+				->execute();
 		}
 	}
 
