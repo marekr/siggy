@@ -636,6 +636,7 @@ var whLookup = {
 		14: "C140 (to Lowsec)",
 		48: "C391 (to Lowsec, 48hr)",
 		15: "D792  (to Highsec)",
+		49: "B520  (to Highsec, 48hr)",
 		/* frigate hole range 31 to 39*/
 		31: "E004 (to C1, Frigate)",
 		32: "L005 (to C2, Frigate)",
