@@ -106,7 +106,7 @@ class Controller_Cron extends Controller
 	
 	public function superclean($text)
 	{
-			// Strip HTML Tags
+		// Strip HTML Tags
 		$clear = strip_tags($text);
 		// Clean up things like &amp;
 		$clear = html_entity_decode($clear);
@@ -124,13 +124,13 @@ class Controller_Cron extends Controller
 	
 	public function action_pruneSiggySessions()
 	{
-			$this->profiler = NULL;
-			$this->auto_render = FALSE;
-			
-			//30 minute cutoff
-			$cutoff = time()-60*30; 
+		$this->profiler = NULL;
+		$this->auto_render = FALSE;
+		
+		//30 minute cutoff
+		$cutoff = time()-60*30; 
       
-      DB::delete('siggysessions')->where('lastBeep', '<=', $cutoff)->execute();
+		DB::delete('siggysessions')->where('lastBeep', '<=', $cutoff)->execute();
 	}
 
 	public function action_billingTransactions()
@@ -143,6 +143,7 @@ class Controller_Cron extends Controller
 		spl_autoload_register( "Pheal::classload" );
 		PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
 		PhealConfig::getInstance()->http_ssl_verifypeer = false;
+		PhealConfig::getInstance()->http_user_agent = 'siggy '.SIGGY_VERSION.' borkedlabs@gmail.com';
 		$pheal = new Pheal( "3523432", "iBfWRWpwZ9I5l7Ynt2Y7ZlxiesY6b7vVhmpHlhzLDMdCFQnaTus4DBgOGxIfwu4M", "corp" );
 		
 		$previousID = (float)miscUtils::getDBCacheItem( 'lastProcessedJournalRefID' );
@@ -203,6 +204,7 @@ class Controller_Cron extends Controller
 		spl_autoload_register( "Pheal::classload" );
 		PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
 		PhealConfig::getInstance()->http_ssl_verifypeer = false;
+		PhealConfig::getInstance()->http_user_agent = 'siggy '.SIGGY_VERSION.' borkedlabs@gmail.com';
 		$pheal = new Pheal(null,null,'corp');      
 		
 		
@@ -306,6 +308,7 @@ class Controller_Cron extends Controller
 		require_once(Kohana::find_file('vendor', 'pheal/Pheal'));
 		spl_autoload_register("Pheal::classload");
 		PhealConfig::getInstance()->http_ssl_verifypeer = false;
+		PhealConfig::getInstance()->http_user_agent = 'siggy '.SIGGY_VERSION.' borkedlabs@gmail.com';
 		$pheal = new Pheal('','');
 		$pheal->scope = 'map';
 		
