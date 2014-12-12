@@ -17,6 +17,8 @@ function sigtable( options )
 
 	this.settings = $.extend(this.defaults, options);
 
+	this.templateSigRow = Handlebars.compile( $("#template-sig-table-row").html() );
+	this.setupHandlebars();
 }
 
 sigtable.prototype.initialize = function()
@@ -53,6 +55,17 @@ sigtable.prototype.initialize = function()
 			}
 		};
 	}
+	
+		
+	$( document ).on('click', 'td.edit i', function (e)
+										{
+											$this.editSigForm($(this).parent().parent().data('sig-id'));
+										});
+										
+	$( document ).on('click', 'td.remove i', function (e)
+										{
+											$this.removeSig($(this).parent().parent().data('sig-id'));
+										});
 
 	$('#sig-table').tablesorter(
 	{
@@ -110,6 +123,11 @@ sigtable.prototype.clear = function()
 	this.editingSig = false;
 }
 
+sigtable.prototype.refreshAnomState = function()
+{
+	this.changeAnomState(this.siggyMain.displayStates.showAnomalies);
+}
+
 sigtable.prototype.changeAnomState = function(visible)
 {
 	this.siggyMain.displayStates.showAnomalies = visible;
@@ -123,6 +141,7 @@ sigtable.prototype.changeAnomState = function(visible)
 	{
 		$('#sig-table tbody tr.type-combat').hide();
 	}
+	
 	this.colorizeSigRows();
 }
 
@@ -218,6 +237,7 @@ sigtable.prototype.updateSigs = function (sigData, flashSigs)
 		$('#sig-table').trigger('update');
 	}
 	
+	this.refreshAnomState();
 	this.updateSigTotal();
 }
 
@@ -295,68 +315,44 @@ sigtable.prototype.removeSigRow = function (sigData)
 	this.colorizeSigRows();
 }
 
+sigtable.prototype.setupHandlebars = function()
+{
+	var $this = this;
+	
+
+	Handlebars.registerHelper('displayTimestamp', function(stamp) {
+		return siggymain.displayTimeStamp(stamp);
+	});
+	
+	Handlebars.registerHelper('sigTypeToText', function(type) {
+		return $this.convertType(type);
+	});
+	
+	Handlebars.registerHelper('siteIDToText', function(sysClass, type, siteID) {
+		return $this.convertSiteID(sysClass, type, siteID);
+	});
+	
+	Handlebars.registerHelper('notEqual', function(lvalue, rvalue, options) {
+		if (arguments.length < 3)
+			throw new Error("Handlebars Helper not equal needs 2 parameters");
+		if( lvalue==rvalue ) {
+			return options.inverse(this);
+		} else {
+			return options.fn(this);
+		}
+	});
+	
+}
+
 sigtable.prototype.addSigRow = function (sigData, flashSig)
 {
-	var that = this;
-
-	var row = $('<tr>').attr('id', 'sig-' + sigData.sigID).addClass('sig');
-	row.addClass('type-'+sigData.type);
-
-	var descTD = $('<td>').addClass('desc');
-
-	descTD.text(this.convertSiteID(this.systemClass, sigData.type, sigData.siteID));
-	descTD.append($('<p>').text(sigData.description));
-
-	var creationInfo = '<b>Added by:</b> '+sigData.creator;
-	if( sigData.lastUpdater != '' && typeof(sigData.lastUpdater) != "undefined" )
-	{
-		creationInfo += '<br /><b>Updated by:</b> '+sigData.lastUpdater;
-		creationInfo += '<br /><b>Updated at:</b> '+siggymain.displayTimeStamp(sigData.updated);
-	}
-
-	var editIcon = $('<i>').addClass('icon icon-pencil icon-large')
-							.click(function (e)
-									{
-										that.editSigForm(sigData.sigID);
-									});
-
-	var editTD = $('<td>').addClass('center-text edit').append(editIcon);
-
-
-	var typeTD = $('<td>').addClass('center-text type')
-						.text(this.convertType(sigData.type));
-
-	var infoIcon = $('<i>').addClass('icon icon-info-sign icon-large icon-yellow');
-	var infoTD = $('<td>').addClass('center-text moreinfo')
-				.append(infoIcon)
-				.append($("<div>").addClass('tooltip').attr('id', 'creation-info-' + sigData.sigID).html(creationInfo));
-
-	var ageTDTooltip = $("<div>").addClass('tooltip').attr('id', 'age-timestamp-' + sigData.sigID).text(siggymain.displayTimeStamp(sigData.created));
-
-	var ageTD = $('<td>').addClass('center-text age').append($("<span>").text("--")).append(ageTDTooltip);
-
-	var removeIcon = $('<i>').addClass('icon icon-remove-sign icon-large icon-red');
-	var removeTD = $('<td>').addClass('center-text remove')
-							.append(removeIcon)
-							.click(function (e)
-									{
-										that.removeSig(sigData.sigID)
-									});
-	row.append(editTD)
-		.append($('<td>').addClass('center-text sig').text(sigData.sig));
-
-	if( this.settings.showSigSizeCol )
-	{
-		row.append( $('<td>').addClass('center-text size').text(sigData.sigSize) );
-	}
-	row.append(typeTD)
-		.append(descTD)
-		.append(infoTD)
-		.append(ageTD)
-		.append(removeTD);
-
+	var $this = this;
+	sigData.showSigSizeCol = this.settings.showSigSizeCol;
+	sigData.sysClass = this.systemClass;
+	
+	var row = this.templateSigRow(sigData);
 	$("#sig-table tbody").append( row );
-
+	
 	this.sigClocks[sigData.sigID] = new CountUp(sigData.created * 1000, '#sig-' + sigData.sigID + ' td.age span', "test");
 
 	$('#sig-' + sigData.sigID + ' td.moreinfo i').qtip({
@@ -369,16 +365,21 @@ sigtable.prototype.addSigRow = function (sigData, flashSig)
 			text: $('#age-timestamp-' + sigData.sigID) // Use the "div" element next to this for the content
 		}
 	});
+	/*
+	$('#sig-' + sigData.sigID + ' td.edit i').click(function (e)
+									{
+										$this.editSigForm(sigData.sigID);
+									});
+	$('#sig-' + sigData.sigID + ' td.remove i').click(function (e)
+									{
+										$this.removeSig(sigData.sigID)
+									});
+	*/
 	this.colorizeSigRows();
 
 	if( flashSig )
 	{
 		$('#sig-' + sigData.sigID).fadeOutFlash("#A46D00", 20000);
-	}
-
-	if( !this.siggyMain.displayStates.showAnomalies && sigData.type == 'combat')
-	{
-		row.hide();
 	}
 }
 

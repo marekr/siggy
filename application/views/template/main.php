@@ -12,6 +12,7 @@
     <link href="<?php echo URL::base(TRUE, TRUE);?>public/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
     <?php if( Kohana::$environment == Kohana::DEVELOPMENT ): ?>
+    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/handlebars-v2.0.0.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/translate.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery-1.11.1.min.js'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery-ui.1.11.2.min.js'></script>
@@ -50,7 +51,7 @@
     <?php endif; ?>
 	</head>
 	<body>
-		<?php if( $loggedIn = true || Kohana::$environment == Kohana::DEVELOPMENT): ?>
+		<?php if( $headerTools != '' ): ?>
 		<div id="floating-header">
 			<div id="top-bar">
 				<div>
