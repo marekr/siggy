@@ -51,7 +51,7 @@
     <?php endif; ?>
 	</head>
 	<body>
-		<?php if( $headerTools != '' ): ?>
+		<?php if( 1 ): ?>
 		<div id="floating-header">
 			<div id="top-bar">
 				<div>
