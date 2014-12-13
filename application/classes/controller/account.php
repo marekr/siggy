@@ -58,7 +58,7 @@ class Controller_Account extends FrontController
 			default: 
 				$this->template->layoutMode = 'leftMenu';
 				$this->template->selectedTab = 'account';
-				$view = View::factory('templatebits/accountMenu');
+				$view = View::factory('account/menu');
 				$this->template->leftMenu = $view;
 				break;
 		}

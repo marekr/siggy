@@ -68,12 +68,9 @@ class Controller_Siggy extends FrontController
 		$this->template->content = $view;
 
 		//load chain map html
-		$chainMapHTML = View::factory('templatebits/chainMap');
+		$chainMapHTML = View::factory('siggy/chainmap');
 		$chainMapHTML->group = Auth::$session->accessData;
 		$view->chainMap = $chainMapHTML;
-
-		$routePlannerHTML = View::factory('templatebits/routeplanner');
-		$this->template->routePlanner = $routePlannerHTML;
 
 		//load header tools
         $themes = DB::query(Database::SELECT, "SELECT theme_id, theme_name FROM themes
@@ -83,7 +80,7 @@ class Controller_Siggy extends FrontController
 								->execute()
 								->as_array();
 
-		$headerToolsHTML = View::factory('templatebits/header_tools');
+		$headerToolsHTML = View::factory('siggy/header_tools');
 		$headerToolsHTML->group = Auth::$session->accessData;
         $headerToolsHTML->themes = $themes;
         $headerToolsHTML->settings = $this->template->settings;
