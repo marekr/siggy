@@ -83,7 +83,7 @@ class Controller_Siggy extends FrontController
 								->execute()
 								->as_array();
 
-		$headerToolsHTML = View::factory('templatebits/headerTools');
+		$headerToolsHTML = View::factory('templatebits/header_tools');
 		$headerToolsHTML->group = Auth::$session->accessData;
         $headerToolsHTML->themes = $themes;
         $headerToolsHTML->settings = $this->template->settings;
