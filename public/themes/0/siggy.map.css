@@ -71,6 +71,9 @@ MAP */
 	-webkit-border-radius:  8px;
 	overflow:hidden;
 	font-size: 11px;
+	box-sizing: content-box;
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
 }
 
 .map-connection-overlay

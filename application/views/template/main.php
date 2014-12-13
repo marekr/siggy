@@ -42,60 +42,81 @@
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.map.js?<?php echo time(); ?>'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.map.connection.js?<?php echo time(); ?>'></script>
     <?php else: ?>
-	<?php if( isset($_GET['beta']) ): ?>
-    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/beta-thirdparty.compiled.js?<?php echo time(); ?>'></script>
-    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/beta-siggy.compiled.js?<?php echo time(); ?>'></script>
-    <?php else: ?>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/thirdparty.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>
-	<?php endif; ?>
     <?php endif; ?>
 	</head>
 	<body>
-		<?php if( 1 ): ?>
-		<div id="floating-header">
-			<div id="top-bar">
-				<div>
-					<img src="https://image.eveonline.com/Corporation/<?php echo Auth::$session->corpID; ?>_64.png" height="32px" />
-					<img src="https://image.eveonline.com/Character/<?php echo Auth::$session->charID; ?>_64.jpg" height="32px"/>
-					<p class="name"><?php echo Auth::$session->charName; ?> <?php if( $apilogin ): ?>[<a href='<?php echo URL::base(TRUE, TRUE);?>account/logout'>Logout</a>]<?php endif;?>
-					<br />
-					<?php if( count( $group['access_groups']) > 1  ):?>
-						<div class="dropdown" style="display:inline-block;">
-								<a data-toggle="dropdown" href="#">
-									<?php echo $group['groupName']; ?>&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-down"></i>
-								</a>
-								<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-									<?php foreach( $group['access_groups'] as $g ): ?>
-										<li>
-											<a href="<?php echo URL::base(TRUE, TRUE); ?>access/switch_membership/?k=<?php echo md5($g['group_id']); ?>">
-											<?php echo $g['group_name']; ?>
-											</a>
-										</li>
-									<?php endforeach; ?>
-								</ul>
-								<br clear='all' />
-						</div>
-						<?php else: ?>
-						<span style="font-size:0.9em;font-style:italic;font-weight: normal;" title="Current access"><?php echo $group['groupName']; ?></span>
-						<?php endif; ?>
-					</p>
-				</div>
-				<div id="update-time">
-					<span id="loading" style="display:none;"><img src="<?php echo URL::base(TRUE, TRUE);?>public/images/ajax-loader.gif" />&nbsp;</span>
-					Selected System: <span id="currentsystem"><b>System</b></span><br />
-					<?php if( $igb ): ?>
-						Your Location: <span id="acsname" title='Your current location'><b>System</b></span>
-					<?php endif; ?>
-				</div>
-			</div>
-			<div id="header-tools">
-				<?php echo $headerTools; ?>
+		<div class="navbar navbar-default navbar-fixed-top">
+			<div class="navbar-collapse collapse navbar-responsive-collapse">
+				<ul class="nav navbar-nav">
+					<li><a id="menu-toggle" href="#"><span id="main_icon" class="glyphicon glyphicon-align-justify"></span> siggy <i class="fa fa-caret-down"></i></a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Support <i class="fa fa-caret-down"></i>
+						</a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">Guide</a></li>
+							<li><a href="#">Changelog</a></li>
+							<li><a href="#">Contact</a></li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a data-toggle="dropdown" href="#">
+							<?php echo $group['groupName']; ?>&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-down"></i>
+						</a>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<?php foreach( $group['access_groups'] as $g ): ?>
+								<li>
+									<a href="<?php echo URL::base(TRUE, TRUE); ?>access/switch_membership/?k=<?php echo md5($g['group_id']); ?>">
+									<?php echo $g['group_name']; ?>
+									</a>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+							 <img class="navbar-eve-image" src="https://image.eveonline.com/Corporation/<?php echo Auth::$session->corpID; ?>_64.png" height="32px"/>
+							 <img class="navbar-eve-image" src="https://image.eveonline.com/Character/<?php echo Auth::$session->charID; ?>_64.jpg" height="32px"/>
+							<?php echo Auth::$session->charName; ?> <i class="fa fa-caret-down"></i>
+						</a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/apiKeys">API Keys</a></li>
+							<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/characterSelect">Switch Character</a></li>
+							<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/changePassword">Change Password</a></li>
+							<li class="divider"></li>
+							<li><a href="#">Logout</a></li>
+						</ul>
+					</li>
+					<li><a></a></li>
+					
+
+				</ul>
 			</div>
 		</div>
-		<br />
-		<?php endif; ?>
+		
+		<script type='text/javascript'>
+		$("#menu-toggle").click(function(e) {
+			e.preventDefault();
+			$('#sidebar-wrapper').toggleClass("active");
+		});
+		</script>
 		<div id="siggy-content" class="wrapper">
+		
+			<div id="sidebar-wrapper">
+				<ul class="sidebar-nav" id="sidebar">
+					<li><a target="_blank" href="<?php echo URL::base(); ?>stats"><span class="sub_icon glyphicon glyphicon-list"></span> Stats</a></li>
+					<li id="settings-button"><a><span class="sub_icon glyphicon glyphicon-cog"></span> Settings</a></li>
+					<!---
+					<li><a><span class="sub_icon glyphicon glyphicon-search"></span> Exit Finder</a></li>
+					<li><a><span class="sub_icon glyphicon glyphicon-flag"></span> Astrolabe</a></li>
+					<li><a><span class="sub_icon glyphicon glyphicon-eye-open"></span> Alexandria</a></li>
+					<li><a><span class="sub_icon glyphicon glyphicon-tower"></span> eet</a></li>
+					--->
+				</ul>
+			</div>
 			<?php echo $content; ?>
 			<div id="footer-link" style="text-align:center;font-size:0.9em;margin-top:100px;">
 				<p style="width:33%;float:left;text-align:left;">

@@ -24,7 +24,11 @@ $themeFiles = array( 'global_variables.css',
                       'icons.css',
                       'buttons.css',
                       'dropdown.css',
-                      'overwrite.css' );
+                      'overwrite.css',
+					  'glyphicons.css',
+					  'nav.css',
+					  'sidebar.css'
+					);
 
                       
 $cssBuffer = '';

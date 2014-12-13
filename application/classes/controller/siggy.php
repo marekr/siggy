@@ -80,14 +80,8 @@ class Controller_Siggy extends FrontController
 								->execute()
 								->as_array();
 
-		$headerToolsHTML = View::factory('siggy/header_tools');
-		$headerToolsHTML->group = Auth::$session->accessData;
-        $headerToolsHTML->themes = $themes;
-        $headerToolsHTML->settings = $this->template->settings;
-	
-		$headerToolsHTML->apilogin = Auth::loggedIn();
-			
-		$this->template->headerTools = $headerToolsHTML;
+        $view->themes = $themes;
+        $view->settings = $this->template->settings;
 	}
 
     public function action_save_character_settings()
