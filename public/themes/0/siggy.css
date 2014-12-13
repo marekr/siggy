@@ -44,11 +44,10 @@ select
     margin-right:10px;
 }
 
-#wrapper
+.wrapper
 {
-	padding: 0 20px 0 20px;
+	padding: 70px 20px 0 20px;
 }
-
 
 .center-text
 {

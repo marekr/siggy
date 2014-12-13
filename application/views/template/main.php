@@ -94,9 +94,7 @@
 		</div>
 		<br />
 		<?php endif; ?>
-		<div id="wrapper">
-			<div style="height:70px; width: 100%"></div>
-
+		<div id="siggy-content" class="wrapper">
 			<?php echo $content; ?>
 			<div id="footer-link" style="text-align:center;font-size:0.9em;margin-top:100px;">
 				<p style="width:33%;float:left;text-align:left;">
