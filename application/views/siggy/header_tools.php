@@ -1,4 +1,9 @@
 <ul id="header-tools-button-bar">
+
+<!---
+	<li style="float:left"><a href="#" id="eet">astrolabe</a></li>
+	<li style="float:left;margin-left:5px;"><a href="#" id="back-to-siggy">siggy</a></li>
+	-->
 	<li id="global-notes-button">Notes <i class="fa fa-caret-down"></i></li>
 	<?php if( $group['statsEnabled'] ): ?>
 		<li id="stats-button"><a target="_blank" href="<?php echo URL::base(); ?>stats">Stats</a></li>

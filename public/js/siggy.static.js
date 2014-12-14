@@ -486,224 +486,6 @@ var ladarsLookup = {
 	9: "Vital Core Reservoir"
 };
 
-var whLookup = {
-	1: {
-		0: "Unstable Wormhole",
-		1: "K162 (from Unknown)",
-		2: "K162 (from Dangerous unknown)",
-		3: "K162 (from Deadly unknown)",
-		4: "K162 (from Nullsec)",
-		5: "K162 (from Lowsec)",
-		6: "K162 (from Highsec)",
-		7: "H121 (to C1)",
-		8: "C125  (to C2)",
-		9: "O883 (to C3)",
-		10: "M609 (to C4)",
-		11: "L614 (to C5)",
-		12: "S804 (to C6)",
-		13: "Z060 (to Nullsec)",
-		14: "J244 (to Lowsec)",
-		15: "N110 (to Highsec)",
-		/* frigate hole range 30 to 39*/
-		31: "E004 (to C1, Frigate)",
-		32: "L005 (to C2, Frigate)",
-		33: "Z006 (to C3, Frigate)",
-		34: "M001 (to C4, Frigate)",
-		35: "C008 (to C5, Frigate)",
-		36: "G008 (to C6, Frigate)",
-		37: "Q003 (to Nullsec, Frigate)"
-	},
-	2: {
-		0: "Unstable Wormhole",
-		1: "K162 (from Unknown)",
-		2: "K162 (from Dangerous unknown)",
-		3: "K162 (from Deadly unknown)",
-		4: "K162 (from Nullsec)",
-		5: "K162 (from Lowsec)",
-		6: "K162 (from Highsec)",
-		7: "Z647 (to C1)",
-		8: "D382 (to C2)",
-		9: "O477 (to C3)",
-		10: "Y683 (to C4)",
-		11: "N062 (to C5)",
-		12: "R474 (to C6)",
-		13: "E545 (to Nullsec)",
-		14: "A239 (to Lowsec)",
-		15: "B274 (to Highsec)",
-		/* frigate hole range 30 to 39*/
-		31: "E004 (to C1, Frigate)",
-		32: "L005 (to C2, Frigate)",
-		33: "Z006 (to C3, Frigate)",
-		34: "M001 (to C4, Frigate)",
-		35: "C008 (to C5, Frigate)",
-		36: "G008 (to C6, Frigate)",
-		37: "Q003 (to Nullsec, Frigate)"
-	},
-	3: {
-		0: "Unstable Wormhole",
-		1: "K162 (from Unknown)",
-		2: "K162 (from Dangerous unknown)",
-		3: "K162 (from Deadly unknown)",
-		4: "K162 (from Nullsec)",
-		5: "K162 (from Lowsec)",
-		6: "K162 (from Highsec)",
-		7: "V301 (to C1)",
-		8: "I182 (to C2)",
-		9: "N968 (to C3)",
-		10: "T405 (to C4)",
-		11: "N770 (to C5)",
-		12: "A982 (to C6)",
-		13: "K346 (to Nullsec)",
-		14: "U210 (to Lowsec)",
-		15: "D845 (to Highsec)",
-		/* frigate hole range 30 to 39*/
-		31: "E004 (to C1, Frigate)",
-		32: "L005 (to C2, Frigate)",
-		33: "Z006 (to C3, Frigate)",
-		34: "M001 (to C4, Frigate)",
-		35: "C008 (to C5, Frigate)",
-		36: "G008 (to C6, Frigate)",
-		37: "Q003 (to Nullsec, Frigate)"
-	},
-	4: {
-		0: "Unstable Wormhole",
-		1: "K162 (from Unknown)",
-		2: "K162 (from Dangerous unknown)",
-		3: "K162 (from Deadly unknown)",
-		4: "K162 (from Nullsec)",
-		5: "K162 (from Lowsec)",
-		6: "K162 (from Highsec)",
-		7: "P060 (to C1)",
-		8: "N766 (to C2)",
-		9: "C247 (to C3)",
-		10: "X877 (to C4)",
-		11: "H900 (to C5)",
-		12: "U574 (to C6)",
-		13: "K329 (to Nullsec)",
-		14: "N290 (to Lowsec)",
-		15: "S047 (to Highsec)",
-		/* frigate hole range 30 to 39*/
-		31: "E004 (to C1, Frigate)",
-		32: "L005 (to C2, Frigate)",
-		33: "Z006 (to C3, Frigate)",
-		34: "M001 (to C4, Frigate)",
-		35: "C008 (to C5, Frigate)",
-		36: "G008 (to C6, Frigate)",
-		37: "Q003 (to Nullsec, Frigate)"
-	},
-	5: {
-		0: "Unstable Wormhole",
-		1: "K162 (from Unknown)",
-		2: "K162 (from Dangerous unknown)",
-		3: "K162 (from Deadly unknown)",
-		4: "K162 (from Nullsec)",
-		5: "K162 (from Lowsec)",
-		6: "K162 (from Highsec)",
-		7: "Y790 (to C1)",
-		8: "D364 (to C2)",
-		9: "M267 (to C3)",
-		10: "E175 (to C4)",
-		11: "H296 (to C5)",
-		12: "V753 (to C6)",
-		13: "Z142 (to Nullsec)",
-		14: "C140 (to Lowsec)",
-		15: "D792 (to Highsec)",
-		/* frigate hole range 30 to 39*/
-		31: "E004 (to C1, Frigate)",
-		32: "L005 (to C2, Frigate)",
-		33: "Z006 (to C3, Frigate)",
-		34: "M001 (to C4, Frigate)",
-		35: "C008 (to C5, Frigate)",
-		36: "G008 (to C6, Frigate)",
-		37: "Q003 (to Nullsec, Frigate)"
-	},
-	6: {
-		0: "Unstable Wormhole",
-		1: "K162 (from Unknown)",
-		2: "K162 (from Dangerous unknown)",
-		3: "K162 (from Deadly unknown)",
-		4: "K162 (from Nullsec)",
-		5: "K162 (from Lowsec)",
-		6: "K162 (from Highsec)",
-		7: "Q317  (to C1)",
-		8: "G024 (to C2)",
-		9: "L477 (to C3)",
-		10: "Z457 (to C4)",
-		11: "V911 (to C5)",
-		12: "W237 (to C6)",
-		13: "Z142 (to Nullsec)",
-		47: "C248 (to Nullsec, 48hr)",
-		14: "C140 (to Lowsec)",
-		48: "C391 (to Lowsec, 48hr)",
-		15: "D792  (to Highsec)",
-		49: "B520  (to Highsec, 48hr)",
-		/* frigate hole range 31 to 39*/
-		31: "E004 (to C1, Frigate)",
-		32: "L005 (to C2, Frigate)",
-		33: "Z006 (to C3, Frigate)",
-		34: "M001 (to C4, Frigate)",
-		35: "C008 (to C5, Frigate)",
-		36: "G008 (to C6, Frigate)",
-		37: "Q003 (to Nullsec, Frigate)"
-	},
-	7: {
-		0: "Unstable Wormhole",
-		1: "K162 (from Unknown)",
-		2: "K162 (from Dangerous unknown)",
-		3: "K162 (from Deadly unknown)",
-		4: "K162 (from Nullsec)",
-		5: "K162 (from Lowsec)",
-		6: "K162 (from Highsec)",
-		7: "Z971 (to C1)",
-		8: "R943 (to C2)",
-		9: "X702 (to C3)",
-		10: "O128 (to C4)",
-		11: "M555 (to C5)",
-		12: "B041 (to C6)",
-		13: "V283 (to Nullsec)",
-		14: "R051 (to Lowsec)",
-		15: "A641 (to Highsec)"
-	},
-	8: {
-		0: "Unstable Wormhole",
-		1: "K162 (from Unknown)",
-		2: "K162 (from Dangerous unknown)",
-		3: "K162 (from Deadly unknown)",
-		4: "K162 (from Nullsec)",
-		5: "K162 (from Lowsec)",
-		6: "K162 (from Highsec)",
-		7: "Z971 (to C1)",
-		8: "R943  (to C2)",
-		9: "X702 (to C3)",
-		10: "O128 (to C4)",
-		11: "N432 (to C5)",
-		12: "B041 (to C6)",
-		46: "U319 (to C6)",	/* mass regen type */
-		13: "S199  (to Nullsec)",
-		14: "N944  (to Lowsec)",
-		15: "B449  (to Highsec)"
-	},
-	9: {
-		0: "Unstable Wormhole",
-		1: "K162 (from Unknown)",
-		2: "K162 (from Dangerous unknown)",
-		3: "K162 (from Deadly unknown)",
-		4: "K162 (from Nullsec)",
-		5: "K162 (from Lowsec)",
-		6: "K162 (from Highsec)",
-		7: "Z971 (to C1)",
-		8: "R943 (to C2)",
-		9: "X702 (to C3)",
-		10: "O128  (to C4)",
-		11: "N432 (to C5)",
-		12: "B041 (to C6)",
-		46: "U319 (to C6)",	/* mass regen type */
-		13: "S199 (to Nullsec)",
-		14: "N944 (to Lowsec)",
-		15: "B449 (to Highsec)"
-	}
-};
-
 var blackHoleEffects = {
 	1: [
 		['Missile Velocity', '+15%'],
@@ -990,4 +772,104 @@ var pulsarEffects = {
 		['Signature Size', '+100%'],
 		['Energy neut/nos bonus', '-100%']
 	]
+}
+
+var siggy2 = siggy2 || {};
+
+siggy2.StaticData = {
+	wormholeClassMap: [],
+	wormholeTypes: [],
+	baseListWormholes: {
+		0: "Unstable Wormhole",
+		1: "K162 (from Unknown)",
+		2: "K162 (from Dangerous unknown)",
+		3: "K162 (from Deadly unknown)",
+		4: "K162 (from Nullsec)",
+		5: "K162 (from Lowsec)",
+		6: "K162 (from Highsec)"
+	}
+
+};
+
+siggy2.StaticData.load = function(baseURL)
+{
+	var $this = this;
+	jQuery.ajax({
+		 url: baseURL + 'data/sig_types',
+		 success: function(result) {
+					$this.wormholeClassMap = result.wormholes;
+					$this.wormholeTypes = result.wormhole_types;
+				  },
+		 async: false,
+		 dataType: 'json'
+	});
+}
+
+siggy2.StaticData.getWormholeByID = function( id )
+{
+	if( typeof( this.wormholeTypes[ id ] ) != 'undefined' )
+		return this.wormholeTypes[ id ];
+	else
+		return null;
+}
+
+siggy2.StaticData.getWormholesForClass = function( sysClass )
+{
+	return this.wormholeClassMap[ sysClass ];
+}
+
+siggy2.StaticData.systemClassToString = function ( sysClass )
+{
+	if( sysClass == 7 )
+		return "Highsec";
+	else if ( sysClass == 8 )
+		return "Lowsec"
+	else if( sysClass == 9 )
+		return "Nullsec";
+	else
+		return "C" + sysClass;
+}
+
+siggy2.StaticData.getWormholeFancyName = function( whInfo )
+{
+	return _("Wormhole") + " " + whInfo.name + " (to " + this.systemClassToString(whInfo.dest_class) + ")";
+}
+
+siggy2.StaticData.getWormholeFancyNameByID = function( id )
+{
+	if( id <= 6 && id >= 0 )
+	{
+		return this.baseListWormholes[ id ];
+	}
+	else
+	{
+		var wh = this.getWormholeByID(id);
+		
+		if( wh != null )
+		{
+			return this.getWormholeFancyName( wh );
+		}
+		else
+		{
+			return "";
+		}
+	}
+}
+
+
+siggy2.StaticData.getWormholesForList = function( sysClass )
+{
+	var result = this.baseListWormholes;
+	
+	var map = this.wormholeClassMap[ sysClass ];
+	if( typeof(map) != 'undefined' )
+	{
+		for( var i in map )
+		{
+			var whInfo = this.getWormholeByID(map[i].static_id);
+			result[map[i].static_id] = this.getWormholeFancyName(whInfo);
+		}
+	}
+	
+	return result;
 }
