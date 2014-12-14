@@ -127,6 +127,8 @@ siggymain.prototype.initialize = function ()
 	$(document).ajaxStop( function() {
 		$(this).hide();
 	} );
+	
+	siggy2.StaticData.load(this.settings.baseUrl);
 
 	// Display states cookie
 	var displayStatesCookie = getCookie('display_states');
@@ -599,7 +601,7 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 		var counter = 0;
 		for (var i in systemData.staticData)
 		{
-			var theStatic = systemData.staticData[i];
+			var theStatic = siggy2.StaticData.getWormholeByID(systemData.staticData[i].id);
 			var destBlurb = '';
 			theStatic.dest_class = parseInt(theStatic.dest_class);
 

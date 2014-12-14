@@ -185,7 +185,7 @@ sigtable.prototype.convertSiteID = function (whClass, type, siteID)
 	if (type == 'combat')
 		return _(anomsLookup[whClass][siteID]);
 	else if (type == 'wh')
-		return _(whLookup[whClass][siteID]);
+		return siggy2.StaticData.getWormholeFancyNameByID(siteID);
 	else if (type == 'mag')
 		return _(magsLookup[whClass][siteID]);
 	else if (type == 'radar')
@@ -270,7 +270,7 @@ sigtable.prototype.updateSiteSelect = function( ele, whClass, type, siteID )
 	switch( type )
 	{
 		case 'wh':
-			options = whLookup[whClass];
+			options = siggy2.StaticData.getWormholesForList(whClass);
 			break;
 		case 'ladar':
 			options = ladarsLookup;
@@ -292,6 +292,7 @@ sigtable.prototype.updateSiteSelect = function( ele, whClass, type, siteID )
 			break;
 	}
 
+	
 	for (var i in options)
 	{
 		elem.append($('<option>').attr('value', i).text(_(options[i])));
@@ -532,7 +533,7 @@ sigtable.prototype.editSig = function (sigID)
 
 sigtable.prototype.generateSiteSelect = function (whClass, type, siteID)
 {
-	if (type == "wh") return this.generateSelect(whLookup[whClass], siteID);
+	if (type == "wh") return this.generateSelect(siggy2.StaticData.getWormholesForList(whClass), siteID);
 	else if (type == "ladar") return this.generateSelect(ladarsLookup, siteID);
 	else if (type == "mag") return this.generateSelect(magsLookup[whClass], siteID);
 	else if (type == "grav") return this.generateSelect(gravsLookup, siteID);
