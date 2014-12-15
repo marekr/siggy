@@ -311,6 +311,7 @@ sigtable.prototype.removeSigRow = function (sigData)
 
 	$('#sig-' + sigData.sigID + ' td.moreinfo img').qtip('destroy');
 	$('#sig-' + sigData.sigID + ' td.age span').qtip('destroy');
+	$('#sig-' + sigData.sigID + ' td.desc').qtip('destroy');
 
 	$('#sig-' + sigData.sigID).remove();
 	this.colorizeSigRows();
@@ -382,6 +383,32 @@ sigtable.prototype.sigRowMagic = function(sigData)
 			text: $('#age-timestamp-' + sigData.sigID) // Use the "div" element next to this for the content
 		}
 	});
+	
+	if( sigData.type == 'wh' )
+	{
+		$('#sig-' + sigData.sigID + ' td.desc').qtip('destroy');
+		
+		var wh = siggy2.StaticData.getWormholeByID(sigData.siteID);
+		if( wh != null )
+		{
+			var whTooltip = siggy2.StaticData.templateWormholeInfoTooltip(wh);
+			$('#sig-' + sigData.sigID + ' td.desc').append(whTooltip);
+			
+			
+			$('#sig-' + sigData.sigID + ' td.desc').qtip({
+				content: {
+					text: $('#static-info-' + sigData.siteID)
+				},
+				position: {
+					target: 'mouse',
+					adjust: { x: 5, y: 5 },
+					viewport: $(window)
+				}
+			});
+		}
+		
+		console.log(whTooltip);
+	}
 }
 
 sigtable.prototype.editSigForm = function (sigID)
@@ -390,6 +417,9 @@ sigtable.prototype.editSigForm = function (sigID)
 	{
 		return;
 	}
+	
+	/*disable the tooltip or it will be annoying */
+	$('#sig-' + sigID + ' td.desc').qtip('disable');
 
 	this.sigData[sigID].editing = true;
 	this.editingSig = true;

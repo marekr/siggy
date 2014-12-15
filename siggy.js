@@ -111,7 +111,6 @@ function siggymain( options )
     this.setSystemID(this.settings.initialSystemID);
 	
 	this.templateEffectTooltip = Handlebars.compile( $("#template-effect-tooltip").html() );
-	this.templateStaticsTooltip = Handlebars.compile( $("#template-statics-tooltip").html() );
 }
 
 
@@ -625,7 +624,7 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 			var staticBit = $("<p>").text(theStatic.name + destBlurb);
 			
 			theStatic.destBlurb = destBlurb;
-			var staticTooltip = this.templateStaticsTooltip(theStatic);
+			var staticTooltip = siggy2.StaticData.templateWormholeInfoTooltip(theStatic);
 
 			$('#static-info').append(staticBit)
 							 .append(staticTooltip);

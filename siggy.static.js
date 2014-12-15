@@ -787,6 +787,9 @@ siggy2.StaticData = {
 		4: "K162 (from Nullsec)",
 		5: "K162 (from Lowsec)",
 		6: "K162 (from Highsec)"
+	},
+	templateWormholeInfoTooltip: function(dummy)
+	{
 	}
 
 };
@@ -794,6 +797,9 @@ siggy2.StaticData = {
 siggy2.StaticData.load = function(baseURL)
 {
 	var $this = this;
+	
+	$this.templateWormholeInfoTooltip = Handlebars.compile( $("#template-statics-tooltip").html() );
+	
 	jQuery.ajax({
 		 url: baseURL + 'data/sig_types',
 		 success: function(result) {
