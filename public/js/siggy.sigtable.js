@@ -368,7 +368,7 @@ sigtable.prototype.addSigRow = function (sigData, flashSig)
 sigtable.prototype.sigRowMagic = function(sigData)
 {	
 	delete this.sigClocks[sigData.sigID];
-	this.sigClocks[sigData.sigID] = new CountUp(sigData.created * 1000, '#sig-' + sigData.sigID + ' td.age span', "test");
+	this.sigClocks[sigData.sigID] = new CountUp(sigData.created * 1000, '#sig-' + sigData.sigID + ' td.age span.age-clock', "test");
 
 	$('#sig-' + sigData.sigID + ' td.moreinfo i').qtip('destroy');
 	$('#sig-' + sigData.sigID + ' td.moreinfo i').qtip({
