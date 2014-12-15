@@ -5,6 +5,8 @@
 	<b>Max Mass:</b> {{ mass }} mass<br />
 	<b>Max Jumpable Mass:</b> {{ jump_mass }} million<br />
 	<b>Max Lifetime:</b> {{ lifetime }} hrs<br />
+	{{#if sig_size}}
 	<b>Signature Size:</b> {{ sig_size }} <br />
+	{{/if}}
 	</div>
 </script>

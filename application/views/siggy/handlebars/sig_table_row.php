@@ -35,7 +35,7 @@
 			</td>
 			<td class='center-text age'>
 				<span class='age-clock'>--</span>
-				<span class='eol-clock'><br /></span>
+				<p class='eol-clock'></p>
 				<div id='age-timestamp-{{ sigID }}' class='tooltip'>
 					{{ displayTimestamp created }}
 				</div>

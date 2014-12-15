@@ -5,6 +5,7 @@
 --js=siggy.intel.poses.js ^
 --js=siggy.charactersettings.js ^
 --js=siggy.js ^
+--js=siggy.timer.js ^
 --js=siggy.sigtable.js ^
 --js=siggy.globalnotes.js ^
 --js=siggy.map.connection.js ^

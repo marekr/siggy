@@ -5,6 +5,7 @@ function sigtable( options )
 {
 	this.sigData = {};
 	this.sigClocks = {};
+	this.eolClocks = {};
 	this.siggyMain = null;
 	this.systemID = 0;
 	this.systemClass = 0;
@@ -116,8 +117,15 @@ sigtable.prototype.clear = function()
 		delete this.sigClocks[i];
 	}
 	
+	for(var i in this.eolClocks)
+	{
+		this.eolClocks[i].destroy();
+		delete this.eolClocks[i];
+	}
+	
     $('td.moreinfo img').qtip('destroy');
     $('td.age span').qtip('destroy');
+    $('td.desc').qtip('destroy');
 
 	$("#sig-table tbody").empty();
 	this.editingSig = false;
@@ -367,8 +375,27 @@ sigtable.prototype.addSigRow = function (sigData, flashSig)
 
 sigtable.prototype.sigRowMagic = function(sigData)
 {	
+	if( typeof(this.sigClocks[sigData.sigID]) != 'undefined' )
+		this.sigClocks[sigData.sigID].destroy();
 	delete this.sigClocks[sigData.sigID];
-	this.sigClocks[sigData.sigID] = new CountUp(sigData.created * 1000, '#sig-' + sigData.sigID + ' td.age span.age-clock', "test");
+	
+	if( typeof(this.eolClocks[sigData.sigID]) != 'undefined' )
+		this.eolClocks[sigData.sigID].destroy();
+	
+	delete this.eolClocks[sigData.sigID];
+	this.sigClocks[sigData.sigID] = new siggy2.Timer(sigData.created * 1000, null, '#sig-' + sigData.sigID + ' td.age span.age-clock', "test");
+	
+	var wh = null;
+	if( sigData.type == 'wh' )
+	{
+		wh = siggy2.StaticData.getWormholeByID(sigData.siteID);
+		
+		if( wh != null )
+		{
+			var endDate = parseInt(sigData.created)+(3600*wh.lifetime);
+			this.eolClocks[sigData.sigID] = new siggy2.Timer(sigData.created * 1000, endDate* 1000, '#sig-' + sigData.sigID + ' td.age p.eol-clock', "test");
+		}
+	}
 
 	$('#sig-' + sigData.sigID + ' td.moreinfo i').qtip('destroy');
 	$('#sig-' + sigData.sigID + ' td.moreinfo i').qtip({
@@ -388,7 +415,6 @@ sigtable.prototype.sigRowMagic = function(sigData)
 	{
 		$('#sig-' + sigData.sigID + ' td.desc').qtip('destroy');
 		
-		var wh = siggy2.StaticData.getWormholeByID(sigData.siteID);
 		if( wh != null )
 		{
 			var whTooltip = siggy2.StaticData.templateWormholeInfoTooltip(wh);
@@ -406,8 +432,6 @@ sigtable.prototype.sigRowMagic = function(sigData)
 				}
 			});
 		}
-		
-		console.log(whTooltip);
 	}
 }
 
