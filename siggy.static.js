@@ -838,7 +838,7 @@ siggy2.StaticData.systemClassToString = function ( sysClass )
 
 siggy2.StaticData.getWormholeFancyName = function( whInfo )
 {
-	return _("Wormhole") + " " + whInfo.name + " (to " + this.systemClassToString(whInfo.dest_class) + ")";
+	return whInfo.name + " (to " + this.systemClassToString(whInfo.dest_class) + ")";
 }
 
 siggy2.StaticData.getWormholeFancyNameByID = function( id )
