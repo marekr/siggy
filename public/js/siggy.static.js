@@ -865,9 +865,10 @@ siggy2.StaticData.getWormholeFancyNameByID = function( id )
 
 siggy2.StaticData.getWormholesForList = function( sysClass )
 {
-	var result = this.baseListWormholes;
+	var result  = jQuery.extend({}, this.baseListWormholes);
 	
 	var map = this.wormholeClassMap[ sysClass ];
+	
 	if( typeof(map) != 'undefined' )
 	{
 		for( var i in map )
