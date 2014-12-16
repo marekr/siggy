@@ -342,6 +342,10 @@ sigtable.prototype.setupHandlebars = function()
 		return $this.convertSiteID(sysClass, type, siteID);
 	});
 	
+	Handlebars.registerHelper('numberFormat', function(number, decimals, dec_point, thousands_sep) {
+		return number_format(number, decimals, dec_point, thousands_sep)
+	});
+	
 	Handlebars.registerHelper('notEqual', function(lvalue, rvalue, options) {
 		if (arguments.length < 3)
 			throw new Error("Handlebars Helper not equal needs 2 parameters");
