@@ -14,7 +14,7 @@ var siggy2 = siggy2 || {};
 /**
 * @constructor
 */
-function siggymain( options )
+siggy2.Core = function( options )
 {
 
 	this.fatalError = false;
@@ -116,7 +116,7 @@ function siggymain( options )
 }
 
 
-siggymain.prototype.initialize = function ()
+siggy2.Core.prototype.initialize = function ()
 {
 	var that = this;
 	this.setupFatalErrorHandler();
@@ -201,7 +201,7 @@ siggymain.prototype.initialize = function ()
 	this.initializeHubJumpContextMenu();
 }
 
-siggymain.prototype.initializeHubJumpContextMenu = function()
+siggy2.Core.prototype.initializeHubJumpContextMenu = function()
 {
 	$(document).contextMenu({
 		selector: '.basic-system-context',
@@ -235,7 +235,7 @@ siggymain.prototype.initializeHubJumpContextMenu = function()
 	});
 }
 
-siggymain.prototype.initializeCollaspibles = function()
+siggy2.Core.prototype.initializeCollaspibles = function()
 {
 	var $this = this;
 
@@ -245,17 +245,17 @@ siggymain.prototype.initializeCollaspibles = function()
 	this.setupCollaspible('#pos-box', 'posesOpen');
 }
 
-siggymain.prototype.ecSetExpandedArrow = function(ele)
+siggy2.Core.prototype.ecSetExpandedArrow = function(ele)
 {
 	$(ele).children('.expand-collapse-indicator').removeClass('fa-caret-down').addClass('fa-caret-up');
 }
 
-siggymain.prototype.ecSetCollaspedArrow = function(ele)
+siggy2.Core.prototype.ecSetCollaspedArrow = function(ele)
 {
 	$(ele).children('.expand-collapse-indicator').removeClass('fa-caret-up').addClass('fa-caret-down');
 }
 
-siggymain.prototype.setupCollaspible = function(baseID, displayState, onShow)
+siggy2.Core.prototype.setupCollaspible = function(baseID, displayState, onShow)
 {
 	var $this = this;
 	var content = $(baseID + ' > div');
@@ -296,13 +296,13 @@ siggymain.prototype.setupCollaspible = function(baseID, displayState, onShow)
 
 }
 
-siggymain.prototype.saveDisplayState = function()
+siggy2.Core.prototype.saveDisplayState = function()
 {
 	setCookie('display_states', JSON.stringify(this.displayStates), 365);
 }
 
 
-siggymain.prototype.getCurrentTime = function ()
+siggy2.Core.prototype.getCurrentTime = function ()
 {
 	var date = new Date();
 	var time = pad(date.getUTCHours(), 2) + ':' + pad(date.getUTCMinutes(), 2) + ':' + pad(date.getUTCSeconds(), 2);
@@ -316,7 +316,8 @@ siggymain.prototype.getCurrentTime = function ()
  * Renders a ISO8601 date + time from a unix timestamp. Except instead of the T
  * in between we have a space.
  */
-siggymain.displayTimeStamp = function (unixTimestamp)
+siggy2.Helpers = siggy2.Helpers || {};
+siggy2.Helpers.displayTimeStamp = function (unixTimestamp)
 {
 	var date = new Date(unixTimestamp * 1000);
 
@@ -335,7 +336,7 @@ siggymain.displayTimeStamp = function (unixTimestamp)
 	return time;
 }
 
-siggymain.prototype.update = function ()
+siggy2.Core.prototype.update = function ()
 {
 	var request = {
 		systemID: this.systemID,
@@ -470,7 +471,7 @@ siggymain.prototype.update = function ()
 	return true;
 }
 
-siggymain.prototype.registerSwitchHandler = function (item, systemID, systemName)
+siggy2.Core.prototype.registerSwitchHandler = function (item, systemID, systemName)
 {
 	var that = this;
 	item.click(function ()
@@ -481,13 +482,13 @@ siggymain.prototype.registerSwitchHandler = function (item, systemID, systemName
 	});
 }
 
-siggymain.prototype.updateNow = function()
+siggy2.Core.prototype.updateNow = function()
 {
 	clearTimeout(this._updateTimeout);
 	return this.update();
 }
 
-siggymain.prototype.switchSystem = function(systemID, systemName)
+siggy2.Core.prototype.switchSystem = function(systemID, systemName)
 {
 	this.setSystemID(systemID);
 	this.systemName = systemName;
@@ -507,7 +508,7 @@ siggymain.prototype.switchSystem = function(systemID, systemName)
 	}
 }
 
-siggymain.prototype.updateSystemInfo = function (systemData)
+siggy2.Core.prototype.updateSystemInfo = function (systemData)
 {
 	//general info
 	$('#region').text(systemData.regionName + " / " + systemData.constellationName);
@@ -694,7 +695,7 @@ siggymain.prototype.updateSystemInfo = function (systemData)
 	this.inteldscan.updateDScan( systemData.dscans );
 }
 
-siggymain.prototype.renderStats = function()
+siggy2.Core.prototype.renderStats = function()
 {
 		var options = {
 			lines: { show: true },
@@ -739,7 +740,7 @@ siggymain.prototype.renderStats = function()
 		}],options);
 }
 
-siggymain.prototype.setBearTab = function( bearClass )
+siggy2.Core.prototype.setBearTab = function( bearClass )
 {
 		$('#bear-class-links a').each(function(index)
 		{
@@ -767,7 +768,7 @@ siggymain.prototype.setBearTab = function( bearClass )
 
 
 
-siggymain.prototype.updateSystemOptionsForm = function (systemData)
+siggy2.Core.prototype.updateSystemOptionsForm = function (systemData)
 {
 	$('#system-options table th').text('System Options for '+systemData.name);
 	$('#system-options input[name=label]').val(systemData.displayName);
@@ -775,13 +776,13 @@ siggymain.prototype.updateSystemOptionsForm = function (systemData)
 }
 
 
-siggymain.prototype.setSystemID = function (systemID)
+siggy2.Core.prototype.setSystemID = function (systemID)
 {
 	this.systemID = systemID;
 	this.sigtable.systemID = systemID;
 }
 
-siggymain.prototype.setSystemClass = function (systemClass)
+siggy2.Core.prototype.setSystemClass = function (systemClass)
 {
 	this.systemClass = systemClass;
 	this.sigtable.systemClass = systemClass;
@@ -795,7 +796,7 @@ siggymain.prototype.setSystemClass = function (systemClass)
 	}
 }
 
-siggymain.prototype.massAddHandler = function(systemID, data)
+siggy2.Core.prototype.massAddHandler = function(systemID, data)
 {
 	var $this = this;
 
@@ -816,7 +817,7 @@ siggymain.prototype.massAddHandler = function(systemID, data)
 	}, 'json');
 }
 
-siggymain.prototype.setupAddBox = function ()
+siggy2.Core.prototype.setupAddBox = function ()
 {
 	var $this = this;
 	var massAddBlob = $('#mass-add-sig-box textarea[name=blob]');
@@ -956,7 +957,7 @@ siggymain.prototype.setupAddBox = function ()
 	$( document ).on('keypress', '#sig-add-box select[name=site]', this.addBoxEnterHandler);
 }
 
-siggymain.prototype.addBoxEnterHandler = function(e)
+siggy2.Core.prototype.addBoxEnterHandler = function(e)
 {
 	if(e.which == 13)
 	{
@@ -964,7 +965,7 @@ siggymain.prototype.addBoxEnterHandler = function(e)
 	}
 }
 
-siggymain.prototype.displayFatalError = function(message)
+siggy2.Core.prototype.displayFatalError = function(message)
 {
 	$('#fatal-error-message').html(message);
 
@@ -990,7 +991,7 @@ siggymain.prototype.displayFatalError = function(message)
 	});
 }
 
-siggymain.prototype.setupFatalErrorHandler = function()
+siggy2.Core.prototype.setupFatalErrorHandler = function()
 {
 	var that = this;
 
@@ -1012,7 +1013,7 @@ siggymain.prototype.setupFatalErrorHandler = function()
 	} );
 }
 
-siggymain.prototype.saveSystemOptions = function(systemID, newData)
+siggy2.Core.prototype.saveSystemOptions = function(systemID, newData)
 {
 	var $this = this;
 
@@ -1039,7 +1040,7 @@ siggymain.prototype.saveSystemOptions = function(systemID, newData)
 	});
 }
 
-siggymain.prototype.initializeTabs = function()
+siggy2.Core.prototype.initializeTabs = function()
 {
 	var $this = this;
 
@@ -1052,7 +1053,7 @@ siggymain.prototype.initializeTabs = function()
     this.changeTab( '#sigs' );
 }
 
-siggymain.prototype.changeTab = function( selectedTab )
+siggy2.Core.prototype.changeTab = function( selectedTab )
 {
     var $this = this;
     $('#system-advanced ul.tabs li a').each(function()
@@ -1079,21 +1080,21 @@ siggymain.prototype.changeTab = function( selectedTab )
     } );
 }
 
-siggymain.prototype.freeze = function()
+siggy2.Core.prototype.freeze = function()
 {
 	this.freezeSystem = 1;
 	$('#freezeOpt').hide();
 	$('#unfreezeOpt').show();
 }
 
-siggymain.prototype.unfreeze = function()
+siggy2.Core.prototype.unfreeze = function()
 {
 	this.freezeSystem = 0;
 	$('#unfreezeOpt').hide();
 	$('#freezeOpt').show();
 }
 
-siggymain.prototype.populateExitData = function(data)
+siggy2.Core.prototype.populateExitData = function(data)
 {
 	if( typeof(data.result) != "undefined" )
 	{
@@ -1116,7 +1117,7 @@ siggymain.prototype.populateExitData = function(data)
 	}
 }
 
-siggymain.prototype.initializeExitFinder = function()
+siggy2.Core.prototype.initializeExitFinder = function()
 {
 	var $this = this;
 
@@ -1163,7 +1164,7 @@ siggymain.prototype.initializeExitFinder = function()
 
 
 
-siggymain.prototype.openBox = function(ele)
+siggy2.Core.prototype.openBox = function(ele)
 {
 	var $this = this;
 
@@ -1192,7 +1193,7 @@ siggymain.prototype.openBox = function(ele)
 	return false;
 }
 
-siggymain.prototype.confirmDialog = function(message, yesCallback, noCallback)
+siggy2.Core.prototype.confirmDialog = function(message, yesCallback, noCallback)
 {
 	var $this = this;
 
@@ -1214,7 +1215,7 @@ siggymain.prototype.confirmDialog = function(message, yesCallback, noCallback)
 }
 
 
-siggymain.prototype.updateChainMaps = function(data)
+siggy2.Core.prototype.updateChainMaps = function(data)
 {
 	var list = $('#chainmap-dropdown');
 	var $this = this;
@@ -1258,7 +1259,7 @@ siggymain.prototype.updateChainMaps = function(data)
 	}
 }
 
-siggymain.prototype.handleChainMapSelect = function(id)
+siggy2.Core.prototype.handleChainMapSelect = function(id)
 {
 	var $this = this;
 

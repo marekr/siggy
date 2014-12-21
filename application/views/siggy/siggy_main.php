@@ -507,7 +507,7 @@
                 }
             };
 
-            siggy = new siggymain( options );
+            var siggy = new siggy2.Core( options );
             <?php if($requested): ?>
             siggy.freeze();
             <?php endif; ?>

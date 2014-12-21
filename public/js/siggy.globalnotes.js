@@ -54,7 +54,7 @@ globalnotes.prototype.initialize = function()
 			$this.editingGlobalNotes = false;
 			$this.lastGlobalNotesUpdate = data;
 			setCookie('notesUpdate', $this.lastGlobalNotesUpdate, 365);
-			$('#global-notes-time').text(siggymain.displayTimeStamp($this.lastGlobalNotesUpdate));
+			$('#global-notes-time').text(siggy2.Helpers.displayTimeStamp($this.lastGlobalNotesUpdate));
 		});
 
 		$('#global-notes-content').html($this.globalNotes.replace(/\n/g, '<br />')).show();
@@ -123,7 +123,7 @@ globalnotes.prototype.update = function(data)
 
 			this.globalNotes = data.globalNotes;
 			$('#global-notes-content').html(this.globalNotes.replace(/\n/g, '<br />'));
-			$('#global-notes-time').text( siggymain.displayTimeStamp(data.group_cache_time) );
+			$('#global-notes-time').text( siggy2.Helpers.displayTimeStamp(data.group_cache_time) );
 		}
 	}
 }

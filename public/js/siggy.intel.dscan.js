@@ -89,7 +89,7 @@ inteldscan.prototype.updateDScan = function( data )
 			var row = $("<tr>").attr('id', 'dscan-'+dscan_id);
 
 			row.append( $("<td>").text( data[i].dscan_title ) );
-			row.append( $("<td>").text(siggymain.displayTimeStamp(data[i].dscan_date)) );
+			row.append( $("<td>").text(siggy2.Helpers.displayTimeStamp(data[i].dscan_date)) );
 			row.append( $("<td>").text( data[i].dscan_added_by ) );
 
 			(function(dscan_id){
