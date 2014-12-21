@@ -26,7 +26,7 @@
 			<td class='center-text moreinfo'>
 				<i class='icon icon-info-sign icon-large icon-yellow'></i>
 				<div id='creation-info-{{ sigID }}' class='tooltip'>
-					<b>Added by </b>: {{ creator }}
+					<b>Added by:</b> {{ creator }}
 					{{#if lastUpdater }}
 						<br /><b>Updated by:</b> {{ lastUpdater }} 
 						<br /><b>Updated at:</b> {{ displayTimestamp updated }}
