@@ -188,20 +188,20 @@ siggy2.SigTable.prototype.convertType = function (type)
 
 siggy2.SigTable.prototype.convertSiteID = function (whClass, type, siteID)
 {
-	if( siteID == 0 || whClass > 9 )
+	if( siteID == 0 )
 		return "";
 	if (type == 'combat')
-		return _(anomsLookup[whClass][siteID]);
+		return _(siggy2.StaticData.getSiteNameByID(siteID));
 	else if (type == 'wh')
 		return siggy2.StaticData.getWormholeFancyNameByID(siteID);
 	else if (type == 'mag')
-		return _(magsLookup[whClass][siteID]);
+		return _(siggy2.StaticData.getSiteNameByID(siteID));
 	else if (type == 'radar')
-		return _(radarsLookup[whClass][siteID]);
+		return _(siggy2.StaticData.getSiteNameByID(siteID));
 	else if (type == 'ladar')
-		return _(ladarsLookup[siteID]);
+		return _(siggy2.StaticData.getSiteNameByID(siteID));
 	else if (type == 'grav')
-		return _(gravsLookup[siteID]);
+		return _(siggy2.StaticData.getSiteNameByID(siteID));
 	else
 		return "";
 }
@@ -273,40 +273,10 @@ siggy2.SigTable.prototype.updateSiteSelect = function( ele, whClass, type, siteI
 {
 	var elem = $( ele );
 	elem.empty();
-
-	var options = [];
-	switch( type )
-	{
-		case 'wh':
-			options = siggy2.StaticData.getWormholesForList(whClass);
-			break;
-		case 'ladar':
-			options = ladarsLookup;
-			break;
-		case 'mag':
-			options = magsLookup[whClass];
-			break;
-		case 'grav':
-			options = gravsLookup;
-			break;
-		case 'radar':
-			options = radarsLookup[whClass];
-			break;
-		case 'combat':
-			options = anomsLookup[whClass];
-			break;
-		default:
-			options = { 0: '--'};
-			break;
-	}
-
 	
-	for (var i in options)
-	{
-		elem.append($('<option>').attr('value', i).text(_(options[i])));
-	}
-
-	elem.val(siteID);
+	/* use common select generator method and just swap contents */
+	var newSel = this.generateSiteSelect( whClass, type, siteID );
+	elem.empty().html(newSel.html());
 }
 
 siggy2.SigTable.prototype.removeSigRow = function (sigData)
@@ -591,15 +561,36 @@ siggy2.SigTable.prototype.editSig = function (sigID)
 
 siggy2.SigTable.prototype.generateSiteSelect = function (whClass, type, siteID)
 {
-	if (type == "wh") return this.generateSelect(siggy2.StaticData.getWormholesForList(whClass), siteID);
-	else if (type == "ladar") return this.generateSelect(ladarsLookup, siteID);
-	else if (type == "mag") return this.generateSelect(magsLookup[whClass], siteID);
-	else if (type == "grav") return this.generateSelect(gravsLookup, siteID);
-	else if (type == "radar") return this.generateSelect(radarsLookup[whClass], siteID);
-	else if (type == "combat") return this.generateSelect(anomsLookup[whClass], siteID);
-	else return this.generateSelect({
+	if (type == "wh") 
+	{
+		return this.generateSelect(siggy2.StaticData.getWormholesForList(whClass), siteID);
+	}
+	else if (type == "ladar")
+	{
+		return this.generateSelect(siggy2.StaticData.getSiteList('gas',whClass), siteID);
+	}
+	else if (type == "mag")
+	{
+		return this.generateSelect(siggy2.StaticData.getSiteList('relic',whClass), siteID);
+	}
+	else if (type == "grav") 
+	{
+		return this.generateSelect(siggy2.StaticData.getSiteList('ore',whClass), siteID);
+	}
+	else if (type == "radar") 
+	{
+		return this.generateSelect(siggy2.StaticData.getSiteList('data',whClass), siteID);
+	}
+	else if (type == "combat") 
+	{
+		return this.generateSelect(siggy2.StaticData.getSiteList('anomaly',whClass), siteID);
+	}
+	else 
+	{
+		return this.generateSelect({
 										0: '--'
 									}, 0);
+	}
 }
 
 

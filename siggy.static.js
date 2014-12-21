@@ -1,491 +1,3 @@
-
-//first key is wh class, second is just unique for mag in the class
-var anomsLookup = {
-	1: {
-		0: "",
-		1: "Perimeter Ambush Point",
-		2: "Perimeter Camp",
-		3: "Phase Catalyst Node",
-		4: "The Line"
-	},
-	2: {
-		0: "",
-		1: "Perimeter Checkpoint",
-		2: "Perimeter Hangar",
-		3: "The Ruins of Enclave Cohort 27",
-		4: "Sleeper Data Sanctuary"
-	},
-	3: {
-		0: "",
-		1: "Fortification Frontier Stronghold",
-		2: "Outpost Frontier Stronghold",
-		3: "Solar Cell",
-		4: "The Oruze Construct"
-	},
-	4: {
-		0: "",
-		1: "Frontier Barracks",
-		2: "Frontier Command Post",
-		3: "Integrated Terminus",
-		4: "Sleeper Information Sanctum"
-	},
-	5: {
-		0: "",
-		1: "Quarantine Area",
-		2: "Core Garrison",
-		3: "Core Stronghold",
-		4: "Oruze Osobnyk"
-	},
-	6: {
-		0: "",
-		1: "Core Citadel",
-		2: "Core Bastion",
-		3: "Strange Energy Readings",
-		4: "The Mirror"
-	},
-	7: {
-		0: ""
-	},
-	8: {
-		0: ""
-	},
-	9: {
-		0: ""
-	}
-};
-
-
-var magsLookup = {
-	1: {
-		0: "",
-		1: "Forgotten Perimeter Coronation Platform",
-		2: "Forgotten Perimeter Power Array",
-		200: "Pristine Angel Ship Remnants",
-		201: "Pristine Angel Pod Cluster",
-		202: "Ruined Angel Monument Site",
-		203: "Pristine Angel Dumped Cargo",
-		204: "Pristine Angel Abandoned Colony",
-		205: "Ruined Angel Temple Site",
-		206: "Pristine Angel Ship Graveyard",
-		207: "Pristine Angel Collision Site",
-		208: "Ruined Angel Science Outpost",
-		209: "Pristine Angel Battle Remnants",
-		210: "Pristine Angel Explosive Debris",
-		211: "Ruined Angel Crystal Quarry",
-		220: "Pristine Blood Raider Ship Remnants",
-		221: "Pristine Blood Raider Pod Cluster",
-		222: "Ruined Blood Raider Monument Site",
-		223: "Pristine Blood Raider Dumped Cargo",
-		224: "Pristine Blood Raider Abandoned Colony",
-		225: "Ruined Blood Raider Temple Site",
-		226: "Pristine Blood Raider Ship Graveyard",
-		227: "Pristine Blood Raider Collision Site",
-		228: "Ruined Blood Raider Science Outpost",
-		229: "Pristine Blood Raider Battle Remnants",
-		230: "Pristine Blood Raider Explosive Debris",
-		231: "Ruined Blood Raider Crystal Quarry",
-		240: "Pristine Guristas Ship Remnants",
-		241: "Pristine Guristas Pod Cluster",
-		242: "Ruined Guristas Monument Site",
-		243: "Pristine Guristas Dumped Cargo",
-		244: "Pristine Guristas Abandoned Colony",
-		245: "Ruined Guristas Temple Site",
-		246: "Pristine Guristas Ship Graveyard",
-		247: "Pristine Guristas Collision Site",
-		248: "Ruined Guristas Science Outpost",
-		249: "Pristine Guristas Battle Remnants",
-		250: "Pristine Guristas Explosive Debris",
-		251: "Ruined Guristas Crystal Quarry",
-		260: "Pristine Sansha Remnants",
-		261: "Pristine Sansha Pod Cluster",
-		262: "Ruined Sansha Monument Site",
-		263: "Pristine Sansha Dumped Cargo",
-		264: "Pristine Sansha Abandoned Colony",
-		265: "Ruined Sansha Temple Site",
-		266: "Pristine Sansha Ship Graveyard",
-		267: "Pristine Sansha Collision Site",
-		268: "Ruined Sansha Science Outpost",
-		269: "Pristine Sansha Battle Remnants",
-		270: "Pristine Sansha Explosive Debris",
-		271: "Ruined Sansha Crystal Quarry",
-		280: "Pristine Serpentis Ship Remnants",
-		281: "Pristine Serpentis Pod Cluster",
-		282: "Ruined Serpentis Monument Site",
-		283: "Pristine Serpentis Dumped Cargo",
-		284: "Pristine Serpentis Abandoned Colony",
-		285: "Ruined Serpentis Temple Site",
-		286: "Pristine Serpentis Ship Graveyard",
-		287: "Pristine Serpentis Collision Site",
-		288: "Ruined Serpentis Science Outpost",
-		289: "Pristine Serpentis Battle Remnants",
-		290: "Pristine Serpentis Explosive Debris",
-		291: "Ruined Serpentis Crystal Quarry"
-	},
-	2: {
-		0: "",
-		1: "Forgotten Perimeter Gateway",
-		2: "Forgotten Perimeter Habitation Coils",
-		200: "Pristine Angel Ship Remnants",
-		201: "Pristine Angel Pod Cluster",
-		202: "Ruined Angel Monument Site",
-		203: "Pristine Angel Dumped Cargo",
-		204: "Pristine Angel Abandoned Colony",
-		205: "Ruined Angel Temple Site",
-		206: "Pristine Angel Ship Graveyard",
-		207: "Pristine Angel Collision Site",
-		208: "Ruined Angel Science Outpost",
-		209: "Pristine Angel Battle Remnants",
-		210: "Pristine Angel Explosive Debris",
-		211: "Ruined Angel Crystal Quarry",
-		220: "Pristine Blood Raider Ship Remnants",
-		221: "Pristine Blood Raider Pod Cluster",
-		222: "Ruined Blood Raider Monument Site",
-		223: "Pristine Blood Raider Dumped Cargo",
-		224: "Pristine Blood Raider Abandoned Colony",
-		225: "Ruined Blood Raider Temple Site",
-		226: "Pristine Blood Raider Ship Graveyard",
-		227: "Pristine Blood Raider Collision Site",
-		228: "Ruined Blood Raider Science Outpost",
-		229: "Pristine Blood Raider Battle Remnants",
-		230: "Pristine Blood Raider Explosive Debris",
-		231: "Ruined Blood Raider Crystal Quarry",
-		240: "Pristine Guristas Ship Remnants",
-		241: "Pristine Guristas Pod Cluster",
-		242: "Ruined Guristas Monument Site",
-		243: "Pristine Guristas Dumped Cargo",
-		244: "Pristine Guristas Abandoned Colony",
-		245: "Ruined Guristas Temple Site",
-		246: "Pristine Guristas Ship Graveyard",
-		247: "Pristine Guristas Collision Site",
-		248: "Ruined Guristas Science Outpost",
-		249: "Pristine Guristas Battle Remnants",
-		250: "Pristine Guristas Explosive Debris",
-		251: "Ruined Guristas Crystal Quarry",
-		260: "Pristine Sansha Remnants",
-		261: "Pristine Sansha Pod Cluster",
-		262: "Ruined Sansha Monument Site",
-		263: "Pristine Sansha Dumped Cargo",
-		264: "Pristine Sansha Abandoned Colony",
-		265: "Ruined Sansha Temple Site",
-		266: "Pristine Sansha Ship Graveyard",
-		267: "Pristine Sansha Collision Site",
-		268: "Ruined Sansha Science Outpost",
-		269: "Pristine Sansha Battle Remnants",
-		270: "Pristine Sansha Explosive Debris",
-		271: "Ruined Sansha Crystal Quarry",
-		280: "Pristine Serpentis Ship Remnants",
-		281: "Pristine Serpentis Pod Cluster",
-		282: "Ruined Serpentis Monument Site",
-		283: "Pristine Serpentis Dumped Cargo",
-		284: "Pristine Serpentis Abandoned Colony",
-		285: "Ruined Serpentis Temple Site",
-		286: "Pristine Serpentis Ship Graveyard",
-		287: "Pristine Serpentis Collision Site",
-		288: "Ruined Serpentis Science Outpost",
-		289: "Pristine Serpentis Battle Remnants",
-		290: "Pristine Serpentis Explosive Debris",
-		291: "Ruined Serpentis Crystal Quarry"
-	},
-	3: {
-		0: "",
-		1: "Forgotten Frontier Quarantine Outpost",
-		2: "Forgotten Frontier Recursive Depot",
-		200: "Pristine Angel Ship Remnants",
-		201: "Pristine Angel Pod Cluster",
-		202: "Ruined Angel Monument Site",
-		203: "Pristine Angel Dumped Cargo",
-		204: "Pristine Angel Abandoned Colony",
-		205: "Ruined Angel Temple Site",
-		206: "Pristine Angel Ship Graveyard",
-		207: "Pristine Angel Collision Site",
-		208: "Ruined Angel Science Outpost",
-		209: "Pristine Angel Battle Remnants",
-		210: "Pristine Angel Explosive Debris",
-		211: "Ruined Angel Crystal Quarry",
-		220: "Pristine Blood Raider Ship Remnants",
-		221: "Pristine Blood Raider Pod Cluster",
-		222: "Ruined Blood Raider Monument Site",
-		223: "Pristine Blood Raider Dumped Cargo",
-		224: "Pristine Blood Raider Abandoned Colony",
-		225: "Ruined Blood Raider Temple Site",
-		226: "Pristine Blood Raider Ship Graveyard",
-		227: "Pristine Blood Raider Collision Site",
-		228: "Ruined Blood Raider Science Outpost",
-		229: "Pristine Blood Raider Battle Remnants",
-		230: "Pristine Blood Raider Explosive Debris",
-		231: "Ruined Blood Raider Crystal Quarry",
-		240: "Pristine Guristas Ship Remnants",
-		241: "Pristine Guristas Pod Cluster",
-		242: "Ruined Guristas Monument Site",
-		243: "Pristine Guristas Dumped Cargo",
-		244: "Pristine Guristas Abandoned Colony",
-		245: "Ruined Guristas Temple Site",
-		246: "Pristine Guristas Ship Graveyard",
-		247: "Pristine Guristas Collision Site",
-		248: "Ruined Guristas Science Outpost",
-		249: "Pristine Guristas Battle Remnants",
-		250: "Pristine Guristas Explosive Debris",
-		251: "Ruined Guristas Crystal Quarry",
-		260: "Pristine Sansha Remnants",
-		261: "Pristine Sansha Pod Cluster",
-		262: "Ruined Sansha Monument Site",
-		263: "Pristine Sansha Dumped Cargo",
-		264: "Pristine Sansha Abandoned Colony",
-		265: "Ruined Sansha Temple Site",
-		266: "Pristine Sansha Ship Graveyard",
-		267: "Pristine Sansha Collision Site",
-		268: "Ruined Sansha Science Outpost",
-		269: "Pristine Sansha Battle Remnants",
-		270: "Pristine Sansha Explosive Debris",
-		271: "Ruined Sansha Crystal Quarry",
-		280: "Pristine Serpentis Ship Remnants",
-		281: "Pristine Serpentis Pod Cluster",
-		282: "Ruined Serpentis Monument Site",
-		283: "Pristine Serpentis Dumped Cargo",
-		284: "Pristine Serpentis Abandoned Colony",
-		285: "Ruined Serpentis Temple Site",
-		286: "Pristine Serpentis Ship Graveyard",
-		287: "Pristine Serpentis Collision Site",
-		288: "Ruined Serpentis Science Outpost",
-		289: "Pristine Serpentis Battle Remnants",
-		290: "Pristine Serpentis Explosive Debris",
-		291: "Ruined Serpentis Crystal Quarry"
-	},
-	4: {
-		0: "",
-		1: "Forgotten Frontier Conversion Module",
-		2: "Forgotten Frontier Evacuation Center"
-	},
-	5: {
-		0: "",
-		1: "Forgotten Core Data Field",
-		2: "Forgotten Core Information Pen"
-	},
-	6: {
-		0: "",
-		1: "Forgotten Core Assembly Hall",
-		2: "Forgotten Circuitry Disassembler"
-	},
-	7: {
-		0: ""
-	},
-	8: {
-		0: ""
-	},
-	9: {
-		0: "",
-		200: "Pristine Angel Ship Remnants",
-		201: "Pristine Angel Pod Cluster",
-		202: "Ruined Angel Monument Site",
-		203: "Pristine Angel Dumped Cargo",
-		204: "Pristine Angel Abandoned Colony",
-		205: "Ruined Angel Temple Site",
-		206: "Pristine Angel Ship Graveyard",
-		207: "Pristine Angel Collision Site",
-		208: "Ruined Angel Science Outpost",
-		209: "Pristine Angel Battle Remnants",
-		210: "Pristine Angel Explosive Debris",
-		211: "Ruined Angel Crystal Quarry",
-		220: "Pristine Blood Raider Ship Remnants",
-		221: "Pristine Blood Raider Pod Cluster",
-		222: "Ruined Blood Raider Monument Site",
-		223: "Pristine Blood Raider Dumped Cargo",
-		224: "Pristine Blood Raider Abandoned Colony",
-		225: "Ruined Blood Raider Temple Site",
-		226: "Pristine Blood Raider Ship Graveyard",
-		227: "Pristine Blood Raider Collision Site",
-		228: "Ruined Blood Raider Science Outpost",
-		229: "Pristine Blood Raider Battle Remnants",
-		230: "Pristine Blood Raider Explosive Debris",
-		231: "Ruined Blood Raider Crystal Quarry",
-		240: "Pristine Guristas Ship Remnants",
-		241: "Pristine Guristas Pod Cluster",
-		242: "Ruined Guristas Monument Site",
-		243: "Pristine Guristas Dumped Cargo",
-		244: "Pristine Guristas Abandoned Colony",
-		245: "Ruined Guristas Temple Site",
-		246: "Pristine Guristas Ship Graveyard",
-		247: "Pristine Guristas Collision Site",
-		248: "Ruined Guristas Science Outpost",
-		249: "Pristine Guristas Battle Remnants",
-		250: "Pristine Guristas Explosive Debris",
-		251: "Ruined Guristas Crystal Quarry",
-		260: "Pristine Sansha Remnants",
-		261: "Pristine Sansha Pod Cluster",
-		262: "Ruined Sansha Monument Site",
-		263: "Pristine Sansha Dumped Cargo",
-		264: "Pristine Sansha Abandoned Colony",
-		265: "Ruined Sansha Temple Site",
-		266: "Pristine Sansha Ship Graveyard",
-		267: "Pristine Sansha Collision Site",
-		268: "Ruined Sansha Science Outpost",
-		269: "Pristine Sansha Battle Remnants",
-		270: "Pristine Sansha Explosive Debris",
-		271: "Ruined Sansha Crystal Quarry",
-		280: "Pristine Serpentis Ship Remnants",
-		281: "Pristine Serpentis Pod Cluster",
-		282: "Ruined Serpentis Monument Site",
-		283: "Pristine Serpentis Dumped Cargo",
-		284: "Pristine Serpentis Abandoned Colony",
-		285: "Ruined Serpentis Temple Site",
-		286: "Pristine Serpentis Ship Graveyard",
-		287: "Pristine Serpentis Collision Site",
-		288: "Ruined Serpentis Science Outpost",
-		289: "Pristine Serpentis Battle Remnants",
-		290: "Pristine Serpentis Explosive Debris",
-		291: "Ruined Serpentis Crystal Quarry"
-	}
-};
-
-var radarsLookup = {
-	1: {
-		0: "",
-		1: "Unsecured Perimeter Amplifier",
-		2: "Unsecured Perimeter Information Center",
-		200: "Central Angel Sparking Transmitter",
-		201: "Central Angel Survey Site",
-		202: "Central Angel Command Center",
-		203: "Central Angel Data Mining Site",
-		220: "Central Blood Raider Sparking Transmitter",
-		221: "Central Blood Raider Survey Site",
-		222: "Central Blood Raider Command Center",
-		223: "Central Blood Raider Data Mining Site",
-		240: "Central Guristas Sparking Transmitter",
-		241: "Central Guristas Survey Site",
-		242: "Central Guristas Command Center",
-		243: "Central Guristas Data Mining Site",
-		260: "Central Sansha Sparking Transmitter",
-		261: "Central Sansha Survey Site",
-		262: "Central Sansha Command Center",
-		263: "Central Sansha Data Mining Site",
-		280: "Central Serpentis Sparking Transmitter",
-		281: "Central Serpentis Survey Site",
-		282: "Central Serpentis Command Center",
-		283: "Central Serpentis Data Mining Site"
-	},
-	2: {
-		0: "",
-		1: "Unsecured Perimeter Comms Relay",
-		2: "Unsecured Perimeter Transponder Farm",
-		200: "Central Angel Sparking Transmitter",
-		201: "Central Angel Survey Site",
-		202: "Central Angel Command Center",
-		203: "Central Angel Data Mining Site",
-		220: "Central Blood Raider Sparking Transmitter",
-		221: "Central Blood Raider Survey Site",
-		222: "Central Blood Raider Command Center",
-		223: "Central Blood Raider Data Mining Site",
-		240: "Central Guristas Sparking Transmitter",
-		241: "Central Guristas Survey Site",
-		242: "Central Guristas Command Center",
-		243: "Central Guristas Data Mining Site",
-		260: "Central Sansha Sparking Transmitter",
-		261: "Central Sansha Survey Site",
-		262: "Central Sansha Command Center",
-		263: "Central Sansha Data Mining Site",
-		280: "Central Serpentis Sparking Transmitter",
-		281: "Central Serpentis Survey Site",
-		282: "Central Serpentis Command Center",
-		283: "Central Serpentis Data Mining Site"
-	},
-	3: {
-		0: "",
-		1: "Unsecured Frontier Database",
-		2: "Unsecured Frontier Receiver",
-		200: "Central Angel Sparking Transmitter",
-		201: "Central Angel Survey Site",
-		202: "Central Angel Command Center",
-		203: "Central Angel Data Mining Site",
-		220: "Central Blood Raider Sparking Transmitter",
-		221: "Central Blood Raider Survey Site",
-		222: "Central Blood Raider Command Center",
-		223: "Central Blood Raider Data Mining Site",
-		240: "Central Guristas Sparking Transmitter",
-		241: "Central Guristas Survey Site",
-		242: "Central Guristas Command Center",
-		243: "Central Guristas Data Mining Site",
-		260: "Central Sansha Sparking Transmitter",
-		261: "Central Sansha Survey Site",
-		262: "Central Sansha Command Center",
-		263: "Central Sansha Data Mining Site",
-		280: "Central Serpentis Sparking Transmitter",
-		281: "Central Serpentis Survey Site",
-		282: "Central Serpentis Command Center",
-		283: "Central Serpentis Data Mining Site"
-	},
-	4: {
-		0: "",
-		1: "Unsecured Frontier Digital Nexus",
-		2: "Unsecured Frontier Trinary Hub"
-	},
-	5: {
-		0: "",
-		1: "Unsecured Frontier Enclave Relay",
-		2: "Unsecured Frontier Server Bank"
-	},
-	6: {
-		0: "",
-		1: "Unsecured Core Backup Array",
-		2: "Unsecured Core Emergence"
-	},
-	7: {
-		0: ""
-	},
-	8: {
-		0: ""
-	},
-	9: {
-		0: "",
-		200: "Central Angel Sparking Transmitter",
-		201: "Central Angel Survey Site",
-		202: "Central Angel Command Center",
-		203: "Central Angel Data Mining Site",
-		220: "Central Blood Raider Sparking Transmitter",
-		221: "Central Blood Raider Survey Site",
-		222: "Central Blood Raider Command Center",
-		223: "Central Blood Raider Data Mining Site",
-		240: "Central Guristas Sparking Transmitter",
-		241: "Central Guristas Survey Site",
-		242: "Central Guristas Command Center",
-		243: "Central Guristas Data Mining Site",
-		260: "Central Sansha Sparking Transmitter",
-		261: "Central Sansha Survey Site",
-		262: "Central Sansha Command Center",
-		263: "Central Sansha Data Mining Site",
-		280: "Central Serpentis Sparking Transmitter",
-		281: "Central Serpentis Survey Site",
-		282: "Central Serpentis Command Center",
-		283: "Central Serpentis Data Mining Site"
-	}
-};
-
-var gravsLookup = {
-	0: "",
-	1: "Average Frontier Deposit",
-	2: "Unexceptional Frontier Deposit",
-	3: "Common Perimeter Deposit",
-	4: "Exceptional Core Deposit",
-	5: "Infrequent Core Deposit",
-	6: "Unusual Core Deposit",
-	7: "Rarified Core Deposit",
-	8: "Ordinary Perimeter Deposit",
-	9: "Uncommon Core Deposit",
-	10: "Isolated Core Deposit"
-};
-
-var ladarsLookup = {
-	0: "",
-	1: "Barren Perimeter Reservoir",
-	2: "Minor Perimeter Reservoir",
-	3: "Ordinary Perimeter Reservoir",
-	4: "Sizeable Perimeter Reservoir",
-	5: "Token Perimeter Reservoir",
-	6: "Bountiful Frontier Reservoir",
-	7: "Vast Frontier Reservoir",
-	8: "Instrumental Core Reservoir",
-	9: "Vital Core Reservoir"
-};
-
 var blackHoleEffects = {
 	1: [
 		['Missile Velocity', '+15%'],
@@ -777,6 +289,8 @@ var pulsarEffects = {
 siggy2.StaticData = {
 	wormholeClassMap: [],
 	wormholeTypes: [],
+	sites: [],
+	maps: {},
 	baseListWormholes: {
 		0: "Unstable Wormhole",
 		1: "K162 (from Unknown)",
@@ -803,11 +317,57 @@ siggy2.StaticData.load = function(baseURL)
 		 success: function(result) {
 					$this.wormholeClassMap = result.wormholes;
 					$this.wormholeTypes = result.wormhole_types;
+					$this.sites = result.sites;
+					$this.maps = result.maps;
 				  },
 		 async: false,
 		 dataType: 'json'
 	});
 }
+
+siggy2.StaticData.getSiteNameByID = function( id )
+{
+	var site = this.getSiteByID(id);
+	if(  site != null )
+		return site.name;
+	else
+		return "";
+}
+
+siggy2.StaticData.getSiteByID = function( id )
+{
+	if( typeof( this.sites[ id ] ) != 'undefined' )
+		return this.sites[ id ];
+	else
+		return null;
+}
+
+siggy2.StaticData.getSiteList = function( type, sysClass )
+{	
+	var result  = {};
+	
+	var map = this.maps[type];
+	console.log(type);
+	
+	if( typeof(map) == 'undefined' )
+	{
+		return result;
+	}
+	
+	map = map[sysClass]
+	
+	if( typeof(map) != 'undefined' )
+	{
+		for( var i in map )
+		{
+			var info = this.getSiteByID(map[i]);
+			result[info.id] = info.name;
+		}
+	}
+	
+	return result;
+}
+
 
 siggy2.StaticData.getWormholeByID = function( id )
 {
@@ -830,7 +390,7 @@ siggy2.StaticData.systemClassToString = function ( sysClass )
 		return "Lowsec"
 	else if( sysClass == 9 )
 		return "Nullsec";
-	else
+	else if ( sysClass != 12 )
 		return "C" + sysClass;
 }
 
