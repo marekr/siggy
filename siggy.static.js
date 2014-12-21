@@ -347,14 +347,12 @@ siggy2.StaticData.getSiteList = function( type, sysClass )
 	var result  = {};
 	
 	var map = this.maps[type];
-	console.log(type);
-	
 	if( typeof(map) == 'undefined' )
 	{
 		return result;
 	}
 	
-	map = map[sysClass]
+	map = map[sysClass];
 	
 	if( typeof(map) != 'undefined' )
 	{

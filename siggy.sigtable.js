@@ -147,7 +147,7 @@ siggy2.SigTable.prototype.changeAnomState = function(visible)
 	}
 	else
 	{
-		$('#sig-table tbody tr.type-combat').hide();
+		$('#sig-table tbody tr.type-anomaly').hide();
 	}
 	
 	this.colorizeSigRows();
@@ -172,15 +172,15 @@ siggy2.SigTable.prototype.convertType = function (type)
 	//unknown null case, either way this should surpress it
 	if (type == 'wh')
 		return _("WH");
-	else if (type == 'grav')
+	else if (type == 'ore')
 		return _("Ore");
-	else if (type == 'ladar')
+	else if (type == 'gas')
 		return _("Gas");
-	else if (type == 'radar')
+	else if (type == 'data')
 		return _("Data");
-	else if (type == 'mag')
+	else if (type == 'relic')
 		return "Relic";
-	else if (type == 'combat')
+	else if (type == 'anomaly')
 		return _("Combat");
 	else
 		return "";
@@ -190,20 +190,10 @@ siggy2.SigTable.prototype.convertSiteID = function (whClass, type, siteID)
 {
 	if( siteID == 0 )
 		return "";
-	if (type == 'combat')
-		return _(siggy2.StaticData.getSiteNameByID(siteID));
-	else if (type == 'wh')
+	if (type == 'wh')
 		return siggy2.StaticData.getWormholeFancyNameByID(siteID);
-	else if (type == 'mag')
-		return _(siggy2.StaticData.getSiteNameByID(siteID));
-	else if (type == 'radar')
-		return _(siggy2.StaticData.getSiteNameByID(siteID));
-	else if (type == 'ladar')
-		return _(siggy2.StaticData.getSiteNameByID(siteID));
-	else if (type == 'grav')
-		return _(siggy2.StaticData.getSiteNameByID(siteID));
 	else
-		return "";
+		return _(siggy2.StaticData.getSiteNameByID(siteID));
 }
 
 siggy2.SigTable.prototype.updateSigs = function (sigData, flashSigs)
@@ -462,11 +452,11 @@ siggy2.SigTable.prototype.editSigForm = function (sigID)
 	typeEle.append(this.generateSelect({
 											none: '--',
 											wh: 'WH',
-											ladar: 'Gas',
-											radar: 'Data',
-											mag: 'Relic',
-											combat: 'Combat',
-											grav: 'Ore'
+											gas: 'Gas',
+											data: 'Data',
+											relic: 'Relic',
+											anomaly: 'Combat',
+											ore: 'Ore'
 										}, this.sigData[sigID].type)
 										.change(function ()
 												{
@@ -561,29 +551,13 @@ siggy2.SigTable.prototype.editSig = function (sigID)
 
 siggy2.SigTable.prototype.generateSiteSelect = function (whClass, type, siteID)
 {
-	if (type == "wh") 
+	if (type == 'wh') 
 	{
 		return this.generateSelect(siggy2.StaticData.getWormholesForList(whClass), siteID);
 	}
-	else if (type == "ladar")
+	else if (type == 'gas' || type == 'relic' || type == 'ore' || type == 'data' || type == 'anomaly')
 	{
-		return this.generateSelect(siggy2.StaticData.getSiteList('gas',whClass), siteID);
-	}
-	else if (type == "mag")
-	{
-		return this.generateSelect(siggy2.StaticData.getSiteList('relic',whClass), siteID);
-	}
-	else if (type == "grav") 
-	{
-		return this.generateSelect(siggy2.StaticData.getSiteList('ore',whClass), siteID);
-	}
-	else if (type == "radar") 
-	{
-		return this.generateSelect(siggy2.StaticData.getSiteList('data',whClass), siteID);
-	}
-	else if (type == "combat") 
-	{
-		return this.generateSelect(siggy2.StaticData.getSiteList('anomaly',whClass), siteID);
+		return this.generateSelect(siggy2.StaticData.getSiteList(type,whClass), siteID);
 	}
 	else 
 	{
