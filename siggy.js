@@ -607,7 +607,7 @@ siggy2.Core.prototype.updateSystemInfo = function (systemData)
 			var destBlurb = '';
 			theStatic.dest_class = parseInt(theStatic.dest_class);
 
-			if (theStatic.dest_class <= 6)
+			if (theStatic.dest_class <= 6 || theStatic.dest_class >= 10)
 			{
 				destBlurb = " (to C" + theStatic.dest_class + ")";
 			}
@@ -629,12 +629,11 @@ siggy2.Core.prototype.updateSystemInfo = function (systemData)
 			theStatic.destBlurb = destBlurb;
 			var staticTooltip = siggy2.StaticData.templateWormholeInfoTooltip(theStatic);
 
-			$('#static-info').append(staticBit)
-							 .append(staticTooltip);
+			$('#static-info').append(staticBit);
 
 			staticBit.qtip({
 				content: {
-					text: $('#static-info-' + theStatic.id) // Use the "div" element next to this for the content
+					text: staticTooltip
 				},
 				position: {
 					target: 'mouse',
