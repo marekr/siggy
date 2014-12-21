@@ -85,7 +85,7 @@ siggy2.Core = function( options )
 
 	this.displayStates = this.defaultDisplayStates;
 
-	this.sigtable = new sigtable(this.settings.sigtable);
+	this.sigtable = new siggy2.SigTable(this.settings.sigtable);
 	this.sigtable.siggyMain = this;
 	this.sigtable.settings.baseUrl = this.settings.baseUrl;
 

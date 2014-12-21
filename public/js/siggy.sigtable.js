@@ -1,7 +1,7 @@
 /**
 * @constructor
 */
-function sigtable( options )
+siggy2.SigTable = function( options )
 {
 	this.sigData = {};
 	this.sigClocks = {};
@@ -22,7 +22,7 @@ function sigtable( options )
 	this.setupHandlebars();
 }
 
-sigtable.prototype.initialize = function()
+siggy2.SigTable.prototype.initialize = function()
 {
 	var $this = this;
 	if( this.settings.showSigSizeCol )
@@ -90,7 +90,7 @@ sigtable.prototype.initialize = function()
 	$this.initializeHotkeys();
 }
 
-sigtable.prototype.initializeHotkeys = function()
+siggy2.SigTable.prototype.initializeHotkeys = function()
 {
 	var $this = this;
 	
@@ -107,7 +107,7 @@ sigtable.prototype.initializeHotkeys = function()
 	this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+B', 'Focus on signature adder');
 }
 
-sigtable.prototype.clear = function()
+siggy2.SigTable.prototype.clear = function()
 {
 	this.sigData = {};
 	
@@ -131,12 +131,12 @@ sigtable.prototype.clear = function()
 	this.editingSig = false;
 }
 
-sigtable.prototype.refreshAnomState = function()
+siggy2.SigTable.prototype.refreshAnomState = function()
 {
 	this.changeAnomState(this.siggyMain.displayStates.showAnomalies);
 }
 
-sigtable.prototype.changeAnomState = function(visible)
+siggy2.SigTable.prototype.changeAnomState = function(visible)
 {
 	this.siggyMain.displayStates.showAnomalies = visible;
 	this.siggyMain.saveDisplayState();
@@ -153,7 +153,7 @@ sigtable.prototype.changeAnomState = function(visible)
 	this.colorizeSigRows();
 }
 
-sigtable.prototype.colorizeSigRows = function()
+siggy2.SigTable.prototype.colorizeSigRows = function()
 {
 	var i = 0;
 	$('#sig-table tbody tr').each( function() {
@@ -167,7 +167,7 @@ sigtable.prototype.colorizeSigRows = function()
 	});
 }
 
-sigtable.prototype.convertType = function (type)
+siggy2.SigTable.prototype.convertType = function (type)
 {
 	//unknown null case, either way this should surpress it
 	if (type == 'wh')
@@ -186,7 +186,7 @@ sigtable.prototype.convertType = function (type)
 		return "";
 }
 
-sigtable.prototype.convertSiteID = function (whClass, type, siteID)
+siggy2.SigTable.prototype.convertSiteID = function (whClass, type, siteID)
 {
 	if( siteID == 0 || whClass > 9 )
 		return "";
@@ -206,7 +206,7 @@ sigtable.prototype.convertSiteID = function (whClass, type, siteID)
 		return "";
 }
 
-sigtable.prototype.updateSigs = function (sigData, flashSigs)
+siggy2.SigTable.prototype.updateSigs = function (sigData, flashSigs)
 {
 	for (var i in this.sigData)
 	{
@@ -249,12 +249,12 @@ sigtable.prototype.updateSigs = function (sigData, flashSigs)
 	this.updateSigTotal();
 }
 
-sigtable.prototype.updateSigTotal = function()
+siggy2.SigTable.prototype.updateSigTotal = function()
 {
 	$('#number-sigs').text(	$('#sig-table tr.sig:visible').length );
 }
 
-sigtable.prototype.removeSig = function (sigID)
+siggy2.SigTable.prototype.removeSig = function (sigID)
 {
 	this.removeSigRow(
 	{
@@ -269,7 +269,7 @@ sigtable.prototype.removeSig = function (sigID)
 	});
 }
 
-sigtable.prototype.updateSiteSelect = function( ele, whClass, type, siteID )
+siggy2.SigTable.prototype.updateSiteSelect = function( ele, whClass, type, siteID )
 {
 	var elem = $( ele );
 	elem.empty();
@@ -309,7 +309,7 @@ sigtable.prototype.updateSiteSelect = function( ele, whClass, type, siteID )
 	elem.val(siteID);
 }
 
-sigtable.prototype.removeSigRow = function (sigData)
+siggy2.SigTable.prototype.removeSigRow = function (sigData)
 {
 	if(this.sigClocks[sigData.sigID] != undefined )
 	{
@@ -325,7 +325,7 @@ sigtable.prototype.removeSigRow = function (sigData)
 	this.colorizeSigRows();
 }
 
-sigtable.prototype.setupHandlebars = function()
+siggy2.SigTable.prototype.setupHandlebars = function()
 {
 	var $this = this;
 	
@@ -358,7 +358,7 @@ sigtable.prototype.setupHandlebars = function()
 	
 }
 
-sigtable.prototype.addSigRow = function (sigData, flashSig)
+siggy2.SigTable.prototype.addSigRow = function (sigData, flashSig)
 {
 	var $this = this;
 	sigData.showSigSizeCol = this.settings.showSigSizeCol;
@@ -377,7 +377,7 @@ sigtable.prototype.addSigRow = function (sigData, flashSig)
 	}
 }
 
-sigtable.prototype.sigRowMagic = function(sigData)
+siggy2.SigTable.prototype.sigRowMagic = function(sigData)
 {	
 	if( typeof(this.sigClocks[sigData.sigID]) != 'undefined' )
 		this.sigClocks[sigData.sigID].destroy();
@@ -439,7 +439,7 @@ sigtable.prototype.sigRowMagic = function(sigData)
 	}
 }
 
-sigtable.prototype.editSigForm = function (sigID)
+siggy2.SigTable.prototype.editSigForm = function (sigID)
 {
 	if (this.editingSig)
 	{
@@ -514,14 +514,14 @@ sigtable.prototype.editSigForm = function (sigID)
 	sigInput.focus();
 }
 
-sigtable.prototype.editTypeSelectChange = function (sigID)
+siggy2.SigTable.prototype.editTypeSelectChange = function (sigID)
 {
 	var newType = $("#sig-" + sigID + " td.type select").val();
 
 	this.updateSiteSelect( '#sig-' + sigID + ' td.desc select', this.systemClass, newType, 0 );
 }
 
-sigtable.prototype.editSig = function (sigID)
+siggy2.SigTable.prototype.editSig = function (sigID)
 {
 	var sigEle = $("#sig-" + sigID + " td.sig input");
 	if( this.settings.showSigSizeCol )
@@ -589,7 +589,7 @@ sigtable.prototype.editSig = function (sigID)
 
 }
 
-sigtable.prototype.generateSiteSelect = function (whClass, type, siteID)
+siggy2.SigTable.prototype.generateSiteSelect = function (whClass, type, siteID)
 {
 	if (type == "wh") return this.generateSelect(siggy2.StaticData.getWormholesForList(whClass), siteID);
 	else if (type == "ladar") return this.generateSelect(ladarsLookup, siteID);
@@ -603,7 +603,7 @@ sigtable.prototype.generateSiteSelect = function (whClass, type, siteID)
 }
 
 
-sigtable.prototype.generateOrderedSelect = function (options, select)
+siggy2.SigTable.prototype.generateOrderedSelect = function (options, select)
 {
 	var newSelect = $('<select>');
 
@@ -617,7 +617,7 @@ sigtable.prototype.generateOrderedSelect = function (options, select)
 	return newSelect;
 }
 
-sigtable.prototype.generateSelect = function (options, select)
+siggy2.SigTable.prototype.generateSelect = function (options, select)
 {
 	var newSelect = $('<select>');
 
@@ -631,7 +631,7 @@ sigtable.prototype.generateSelect = function (options, select)
 	return newSelect;
 }
 
-sigtable.prototype.updateSigRow = function (sigData, flashSig)
+siggy2.SigTable.prototype.updateSigRow = function (sigData, flashSig)
 {
 	var baseID = '#sig-' + sigData.sigID;
 	sigData.showSigSizeCol = this.settings.showSigSizeCol;
