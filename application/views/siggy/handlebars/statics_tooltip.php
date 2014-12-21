@@ -1,5 +1,4 @@
 <script id="template-statics-tooltip" type="text/x-handlebars-template">
-	<div id='static-info-{{ id }}' class='tooltip'>
 	<b>{{name}} {{destBlurb}}</b><br /><br />
 	
 	<b>Mass:</b> {{ numberFormat mass }} kg<br />
@@ -8,5 +7,4 @@
 	{{#if sig_size}}
 	<b>Signature Size:</b> {{ sig_size }} <br />
 	{{/if}}
-	</div>
 </script>

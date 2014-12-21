@@ -375,27 +375,38 @@ siggy2.SigTable.prototype.sigRowMagic = function(sigData)
 		}
 	});
 	
+	$('#sig-' + sigData.sigID + ' td.desc').qtip('destroy');
+	
+	var desc_tooltip = '';
 	if( sigData.type == 'wh' )
 	{
-		$('#sig-' + sigData.sigID + ' td.desc').qtip('destroy');
-		
 		if( wh != null )
 		{
-			var whTooltip = siggy2.StaticData.templateWormholeInfoTooltip(wh);
-			$('#sig-' + sigData.sigID + ' td.desc').append(whTooltip);
-			
-			
-			$('#sig-' + sigData.sigID + ' td.desc').qtip({
-				content: {
-					text: $('#static-info-' + sigData.siteID)
-				},
-				position: {
-					target: 'mouse',
-					adjust: { x: 5, y: 5 },
-					viewport: $(window)
-				}
-			});
+			desc_tooltip = siggy2.StaticData.templateWormholeInfoTooltip(wh);
 		}
+	}
+	else if( sigData.siteID != 0 )
+	{
+		var site = siggy2.StaticData.getSiteByID(sigData.siteID);
+		
+		if( site != null && site.description != "" )
+		{
+			desc_tooltip = site.description;
+		}
+	}
+	
+	if( desc_tooltip != '' )
+	{
+		$('#sig-' + sigData.sigID + ' td.desc').qtip({
+			content: {
+				text: desc_tooltip
+			},
+			position: {
+				target: 'mouse',
+				adjust: { x: 5, y: 5 },
+				viewport: $(window)
+			}
+		});
 	}
 }
 
