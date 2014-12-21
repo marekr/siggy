@@ -6,6 +6,12 @@ class Controller_Data extends FrontController
 {
 	public function action_sig_types()
 	{
+		if( Kohana::$environment == Kohana::PRODUCTION )
+		{
+			header('content-type: application/json');
+			ob_start( 'ob_gzhandler' );
+		}
+		
 		$output = array();
 		
         $wormholeTypes = DB::query(Database::SELECT, "SELECT * FROM statics")
@@ -40,6 +46,28 @@ class Controller_Data extends FrontController
 		}
 
 		$output['wormholes'] = $outWormholes;
+		
+		
+		$siteTypes = DB::query(Database::SELECT, "SELECT * FROM sites")
+								->execute()
+								->as_array();
+		
+		foreach($siteTypes as $site)
+		{
+			$output[ $site['type'].'_types' ][] = array('id' => (int)$site['id'], 'name' => $site['name']);
+		}
+		
+		
+        $extra = DB::query(Database::SELECT, "SELECT s.id, scm.system_class, s.name, s.type FROM site_class_map scm
+													LEFT JOIN sites s ON(s.id=scm.site_id)")
+								->execute()
+								->as_array();
+								
+		foreach($extra as $site)
+		{
+			$output[ $site['type'] ][ $site['system_class'] ][] = $site['id'];
+		}
+		
 		print (json_encode($output));
 		die();
 	}
