@@ -331,7 +331,7 @@ sigtable.prototype.setupHandlebars = function()
 	
 
 	Handlebars.registerHelper('displayTimestamp', function(stamp) {
-		return siggymain.displayTimeStamp(stamp);
+		return siggy2.Helpers.displayTimeStamp(stamp);
 	});
 	
 	Handlebars.registerHelper('sigTypeToText', function(type) {

@@ -67,7 +67,7 @@ intelposes.prototype.updatePOSList = function( data )
 			row.append($("<td>").text( data[i].pos_owner ) );
 			row.append($("<td>").text( data[i].pos_type_name ) );
 			row.append($("<td>").text( ucfirst(data[i].pos_size) ) );
-			row.append($("<td>").text( siggymain.displayTimeStamp(data[i].pos_added_date)));
+			row.append($("<td>").text( siggy2.Helpers.displayTimeStamp(data[i].pos_added_date)));
 			row.append($("<td>").text( data[i].pos_notes ) );
 
 			(function(pos_id){
