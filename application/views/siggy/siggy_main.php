@@ -294,11 +294,11 @@
                                 <select name="type">
                                     <option value="none" selected="selected"> -- </option>
                                     <option value="wh"><?php echo __('WH');?></option>
-                                    <option value="ladar"><?php echo __('Gas');?></option>
-                                    <option value="grav"><?php echo __('Ore');?></option>
-                                    <option value="radar"><?php echo __('Data');?></option>
-                                    <option value="mag"><?php echo __('Relic');?></option>
-                                    <option value="combat"><?php echo __('Combat');?></option>
+                                    <option value="gas"><?php echo __('Gas');?></option>
+                                    <option value="ore"><?php echo __('Ore');?></option>
+                                    <option value="data"><?php echo __('Data');?></option>
+                                    <option value="relic"><?php echo __('Relic');?></option>
+                                    <option value="anomaly"><?php echo __('Combat');?></option>
                                 </select>
                             </div>
                             <div class="input-group" style="width: auto;">

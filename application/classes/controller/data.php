@@ -54,7 +54,7 @@ class Controller_Data extends FrontController
 		
 		foreach($siteTypes as $site)
 		{
-			$output['sites'][$site['id']] = array('id' => (int)$site['id'], 'name' => $site['name'], 'type' => $site['type']);
+			$output['sites'][$site['id']] = array('id' => (int)$site['id'], 'name' => $site['name'], 'type' => $site['type'], 'description' => $site['description']);
 		}
 		
 		
