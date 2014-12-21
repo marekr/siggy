@@ -9,6 +9,8 @@ $( function()
 	$('input, textarea').placeholder();
 });
 
+var siggy2 = siggy2 || {};
+
 /**
 * @constructor
 */
