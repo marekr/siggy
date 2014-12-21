@@ -54,7 +54,7 @@ class Controller_Data extends FrontController
 		
 		foreach($siteTypes as $site)
 		{
-			$output[ $site['type'].'_types' ][] = array('id' => (int)$site['id'], 'name' => $site['name']);
+			$output['sites'][$site['id']] = array('id' => (int)$site['id'], 'name' => $site['name'], 'type' => $site['type']);
 		}
 		
 		
@@ -65,7 +65,7 @@ class Controller_Data extends FrontController
 								
 		foreach($extra as $site)
 		{
-			$output[ $site['type'] ][ $site['system_class'] ][] = $site['id'];
+			$output['maps'][ $site['type'] ][ $site['system_class'] ][] = $site['id'];
 		}
 		
 		print (json_encode($output));
