@@ -774,8 +774,6 @@ var pulsarEffects = {
 	]
 }
 
-var siggy2 = siggy2 || {};
-
 siggy2.StaticData = {
 	wormholeClassMap: [],
 	wormholeTypes: [],

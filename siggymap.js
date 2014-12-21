@@ -934,7 +934,7 @@ siggyMap.prototype.draw = function()
 			}
 		}
 		
-		var connection = new mapconnection(jsPlumb,options);
+		var connection = new siggy2.MapConnection(jsPlumb,options);
 		connection.map = this;
 		connection.create();
 		
@@ -953,7 +953,7 @@ siggyMap.prototype.draw = function()
 			type: 'stargate'
 		};
 		
-		var connection = new mapconnection(jsPlumb,options);
+		var connection = new siggy2.MapConnection(jsPlumb,options);
 		connection.map = this;
 		connection.create();
 		
@@ -972,7 +972,7 @@ siggyMap.prototype.draw = function()
 			type: 'cyno'
 		};
 		
-		var connection = new mapconnection(jsPlumb,options);
+		var connection = new siggy2.MapConnection(jsPlumb,options);
 		connection.map = this;
 		connection.create();
 		
@@ -992,7 +992,7 @@ siggyMap.prototype.draw = function()
 			type: 'jumpbridge'
 		};
 		
-		var connection = new mapconnection(jsPlumb,options);
+		var connection = new siggy2.MapConnection(jsPlumb,options);
 		connection.map = this;
 		connection.create();
 		

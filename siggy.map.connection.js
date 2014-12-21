@@ -1,4 +1,4 @@
-function mapconnection(plumb, options)
+siggy2.MapConnection = function(plumb, options)
 {
 	this.jsPlumb = plumb;
 	
@@ -41,7 +41,7 @@ function mapconnection(plumb, options)
 	this.selected = false;
 }
 
-mapconnection.prototype.refresh = function()
+siggy2.MapConnection.prototype.refresh = function()
 {
 	if( !this.selected )
 	{
@@ -59,7 +59,7 @@ mapconnection.prototype.refresh = function()
 	}
 }
 
-mapconnection.prototype.getDefaultPaintStyle = function()
+siggy2.MapConnection.prototype.getDefaultPaintStyle = function()
 {
 	if( this.settings.type == 'wormhole' )
 	{
@@ -104,7 +104,7 @@ mapconnection.prototype.getDefaultPaintStyle = function()
 	}
 }
 
-mapconnection.prototype.create = function()
+siggy2.MapConnection.prototype.create = function()
 {
 	var $this = this;
 	var connectionOptions = { source: this.settings.from,
@@ -163,7 +163,7 @@ mapconnection.prototype.create = function()
 	});
 }
 
-mapconnection.prototype.contextMenuHandler = function(action)
+siggy2.MapConnection.prototype.contextMenuHandler = function(action)
 {
 	var $this = this;
 	var saveData = {};
@@ -205,7 +205,7 @@ mapconnection.prototype.contextMenuHandler = function(action)
 }
 
 
-mapconnection.prototype.contextMenuBuildItems = function()
+siggy2.MapConnection.prototype.contextMenuBuildItems = function()
 {
 	var items = {};
 	
@@ -251,7 +251,7 @@ mapconnection.prototype.contextMenuBuildItems = function()
 	return items;
 }
 
-mapconnection.prototype.destroy = function()
+siggy2.MapConnection.prototype.destroy = function()
 {
 	$(this.connection.canvas).qtip('destroy');
 	//remove data to avoid refs, normally jquery clears on remove()
@@ -265,7 +265,7 @@ mapconnection.prototype.destroy = function()
 	this.map = null;
 }
 
-mapconnection.prototype.setupOverlay = function(connectionOptions)
+siggy2.MapConnection.prototype.setupOverlay = function(connectionOptions)
 {
 	if( this.settings.type == 'wormhole' )
 	{
@@ -323,7 +323,7 @@ mapconnection.prototype.setupOverlay = function(connectionOptions)
 	}
 }
 
-mapconnection.prototype.getMassColor = function(mass)
+siggy2.MapConnection.prototype.getMassColor = function(mass)
 {
 	var inner = '#676767';
 	if( mass == 1 )
@@ -337,7 +337,7 @@ mapconnection.prototype.getMassColor = function(mass)
 	return inner;
 }
 
-mapconnection.prototype.getTimeColor = function(eol,frig)
+siggy2.MapConnection.prototype.getTimeColor = function(eol,frig)
 {
 	frig = parseInt(frig);
 	eol = parseInt(eol);
@@ -361,7 +361,7 @@ mapconnection.prototype.getTimeColor = function(eol,frig)
 	return outer;
 }
 
-mapconnection.prototype.getDashStyle = function(frig)
+siggy2.MapConnection.prototype.getDashStyle = function(frig)
 {
 	return '0';
 }
