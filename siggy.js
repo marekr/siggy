@@ -143,7 +143,7 @@ siggymain.prototype.initialize = function ()
 	this.displayStates.map = $.extend({}, this.defaultDisplayStates.map, dispStates.map);
 
 	// Initialize map
-	this.map = new siggyMap(this.settings.map);
+	this.map = new siggy2.Map(this.settings.map);
 	this.map.baseUrl = this.settings.baseUrl;
 	this.map.siggymain = this;
 	this.map.initialize();

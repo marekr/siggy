@@ -1,5 +1,4 @@
-
-function siggyMap(options)
+siggy2.Map = function(options)
 {
 	this.defaults = {
 		jumpTrackerEnabled: true,
@@ -68,7 +67,7 @@ function siggyMap(options)
     this.selectionBox = $('<div>').addClass('selection-box');
 }
 
-siggyMap.prototype.showMessage = function(what)
+siggy2.Map.prototype.showMessage = function(what)
 {
 	if( what == 'loading' )
 	{
@@ -92,7 +91,7 @@ siggyMap.prototype.showMessage = function(what)
 	}
 }
 
-siggyMap.prototype.hideMessage = function(what)
+siggy2.Map.prototype.hideMessage = function(what)
 {
 	if( what == 'loading' )
 	{
@@ -108,7 +107,7 @@ siggyMap.prototype.hideMessage = function(what)
 	}
 }
 
-siggyMap.prototype.updateMessagePositions = function()
+siggy2.Map.prototype.updateMessagePositions = function()
 {
 
 	if( this.loadingMessage.is(':visible') )
@@ -129,7 +128,7 @@ siggyMap.prototype.updateMessagePositions = function()
 	}
 }
 
-siggyMap.prototype.centerButtons = function()
+siggy2.Map.prototype.centerButtons = function()
 {
 	var bottomOffset = 30;
 	if( this.buttonsContainer != null )
@@ -141,7 +140,7 @@ siggyMap.prototype.centerButtons = function()
 	}
 }
 
-siggyMap.prototype.initialize = function()
+siggy2.Map.prototype.initialize = function()
 {
 	var that = this;
 
@@ -340,7 +339,7 @@ siggyMap.prototype.initialize = function()
 }
 
 
-siggyMap.prototype.initializeConnectionContextMenu = function()
+siggy2.Map.prototype.initializeConnectionContextMenu = function()
 {
 	var $this = this;
 	$(document).contextMenu({
@@ -374,7 +373,7 @@ siggyMap.prototype.initializeConnectionContextMenu = function()
 }
 
 
-siggyMap.prototype.initializeSystemBlobContextMenu = function()
+siggy2.Map.prototype.initializeSystemBlobContextMenu = function()
 {
 	var $this = this;
 	$(document).contextMenu({
@@ -419,7 +418,7 @@ siggyMap.prototype.initializeSystemBlobContextMenu = function()
 }
 
 
-siggyMap.prototype.systemContextMenuHandler = function(action, system)
+siggy2.Map.prototype.systemContextMenuHandler = function(action, system)
 {
 	var $this = this;
 	
@@ -464,7 +463,7 @@ siggyMap.prototype.systemContextMenuHandler = function(action, system)
 }
 
 
-siggyMap.prototype.startMapEdit = function()
+siggy2.Map.prototype.startMapEdit = function()
 {
 	this.editing = true;
 	$('#chain-map-edit-save').show();
@@ -478,7 +477,7 @@ siggyMap.prototype.startMapEdit = function()
 	this.showMessage('editing');
 }
 
-siggyMap.prototype.initializeHotkeys = function()
+siggy2.Map.prototype.initializeHotkeys = function()
 {
 	var $this = this;
 	
@@ -489,7 +488,7 @@ siggyMap.prototype.initializeHotkeys = function()
 	this.siggymain.hotkeyhelper.registerHotkey('Ctrl+M', 'Jump to map');
 }
 
-siggyMap.prototype.setSelectedSystem = function( systemID )
+siggy2.Map.prototype.setSelectedSystem = function( systemID )
 {
 	if( this.selectedSystemID != systemID )
 	{
@@ -501,7 +500,7 @@ siggyMap.prototype.setSelectedSystem = function( systemID )
 	}
 }
 
-siggyMap.prototype.mapHide = function()
+siggy2.Map.prototype.mapHide = function()
 {
 	$('#chain-map-inner').hide();
 	$('#chain-map-ec').text('Click to show');
@@ -513,7 +512,7 @@ siggyMap.prototype.mapHide = function()
 	this.siggymain.saveDisplayState();
 }
 
-siggyMap.prototype.mapShow = function()
+siggy2.Map.prototype.mapShow = function()
 {
 	$('#chain-map-inner').show();
 	$('#chain-map-ec').text('Click to hide');
@@ -524,7 +523,7 @@ siggyMap.prototype.mapShow = function()
 	this.siggymain.saveDisplayState();
 }
 
-siggyMap.prototype.registerEvents = function()
+siggy2.Map.prototype.registerEvents = function()
 {
     var that = this;
 
@@ -611,7 +610,7 @@ siggyMap.prototype.registerEvents = function()
     });
 }
 
-siggyMap.prototype.processConnectionDelete = function(hashes)
+siggy2.Map.prototype.processConnectionDelete = function(hashes)
 {
 	var $this = this;
 	
@@ -632,7 +631,7 @@ siggyMap.prototype.processConnectionDelete = function(hashes)
 	}
 }
 
-siggyMap.prototype.getSelectedHashes = function()
+siggy2.Map.prototype.getSelectedHashes = function()
 {
 	var hashes = {	wormholes: [],
 					stargates: [],
@@ -672,7 +671,7 @@ siggyMap.prototype.getSelectedHashes = function()
 }
 
 
-siggyMap.prototype.update = function(timestamp, systems, wormholes, stargates, jumpbridges, cynos)
+siggy2.Map.prototype.update = function(timestamp, systems, wormholes, stargates, jumpbridges, cynos)
 {
 	if( this.editing || this.massDelete )
 	{
@@ -693,7 +692,7 @@ siggyMap.prototype.update = function(timestamp, systems, wormholes, stargates, j
 	this.hideMessage('loading');
 }
 
-siggyMap.prototype.updateActives = function( activesData )
+siggy2.Map.prototype.updateActives = function( activesData )
 {
 	if(  typeof( activesData ) == 'undefined' )
 	{
@@ -757,7 +756,7 @@ siggyMap.prototype.updateActives = function( activesData )
     }
 }
 
-siggyMap.prototype.draw = function()
+siggy2.Map.prototype.draw = function()
 {
     var that = this;
 
@@ -1010,7 +1009,7 @@ siggyMap.prototype.draw = function()
 	}
 }
 
-siggyMap.prototype.openSystemEdit = function( sysID )
+siggy2.Map.prototype.openSystemEdit = function( sysID )
 {
 	this.editingSystem = sysID;
 
@@ -1042,7 +1041,7 @@ siggyMap.prototype.openSystemEdit = function( sysID )
 	$('#system-editor select[name=activity]').val(this.systems[ sysID ].activity);
 }
 
-siggyMap.prototype.getEffectText = function(effect)
+siggy2.Map.prototype.getEffectText = function(effect)
 {
     var effText = '';
     switch( effect )
@@ -1073,7 +1072,7 @@ siggyMap.prototype.getEffectText = function(effect)
     return effText;
 }
 
-siggyMap.prototype.getEffectColor = function(effect)
+siggy2.Map.prototype.getEffectColor = function(effect)
 {
     var eff = effect;
     switch( effect )
@@ -1104,7 +1103,7 @@ siggyMap.prototype.getEffectColor = function(effect)
     return eff;
 }
 
-siggyMap.prototype.getClassText = function(sysClass)
+siggy2.Map.prototype.getClassText = function(sysClass)
 {
     var text = "";
 
@@ -1128,7 +1127,7 @@ siggyMap.prototype.getClassText = function(sysClass)
     return text;
 }
 
-siggyMap.prototype.getClassColor = function(sysClass)
+siggy2.Map.prototype.getClassColor = function(sysClass)
 {
     var classColor = '';
     switch( sysClass )
@@ -1162,7 +1161,7 @@ siggyMap.prototype.getClassColor = function(sysClass)
     return classColor;
 }
 
-siggyMap.prototype.getActivityColor = function(activity)
+siggy2.Map.prototype.getActivityColor = function(activity)
 {
     var color = '';
 
@@ -1191,7 +1190,7 @@ siggyMap.prototype.getActivityColor = function(activity)
 }
 
 
-siggyMap.prototype.setupEditor = function()
+siggy2.Map.prototype.setupEditor = function()
 {
 	var that = this;
 	$('#connection-editor-disconnect').click( function() {
@@ -1310,7 +1309,7 @@ siggyMap.prototype.setupEditor = function()
 }
 
 
-siggyMap.prototype.displayEditorErrors = function(errors)
+siggy2.Map.prototype.displayEditorErrors = function(errors)
 {
 	var errorsUL = $('#connection-editor ul.errors');
 	errorsUL.empty();
@@ -1323,7 +1322,7 @@ siggyMap.prototype.displayEditorErrors = function(errors)
 }
 
 
-siggyMap.prototype.setupSystemEditor = function()
+siggy2.Map.prototype.setupSystemEditor = function()
 {
 	var that = this;
 	$('#system-editor-cancel').click( function() {
@@ -1349,7 +1348,8 @@ siggyMap.prototype.setupSystemEditor = function()
 		$('#chain-map-container').unblock();
 	});
 }
-siggyMap.prototype.updateJumpLog = function( hash )
+
+siggy2.Map.prototype.updateJumpLog = function( hash )
 {
 		var logList = $('#jumpLogList');
 		logList.empty();
@@ -1429,7 +1429,7 @@ siggyMap.prototype.updateJumpLog = function( hash )
 		} );
 }
 
-siggyMap.prototype.registerSystemAutoComplete = function(inputSelector)
+siggy2.Map.prototype.registerSystemAutoComplete = function(inputSelector)
 {
     var that = this;
     var input = $(inputSelector);
@@ -1452,7 +1452,7 @@ siggyMap.prototype.registerSystemAutoComplete = function(inputSelector)
     return input;
 }
 
-siggyMap.prototype.resetWormholeEditor = function()
+siggy2.Map.prototype.resetWormholeEditor = function()
 {
 	var errorsUL = $('#connection-editor ul.errors');
 	errorsUL.empty();
@@ -1493,7 +1493,7 @@ siggyMap.prototype.resetWormholeEditor = function()
 	$('select[name=connection-editor-type]').val('wormhole');
 }
 
-siggyMap.prototype.editWormhole = function(conn)
+siggy2.Map.prototype.editWormhole = function(conn)
 {
 	this.editingConnection = conn;
 
@@ -1534,7 +1534,7 @@ siggyMap.prototype.editWormhole = function(conn)
 	this.openWHEditor('edit');
 }
 
-siggyMap.prototype.initializeTabs = function()
+siggy2.Map.prototype.initializeTabs = function()
 {
 	var $this = this;
 
@@ -1548,7 +1548,7 @@ siggyMap.prototype.initializeTabs = function()
 }
 
 
-siggyMap.prototype.setWHPopupTab = function( selectedTab )
+siggy2.Map.prototype.setWHPopupTab = function( selectedTab )
 {
 	if( selectedTab == "#jump-log" )
 	{
@@ -1578,7 +1578,7 @@ siggyMap.prototype.setWHPopupTab = function( selectedTab )
 }
 
 
-siggyMap.prototype.openWHEditor = function(mode)
+siggy2.Map.prototype.openWHEditor = function(mode)
 {
 	this.setWHPopupTab('#connection-editor');
 	$('#chain-map-container').block({

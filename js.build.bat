@@ -10,7 +10,7 @@
 --js=siggy.globalnotes.js ^
 --js=siggy.map.connection.js ^
 --js=siggy.hotkeyhelper.js ^
---js=siggymap.js ^
+--js=siggy.map.js ^
 --source_map_format=V3 ^
 --create_source_map siggy.compiled.js.map ^
 --js_output_file=siggy.compiled.js
