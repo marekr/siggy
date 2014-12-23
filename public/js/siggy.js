@@ -53,7 +53,7 @@ siggy2.Core = function( options )
 			language: 'en'
 		},
 		map: {
-		  jumpTrackerEnabled: true
+			jumpTrackerEnabled: true
 	    },
 		sigtable: {
 			showSigSizeCol: false

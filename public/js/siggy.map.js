@@ -6,7 +6,8 @@ siggy2.Map = function(options)
 		jumpTrackerShowTime: true,
 		showActivesShips: false,
 		allowMapHeightExpand: true,
-		alwaysShowClass: false
+		alwaysShowClass: false,
+		maxCharactersShownInSystem: 7
 	};
 
 
@@ -716,9 +717,9 @@ siggy2.Map.prototype.updateActives = function( activesData )
 
             //setup our lengths
             //TBH, make the max length configurable
-            var maxDisplayLen = 7;
             var len = actives.length;
-            var displayLen = len > maxDisplayLen ? maxDisplayLen : len;
+            var displayLen = len > this.settings.maxCharactersShownInSystem 
+									? this.settings.maxCharactersShownInSystem : len;
 
             var fullText = '';
             for(var j in actives)
@@ -742,7 +743,14 @@ siggy2.Map.prototype.updateActives = function( activesData )
 
             if( len > displayLen )
             {
-                text += ' +' + (len-displayLen) + ' other...<br \>';
+				if( displayLen == 0 )
+				{
+					text += (len-displayLen) + ' characters...<br \>';
+				}
+				else
+				{
+					text += ' +' + (len-displayLen) + ' others...<br \>';
+				}
             }
 
 

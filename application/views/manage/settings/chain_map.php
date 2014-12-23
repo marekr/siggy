@@ -5,6 +5,8 @@
 		<?php echo formRenderer::yesNo('Display ship types for characters active in systems?', 'chain_map_show_actives_ships', $data['chain_map_show_actives_ships'], 'If yes, ship types will display next to the characters on hover over a system for the full activity list of characters.', $errors); ?>
 		<?php echo formRenderer::yesNo("Allow expanding map height?", 'allow_map_height_expand', $data['allow_map_height_expand'], 'If yes, you will be able to expand the map to twice its height with a resize a', $errors); ?>
 		<?php echo formRenderer::yesNo("Always show system class?", 'chainmap_always_show_class', $data['chainmap_always_show_class'], 'By default, when you rename wormhole systems, the class gets removed since you may name the hole c5a, c5b, etc. This instead keeps it always displayed.', $errors); ?>
+	
+		<?php echo formRenderer::input('Max numbers of displayed characters per system', 'chainmap_max_characters_shown', $data['chainmap_max_characters_shown'], 'Max number of characters displayed inside a system before the # pilots count appears. This can be any number.', $errors); ?>
 	</fieldset>
 	<fieldset>
 		<legend>Jump Log</legend>	
