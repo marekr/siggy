@@ -302,6 +302,9 @@ siggy2.StaticData = {
 	},
 	templateWormholeInfoTooltip: function(dummy)
 	{
+	},
+	templateSiteTooltip: function(dummy)
+	{
 	}
 
 };
@@ -311,6 +314,7 @@ siggy2.StaticData.load = function(baseURL)
 	var $this = this;
 	
 	$this.templateWormholeInfoTooltip = Handlebars.compile( $("#template-statics-tooltip").html() );
+	$this.templateSiteTooltip = Handlebars.compile( $("#template-site-tooltip").html() );
 	
 	jQuery.ajax({
 		 url: baseURL + 'data/sig_types',

@@ -167,7 +167,7 @@ siggy2.SigTable.prototype.colorizeSigRows = function()
 	});
 }
 
-siggy2.SigTable.prototype.convertType = function (type)
+siggy2.SigTable.prototype.convertType = function(type)
 {
 	//unknown null case, either way this should surpress it
 	if (type == 'wh')
@@ -389,9 +389,10 @@ siggy2.SigTable.prototype.sigRowMagic = function(sigData)
 	{
 		var site = siggy2.StaticData.getSiteByID(sigData.siteID);
 		
+		
 		if( site != null && site.description != "" )
 		{
-			desc_tooltip = site.description;
+			desc_tooltip = siggy2.StaticData.templateSiteTooltip( site );
 		}
 	}
 	

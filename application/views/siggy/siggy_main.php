@@ -479,6 +479,7 @@
 	<?php echo View::factory('siggy/handlebars/sig_table_row'); ?>
 	<?php echo View::factory('siggy/handlebars/effect_tooltip'); ?>
 	<?php echo View::factory('siggy/handlebars/statics_tooltip'); ?>
+	<?php echo View::factory('siggy/handlebars/site_tooltip'); ?>
 	
     <script type='text/javascript'>
         $(document).ready(function() {
