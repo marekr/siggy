@@ -348,7 +348,7 @@ siggy2.StaticData.getSiteByID = function( id )
 
 siggy2.StaticData.getSiteList = function( type, sysClass )
 {	
-	var result  = {};
+	var result  = {0: ''};
 	
 	var map = this.maps[type];
 	if( typeof(map) == 'undefined' )
