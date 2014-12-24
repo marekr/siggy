@@ -289,7 +289,7 @@ siggy2.MapConnection.prototype.setupOverlay = function(connectionOptions)
 		
 		if( this.settings.wormhole.eol != 0 )
 		{
-			this.label += 'EOL set at: '+ siggymain.displayTimeStamp(this.settings.wormhole.eolDateSet) + "<br />";
+			this.label += 'EOL set at: '+ siggy2.Helpers.displayTimeStamp(this.settings.wormhole.eolDateSet) + "<br />";
 		}
 
 		if( parseInt(this.settings.wormhole.frigateSized) == 1 )
