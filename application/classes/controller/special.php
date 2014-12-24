@@ -447,18 +447,18 @@ class Controller_Special extends Controller {
 		
 		$view = View::factory('special/buildStatics');
 		
-		$staticData = DB::select()->from('statics')->order_by('staticName', 'ASC')->execute()->as_array();
+		$staticData = DB::select()->from('statics')->order_by('name', 'ASC')->execute()->as_array();
 		
 		$statics = '';
 		foreach($staticData as $s )
 		{
-			if( isset($_POST['static'] ) && $s['staticID'] == $_POST['static'] )
+			if( isset($_POST['static'] ) && $s['id'] == $_POST['static'] )
 			{
-				$statics .= '<option value="'.$s['staticID'].'" selected="selected">'.$s['staticName'].'</option>';
+				$statics .= '<option value="'.$s['id'].'" selected="selected">'.$s['name'].'</option>';
 			}
 			else
 			{
-				$statics .= '<option value="'.$s['staticID'].'">'.$s['staticName'].'</option>';
+				$statics .= '<option value="'.$s['id'].'">'.$s['name'].'</option>';
 			}
 		}
 		$view->statics = $statics;
@@ -508,8 +508,8 @@ class Controller_Special extends Controller {
 			{
 				foreach($systems as $s)
 				{
-					$insert['systemID'] = $s['id'];
-					$insert['staticID'] = intval($_POST['static']);
+					$insert['system_id'] = $s['id'];
+					$insert['static_id'] = intval($_POST['static']);
 					
 					
 					DB::insert('staticmap', array_keys($insert) )->values(array_values($insert))->execute();
