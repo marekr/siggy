@@ -1397,7 +1397,7 @@ siggy2.Map.prototype.updateJumpLog = function( hash )
 					var time = '';
 					if( that.settings.jumpTrackerShowTime )
 					{
-						time =  siggymain.displayTimeStamp(item.time);
+						time =  siggy2.Helpers.displayTimeStamp(item.time);
 					}
 
 					var direction = '';
