@@ -595,34 +595,14 @@ siggy2.Core.prototype.updateSystemInfo = function (systemData)
 		});
 	}
 
-	//
 	$('#static-info').empty();
-	var staticCount = Object.size(systemData.staticData);
-	if( staticCount > 0 )
+	if( Object.size(systemData.staticData) > 0 )
 	{
 		var counter = 0;
 		for (var i in systemData.staticData)
 		{
 			var theStatic = siggy2.StaticData.getWormholeByID(systemData.staticData[i].id);
-			var destBlurb = '';
-			theStatic.dest_class = parseInt(theStatic.dest_class);
-
-			if (theStatic.dest_class <= 6 || theStatic.dest_class >= 10)
-			{
-				destBlurb = " (to C" + theStatic.dest_class + ")";
-			}
-			else if (theStatic.dest_class == 7)
-			{
-				destBlurb = " (to Highsec)";
-			}
-			else if (theStatic.dest_class == 8)
-			{
-				destBlurb = " (to Lowsec)";
-			}
-			else
-			{
-				destBlurb = " (to Nullsec)";
-			}
+			var destBlurb = " (to "+siggy2.StaticData.systemClassToString(theStatic.dest_class)+")";
 
 			var staticBit = $("<p>").text(theStatic.name + destBlurb);
 			

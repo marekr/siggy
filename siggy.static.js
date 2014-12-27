@@ -392,8 +392,10 @@ siggy2.StaticData.systemClassToString = function ( sysClass )
 		return "Lowsec"
 	else if( sysClass == 9 )
 		return "Nullsec";
-	else if ( sysClass != 12 )
-		return "C" + sysClass;
+	else if( sysClass == 12 )
+		return "Thera";
+	else
+		return sysClass;
 }
 
 siggy2.StaticData.getWormholeFancyName = function( whInfo )
