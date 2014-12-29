@@ -1,3 +1,8 @@
+/*
+ * @license Proprietary
+ * @copyright Copyright (c) 2014 borkedLabs - All Rights Reserved
+ */
+ 
 siggy2.Timer = function(initDate, endDate, selector)
 {
 	this.beginDate = new Date(initDate);
