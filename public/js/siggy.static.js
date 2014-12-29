@@ -400,7 +400,7 @@ siggy2.StaticData.systemClassToString = function ( sysClass )
 	else if( sysClass == 12 )
 		return "Thera";
 	else
-		return sysClass;
+		return "C"+sysClass;
 }
 
 siggy2.StaticData.getWormholeFancyName = function( whInfo )
