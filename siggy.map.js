@@ -1,3 +1,8 @@
+/*
+ * @license Proprietary
+ * @copyright Copyright (c) 2014 borkedLabs - All Rights Reserved
+ */
+ 
 siggy2.Map = function(options)
 {
 	this.defaults = {

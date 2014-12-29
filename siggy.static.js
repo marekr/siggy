@@ -1,3 +1,8 @@
+/*
+ * @license Proprietary
+ * @copyright Copyright (c) 2014 borkedLabs - All Rights Reserved
+ */
+ 
 var blackHoleEffects = {
 	1: [
 		['Missile Velocity', '+15%'],
