@@ -73,9 +73,9 @@ return array(
 	"Combat Sites" => "Kampfgebieten",
 	"Ore" => "Mineraliengebiet",
 	"Ore Site"=> "Mineraliengebiet",
-	"Data" => "Daten",
+	"Data" => "Datenseite",
 	"Data Site" => "Datenseite",
-	"Relic" => "Relikt",
+	"Relic" => "Reliktseite",
 	"Rellc Site" => "Reliktseite",
 	"WH" => "Wurmloch",
 	"Wormhole" => "Wurmloch",
@@ -83,5 +83,9 @@ return array(
 	"Cosmic Signature" => "Kosmische Signatur",
 	"Constellation" => "Konstellation",
 	"Show anomalies" => "Anomalien zeigen",
-	"jumps" => "sprünge" 
+	"jumps" => "sprünge",
+	"signature(s) shown" => "signatur(en) gezeigt",
+	"Options" => "Optionen",
+	"Gas Site" => "Gasgebiet",
+	"Gas" => "Gasgebiet"
 );
