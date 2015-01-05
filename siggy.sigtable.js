@@ -184,7 +184,7 @@ siggy2.SigTable.prototype.convertType = function(type)
 	else if (type == 'data')
 		return _("Data");
 	else if (type == 'relic')
-		return "Relic";
+		return _("Relic");
 	else if (type == 'anomaly')
 		return _("Combat");
 	else

@@ -73,16 +73,19 @@ var translation = {
 	"Vital Core Reservoir": "Wichtige grundlegende Erzvorkommen",
 	"Combat": "Kampfgebiet",
 	"Combat Site": "Kampfgebiet",
-	"Ore": "Mineraliengebiet",
+	"Ore": "Mineralien",
 	"Ore Site": "Mineraliengebiet",
 	"Data": "Daten",
 	"Data Site": "Datenseite",
-	"Relic": "Relikt",
+	"Relic": "Reliktseite",
 	"Rellc Site": "Reliktseite",
 	"WH": "Wurmloch",
 	"Wormhole": "Wurmloch",
 	"Cosmic Anomaly": "Kosmische Anomalie",
 	"Cosmic Signature": "Kosmische Signatur",
 	"Jumps": "Sprünge",
-	"AU": "AE"
+	"AU": "AE",
+	"signature(s) shown": "signatur(en) gezeigt",
+	"Gas Site": "Gasgebiet",
+	"Gas": "Gasgebiet"
 };
