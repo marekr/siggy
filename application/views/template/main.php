@@ -107,6 +107,7 @@
 		
 			<div id="sidebar-wrapper">
 				<ul class="sidebar-nav" id="sidebar">
+					<li><a id="global-notes-button"><span class="sub_icon glyphicon glyphicon-folder-close"></span> Notes</a></li>
 					<li><a target="_blank" href="<?php echo URL::base(); ?>stats"><span class="sub_icon glyphicon glyphicon-list"></span> Stats</a></li>
 					<li id="settings-button"><a><span class="sub_icon glyphicon glyphicon-cog"></span> Settings</a></li>
 					<!---

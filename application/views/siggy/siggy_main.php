@@ -476,6 +476,7 @@
 	<?php echo View::factory('siggy/boxes/fatal_error'); ?>
 	<?php echo View::factory('siggy/boxes/confirm'); ?>
 	<?php echo View::factory('siggy/boxes/hotkey_helper'); ?>
+	<?php echo View::factory('siggy/boxes/group_notes'); ?>
 	<?php echo View::factory('siggy/boxes/character_settings')->set('themes', $themes)->set('settings', $settings); ?>
 	<?php echo View::factory('siggy/handlebars/sig_table_row'); ?>
 	<?php echo View::factory('siggy/handlebars/effect_tooltip'); ?>

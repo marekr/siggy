@@ -322,23 +322,6 @@ table td.button-row
 
 
 /*gnotes*/
-#global-notes {
-  -moz-border-radius: 0 0 9px 9px;
-  border-radius: 0 0 9px 9px;
-  -webkit-border-radius: 0 0 9px 9px;
-  padding: 10px;
-  background-color: @primary-background;
-  display:none;
-}
-
-#global-notes h2 {
-  font-weight:bold;
-  font-size:1.03em;
-  margin-bottom:4px;
-  border-bottom: 1px solid #fff;
-  padding-bottom:3px;
-}
-
 
 #global-notes p
 {
