@@ -1,10 +1,5 @@
-﻿/* 
- * @license Proprietary
- * @copyright Copyright (c) 2014 borkedLabs - All Rights Reserved
- */
-
-var translation = {
-	'Perimeter Ambush Point': 'Randgebiet für Hinterhalt',
+﻿{
+	"Perimeter Ambush Point": "Randgebiet für Hinterhalt",
 	"Lager im Randgebiet": "Perimeter Camp",
 	"Phase Catalyst Node": "Phasenkatalysator-Knotenpunkt",
 	"The Line": "Das Feld",
@@ -65,7 +60,7 @@ var translation = {
 	"Common Perimeter Deposit": "Gemeinschaftliche Erzvorkommen",
 	"Exceptional Core Deposit": "Besondere grundlegende Erzvorkommen",
 	"Infrequent Core Deposit": "Seltene Kernablagerung",
-	'Unusual Core Deposit': 'Ungewöhnliche Kernablagerung',
+	"Unusual Core Deposit": "Ungewöhnliche Kernablagerung",
 	"Rarified Core Deposit": "Rare Kernablagerung",
 	"Ordinary Perimeter Deposit": "Gewöhnliche Erzvorkommen",
 	"Uncommon Core Deposit": "Ungewöhnliche Kernablagerung",
@@ -100,4 +95,4 @@ var translation = {
 	"signature(s) shown": "signatur(en) gezeigt",
 	"Gas Site": "Gasgebiet",
 	"Gas": "Gasgebiet"
-};
+}
