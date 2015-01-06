@@ -1,6 +1,6 @@
 <script id="template-site-tooltip" type="text/x-handlebars-template">
 	
-	<b>{{ name }}</b>
+	<b>{{ _ name }}</b>
 	<br />
 	<br />
 	

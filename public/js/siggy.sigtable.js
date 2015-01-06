@@ -294,6 +294,9 @@ siggy2.SigTable.prototype.setupHandlebars = function()
 {
 	var $this = this;
 	
+	Handlebars.registerHelper('_', function(str) {
+		return _(str);
+	});
 
 	Handlebars.registerHelper('displayTimestamp', function(stamp) {
 		return siggy2.Helpers.displayTimeStamp(stamp);
