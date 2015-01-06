@@ -97,7 +97,7 @@
 							<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/characterSelect">Switch Character</a></li>
 							<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/changePassword">Change Password</a></li>
 							<li class="divider"></li>
-							<li><a href="#">Logout</a></li>
+							<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/logout">Logout</a></li>
 						</ul>
 					</li>
 					<li><a></a></li>
