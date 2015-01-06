@@ -816,4 +816,13 @@ div.connection-editor-group > div
 	background-position: right center  !important;
 }
 
+.siggy-navbar-brand {
+	font-size: 17px;
+	cursor:pointer;
+}
+.siggy-navbar-brand span.glyphicon
+{
+	font-size:12px;
+}
+
 

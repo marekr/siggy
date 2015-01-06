@@ -10,6 +10,7 @@
 	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>theme.php?id=<?php echo $settings['theme_id']; ?>" id="theme-css" rel="stylesheet" media="screen" />
     <?php endif; ?>
     <link href="<?php echo URL::base(TRUE, TRUE);?>public/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet">
+	<link rel="icon" href="<?php echo URL::base(TRUE, TRUE);?>favicon.ico">
 
     <?php if( Kohana::$environment == Kohana::DEVELOPMENT ): ?>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/handlebars-v2.0.0.js'></script>
@@ -48,7 +49,7 @@
 	<body>
 		<div class="navbar navbar-default navbar-fixed-top">
 				<ul class="nav navbar-nav">
-					<li><a id="menu-toggle" href="#"><span id="main_icon" class="glyphicon glyphicon-align-justify"></span> siggy <i class="fa fa-caret-down"></i></a></li>
+					<li><a id="menu-toggle" class="siggy-navbar-brand">siggy <span id="main_icon" class="glyphicon glyphicon-align-justify"></span> <i class="fa fa-caret-down"></i></a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Support <i class="fa fa-caret-down"></i>
 						</a>
@@ -89,15 +90,22 @@
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 							 <img class="navbar-eve-image" src="https://image.eveonline.com/Corporation/<?php echo Auth::$session->corpID; ?>_64.png" height="32px"/>
 							 <img class="navbar-eve-image" src="https://image.eveonline.com/Character/<?php echo Auth::$session->charID; ?>_64.jpg" height="32px"/>
-							<?php echo Auth::$session->charName; ?> <i class="fa fa-caret-down"></i>
+							<?php echo Auth::$session->charName; ?> 
+							<?php if( Auth::loggedIn() ): ?>
+							<i class="fa fa-caret-down"></i>
+							<?php endif; ?>
 						</a>
+						<?php if( Auth::loggedIn() ): ?>
 						<ul class="dropdown-menu" role="menu">
+							<?php if( Auth::$user->isLocal() ): ?>
 							<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/apiKeys">API Keys</a></li>
 							<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/characterSelect">Switch Character</a></li>
 							<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/changePassword">Change Password</a></li>
 							<li class="divider"></li>
+							<?php endif; ?>
 							<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/logout">Logout</a></li>
 						</ul>
+						<?php endif; ?>
 					</li>
 					<li><a></a></li>
 					
