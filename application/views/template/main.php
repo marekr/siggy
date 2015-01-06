@@ -49,7 +49,16 @@
 	<body>
 		<div class="navbar navbar-default navbar-fixed-top">
 				<ul class="nav navbar-nav">
-					<li><a id="menu-toggle" class="siggy-navbar-brand">siggy <span id="main_icon" class="glyphicon glyphicon-align-justify"></span> <i class="fa fa-caret-down"></i></a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle siggy-navbar-brand" data-toggle="dropdown" role="button" aria-expanded="false">
+						siggy <span id="main_icon" class="glyphicon glyphicon-align-justify"></span> <i class="fa fa-caret-down"></i>
+						</a>
+						<ul class="dropdown-menu siggy-main-navbar" role="menu">
+							<li><a id="global-notes-button"><span class="glyphicon glyphicon-folder-close"></span> Notes</a></li>
+							<li><a target="_blank" href="<?php echo URL::base(); ?>stats"><span class="glyphicon glyphicon-list"></span> Stats</a></li>
+							<li id="settings-button"><a><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+						</ul>
+					</li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Support <i class="fa fa-caret-down"></i>
 						</a>
@@ -112,28 +121,7 @@
 
 				</ul>
 		</div>
-		
-		<script type='text/javascript'>
-		$("#menu-toggle").click(function(e) {
-			e.preventDefault();
-			$('#sidebar-wrapper').toggleClass("active");
-		});
-		</script>
 		<div id="siggy-content" class="wrapper">
-		
-			<div id="sidebar-wrapper">
-				<ul class="sidebar-nav" id="sidebar">
-					<li><a id="global-notes-button"><span class="sub_icon glyphicon glyphicon-folder-close"></span> Notes</a></li>
-					<li><a target="_blank" href="<?php echo URL::base(); ?>stats"><span class="sub_icon glyphicon glyphicon-list"></span> Stats</a></li>
-					<li id="settings-button"><a><span class="sub_icon glyphicon glyphicon-cog"></span> Settings</a></li>
-					<!---
-					<li><a><span class="sub_icon glyphicon glyphicon-search"></span> Exit Finder</a></li>
-					<li><a><span class="sub_icon glyphicon glyphicon-flag"></span> Astrolabe</a></li>
-					<li><a><span class="sub_icon glyphicon glyphicon-eye-open"></span> Alexandria</a></li>
-					<li><a><span class="sub_icon glyphicon glyphicon-tower"></span> eet</a></li>
-					--->
-				</ul>
-			</div>
 			<?php echo $content; ?>
 			<div id="footer-link" style="text-align:center;font-size:0.9em;margin-top:100px;">
 				<p style="width:33%;float:left;text-align:left;">
