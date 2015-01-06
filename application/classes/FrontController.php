@@ -151,7 +151,7 @@ class FrontController extends Controller
 		}
 		elseif( $this->authStatus != AuthStatus::ACCEPTED )
 		{
-			if( Auth::loggedIn() )
+			if( Auth::loggedIn() && Auth::$user->isLocal() )
 			{
 				$this->siggyredirect('/account/noAPIAccess');
 			}
