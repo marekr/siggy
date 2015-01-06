@@ -50,12 +50,6 @@ class Auth
 	
 	public static function authenticate()
 	{
-		if( !self::$session->charID  )
-		{
-			self::$authStatus = AuthStatus::GUEST;
-			return self::$authStatus;
-		}
-		
 		if( miscUtils::isIGB() )
 		{
 			if( !miscUtils::getTrust() )
@@ -64,6 +58,13 @@ class Auth
 				return self::$authStatus;
 			}
 		}
+		
+		if( !self::$session->charID  )
+		{
+			self::$authStatus = AuthStatus::GUEST;
+			return self::$authStatus;
+		}
+		
 		
 		$success = TRUE;
 		if( self::loggedIn() )
