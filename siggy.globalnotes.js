@@ -26,17 +26,27 @@ globalnotes.prototype.initialize = function()
 	$this.globalNotesEle = $('#global-notes');
 	$('#global-notes-button').click(function ()
 	{
-		if ( $this.globalNotesEle.is(":visible") )
-		{
-			$this.globalNotesEle.hide();
-			$('#global-notes-button').html('Notes <i class="fa fa-caret-down"></i>');
-		}
-		else
-		{
-			$this.globalNotesEle.show();
-			$('#global-notes-button').html('Notes <i class="fa fa-caret-up"></i>');
-			$this.stopBlinkingNotes();
-		}
+		$this.stopBlinkingNotes();
+	
+		$.blockUI({
+			message: $this.globalNotesEle,
+			css: {
+				border: 'none',
+				padding: '15px',
+				background: 'transparent',
+				color: 'inherit',
+				cursor: 'auto',
+				textAlign: 'left',
+				centerX: true,
+				centerY: true
+			},
+			overlayCSS: {
+				cursor: 'auto'
+			},
+			fadeIn:  0,
+			fadeOut:  0
+		});
+		$('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);
 	});
 
 	$('#global-notes-edit').click(function ()
@@ -73,7 +83,7 @@ globalnotes.prototype.initialize = function()
 	$('#global-notes-cancel').click(function ()
 	{
 		$this.editingGlobalNotes = false;
-		$('#thegnotes').show();
+		$('#global-notes-content').show();
 		$('#global-notes-edit-box').hide();
 		$('#global-notes-edit').show();
 		$('#global-notes-save').hide();
