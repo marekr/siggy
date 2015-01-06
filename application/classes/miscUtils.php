@@ -59,7 +59,7 @@ final class miscUtils
 					continue;
 				}
 				
-				$regex = "/^(".__('Wormhole')."|".__('Data Site')."|Gas Site|".__('Relic Site')."|".__('Ore Site')."|".__('Combat Site').")$/";
+				$regex = "/^(".__('Wormhole')."|".__('Data Site')."|".__('Gas Site')."|".__('Relic Site')."|".__('Ore Site')."|".__('Combat Site').")$/";
 				
 				preg_match($regex, $item, $matches );
 				if( count($matches) == 2 )
