@@ -47,7 +47,6 @@
 	</head>
 	<body>
 		<div class="navbar navbar-default navbar-fixed-top">
-			<div class="navbar-collapse collapse navbar-responsive-collapse">
 				<ul class="nav navbar-nav">
 					<li><a id="menu-toggle" href="#"><span id="main_icon" class="glyphicon glyphicon-align-justify"></span> siggy <i class="fa fa-caret-down"></i></a></li>
 					<li class="dropdown">
@@ -104,7 +103,6 @@
 					
 
 				</ul>
-			</div>
 		</div>
 		
 		<script type='text/javascript'>
