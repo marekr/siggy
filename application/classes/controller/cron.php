@@ -40,7 +40,7 @@ class Controller_Cron extends Controller
 				if( $trans['refTypeID'] == eveAPIWalletJournalTypes::playerDonation || $trans['refTypeID'] == eveAPIWalletJournalTypes::corpAccountWithdrawal)
 				{
 					$entryCode = trim(str_replace('DESC:','',$trans['reason']));
-					$entryCode = $this->superclean($entryCode);
+					$entryCode = strtolower($this->superclean($entryCode));
 					if( !empty($entryCode) )
 					{
 						preg_match('/^siggy-([a-zA-Z0-9]{14,})/', $entryCode, $matches);
