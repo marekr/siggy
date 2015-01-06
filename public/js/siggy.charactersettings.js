@@ -170,9 +170,13 @@ charactersettings.prototype.performSettingsRefresh = function()
 	/* init localisations  */
 	if( this.settings.language != 'en' )
 	{
-		LazyLoad.js(this.settings.baseUrl + 'public/js/locale/siggy.locale.'+this.settings.language+'.js', function()
-		{
-			_.setTranslation(translation);
+		jQuery.ajax({
+			 url: this.settings.baseUrl + 'public/js/locale/siggy.locale.'+this.settings.language+'.js',
+			 success: function(result) {
+						_.setTranslation(result);
+					  },
+			 async: false,
+			 dataType: 'json'
 		});
 	}
 
