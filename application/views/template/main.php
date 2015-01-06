@@ -55,7 +55,7 @@
 						</a>
 						<ul class="dropdown-menu siggy-main-navbar" role="menu">
 							<li><a id="global-notes-button"><span class="glyphicon glyphicon-folder-close"></span> Notes</a></li>
-							<li><a target="_blank" href="<?php echo URL::base(); ?>stats"><span class="glyphicon glyphicon-list"></span> Stats</a></li>
+							<li><a target="_blank" href="<?php echo URL::base(TRUE, TRUE); ?>stats"><span class="glyphicon glyphicon-list"></span> Stats</a></li>
 							<li id="settings-button"><a><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
 						</ul>
 					</li>
@@ -64,7 +64,7 @@
 						</a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a target="_blank" href="http://wiki.siggy.borkedlabs.com">Guide</a></li>
-							<li><a target="_blank" href="http://siggy.borkedlabs.com/announcements">Changelog</a></li>
+							<li><a target="_blank" href="<?php echo URL::base(TRUE, TRUE);?>/announcements">Changelog</a></li>
 							<li><a target="_blank" href="http://wiki.siggy.borkedlabs.com/support">Contact</a></li>
 						</ul>
 					</li>
