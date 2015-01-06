@@ -65,6 +65,7 @@
 					<?php endif; ?>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
+					<?php if( count($group['access_groups']) > 1 ): ?>
 					<li class="dropdown">
 						<a data-toggle="dropdown" href="#">
 							<?php echo $group['groupName']; ?>&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-down"></i>
@@ -79,6 +80,13 @@
 							<?php endforeach; ?>
 						</ul>
 					</li>
+					<?php else: ?>
+					<li class="dropdown">
+						<a href="#">
+							<?php echo $group['groupName']; ?>
+						</a>
+					</li>
+					<?php endif; ?>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 							 <img class="navbar-eve-image" src="https://image.eveonline.com/Corporation/<?php echo Auth::$session->corpID; ?>_64.png" height="32px"/>
