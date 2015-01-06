@@ -63,9 +63,9 @@
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Support <i class="fa fa-caret-down"></i>
 						</a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="#">Guide</a></li>
-							<li><a href="#">Changelog</a></li>
-							<li><a href="#">Contact</a></li>
+							<li><a target="_blank" href="http://wiki.siggy.borkedlabs.com">Guide</a></li>
+							<li><a target="_blank" href="http://siggy.borkedlabs.com/announcements">Changelog</a></li>
+							<li><a target="_blank" href="http://wiki.siggy.borkedlabs.com/support">Contact</a></li>
 						</ul>
 					</li>
 					<?php if( count(Auth::$user->perms) > 0 ): ?>
