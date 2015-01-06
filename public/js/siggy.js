@@ -658,8 +658,6 @@ siggy2.Core.prototype.updateSystemInfo = function (systemData)
 	this.setSystemClass(systemData.sysClass);
 	this.systemName = systemData.name;
 
-	$('#currentsystem b').text(this.systemName);
-
 	if( systemData.stats.length > 0 )
 	{
 		this.systemStats = systemData.stats;
