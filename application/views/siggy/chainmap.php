@@ -2,7 +2,7 @@
 
 
 <!--- TODO: FIX container style, jquery block breaks the dropdown otherwise ---->
-<div id="chain-map-container" class="bordered-wrap" style="relative !important">
+<div id="chain-map-container" class="bordered-wrap">
 		<ul id="chain-map-tabs" class="clearfix">
 			<li class="tab tab-active dropdown">
 				<a data-toggle="dropdown" href="#" id="chain-map-title">
@@ -37,9 +37,10 @@
 		<div id='map-footer-bar'>
 			<div style="left: 0;position: absolute;">
 				<!-- options -->
-				<a href="#" id="chain-map-add-wh" class="btn btn-default btn-xs btn-primary"><i class="fa fa-link"></i> Add Connection</a>
+				<a href="#" id="chain-map-add-wh" class="btn btn-default btn-xs btn-primary"><i class="fa fa-link"></i> Add</a>
 				<a href="#" id="chain-map-edit" class="btn btn-default btn-xs btn-warning"><i class="fa fa-pencil"></i> Edit</a>
-				<a href="#" id="chain-map-delete-whs" class="btn btn-default btn-xs btn-danger"><i class="fa fa-chain-broken"></i> Delete Connections</a>
+				<a href="#" id="chain-map-delete-whs" class="btn btn-default btn-xs btn-danger"><i class="fa fa-chain-broken"></i> Delete</a>
+				<a href="#" id="exit-finder-button" class="btn btn-default btn-xs btn-info"><i class="fa fa-binoculars"></i> Exit Finder</a>
 				<!--- end options -->
 			</div>
 			<div style="right: 0;position: absolute;">
