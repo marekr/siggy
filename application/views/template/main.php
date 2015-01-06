@@ -60,6 +60,9 @@
 							<li><a href="#">Contact</a></li>
 						</ul>
 					</li>
+					<?php if( count(Auth::$user->perms) > 0 ): ?>
+					<li><a href="<?php echo URL::base(TRUE, TRUE);?>manage">Admin</a></li>
+					<?php endif; ?>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">
