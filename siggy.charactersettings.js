@@ -171,7 +171,7 @@ charactersettings.prototype.performSettingsRefresh = function()
 	if( this.settings.language != 'en' )
 	{
 		jQuery.ajax({
-			 url: this.settings.baseUrl + 'public/js/locale/siggy.locale.'+this.settings.language+'.js',
+			 url: this.settings.baseUrl + 'public/js/locale/siggy.locale.'+this.settings.language+'.js?' + new Date().getTime(),
 			 success: function(result) {
 						_.setTranslation(result);
 					  },
