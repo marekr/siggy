@@ -62,6 +62,11 @@ class Controller_Pages extends FrontController
 		}
 		else if( $page == 'trust-required')
 		{
+			if( $this->igb && $this->trusted )
+			{
+				HTTP::redirect('/');
+			}
+		
 			$this->template->title = "Trust required";
 			$this->template->selectedTab = 'home';
 
