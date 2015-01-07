@@ -56,7 +56,10 @@
 						<ul class="dropdown-menu siggy-main-navbar" role="menu">
 							<li><a id="global-notes-button"><span class="glyphicon glyphicon-folder-close"></span> Notes</a></li>
 							<li><a target="_blank" href="<?php echo URL::base(TRUE, TRUE); ?>stats"><span class="glyphicon glyphicon-list"></span> Stats</a></li>
-							<li id="settings-button"><a><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+							<li id="settings-button"><a><span class="glyphicon glyphicon-cog"></span> Settings</a></li>	
+							<?php if( count(Auth::$user->perms) > 0 ): ?>
+							<li><a href="<?php echo URL::base(TRUE, TRUE);?>manage"><span class="glyphicon glyphicon-home"></span> Admin</a></li>
+							<?php endif; ?>
 						</ul>
 					</li>
 					<li class="dropdown">
@@ -68,15 +71,12 @@
 							<li><a target="_blank" href="http://wiki.siggy.borkedlabs.com/support">Contact</a></li>
 						</ul>
 					</li>
-					<?php if( count(Auth::$user->perms) > 0 ): ?>
-					<li><a href="<?php echo URL::base(TRUE, TRUE);?>manage">Admin</a></li>
-					<?php endif; ?>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<?php if( count($group['access_groups']) > 1 ): ?>
 					<li class="dropdown">
 						<a data-toggle="dropdown" href="#">
-							<?php echo $group['groupName']; ?>&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-down"></i>
+							<?php echo substr($group['groupName'],0,10); ?>&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-down"></i>
 						</a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 							<?php foreach( $group['access_groups'] as $g ): ?>
@@ -91,7 +91,7 @@
 					<?php else: ?>
 					<li class="dropdown">
 						<a href="#">
-							<?php echo $group['groupName']; ?>
+							<?php echo substr($group['groupName'],0,10); ?>
 						</a>
 					</li>
 					<?php endif; ?>
