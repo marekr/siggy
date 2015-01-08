@@ -117,6 +117,8 @@ siggy2.Core = function( options )
 
 siggy2.Core.prototype.initialize = function ()
 {
+	siggy2.Helpers.setupHandlebars();
+	
 	var that = this;
 	this.setupFatalErrorHandler();
 
@@ -305,30 +307,6 @@ siggy2.Core.prototype.getCurrentTime = function ()
 {
 	var date = new Date();
 	var time = pad(date.getUTCHours(), 2) + ':' + pad(date.getUTCMinutes(), 2) + ':' + pad(date.getUTCSeconds(), 2);
-
-	delete date;
-
-	return time;
-}
-
-/**
- * Renders a ISO8601 date + time from a unix timestamp. Except instead of the T
- * in between we have a space.
- */
-siggy2.Helpers = siggy2.Helpers || {};
-siggy2.Helpers.displayTimeStamp = function (unixTimestamp)
-{
-	var date = new Date(unixTimestamp * 1000);
-
-	var day = pad(date.getUTCDate(), 2);
-	var month = pad(date.getUTCMonth() + 1, 2);
-	var year = date.getUTCFullYear().toString();
-
-	var hours = pad(date.getUTCHours(), 2);
-	var minutes = pad(date.getUTCMinutes(), 2);
-	var seconds = pad(date.getUTCSeconds(), 2);
-
-	var time = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
 
 	delete date;
 
