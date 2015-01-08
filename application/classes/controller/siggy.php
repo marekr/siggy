@@ -390,14 +390,12 @@ class Controller_Siggy extends FrontController
 
             $newSystemData = array();
             $update['acsid'] = $lastSystemID = $actualCurrentSystemID = intval($_POST['acsid']);
-            $update['acsname'] = $lastSystemName = $actualCurrentSystemName = $_POST['acsname'];
 
             if( $this->igb )
             {
                 if( ($actualCurrentSystemID != $_SERVER['HTTP_EVE_SOLARSYSTEMID'] ) )
                 {
 					$update['acsid'] = $actualCurrentSystemID = $_SERVER['HTTP_EVE_SOLARSYSTEMID'];
-					$update['acsname'] = $actualCurrentSystemName = $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'];
 
 
                     if( Auth::$session->accessData['recordJumps'] && $actualCurrentSystemID != 0 && $lastSystemID != 0 )
