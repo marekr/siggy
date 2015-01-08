@@ -322,7 +322,7 @@
 					<label style="float:right"><input id="checkbox-show-anomalies" type="checkbox" value="1" checked /> <?php echo __('Show anomalies'); ?> (<?php echo __('Combat Sites'); ?>)</label>
 				</h2>
 			</div>
-            <table id="sig-table" cellspacing="1" class="siggy-table tablesorter">
+            <table id="sig-table" cellspacing="1" class="siggy-table siggy-table-striped">
                 <thead>
                     <tr>
                         <th width="2%">&nbsp;</th>
@@ -482,6 +482,7 @@
 	<?php echo View::factory('siggy/handlebars/effect_tooltip'); ?>
 	<?php echo View::factory('siggy/handlebars/statics_tooltip'); ?>
 	<?php echo View::factory('siggy/handlebars/site_tooltip'); ?>
+	<?php echo View::factory('siggy/handlebars/thera_table_row'); ?>
 	
     <script type='text/javascript'>
         $(document).ready(function() {

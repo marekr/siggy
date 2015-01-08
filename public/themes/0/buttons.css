@@ -404,3 +404,19 @@ fieldset[disabled] .btn-link:focus
 {
     margin-top: 5px;
 }
+
+
+.btn-hidden
+{
+	border: 1px solid transparent;
+	background:transparent;
+	color: inherit;
+}
+
+.btn-hidden:hover
+{
+	border: 1px solid #fff;
+	background-color: inherit;
+	color: inherit;
+}
+

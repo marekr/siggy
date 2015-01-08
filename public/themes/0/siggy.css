@@ -92,7 +92,7 @@ table.siggy-table td
 	padding:4px;
 }
 
-table.siggy-table tr.alt {
+table.siggy-table-striped tr:nth-child(odd) {
 	background-color: @alt-primary-background;
 }
 
@@ -825,4 +825,7 @@ div.connection-editor-group > div
 	font-size:12px;
 }
 
-
+#thera-exits-table .btn-hidden
+{
+	width: 100%;
+}

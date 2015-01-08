@@ -42,6 +42,7 @@
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.hotkeyhelper.js?<?php echo time(); ?>'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.map.js?<?php echo time(); ?>'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.map.connection.js?<?php echo time(); ?>'></script>
+    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.activity.thera.js?<?php echo time(); ?>'></script>
     <?php else: ?>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/thirdparty.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>
@@ -52,9 +53,12 @@
 				<ul class="nav navbar-nav">
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle siggy-navbar-brand" data-toggle="dropdown" role="button" aria-expanded="false">
-						siggy <span id="main_icon" class="glyphicon glyphicon-align-justify"></span> <i class="fa fa-caret-down"></i>
+						<span id="current-activity">siggy</span> <span id="main_icon" class="glyphicon glyphicon-align-justify"></span> <i class="fa fa-caret-down"></i>
 						</a>
 						<ul class="dropdown-menu siggy-main-navbar" role="menu">
+							<li><a class="activity-menu-option" data-activity="siggy" style="display:none"><span class="glyphicon glyphicon-list"></span> siggy</a></li>
+							<li><a class="activity-menu-option" data-activity="thera"><span class="glyphicon glyphicon-list"></span> Thera</a></li>
+							
 							<li><a id="global-notes-button"><span class="glyphicon glyphicon-folder-close"></span> Notes</a></li>
 							<li><a target="_blank" href="<?php echo URL::base(TRUE, TRUE); ?>stats"><span class="glyphicon glyphicon-list"></span> Stats</a></li>
 							<li id="settings-button"><a><span class="glyphicon glyphicon-cog"></span> Settings</a></li>	
@@ -122,7 +126,24 @@
 
 				</ul>
 		</div>
-		<div id="siggy-content" class="wrapper">
+		<div id="activity-thera" class="wrapper" style="display:none">
+			<p>Thera wormhole information with data from <a href="http://eve-scout.com">EVE-Scout</a></p>
+			<table class="siggy-table siggy-table-striped" id="thera-exits-table">
+				<thead>
+					<tr>
+						<th>Region</th>
+						<th>System</th>
+						<th>Type</th>
+						<th>Out Sig</th>
+						<th>In Sig</th>
+						<th>Life</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<div id="activity-siggy" class="wrapper">
 			<?php echo $content; ?>
 			<div id="footer-link" style="text-align:center;font-size:0.9em;margin-top:100px;">
 				<p style="width:33%;float:left;text-align:left;">

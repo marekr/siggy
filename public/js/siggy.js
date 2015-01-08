@@ -112,6 +112,10 @@ siggy2.Core = function( options )
     this.setSystemID(this.settings.initialSystemID);
 	
 	this.templateEffectTooltip = Handlebars.compile( $("#template-effect-tooltip").html() );
+	
+	
+	this.activity = 'siggy';
+	this.activities = { thera: new siggy2.Activity.Thera(this)  }
 }
 
 
@@ -200,6 +204,54 @@ siggy2.Core.prototype.initialize = function ()
 	this.initializeExitFinder();
 
 	this.initializeHubJumpContextMenu();
+	
+	this.registerMainMenu();
+}
+
+siggy2.Core.prototype.registerMainMenu = function()
+{
+	var $this = this;
+	
+	$('.activity-menu-option').click( function() {
+		$this.loadActivity( $(this).data('activity') );
+	});
+}
+
+siggy2.Core.prototype.loadActivity = function(activity)
+{
+	var $this = this;
+	
+	
+	if( typeof( $this.activities[ activity ] ) == 'undefined' && activity != 'siggy' )
+		return;
+		
+	if( $this.activity == activity )
+		return;
+		
+		
+	if( $this.activity != 'siggy' )
+		$this.activities[$this.activity].stop();
+	else
+		$('#activity-siggy').hide();
+		
+		
+	$this.activity = activity;
+	
+	if( $this.activity != 'siggy' )
+		$this.activities[$this.activity].start();
+	else
+		$('#activity-siggy').show();
+		
+	
+	$('.activity-menu-option').show();
+	$('.activity-menu-option').each( function() {
+		if( $(this).data('activity') == activity )
+		{
+		
+			$('#current-activity').text( $(this).text() );
+			$(this).hide();
+		}
+	} );
 }
 
 siggy2.Core.prototype.initializeHubJumpContextMenu = function()

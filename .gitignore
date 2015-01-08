@@ -1,8 +1,6 @@
 /application/logs
 /application/cache
-
 /specific
 /junk
 /.htaccess
-/application
-/vendor
+/application/vendor
