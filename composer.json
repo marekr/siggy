@@ -1,0 +1,8 @@
+{
+	"config": {
+		"vendor-dir": "application/vendor"
+	},
+    "require": {
+        "nesbot/Carbon": "*"
+    }
+}
