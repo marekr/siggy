@@ -33,7 +33,6 @@ siggy2.Core = function( options )
 	this.publicMode = false;
 	this.map = null;
 	this.acsid = 0;
-	this.acsname = '';
 
 	this.chainMapID = 0;
 
@@ -345,7 +344,6 @@ siggy2.Core.prototype.update = function ()
 		systemName: this.systemName,
 		freezeSystem: this.freezeSystem,
 		acsid: this.acsid,
-		acsname: this.acsname,
 		mapOpen: this.displayStates.map.open,
 		mapLastUpdate: this.map.lastUpdate,
 		forceUpdate: this.forceUpdate
@@ -394,11 +392,7 @@ siggy2.Core.prototype.update = function ()
 					{
 						that.acsid = data.acsid;
 					}
-					if( data.acsname != '' )
-					{
-						that.acsname = data.acsname;
-						$('#acsname b').text(that.acsname);
-					}
+					
 					if (data.systemUpdate)
 					{
 						that.updateSystemInfo(data.systemData);
