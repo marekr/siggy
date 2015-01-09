@@ -36,6 +36,9 @@
 					</ul>
 				</div>
 			</td>
+			<td class='center-text'>
+				{{ system.sec }}
+			</td>
 			<td class='wormhole-type center-text'>
 				{{ wormhole_name }}
 			</td>

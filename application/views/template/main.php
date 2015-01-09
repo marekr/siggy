@@ -58,10 +58,10 @@
 						<ul class="dropdown-menu siggy-main-navbar" role="menu">
 							<li><a class="activity-menu-option" data-activity="siggy" style="display:none"><span class="glyphicon glyphicon-list"></span> siggy</a></li>
 							<li><a class="activity-menu-option" data-activity="thera"><span class="glyphicon glyphicon-list"></span> Thera</a></li>
-							
+
 							<li><a id="global-notes-button"><span class="glyphicon glyphicon-folder-close"></span> Notes</a></li>
 							<li><a target="_blank" href="<?php echo URL::base(TRUE, TRUE); ?>stats"><span class="glyphicon glyphicon-list"></span> Stats</a></li>
-							<li id="settings-button"><a><span class="glyphicon glyphicon-cog"></span> Settings</a></li>	
+							<li id="settings-button"><a><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
 							<?php if( count(Auth::$user->perms) > 0 ): ?>
 							<li><a href="<?php echo URL::base(TRUE, TRUE);?>manage"><span class="glyphicon glyphicon-home"></span> Admin</a></li>
 							<?php endif; ?>
@@ -104,7 +104,7 @@
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 							 <img class="navbar-eve-image" src="https://image.eveonline.com/Corporation/<?php echo Auth::$session->corpID; ?>_64.png" height="32px"/>
 							 <img class="navbar-eve-image" src="https://image.eveonline.com/Character/<?php echo Auth::$session->charID; ?>_64.jpg" height="32px"/>
-							<?php echo Auth::$session->charName; ?> 
+							<?php echo Auth::$session->charName; ?>
 							<?php if( Auth::loggedIn() ): ?>
 							<i class="fa fa-caret-down"></i>
 							<?php endif; ?>
@@ -122,7 +122,7 @@
 						<?php endif; ?>
 					</li>
 					<li><a></a></li>
-					
+
 
 				</ul>
 		</div>
@@ -133,6 +133,7 @@
 					<tr>
 						<th>Region</th>
 						<th>System</th>
+                        <th>Sec</th>
 						<th>Type</th>
 						<th>Out Sig</th>
 						<th>In Sig</th>

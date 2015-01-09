@@ -65,6 +65,7 @@ class Controller_Thera extends FrontController
 
 			$system = DB::query(Database::SELECT, 'SELECT s.id, s.name,
 													s.sysClass as sys_class,
+													s.sec as sec,
 													s.region as region_id,
 													r.regionName as region_name, s.sec
 													FROM solarsystems  s
