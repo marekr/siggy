@@ -14,12 +14,24 @@
 			</td>
 			<td class='center-text'>
 				<div class="dropdown">
-					 <button class="btn btn-default btn-hidden dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+					<button class="btn btn-default btn-hidden dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
 						{{ system.name }}
 					</button>
 					<ul class="dropdown-menu" role="menu">
-						<li><a>Set Destination</a></li>
-						<li><a>Show Info</a></li>
+						{{#isIGB}}
+						<li>
+						{{else}}
+						<li class='disabled'>
+						{{/isIGB}}
+							<a onclick="javascript:CCPEVE.setDestination(system.id )">Set Destination</a>
+						</li>
+						{{#isIGB}}
+						<li>
+						{{else}}
+						<li class='disabled'>
+						{{/isIGB}}
+							<a onclick="javascript:CCPEVE.showInfo(5,{{ system.id }})">Show Info</a>
+						</li>
 						<li><a target="_blank" href="http://evemaps.dotlan.net/system/{{system.name}}">DOTLAN</a></li>
 					</ul>
 				</div>

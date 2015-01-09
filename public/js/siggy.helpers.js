@@ -29,14 +29,25 @@ siggy2.Helpers.setupHandlebars = function()
 		return _(str);
 	});
 
+	Handlebars.registerHelper('isIGB', function(options) {
+		if (typeof(CCPEVE) != 'undefined')
+		{
+			return options.fn(this);
+		}
+		else
+		{
+			return options.inverse(this);
+		}
+	});
+
 	Handlebars.registerHelper('displayTimestamp', function(stamp) {
 		return siggy2.Helpers.displayTimeStamp(stamp);
 	});
-	
+
 	Handlebars.registerHelper('numberFormat', function(number, decimals, dec_point, thousands_sep) {
 		return number_format(number, decimals, dec_point, thousands_sep)
 	});
-	
+
 	Handlebars.registerHelper('notEqual', function(lvalue, rvalue, options) {
 		if (arguments.length < 3)
 			throw new Error("Handlebars Helper not equal needs 2 parameters");
