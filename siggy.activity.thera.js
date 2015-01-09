@@ -21,7 +21,7 @@ siggy2.Activity.Thera = function(core)
 	var tableSorterHeaders = {
 		0: {
 			sortInitialOrder: 'asc'
-		},
+		}
 	};
 
 	$('#thera-exits-table').tablesorter(
