@@ -2,7 +2,7 @@
  * @license Proprietary
  * @copyright Copyright (c) 2014 borkedLabs - All Rights Reserved
  */
- 
+
 /**
 * @constructor
 */
@@ -61,13 +61,13 @@ siggy2.SigTable.prototype.initialize = function()
 			}
 		};
 	}
-	
-		
+
+
 	$( document ).on('click', 'td.edit i', function (e)
 										{
 											$this.editSigForm($(this).parent().parent().data('sig-id'));
 										});
-										
+
 	$( document ).on('click', 'td.remove i', function (e)
 										{
 											$this.removeSig($(this).parent().parent().data('sig-id'));
@@ -77,11 +77,10 @@ siggy2.SigTable.prototype.initialize = function()
 	{
 		headers: tableSorterHeaders
 	});
-	
+
 	$('#sig-table').trigger("sorton", [ [[1,0]] ]);
 
 	$('#sig-table').bind('sortEnd', function() {
-		$this.colorizeSigRows();
 	});
 
 
@@ -91,23 +90,23 @@ siggy2.SigTable.prototype.initialize = function()
 		$this.changeAnomState($(this).is(':checked'));
 		$this.updateSigTotal();
 	});
-	
+
 	$this.initializeHotkeys();
 }
 
 siggy2.SigTable.prototype.initializeHotkeys = function()
 {
 	var $this = this;
-	
+
 	$(document).bind('keydown', 'ctrl+q', function(){
-		$(document).scrollTop( $('#sig-table').offset().top-100 );  
+		$(document).scrollTop( $('#sig-table').offset().top-100 );
 	});
-	
+
 	$(document).bind('keydown', 'ctrl+b', function(){
-		$(document).scrollTop( $("#sig-add-box textarea[name=mass_sigs]").offset().top-100);  
+		$(document).scrollTop( $("#sig-add-box textarea[name=mass_sigs]").offset().top-100);
 		$("#sig-add-box textarea[name=mass_sigs]").focus();
 	});
-	
+
 	this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+Q', 'Jump to signatue table');
 	this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+B', 'Focus on signature adder');
 }
@@ -115,19 +114,19 @@ siggy2.SigTable.prototype.initializeHotkeys = function()
 siggy2.SigTable.prototype.clear = function()
 {
 	this.sigData = {};
-	
+
 	for(var i in this.sigClocks)
 	{
 		this.sigClocks[i].destroy();
 		delete this.sigClocks[i];
 	}
-	
+
 	for(var i in this.eolClocks)
 	{
 		this.eolClocks[i].destroy();
 		delete this.eolClocks[i];
 	}
-	
+
     $('td.moreinfo img').qtip('destroy');
     $('td.age span').qtip('destroy');
     $('td.desc').qtip('destroy');
@@ -154,22 +153,6 @@ siggy2.SigTable.prototype.changeAnomState = function(visible)
 	{
 		$('#sig-table tbody tr.type-anomaly').hide();
 	}
-	
-	this.colorizeSigRows();
-}
-
-siggy2.SigTable.prototype.colorizeSigRows = function()
-{
-	var i = 0;
-	$('#sig-table tbody tr').each( function() {
-		$( this ).removeClass('alt');
-		if( $(this).is(':visible') )
-		{
-			if( i % 2 != 0 )
-				$( this ).addClass('alt');
-			i++;
-		}
-	});
 }
 
 siggy2.SigTable.prototype.convertType = function(type)
@@ -239,7 +222,7 @@ siggy2.SigTable.prototype.updateSigs = function (sigData, flashSigs)
 	{
 		$('#sig-table').trigger('update');
 	}
-	
+
 	this.refreshAnomState();
 	this.updateSigTotal();
 }
@@ -268,7 +251,7 @@ siggy2.SigTable.prototype.updateSiteSelect = function( ele, whClass, type, siteI
 {
 	var elem = $( ele );
 	elem.empty();
-	
+
 	/* use common select generator method and just swap contents */
 	var newSel = this.generateSiteSelect( whClass, type, siteID );
 	elem.empty().html(newSel.html());
@@ -287,23 +270,22 @@ siggy2.SigTable.prototype.removeSigRow = function (sigData)
 	$('#sig-' + sigData.sigID + ' td.desc').qtip('destroy');
 
 	$('#sig-' + sigData.sigID).remove();
-	this.colorizeSigRows();
 }
 
 siggy2.SigTable.prototype.setupHandlebars = function()
 {
 	var $this = this;
-	
-	
+
+
 	Handlebars.registerHelper('sigTypeToText', function(type) {
 		return $this.convertType(type);
 	});
-	
+
 	Handlebars.registerHelper('siteIDToText', function(sysClass, type, siteID) {
 		return $this.convertSiteID(sysClass, type, siteID);
 	});
-	
-	
+
+
 }
 
 siggy2.SigTable.prototype.addSigRow = function (sigData, flashSig)
@@ -311,13 +293,11 @@ siggy2.SigTable.prototype.addSigRow = function (sigData, flashSig)
 	var $this = this;
 	sigData.showSigSizeCol = this.settings.showSigSizeCol;
 	sigData.sysClass = this.systemClass;
-	
+
 	var row = this.templateSigRow(sigData);
 	$("#sig-table tbody").append( row );
-	
+
 	this.sigRowMagic(sigData);
-	
-	this.colorizeSigRows();
 
 	if( flashSig )
 	{
@@ -326,22 +306,22 @@ siggy2.SigTable.prototype.addSigRow = function (sigData, flashSig)
 }
 
 siggy2.SigTable.prototype.sigRowMagic = function(sigData)
-{	
+{
 	if( typeof(this.sigClocks[sigData.sigID]) != 'undefined' )
 		this.sigClocks[sigData.sigID].destroy();
 	delete this.sigClocks[sigData.sigID];
-	
+
 	if( typeof(this.eolClocks[sigData.sigID]) != 'undefined' )
 		this.eolClocks[sigData.sigID].destroy();
-	
+
 	delete this.eolClocks[sigData.sigID];
 	this.sigClocks[sigData.sigID] = new siggy2.Timer(sigData.created * 1000, null, '#sig-' + sigData.sigID + ' td.age span.age-clock', "test");
-	
+
 	var wh = null;
 	if( sigData.type == 'wh' )
 	{
 		wh = siggy2.StaticData.getWormholeByID(sigData.siteID);
-		
+
 		if( wh != null )
 		{
 			var endDate = parseInt(sigData.created)+(3600*wh.lifetime);
@@ -355,16 +335,16 @@ siggy2.SigTable.prototype.sigRowMagic = function(sigData)
 			text: $('#creation-info-' + sigData.sigID) // Use the "div" element next to this for the content
 		}
 	});
-	
+
 	$('#sig-' + sigData.sigID + ' td.age span').qtip('destroy');
 	$('#sig-' + sigData.sigID + ' td.age span').qtip({
 		content: {
 			text: $('#age-timestamp-' + sigData.sigID) // Use the "div" element next to this for the content
 		}
 	});
-	
+
 	$('#sig-' + sigData.sigID + ' td.desc').qtip('destroy');
-	
+
 	var desc_tooltip = '';
 	if( sigData.type == 'wh' )
 	{
@@ -376,14 +356,14 @@ siggy2.SigTable.prototype.sigRowMagic = function(sigData)
 	else if( sigData.siteID != 0 )
 	{
 		var site = siggy2.StaticData.getSiteByID(sigData.siteID);
-		
-		
+
+
 		if( site != null && site.description != "" )
 		{
 			desc_tooltip = siggy2.StaticData.templateSiteTooltip( site );
 		}
 	}
-	
+
 	if( desc_tooltip != '' )
 	{
 		$('#sig-' + sigData.sigID + ' td.desc').qtip({
@@ -405,7 +385,7 @@ siggy2.SigTable.prototype.editSigForm = function (sigID)
 	{
 		return;
 	}
-	
+
 	/*disable the tooltip or it will be annoying */
 	$('#sig-' + sigID + ' td.desc').qtip('disable');
 
@@ -551,7 +531,7 @@ siggy2.SigTable.prototype.editSig = function (sigID)
 
 siggy2.SigTable.prototype.generateSiteSelect = function (whClass, type, siteID)
 {
-	if (type == 'wh') 
+	if (type == 'wh')
 	{
 		return this.generateSelect(siggy2.StaticData.getWormholesForList(whClass), siteID);
 	}
@@ -559,7 +539,7 @@ siggy2.SigTable.prototype.generateSiteSelect = function (whClass, type, siteID)
 	{
 		return this.generateSelect(siggy2.StaticData.getSiteList(type,whClass), siteID);
 	}
-	else 
+	else
 	{
 		return this.generateSelect({
 										0: '--'
@@ -601,11 +581,10 @@ siggy2.SigTable.prototype.updateSigRow = function (sigData, flashSig)
 	var baseID = '#sig-' + sigData.sigID;
 	sigData.showSigSizeCol = this.settings.showSigSizeCol;
 	sigData.sysClass = this.systemClass;
-	
+
 	var row = this.templateSigRow(sigData);
 	$(baseID).replaceWith(row);
-	
-	
+
+
 	this.sigRowMagic(sigData);
-	this.colorizeSigRows();
 }
