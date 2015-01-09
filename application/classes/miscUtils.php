@@ -12,11 +12,11 @@ final class miscUtils
 		{
 			return 0;
 		}
-		
+
 		$total = 25420*$memberCount + 283650;
 		return $total*$days;
 	}
-	
+
 
 	static function parseIngameSigExport( $string )
 	{
@@ -35,7 +35,7 @@ final class miscUtils
 
 			$matches = array();
 
-			/*eliminate junk items, :CCP: sometimes 
+			/*eliminate junk items, :CCP: sometimes
 			inject mix spaces/tabs that cause the tab split to not be clean */
 			$data = array();
 			foreach($rawdata as $item)
@@ -45,22 +45,22 @@ final class miscUtils
 					continue;
 				$data[] = $item;
 			}
-			
+
 			foreach($data as $k => $item)
 			{
 				$item = trim($item);
 				if( empty($item) )
 					continue;
-					
+
 				preg_match("/^([a-zA-Z]{3})-([0-9]{3})$/", $item, $matches );
 				if( count($matches) == 3 )	//SIG-NUM, SIG, NUM
 				{
 					$sigData['sig'] = $matches[1];
 					continue;
 				}
-				
+
 				$regex = "/^(".__('Wormhole')."|".__('Data Site')."|".__('Gas Site')."|".__('Relic Site')."|".__('Ore Site')."|".__('Combat Site').")$/";
-				
+
 				preg_match($regex, $item, $matches );
 				if( count($matches) == 2 )
 				{
@@ -94,7 +94,7 @@ final class miscUtils
 					continue;
 				}
 			}
-			
+
 			if( $sigData['sig'] != '' )
 			{
 				$resultingSigs[] = $sigData;
@@ -108,7 +108,7 @@ final class miscUtils
 		$sites = DB::query(Database::SELECT, "SELECT * FROM sites WHERE type = :type")
 											->param(':type', $type)
 					  ->execute()->as_array();
-					  
+
 		foreach( $sites as $site )
 		{
 			if( __($site['name']) == $name )
