@@ -28,7 +28,7 @@ siggy2.Activity.Thera = function(core)
 	{
 		headers: tableSorterHeaders
 	});
-	
+
 	$('#thera-exits-table').trigger("sorton", [ [[0,0]] ]);
 }
 
@@ -60,7 +60,7 @@ siggy2.Activity.Thera.prototype.update = function()
 					$this._updateTimeout = setTimeout(function(thisObj)
 					{
 						thisObj.update()
-					}, 10000, $this);
+					}, 60000, $this);
 				}
 		});
 }
