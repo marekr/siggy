@@ -1,14 +1,14 @@
 
 	<script id="template-thera-table-row" type="text/x-handlebars-template">?
-		<tr id='thera-sig-{{ id }}' data-id='{{ id }}' class='data-row'>
+		<tr id='thera-sig-{{ id }}' data-id='{{ id }}' class='exit-row'>
 			<td class='center-text'>
-				
+
 				<div class="dropdown">
 					 <button class="btn btn-default btn-hidden dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
 						{{ system.region_name }}
 					</button>
 					<ul class="dropdown-menu" role="menu">
-						<li><a>DOTLAN</a></li>
+						<li><a target="_blank" href="http://evemaps.dotlan.net/map/{{system.region_name}}">DOTLAN</a></li>
 					</ul>
 				</div>
 			</td>
@@ -20,7 +20,7 @@
 					<ul class="dropdown-menu" role="menu">
 						<li><a>Set Destination</a></li>
 						<li><a>Show Info</a></li>
-						<li><a>DOTLAN</a></li>
+						<li><a target="_blank" href="http://evemaps.dotlan.net/system/{{system.name}}">DOTLAN</a></li>
 					</ul>
 				</div>
 			</td>

@@ -25,7 +25,7 @@ textarea
 }
 
 .placeholder
-{ 
+{
 	color: #aaa;
 }
 
@@ -828,4 +828,10 @@ div.connection-editor-group > div
 #thera-exits-table .btn-hidden
 {
 	width: 100%;
+}
+
+#thera-exits-table tr th,
+#thera-exits-table tr td
+{
+	padding: 6px;
 }
