@@ -1,3 +1,7 @@
+/*
+* @license Proprietary
+* @copyright Copyright (c) 2014 borkedLabs - All Rights Reserved
+*/
 
 siggy2.Activity = siggy2.Activity || {};
 
@@ -24,8 +28,8 @@ siggy2.Activity.Thera = function(core)
 	{
 		headers: tableSorterHeaders
 	});
+	
 	$('#thera-exits-table').trigger("sorton", [ [[0,0]] ]);
-
 }
 
 siggy2.Activity.Thera.prototype.start = function()
