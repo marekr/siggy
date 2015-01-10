@@ -4,6 +4,7 @@
 	},
     "require": {
         "nesbot/Carbon": "*",
-		"swiftmailer/swiftmailer": "@stable"
+		"swiftmailer/swiftmailer": "@stable",
+        "3rdpartyeve/phealng": "~2.0"
     }
 }

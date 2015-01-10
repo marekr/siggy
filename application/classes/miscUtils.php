@@ -1,5 +1,7 @@
 <?php
 
+use Pheal\Pheal;
+
 final class miscUtils
 {
 	const TIER1COST = 33000;
@@ -143,10 +145,7 @@ final class miscUtils
 			}
 		}
 
-		require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
-		spl_autoload_register( "Pheal::classload" );
-		PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
-		PhealConfig::getInstance()->http_ssl_verifypeer = false;
+		PhealHelper::configure();
 		$pheal = new Pheal(null,null,'eve');
 
 		$result = $pheal->CharacterID( array( 'names' => $names ) )->toArray();
@@ -255,10 +254,7 @@ final class miscUtils
 
 	static function apiFetchCorp( $corpID )
 	{
-		require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
-		spl_autoload_register( "Pheal::classload" );
-		PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
-		PhealConfig::getInstance()->http_ssl_verifypeer = false;
+		PhealHelper::configure();
 		$pheal = new Pheal(null,null,'corp');
 
 		$result = $pheal->CorporationSheet( array( 'corporationID' => (int)$gm->eveID ) );

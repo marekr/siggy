@@ -1,31 +1,33 @@
-<?php 
+<?php
+
+use Pheal\Pheal;
 
 class User
 {
 	public $data = array();
 	public $apiKeys = array();
 	public $perms = array();
-	
+
 	public $groupID = 0;
 	public $activeChainMap = 0;
-	
+
 	public function userLoaded()
 	{
 		return (isset($this->data['id']) && $this->data['id'] > 0);
 	}
-	
+
 	public function isLocal()
 	{
 		return ($this->data['provider'] == 0);
 	}
-	
+
 	public function save()
 	{
 		if( !$this->userLoaded() )
 		{
 			return;
 		}
-		
+
 		$userArray = array(	'id' => $this->data['id'],
 							'email' => $this->data['email'],
 							'password' => $this->data['password'],
@@ -44,19 +46,19 @@ class User
 							'selected_apikey_id' => $this->data['selected_apikey_id'],
 							'provider' => $this->data['provider']
 						 );
-						 
+
 		DB::update('users')->set( $userArray )->where('id', '=',  $this->data['id'])->execute();
-		
-		
+
+
 		if( $this->data['selected_apikey_id'] != 0 )
 		{
 			$apiArray = array( 'apiKeyInvalid' => $this->data['apiKeyInvalid'],
 								'apiFailures' => $this->data['apiFailures'],
-                                'apiLastCheck' => $this->data['apiLastCheck']
+								'apiLastCheck' => $this->data['apiLastCheck']
 							 );
 			DB::update('apikeys')->set( $apiArray )->where('entryID', '=',  $this->data['selected_apikey_id'])->execute();
 		}
-		
+
 		//are we the current user?
 		if( isset(Auth::$user->data['id']) && $this->data['id'] == Auth::$user->data['id'] )
 		{
@@ -68,7 +70,7 @@ class User
 			//purge sessions?
 		}
 	}
-	
+
 	public function savePassword( $groupID, $pass )
 	{
 		$passes = DB::query(Database::INSERT, "REPLACE INTO user_group_passwords (user_id, group_id, group_password) VALUES(:user, :group, :pass)")
@@ -78,7 +80,7 @@ class User
 									->execute();
 		$this->recacheSavedPasswords();
 	}
-	
+
 	public function getSavedPassword( $groupID )
 	{
 		$cache = Cache::instance(CACHE_METHOD);
@@ -88,14 +90,14 @@ class User
 		{
 			$saved_passwords = $this->recacheSavedPasswords();
 		}
-		
+
 		return isset( $saved_passwords[ $groupID ] ) ? $saved_passwords[ $groupID ] : '';
 	}
-	
+
 	public function recacheSavedPasswords()
 	{
 		$saved_passwords = array();
-	
+
 		$cache = Cache::instance(CACHE_METHOD);
 		$passes = DB::query(Database::SELECT, "SELECT * FROM user_group_passwords WHERE user_id=:userid")
 									->param(':userid', $this->data['id'])
@@ -106,12 +108,12 @@ class User
 		{
 			$saved_passwords[ $p['group_id'] ] = $p['group_password'];
 		}
-		
+
 		$cache->set('user-'.$this->data['id'].'-group-passwords', $saved_passwords);
-		
+
 		return $saved_passwords;
 	}
-	
+
 	public function validateCorpChar()
 	{
 		if( !self::userLoaded() )
@@ -122,7 +124,7 @@ class User
 		if( $this->isLocal() )
 		{
 			$apiCharInfo = $this->apiKeyCheck();
-			
+
 			if( $apiCharInfo !== FALSE )
 			{
 				/* update the corp id */
@@ -140,7 +142,7 @@ class User
 		else
 		{
 			$corpID = $this->apiCharacterAffiliationGetCorp();
-			
+
 			/* update the corp id */
 			if( $corpID != $this->data['corp_id'] )
 			{
@@ -153,30 +155,30 @@ class User
 				}
 			}
 		}
-		
+
 		return TRUE;
 	}
-	
+
 	public static function create($data)
 	{
 		$insert = array();
 		$insert = $data;
-		
+
 		$insert['password'] = Auth::hash($insert['password']);
 		$insert['active'] = TRUE;
-		
+
 		$userID = DB::insert('users', array_keys($insert) )->values(array_values($insert))->execute();
-		
+
 		return TRUE;
 	}
-	
+
 	public function getAPIKeys()
 	{
 		if( !$this->userLoaded() )
 		{
 			return;
 		}
-	
+
 		$keys = DB::query(Database::SELECT, "SELECT * FROM apikeys WHERE userID=:userid")->param(':userid', $this->data['id'])
 										->execute()->as_array();
 
@@ -198,39 +200,39 @@ class User
 			{
 					$status = 'Good';
 			}
-			
+
 			$key['status'] = $status;
 		}
-		
-		return $keys;				
+
+		return $keys;
 	}
-	
+
 	public function loadByEmail($email)
 	{
 		$this->loadBy('email', $email);
 	}
-	
+
 	public function loadByID($id)
 	{
 		$this->loadBy('id', $id);
 	}
-	
+
 	public function loadByUsername($username)
 	{
 		$this->loadBy('username', $username);
 	}
-	
+
 	public function loadBy($identifier, $key)
 	{
-		$baseSQL = "SELECT u.*, 
-					COALESCE(ak.apiID,0) as apiID, 
-					COALESCE(ak.apiKey,0) as apiKey, 
-					COALESCE(ak.apiKeyInvalid,0) as apiKeyInvalid, 
-					COALESCE(ak.apiFailures,0) as apiFailures, 
-					COALESCE(ak.apiLastCheck,0) as apiLastCheck 
+		$baseSQL = "SELECT u.*,
+					COALESCE(ak.apiID,0) as apiID,
+					COALESCE(ak.apiKey,0) as apiKey,
+					COALESCE(ak.apiKeyInvalid,0) as apiKeyInvalid,
+					COALESCE(ak.apiFailures,0) as apiFailures,
+					COALESCE(ak.apiLastCheck,0) as apiLastCheck
 					FROM users u
 					LEFT JOIN apikeys ak ON(ak.entryID = u.selected_apikey_id)";
-					
+
 		if( $identifier == 'username' )
 		{
 			$user = DB::query(Database::SELECT, $baseSQL .' WHERE LOWER(u.username)=:username')
@@ -242,32 +244,32 @@ class User
 											->param(':id', intval($key))->execute()->current();
 		}
 		else if( $identifier == 'email' )
-		{		
+		{
 			$user = DB::query(Database::SELECT, $baseSQL .' WHERE LOWER(u.email)=:email')
 												->param(':email', strtolower($key))->execute()->current();
 		}
-		
+
 		$this->data = $user;
-		
+
 
 		$perms = DB::query(Database::SELECT, 'SELECT * FROM users_group_acl WHERE user_id = :id')
 										->param(':id', $this->data['id'])->execute()->as_array('group_id');
-		
+
 		$this->perms = $perms;
-		
+
 	}
-	
+
 	public function updatePassword($newPass)
 	{
 		$this->data['password'] = Auth::hash($newPass);
 		$this->save();
 	}
-	
+
 	public function isAdmin()
 	{
 		return ( (isset($this->data['admin']) && $this->data['admin'] ) ? TRUE : FALSE);
 	}
-	
+
 	public function isGroupAdmin()
 	{
         if( isset( $this->perms[ $this->data['groupID'] ] ) )
@@ -277,18 +279,14 @@ class User
 
         return FALSE;
 	}
-	
+
 	public function apiCharacterAffiliationGetCorp()
 	{
 		//recheck
-		require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
-		spl_autoload_register( "Pheal::classload" );
-		PhealConfig::getInstance()->http_ssl_verifypeer = false;
-		PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
-		PhealConfig::getInstance()->http_user_agent = 'siggy '.SIGGY_VERSION.' borkedlabs@gmail.com';
+		PhealHelper::configure();
 		$pheal = new Pheal( null, null, 'eve' );
-		
-		
+
+
 		$result = $pheal->eveScope->CharacterAffiliation(array('ids' => $this->data['char_id']));
 		if( isset ($result->characters[0]) )
 		{
@@ -297,11 +295,11 @@ class User
 				return $result->characters[0]['corporationID'];
 			}
 		}
-		
+
 		return 0;
 	}
-	
-	
+
+
     public function apiKeyCheck()
     {
 		if( !self::userLoaded() )
@@ -314,27 +312,23 @@ class User
 		{
 			return FALSE;
 		}
-		
+
 		if( $this->data['apiLastCheck'] < time()-60*120 )
 		{
 			if( $this->data['apiID'] == 0 ||  $this->data['apiKey'] == '' || $this->data['char_id'] == 0 || $this->data['apiKeyInvalid'] || ($this->data['apiFailures'] >= 3) )
 			{
 				$this->data['char_id'] = 0;
-				$this->data['corp_id'] = 0;		
+				$this->data['corp_id'] = 0;
 				$this->save();
-									
+
 				return FALSE;
 			}
-			
+
 			//recheck
-			require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
-			spl_autoload_register( "Pheal::classload" );
-			PhealConfig::getInstance()->http_ssl_verifypeer = false;
-			PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
-			PhealConfig::getInstance()->http_user_agent = 'siggy '.SIGGY_VERSION.' borkedlabs@gmail.com';
+			PhealHelper::configure();
 			$pheal = new Pheal( $this->data['apiID'], $this->data['apiKey'], 'eve' );
-			
-			try 
+
+			try
 			{
 				//get all chars on the key
 				$result = $pheal->accountScope->Characters();
@@ -342,17 +336,17 @@ class User
 				{
 					if( $char->characterID == $this->data['char_id'] )
 					{
-						$this->data['corp_id'] = $char->corporationID;								
-						
+						$this->data['corp_id'] = $char->corporationID;
+
 						$this->data['apiLastCheck'] = time();
 						$this->data['apiFailures'] = 0;
 						$this->data['apiKeyInvalid'] = 0;
 						$this->save();
-				
+
 						return array( 'corpID' => $this->data['corp_id'], 'charID' => $this->data['char_id'], 'charName' => $this->data['char_name'] );
 					}
 				}
-				
+
 				//key no longer exists?
 				return FALSE;
 			}
@@ -371,7 +365,7 @@ class User
 							$this->save();
 							return FALSE;
 							break;
-							
+
 						case 202:
 						case 203:
 						case 204:
@@ -389,11 +383,11 @@ class User
 							{
 								$this->data['apiKeyInvalid'] = 1;
 							}
-							
+
 							$this->save();
 							return FALSE;
 							break;
-							
+
 						case 221:
 						case 222:
 						case 223:
@@ -402,8 +396,8 @@ class User
 							//bad api entirely
 							//$this->update_user( $this->data['id'], array('apiInvalid' => 1) );
 							$this->data['apiKeyInvalid'] = 1;
-							
-							
+
+
 							$this->save();
 							return FALSE;
 							break;
@@ -412,7 +406,7 @@ class User
 							//expired account
 							return FALSE;
 							break;
-							
+
 						default:
 							return FALSE;
 							break;
@@ -427,4 +421,3 @@ class User
 		return FALSE;
     }
 }
-	

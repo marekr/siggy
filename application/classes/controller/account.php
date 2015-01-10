@@ -4,6 +4,7 @@ require Kohana::find_file('vendor', 'OAuth\bootstrap');
 use OAuth\OAuth2\Service\Eve;
 use OAuth\Common\Storage\Session;
 use OAuth\Common\Consumer\Credentials;
+use Pheal\Pheal;
 
 require_once APPPATH.'classes/FrontController.php';
 
@@ -18,7 +19,7 @@ class Controller_Account extends FrontController
 	{
 		parent::__construct($request, $response);
 	}
-	
+
 	public function before()
 	{
 		switch( $this->request->action() )
@@ -37,10 +38,10 @@ class Controller_Account extends FrontController
 				}
 				break;
 		}
-		
+
 		parent::before();
 	}
-	
+
 	public function after()
 	{
 		switch( $this->request->action() )
@@ -55,7 +56,7 @@ class Controller_Account extends FrontController
 				$this->template->selectedTab = 'register';
 				$this->template->layoutMode = 'blank';
 				break;
-			default: 
+			default:
 				$this->template->layoutMode = 'leftMenu';
 				$this->template->selectedTab = 'account';
 				$view = View::factory('account/menu');
@@ -68,11 +69,11 @@ class Controller_Account extends FrontController
 
 		parent::after();
 	}
-	
+
 	public function action_sso()
 	{
 		$sso_type = $this->request->param('id');
-		
+
 		if( $sso_type == 'eve' )
 		{
 			/** @var $serviceFactory \OAuth\ServiceFactory An OAuth service factory. */
@@ -80,15 +81,15 @@ class Controller_Account extends FrontController
 			// Session storage
 			$storage = new Session();
 
-					
+
 			/**
 			 * Create a new instance of the URI class with the current URI, stripping the query string
 			 */
 			$uriFactory = new \OAuth\Common\Http\Uri\UriFactory();
 			$currentUri = $uriFactory->createFromSuperGlobalArray($_SERVER);
 			$currentUri->setQuery('');
-			
-			
+
+
 			$credentials = null;
 			if( Kohana::$environment == Kohana::PRODUCTION )
 			{
@@ -123,7 +124,7 @@ class Controller_Account extends FrontController
 				{
 					HTTP::redirect('/');
 				}
-				
+
 				$fakeEmail = $result['CharacterOwnerHash'].'@eveonline.com';
 				if( $userID = Auth::usernameExists( $fakeEmail ) )
 				{
@@ -133,7 +134,7 @@ class Controller_Account extends FrontController
 				}
 				else
 				{
-					
+
 					$data = array( 'email' => $fakeEmail,
 									'username' => $fakeEmail,
 									'char_id' => $result['CharacterID'],
@@ -141,8 +142,8 @@ class Controller_Account extends FrontController
 									'password' => $result['CharacterOwnerHash'],		//we aren't using password but this is a good placeholder (non blank)
 									'provider' => 1			//provider 1 == eve sso for now
 									);
-									
-					
+
+
 					if( User::create( $data ) )
 					{
 						Auth::processLogin($fakeEmail, $result['CharacterOwnerHash']);
@@ -157,12 +158,12 @@ class Controller_Account extends FrontController
 			else
 			{
 				HTTP::redirect($eveService->getAuthorizationUri());
-			} 
+			}
 		}
-		
+
 		exit();
 	}
-		
+
 	public function action_overview()
 	{
 		if( !Auth::$user->isLocal() )
@@ -182,15 +183,15 @@ class Controller_Account extends FrontController
 	public function action_register()
 	{
 		$this->template->title = __('Register a new account');
-		
+
 		if( Auth::loggedIn() )
 		{
 			HTTP::redirect('/account');
 		}
-		
+
 		$errors = array();
-		
-		if ($this->request->method() == "POST") 
+
+		if ($this->request->method() == "POST")
 		{
 			$validator = Validation::factory($_POST)
 						->rule('username', 'not_empty')
@@ -198,20 +199,20 @@ class Controller_Account extends FrontController
 						->rule('password', 'not_empty')
 						->rule('password', 'min_length', array(':value', '6'))
 						->rule('password_confirm',  'matches', array(':validation', 'password_confirm', 'password'));
-						
-						
+
+
 			if ($validator->check())
 			{
 				if( Auth::usernameExists( $_POST['username'] ) )
 				{
 					$errors['username'] = 'Username is already in use.';
 				}
-				
+
 				if( Auth::emailExists( $_POST['email'] ) )
 				{
 					$errors['email'] = 'Email is already in use.';
 				}
-				
+
 				if( empty( $errors ) )
 				{
 					$userData = array('username' => $_POST['username'],
@@ -236,11 +237,11 @@ class Controller_Account extends FrontController
 			{
 				$errors = $validator->errors('account/register');
 			}
-		}				
-		
+		}
+
 		$this->template->content =  View::Factory('account/register')->bind('errors', $errors);
 	}
-		
+
 	public function action_apiKeys()
 	{
 		if( !Auth::loggedIn() )
@@ -248,18 +249,18 @@ class Controller_Account extends FrontController
 			HTTP::redirect('/');
 			return;
 		}
-		
+
 		if( !Auth::$user->isLocal() )
 		{
 			HTTP::redirect('/');
 		}
-		
+
 		$view = View::factory('account/apiKeys');
 		$view->set('keys', Auth::$user->getAPIKeys());
 		$this->template->content = $view;
 		$this->template->title = 'siggy - set api';
 	}
-		
+
 	public function action_addAPI()
 	{
 		if( !Auth::loggedIn() )
@@ -267,7 +268,7 @@ class Controller_Account extends FrontController
 			HTTP::redirect('/');
 			return;
 		}
-		
+
 		if( !Auth::$user->isLocal() )
 		{
 			HTTP::redirect('/');
@@ -275,8 +276,8 @@ class Controller_Account extends FrontController
 
 		$this->apiKeyForm('add');
 	}
-	
-	
+
+
 	public function action_editAPI()
 	{
 		if( !Auth::loggedIn() )
@@ -284,7 +285,7 @@ class Controller_Account extends FrontController
 			HTTP::redirect('/');
 			return;
 		}
-		
+
 		if( !Auth::$user->isLocal() )
 		{
 			HTTP::redirect('/');
@@ -292,7 +293,7 @@ class Controller_Account extends FrontController
 
 		$this->apiKeyForm('edit');
 	}
-		
+
 	public function action_removeAPI()
 	{
 		if( !Auth::loggedIn() )
@@ -300,72 +301,76 @@ class Controller_Account extends FrontController
 			HTTP::redirect('/');
 			return;
 		}
-		
+
 		if( !Auth::$user->isLocal() )
 		{
 			HTTP::redirect('/');
 		}
-		
-		
+
+
 		$entryID = intval($this->request->param('id',0));
-		
-		
-		$keyData = DB::query(Database::SELECT, "SELECT * FROM apikeys WHERE entryID=:entryID AND userID=:userID")
-										->param(':entryID', $entryID)->param(':userID', Auth::$user->data['id'])
-										->execute()->current();				
+
+
+		$keyData = DB::query(Database::SELECT, "SELECT * FROM apikeys 
+												WHERE entryID=:entryID AND userID=:userID")
+										->param(':entryID', $entryID)
+										->param(':userID', Auth::$user->data['id'])
+										->execute()
+										->current();
 		if( !isset($keyData['entryID']) )
 		{
 			HTTP::redirect('/account/apiKeys');
 		}
-		
+
 		DB::delete('apikeys')->where('entryID', '=', $entryID)->execute();
-		
+
 		if( Auth::$user->data['selected_apikey_id'] == $keyData['entryID'] )
 		{
 			Auth::$user->data['corp_id'] = 0;
 			Auth::$user->data['char_id'] = 0;
 			Auth::$user->data['char_name'] = '';
 			Auth::$user->data['selected_apikey_id'] = 0;
-			
+
 			Auth::$user->save();
 		}
-		HTTP::redirect('/account/apiKeys');	
+		HTTP::redirect('/account/apiKeys');
 	}
-	
+
 	private function apiKeyForm($mode)
 	{
 		$errors = array();
-		
+
 		$entryID = intval($this->request->param('id',0));
-		
-		
+
+
 		$keyData = array('apiID' => '', 'apiKey' => '', 'entryID' => 0);
 		if( $mode == 'edit' )
 		{
 			$keyData = DB::query(Database::SELECT, "SELECT * FROM apikeys WHERE entryID=:entryID AND userID=:userID")
 											->param(':entryID', $entryID)
 											->param(':userID', Auth::$user->data['id'])
-											->execute()->current();
-											
-											
+											->execute()
+											->current();
+
+
 			if( !isset($keyData['entryID']) )
 			{
 				HTTP::redirect('/account/apiKeys');
 			}
 		}
-		
-		if ($this->request->method() == "POST") 
+
+		if ($this->request->method() == "POST")
 		{
 			if( empty( $_POST['apiID'] ) )
 			{
 				$errors['apiID'] = 'An API ID must be provided';
 			}
-			
+
 			if( empty( $_POST['apiKey'] ) )
 			{
 				$errors['apiKey'] = 'An API key must be provided';
 			}
-				
+
 			if( $mode != 'edit' )
 			{
 				$keyData = DB::query(Database::SELECT, "SELECT * FROM apikeys WHERE apiID=:apiID AND userID=:userID")
@@ -377,29 +382,25 @@ class Controller_Account extends FrontController
 					$errors['apiID'] = 'API ID already on your account';
 				}
 			}
-			
+
 			if( !(count($errors) > 0 ) )
 			{
-				require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
-				spl_autoload_register( "Pheal::classload" );
-				PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
-				PhealConfig::getInstance()->http_ssl_verifypeer = false;
-				PhealConfig::getInstance()->http_user_agent = 'siggy '.SIGGY_VERSION.' borkedlabs@gmail.com';
+				PhealHelper::configure();
 				$pheal = new Pheal( $_POST['apiID'], $_POST['apiKey'] );
-				
-				
-				try 
+
+
+				try
 				{
 					$result = $pheal->accountScope->APIKeyInfo();
-					
+
 					$success = true;
 				}
 				catch(PhealException $e)
-				{    
+				{
 					$success = false;
 				}
-					
-					
+
+
 				if( $success )
 				{
 					$data['apiID'] = intval($_POST['apiID']);
@@ -408,19 +409,19 @@ class Controller_Account extends FrontController
 					$data['apiKeyInvalid'] = 0;
 					$data['apiFailures'] = 0;
 					$data['userID'] = Auth::$user->data['id'];
-					
+
 					if( $mode == 'edit' )
 					{
 						DB::update('apikeys')->set( $data )->where('entryID', '=',  $entryID)->execute();
-						
-						
+
+
 						if( Auth::$user->data['selected_apikey_id'] == $entryID )
 						{
 							Auth::$user->data['corp_id'] = 0;
 							Auth::$user->data['char_id'] = 0;
 							Auth::$user->data['char_name'] = '';
 							Auth::$user->data['selected_apikey_id'] = 0;
-							
+
 							Auth::$user->save();
 						}
 					}
@@ -428,7 +429,7 @@ class Controller_Account extends FrontController
 					{
 						DB::insert('apikeys', array_keys($data) )->values(array_values($data))->execute();
 					}
-					
+
 					HTTP::redirect('/account/characterSelect');
 				}
 				else
@@ -444,7 +445,7 @@ class Controller_Account extends FrontController
 		$view->set('keyData', $keyData);
 		$this->template->content = $view;
 	}
-	
+
 	public function action_changePassword()
 	{
 		if( !Auth::loggedIn() )
@@ -457,18 +458,18 @@ class Controller_Account extends FrontController
 		{
 			HTTP::redirect('/');
 		}
-		
+
 		$this->template->title = __('siggy: change password');
 		$view = View::factory('account/changePassword');
-		
+
 		$errors = array();
-		if ($this->request->method() == "POST") 
-		{						
+		if ($this->request->method() == "POST")
+		{
 			if( empty( $_POST['current_password'] ) || (Auth::hash($_POST['current_password']) != Auth::$user->data['password'])  )
 			{
 				$errors['current_password'] = 'This is not current password.';
 			}
-			
+
 			if( empty( $_POST['password'] ) )
 			{
 				$errors['password'] = 'You must enter a new password.';
@@ -481,118 +482,118 @@ class Controller_Account extends FrontController
 			{
 				$errors['password_confirm'] = 'The password did not match the new one above.';
 			}
-			
+
 			if( !count( $errors ) )
 			{
 				Auth::$user->updatePassword($_POST['password']);
 				HTTP::redirect('/');
 			}
 		}
-		
+
 		$view->bind('errors',$errors);
 		$this->template->content = $view;
 	}
-	
+
 	public function action_forgotPassword()
 	{
 		if( Auth::loggedIn() )
 		{
 			HTTP::redirect('/');
 			return;
-		}		
-		
+		}
+
 		$this->template->title = __('siggy: forgot password');
-		
+
 		$errors = array();
-		if ($this->request->method() == "POST") 
+		if ($this->request->method() == "POST")
 		{
 			if( empty( $_POST['reset_email'] ) )
 			{
 				$errors['reset_email'] = 'You must enter a valid email address.';
 			}
-			
-			if( !count( $errors ) ) 
+
+			if( !count( $errors ) )
 			{
 				$user = new User();
 				$user->loadByEmail($_POST['reset_email']);
-				
 
-				if ( isset( $user->data['id'] ) ) 
+
+				if ( isset( $user->data['id'] ) )
 				{
 					// send an email with the account reset token
 					$user->data['reset_token'] = Auth::generatePassword(32);
 					$user->save();
-					
+
 					$message = "You have requested a password reset for your siggy account. To confirm the password reset, please the follow the proceeding url:\n\n"
 					.":reset_token_link\n\n"
 					."If the above link is not clickable, please visit the following page:\n"
 					.":reset_link\n\n"
 					."and copy/paste the following reset token: :reset_token\nYour user account name is: :username\n";
-					
+
 					$mailer = Email::connect();
 					// Create complex Swift_Message object stored in $message
 					// MUST PASS ALL PARAMS AS REFS
 					$subject = __('siggy: Account password reset');
-					
+
 					$to = $_POST['reset_email'];
 					$from = Kohana::$config->load('useradmin')->email_address;
-					
-					
+
+
 					$body =  __($message, array(
 						':reset_token_link' => URL::site('account/completePasswordReset?reset_token='.$user->data['reset_token'].'&reset_email='.$_POST['reset_email'], TRUE),
 						':reset_link' => URL::site('account/completePasswordReset', TRUE),
 						':reset_token' => $user->data['reset_token'],
 						':username' => $user->data['username']
 					));
-					
+
 					$message_swift = Swift_Message::newInstance($subject, $body)
 									->setFrom($from)
 									->setTo($to);
 
 					try
 					{
-						$mailer->send($message_swift);									
+						$mailer->send($message_swift);
 					}
 					catch( Exception $e )
 					{
 					}
 				}
-					
+
 				$view = $this->template->content = View::factory('messages/forgotPasswordSent');
 				$view->email = $_POST['reset_email'];
 				return;
 			}
 		}
-			
+
 		$this->template->content = $view = View::factory('account/forgotPassword');
 		$view->errors = $errors;
 	}
-	
+
 	public function action_completePasswordReset()
 	{
 		if( Auth::loggedIn() )
 		{
 			HTTP::redirect('/');
 			return;
-		}		
+		}
 		$this->template->title = __('siggy: complete password reset');
-		
+
 		if( isset( $_REQUEST['reset_token'] ) )
 		{
 			$errors = array();
-			
+
 			if( empty( $_REQUEST['reset_email'] ) )
 			{
 				$errors['reset_email'] = 'You must enter a valid email address.';
 			}
-			
+
 			if( empty( $_REQUEST['reset_token'] ) )
 			{
 				$errors['reset_token'] = 'You must enter a valid reset token.';
 			}
-	
-	
-			if( count( $errors ) ) 
+
+
+			if( count( $errors ) )
 			{
 				$view = $this->template->content = View::factory('account/completePasswordReset');
 				$view->errors = $errors;
@@ -601,14 +602,14 @@ class Controller_Account extends FrontController
 			{
 				$user = new User();
 				$user->loadByEmail($_REQUEST['reset_email']);
-				
+
 				if( $user->data['reset_token'] != $_REQUEST['reset_token'] )
 				{
 					$errors['reset_token'] = 'The reset token you have entered is invalid';
 					$view = $this->template->content = View::factory('account/completePasswordReset');
 					$view->errors = $errors;
 				}
-				else if ( isset($user->data['id']) && ($user->data['reset_token'] == $_REQUEST['reset_token']) ) 
+				else if ( isset($user->data['id']) && ($user->data['reset_token'] == $_REQUEST['reset_token']) )
 				{
 					$password = Auth::generatePassword();
 					$user->data['reset_token'] = '';
@@ -618,27 +619,27 @@ class Controller_Account extends FrontController
 					.":password\n\n"
 					."You may login at:\n"
 					.":url\n";
-					
+
 					$mailer = Email::connect();
 					// Create complex Swift_Message object stored in $message
 					// MUST PASS ALL PARAMS AS REFS
 					$subject = __('siggy: Your new password');
-					
+
 					$to = $_REQUEST['reset_email'];
 					$from = Kohana::$config->load('useradmin')->email_address;
-					
+
 					$body =  __($message, array(
 							':url' => URL::site('', TRUE),
 							':password' => $password
 					));
-					
+
 					try
 					{
 						$message_swift = Swift_Message::newInstance($subject, $body)
 										->setFrom($from)
 										->setTo($to);
 
-						$mailer->send($message_swift);																			
+						$mailer->send($message_swift);
 					}
 					catch(Exception $e)
 					{
@@ -657,7 +658,7 @@ class Controller_Account extends FrontController
 			$view = $this->template->content = View::factory('account/completePasswordReset');
 		}
 	}
-	
+
 	public function action_noAPIAccess()
 	{
 		if( !Auth::loggedIn() )
@@ -666,15 +667,15 @@ class Controller_Account extends FrontController
 				return;
 		}
 		$this->template->title = __('siggy: no access');
-				
+
 		$view = View::factory('siggy/noAPIAccess');
-	
+
 		if(	!isset(Auth::$user->data['selected_apikey_id']) )
 		{
 			Auth::$user->loadByID(Auth::$user->data['id']);
 			Auth::$user->save();
 		}
-	
+
 		if( Auth::$user->data['selected_apikey_id'] && ( Auth::$user->data['char_id'] == 0 || Auth::$user->data['corp_id'] == 0 ) )
 		{
 			//char select
@@ -692,11 +693,10 @@ class Controller_Account extends FrontController
 		{
 			$view->messageType = 'noAccess';
 		}
-		
+
 		$this->template->content = $view;
 	}
-	
-	
+
 	public function action_characterSelect()
 	{
 		if( !Auth::loggedIn() )
@@ -715,19 +715,15 @@ class Controller_Account extends FrontController
 		{
 			HTTP::redirect('/account/apiKeys');
 		}
-		
+
 		$this->template->title = __('siggy: character selection');
-		
+
 		Auth::$user->loadByID(Auth::$user->data['id']);
 		Auth::$user->save();
 		$charID =  Auth::$user->data['char_id'];
-		
-		require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
-		spl_autoload_register( "Pheal::classload" );
-		PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
-		PhealConfig::getInstance()->http_ssl_verifypeer = false;
-		PhealConfig::getInstance()->http_user_agent = 'siggy '.SIGGY_VERSION.' borkedlabs@gmail.com';
-		
+
+		PhealHelper::configure();
+
 		$chars = array();
 		foreach($keys as $key)
 		{
@@ -736,27 +732,27 @@ class Controller_Account extends FrontController
 				try
 				{
 					$pheal = new Pheal( $key['apiID'], $key['apiKey']);
-					
+
 					$corpList = $this->getCorpList();
-					$charList = $this->getCharList();				
-					
+					$charList = $this->getCharList();
+
 					$apiError = FALSE;
 					$result = $pheal->accountScope->Characters();
-					
+
 					foreach($result->characters as $char )
 					{
 							if( in_array($char->corporationID, $corpList) || in_array($char->characterID, $charList) )
 							{
-								$chars[ $char->characterID ] = array( 'name' => $char->name, 
-																	'corpID' => $char->corporationID, 
+								$chars[ $char->characterID ] = array( 'name' => $char->name,
+																	'corpID' => $char->corporationID,
 																	'corpName' => $char->corporationName,
-																	'charID' => $char->characterID, 
-																	'entryID' => $key['entryID'] 
+																	'charID' => $char->characterID,
+																	'entryID' => $key['entryID']
 																	);
 							}
 					}
-					
-						
+
+
 				}
 				catch(PhealAPIException $e)
 				{
@@ -768,8 +764,8 @@ class Controller_Account extends FrontController
 				$apiError = true;
 			}
 		}
-			
-		if ($this->request->method() == "POST") 
+
+		if ($this->request->method() == "POST")
 		{
 			$charID = intval($_POST['charID']);
 			if( $charID && isset( $chars[ $charID ] ) )
@@ -778,34 +774,34 @@ class Controller_Account extends FrontController
 				Auth::$user->data['char_name'] = $chars[ $charID ]['name'];
 				Auth::$user->data['char_id'] = $charID;
 				Auth::$user->data['selected_apikey_id'] = $chars[ $charID ]['entryID'];
-				
+
 				Auth::$user->data['apiLastCheck'] = 0;
 				Auth::$user->data['apiInvalid'] = 0;
 				Auth::$user->data['apiFailures'] = 0;
-		
+
 				Auth::$user->save();
-				
+
 				HTTP::redirect('/');
 			}
 		}
-			
+
 		$view = View::factory('account/characterSelect');
 		$view->chars = $chars;
 		$view->selectedCharID = $charID;
 		$view->apiError = $apiError;
 		$this->template->content = $view;
 	}
-	
+
 	public function action_login()
 	{
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 		$this->template->title = __('siggy: login required');
-		
+
 		if( Auth::loggedIn() )
 		{
 			HTTP::redirect('/');
 		}
-		
+
 		if( $this->request->method() == "POST" )
 		{
 			$rememberMe = (isset($_POST['rememberMe']) ? TRUE : FALSE);
@@ -845,15 +841,15 @@ class Controller_Account extends FrontController
 		Auth::processLogout();
 
 		HTTP::redirect('/');
-	}			
-	
+	}
+
 
 	public function getCorpList()
 	{
 		$cache = Cache::instance(CACHE_METHOD);
-		
+
 		$corpList = $cache->get('corpList');
-		
+
 		if( $corpList != null )
 		{
 			return $corpList;
@@ -861,7 +857,7 @@ class Controller_Account extends FrontController
 		else
 		{
 			$corps = DB::query(Database::SELECT, "SELECT eveID FROM groupmembers WHERE memberType='corp'")
-											->execute()->as_array('eveID');  
+											->execute()->as_array('eveID');
 
 			$corpList = array();
 			foreach($corps as $c)
@@ -870,19 +866,19 @@ class Controller_Account extends FrontController
 			}
 
 			$corpList = array_unique( $corpList );
-			
-			$cache->set('corpList', $corpList);    	
-	
+
+			$cache->set('corpList', $corpList);
+
 			return $corpList;
 		}
-	}		
+	}
 
 	public function getCharList()
 	{
 		$cache = Cache::instance(CACHE_METHOD);
-		
+
 		$charList = $cache->get('charList');
-		
+
 		if( $charList != null )
 		{
 			return $charList;
@@ -890,16 +886,16 @@ class Controller_Account extends FrontController
 		else
 		{
 			$chars = DB::query(Database::SELECT, "SELECT eveID FROM groupmembers WHERE memberType='char'")
-											->execute()->as_array('eveID');  
-			
+											->execute()->as_array('eveID');
+
 			$charList = array();
 			foreach($chars as $c)
 			{
 				$charList[] = $c['eveID'];
 			}
-			
-			$cache->set('charList', $charList);    	
-					
+
+			$cache->set('charList', $charList);
+
 			return $charList;
 		}
 	}

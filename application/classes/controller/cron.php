@@ -15,11 +15,13 @@ class eveAPIWalletJournalTypes
 	const brokerFee = 46;
 	const manufacturing = 56;
 	const bountyPrize = 85;
-	
+
 	// etc.
 }
-	
-class Controller_Cron extends Controller 
+
+use Pheal\Pheal;
+
+class Controller_Cron extends Controller
 {
 	private function processBillingTransactionsResult( $transactions, $previousID, &$maxID, &$fromID )
 	{
@@ -31,12 +33,12 @@ class Controller_Cron extends Controller
 			{
 				$maxID = max($maxID, $trans['refID']);
 				$fromID = min($fromID, $trans['refID']);
-				
+
 				if( $previousID == $trans['refID'] )	//we hit the last processed entry
 				{
 					$stop = TRUE;
 				}
-			
+
 				if( $trans['refTypeID'] == eveAPIWalletJournalTypes::playerDonation || $trans['refTypeID'] == eveAPIWalletJournalTypes::corpAccountWithdrawal)
 				{
 					$entryCode = trim(str_replace('DESC:','',$trans['reason']));
@@ -47,15 +49,15 @@ class Controller_Cron extends Controller
 						if( count($matches) > 0 && isset($matches[1]) )
 						{
 							$res = DB::query(Database::SELECT, 'SELECT eveRefID FROM billing_payments WHERE eveRefID=:refID')->param(':refID', $trans['refID'])->execute()->current();
-							
+
 							if( !isset($res['eveRefID']) )
 							{
 								$paymentCode = strtolower($matches[1]);	//get 14 char "account code"
 								$group = DB::query(Database::SELECT, 'SELECT * FROM	groups WHERE paymentCode=:paymentCode')->param(':paymentCode', $paymentCode)->execute()->current();
-								
+
 								if( isset( $group['groupID'] ) )
 								{
-								
+
 									$insert = array( 'groupID' => $group['groupID'],
 													 'eveRefID' => $trans['refID'],
 													 'paymentTime' => strtotime($trans['date']),
@@ -68,7 +70,7 @@ class Controller_Cron extends Controller
 													 'argName' => $trans['argName1']
 													);
 									DB::insert( 'billing_payments', array_keys($insert) )->values( array_values($insert) )->execute();
-						
+
 									groupUtils::applyISKPayment($group['groupID'], (float)$trans['amount']);
 								}
 								else
@@ -86,7 +88,7 @@ class Controller_Cron extends Controller
 									print "<br />";
 									print "<br />";
 							}
-							
+
 						}
 					}
 					else
@@ -101,9 +103,9 @@ class Controller_Cron extends Controller
 		{
 			$stop = TRUE;
 		}
-		return $stop;	
+		return $stop;
 	}
-	
+
 	public function superclean($text)
 	{
 		// Strip HTML Tags
@@ -118,18 +120,18 @@ class Controller_Cron extends Controller
 		$clear = preg_replace('/ +/', ' ', $clear);
 		// Trim the string of leading/trailing space
 		$clear = trim($clear);
-		
+
 		return $clear;
 	}
-	
+
 	public function action_pruneSiggySessions()
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
-		
+
 		//30 minute cutoff
-		$cutoff = time()-60*30; 
-      
+		$cutoff = time()-60*30;
+
 		DB::delete('siggysessions')->where('lastBeep', '<=', $cutoff)->execute();
 	}
 
@@ -137,26 +139,23 @@ class Controller_Cron extends Controller
 	{
 		ini_set('memory_limit', '128M');
 		ini_set('max_execution_time', 0);
-		set_time_limit(600);
-		
-		require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
-		spl_autoload_register( "Pheal::classload" );
-		PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
-		PhealConfig::getInstance()->http_ssl_verifypeer = false;
-		PhealConfig::getInstance()->http_user_agent = 'siggy '.SIGGY_VERSION.' borkedlabs@gmail.com';
+		set_time_limit(0);
+
+		PhealHelper::configure();
 		$pheal = new Pheal( "3523432", "iBfWRWpwZ9I5l7Ynt2Y7ZlxiesY6b7vVhmpHlhzLDMdCFQnaTus4DBgOGxIfwu4M", "corp" );
-		
+
 		$previousID = (float)miscUtils::getDBCacheItem( 'lastProcessedJournalRefID' );
 		$transactions = $pheal->WalletJournal( array( 'rowCount' => 100) )->entries;
 
 		$maxID = 0;
 		$fromID = 0;
 		$stop = $this->processBillingTransactionsResult($transactions, $previousID, $maxID, $fromID );
-		
+
 		if( !$stop )
 		{
 			while( !$stop )
 			{
+				print $fromID;
 				$transactions = $pheal->WalletJournal( array('fromID' => $fromID, 'rowCount' => 100) )->entries;
 				$stop = $this->processBillingTransactionsResult($transactions, $previousID, $maxID, $fromID );
 				unset($transactions);
@@ -166,7 +165,7 @@ class Controller_Cron extends Controller
 		$maxID = (string)$maxID;
 		miscUtils::storeDBCacheItem( 'lastProcessedJournalRefID', $maxID );
 	}
-	
+
 	public function action_billingCharges()
 	{
 		$groups = DB::select()->from('groups')->where('billable','=',1)->execute()->as_array();
@@ -177,11 +176,11 @@ class Controller_Cron extends Controller
 			{
 				continue;
 			}
-			
+
 			$cost = miscUtils::computeCostPerDays($numUsers, 1);
-			
+
 			$message = 'Daily usage cost - ' . $numUsers . ' characters';
-			
+
 			$insert = array(
 								'amount' => $cost,
 								'date' => time(),
@@ -190,24 +189,19 @@ class Controller_Cron extends Controller
 								'message' => $message
 							);
 			$result = DB::insert('billing_charges', array_keys($insert) )->values( array_values($insert) )->execute();
-			
+
 			groupUtils::applyISKCharge( $group['groupID'], $cost );
-		
-		}	
+
+		}
 	}
-	
+
 	public function action_apiUpdateCorpData()
 	{
-		set_time_limit(600);
-		
-		require_once( Kohana::find_file('vendor', 'pheal/Pheal') );
-		spl_autoload_register( "Pheal::classload" );
-		PhealConfig::getInstance()->cache = new PhealFileCache(APPPATH.'cache/api/');
-		PhealConfig::getInstance()->http_ssl_verifypeer = false;
-		PhealConfig::getInstance()->http_user_agent = 'siggy '.SIGGY_VERSION.' borkedlabs@gmail.com';
-		$pheal = new Pheal(null,null,'corp');      
-		
-		
+		set_time_limit(0);
+
+		PhealHelper::configure();
+		$pheal = new Pheal(null,null,'corp');
+
 		$select = date('G');
 		if( $select > 9 )
 		{
@@ -217,19 +211,19 @@ class Controller_Cron extends Controller
 				$select -= 9;
 			}
 		}
-		
-		
+
+
 		$corpsToUpdate = array();
 		$corpsToUpdate = DB::query(Database::SELECT, "SELECT * FROM groupmembers WHERE memberType='corp' AND SUBSTR(id,LENGTH(id),1) = :select")
 							->param(':select', $select)
-							->execute()->as_array();	 
-		
+							->execute()->as_array();
+
 		foreach($corpsToUpdate as $gm)
 		{
 			try
 			{
 					$result = $pheal->CorporationSheet( array( 'corporationID' => (int)$gm['eveID'] ) );
-									
+
 					DB::query(Database::INSERT, 'INSERT INTO corporations (`corporationID`, `corporationName`, `memberCount`, `ticker`, `description`, `lastUpdate`) VALUES(:corporationID, :corporationName, :memberCount, :ticker, :description, :lastUpdate)'
 											   .' ON DUPLICATE KEY UPDATE description = :description, memberCount = :memberCount, lastUpdate = :lastUpdate')
 											->param(':memberCount', $result->memberCount )
@@ -238,7 +232,7 @@ class Controller_Cron extends Controller
 											->param(':description', $result->description )
 											->param(':ticker', $result->ticker )
 											->param(':lastUpdate', time() )
-											->execute();	
+											->execute();
 			}
 			catch( Exception $e )
 			{
@@ -254,12 +248,12 @@ class Controller_Cron extends Controller
 		//two days?
 		$cutoff = time()-60*60*24*26;
 		$whCutoff = time()-60*60*24*2;
-  
-		$groups = DB::query(Database::SELECT, "SELECT groupID,skipPurgeHomeSigs FROM groups")->execute()->as_array();	 
+
+		$groups = DB::query(Database::SELECT, "SELECT groupID,skipPurgeHomeSigs FROM groups")->execute()->as_array();
 		foreach( $groups as $group )
 		{
 			$ignoreSys = '';
-			$chains = DB::query(Database::SELECT, "SELECT chainmap_homesystems_ids FROM chainmaps 
+			$chains = DB::query(Database::SELECT, "SELECT chainmap_homesystems_ids FROM chainmaps
 													WHERE group_id = :groupID AND
 													chainmap_skip_purge_home_sigs=1")
 							->param(':groupID', $group['groupID'])
@@ -275,18 +269,18 @@ class Controller_Cron extends Controller
 						$ignoreSys[] = $c['chainmap_homesystems_ids'];
 					}
 				}
-				
+
 				$ignoreSys = implode(',', $ignoreSys);
 			}
-			
+
 			$ignoreSysExtra = '';
 			if( !empty($ignoreSys) )
 			{
 				$ignoreSysExtra = "systemID NOT IN(".$ignoreSys.") AND ";
 			}
-			
-			$query = DB::query(Database::DELETE, "DELETE FROM systemsigs WHERE sig != 'POS' AND 
-																		groupID=:groupID AND 
+
+			$query = DB::query(Database::DELETE, "DELETE FROM systemsigs WHERE sig != 'POS' AND
+																		groupID=:groupID AND
 																		{$ignoreSysExtra}
 																		( created <= :cutoff OR (type = 'wh' AND created <= :whcutoff))")
 				->param(':cutoff',$cutoff)
@@ -302,37 +296,33 @@ class Controller_Cron extends Controller
 		$this->auto_render = FALSE;
 		//two days?
 		$cutoff = time()-60*60*24;
-      
+
 		//DB::update('activesystems')->set(array('displayName' => '', 'activity' => 0, 'lastActive' => 0, 'inUse' => 0))->where('lastActive', '<=', $cutoff)->where('lastActive', '!=', 0)->execute();
 		DB::delete('wormholes')->where('lastJump', '<=', $cutoff)->execute();
-      
+
 		print 'done!';
 	}
-	
+
 	public function action_hourlyAPIStats()
 	{
 		$cutoff = time()-(3600*24*2);
-		
+
 		DB::delete('apiHourlyMapData')->where('hourStamp', '<=', $cutoff)->execute();
 		DB::delete('jumpsTracker')->where('hourStamp', '<=', $cutoff)->execute();
-      
+
 		$systems = DB::select('id')->from('solarsystems')->order_by('id', 'ASC')->execute()->as_array('id');
 		foreach($systems as &$system)
-		{		
+		{
 			$system['jumps'] = 0;
 			$system['kills'] = 0;
 			$system['npcKills'] = 0;
 			$system['podKills'] = 0;
 		}
-	
-	
-		require_once(Kohana::find_file('vendor', 'pheal/Pheal'));
-		spl_autoload_register("Pheal::classload");
-		PhealConfig::getInstance()->http_ssl_verifypeer = false;
-		PhealConfig::getInstance()->http_user_agent = 'siggy '.SIGGY_VERSION.' borkedlabs@gmail.com';
+
+		PhealHelper::configure();
 		$pheal = new Pheal('','');
 		$pheal->scope = 'map';
-		
+
 		$jumpsData = $pheal->Jumps();
 		foreach($jumpsData->solarSystems as $ss )
 		{
@@ -341,7 +331,7 @@ class Controller_Cron extends Controller
 				$systems[ $ss->solarSystemID ]['jumps'] = $ss->shipJumps;
 			}
 		}
-		
+
 		$killsData = $pheal->Kills();
 		foreach($killsData->solarSystems as $ss )
 		{
@@ -352,19 +342,19 @@ class Controller_Cron extends Controller
 				$systems[ $ss->solarSystemID ]['podKills'] = $ss->podKills;
 			}
 		}
-		
+
 
 		date_default_timezone_set('UTC');
 		$requestDateInfo = getdate( time() - 3600 );
-		$time = gmmktime($requestDateInfo['hours'],0,0,$requestDateInfo['mon'],$requestDateInfo['mday'],$requestDateInfo['year']);		
-	
+		$time = gmmktime($requestDateInfo['hours'],0,0,$requestDateInfo['mon'],$requestDateInfo['mday'],$requestDateInfo['year']);
+
 		foreach($systems as $system)
 		{
 			DB::query(Database::INSERT, 'INSERT INTO apiHourlyMapData (`systemID`,`hourStamp`, `jumps`, `kills`, `npcKills`, `podKills`) VALUES(:systemID, :hourStamp, :jumps, :kills, :npcKills, :podKills) ON DUPLICATE KEY UPDATE systemID=systemID')
 														->param(':systemID', $system['id'] )->param(':hourStamp', $time )->param(':jumps', $system['jumps'] )->param(':kills', $system['kills'] )->param(':npcKills', $system['npcKills'] )->param(':podKills', $system['podKills'] )->execute();
-	
+
 		}
-		
+
 		print "done!";
 	}
 }
