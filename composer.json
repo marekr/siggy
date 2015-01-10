@@ -3,6 +3,7 @@
 		"vendor-dir": "application/vendor"
 	},
     "require": {
-        "nesbot/Carbon": "*"
+        "nesbot/Carbon": "*",
+		"swiftmailer/swiftmailer": "@stable"
     }
 }
