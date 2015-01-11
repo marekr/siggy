@@ -1,7 +1,7 @@
 ﻿<?php
 
 return array(
-	'Perimeter Ambush Point' => 'Randgebiet für Hinterhalt',
+	"Perimeter Ambush Point" => "Randgebiet für Hinterhalt",
 	"Lager im Randgebiet" => "Perimeter Camp",
 	"Phase Catalyst Node" => "Phasenkatalysator-Knotenpunkt",
 	"The Line" => "Das Feld",
@@ -61,22 +61,22 @@ return array(
 	"Unexceptional Frontier Deposit" => "Gewöhnliche Erzvorkommen im Grenzgebiet",
 	"Common Perimeter Deposit" => "Gemeinschaftliche Erzvorkommen",
 	"Exceptional Core Deposit" => "Besondere grundlegende Erzvorkommen",
-	"Infrequent Core Deposit" => "Seltene Kernablagerung",
-	'Unusual Core Deposit' => 'Ungewöhnliche grundlegende Erzvorkommen',
-	"Rarified Core Deposit" => "Rare Kernablagerung",
+	"Infrequent Core Deposit" => "Unregelmäßig auftretende grundlegende Erzvorkommen",
+	"Unusual Core Deposit" => "Ungewöhnliche grundlegende Erzvorkommen",
+	"Rarified Core Deposit" => "Einzelne grundlegende Erzvorkommen",
 	"Ordinary Perimeter Deposit" => "Gewöhnliche Erzvorkommen",
-	"Uncommon Core Deposit" => "Ungewöhnliche Kernablagerung",
+	"Uncommon Core Deposit" => "Ungewöhnliche grundlegende Erzvorkommen",
 	"Isolated Core Deposit" => "Vereinzelte grundlegende Erzvorkommen",
 
-	"Barren Perimeter Reservoir" => "Karges Erzgebiet",
-	"Minor Perimeter Reservoir" => "Unwesentliches Erzgebiet",
+	"Barren Perimeter Reservoir" => "Karges Gasvorkommen",
+	"Minor Perimeter Reservoir" => "Geringfügiges Gasvorkommen",
 	"Ordinary Perimeter Reservoir" => "Gewöhnliches Gasvorkommen",
-	"Sizeable Perimeter Reservoir" => "Geringfügiges Gasvorkommen",
-	"Token Perimeter Reservoir" => "Anzeichen eines Erzgebietes",
+	"Sizeable Perimeter Reservoir" => "Erhebliches Gasvorkommen",
+	"Token Perimeter Reservoir" => "Anzeichen eines Gasvorkommens",
 	"Bountiful Frontier Reservoir" => "Üppiges Gasvorkommen im Grenzgebiet",
 	"Vast Frontier Reservoir" => "Großes Gasvorkommen im Grenzgebiet",
-	"Instrumental Core Reservoir" => "Nützliche grundlegende Erzvorkommen",
-	"Vital Core Reservoir" => "Wichtige grundlegende Erzvorkommen",
+	"Instrumental Core Reservoir" => "Nützliche grundlegendes Gasvorkommen",
+	"Vital Core Reservoir" => "Wichtige grundlegendes Gasvorkommen",
 
 	"Unstable Wormhole" => "Instabiles Wurmloch",
 
