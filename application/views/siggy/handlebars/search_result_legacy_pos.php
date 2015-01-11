@@ -6,7 +6,7 @@
 				<td class="title">System</td>
 				<td class="content">{{ data.system_name }}</td>
 				<td class="title">Description</td>
-				<td class="content"><span class="highlight">{{ data.description }}</span></td>
+				<td class="content">{{ data.description }}</td>
 			</tr>
 			<tr>
 				<td class="title">Date Added</td>

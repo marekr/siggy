@@ -16,7 +16,7 @@ class Controller_Search extends FrontController
 	{
 		$results = array();
 
-		$query = $this->request->query('query');
+		$query = "%".$this->request->query('query')."%";
 
 		$poses = DB::query(Database::SELECT, "SELECT p.pos_id, p.pos_system_id as system_id,
 													s.name as system_name, p.pos_owner,

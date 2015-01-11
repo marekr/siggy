@@ -6,7 +6,7 @@
 				<td class="title">System</td>
 				<td class="content">{{ data.system_name }}</td>
 				<td class="title">Owner</td>
-				<td class="content"><span class="highlight">{{ data.pos_owner }}</span></td>
+				<td class="content">{{ data.pos_owner }}</td>
 			</tr>
 			<tr>
 				<td class="title">POS Planet</td>
