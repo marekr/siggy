@@ -110,19 +110,21 @@ siggy2.Core = function( options )
 
 	this.systemName = this.settings.initialSystemName;
     this.setSystemID(this.settings.initialSystemID);
-	
+
 	this.templateEffectTooltip = Handlebars.compile( $("#template-effect-tooltip").html() );
-	
-	
+
+
 	this.activity = 'siggy';
-	this.activities = { thera: new siggy2.Activity.Thera(this)  }
+	this.activities = { thera: new siggy2.Activity.Thera(this),
+	  					search: new siggy2.Activity.Search(this)
+					};
 }
 
 
 siggy2.Core.prototype.initialize = function ()
 {
 	siggy2.Helpers.setupHandlebars();
-	
+
 	var that = this;
 	this.setupFatalErrorHandler();
 
@@ -133,7 +135,7 @@ siggy2.Core.prototype.initialize = function ()
 	$(document).ajaxStop( function() {
 		$(this).hide();
 	} );
-	
+
 	siggy2.StaticData.load(this.settings.baseUrl);
 
 	// Display states cookie
@@ -204,14 +206,14 @@ siggy2.Core.prototype.initialize = function ()
 	this.initializeExitFinder();
 
 	this.initializeHubJumpContextMenu();
-	
+
 	this.registerMainMenu();
 }
 
 siggy2.Core.prototype.registerMainMenu = function()
 {
 	var $this = this;
-	
+
 	$('.activity-menu-option').click( function() {
 		$this.loadActivity( $(this).data('activity') );
 	});
@@ -220,34 +222,34 @@ siggy2.Core.prototype.registerMainMenu = function()
 siggy2.Core.prototype.loadActivity = function(activity)
 {
 	var $this = this;
-	
-	
+
+
 	if( typeof( $this.activities[ activity ] ) == 'undefined' && activity != 'siggy' )
 		return;
-		
+
 	if( $this.activity == activity )
 		return;
-		
-		
+
+
 	if( $this.activity != 'siggy' )
 		$this.activities[$this.activity].stop();
 	else
 		$('#activity-siggy').hide();
-		
-		
+
+
 	$this.activity = activity;
-	
+
 	if( $this.activity != 'siggy' )
 		$this.activities[$this.activity].start();
 	else
 		$('#activity-siggy').show();
-		
-	
+
+
 	$('.activity-menu-option').show();
 	$('.activity-menu-option').each( function() {
 		if( $(this).data('activity') == activity )
 		{
-		
+
 			$('#current-activity').text( $(this).text() );
 			$(this).hide();
 		}
@@ -330,8 +332,8 @@ siggy2.Core.prototype.setupCollaspible = function(baseID, displayState, onShow)
 		{
 			content.hide();
 			$this.ecSetCollaspedArrow(this);
-			
-			
+
+
 			$this.displayStates[displayState] = false;
 			$this.saveDisplayState();
 		}
@@ -339,7 +341,7 @@ siggy2.Core.prototype.setupCollaspible = function(baseID, displayState, onShow)
 		{
 			content.show();
 			$this.ecSetExpandedArrow(this);
-			
+
 			if( typeof(onShow) == 'function' )
 				onShow.call();
 			$this.displayStates[displayState] = true;
@@ -422,7 +424,7 @@ siggy2.Core.prototype.update = function ()
 					{
 						that.acsid = data.acsid;
 					}
-					
+
 					if (data.systemUpdate)
 					{
 						that.updateSystemInfo(data.systemData);
@@ -599,12 +601,12 @@ siggy2.Core.prototype.updateSystemInfo = function (systemData)
 		{
 			effData = [];
 		}
-		
+
 		var tooltip = this.templateEffectTooltip({
-												  sysClass: systemData.sysClass, 
+												  sysClass: systemData.sysClass,
 												  effects: effData
 												  });
-		
+
 		effect.append(tooltip);
 
 		effectTitle.qtip({
@@ -629,7 +631,7 @@ siggy2.Core.prototype.updateSystemInfo = function (systemData)
 			var destBlurb = " (to "+siggy2.StaticData.systemClassToString(theStatic.dest_class)+")";
 
 			var staticBit = $("<p>").text(theStatic.name + destBlurb);
-			
+
 			theStatic.destBlurb = destBlurb;
 			var staticTooltip = siggy2.StaticData.templateWormholeInfoTooltip(theStatic);
 
