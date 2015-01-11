@@ -67,6 +67,18 @@ class Controller_Thera extends FrontController
 				->execute()
 				->current();
 
+			if( isset( $system['sys_class']) && $system['sys_class'] == 7 || $system['sys_class'] == 8|| $system['sys_class'] == 9 )
+			{
+				$hubJumps = DB::query(Database::SELECT, "SELECT ss.id as system_id, pr.num_jumps,ss.name as destination_name FROM precomputedroutes pr
+														INNER JOIN solarsystems ss ON ss.id = pr.destination_system
+														WHERE pr.origin_system=:system AND pr.destination_system != :system
+														ORDER BY pr.num_jumps ASC")
+					->param(':system', $system['id'])
+					->execute()
+					->as_array();
+
+				$system['hub_jumps'] = $hubJumps;
+			}
 
 			$wormholeType = '';
 			if( $rawExit->sourceWormholeType->id != 91 )
