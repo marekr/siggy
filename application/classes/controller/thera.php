@@ -1,24 +1,16 @@
 <?php
 
-
 use Carbon\Carbon;
 require_once APPPATH.'classes/FrontController.php';
 
 class Controller_Thera extends FrontController
 {
-	/*
-		Key value array
-	*/
-	public $template = 'template/public';
-
 	protected $output_array = array();
-
 
 	public function before()
 	{
 		parent::before();
 	}
-
 
 	public function action_latest_exits()
 	{

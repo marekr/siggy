@@ -16,6 +16,7 @@ if( isset( $_GET['id'] ) )
 $themeFiles = array( 'global_variables.css',
                       'reset.css',
                       'siggy.css',
+                      'input.css',
                       'siggy.map.css',
                       'jquery.qtip.css',
 					  'jquery.ui.css',
@@ -30,7 +31,7 @@ $themeFiles = array( 'global_variables.css',
 					  'sidebar.css'
 					);
 
-                      
+
 $cssBuffer = '';
 
 foreach( $themeFiles as $fileName )

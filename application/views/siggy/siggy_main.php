@@ -7,9 +7,9 @@
 	</div>
 	<br />
 	<br />
-	<?php endif; ?>	
-	
-	<?php 
+	<?php endif; ?>
+
+	<?php
 	if(isset($_SERVER['HTTP_X_SSL_PROTOCOL']) && trim($_SERVER['HTTP_X_SSL_PROTOCOL']) == 'SSLv3' ): ?>
 	<div class="box" style="width:100%;background-color:rgb(179, 52, 52)">
 		<h3>Security warning!</h3>
@@ -22,7 +22,7 @@
 		</div>
 	</div>
 	<?php endif; ?>
-	
+
 	<div class="box" style="width:100%;display:none;" id="no-chain-map-warning">
 		<h3>No chain-maps configured</h3>
 		<div>
@@ -192,17 +192,17 @@
             <table class='siggy-table'>
                 <tr>
                     <td class="title">System label/display name<p class="desc">This is completely optional and displays a custom name in the system list for easy identification of chained systems</p></td>
-                    <td class="content"><input type="text" name="label" /></td>
+                    <td class="content"><input type="text" name="label"  class="siggy-input" /></td>
                 </tr>
                 <tr>
                     <td class="title">Activity Level</td>
                     <td class="content">
-                    <select name='activity'>
-                                <option value='0'>Don't Know</option>
-                                <option value='1'>Empty</option>
-                                <option value='2'>Occupied</option>
-                                <option value='3'>Active</option>
-                                <option value='4'>Friendly</option>
+                    <select name='activity' class="siggy-input">
+                        <option value='0'>Don't Know</option>
+                        <option value='1'>Empty</option>
+                        <option value='2'>Occupied</option>
+                        <option value='3'>Active</option>
+                        <option value='4'>Friendly</option>
                     </select>
                     </td>
                 </tr>
@@ -262,7 +262,7 @@
             <div id="sig-add-box" class="sub-display-group">
                 <h2 class="hover">
 					<span>Signature Adder</span>
-					<textarea name='mass_sigs' placeholder=" Paste scan results here + Press Enter " type='text'></textarea>
+					<textarea name='mass_sigs' placeholder=" Paste scan results here + Press Enter " type='text' class="siggy-input"></textarea>
 					<i class="expand-collapse-indicator fa fa-caret-down pull-right fa-lg"></i>
 				</h2>
                 <div>
@@ -270,14 +270,14 @@
                     <div class="clear"></div>
                     <form>
                         <div style="float:left">
-                            <div class="input-group" style="width:50px" >
+                            <div class="input-group" style="width:50px">
                                 <label>Sig ID</label>
-                                <input type="text" name="sig" maxlength="3" placeholder="ABC" />
+                                <input type="text" class="siggy-input" name="sig" maxlength="3" placeholder="ABC" />
                             </div>
                             <?php if( $group['showSigSizeCol'] ): ?>
                             <div class="input-group"  style="width:100px;">
                                 <label>Sig Size</label>
-                                <select name="size">
+                                <select name="size" class="siggy-input">
                                     <option value="" selected="selected"> -- </option>
                                     <option value="1.25">1.25</option>
                                     <option value="2.2">2.2</option>
@@ -291,7 +291,7 @@
                             <?php endif; ?>
                             <div class="input-group"  style="width:100px;">
                                 <label>Type</label>
-                                <select name="type">
+                                <select name="type" class="siggy-input">
                                     <option value="none" selected="selected"> -- </option>
                                     <option value="wh"><?php echo __('WH');?></option>
                                     <option value="gas"><?php echo __('Gas');?></option>
@@ -303,13 +303,13 @@
                             </div>
                             <div class="input-group" style="width: auto;">
                                 <label>Site</label>
-                                <select name="site">
+                                <select name="site" class="siggy-input">
                                 </select>
                             </div>
                             <br />
                             <div class="input-group" style="width:236px;">
                                 <label>Description</label>
-                                <input type="text" name="desc" />
+                                <input type="text" name="desc" class="siggy-input" />
                             </div>
                         </div>
                         <button name='add' class="btn btn-default" style="margin-top: 15px;line-height: 171%;"><i class="icon icon-plus-sign"></i>  Add</button>
@@ -483,7 +483,9 @@
 	<?php echo View::factory('siggy/handlebars/statics_tooltip'); ?>
 	<?php echo View::factory('siggy/handlebars/site_tooltip'); ?>
 	<?php echo View::factory('siggy/handlebars/thera_table_row'); ?>
-	
+	<?php echo View::factory('siggy/handlebars/search_result_pos'); ?>
+	<?php echo View::factory('siggy/handlebars/search_result_legacy_pos'); ?>
+
     <script type='text/javascript'>
         $(document).ready(function() {
 

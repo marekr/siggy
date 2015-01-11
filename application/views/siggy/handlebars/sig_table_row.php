@@ -1,5 +1,4 @@
-
-	<script id="template-sig-table-row" type="text/x-handlebars-template">?
+	<script id="template-sig-table-row" type="text/x-handlebars-template">
 		<tr id='sig-{{ sigID }}' class='type-{{ type }} sig' data-sig-id='{{ sigID }}'>
 			<td class='center-text edit'>
 				<i class='icon icon-pencil icon-large'></i>
@@ -28,7 +27,7 @@
 				<div id='creation-info-{{ sigID }}' class='tooltip'>
 					<b>Added by:</b> {{ creator }}
 					{{#if lastUpdater }}
-						<br /><b>Updated by:</b> {{ lastUpdater }} 
+						<br /><b>Updated by:</b> {{ lastUpdater }}
 						<br /><b>Updated at:</b> {{ displayTimestamp updated }}
 					{{/if}}
 				</div>

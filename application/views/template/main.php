@@ -43,6 +43,7 @@
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.map.js?<?php echo time(); ?>'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.map.connection.js?<?php echo time(); ?>'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.activity.thera.js?<?php echo time(); ?>'></script>
+    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.activity.search.js?<?php echo time(); ?>'></script>s
     <?php else: ?>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/thirdparty.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>
@@ -58,6 +59,7 @@
 						<ul class="dropdown-menu siggy-main-navbar" role="menu">
 							<li><a class="activity-menu-option" data-activity="siggy" style="display:none"><span class="glyphicon glyphicon-list"></span> siggy</a></li>
 							<li><a class="activity-menu-option" data-activity="thera"><span class="glyphicon glyphicon-list"></span> Thera</a></li>
+                            <li><a class="activity-menu-option" data-activity="search"><span class="glyphicon glyphicon-search"></span> Search</a></li>
 
 							<li><a id="global-notes-button"><span class="glyphicon glyphicon-folder-close"></span> Notes</a></li>
 							<li><a target="_blank" href="<?php echo URL::base(TRUE, TRUE); ?>stats"><span class="glyphicon glyphicon-list"></span> Stats</a></li>
@@ -126,6 +128,19 @@
 
 				</ul>
 		</div>
+        <div id="activity-search" class="wrapper" style="display:none">
+            <p><b>BETA</b> You may search for POSes owned by corporation name for now. More items coming later.</p>
+            <div class="input-group" style="width:100%">
+                <input id="activity-search-input" type="text" class="form-control" placeholder="Search for...">
+                <span class="input-group-btn">
+                    <button id="activity-search-go" class="btn btn-primary" type="button">Go!</button>
+                </span>
+            </div>
+            <div class="clearfix"></div>
+            <h2>Results</h2>
+            <div id="activity-search-results">
+            </div>
+        </div>
 		<div id="activity-thera" class="wrapper" style="display:none">
 			<p>Thera wormhole information with data from <a href="http://eve-scout.com">EVE-Scout</a></p>
 			<table class="siggy-table siggy-table-striped" id="thera-exits-table">

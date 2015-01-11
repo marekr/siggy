@@ -4,6 +4,11 @@
 	box-sizing: border-box;
 }
 
+h1,h2,h3,h4,h5,h6
+{
+	font-weight:bold;
+}
+
 body
 {
 	background: @page-background;
@@ -13,9 +18,7 @@ body
 }
 
 
-input,
-select,
-textarea
+.siggy-input
 {
 	background-color: #fff;
     border: 1px solid #cccccc;
@@ -29,15 +32,15 @@ textarea
 	color: #aaa;
 }
 
-input[type=text],
-input[type=password],
-select
+.siggy-input[type=text],
+.siggy-input[type=password],
+.siggy-input
 {
     height: 20px;
     width: 100%;
 }
 
-select
+select.siggy-input
 {
     height: 22px;
     min-width:70px;
@@ -834,4 +837,24 @@ div.connection-editor-group > div
 #thera-exits-table tr td
 {
 	padding: 6px;
+}
+
+.search-result {
+	background-color: @primary-background;
+	padding: 10px;
+	margin-top:5px;
+}
+
+.search-result h3 {
+	font-weight: bold;
+	font-size: 14px;
+}
+
+#activity-search h2 {
+	font-size:14px;
+}
+
+.highlight {
+	background-color: yellow;
+	color: black;
 }
