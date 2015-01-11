@@ -55,6 +55,12 @@ siggy2.Activity.Thera.prototype.update = function()
 				method: 'get',
 				success: function (data)
 				{
+					$this.updateTable(data);
+
+					$this._updateTimeout = setTimeout(function(thisObj)
+					{
+						thisObj.update()
+					}, 60000, $this);
 				}
 		});
 }
