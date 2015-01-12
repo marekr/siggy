@@ -7,6 +7,8 @@ siggy2.Activity = siggy2.Activity || {};
 
 siggy2.Activity.Thera = function(core)
 {
+	var $this = this;
+
 	this.key = 'thera';
 	this._updateTimeout = null;
 	this.core = core;
@@ -30,6 +32,42 @@ siggy2.Activity.Thera = function(core)
 	});
 
 	$('#thera-exits-table').trigger("sorton", [ [[0,0]] ]);
+
+	$('#activity-thera-import').click( function() {
+		$this.dialogImport();
+	});
+
+	this.setupDialogImport();
+}
+
+siggy2.Activity.Thera.prototype.setupDialogImport = function()
+{
+	var $this = this;
+	$('#dialog-import-thera button[type=submit]').click( function(e) {
+		e.stopPropagation();
+
+		var data = {
+			'clean': $('#dialog-import-thera input[name=clean]').val()
+		};
+
+		$.post($this.core.settings.baseUrl + 'thera/import_to_chainmap', data,
+		function (ret)
+		{
+			$.unblockUI();
+		});
+
+		return false;
+	});
+
+	$('#dialog-import-thera button[type=reset]').click( function() {
+		$.unblockUI();
+		return false;
+	});
+}
+
+siggy2.Activity.Thera.prototype.dialogImport = function()
+{
+	this.core.openBox('#dialog-import-thera');
 }
 
 siggy2.Activity.Thera.prototype.start = function()
