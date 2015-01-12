@@ -105,6 +105,52 @@ class Controller_Thera extends FrontController
 		return $exits;
 	}
 
+	public function action_import_to_chainmap()
+	{
+		$cache = Cache::instance( CACHE_METHOD );
+
+		$cache_name = 'thera-exits';
+
+		if( ($exits = $cache->get( $cache_name, FALSE )) == FALSE )
+		{
+			$data = $this->fetch_thera_json();
+
+			$exits = $this->build_exits_data($data);
+
+			if( $exits != null )
+			{
+				$cache->set($cache_name, $exits, 300);
+			}
+		}
+
+		$chainmap = null;
+		if( Auth::$session->accessData['active_chain_map'] )
+		{
+			$chainmap = new Chainmap(Auth::$session->accessData['active_chain_map'],Auth::$session->groupID);
+		}
+
+		if( $chainmap == null )
+		{
+			return;
+		}
+
+		if( count($exits) > 0 )
+		{
+			if( isset($_POST['clean']) && intval($_POST['clean']) == 1 )
+			{
+				$chainmap->delete_all_system_connections(31000005);
+			}
+
+			foreach( $exits as $exit )
+			{
+				if( isset($exit['system']['id']) )
+				{
+					$chainmap->add_system_to_map(31000005, $exit['system']['id']);
+				}
+			}
+		}
+	}
+
 	private function fetch_thera_json()
 	{
 		$opts = array(

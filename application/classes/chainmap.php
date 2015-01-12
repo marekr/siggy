@@ -69,13 +69,13 @@ class chainmap
 								 ->execute()
 								 ->as_array('hash');
 
-		
+
 		$systemsToPoll = array();
 		$wormholeHashes = array();
 		foreach( $wormholes as $k => $wormhole )
 		{
 			/* Include all the group tracked jumps from all chainmaps since this is important not to trap oneself out */
-			$jumpTotal  = DB::query(Database::SELECT, "SELECT COALESCE(SUM(s.mass),0) as total 
+			$jumpTotal  = DB::query(Database::SELECT, "SELECT COALESCE(SUM(s.mass),0) as total
 														FROM wormholetracker wt
 														LEFT JOIN ships as s ON s.shipID = wt.shipTypeID
 														WHERE wt.group_id = :groupID AND wt.wormhole_hash = :hash")
@@ -83,15 +83,15 @@ class chainmap
 											->param(':hash', $wormhole['hash'])
 											->execute()
 											->current();
-											
+
 			$wormholes[$k]['total_tracked_mass'] = $jumpTotal['total'];
-			
+
 			$systemsToPoll[] = $wormhole['to'];
 			$systemsToPoll[] = $wormhole['from'];
 			$wormholeHashes[] = $wormhole['hash'];
 		}
 		$data['wormholes'] = $wormholes;
-		
+
 		/* Stargates */
 		$stargates = DB::query(Database::SELECT, "SELECT s.`hash`,s.`to_system_id`, s.`from_system_id`
 			 										FROM chainmap_stargates AS s
@@ -108,7 +108,7 @@ class chainmap
 			$systemsToPoll[] = $stargate['to_system_id'];
 			$systemsToPoll[] = $stargate['from_system_id'];
 		}
-		
+
 		/* Jump bridges */
 		$jumpbridges = DB::query(Database::SELECT, "SELECT s.`hash`,s.`to_system_id`, s.`from_system_id`
 			 										FROM chainmap_jumpbridges AS s
@@ -125,7 +125,7 @@ class chainmap
 			$systemsToPoll[] = $jumpbridge['to_system_id'];
 			$systemsToPoll[] = $jumpbridge['from_system_id'];
 		}
-		
+
 		/* Cynos */
 		$cynos = DB::query(Database::SELECT, "SELECT s.`hash`,s.`to_system_id`, s.`from_system_id`
 			 										FROM chainmap_cynos AS s
@@ -142,9 +142,9 @@ class chainmap
 			$systemsToPoll[] = $cyno['to_system_id'];
 			$systemsToPoll[] = $cyno['from_system_id'];
 		}
-		
+
 		/* Systems */
-		
+
 		$data['systems'] = array();
 		$data['systemIDs'] = array();
 
@@ -245,8 +245,19 @@ class chainmap
 						->as_array();
 	}
 
-	public function add_system_to_map($whHash, $sys1,$sys2, $eol=0, $mass=0, $wh_type_id = 0)
+	public function delete_all_system_connections( $system )
 	{
+		DB::query(Database::DELETE, 'DELETE FROM wormholes WHERE (`to` = :system OR `from` = :system) AND group_id=:groupID AND chainmap_id=:chainmap')
+			->param(':groupID', Auth::$session->groupID)
+			->param(':chainmap', Auth::$session->accessData['active_chain_map'])
+			->param(':system', $system)
+			->execute();
+	}
+
+	public function add_system_to_map($sys1, $sys2, $eol=0, $mass=0, $wh_type_id = 0)
+	{
+		$whHash = mapUtils::whHashByID($sys1 , $sys2);
+
 		$this->_placeSystems($sys1,$sys2);
 
 		try
@@ -261,7 +272,7 @@ class chainmap
 							'chainmap_id' => $this->id,
 							'lastJump' => time()
 							);
-							
+
 			DB::insert('wormholes', array_keys($insert) )->values(array_values($insert))->execute();
 		}
 		catch( Exception $e )
@@ -273,7 +284,7 @@ class chainmap
 
 		$this->rebuild_map_data_cache();
 	}
-	
+
 	private function _placeSystems($sys1, $sys2)
 	{
 		$sys1Connections = $this->get_connected_system($sys1);
@@ -315,9 +326,11 @@ class chainmap
 			}
 		}
 	}
-	
-	public function add_stargate_to_map($whHash, $sys1, $sys2)
+
+	public function add_stargate_to_map($sys1, $sys2)
 	{
+		$whHash = mapUtils::whHashByID($sys1, $sys2);
+
 		$this->_placeSystems($sys1,$sys2);
 		try
 		{
@@ -327,7 +340,7 @@ class chainmap
 							'group_id' => $this->group_id,
 							'chainmap_id' => $this->id
 							);
-							
+
 			DB::insert('chainmap_stargates', array_keys($insert) )->values(array_values($insert))->execute();
 		}
 		catch( Exception $e )
@@ -340,8 +353,10 @@ class chainmap
 		$this->rebuild_map_data_cache();
 	}
 
-	public function add_jumpbridge_to_map($whHash, $sys1, $sys2)
+	public function add_jumpbridge_to_map($sys1, $sys2)
 	{
+		$whHash = mapUtils::whHashByID($sys1 , $sys2);
+
 		$this->_placeSystems($sys1,$sys2);
 		try
 		{
@@ -351,7 +366,7 @@ class chainmap
 							'group_id' => $this->group_id,
 							'chainmap_id' => $this->id
 							);
-							
+
 			DB::insert('chainmap_jumpbridges', array_keys($insert) )->values(array_values($insert))->execute();
 		}
 		catch( Exception $e )
@@ -363,9 +378,11 @@ class chainmap
 
 		$this->rebuild_map_data_cache();
 	}
-	
-	public function add_cyno_to_map($whHash, $sys1, $sys2)
+
+	public function add_cyno_to_map($sys1, $sys2)
 	{
+		$whHash = mapUtils::whHashByID($sys1, $sys2);
+
 		$this->_placeSystems($sys1,$sys2);
 		try
 		{
@@ -375,7 +392,7 @@ class chainmap
 							'group_id' => $this->group_id,
 							'chainmap_id' => $this->id
 							);
-							
+
 			DB::insert('chainmap_cynos', array_keys($insert) )->values(array_values($insert))->execute();
 		}
 		catch( Exception $e )
@@ -387,7 +404,7 @@ class chainmap
 
 		$this->rebuild_map_data_cache();
 	}
-	
+
 	private function _placeSystem($originSys, $originSystems, $systemToBePlaced)
 	{
 		$sysPos = NULL;
@@ -503,8 +520,8 @@ class chainmap
 			}
 		}
 	}
-	
-	
+
+
 	public function find_system_by_name($name)
 	{
 		$systemID = 0;
@@ -512,7 +529,7 @@ class chainmap
 		{
 			return 0;
 		}
-		
+
 		$name = strtolower($name);
 		$systemID = DB::query(Database::SELECT, "SELECT systemID,displayName FROM activesystems WHERE groupID=:groupID AND chainmap_id=:chainmap AND displayName LIKE :name")
 													->param(':name', $name )
@@ -520,16 +537,16 @@ class chainmap
 													->param(':chainmap', $this->id)
 													->execute()
 													->get('systemID', 0);
-													
+
 		if( $systemID == 0 )
 		{
 			$systemID = DB::query(Database::SELECT, 'SELECT id,name FROM solarsystems WHERE LOWER(name) = :name')
 																->param(':name', $name )
 																->execute()
 																->get('id', 0);
-																
+
 		}
-		
+
 		return $systemID;
 	}
 }

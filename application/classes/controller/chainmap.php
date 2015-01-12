@@ -117,7 +117,7 @@ class Controller_Chainmap extends FrontController
 				{
 					$system['x'] = 0;
 				}
-				
+
 				if( !Auth::$session->accessData['allow_map_height_expand'] && $system['y'] > 400 )
 				{
 					$system['y'] = 380;
@@ -133,7 +133,7 @@ class Controller_Chainmap extends FrontController
 
 		exit();
 	}
-	
+
 	private function _hash_array_to_string($arr)
 	{
 		foreach( $arr as $k => $v )
@@ -149,18 +149,18 @@ class Controller_Chainmap extends FrontController
 		$this->auto_render = FALSE;
 		header('content-type: application/json');
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-		
+
 		$systemIDs = array();
 
 		$wormholeHashes = json_decode($_POST['wormhole_hashes']);
 		$stargateHashes = json_decode($_POST['stargate_hashes']);
 		$jumpbridgeHashes = json_decode($_POST['jumpbridge_hashes']);
 		$cynoHashes = json_decode($_POST['cyno_hashes']);
-		
+
 		if( is_array($cynoHashes) && count($cynoHashes) > 0 )
 		{
 			$log_message = Auth::$session->charName.' performed a mass delete of the following cynos: ';
-			
+
 			$cynoHashes = $this->_hash_array_to_string($cynoHashes);
 
 			$stargates = DB::query(Database::SELECT, 'SELECT s.*, sto.name as to_name, sfrom.name as from_name
@@ -180,7 +180,7 @@ class Controller_Chainmap extends FrontController
 				$log_message .= $sg['to_name'] . ' to ' . $sg['from_name'] . ', ';
 			}
 			$systemIDs = array_unique( $systemIDs );
-			
+
 			DB::query(Database::DELETE, 'DELETE FROM chainmap_cynos WHERE hash IN('.$cynoHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
 							->param(':groupID', Auth::$session->groupID)
 							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
@@ -189,11 +189,11 @@ class Controller_Chainmap extends FrontController
 			$log_message .= ' from the chainmap "'. $this->chainmap->data['chainmap_name'].'"';
 			groupUtils::log_action(Auth::$session->groupID,'delwhs', $log_message );
 		}
-		
+
 		if( is_array($jumpbridgeHashes) && count($jumpbridgeHashes) > 0 )
 		{
 			$log_message = Auth::$session->charName.' performed a mass delete of the following jumpbridges: ';
-			
+
 			$jumpbridgeHashes = $this->_hash_array_to_string($jumpbridgeHashes);
 
 			$stargates = DB::query(Database::SELECT, 'SELECT s.*, sto.name as to_name, sfrom.name as from_name
@@ -213,7 +213,7 @@ class Controller_Chainmap extends FrontController
 				$log_message .= $sg['to_name'] . ' to ' . $sg['from_name'] . ', ';
 			}
 			$systemIDs = array_unique( $systemIDs );
-			
+
 			DB::query(Database::DELETE, 'DELETE FROM chainmap_jumpbridges WHERE hash IN('.$jumpbridgeHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
 							->param(':groupID', Auth::$session->groupID)
 							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
@@ -222,11 +222,11 @@ class Controller_Chainmap extends FrontController
 			$log_message .= ' from the chainmap "'. $this->chainmap->data['chainmap_name'].'"';
 			groupUtils::log_action(Auth::$session->groupID,'delwhs', $log_message );
 		}
-		
+
 		if( is_array($stargateHashes) && count($stargateHashes) > 0 )
 		{
 			$log_message = Auth::$session->charName.' performed a mass delete of the following stargates: ';
-			
+
 			$stargateHashes = $this->_hash_array_to_string($stargateHashes);
 
 			$stargates = DB::query(Database::SELECT, 'SELECT s.*, sto.name as to_name, sfrom.name as from_name
@@ -246,7 +246,7 @@ class Controller_Chainmap extends FrontController
 				$log_message .= $sg['to_name'] . ' to ' . $sg['from_name'] . ', ';
 			}
 			$systemIDs = array_unique( $systemIDs );
-			
+
 			DB::query(Database::DELETE, 'DELETE FROM chainmap_stargates WHERE hash IN('.$stargateHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
 							->param(':groupID', Auth::$session->groupID)
 							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
@@ -255,12 +255,12 @@ class Controller_Chainmap extends FrontController
 			$log_message .= ' from the chainmap "'. $this->chainmap->data['chainmap_name'].'"';
 			groupUtils::log_action(Auth::$session->groupID,'delwhs', $log_message );
 		}
-		
-		
+
+
 		if( is_array($wormholeHashes) && count($wormholeHashes) > 0 )
 		{
 			$log_message = Auth::$session->charName.' performed a mass delete of the following wormholes: ';
-			
+
 			$wormholeHashes = $this->_hash_array_to_string($wormholeHashes);
 
 			$wormholes = DB::query(Database::SELECT, 'SELECT w.*, sto.name as to_name, sfrom.name as from_name
@@ -295,7 +295,7 @@ class Controller_Chainmap extends FrontController
 			$log_message .= ' from the chainmap "'. $this->chainmap->data['chainmap_name'].'"';
 			groupUtils::log_action(Auth::$session->groupID,'delwhs', $log_message );
 		}
-		
+
 		if(!empty($systemIDs))
 		{
 			$this->chainmap->reset_systems( $systemIDs );
@@ -317,10 +317,10 @@ class Controller_Chainmap extends FrontController
 			echo json_encode(array('error' => 1, 'error_message' => 'Invalid auth'));
 			exit();
 		}
-		
+
 		$update = array();
 		$hash = ($_POST['hash']);
-		
+
 		if( empty($hash) )
 		{
 			echo json_encode(array('error' => 1, 'error_message' => 'Missing wormhole hash'));
@@ -339,11 +339,11 @@ class Controller_Chainmap extends FrontController
 			echo json_encode(array('error' => 1, 'error_message' => 'Wormhole does not exist.'));
 			exit();
 		}
-		
+
 		if( isset($_POST['eol']) )
 		{
 			$update['eol'] = intval($_POST['eol']);
-			
+
 			if( !$wormhole['eol'] && $update['eol'] )
 			{
 				$update['eol_date_set'] = time();
@@ -353,7 +353,7 @@ class Controller_Chainmap extends FrontController
 				$update['eol_date_set'] = 0;
 			}
 		}
-		
+
 		if( isset($_POST['frigate_sized']) )
 		{
 			$update['frigate_sized'] = intval($_POST['frigate_sized']);
@@ -363,12 +363,12 @@ class Controller_Chainmap extends FrontController
 		{
 			$update['mass'] = intval($_POST['mass']);
 		}
-		
+
 		if( isset($_POST['wh_type_name']) )
 		{
 			$update['wh_type_id'] = $this->lookupWHTypeByName($_POST['wh_type_name']);
 		}
-		
+
 		if( !empty($update) )
 		{
 			DB::update('wormholes')
@@ -381,13 +381,13 @@ class Controller_Chainmap extends FrontController
 			$this->chainmap->rebuild_map_data_cache();
 		}
 	}
-	
+
 	private function lookupWHTypeByName($name)
 	{
 		$static = DB::query(Database::SELECT, "SELECT `id` FROM statics WHERE LOWER(name)=:name")
 							->param(':name', strtolower($name))
 							->execute()
-							
+
 							->current();
 		if( isset($static['id']) )
 		{
@@ -408,9 +408,9 @@ class Controller_Chainmap extends FrontController
 			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
 			exit();
 		}
-		
+
 		$type = $_POST['type'];
-		
+
 		$fromSys = trim($_POST['fromSys']);
 		$fromSysCurrent = intval($_POST['fromSysCurrent']);
 		$toSys	= trim($_POST['toSys']);
@@ -434,7 +434,7 @@ class Controller_Chainmap extends FrontController
 
 		$fromSysID = 0;
 		if( $fromSysCurrent )
-		{				
+		{
 			if( isset($_SERVER['HTTP_EVE_SOLARSYSTEMID']) )
 			{
 				$fromSysID = $_SERVER['HTTP_EVE_SOLARSYSTEMID'];
@@ -473,12 +473,12 @@ class Controller_Chainmap extends FrontController
 				$errors[] = "The 'to' system could not be looked up by name.";
 			}
 		}
-		
+
 		if( !$fromSysID )
 		{
 			$errors[] = "The 'to' system cannot be blank.";
 		}
-		
+
 		if( !$toSysID )
 		{
 			$errors[] = "The 'to' system cannot be blank.";
@@ -488,8 +488,6 @@ class Controller_Chainmap extends FrontController
 		{
 			$errors[] = "You cannot link a system to itself!";
 		}
-		$whHash = mapUtils::whHashByID($fromSysID , $toSysID);
-
 
 		if( $type == 'wormhole' )
 		{
@@ -524,8 +522,8 @@ class Controller_Chainmap extends FrontController
 			$eol = intval($_POST['eol']);
 			$mass = intval($_POST['mass']);
 
-			$this->chainmap->add_system_to_map($whHash, $fromSysID, $toSysID, $eol, $mass, $whTypeID);
-			
+			$this->chainmap->add_system_to_map($fromSysID, $toSysID, $eol, $mass, $whTypeID);
+
 			$message = Auth::$session->charName.' added wormhole manually between system IDs' . $fromSysID . ' and ' . $toSysID;
 
 			groupUtils::log_action(Auth::$session->groupID,'addwh', $message );
@@ -538,31 +536,30 @@ class Controller_Chainmap extends FrontController
 				exit();
 			}
 
-			
-			$this->chainmap->add_stargate_to_map($whHash, $fromSysID, $toSysID);
+			$this->chainmap->add_stargate_to_map($fromSysID, $toSysID);
 		}
 		else if( $type == 'jumpbridge' )
-		{			
+		{
 			if( count($errors) > 0 )
 			{
 				echo json_encode(array('success' => 0, 'dataErrorMsgs' => $errors ) );
 				exit();
 			}
 
-			$this->chainmap->add_jumpbridge_to_map($whHash, $fromSysID, $toSysID);
+			$this->chainmap->add_jumpbridge_to_map($fromSysID, $toSysID);
 		}
 		else if( $type == 'cyno' )
-		{			
+		{
 			if( count($errors) > 0 )
 			{
 				echo json_encode(array('success' => 0, 'dataErrorMsgs' => $errors ) );
 				exit();
 			}
 
-			$this->chainmap->add_cyno_to_map($whHash, $fromSysID, $toSysID);
+			$this->chainmap->add_cyno_to_map($fromSysID, $toSysID);
 		}
-		
-			
+
+
 		echo json_encode( array('success' => 1) );
 
 		exit();
@@ -593,7 +590,7 @@ class Controller_Chainmap extends FrontController
 			throw new Exception("Selected chain map not found!");
 		}
 	}
-	
+
 	public function action_autocomplete_wh()
 	{
 		$this->profiler = NULL;
@@ -646,7 +643,7 @@ class Controller_Chainmap extends FrontController
 		}
 		die();
 	}
-	
+
 	public function action_jump_log()
 	{
 		$this->profiler = NULL;
@@ -670,7 +667,7 @@ class Controller_Chainmap extends FrontController
 
 		/* Include all the group tracked jumps from all chainmaps since this is important not to trap oneself out */
 		$jumpData = array();
-		$jumpData  = DB::query(Database::SELECT, "SELECT wt.shipTypeID, wt.charName, wt.charID, wt.origin, wt.destination, wt.time, s.shipName, s.mass, s.shipClass 
+		$jumpData  = DB::query(Database::SELECT, "SELECT wt.shipTypeID, wt.charName, wt.charID, wt.origin, wt.destination, wt.time, s.shipName, s.mass, s.shipClass
 													FROM wormholetracker wt
 													LEFT JOIN ships as s ON s.shipID = wt.shipTypeID
 													WHERE wt.group_id = :groupID AND wt.wormhole_hash = :hash

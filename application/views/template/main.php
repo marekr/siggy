@@ -142,7 +142,12 @@
             </div>
         </div>
 		<div id="activity-thera" class="wrapper" style="display:none">
-			<p>Thera wormhole information with data from <a href="http://eve-scout.com">EVE-Scout</a></p>
+			<p>
+                Thera wormhole information with data from <a href="http://eve-scout.com">EVE-Scout</a>
+                <button class="btn btn-primary pull-right" id="activity-thera-import"><i class="fa fa-arrow-circle-down"></i> Import to chain map</button>
+            </p>
+            <br />
+            <br />
 			<table class="siggy-table siggy-table-striped" id="thera-exits-table">
 				<thead>
 					<tr>
