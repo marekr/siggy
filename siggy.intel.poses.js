@@ -2,7 +2,7 @@
  * @license Proprietary
  * @copyright Copyright (c) 2014 borkedLabs - All Rights Reserved
  */
- 
+
 function intelposes(options)
 {
 	this.siggyMain = null;
@@ -11,7 +11,7 @@ function intelposes(options)
 	};
 
 	this.settings = $.extend(this.defaults, options);
-	
+
 	/* POSes */
 	this.poses = {};
 }
@@ -191,8 +191,7 @@ intelposes.prototype.setupPOSForm = function(mode, posID)
 		{
 			$.post(action, posData, function ()
 			{
-				$this.siggyMain.forceUpdate = true;
-				$this.siggyMain.updateNow();
+                $(document).trigger('siggy.updateRequested', true );
 
 				$.unblockUI();
 			});

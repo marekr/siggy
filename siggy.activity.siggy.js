@@ -40,6 +40,12 @@ siggy2.Activity.siggy = function(core)
 		$this.switchSystem(systemID);
 	} );
 
+
+	$(document).bind('siggy.updateRequested', function(e, force) {
+		$this.forceUpdate = force;
+		$this.updateNow();
+	} );
+
 	this.initModules();
 	this.setupFormSystemOptions();
 

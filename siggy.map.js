@@ -606,38 +606,35 @@ siggy2.Map.prototype.mapShow = function()
 
 siggy2.Map.prototype.registerEvents = function()
 {
-    var that = this;
-
+    var $this = this;
 
     $('#chain-map-tabs .minimize').click( function() {
-        if( that.siggymain.displayStates.map.open == 1 )
+        if( $this.siggymain.displayStates.map.open == 1 )
         {
-			that.mapHide();
+			$this.mapHide();
         }
         else
         {
-			that.mapShow();
-			that.siggymain.updateNow();
+			$this.mapShow();
+			$(document).trigger('siggy.updateRequested', false );
         }
     } );
 
-
     $('#chain-map-edit-cancel').click( function() {
-        that.editing = false;
+		$this.editing = false;
         $(this).hide();
-        that.hideMessage('editing');
+		$this.hideMessage('editing');
 
         $('div.map-system-blob').qtip('enable');
 
-		that.siggymain.forceUpdate = true;
-		that.siggymain.updateNow();
+		$(document).trigger('siggy.updateRequested', true );
 	} );
 
     $('#chain-map-edit-save').click( function() {
         var saveSystemData = [];
-        for (var i in that.systems)
+        for (var i in $this.systems)
         {
-            var sysID = that.systems[i].systemID;
+            var sysID = $this.systems[i].systemID;
 
             var saveSystem = {};
             saveSystem.id = parseInt(sysID);
@@ -650,24 +647,24 @@ siggy2.Map.prototype.registerEvents = function()
             saveSystemData.push(saveSystem);
         }
 
-        $.post(that.baseUrl + 'chainmap/save', {
+        $.post($this.baseUrl + 'chainmap/save', {
             systemData: JSON.stringify(saveSystemData)
         });
 
-        that.editing = false;
+		$this.editing = false;
         $(this).hide();
-        that.hideMessage('editing');
+		$this.hideMessage('editing');
 
         $('div.map-system-blob').qtip('enable');
     } );
 
 
     $('#chain-map-mass-delete-confirm').click( function() {
-		that.processConnectionDelete();
+		$this.processConnectionDelete();
 
-        that.hideMessage('deleting');
-        that.massDelete = false;
-		that.massSelect = false;
+		$this.hideMessage('deleting');
+		$this.massDelete = false;
+		$this.massSelect = false;
 
         $(this).hide();
         $('#chain-map-mass-delete-cancel').hide();
@@ -676,15 +673,15 @@ siggy2.Map.prototype.registerEvents = function()
 
     $('#chain-map-mass-delete-cancel').click( function() {
 
-        for (i in that.mapConnections)
+        for (i in $this.mapConnections)
         {
-			that.mapConnections[i].selected = false;
-			that.mapConnections[i].refresh();
+			$this.mapConnections[i].selected = false;
+			$this.mapConnections[i].refresh();
         }
 
-        that.hideMessage('deleting');
-        that.massDelete = false;
-		that.massSelect = false;
+		$this.hideMessage('deleting');
+		$this.massDelete = false;
+		$this.massSelect = false;
 
         $(this).hide();
         $('#chain-map-mass-delete-confirm').hide();
@@ -707,7 +704,7 @@ siggy2.Map.prototype.processConnectionDelete = function(hashes)
 				cyno_hashes: JSON.stringify(hashes.cynos)
 			},
 			function() {
-				$this.siggymain.updateNow();
+				$(document).trigger('siggy.updateRequested', false );
 		});
 	}
 }
@@ -1331,7 +1328,7 @@ siggy2.Map.prototype.setupEditor = function()
 
 			$.post(that.baseUrl + 'chainmap/connection_edit', data, function()
 			{
-				that.siggymain.updateNow();
+				$(document).trigger('siggy.updateRequested', false );
 			});
 
 
@@ -1366,7 +1363,7 @@ siggy2.Map.prototype.setupEditor = function()
 				{
 					that.editorOpen = false;
 					$('#chain-map-container').unblock();
-					that.siggymain.updateNow();
+					$(document).trigger('siggy.updateRequested', false );
 				}
 				else
 				{
