@@ -2,7 +2,7 @@
  * @license Proprietary
  * @copyright Copyright (c) 2014 borkedLabs - All Rights Reserved
  */
- 
+
 siggy2.Map = function(options)
 {
 	this.defaults = {
@@ -77,7 +77,7 @@ siggy2.Map.prototype.showMessage = function(what)
 {
 	if( what == 'loading' )
 	{
-		this.loadingMessage.css({	'top': 150, 
+		this.loadingMessage.css({	'top': 150,
 									'left': this.container.width()/2 - this.loadingMessage.width()/2,
 									'position':'relative',
 									'float':'left'
@@ -117,8 +117,8 @@ siggy2.Map.prototype.updateMessagePositions = function()
 {
 
 	if( this.loadingMessage.is(':visible') )
-	{		
-		this.loadingMessage.css({	'top': this.container.height()/2 - this.loadingMessage.height()/2, 
+	{
+		this.loadingMessage.css({	'top': this.container.height()/2 - this.loadingMessage.height()/2,
 									'left': this.container.width()/2 - this.loadingMessage.width()/2,
 									'position':'relative',
 									'float':'left'
@@ -205,7 +205,7 @@ siggy2.Map.prototype.initialize = function()
 		that.centerButtons();
 		$("#chain-map").width($("#chain-map-scrolltainer")[0].scrollWidth);
 	});
-	
+
 	if( this.siggymain.displayStates.map.open )
 	{
 		this.mapShow();
@@ -214,18 +214,18 @@ siggy2.Map.prototype.initialize = function()
 	{
 		this.mapHide();
 	}
-	
+
 	var $container = $("#chain-map");
-	
+
 	this.innerContainer.height(that.siggymain.displayStates.map.height);
-	
+
 	if( this.settings.allowMapHeightExpand )
 	{
-		this.innerContainer.resizable({ 
-								handles:'s', 
-								maxHeight:800, 
+		this.innerContainer.resizable({
+								handles:'s',
+								maxHeight:800,
 								minHeight:400 })
-							.on( "resizestop", function( event, ui ) 
+							.on( "resizestop", function( event, ui )
 							{
 								that.siggymain.displayStates.map.height = that.innerContainer.height();
 								that.siggymain.saveDisplayState();
@@ -238,13 +238,13 @@ siggy2.Map.prototype.initialize = function()
 		}
 		//ulgy hack to make the mass delete selection work for now
 		$("#chain-map").width($("#chain-map-scrolltainer")[0].scrollWidth);
-		
+
 		that.selectionInProgress = true;
-		
+
 		var chainmapOffset = $(this).offset();
 		var click_y = e.pageY-chainmapOffset.top-5,
 			click_x = e.pageX-chainmapOffset.left-5;
-			
+
 		that.selectionBox.css({
 		  'top':    click_y,
 		  'left':   click_x,
@@ -268,12 +268,12 @@ siggy2.Map.prototype.initialize = function()
 
 				new_x = (move_x < click_x) ? (click_x - width) : click_x;
 				new_y = (move_y < click_y) ? (click_y - height) : click_y;
-				
+
 				new_x -= 5;
 				new_y -= 5;
 
 				that.selectionBox.show();
-				
+
 				that.selectionBox.css({
 				'width': width,
 				'height': height,
@@ -286,7 +286,7 @@ siggy2.Map.prototype.initialize = function()
 			{
 				//ulgy hack to make the mass delete selection work for now
 				$("#chain-map").width("auto");
-		
+
 				that.selectionInProgress = false;
 				$container.off('mousemove');
 
@@ -298,12 +298,12 @@ siggy2.Map.prototype.initialize = function()
 				};
 
 				that.selectionBox.remove();
-				
+
 				if( bb.w < 1 || bb.h < 1 )
 				{
 					return;
 				}
-				
+
 				for(var i in that.mapConnections)
 				{
 					var conn = that.mapConnections[i];
@@ -316,14 +316,14 @@ siggy2.Map.prototype.initialize = function()
 						y: internalconn.y,
 						w: internalconn.w
 					};
-					
+
 					var inside = jsPlumbGeom.intersects( bb, compareBB );
-					
+
 					if( inside )
 					{
 						conn.selected = !conn.selected;
 					}
-					
+
 					conn.refresh();
 				}
 			}
@@ -334,31 +334,106 @@ siggy2.Map.prototype.initialize = function()
 		that.setSelectedSystem( systemID );
 		e.stopPropagation();
 	});
-	
+
 	$('#jump-log-refresh').click( function() {
         that.updateJumpLog(that.editingConnection.settings.hash);
 	});
-	
+
 	this.initializeHotkeys();
 	this.initializeSystemBlobContextMenu();
 	this.initializeConnectionContextMenu();
+    this.initializeExitFinder();
 }
 
+
+siggy2.Map.prototype.initializeExitFinder = function()
+{
+    var $this = this;
+
+    $("#exit-finder-button").click( function() {
+        $this.siggymain.openBox('#exit-finder');
+        $("#exit-finder-results-wrap").hide();
+        return false;
+    } );
+
+    $('#exit-finder button[name=current_location]').click( function() {
+        $("#exit-finder-loading").show();
+        $("#exit-finder-results-wrap").hide();
+        $.post($this.baseUrl + 'chainmap/find_nearest_exits',
+        {current_system: 1},
+        function (data)
+        {
+            $("#exit-finder-loading").hide();
+            $('#exit-finder-list').empty();
+            $this.populateExitData(data);
+            $("#exit-finder-results-wrap").show();
+        });
+        return false;
+    });
+
+    var submitHandler = function() {
+    var target = $("#exit-finder input[name=target_system]").val();
+
+    $("#exit-finder-loading").show();
+    $("#exit-finder-results-wrap").hide();
+
+    $.post($this.baseUrl + 'chainmap/find_nearest_exits',
+        {target: target},
+        function (data)
+        {
+            $("#exit-finder-loading").hide();
+            $('#exit-finder-list').empty();
+            $this.populateExitData(data);
+            $("#exit-finder-results-wrap").show();
+        });
+        return false;
+    };
+
+    $('#exit-finder form').submit(submitHandler);
+
+    $('#exit-finder button[name=cancel]').click( function() {
+        $.unblockUI();
+        return false;
+    } );
+}
+
+siggy2.Map.prototype.populateExitData = function(data)
+{
+    if( typeof(data.result) != "undefined" )
+    {
+        for(var i in data.result)
+        {
+            var item = $("<li>");
+            item.html("<span class='faux-link'>"+data.result[i].system_name + "</span> - " + data.result[i].number_jumps + " jumps");
+            $('#exit-finder-list').append(item);
+
+            item.data("sysID", data.result[i].system_id);
+            item.data("sysName",data.result[i].system_name);
+            item.addClass('basic-system-context');
+        }
+    }
+    else
+    {
+        var item = $("<li>");
+        item.text("Invalid system or no exits");
+        $('#exit-finder-list').append(item);
+    }
+}
 
 siggy2.Map.prototype.initializeConnectionContextMenu = function()
 {
 	var $this = this;
 	$(document).contextMenu({
-		selector: '._jsPlumb_connector ', 
-		
+		selector: '._jsPlumb_connector ',
+
         build: function($trigger, e) {
 			var connection = $($trigger).data('siggy_connection');
-			
+
 			if( typeof(connection) == "undefined" )
 				return false;
-			
+
 			var items = connection.contextMenuBuildItems();
-			
+
 			if( Object.size(items) != 0 )
 			{
 				return {
@@ -373,7 +448,7 @@ siggy2.Map.prototype.initializeConnectionContextMenu = function()
 			{
 				return false;
 			}
-			
+
         }
 	});
 }
@@ -383,25 +458,25 @@ siggy2.Map.prototype.initializeSystemBlobContextMenu = function()
 {
 	var $this = this;
 	$(document).contextMenu({
-		selector: '.map-system-blob', 
-		
+		selector: '.map-system-blob',
+
         build: function($trigger, e) {
 			var sysID = $($trigger).data('system_id');
-			
+
 			var sysData = $this.systems[sysID];
-			
+
 			if( typeof(sysData) == "undefined" )
 				return false;
-			
+
 			var items = { 'edit': {name: 'Edit' },
-						  'showinfo': {name: 'Show Info'} 
+						  'showinfo': {name: 'Show Info'}
 						};
-			
+
 			if( typeof(CCPEVE) != "undefined" )
 			{
 				items.setdest = {name:'Set Destination'};
 			}
-			
+
 			if( parseInt(sysData.rally) == 1 )
 			{
 				items.clearrally = {name:'Clear Rally'};
@@ -410,7 +485,7 @@ siggy2.Map.prototype.initializeSystemBlobContextMenu = function()
 			{
 				items.setrally = {name:'Set Rally'};
 			}
-			
+
             return {
                 callback: function(key, options) {
 					var sysID = $(this).data('system_id');
@@ -427,7 +502,7 @@ siggy2.Map.prototype.initializeSystemBlobContextMenu = function()
 siggy2.Map.prototype.systemContextMenuHandler = function(action, system)
 {
 	var $this = this;
-	
+
 	if( action == "edit" )
 	{
 		$this.openSystemEdit( system.systemID );
@@ -455,7 +530,7 @@ siggy2.Map.prototype.systemContextMenuHandler = function(action, system)
 		var data = {
 			rally: 1
 		};
-		
+
 		$this.siggymain.saveSystemOptions(system.systemID, data);
 	}
 	else if( action == "clearrally" )
@@ -463,7 +538,7 @@ siggy2.Map.prototype.systemContextMenuHandler = function(action, system)
 		var data = {
 			rally: 0
 		};
-		
+
 		$this.siggymain.saveSystemOptions(system.systemID, data);
 	}
 }
@@ -486,11 +561,11 @@ siggy2.Map.prototype.startMapEdit = function()
 siggy2.Map.prototype.initializeHotkeys = function()
 {
 	var $this = this;
-	
+
 	$(document).bind('keydown', 'ctrl+m', function(){
-		$(document).scrollTop( 0 );  
+		$(document).scrollTop( 0 );
 	});
-	
+
 	this.siggymain.hotkeyhelper.registerHotkey('Ctrl+M', 'Jump to map');
 }
 
@@ -512,7 +587,7 @@ siggy2.Map.prototype.mapHide = function()
 	$('#chain-map-ec').text('Click to show');
 	$('#chainPanTrackX').hide();
 	this.lastUpdate = 0;
-	
+
 	$('#chain-map-tabs i.expand-collapse-indicator').removeClass('fa-caret-down').addClass('fa-caret-up');
 	this.siggymain.displayStates.map.open = false;
 	this.siggymain.saveDisplayState();
@@ -523,7 +598,7 @@ siggy2.Map.prototype.mapShow = function()
 	$('#chain-map-inner').show();
 	$('#chain-map-ec').text('Click to hide');
 	this.showMessage('loading');
-	
+
 	$('#chain-map-tabs i.expand-collapse-indicator').removeClass('fa-caret-up').addClass('fa-caret-down');
 	this.siggymain.displayStates.map.open = true;
 	this.siggymain.saveDisplayState();
@@ -545,15 +620,15 @@ siggy2.Map.prototype.registerEvents = function()
 			that.siggymain.updateNow();
         }
     } );
-	
-	
+
+
     $('#chain-map-edit-cancel').click( function() {
         that.editing = false;
         $(this).hide();
         that.hideMessage('editing');
-		
+
         $('div.map-system-blob').qtip('enable');
-		
+
 		that.siggymain.forceUpdate = true;
 		that.siggymain.updateNow();
 	} );
@@ -582,7 +657,7 @@ siggy2.Map.prototype.registerEvents = function()
         that.editing = false;
         $(this).hide();
         that.hideMessage('editing');
-		
+
         $('div.map-system-blob').qtip('enable');
     } );
 
@@ -619,13 +694,13 @@ siggy2.Map.prototype.registerEvents = function()
 siggy2.Map.prototype.processConnectionDelete = function(hashes)
 {
 	var $this = this;
-	
+
 	var hashes = this.getSelectedHashes();
-	
+
 	if( hashes.count > 0 )
 	{
-		$.post(this.baseUrl + 'chainmap/connection_delete', 
-			{ 
+		$.post(this.baseUrl + 'chainmap/connection_delete',
+			{
 				wormhole_hashes: JSON.stringify(hashes.wormholes),
 				stargate_hashes:JSON.stringify(hashes.stargates),
 				jumpbridge_hashes:JSON.stringify(hashes.jumpbridges),
@@ -645,7 +720,7 @@ siggy2.Map.prototype.getSelectedHashes = function()
 					cynos: [],
 					count: 0
 				};
-				
+
 	for (var i in this.mapConnections)
 	{
 		if( this.mapConnections[i].selected )
@@ -668,11 +743,11 @@ siggy2.Map.prototype.getSelectedHashes = function()
 					hashes.cynos.push( this.mapConnections[i].settings.hash );
 					hashes.count++;
 					break;
-					
+
 			}
 		}
 	}
-	
+
 	return hashes;
 }
 
@@ -723,7 +798,7 @@ siggy2.Map.prototype.updateActives = function( activesData )
             //setup our lengths
             //TBH, make the max length configurable
             var len = actives.length;
-            var displayLen = len > this.settings.maxCharactersShownInSystem 
+            var displayLen = len > this.settings.maxCharactersShownInSystem
 									? this.settings.maxCharactersShownInSystem : len;
 
             var fullText = '';
@@ -775,31 +850,31 @@ siggy2.Map.prototype.draw = function()
 
 	//reset jsplumb to nuke all events
 	jsPlumb.reset();
-	
+
     $('div.map-system-blob').qtip('destroy');
     $('div.map-system-blob').off();
     $('div.map-full-actives').remove();
-	
+
 	for( var i  in this.mapConnections )
 	{
 		this.mapConnections[i].destroy();
 		delete this.mapConnections[i];
 	}
-	
+
     $('#chain-map').empty();
-	
+
     for( var i in this.systems )
     {
         //local variable assignment
         var systemData = this.systems[i];
 
         var sysBlob = $("<div>").addClass('map-system-blob').offset({ top: systemData.y, left: systemData.x}).attr("id", systemData.systemID);
-		
+
 		sysBlob.data('system_id', systemData.systemID);
 
         //blob time for the title
         var systemName = $("<span>").text(systemData.displayName == "" ? systemData.name : systemData.displayName).addClass('map-system-blob-sysname');
-		
+
 
         var titleClassBit = "";
         if( this.settings.alwaysShowClass || systemData.sysClass >= 7 || ( systemData.sysClass < 7 && systemData.displayName == "") )
@@ -920,7 +995,7 @@ siggy2.Map.prototype.draw = function()
     {
         //local variable to make code smaller
         var wormhole = this.wormholes[w];
-		
+
 		var options = {
 			to: wormhole.to,
 			from: wormhole.from,
@@ -934,7 +1009,7 @@ siggy2.Map.prototype.draw = function()
 				totalTrackedMass: wormhole.total_tracked_mass
 			}
 		};
-		
+
 		if( wormhole.wh_name != null )
 		{
 			options.wormhole.typeInfo = {
@@ -945,69 +1020,69 @@ siggy2.Map.prototype.draw = function()
 				regen: wormhole.wh_regen
 			}
 		}
-		
+
 		var connection = new siggy2.MapConnection(jsPlumb,options);
 		connection.map = this;
 		connection.create();
-		
+
 		this.mapConnections['wormhole-'+wormhole.hash] = connection;
     }
-	
+
     for( var s in this.stargates )
     {
         //local variable to make code smaller
         var stargate = this.stargates[s];
-		
+
 		var options = {
 			to: stargate.to_system_id,
 			from: stargate.from_system_id,
 			hash: stargate.hash,
 			type: 'stargate'
 		};
-		
+
 		var connection = new siggy2.MapConnection(jsPlumb,options);
 		connection.map = this;
 		connection.create();
-		
+
 		this.mapConnections['stargate-'+stargate.hash] = connection;
     }
-	
+
     for( var s in this.cynos )
     {
         //local variable to make code smaller
         var cyno = this.cynos[s];
-		
+
 		var options = {
 			to: cyno.to_system_id,
 			from: cyno.from_system_id,
 			hash: cyno.hash,
 			type: 'cyno'
 		};
-		
+
 		var connection = new siggy2.MapConnection(jsPlumb,options);
 		connection.map = this;
 		connection.create();
-		
+
 		this.mapConnections['cyno-'+cyno.hash] = connection;
     }
-	
-	
+
+
     for( var s in this.jumpbridges )
     {
         //local variable to make code smaller
         var jumpbridge = this.jumpbridges[s];
-		
+
 		var options = {
 			to: jumpbridge.to_system_id,
 			from: jumpbridge.from_system_id,
 			hash: jumpbridge.hash,
 			type: 'jumpbridge'
 		};
-		
+
 		var connection = new siggy2.MapConnection(jsPlumb,options);
 		connection.map = this;
 		connection.create();
-		
+
 		this.mapConnections['jumpbridges'+jumpbridge.hash] = connection;
     }
 
@@ -1044,11 +1119,11 @@ siggy2.Map.prototype.openSystemEdit = function( sysID )
 		fadeIn:  0,
 		fadeOut:  0
 	});
-	
+
 	$('#editingSystemName').text(this.systems[ sysID ].name);
 
 	var label = this.systems[ sysID ].displayName == '' ? this.systems[ sysID ].name : this.systems[ sysID ].displayName;
-	
+
 	$('#system-editor input[name=label]').val( label );
 	$('#system-editor input[name=label]').select();
 	$('#system-editor select[name=activity]').val(this.systems[ sysID ].activity);
@@ -1231,7 +1306,7 @@ siggy2.Map.prototype.setupEditor = function()
 		toSysInput.prop('disabled',$(this).is(':checked'));
 		fromCurrentInput.prop('disabled',$(this).is(':checked'));
 	});
-	
+
 
 	$('#connection-editor-save').click( function() {
 
@@ -1242,7 +1317,7 @@ siggy2.Map.prototype.setupEditor = function()
 				hash: that.editingConnection.settings.hash,
 				type: that.editingConnection.settings.type
 			};
-			
+
 			if( data.type == 'wormhole' )
 			{
 				data.eol = $('#connection-editor input[name=eol]:checked').val();
@@ -1250,7 +1325,7 @@ siggy2.Map.prototype.setupEditor = function()
 				data.mass = $('#connection-editor select[name=mass]').val();
 				data.wh_type_name = $('#connection-editor input[name=wh_type_name]').val();
 			}
-			
+
 			$.post(that.baseUrl + 'chainmap/connection_edit', data, function()
 			{
 				that.siggymain.updateNow();
@@ -1265,7 +1340,7 @@ siggy2.Map.prototype.setupEditor = function()
 			var errors = [];
 
 			var type = $('select[name=connection-editor-type]').val();
-			
+
 			data = {
 				fromSys: fromSysInput.val(),
 				fromSysCurrent: ( fromCurrentInput.is(':checked') ? 1 : 0 ),
@@ -1273,7 +1348,7 @@ siggy2.Map.prototype.setupEditor = function()
 				toSysCurrent: ( toCurrentInput.is(':checked') ? 1 : 0 ),
 				type: type
 			};
-			
+
 			if( type == 'wormhole' )
 			{
 				data.eol = $('#connection-editor input[name=eol]:checked').val();
@@ -1305,7 +1380,7 @@ siggy2.Map.prototype.setupEditor = function()
 	$('#connection-editor-cancel').click( function() {
 		$('#chain-map-container').unblock();
 	});
-	
+
 	$('select[name=connection-editor-type]').change( function() {
 		switch( $(this).val() )
 		{
@@ -1351,12 +1426,12 @@ siggy2.Map.prototype.setupSystemEditor = function()
 		{
 			label = '';
 		}
-		
+
 		var data = {
 			label: label,
 			activity: $('#system-editor select[name=activity]').val()
 		};
-		
+
 		that.siggymain.saveSystemOptions(that.editingSystem, data);
 		$('#chain-map-container').unblock();
 	});
@@ -1491,7 +1566,7 @@ siggy2.Map.prototype.resetWormholeEditor = function()
 	//resets cause fucking browsers
 	toSysInput.val('');
 	toSysInput.prop('disabled',false);
-	
+
 	if( !this.siggymain.igb )
 	{
 		fromCurrentInput.parent().hide();
@@ -1502,7 +1577,7 @@ siggy2.Map.prototype.resetWormholeEditor = function()
 	$('#connection-editor input[name=eol]').filter('[value=0]').prop('checked', true);
 	$('#connection-editor input[name=frigate_sized]').filter('[value=0]').prop('checked', true);
 	$('#connection-editor input[name=wh_type_name]').val('');
-	
+
 	$('select[name=connection-editor-type]').val('wormhole');
 }
 
@@ -1543,7 +1618,7 @@ siggy2.Map.prototype.editWormhole = function(conn)
 		$('#connection-popup ul.box-tabs').hide();
 		$('#connection-editor-options-wh').hide();
 	}
-	
+
 	this.openWHEditor('edit');
 }
 
@@ -1570,13 +1645,13 @@ siggy2.Map.prototype.setWHPopupTab = function( selectedTab )
 			this.updateJumpLog(this.editingConnection.settings.hash);
 		}
 	}
-	
+
     var $this = this;
     $('#connection-popup ul.box-tabs li a').each(function()
     {
         var href = $(this).attr('href');
 
-		
+
         if( href == selectedTab )
         {
             $(this).parent().addClass('active');
@@ -1613,7 +1688,7 @@ siggy2.Map.prototype.openWHEditor = function(mode)
 		fadeIn:  0,
 		fadeOut:  0
 	});
-	
+
 	if( mode == 'edit' )
 	{
 		$('#connection-editor-add').hide();
@@ -1623,13 +1698,13 @@ siggy2.Map.prototype.openWHEditor = function(mode)
 	}
 	else
 	{
-		
+
 		$('#connection-editor-save').show();
 		$('#connection-editor-options-wh').show();
 		$('#connection-popup ul.box-tabs').hide();
 		$('#connection-editor-add').show();
 		$('#connection-editor-edit').hide();
-		
+
 		$("#connection-editor input[name=from-sys]").focus();
 		this.editorMode = 'add';
 		this.editorOpen = true;

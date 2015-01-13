@@ -151,7 +151,7 @@ charactersettings.prototype.performSettingsRefresh = function()
 {
 	var $this = this;
 
-	this.siggyMain.changeTab("#sigs");
+//	this.siggyMain.changeTab("#sigs");
 	if( this.settings.combineScanIntel )
 	{
 		$("#system-stats").before($("#pos-box"));
