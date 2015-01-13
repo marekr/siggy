@@ -1,8 +1,6 @@
 <?php
 
 require_once APPPATH.'classes/FrontController.php';
-require_once APPPATH.'classes/astar.php';
-require_once APPPATH.'classes/systempathfinder.php';
 
 class Controller_Chainmap extends FrontController
 {
@@ -73,13 +71,14 @@ class Controller_Chainmap extends FrontController
 						->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 						->execute()->as_array();
 
-		$pather = new SystemPathFinder();
+		$pather = new Pathfinder();
 		$result = array();
 		foreach($systems as $system)
 		{
-			$path = $pather->PathFind($targetID, $system['sys_id']);
+			$path = $pather->shortest($targetID, $system['sys_id']);
+			$path = $path['distance'];
 
-			$result[] = array('system_id' => $system['sys_id'], 'system_name' => $system['name'], 'number_jumps' => count($path) );
+			$result[] = array('system_id' => $system['sys_id'], 'system_name' => $system['name'], 'number_jumps' => $path );
 		}
 
 		usort($result, array('Controller_Chainmap','sortResults'));

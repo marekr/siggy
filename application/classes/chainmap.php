@@ -521,7 +521,6 @@ class chainmap
 		}
 	}
 
-
 	public function find_system_by_name($name)
 	{
 		$systemID = 0;
