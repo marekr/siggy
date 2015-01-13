@@ -1,7 +1,5 @@
 <?php
 
-require_once APPPATH.'classes/FrontController.php';
-
 class Controller_Chainmap extends FrontController
 {
 	/*
