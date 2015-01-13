@@ -12,6 +12,8 @@
 --js=siggy.map.connection.js ^
 --js=siggy.hotkeyhelper.js ^
 --js=siggy.map.js ^
+--js=siggy.activity.siggy.js ^
+--js=siggy.activity.search.js ^
 --js=siggy.activity.thera.js ^
 --source_map_format=V3 ^
 --create_source_map siggy.compiled.js.map ^
