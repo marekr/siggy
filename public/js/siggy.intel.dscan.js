@@ -2,7 +2,7 @@
  * @license Proprietary
  * @copyright Copyright (c) 2014 borkedLabs - All Rights Reserved
  */
- 
+
 function inteldscan(options)
 {
 	this.siggyMain = null;
@@ -11,7 +11,7 @@ function inteldscan(options)
 	};
 
 	this.settings = $.extend(this.defaults, options);
-	
+
 	this.dscans = {};
 }
 
@@ -70,7 +70,7 @@ inteldscan.prototype.setupDScanForm = function(mode, posID)
 		{
 			$.post(action, data, function ()
 			{
-				$this.siggyMain.forceUpdate = true;
+                $(document).trigger('siggy.updateRequested', true );
 				$.unblockUI();
 			});
 		}

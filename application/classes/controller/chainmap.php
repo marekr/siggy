@@ -499,6 +499,8 @@ class Controller_Chainmap extends FrontController
 				}
 			}
 
+			$whHash = mapUtils::whHashByID($fromSysID , $toSysID);
+
 			$connection = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE hash=:hash AND group_id=:group AND chainmap_id=:chainmap")
 								->param(':hash', $whHash)
 								->param(':group', Auth::$session->groupID)
