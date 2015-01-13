@@ -3,8 +3,9 @@
  * @copyright Copyright (c) 2014 borkedLabs - All Rights Reserved
  */
 
-siggy2.Map = function(options)
+siggy2.Map = function(core, options)
 {
+	this.core = core;
 	this.defaults = {
 		jumpTrackerEnabled: true,
 		jumpTrackerShowNames: true,
@@ -28,8 +29,6 @@ siggy2.Map = function(options)
 	this.mapConnections = {};
 
 	this.baseUrl = '';
-	this.siggymain = null;
-
 
 	this.container = $('#chain-map-container');
 	this.innerContainer = $('#chain-map-inner');
@@ -206,7 +205,7 @@ siggy2.Map.prototype.initialize = function()
 		$("#chain-map").width($("#chain-map-scrolltainer")[0].scrollWidth);
 	});
 
-	if( this.siggymain.displayStates.map.open )
+	if( this.core.displayStates.map.open )
 	{
 		this.mapShow();
 	}
@@ -217,7 +216,7 @@ siggy2.Map.prototype.initialize = function()
 
 	var $container = $("#chain-map");
 
-	this.innerContainer.height(that.siggymain.displayStates.map.height);
+	this.innerContainer.height(that.core.displayStates.map.height);
 
 	if( this.settings.allowMapHeightExpand )
 	{
@@ -227,8 +226,8 @@ siggy2.Map.prototype.initialize = function()
 								minHeight:400 })
 							.on( "resizestop", function( event, ui )
 							{
-								that.siggymain.displayStates.map.height = that.innerContainer.height();
-								that.siggymain.saveDisplayState();
+								that.core.displayStates.map.height = that.innerContainer.height();
+								that.core.saveDisplayState();
 							} );
 	}
 	$container.on('mousedown', function(e) {
@@ -351,7 +350,7 @@ siggy2.Map.prototype.initializeExitFinder = function()
     var $this = this;
 
     $("#exit-finder-button").click( function() {
-        $this.siggymain.openBox('#exit-finder');
+        $this.core.openBox('#exit-finder');
         $("#exit-finder-results-wrap").hide();
         return false;
     } );
@@ -531,7 +530,7 @@ siggy2.Map.prototype.systemContextMenuHandler = function(action, system)
 			rally: 1
 		};
 
-		$this.siggymain.saveSystemOptions(system.systemID, data);
+		$this.core.saveSystemOptions(system.systemID, data);
 	}
 	else if( action == "clearrally" )
 	{
@@ -539,7 +538,7 @@ siggy2.Map.prototype.systemContextMenuHandler = function(action, system)
 			rally: 0
 		};
 
-		$this.siggymain.saveSystemOptions(system.systemID, data);
+		$this.core.saveSystemOptions(system.systemID, data);
 	}
 }
 
@@ -566,7 +565,7 @@ siggy2.Map.prototype.initializeHotkeys = function()
 		$(document).scrollTop( 0 );
 	});
 
-	this.siggymain.hotkeyhelper.registerHotkey('Ctrl+M', 'Jump to map');
+	this.core.hotkeyhelper.registerHotkey('Ctrl+M', 'Jump to map');
 }
 
 siggy2.Map.prototype.setSelectedSystem = function( systemID )
@@ -589,8 +588,8 @@ siggy2.Map.prototype.mapHide = function()
 	this.lastUpdate = 0;
 
 	$('#chain-map-tabs i.expand-collapse-indicator').removeClass('fa-caret-down').addClass('fa-caret-up');
-	this.siggymain.displayStates.map.open = false;
-	this.siggymain.saveDisplayState();
+	this.core.displayStates.map.open = false;
+	this.core.saveDisplayState();
 }
 
 siggy2.Map.prototype.mapShow = function()
@@ -600,8 +599,8 @@ siggy2.Map.prototype.mapShow = function()
 	this.showMessage('loading');
 
 	$('#chain-map-tabs i.expand-collapse-indicator').removeClass('fa-caret-up').addClass('fa-caret-down');
-	this.siggymain.displayStates.map.open = true;
-	this.siggymain.saveDisplayState();
+	this.core.displayStates.map.open = true;
+	this.core.saveDisplayState();
 }
 
 siggy2.Map.prototype.registerEvents = function()
@@ -609,7 +608,7 @@ siggy2.Map.prototype.registerEvents = function()
     var $this = this;
 
     $('#chain-map-tabs .minimize').click( function() {
-        if( $this.siggymain.displayStates.map.open == 1 )
+        if( $this.core.displayStates.map.open == 1 )
         {
 			$this.mapHide();
         }
@@ -1432,7 +1431,7 @@ siggy2.Map.prototype.setupSystemEditor = function()
 			activity: $('#system-editor select[name=activity]').val()
 		};
 
-		that.siggymain.saveSystemOptions(that.editingSystem, data);
+		that.core.saveSystemOptions(that.editingSystem, data);
 		$('#chain-map-container').unblock();
 	});
 }
@@ -1567,7 +1566,7 @@ siggy2.Map.prototype.resetWormholeEditor = function()
 	toSysInput.val('');
 	toSysInput.prop('disabled',false);
 
-	if( !this.siggymain.igb )
+	if( !this.core.igb )
 	{
 		fromCurrentInput.parent().hide();
 		toCurrentInput.parent().hide();
