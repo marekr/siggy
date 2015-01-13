@@ -133,9 +133,8 @@ siggy2.Activity.siggy.prototype.initModules = function()
 	// Initialize map
 
 	this.sigtable.initialize();
-	this.map = new siggy2.Map(this.core.settings.map);
+	this.map = new siggy2.Map(this.core, this.core.settings.map);
 	this.map.baseUrl = this.core.settings.baseUrl;
-	this.map.siggymain = this.core;
 	this.map.initialize();
 
 	$(document).trigger('siggy.systemSwitched', this.systemID );
