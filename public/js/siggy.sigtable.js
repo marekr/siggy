@@ -92,6 +92,8 @@ siggy2.SigTable.prototype.initialize = function()
 	});
 
 	$this.initializeHotkeys();
+
+	this.setupAddDialog();
 }
 
 siggy2.SigTable.prototype.initializeHotkeys = function()
@@ -109,6 +111,181 @@ siggy2.SigTable.prototype.initializeHotkeys = function()
 
 	this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+Q', 'Jump to signatue table');
 	this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+B', 'Focus on signature adder');
+}
+
+
+siggy2.SigTable.prototype.setupAddDialog = function ()
+{
+	var $this = this;
+	var massAddBlob = $('#mass-add-sig-box textarea[name=blob]');
+	massAddBlob.val('');
+	$('#mass-add-sig-box button[name=add]').click( function()
+	{
+		$this.massAddHandler($this.systemID,massAddBlob.val());
+		massAddBlob.val('');
+
+		$.unblockUI();
+		return false;
+	} );
+
+	$('#mass-add-sig-box button[name=cancel]').click( function()
+	{
+		$.unblockUI();
+		return false;
+	} );
+
+	$('#mass-add-sigs').click(function ()
+	{
+		$.blockUI({
+			message: $('#mass-add-sig-box'),
+			css: {
+				border: 'none',
+				padding: '15px',
+				background: 'transparent',
+				color: 'inherit',
+				cursor: 'auto',
+				textAlign: 'left',
+				top: '20%',
+				width: 'auto',
+				centerX: true,
+				centerY: false
+			},
+			overlayCSS: {
+				cursor: 'auto'
+			},
+			fadeIn:  0,
+			fadeOut:  0
+		});
+		$('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);
+		return false;
+	});
+
+	//override potential form memory
+	$('#sig-add-box select[name=type]').val('none');
+
+
+	var massSigEnter = function(e)
+	{
+		//enter key
+		if(e.which == 13)
+		{
+			$this.massAddHandler($this.systemID,$('#sig-add-box textarea[name=mass_sigs]').val());
+			$('#sig-add-box textarea[name=mass_sigs]').val('');
+		}
+	}
+
+	$( document ).on('keypress', '#sig-add-box textarea[name=mass_sigs]', massSigEnter);
+	$('#sig-add-box textarea[name=mass_sigs]').click(function() {
+		//need this to fix event bubble on the collaspible
+		return false;
+	});
+
+	$('#sig-add-box form').submit(function ()
+	{
+		$this.sigAddHandler();
+		return false;
+	});
+
+
+	$('#sig-add-box select[name=type]').change(function ()
+	{
+		newType = $(this).val();
+
+		$this.updateSiteSelect( '#sig-add-box select[name=site]', $this.systemClass, newType, 0);
+	}).keypress(this.addBoxEnterHandler);
+
+	if( this.settings.showSigSizeCol )
+	{
+		$('#sig-add-box select[name=size]').keypress(this.addBoxEnterHandler);
+	}
+
+	$( document ).on('keypress', '#sig-add-box select[name=site]', this.addBoxEnterHandler);
+}
+
+siggy2.SigTable.prototype.sigAddHandler = function()
+{
+	var $this = this;
+	var sigEle = $('#sig-add-box input[name=sig]');
+	var typeEle = $('#sig-add-box select[name=type]');
+	var descEle = $('#sig-add-box input[name=desc]');
+	var siteEle = $('#sig-add-box select[name=site]');
+
+	if (sigEle.val().length != 3)
+	{
+		return false;
+	}
+
+	//idiot proof for ccp
+	var type = 'none';
+	if( typeEle.val() != null )
+	{
+		type = typeEle.val();
+	}
+
+	var postData = {
+		systemID: $this.systemID,
+		sig: sigEle.val(),
+		type: type,
+		desc: descEle.val(),
+		siteID: siteEle.val()
+	};
+
+	if( $this.settings.showSigSizeCol )
+	{
+		var sizeEle = $('#sig-add-box select[name=size]');
+		postData.sigSize = sizeEle.val();
+	}
+
+	$.post($this.settings.baseUrl + 'sig/add', postData, function (newSig)
+	{
+		for (var i in newSig)
+		{
+			$this.addSigRow(newSig[i]);
+		}
+		$.extend($this.sigData, newSig);
+		$('#sig-table').trigger('update');
+
+	}, 'json');
+
+	sigEle.val('');
+	if( $this.settings.showSigSizeCol )
+	{
+		sizeEle.val('');
+	}
+	typeEle.val('none');
+	descEle.val('');
+	siteEle.replaceWith($('<select>').attr('name', 'site').addClass('siggy-input'));
+
+	sigEle.focus();
+}
+
+siggy2.SigTable.prototype.massAddHandler = function(systemID, data)
+{
+	var $this = this;
+
+	var postData = {
+		systemID: systemID,
+		blob: data
+	};
+
+	$.post( $this.settings.baseUrl + 'sig/mass_add', postData, function (newSig)
+	{
+		for (var i in newSig)
+		{
+			$this.addSigRow(newSig[i]);
+		}
+
+		$.extend($this.sigData, newSig);
+		$('#sig-table').trigger('update');
+	}, 'json');
+}
+
+siggy2.SigTable.prototype.addBoxEnterHandler = function(e)
+{
+	if(e.which == 13)
+	{
+		$('button[name=add]').focus().click();
+	}
 }
 
 siggy2.SigTable.prototype.clear = function()
@@ -550,7 +727,7 @@ siggy2.SigTable.prototype.generateSiteSelect = function (whClass, type, siteID)
 
 siggy2.SigTable.prototype.generateOrderedSelect = function (options, select)
 {
-	var newSelect = $('<select>');
+	var newSelect = $('<select>').addClass('siggy-input');
 
 	for (var i=0; i < options.length; i++ )
 	{
@@ -564,7 +741,7 @@ siggy2.SigTable.prototype.generateOrderedSelect = function (options, select)
 
 siggy2.SigTable.prototype.generateSelect = function (options, select)
 {
-	var newSelect = $('<select>');
+	var newSelect = $('<select>').addClass('siggy-input');
 
 	for (var i in options)
 	{
