@@ -244,37 +244,6 @@ siggy2.Core.prototype.getCurrentTime = function ()
 	return time;
 }
 
-siggy2.Core.prototype.registerSwitchHandler = function (item, systemID, systemName)
-{
-	var that = this;
-	item.click(function ()
-	{
-		//$.blockUI({ message: '<h1 style="font-size:1.2em;"><strong>Loading...</strong></h1>' });
-		that.switchSystem(systemID, systemName);
-
-	});
-}
-
-siggy2.Core.prototype.switchSystem = function(systemID, systemName)
-{
-	this.setSystemID(systemID);
-	this.systemName = systemName;
-	this.forceUpdate = true;
-	this.freeze();
-	clearTimeout(this._updateTimeout);
-
-	this.sigtable.clear();
-
-
-	$('#sig-add-box select[name=type]').val(0);
-	this.sigtable.updateSiteSelect('#sig-add-box select[name=site]',this.systemClass, 0, 0);
-
-	if( this.updateNow() )
-	{
-		$(document).trigger('siggy.switchSystem', systemID );
-	}
-}
-
 siggy2.Core.prototype.displayFatalError = function(message)
 {
 	$('#fatal-error-message').html(message);
@@ -321,20 +290,6 @@ siggy2.Core.prototype.setupFatalErrorHandler = function()
 	$('#fatal-error-refresh').click( function() {
 		location.reload(true);
 	} );
-}
-
-siggy2.Core.prototype.freeze = function()
-{
-	this.freezeSystem = 1;
-	$('#freezeOpt').hide();
-	$('#unfreezeOpt').show();
-}
-
-siggy2.Core.prototype.unfreeze = function()
-{
-	this.freezeSystem = 0;
-	$('#unfreezeOpt').hide();
-	$('#freezeOpt').show();
 }
 
 siggy2.Core.prototype.openBox = function(ele)

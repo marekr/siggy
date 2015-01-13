@@ -330,7 +330,7 @@ siggy2.Map.prototype.initialize = function()
 		});
 	});
 
-	$(document).bind('siggy.switchSystem', function(e, systemID) {
+	$(document).bind('siggy.systemSwitched', function(e, systemID) {
 		that.setSelectedSystem( systemID );
 		e.stopPropagation();
 	});
@@ -970,7 +970,10 @@ siggy2.Map.prototype.draw = function()
                 return false;
             }
             var sysID = $(this).attr("id");
-            that.siggymain.switchSystem(sysID, that.systems[sysID].name);
+        //    that.siggymain.switchSystem(sysID, that.systems[sysID].name);
+
+			$(document).trigger('siggy.map.systemSelected', sysID );
+		//	$(document).trigger('siggy.switchSystem', sysID );
         } );
 
         var tst = $("<div>").attr("id","fullactives"+systemData.systemID).addClass('tooltip').addClass('map-full-actives').text("");

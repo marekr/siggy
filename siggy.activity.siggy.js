@@ -36,15 +36,19 @@ siggy2.Activity.siggy = function(core)
 
 	this.templateEffectTooltip = Handlebars.compile( $("#template-effect-tooltip").html() );
 
+	$(document).bind('siggy.map.systemSelected', function(e, systemID) {
+		$this.switchSystem(systemID);
+	} );
+
 	this.initModules();
 	this.setupFormSystemOptions();
 
-	$('#bear-C1').click(function() { that.setBearTab(1); return false; });
-	$('#bear-C2').click(function() { that.setBearTab(2); return false; });
-	$('#bear-C3').click(function() { that.setBearTab(3); return false; });
-	$('#bear-C4').click(function() { that.setBearTab(4); return false; });
-	$('#bear-C5').click(function() { that.setBearTab(5); return false; });
-	$('#bear-C6').click(function() { that.setBearTab(6); return false; });
+	$('#bear-C1').click(function() { $this.setBearTab(1); return false; });
+	$('#bear-C2').click(function() { $this.setBearTab(2); return false; });
+	$('#bear-C3').click(function() { $this.setBearTab(3); return false; });
+	$('#bear-C4').click(function() { $this.setBearTab(4); return false; });
+	$('#bear-C5').click(function() { $this.setBearTab(5); return false; });
+	$('#bear-C6').click(function() { $this.setBearTab(6); return false; });
 
 
 
@@ -69,7 +73,7 @@ siggy2.Activity.siggy.prototype.setupFormSystemOptions = function()
 			activity: $('#system-options select[name=activity]').val()
 		};
 
-		$this.saveSystemOptions(that.systemID, data);
+		$this.saveSystemOptions($this.systemID, data);
 	});
 
 	$('#system-options-reset').click(function ()
@@ -82,7 +86,7 @@ siggy2.Activity.siggy.prototype.setupFormSystemOptions = function()
 			activity: 0
 		};
 
-		$this.saveSystemOptions(that.systemID, data);
+		$this.saveSystemOptions($this.systemID, data);
 	});
 }
 
@@ -121,7 +125,6 @@ siggy2.Activity.siggy.prototype.initModules = function()
 	this.intelposes.settings.baseUrl = this.core.settings.baseUrl;
 
 	// Initialize map
-	$(document).trigger('siggy.switchSystem', this.systemID );
 
 	this.sigtable.initialize();
 	this.map = new siggy2.Map(this.core.settings.map);
@@ -129,8 +132,39 @@ siggy2.Activity.siggy.prototype.initModules = function()
 	this.map.siggymain = this.core;
 	this.map.initialize();
 
+	$(document).trigger('siggy.systemSwitched', this.systemID );
+
 	this.inteldscan.initialize();
 	this.intelposes.initialize();
+
+}
+
+siggy2.Activity.siggy.prototype.freeze = function()
+{
+	this.freezeSystem = 1;
+}
+
+siggy2.Activity.siggy.prototype.unfreeze = function()
+{
+	this.freezeSystem = 0;
+}
+
+siggy2.Activity.siggy.prototype.switchSystem = function(systemID, systemName)
+{
+	this.setSystemID(systemID);
+	this.systemName = systemName;
+	this.forceUpdate = true;
+	this.freeze();
+	clearTimeout(this._updateTimeout);
+
+	this.sigtable.clear();
+
+	this.sigtable.setupSiteSelectForNewSystem(this.systemClass);
+
+	if( this.updateNow() )
+	{
+		$(document).trigger('siggy.systemSwitched', systemID );
+	}
 }
 
 siggy2.Activity.siggy.prototype.start = function()
@@ -161,7 +195,6 @@ siggy2.Activity.siggy.prototype.update = function()
 
 	var $this = this;
 
-	var that = this;
 	$.ajax({
 		url: $this.core.settings.baseUrl + 'update',
 		data: request,
@@ -170,7 +203,7 @@ siggy2.Activity.siggy.prototype.update = function()
 		async: true,
 		method: 'post',
 		beforeSend : function(xhr, opts){
-			if(that.fatalError == true) //just an example
+			if($this.fatalError == true) //just an example
 			{
 				xhr.abort();
 			}
@@ -183,9 +216,9 @@ siggy2.Activity.siggy.prototype.update = function()
 				return;
 			}
 
-			that.chainMapID = parseInt(data.chainmap_id);
+			$this.chainMapID = parseInt(data.chainmap_id);
 
-			if( that.chainMapID == 0 )
+			if( $this.chainMapID == 0 )
 			{
 				$('#chain-map-container').hide();
 				$('#main-body').hide();

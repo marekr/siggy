@@ -424,13 +424,18 @@ siggy2.SigTable.prototype.removeSig = function (sigID)
 	});
 }
 
+siggy2.SigTable.prototype.setupSiteSelectForNewSystem = function(systemClass)
+{
+	$('#sig-add-box select[name=type]').val(0);
+	this.updateSiteSelect('#sig-add-box select[name=site]',systemClass, 0, 0);
+}
+
 siggy2.SigTable.prototype.updateSiteSelect = function( ele, whClass, type, siteID )
 {
 	var elem = $( ele );
-	elem.empty();
-
 	/* use common select generator method and just swap contents */
 	var newSel = this.generateSiteSelect( whClass, type, siteID );
+
 	elem.empty().html(newSel.html());
 }
 
@@ -718,9 +723,10 @@ siggy2.SigTable.prototype.generateSiteSelect = function (whClass, type, siteID)
 	}
 	else
 	{
-		return this.generateSelect({
+		var t = this.generateSelect({
 										0: '--'
 									}, 0);
+		return t;
 	}
 }
 
