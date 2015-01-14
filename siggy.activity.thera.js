@@ -14,6 +14,7 @@ siggy2.Activity.Thera = function(core)
 	this.core = core;
 	this.sigClocks = {};
 	this.eolClocks = {};
+	this.updateRate = 30000;
 
 	this.templateRow = Handlebars.compile( $("#template-thera-table-row").html() );
 
@@ -86,20 +87,20 @@ siggy2.Activity.Thera.prototype.update = function()
 {
 	var $this = this;
 	$.ajax({
-				url: this.core.settings.baseUrl + 'thera/latest_exits',
-				dataType: 'json',
-				cache: false,
-				async: true,
-				method: 'get',
-				success: function (data)
-				{
-					$this.updateTable(data);
+			url: this.core.settings.baseUrl + 'thera/latest_exits',
+			dataType: 'json',
+			cache: false,
+			async: true,
+			method: 'get',
+			success: function (data)
+			{
+				$this.updateTable(data);
 
-					$this._updateTimeout = setTimeout(function(thisObj)
-					{
-						thisObj.update()
-					}, 60000, $this);
-				}
+				$this._updateTimeout = setTimeout(function(thisObj)
+				{
+					thisObj.update()
+				}, $this.updateRate, $this);
+			}
 		});
 }
 
@@ -132,6 +133,8 @@ siggy2.Activity.Thera.prototype.updateTable = function( exits )
 		else
 		{
 			exits[id].row_already_exists = true;
+
+			$(this).children('td.jumps').text( exits[id].jumps );
 		}
 	});
 
