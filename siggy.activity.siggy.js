@@ -206,6 +206,7 @@ siggy2.Activity.siggy.prototype.update = function()
 			}
 
 			$this.chainMapID = parseInt(data.chainmap_id);
+			siggy2.Maps.selected = $this.chainMapID;
 
 			if( $this.chainMapID == 0 )
 			{
@@ -320,7 +321,7 @@ siggy2.Activity.siggy.prototype.updateChainMaps = function(data)
 				var a = $('<a>');
 				var li = $('<li>').append(a);
 
-				a.text(chainmap.chainmap_name);
+				a.text(chainmap.name);
 
 				(function(id) {
 					a.click(function(){$this.handleChainMapSelect(id)});

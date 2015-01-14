@@ -343,5 +343,29 @@ siggy2.Core.prototype.confirmDialog = function(message, yesCallback, noCallback)
 }
 
 siggy2.Maps = {
-	available: []
+	available: {},
+	selected: 0,
+	getSelectDropdown: function(selected, selectedNote)
+	{
+		var sel = $('<select>');
+		$.each(this.available, function(key, c) {
+			var value = c.name;
+			if( selected == key && typeof selectedNote != '' && selectedNote != '' )
+			{
+				value += ' ' + selectedNote;
+			}
+
+			sel.append($("<option>", {
+				value: key,
+				text: value
+			}));
+		});
+
+		if( typeof(selected) != "undefined" )
+		{
+			sel.val(selected);
+		}
+
+		return sel;
+	}
 }
