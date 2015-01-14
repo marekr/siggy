@@ -59,7 +59,7 @@
 						</a>
 						<ul class="dropdown-menu siggy-main-navbar" role="menu">
 							<li><a class="activity-menu-option" data-activity="siggy" style="display:none"><span class="glyphicon glyphicon-list"></span> siggy</a></li>
-							<li><a class="activity-menu-option" data-activity="thera"><span class="glyphicon glyphicon-list"></span> Thera</a></li>
+							<li><a class="activity-menu-option" data-activity="thera"><span class="glyphicon glyphicon-magnet"></span> Thera</a></li>
                             <li><a class="activity-menu-option" data-activity="search"><span class="glyphicon glyphicon-search"></span> Search</a></li>
 
 							<li><a id="global-notes-button"><span class="glyphicon glyphicon-folder-close"></span> Notes</a></li>
