@@ -346,66 +346,6 @@
         </div>
     </div>
     <br />
-    <!-- mass add box start -->
-    <div id="pos-form" class="box" style="display:none;">
-        <h3>Add POS</h3>
-        <div>
-            <form>
-				<div>
-					Location(Planet - Moon)<br />
-					<input type="text" value="" name="pos_location_planet" size="2" maxlength="2" style="width:auto"/> -
-					<input type="text" value="" name="pos_location_moon" size="3" maxlength="4" style="width:auto"/>
-				</div>
-				<label>
-					Owner
-					<input type="text" value="" name="pos_owner" />
-				</label>
-				<label>
-					Type
-					<select name="pos_type">
-						<option value="1">Amarr</option>
-						<option value="2">Caldari</option>
-						<option value="3">Gallente</option>
-						<option value="4">Minmatar</option>
-						<option value="5">Dread Guristas</option>
-						<option value="6">Shadow Serpentis</option>
-						<option value="7">Guristas</option>
-						<option value="8">Serpentis</option>
-						<option value="9">Angel</option>
-						<option value="10">Blood</option>
-						<option value="11">Dark Blood</option>
-						<option value="12">Domination</option>
-						<option value="13">Sansha</option>
-						<option value="14">True Sansha</option>
-					</select>
-				</label>
-				<label>
-					Size
-					<select name="pos_size">
-						<option value="small">Small</option>
-						<option value="medium">Medium</option>
-						<option value="large">Large</option>
-					</select>
-				</label>
-				<label>
-					Status
-					<select name="pos_status">
-						<option value="1">Online</option>
-						<option value="0">Offline</option>
-					</select>
-				</label>
-				<label>
-					Notes
-					<textarea name="pos_notes" rows="6" style="width:100%;font-size:11px;"></textarea>
-				</label>
-                <div class="center-text form-actions">
-                    <button name='submit' class="btn btn-primary" type="submit">Submit</button>
-                    <button name='cancel' type="button" class="btn btn-default">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
 
     <div id="mass-add-sig-box" class="box">
         <h3>Mass Sig Reader</h3>
@@ -451,6 +391,7 @@
 	<?php echo View::factory('siggy/boxes/character_settings')->set('themes', $themes)->set('settings', $settings); ?>
 	<?php echo View::factory('siggy/boxes/dialog_import_thera'); ?>
 	<?php echo View::factory('siggy/boxes/dialog_exit_finder'); ?>
+	<?php echo View::factory('siggy/boxes/dialog_pos'); ?>
 	<?php echo View::factory('siggy/handlebars/sig_table_row'); ?>
 	<?php echo View::factory('siggy/handlebars/effect_tooltip'); ?>
 	<?php echo View::factory('siggy/handlebars/statics_tooltip'); ?>
