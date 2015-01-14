@@ -341,16 +341,3 @@ siggy2.Core.prototype.confirmDialog = function(message, yesCallback, noCallback)
 		}
 	});
 }
-
-siggy2.Core.prototype.handleChainMapSelect = function(id)
-{
-	var $this = this;
-
-	$.post(this.settings.baseUrl + 'chainmap/switch', {chainmap_id: id}, function ()
-	{
-		//clear group cache time or we dont update properly
-		$this.groupCacheTime = 0;
-		$this.forceUpdate = true;
-		$this.updateNow();
-	});
-}

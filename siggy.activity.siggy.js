@@ -333,6 +333,17 @@ siggy2.Activity.siggy.prototype.updateChainMaps = function(data)
 }
 
 
+siggy2.Activity.siggy.prototype.handleChainMapSelect = function(id)
+{
+	var $this = this;
+
+	$.post(this.core.settings.baseUrl + 'chainmap/switch', {chainmap_id: id}, function ()
+	{
+		//clear group cache time or we dont update properly
+		$this.groupCacheTime = 0;
+		$(document).trigger('siggy.updateRequested', true );
+	});
+}
 
 siggy2.Activity.siggy.prototype.updateSystemOptionsForm = function (systemData)
 {
@@ -340,8 +351,6 @@ siggy2.Activity.siggy.prototype.updateSystemOptionsForm = function (systemData)
 	$('#system-options input[name=label]').val(systemData.displayName);
 	$('#system-options select[name=activity]').val(systemData.activity);
 }
-
-
 
 siggy2.Activity.siggy.prototype.setSystemClass = function (systemClass)
 {
