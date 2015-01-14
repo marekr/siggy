@@ -116,6 +116,10 @@ siggy2.Activity.siggy.prototype.initModules = function()
 	this.intelposes.siggyMain = this.core;
 	this.intelposes.settings.baseUrl = this.core.settings.baseUrl;
 
+	this.globalnotes = new globalnotes(this.core.settings.globalnotes);
+	this.globalnotes.siggyMain = this.core;
+	this.globalnotes.settings.baseUrl = this.core.settings.baseUrl;
+
 	// Initialize map
 	this.sigtable.initialize();
 	this.map = new siggy2.Map(this.core, this.core.settings.map);
@@ -126,6 +130,7 @@ siggy2.Activity.siggy.prototype.initModules = function()
 
 	this.inteldscan.initialize();
 	this.intelposes.initialize();
+	this.globalnotes.initialize();
 }
 
 siggy2.Activity.siggy.prototype.freeze = function()
@@ -242,11 +247,11 @@ siggy2.Activity.siggy.prototype.update = function()
 			{
 				$this.updateChainMaps(data.chainmaps);
 			}
-/*
+
 			if (data.globalNotesUpdate)
 			{
 				$this.globalnotes.update(data);
-			}*/
+			}
 			$this.groupCacheTime = data.group_cache_time;
 
 
