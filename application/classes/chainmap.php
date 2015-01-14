@@ -18,8 +18,9 @@ class chainmap
 		$this->data = array();
 
 		$data = DB::query(Database::SELECT, "SELECT * FROM chainmaps
-											  WHERE chainmap_id=:chainmap_id")
+											  WHERE chainmap_id=:chainmap_id AND group_id=:group")
 						->param(':chainmap_id', $chainmap_id)
+						->param(':group', $group_id)
 						->execute()
 						->current();
 

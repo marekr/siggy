@@ -48,7 +48,8 @@ siggy2.Activity.Thera.prototype.setupDialogImport = function()
 		e.stopPropagation();
 
 		var data = {
-			'clean': $('#dialog-import-thera input[name=clean]').val()
+			'clean': $('#dialog-import-thera input[name=clean]').val(),
+			'chainmap': $('#dialog-import-thera select[name=chainmap]').val()
 		};
 
 		$.post($this.core.settings.baseUrl + 'thera/import_to_chainmap', data,
@@ -69,6 +70,10 @@ siggy2.Activity.Thera.prototype.setupDialogImport = function()
 siggy2.Activity.Thera.prototype.dialogImport = function()
 {
 	this.core.openBox('#dialog-import-thera');
+
+	var sel = siggy2.Maps.getSelectDropdown(siggy2.Maps.selected, "(current map)");
+	$('#dialog-import-thera select[name=chainmap]').html(sel.html());
+	$('#dialog-import-thera select[name=chainmap]').val(sel.val());
 }
 
 siggy2.Activity.Thera.prototype.start = function()
