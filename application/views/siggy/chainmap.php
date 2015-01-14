@@ -106,7 +106,7 @@
 						<br />
 						<div class="form-group">
 							<label>Connection Type
-								<select name="connection-editor-type">
+								<select name="connection-editor-type" class='siggy-input'>
 									<option value="wormhole"><?php echo __('Wormhole');?></option>
 									<option value="stargate">Stargate</option>
 									<option value="jumpbridge">Jumpbridge</option>
@@ -131,10 +131,10 @@
 					</ul>
 					<div>
 						<div class="form-group">
-							<label>WH Type Name <input type='text' name='wh_type_name' style='width:40px'/></label>
+							<label>WH Type Name <input type='text' name='wh_type_name' style='width:40px' class='siggy-input' /></label>
 						</div>
 						<div class="form-group">
-							<label>EOL?: 	
+							<label>EOL?:
 									<label class="yes" style="display:inline;float:none;">Yes<input type="radio" name="eol" value="1" /></label>
 									<label class="no" style="display:inline;float:none;">No<input type="radio" name="eol" value="0" /></label>
 							</label>
@@ -145,10 +145,10 @@
 											<label class="no" style="display:inline;float:none;">No<input type="radio" name="frigate_sized" value="0" /></label>
 							</label>
 						</div>
-						<div class="form-group">		
+						<div class="form-group">
 							<label>
 								Mass Stage:
-								<select name='mass'>
+								<select name='mass' class='siggy-input'>
 									<option value='0'>Stage 1/Default</option>
 									<option value='1'>Stage 2/Reduced</option>
 									<option value='2'>Stage 3/Critical</option>
@@ -171,13 +171,13 @@
 				</ul>
 				<b>System label/display name</b>
 				<br />
-				<input type="text" name="label" />
+				<input type="text" name="label"  class='siggy-input' />
 
 				<br />
 				<br />
 				<b>Activity Level</b>
 				<br />
-				<select name='activity'>
+				<select name='activity' class='siggy-input'>
 					<option value='0'>Don't Know</option>
 					<option value='1'>Empty</option>
 					<option value='2'>Occupied</option>

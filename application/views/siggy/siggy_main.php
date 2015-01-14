@@ -361,29 +361,6 @@
         </div>
     </div>
 
-
-    <div id="dscan-form" class="box" style="display:none;">
-        <h3>DScan Results</h3>
-        <div>
-            <p>This is for copy pasted dscan results from your scanner window. Simply select a entry, hit CTRL+A, then CTRL-C, then paste into the box below. </p>
-            <form>
-				<label>
-					Title
-					<input type="text" value="" name="dscan_title" />
-				</label><br /><br />
-				<label>
-					Scan
-					<textarea name="blob" rows="12" style="width:100%;font-size:11px;"></textarea>
-				</label>
-                <div class="center-text form-actions">
-                    <button name='submit' class="btn btn-primary" type="submit">Submit</button>
-                    <button name='cancel' type="button" class="btn btn-default">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-
 	<?php echo View::factory('siggy/boxes/fatal_error'); ?>
 	<?php echo View::factory('siggy/boxes/confirm'); ?>
 	<?php echo View::factory('siggy/boxes/hotkey_helper'); ?>
@@ -392,6 +369,7 @@
 	<?php echo View::factory('siggy/boxes/dialog_import_thera'); ?>
 	<?php echo View::factory('siggy/boxes/dialog_exit_finder'); ?>
 	<?php echo View::factory('siggy/boxes/dialog_pos'); ?>
+	<?php echo View::factory('siggy/boxes/dialog_dscan'); ?>
 	<?php echo View::factory('siggy/handlebars/sig_table_row'); ?>
 	<?php echo View::factory('siggy/handlebars/effect_tooltip'); ?>
 	<?php echo View::factory('siggy/handlebars/statics_tooltip'); ?>
