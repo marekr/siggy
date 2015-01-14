@@ -159,6 +159,7 @@
 						<th>Out Sig</th>
 						<th>In Sig</th>
 						<th>Life</th>
+                        <th>Jumps</th>
 					</tr>
 				</thead>
 				<tbody>

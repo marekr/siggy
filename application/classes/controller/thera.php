@@ -35,6 +35,22 @@ class Controller_Thera extends FrontController
 			}
 		}
 
+		if( $this->igb && isset($_SERVER['HTTP_EVE_SOLARSYSTEMID']) )
+		{
+			$pather = new Pathfinder();
+
+			$targetID = intval($_SERVER['HTTP_EVE_SOLARSYSTEMID']);
+
+			foreach($exits as &$exit)
+			{
+				if( isset($exit['system']['id']) && $exit['system']['id'] < 31000000 )
+				{
+					$path = $pather->shortest($targetID, $exit['system']['id']);
+					$exit['jumps'] = $path['distance'];
+				}
+			}
+		}
+
 		print json_encode($exits);
 		exit();
 	}
@@ -97,7 +113,7 @@ class Controller_Thera extends FrontController
 			$system['region_id'] = (int)$system['region_id'];
 			$system['security'] = (float)$system['sec'];
 			$exit['system'] = $system;
-
+			$exit['jumps'] = "-";	//placeholder for real value
 
 			$exits[$rawExit->id] = $exit;
 		}

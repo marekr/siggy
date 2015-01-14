@@ -52,5 +52,8 @@
 				<span class='age-clock'>--</span>
 				<p class='eol-clock'></p>
 			</td>
+			<td class='center-text jumps'>
+				{{ jumps }}
+			</td>
 		</tr>
 	</script>
