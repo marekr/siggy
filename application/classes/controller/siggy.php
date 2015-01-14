@@ -323,7 +323,7 @@ class Controller_Siggy extends FrontController
 		if( !isset($connection['hash'] ) )
 		{
 			//new wh
-			$this->chainmap->add_system_to_map($whHash, $origin, $dest);
+			$this->chainmap->add_system_to_map($origin, $dest);
 
 			miscUtils::increment_stat('wormholes', Auth::$session->accessData);
 		}
