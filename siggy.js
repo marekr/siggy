@@ -341,3 +341,7 @@ siggy2.Core.prototype.confirmDialog = function(message, yesCallback, noCallback)
 		}
 	});
 }
+
+siggy2.Maps = {
+	available: []
+}

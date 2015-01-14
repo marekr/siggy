@@ -16,9 +16,7 @@ siggy2.Map = function(core, options)
 		maxCharactersShownInSystem: 7
 	};
 
-
 	this.settings = $.extend({}, this.defaults, options);
-
 
 	this.systems = {};
 	this.wormholes = {};
@@ -1708,8 +1706,6 @@ siggy2.Map.prototype.openWHEditor = function(mode)
 		this.editorOpen = true;
 	}
 }
-
-
 
 siggy2.Map.prototype.saveSystemOptions = function(systemID, newData)
 {
