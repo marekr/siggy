@@ -41,12 +41,15 @@ class Controller_Thera extends FrontController
 
 			$targetID = intval($_SERVER['HTTP_EVE_SOLARSYSTEMID']);
 
-			foreach($exits as &$exit)
+			if( $targetID < 31000000 )
 			{
-				if( isset($exit['system']['id']) && $exit['system']['id'] < 31000000 )
+				foreach($exits as &$exit)
 				{
-					$path = $pather->shortest($targetID, $exit['system']['id']);
-					$exit['jumps'] = $path['distance'];
+					if( isset($exit['system']['id']) && $exit['system']['id'] < 31000000 )
+					{
+						$path = $pather->shortest($targetID, $exit['system']['id']);
+						$exit['jumps'] = $path['distance'];
+					}
 				}
 			}
 		}
