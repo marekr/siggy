@@ -75,10 +75,6 @@ siggy2.Core = function( options )
 	this.hotkeyhelper.initialize();
 
 
-	this.globalnotes = new globalnotes(this.settings.globalnotes);
-	this.globalnotes.siggyMain = this;
-	this.globalnotes.settings.baseUrl = this.settings.baseUrl;
-
 	this.activity = '';
 	this.activities = { thera: new siggy2.Activity.Thera(this),
 	  					search: new siggy2.Activity.Search(this),
@@ -116,7 +112,6 @@ siggy2.Core.prototype.initialize = function ()
 	this.displayStates.map = $.extend({}, this.defaultDisplayStates.map, dispStates.map);
 
 	this.charactersettings.initialize();
-	this.globalnotes.initialize();
 
 	this.loadActivity('siggy');
 
