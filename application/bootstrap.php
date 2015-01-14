@@ -41,7 +41,7 @@ if (is_file(APPPATH.'classes/kohana'.EXT))
 else
 {
 	// Load empty core extension
-	require SYSPATH.'classes/kohana'.EXT; 
+	require SYSPATH.'classes/kohana'.EXT;
 }
 
 /**
@@ -101,7 +101,7 @@ if (isset($_SERVER['SERVER_PROTOCOL']))
  * Note: If you supply an invalid environment name, a PHP warning will be thrown
  * saying "Couldn't find constant Kohana::<INVALID_ENV_NAME>"
  */
- 
+
 Kohana::$environment = ($_SERVER['SERVER_NAME'] !== 'localhost') ? Kohana::PRODUCTION : Kohana::DEVELOPMENT;
 
 if( !isset($_SERVER['HTTP_EVE_SOLARSYSTEMID']) && isset($_SERVER['HTTP_EVE_SOLARSYSTEMNAME']) )
@@ -131,7 +131,7 @@ if( Kohana::$environment == Kohana::DEVELOPMENT && strpos($_SERVER['HTTP_USER_AG
   $_SERVER['HTTP_EVE_SOLARSYSTEMID'] = 31002019;
 	}
 }*/
-define('SIGGY_VERSION', '2.18c');
+define('SIGGY_VERSION', '2.19');
 if( Kohana::$environment == Kohana::PRODUCTION)
 {
 	define('WIN_DEV', true);
@@ -161,9 +161,9 @@ Cookie::$salt = 'y[$e.swbDs@|Gd(ndtUSy^';
  */
 $initOptions = array(
   'base_url'   => 'http://siggy.borkedlabs.com',
-  'index_file' => FALSE,  
+  'index_file' => FALSE,
   'profile'    => Kohana::$environment !== Kohana::PRODUCTION,
-  'caching'    => Kohana::$environment === Kohana::PRODUCTION,	
+  'caching'    => Kohana::$environment === Kohana::PRODUCTION,
   //'errors' => ( Kohana::$environment === Kohana::PRODUCTION ? FALSE : TRUE )
   'errors' => TRUE
 );
@@ -197,7 +197,7 @@ Kohana::modules(array(
 	 'database'   => MODPATH.'database',   // Database access
 	 'orm'        => MODPATH.'orm',        // Object Relationship Mapping
 	));
-	
+
 if( Kohana::$environment == Kohana::PRODUCTION)
 {
 	Database::$default = 'production';
@@ -237,7 +237,7 @@ if (!Route::cache())
 			'controller' => 'special',
 			'action' => 'processStatics',
 		));
-    
+
 	Route::set('siggySigs', 'do(<action>)')
 		->defaults(array(
 			'controller' => 'siggy'
@@ -248,7 +248,7 @@ if (!Route::cache())
 			'controller' => 'user',
 			'action' => 'login',
 		));
-    
+
 	Route::set('manage', 'manage(/<controller>(/<action>(/<id>)))')
 		->defaults(array(
 			'directory'  => 'manage',
@@ -283,20 +283,20 @@ if (!Route::cache())
 		->defaults(array(
 			'controller' => 'stats',
 			'action' => 'index',
-		)); 
+		));
 
 	Route::set('pages', 'pages(/<page>)')
 		->defaults(array(
 		  'controller' => 'pages',
 		  'action'     => 'viewPage',
 		));
-		
+
 	Route::set('default', '(<controller>(/<action>(/<id>)))')
 		->defaults(array(
 		  'controller' => 'siggy',
 		  'action'     => 'index',
 		));
-		
+
 	if( Kohana::$environment !== Kohana::DEVELOPMENT )
 	{
 		Route::cache(TRUE);
