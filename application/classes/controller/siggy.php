@@ -365,12 +365,12 @@ class Controller_Siggy extends FrontController
         $this->auto_render = FALSE;
         header('content-type: application/json');
         header("Cache-Control: no-cache, must-revalidate");
-		
+
 		if( Kohana::$environment == Kohana::PRODUCTION )
 		{
 			ob_start( 'ob_gzhandler' );
 		}
-		
+
         if(	!$this->siggyAccessGranted() )
         {
             echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
@@ -401,9 +401,9 @@ class Controller_Siggy extends FrontController
                     if( Auth::$session->accessData['recordJumps'] && $actualCurrentSystemID != 0 && $lastSystemID != 0 )
                     {
 						$hourStamp = miscUtils::getHourStamp();
-						
-						
-						
+
+
+
 						DB::query(Database::INSERT, 'INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`) VALUES(:systemID, :groupID, :hourStamp, 1) ON DUPLICATE KEY UPDATE jumps=jumps+1')
 											->param(':hourStamp', $hourStamp )
 											->param(':systemID', $lastSystemID )
@@ -506,7 +506,15 @@ class Controller_Siggy extends FrontController
 			if( $group_last_cache_time < Auth::$session->accessData['cache_time'] )
 			{
 				$update['chainmaps_update'] = 1;
-				$update['chainmaps'] = Auth::$session->accessData['accessible_chainmaps'];
+
+				$chainmaps = array();
+				foreach( Auth::$session->accessData['accessible_chainmaps'] as $c )
+				{
+					$chainmaps[ $c['chainmap_id'] ] = array('id' => (int)$c['chainmap_id'],
+															'name' => $c['chainmap_name']);
+				}
+
+				$update['chainmaps'] = $chainmaps;
 
 				$update['globalNotesUpdate'] = (int) 1;
 				$update['group_cache_time'] = (int) Auth::$session->accessData['cache_time'];
@@ -526,11 +534,11 @@ class Controller_Siggy extends FrontController
 
         exit();
 	}
-	
+
 	private function _update_process_map(&$update)
-	{			
+	{
         $chainMapOpen = ( isset($_POST['mapOpen']) ? filter_var($_POST['mapOpen'], FILTER_VALIDATE_BOOLEAN) : false );
-		
+
 		if( $this->chainmap != null )
 		{
 			$this->mapData = $this->chainmap->get_map_cache();
@@ -627,18 +635,18 @@ class Controller_Siggy extends FrontController
 			{
 				exit();
 			}
-			
+
 			$update = array();
-			
+
 			$system_data = $this->getSystemData($id);
 			$log_message = sprintf('%s edited system %s; ', Auth::$session->charName, $system_data['name'] );
-		
+
 			if( isset($_POST['label']) )
 			{
 				$update['displayName'] = trim(strip_tags($_POST['label']));
 				$log_message .= " Display Name:" . $update['displayName'] . ";";
 			}
-			
+
 			if( isset($_POST['activity']) )
 			{
 				$update['activity'] = intval($_POST['activity']);
@@ -655,7 +663,7 @@ class Controller_Siggy extends FrontController
 			{
 				exit();
 			}
-			
+
 			$this->chainmap->update_system($_POST['systemID'], $update);
 			echo json_encode('1');
 

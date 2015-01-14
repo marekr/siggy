@@ -301,7 +301,7 @@ siggy2.Activity.siggy.prototype.updateChainMaps = function(data)
 		for(var i in data)
 		{
 			var chainmap = data[i];
-			if( chainmap.chainmap_id == $this.chainMapID )
+			if( chainmap.id == $this.chainMapID )
 			{
 				var extra = '';
 				if(Object.size(data) > 1 )
@@ -313,7 +313,7 @@ siggy2.Activity.siggy.prototype.updateChainMaps = function(data)
 				{
 					$('#chain-map-title').addClass('disabled');
 				}
-				$('#chain-map-title').html(chainmap.chainmap_name + extra);
+				$('#chain-map-title').html(chainmap.name + extra);
 			}
 			else
 			{
@@ -324,11 +324,13 @@ siggy2.Activity.siggy.prototype.updateChainMaps = function(data)
 
 				(function(id) {
 					a.click(function(){$this.handleChainMapSelect(id)});
-				})(chainmap.chainmap_id);
+				})(chainmap.id);
 
 				list.append(li);
 			}
 		}
+
+		siggy2.Maps.available = data;
 	}
 }
 
