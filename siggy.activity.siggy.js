@@ -79,7 +79,7 @@ siggy2.Activity.siggy.prototype.setupFormSystemOptions = function()
 			activity: $('#system-options select[name=activity]').val()
 		};
 
-		$this.saveSystemOptions($this.systemID, data);
+		$this.map.saveSystemOptions($this.systemID, data);
 	});
 
 	$('#system-options-reset').click(function ()
@@ -92,7 +92,7 @@ siggy2.Activity.siggy.prototype.setupFormSystemOptions = function()
 			activity: 0
 		};
 
-		$this.saveSystemOptions($this.systemID, data);
+		$this.map.saveSystemOptions($this.systemID, data);
 	});
 }
 
@@ -100,20 +100,6 @@ siggy2.Activity.siggy.prototype.updateNow = function()
 {
 	clearTimeout(this._updateTimeout);
 	return this.update();
-}
-
-siggy2.Activity.siggy.prototype.saveSystemOptions = function(systemID, newData)
-{
-	var $this = this;
-
-	newData.systemID = systemID;
-
-	$.post(this.core.settings.baseUrl + 'siggy/save_system', newData,
-	function (data)
-	{
-		$this.forceUpdate = true;
-		$this.updateNow();
-	});
 }
 
 siggy2.Activity.siggy.prototype.initModules = function()
@@ -131,7 +117,6 @@ siggy2.Activity.siggy.prototype.initModules = function()
 	this.intelposes.settings.baseUrl = this.core.settings.baseUrl;
 
 	// Initialize map
-
 	this.sigtable.initialize();
 	this.map = new siggy2.Map(this.core, this.core.settings.map);
 	this.map.baseUrl = this.core.settings.baseUrl;
@@ -141,7 +126,6 @@ siggy2.Activity.siggy.prototype.initModules = function()
 
 	this.inteldscan.initialize();
 	this.intelposes.initialize();
-
 }
 
 siggy2.Activity.siggy.prototype.freeze = function()

@@ -530,7 +530,7 @@ siggy2.Map.prototype.systemContextMenuHandler = function(action, system)
 			rally: 1
 		};
 
-		$this.core.saveSystemOptions(system.systemID, data);
+		$this.saveSystemOptions(system.systemID, data);
 	}
 	else if( action == "clearrally" )
 	{
@@ -538,7 +538,7 @@ siggy2.Map.prototype.systemContextMenuHandler = function(action, system)
 			rally: 0
 		};
 
-		$this.core.saveSystemOptions(system.systemID, data);
+		$this.saveSystemOptions(system.systemID, data);
 	}
 }
 
@@ -1431,7 +1431,7 @@ siggy2.Map.prototype.setupSystemEditor = function()
 			activity: $('#system-editor select[name=activity]').val()
 		};
 
-		that.core.saveSystemOptions(that.editingSystem, data);
+		that.saveSystemOptions(that.editingSystem, data);
 		$('#chain-map-container').unblock();
 	});
 }
@@ -1664,7 +1664,6 @@ siggy2.Map.prototype.setWHPopupTab = function( selectedTab )
     } );
 }
 
-
 siggy2.Map.prototype.openWHEditor = function(mode)
 {
 	this.setWHPopupTab('#connection-editor');
@@ -1708,4 +1707,20 @@ siggy2.Map.prototype.openWHEditor = function(mode)
 		this.editorMode = 'add';
 		this.editorOpen = true;
 	}
+}
+
+
+
+siggy2.Map.prototype.saveSystemOptions = function(systemID, newData)
+{
+	var $this = this;
+
+	newData.systemID = systemID;
+
+	$.post(this.core.settings.baseUrl + 'siggy/save_system',
+	newData,
+	function (data)
+	{
+		$(document).trigger('siggy.updateRequested', true );
+	});
 }

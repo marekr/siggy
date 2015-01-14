@@ -6,7 +6,7 @@
 siggy2.MapConnection = function(plumb, options)
 {
 	this.jsPlumb = plumb;
-	
+
 	this.defaults = {
 			to: '',
 			from: '',
@@ -29,20 +29,20 @@ siggy2.MapConnection = function(plumb, options)
 			},
 			type: 'wormhole'
 	};
-	
+
 	this.settings = $.extend({}, this.defaults, options);
 	if( this.settings.type == 'wormhole' )
 	{
 		this.settings.wormhole = $.extend({}, this.defaults.wormhole, options.wormhole);
 		this.settings.wormhole.typeInfo = $.extend({}, this.defaults.wormhole.typeInfo, options.wormhole.typeInfo);
 	}
-	
+
 	this.map = null;
-	
+
 	this.label = '';
-	
+
 	this.connection = null;
-	
+
 	this.selected = false;
 }
 
@@ -131,15 +131,15 @@ siggy2.MapConnection.prototype.create = function()
 	this.setupOverlay(connectionOptions);
 
 	var connection = this.jsPlumb.connect(connectionOptions);
-	
-		
-	
+
+
+
 	connection.bind("click", function(conn)
 	{
 		if( $this.map.massSelect )
 		{
 			$this.selected = !$this.selected;
-			
+
 			$this.refresh();
 		}
 		else if( !$this.map.editing )
@@ -148,11 +148,11 @@ siggy2.MapConnection.prototype.create = function()
 		}
 		return false;
 	});
-	
+
 	this.connection = connection;
-	
+
 	$(connection.canvas).data('siggy_connection', this);
-	
+
 	 $(connection.canvas).qtip({
 		content: {
 			text: this.label
@@ -172,7 +172,7 @@ siggy2.MapConnection.prototype.contextMenuHandler = function(action)
 {
 	var $this = this;
 	var saveData = {};
-	
+
 	switch( action )
 	{
 		case 'setstage1':
@@ -197,14 +197,14 @@ siggy2.MapConnection.prototype.contextMenuHandler = function(action)
 			saveData.frigate_sized = 0;
 			break;
 	}
-	
+
 	if( Object.size(saveData) > 0 )
 	{
 		saveData.hash = this.settings.hash;
-		
+
 		$.post($this.map.baseUrl + 'chainmap/connection_edit', saveData, function()
 		{
-			$this.map.siggymain.updateNow();
+			$(document).trigger('siggy.updateRequested', false );
 		});
 	}
 }
@@ -213,12 +213,12 @@ siggy2.MapConnection.prototype.contextMenuHandler = function(action)
 siggy2.MapConnection.prototype.contextMenuBuildItems = function()
 {
 	var items = {};
-	
+
 	if( this.settings.type != 'wormhole' )
 	{
 		return items;
 	}
-	
+
 	switch( this.settings.wormhole.mass )
 	{
 		case 0:
@@ -234,7 +234,7 @@ siggy2.MapConnection.prototype.contextMenuBuildItems = function()
 			items.setstage2 = { name: "Set Stage 2" };
 			break;
 	}
-	
+
 	if( this.settings.wormhole.eol )
 	{
 		items.cleareol = { name: "Clear EOL" };
@@ -243,7 +243,7 @@ siggy2.MapConnection.prototype.contextMenuBuildItems = function()
 	{
 		items.seteol = { name: "Set EOL" };
 	}
-	
+
 	if( this.settings.wormhole.frigateSized )
 	{
 		items.clearfrigate = { name: "Unmark as Frigate Hole" };
@@ -252,7 +252,7 @@ siggy2.MapConnection.prototype.contextMenuBuildItems = function()
 	{
 		items.setfrigate = { name: "Mark as Frigate Hole" };
 	}
-	
+
 	return items;
 }
 
@@ -264,7 +264,7 @@ siggy2.MapConnection.prototype.destroy = function()
 	$(this.connection.canvas).removeData();
 	//remove any other events
 	$(this.connection.canvas).off();
-	
+
 	this.connection = null;
 	this.jsPlumb = null;
 	this.map = null;
@@ -280,18 +280,18 @@ siggy2.MapConnection.prototype.setupOverlay = function(connectionOptions)
 			this.label += number_format(this.settings.wormhole.typeInfo.mass*1000000000,0) + " kg +-10% mass<br />";
 			this.label += this.settings.wormhole.typeInfo.lifetime + " hr lifetime<br />";
 			this.label += number_format(this.settings.wormhole.typeInfo.maxJumpMass*1000000,0) + " kg max jump<br />";
-		
+
 			if( this.settings.wormhole.typeInfo.regen != 0 )
 			{
 				this.label += number_format(this.settings.wormhole.typeInfo.regen*1000000,0) + " kg mass regen<br />";
 			}
 		}
-		
+
 		if( this.settings.wormhole.totalTrackedMass )
 		{
 			this.label += "Approx." + number_format(this.settings.wormhole.totalTrackedMass,0) + " kg jumped<br />"
 		}
-		
+
 		if( this.settings.wormhole.eol != 0 )
 		{
 			this.label += 'EOL set at: '+ siggy2.Helpers.displayTimeStamp(this.settings.wormhole.eolDateSet) + "<br />";
