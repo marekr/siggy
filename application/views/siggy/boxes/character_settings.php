@@ -3,7 +3,7 @@
 	<div>
         <form action="#" id="settings-form" method="post">
             <label>Theme
-                <select name="theme_id">
+                <select name="theme_id" class="siggy-input">
                 <?php foreach($themes as $theme): ?>
                      <option value="<?php echo $theme['theme_id']; ?>" <?php echo( $theme['theme_id'] == $settings['theme_id'] ? 'selected="selected"' : '' ); ?>> <?php echo $theme['theme_name']; ?></option>
                 <?php endforeach; ?>
@@ -16,7 +16,7 @@
 			<br />
 			<label>
 				EVE Client Language 
-				<select name="language">
+				<select name="language" class="siggy-input">
 					<option value="en">English</option>
 					<option value="de">Deutsch</option>
 				</select>

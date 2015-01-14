@@ -443,35 +443,6 @@
         </div>
     </div>
 
-    <div id="exit-finder" class="box" style="display:none;">
-        <h3>Exit Finder</h3>
-        <div>
-            <p>Find's the nearest exit to the given system or your location.</p>
-            <form>
-				<label>
-					System
-					<input type="text" value="" name="target_system" style="width:150px" />
-					<button name='submit' class="btn btn-default btn-xs" type="submit" style="margin-top: -4px;">Search</button> <br />
-				</label>
-				<?php if( $igb ): ?>
-				<button name='current_location' class="btn btn-default btn-xs">Exits near my location</button>
-				<?php endif; ?>
-				<div id="exit-finder-loading" class="box-load-progress" style="display:none;">
-					<img src="<?php echo URL::base(TRUE, TRUE);?>public/images/ajax-loader.gif" />
-					<span>Calculating....</span>
-				</div>
-				<div id="exit-finder-results-wrap" style='max-height:210px;overflow: auto;margin-top: 10px;'>
-					<h3>Results</h3>
-					<ul id="exit-finder-list" class="box-simple-list">
-						<li><b>No exits found</b></li>
-					</ul>
-				</div>
-                <div class="center-text form-actions">
-                    <button name='cancel' type="button" class="btn btn-default">Close</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
 	<?php echo View::factory('siggy/boxes/fatal_error'); ?>
 	<?php echo View::factory('siggy/boxes/confirm'); ?>
@@ -479,6 +450,7 @@
 	<?php echo View::factory('siggy/boxes/group_notes'); ?>
 	<?php echo View::factory('siggy/boxes/character_settings')->set('themes', $themes)->set('settings', $settings); ?>
 	<?php echo View::factory('siggy/boxes/dialog_import_thera'); ?>
+	<?php echo View::factory('siggy/boxes/dialog_exit_finder'); ?>
 	<?php echo View::factory('siggy/handlebars/sig_table_row'); ?>
 	<?php echo View::factory('siggy/handlebars/effect_tooltip'); ?>
 	<?php echo View::factory('siggy/handlebars/statics_tooltip'); ?>
