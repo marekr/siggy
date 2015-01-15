@@ -13,6 +13,8 @@ function inteldscan(options)
 	this.settings = $.extend(this.defaults, options);
 
 	this.dscans = {};
+	/* temp hack */
+	this.systemID = 0;
 }
 
 inteldscan.prototype.initialize = function()

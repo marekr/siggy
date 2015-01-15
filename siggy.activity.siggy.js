@@ -67,6 +67,10 @@ siggy2.Activity.siggy.prototype.setSystemID = function (systemID)
 	this.systemID = systemID;
 	if( this.sigtable != null )
 		this.sigtable.systemID = systemID;
+	if( this.intelposes != null )
+		this.intelposes.systemID = systemID;
+	if( this.inteldscan != null )
+		this.inteldscan.systemID = systemID;
 }
 
 siggy2.Activity.siggy.prototype.setupFormSystemOptions = function()
