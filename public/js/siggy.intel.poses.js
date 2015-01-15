@@ -14,6 +14,9 @@ function intelposes(options)
 
 	/* POSes */
 	this.poses = {};
+	
+	/* temp hack */
+	this.systemID = 0;
 }
 
 intelposes.prototype.initialize = function()
@@ -179,7 +182,7 @@ intelposes.prototype.setupPOSForm = function(mode, posID)
 			pos_size: size.val(),
 			pos_online: status.val(),
 			pos_notes: notes.val(),
-			pos_system_id: $this.siggyMain.systemID
+			pos_system_id: $this.systemID
 		};
 
 		if(mode == 'edit')
