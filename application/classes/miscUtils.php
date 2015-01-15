@@ -189,7 +189,7 @@ final class miscUtils
 					$resultArray[] = $result;
 				}
 			}
-			catch( PhealException $e )
+			catch (\Pheal\Exceptions\PhealException $e)
 			{
 				if( $e->getCode() == 523 || $e->getCode() == 522 )	//not a corp error
 				{

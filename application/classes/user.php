@@ -350,9 +350,9 @@ class User
 				//key no longer exists?
 				return FALSE;
 			}
-			catch( PhealException $e )
+			catch (\Pheal\Exceptions\PhealException $e)
 			{
-				if ($e instanceof PhealAPIException OR $e instanceof PhealHTTPException)
+				if ($e instanceof \Pheal\Exceptions\APIException OR $e instanceof \Pheal\Exceptions\HTTPException)
 				{
 					 switch( $e->getCode() )
 					 {

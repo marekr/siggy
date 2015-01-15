@@ -388,14 +388,13 @@ class Controller_Account extends FrontController
 				PhealHelper::configure();
 				$pheal = new Pheal( $_POST['apiID'], $_POST['apiKey'] );
 
-
 				try
 				{
 					$result = $pheal->accountScope->APIKeyInfo();
 
 					$success = true;
 				}
-				catch(PhealException $e)
+				catch (\Pheal\Exceptions\PhealException $e)
 				{
 					$success = false;
 				}
