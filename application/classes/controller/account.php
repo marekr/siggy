@@ -753,7 +753,7 @@ class Controller_Account extends FrontController
 
 
 				}
-				catch(PhealAPIException $e)
+				catch(\Pheal\Exceptions\PhealException $e)
 				{
 					$apiError = true;
 				}
