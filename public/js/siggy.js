@@ -63,8 +63,18 @@ siggy2.Core = function( options )
 			height: 400
 		}
 	}
+	
+	// Display states cookie
+	var displayStatesCookie = getCookie('display_states');
+	var dispStates = '';
+	if( displayStatesCookie != null )
+	{
+		dispStates = $.parseJSON(displayStatesCookie);
+	}
 
-	this.displayStates = this.defaultDisplayStates;
+	this.displayStates = $.extend({}, this.defaultDisplayStates, dispStates);
+	this.displayStates.map = $.extend({}, this.defaultDisplayStates.map, dispStates.map);
+	
 
 	this.charactersettings = new charactersettings(this.settings.charsettings);
 	this.charactersettings.siggyMain = this;
@@ -100,23 +110,10 @@ siggy2.Core.prototype.initialize = function ()
 
 	siggy2.StaticData.load(this.settings.baseUrl);
 
-	// Display states cookie
-	var displayStatesCookie = getCookie('display_states');
-	var dispStates = '';
-	if( displayStatesCookie != null )
-	{
-		dispStates = $.parseJSON(displayStatesCookie);
-	}
-
-	this.displayStates = $.extend({}, this.defaultDisplayStates, dispStates);
-	this.displayStates.map = $.extend({}, this.defaultDisplayStates.map, dispStates.map);
 
 	this.charactersettings.initialize();
 
 	this.loadActivity('siggy');
-
-
-	this.initializeCollaspibles();
 
 	this.registerMainMenu();
 }
@@ -162,15 +159,6 @@ siggy2.Core.prototype.loadActivity = function(activity)
 	} );
 }
 
-siggy2.Core.prototype.initializeCollaspibles = function()
-{
-	var $this = this;
-
-	this.setupCollaspible('#system-stats', 'statsOpen', function() {$this.renderStats();});
-	this.setupCollaspible('#sig-add-box', 'sigsAddOpen');
-	this.setupCollaspible('#dscan-box', 'dscanOpen');
-	this.setupCollaspible('#pos-box', 'posesOpen');
-}
 
 siggy2.Core.prototype.ecSetExpandedArrow = function(ele)
 {

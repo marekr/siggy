@@ -89,6 +89,7 @@ siggy2.SigTable.prototype.initialize = function()
 	{
 		$this.changeAnomState($(this).is(':checked'));
 		$this.updateSigTotal();
+		$this.siggyMain.saveDisplayState();
 	});
 
 	$this.initializeHotkeys();
@@ -320,7 +321,6 @@ siggy2.SigTable.prototype.refreshAnomState = function()
 siggy2.SigTable.prototype.changeAnomState = function(visible)
 {
 	this.siggyMain.displayStates.showAnomalies = visible;
-	this.siggyMain.saveDisplayState();
 
 	if( visible )
 	{
