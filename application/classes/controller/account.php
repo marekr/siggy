@@ -728,37 +728,30 @@ class Controller_Account extends FrontController
 		{
 			try
 			{
-				try
+				$pheal = new Pheal( $key['apiID'], $key['apiKey']);
+
+				$corpList = $this->getCorpList();
+				$charList = $this->getCharList();
+
+				$apiError = FALSE;
+				$result = $pheal->accountScope->Characters();
+
+				foreach($result->characters as $char )
 				{
-					$pheal = new Pheal( $key['apiID'], $key['apiKey']);
-
-					$corpList = $this->getCorpList();
-					$charList = $this->getCharList();
-
-					$apiError = FALSE;
-					$result = $pheal->accountScope->Characters();
-
-					foreach($result->characters as $char )
-					{
-							if( in_array($char->corporationID, $corpList) || in_array($char->characterID, $charList) )
-							{
-								$chars[ $char->characterID ] = array( 'name' => $char->name,
-																	'corpID' => $char->corporationID,
-																	'corpName' => $char->corporationName,
-																	'charID' => $char->characterID,
-																	'entryID' => $key['entryID']
-																	);
-							}
-					}
-
-
+						if( in_array($char->corporationID, $corpList) || in_array($char->characterID, $charList) )
+						{
+							$chars[ $char->characterID ] = array( 'name' => $char->name,
+																'corpID' => $char->corporationID,
+																'corpName' => $char->corporationName,
+																'charID' => $char->characterID,
+																'entryID' => $key['entryID']
+																);
+						}
 				}
-				catch(\Pheal\Exceptions\PhealException $e)
-				{
-					$apiError = true;
-				}
+
+
 			}
-			catch(PhealHTTPException $e)
+			catch(\Pheal\Exceptions\PhealException $e)
 			{
 				$apiError = true;
 			}
