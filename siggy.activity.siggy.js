@@ -60,6 +60,18 @@ siggy2.Activity.siggy = function(core)
 
 	this.initializeHubJumpContextMenu();
 	this.initializeTabs();
+	this.initializeCollaspibles();
+}
+
+
+siggy2.Activity.siggy.prototype.initializeCollaspibles = function()
+{
+	var $this = this;
+
+	this.core.setupCollaspible('#system-stats', 'statsOpen', function() {$this.renderStats();});
+	this.core.setupCollaspible('#sig-add-box', 'sigsAddOpen');
+	this.core.setupCollaspible('#dscan-box', 'dscanOpen');
+	this.core.setupCollaspible('#pos-box', 'posesOpen');
 }
 
 siggy2.Activity.siggy.prototype.setSystemID = function (systemID)

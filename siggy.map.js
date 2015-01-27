@@ -586,8 +586,6 @@ siggy2.Map.prototype.mapHide = function()
 	this.lastUpdate = 0;
 
 	$('#chain-map-tabs i.expand-collapse-indicator').removeClass('fa-caret-down').addClass('fa-caret-up');
-	this.core.displayStates.map.open = false;
-	this.core.saveDisplayState();
 }
 
 siggy2.Map.prototype.mapShow = function()
@@ -597,8 +595,6 @@ siggy2.Map.prototype.mapShow = function()
 	this.showMessage('loading');
 
 	$('#chain-map-tabs i.expand-collapse-indicator').removeClass('fa-caret-up').addClass('fa-caret-down');
-	this.core.displayStates.map.open = true;
-	this.core.saveDisplayState();
 }
 
 siggy2.Map.prototype.registerEvents = function()
@@ -606,7 +602,7 @@ siggy2.Map.prototype.registerEvents = function()
     var $this = this;
 
     $('#chain-map-tabs .minimize').click( function() {
-        if( $this.core.displayStates.map.open == 1 )
+        if( $this.core.displayStates.map.open == true )
         {
 			$this.mapHide();
         }
@@ -615,6 +611,8 @@ siggy2.Map.prototype.registerEvents = function()
 			$this.mapShow();
 			$(document).trigger('siggy.updateRequested', false );
         }
+		$this.core.displayStates.map.open = !$this.core.displayStates.map.open;
+		$this.core.saveDisplayState();
     } );
 
     $('#chain-map-edit-cancel').click( function() {
