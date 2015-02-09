@@ -164,7 +164,13 @@ class Controller_Thera extends FrontController
 			{
 				if( isset($exit['system']['id']) )
 				{
-					$chainmap->add_system_to_map(31000005, $exit['system']['id']);
+					try
+					{
+						$chainmap->add_system_to_map(31000005, $exit['system']['id']);
+					}
+					catch (Exception $e) 
+					{
+					}
 				}
 			}
 		}
