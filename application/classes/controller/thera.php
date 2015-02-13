@@ -72,6 +72,11 @@ class Controller_Thera extends FrontController
 							'out_signature' => $rawExit->signatureId,
 							'in_signature' => $rawExit->wormholeDestinationSignatureId
 						);
+						
+						
+			//skip thera to thera wormholes....yea thanks guys
+			if( (int)$rawExit->wormholeDestinationSolarSystemId == 31000005 )
+				continue;
 
 
 			$system = DB::query(Database::SELECT, 'SELECT s.id, s.name,
