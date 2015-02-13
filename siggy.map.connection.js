@@ -277,13 +277,13 @@ siggy2.MapConnection.prototype.setupOverlay = function(connectionOptions)
 		if( this.settings.wormhole.typeInfo.name )
 		{
 			this.label += "<b>" + this.settings.wormhole.typeInfo.name + "</b><br />";
-			this.label += number_format(this.settings.wormhole.typeInfo.mass*1000000000,0) + " kg +-10% mass<br />";
+			this.label += number_format(this.settings.wormhole.typeInfo.mass,0) + " kg +-10% mass<br />";
 			this.label += this.settings.wormhole.typeInfo.lifetime + " hr lifetime<br />";
-			this.label += number_format(this.settings.wormhole.typeInfo.maxJumpMass*1000000,0) + " kg max jump<br />";
+			this.label += number_format(this.settings.wormhole.typeInfo.maxJumpMass,0) + " kg max jump<br />";
 
 			if( this.settings.wormhole.typeInfo.regen != 0 )
 			{
-				this.label += number_format(this.settings.wormhole.typeInfo.regen*1000000,0) + " kg mass regen<br />";
+				this.label += number_format(this.settings.wormhole.typeInfo.regen,0) + " kg mass regen<br />";
 			}
 		}
 
