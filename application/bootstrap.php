@@ -227,22 +227,7 @@ if (!Route::cache())
 			'controller' => 'siggy',
 			'action' => 'update',
 		));
-	Route::set('siggyGetJumpLog', 'getJumpLog')
-		->defaults(array(
-			'controller' => 'siggy',
-			'action' => 'getJumpLog',
-		));
-	Route::set('siggyProcessStatics', 'processStatics(/<region>)')
-		->defaults(array(
-			'controller' => 'special',
-			'action' => 'processStatics',
-		));
-
-	Route::set('siggySigs', 'do(<action>)')
-		->defaults(array(
-			'controller' => 'siggy'
-		));
-
+		
 	Route::set('login', 'manage/login')
 		->defaults(array(
 			'controller' => 'user',
@@ -261,16 +246,10 @@ if (!Route::cache())
 			'directory'  => 'api'
 		));
 
-
     Route::set('account', 'account(/<action>)')
 		->defaults(array(
 			'controller' => 'account',
 			'action' => 'login'
-		));
-
-    Route::set('cron', 'cron(/<action>)')
-		->defaults(array(
-			'controller' => 'cron'
 		));
 
 	Route::set('stats', 'stats(/year/<year>(/month(/<month>))(/week/<week>))')
