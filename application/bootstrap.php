@@ -255,6 +255,12 @@ if (!Route::cache())
 			'controller' => 'dashboard',
 			'action' => 'index',
 		));
+		
+	Route::set('api', 'api(/<controller>(/<action>(/<id>)))')
+		->defaults(array(
+			'directory'  => 'api'
+		));
+
 
     Route::set('account', 'account(/<action>)')
 		->defaults(array(
@@ -266,12 +272,6 @@ if (!Route::cache())
 		->defaults(array(
 			'controller' => 'cron'
 		));
-
-    Route::set('apiChainMaps', 'api/chainMap(/<action>)')
-		->defaults(array(
-			'controller' => 'api'
-		));
-
 
 	Route::set('stats', 'stats(/year/<year>(/month(/<month>))(/week/<week>))')
 		->defaults(array(
