@@ -373,7 +373,7 @@ abstract class Kohana_Controller_Rest extends Controller {
 	{
 		if (RestUser::AUTH_TYPE_OFF != $this->_auth_type)
 		{
-			$this->_user = new RestUser($this->_auth_type, $this->_auth_source);
+			$this->_user = new RestUser($this->_auth_type, $this->_auth_source, $this->request->method());
 		}
 	}
 

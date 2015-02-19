@@ -196,6 +196,7 @@ Kohana::modules(array(
 	 'cache'      => MODPATH.'cache',      // Caching with multiple backends
 	 'database'   => MODPATH.'database',   // Database access
 	 'orm'        => MODPATH.'orm',        // Object Relationship Mapping
+	 'restful_api' => MODPATH.'restful-api',        // Object Relationship Mapping
 	));
 
 if( Kohana::$environment == Kohana::PRODUCTION)
@@ -241,9 +242,14 @@ if (!Route::cache())
 			'action' => 'index',
 		));
 		
-	Route::set('api', 'api(/<controller>(/<action>(/<id>)))')
+	Route::set('api', 'api/<version>/<controller>(.<format>)', 
+					array(
+						'version' => 'v1',
+						'format'  => '(json|xml|csv|html)',
+					))
 		->defaults(array(
-			'directory'  => 'api'
+			'directory'  => 'api',
+			'format' => 'json',
 		));
 
     Route::set('account', 'account(/<action>)')

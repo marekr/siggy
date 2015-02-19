@@ -60,11 +60,13 @@ abstract class Kohana_RestUser {
 	 */
 	private $_actions;
 
+	protected $_verb;
 
-	public function __construct($auth_type, $auth_source)
+	public function __construct($auth_type, $auth_source, $verb)
 	{
 		$this->_auth_type = $auth_type; // @TODO validate
 		$this->_auth_source = $auth_source; // @TODO validate
+		$this->_verb = $verb;
 		$this->_auth();
 		$this->_load(); // Just in case it hasn't run yet.
 		$this->_populate_actions();
@@ -121,7 +123,7 @@ abstract class Kohana_RestUser {
 
 		// We load the user now, so that we can validate the hashed timestamp with the secret key.
 		$this->_load();
-
+		
 		if (!$this->_secret_key || $secret_hash !== md5($timestamp . $this->_secret_key)) {
 			throw $this->_altered_401_exception('Invalid '. self::AUTH_KEY_HASH .' value');
 		}
@@ -130,7 +132,7 @@ abstract class Kohana_RestUser {
 	/**
 	 * Loads the user data.
 	 */
-	private function _load()
+	protected function _load()
 	{
 		if ($this->_loaded) return;
 		$this->_find();
@@ -145,7 +147,7 @@ abstract class Kohana_RestUser {
 	 * Returns a 401 HTTP_Exception with a "www-authenticate" header, in order to bypass
 	 * Kohana 3.3's exception on missing such header (based on @ehlersd's solution).
 	 */
-	private function _altered_401_exception($message = NULL)
+	protected function _altered_401_exception($message = NULL)
 	{
 		$exception = HTTP_Exception::factory(401, $message);
 		$exception->headers('www-authenticate', 'None');
