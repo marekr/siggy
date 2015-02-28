@@ -58,3 +58,12 @@ siggy2.Helpers.setupHandlebars = function()
 		}
 	});
 }
+
+siggy2.Helpers.isKSpaceClass = function( sysClass )
+{
+	if( sysClass >= 7 && sysClass <= 9 )
+	{
+		return true;
+	}
+	return false;
+}

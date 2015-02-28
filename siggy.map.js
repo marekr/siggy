@@ -865,8 +865,22 @@ siggy2.Map.prototype.draw = function()
 		sysBlob.data('system_id', systemData.systemID);
 
         //blob time for the title
-        var systemName = $("<span>").text(systemData.displayName == "" ? systemData.name : systemData.displayName).addClass('map-system-blob-sysname');
-
+        var systemName = $("<span>").addClass('map-system-blob-sysname');
+		
+		if(systemData.displayName == "")
+		{
+			var text = systemData.name;
+			if( siggy2.Helpers.isKSpaceClass(systemData.sysClass) )
+			{
+				text += '<br />' + systemData.region_name + '';
+			}
+			systemName.html(text);
+		}
+		else
+		{
+			systemName.text(systemData.displayName);
+		}
+		
 
         var titleClassBit = "";
         if( this.settings.alwaysShowClass || systemData.sysClass >= 7 || ( systemData.sysClass < 7 && systemData.displayName == "") )
