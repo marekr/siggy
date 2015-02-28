@@ -173,10 +173,12 @@ class chainmap
 															COALESCE(sa.rally,0) as rally,
 															ss.sysClass,
 															ss.effect,
+															r.regionName as region_name,
 															(SELECT SUM(kills) FROM apihourlymapdata WHERE systemID=ss.id AND hourStamp >= :kill_cutoff) as kills_in_last_2_hours,
 															(SELECT SUM(npcKills) FROM apihourlymapdata WHERE systemID=ss.id AND hourStamp >= :kill_cutoff) as npcs_kills_in_last_2_hours
 															FROM solarsystems ss
 															LEFT OUTER JOIN activesystems sa ON (ss.id = sa.systemID AND sa.groupID=:group AND sa.chainmap_id=:chainmap)
+															INNER JOIN regions r ON(r.regionID=ss.region)
 															WHERE ss.id IN(".$systemsToPoll.")  ORDER BY ss.id ASC")
 											->param(':group', $this->group_id)
 											->param(':chainmap', $this->id)
