@@ -215,4 +215,37 @@ class Controller_Sig extends FrontController
 		die();
 	}
 	
+	public function action_scanned_systems()
+	{
+		$this->profiler = NULL;
+		$this->auto_render = FALSE;
+		header('content-type: application/json');
+		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+		
+		
+		$data = DB::query(Database::SELECT, "SELECT ss.name as system_name, ss.id,
+													r.regionName as region_name,
+													r.regionID as region_id,
+													c.constellationID as constellation_id,
+													c.constellationName as constellation_name,
+													(SELECT created FROM systemsigs
+													WHERE systemID = ss.id AND groupID=:groupID
+													ORDER BY created DESC
+													LIMIT 1)
+													as last_scan
+												FROM solarsystems ss									
+												INNER JOIN regions r ON(r.regionID=ss.region)						
+												INNER JOIN constellations c ON(c.constellationID=ss.constellation)
+												WHERE ss.id IN (
+													SELECT s.systemID FROM	 systemsigs s
+													WHERE s.sig !='POS' AND s.groupID=:groupID
+													GROUP BY s.systemID
+												)")
+								->param(':groupID', Auth::$session->groupID)
+								->execute()
+								->as_array();
+								
+		print json_encode($data);
+		exit();
+	}
 }

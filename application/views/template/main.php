@@ -45,6 +45,7 @@
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.activity.thera.js?<?php echo time(); ?>'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.activity.search.js?<?php echo time(); ?>'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.activity.siggy.js?<?php echo time(); ?>'></script>
+    <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.activity.scannedsystems.js?<?php echo time(); ?>'></script>
     <?php else: ?>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/thirdparty.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>
     <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>
@@ -59,6 +60,7 @@
 						</a>
 						<ul class="dropdown-menu siggy-main-navbar" role="menu">
 							<li><a class="activity-menu-option" data-activity="siggy" style="display:none"><span class="glyphicon glyphicon-list"></span> siggy</a></li>
+							<li><a class="activity-menu-option" data-activity="scannedsystems" style="display:none"><span class="glyphicon glyphicon-list"></span> Scanned Systems</a></li>
 							<li><a class="activity-menu-option" data-activity="thera"><span class="glyphicon glyphicon-magnet"></span> Thera</a></li>
                             <li><a class="activity-menu-option" data-activity="search"><span class="glyphicon glyphicon-search"></span> Search</a></li>
 
@@ -160,6 +162,25 @@
 						<th>In Sig</th>
 						<th>Life</th>
                         <th>Jumps</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<div id="activity-scanned-systems" class="wrapper" style="display:none">
+			<p>
+                This page lists all systems that have signatures stored and the latest time they were entered as the Last Scan column.</a>
+            </p>
+            <br />
+            <br />
+			<table class="siggy-table siggy-table-striped" id="scanned-systems-table">
+				<thead>
+					<tr>
+						<th>Region</th>
+						<th>Constellation</th>
+						<th>System</th>
+						<th>Last Scan</th>
 					</tr>
 				</thead>
 				<tbody>

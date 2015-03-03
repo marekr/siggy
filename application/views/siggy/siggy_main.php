@@ -377,6 +377,7 @@
 	<?php echo View::factory('siggy/handlebars/thera_table_row'); ?>
 	<?php echo View::factory('siggy/handlebars/search_result_pos'); ?>
 	<?php echo View::factory('siggy/handlebars/search_result_legacy_pos'); ?>
+	<?php echo View::factory('siggy/handlebars/scanned_system_table_row'); ?>
 
     <script type='text/javascript'>
         $(document).ready(function() {

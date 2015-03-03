@@ -88,7 +88,8 @@ siggy2.Core = function( options )
 	this.activity = '';
 	this.activities = { thera: new siggy2.Activity.Thera(this),
 	  					search: new siggy2.Activity.Search(this),
-						siggy: new siggy2.Activity.siggy(this)
+						siggy: new siggy2.Activity.siggy(this),
+						scannedsystems: new siggy2.Activity.ScannedSystems(this)
 					};
 }
 
