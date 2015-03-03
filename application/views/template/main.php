@@ -151,7 +151,7 @@
             </p>
             <br />
             <br />
-			<table class="siggy-table siggy-table-striped" id="thera-exits-table">
+			<table class="siggy-table siggy-table-striped table-with-dropdowns" id="thera-exits-table">
 				<thead>
 					<tr>
 						<th>Region</th>
@@ -174,7 +174,7 @@
             </p>
             <br />
             <br />
-			<table class="siggy-table siggy-table-striped" id="scanned-systems-table">
+			<table class="siggy-table siggy-table-striped table-with-dropdowns" id="scanned-systems-table">
 				<thead>
 					<tr>
 						<th>Region</th>

@@ -828,11 +828,6 @@ div.connection-editor-group > div
 	font-size:12px;
 }
 
-#thera-exits-table .btn-hidden
-{
-	width: 100%;
-}
-
 #thera-exits-table tr th,
 #thera-exits-table tr td
 {
@@ -857,4 +852,10 @@ div.connection-editor-group > div
 .highlight {
 	background-color: yellow;
 	color: black;
+}
+
+
+.table-with-dropdowns .btn-hidden
+{
+	width: 100%;
 }
