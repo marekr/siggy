@@ -13,6 +13,7 @@
 --js=siggy.hotkeyhelper.js ^
 --js=siggy.map.js ^
 --js=siggy.activity.siggy.js ^
+--js=siggy.activity.scannedsystems.js ^
 --js=siggy.activity.search.js ^
 --js=siggy.activity.thera.js ^
 --source_map_format=V3 ^
