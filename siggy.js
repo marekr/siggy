@@ -25,6 +25,7 @@ siggy2.Core = function( options )
 		baseUrl: '',
 		initialSystemID: 0,
 		initialSystemName: '',
+		freezeSystem: false,
 		sessionID: '',
 		charsettings: {
 			themeID: 0,
