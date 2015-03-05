@@ -387,6 +387,9 @@
                 initialSystemID: <?php echo $systemData['id']; ?>,
                 initialSystemName: '<?php echo $systemData['name']; ?>',
 				igb: <?php echo ($igb ? 'true' : 'false'); ?>,
+				<?php if($requested): ?>
+				freezeSystem: true,
+				<?php endif; ?>
 				charsettings: {
 					themeID: <?php echo $settings['theme_id']; ?>,
 					combineScanIntel: <?php echo $settings['combine_scan_intel']; ?>,
@@ -408,9 +411,6 @@
             };
 
             var siggy = new siggy2.Core( options );
-            <?php if($requested): ?>
-            siggy.freeze();
-            <?php endif; ?>
 
 
             siggy.initialize();

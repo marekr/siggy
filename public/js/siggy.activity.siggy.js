@@ -34,6 +34,12 @@ siggy2.Activity.siggy = function(core)
 	this.systemName = this.core.settings.initialSystemName;
 	this.setSystemID(this.core.settings.initialSystemID);
 
+	
+	if( this.core.settings.freezeSystem )
+	{
+		this.freeze();
+	}
+	
 	this.templateEffectTooltip = Handlebars.compile( $("#template-effect-tooltip").html() );
 
 	$(document).bind('siggy.map.systemSelected', function(e, systemID) {
@@ -55,7 +61,7 @@ siggy2.Activity.siggy = function(core)
 	$('#bear-C4').click(function() { $this.setBearTab(4); return false; });
 	$('#bear-C5').click(function() { $this.setBearTab(5); return false; });
 	$('#bear-C6').click(function() { $this.setBearTab(6); return false; });
-
+	
 
 
 	this.initializeHubJumpContextMenu();
