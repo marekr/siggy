@@ -67,7 +67,7 @@ return array(
      */
     'email' => true,
     /* change this to the email address you want the password reset emails to come from. */
-    'email_address' => 'no-response@example.com',
+    'email_address' => 'noreply@borkedlabs.com',
     /**
      * Toggle reCaptcha support: if set, then during registration the user is shown
      * a reCaptcha which they must answer correctly (unless they are using one of the 3rd party accounts).
