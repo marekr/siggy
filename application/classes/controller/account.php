@@ -535,7 +535,7 @@ class Controller_Account extends FrontController
 					$subject = __('siggy: Account password reset');
 
 					$to = $_POST['reset_email'];
-					$from = Kohana::$config->load('useradmin')->email_address;
+					$from = Kohana::$config->load('auth')->sender_email_address;
 
 
 					$body =  __($message, array(
@@ -625,7 +625,7 @@ class Controller_Account extends FrontController
 					$subject = __('siggy: Your new password');
 
 					$to = $_REQUEST['reset_email'];
-					$from = Kohana::$config->load('useradmin')->email_address;
+					$from = Kohana::$config->load('auth')->sender_email_address;
 
 					$body =  __($message, array(
 							':url' => URL::site('', TRUE),
