@@ -359,7 +359,7 @@ class Controller_Siggy extends FrontController
         }
 	}
 
-	public function action_update()
+	public function action_siggy()
 	{
         $this->profiler = NULL;
         $this->auto_render = FALSE;
@@ -377,107 +377,34 @@ class Controller_Siggy extends FrontController
             exit();
         }
 
+        $update = array(
+						'systemUpdate' => 0, 
+						'sigUpdate' => 0,
+						'globalNotesUpdate' => 0,
+						'mapUpdate' => 0
+						);
 
-        $update = array('systemUpdate' => 0, 'sigUpdate' => 0, 'globalNotesUpdate' => 0, 'mapUpdate' => 0, 'acsid' => 0, 'acsname' =>'');
-
-        $group_last_cache_time = isset($_POST['group_cache_time']) ? intval($_POST['group_cache_time']) : 0;
         if( isset( $_POST['lastUpdate'] ) && isset( $_POST['systemID'] ) && $_POST['systemID'] != 0 )
         {
-            $currentSystemID = intval($_POST['systemID']);
+            $selectedSystemID = intval($_POST['systemID']);
             $forceUpdate = $_POST['forceUpdate'] == 'true' ? 1 : 0;
             $_POST['lastUpdate'] = intval($_POST['lastUpdate']);
-            $freeze = intval( $_POST['freezeSystem'] );
 
             $newSystemData = array();
-            $update['acsid'] = $lastSystemID = $actualCurrentSystemID = intval($_POST['acsid']);
 
-            if( $this->igb )
+            if( $forceUpdate )
             {
-                if( ($actualCurrentSystemID != $_SERVER['HTTP_EVE_SOLARSYSTEMID'] ) )
-                {
-					$update['acsid'] = $actualCurrentSystemID = $_SERVER['HTTP_EVE_SOLARSYSTEMID'];
-
-
-                    if( Auth::$session->accessData['recordJumps'] && $actualCurrentSystemID != 0 && $lastSystemID != 0 )
-                    {
-						$hourStamp = miscUtils::getHourStamp();
-
-
-
-						DB::query(Database::INSERT, 'INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`) VALUES(:systemID, :groupID, :hourStamp, 1) ON DUPLICATE KEY UPDATE jumps=jumps+1')
-											->param(':hourStamp', $hourStamp )
-											->param(':systemID', $lastSystemID )
-											->param(':groupID', Auth::$session->groupID )
-											->execute();
-
-						DB::query(Database::INSERT, 'INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`) VALUES(:systemID, :groupID, :hourStamp, 1) ON DUPLICATE KEY UPDATE jumps=jumps+1')
-											->param(':hourStamp', $hourStamp )
-											->param(':systemID', $actualCurrentSystemID )
-											->param(':groupID', Auth::$session->groupID )
-											->execute();
-                    }
-
-                    if( ($lastSystemID != $actualCurrentSystemID) && $actualCurrentSystemID != 0 && !empty($lastSystemID) )
-                    {
-                        $this->__wormholeJump($lastSystemID, $actualCurrentSystemID);
-                    }
-                }
-            }
-
-            if( $forceUpdate || ( $this->igb && $_POST['systemID'] != $_SERVER['HTTP_EVE_SOLARSYSTEMID'] ) )
-            {
-                if( !$freeze && $this->igb )
-                {
-                    $update['systemData'] = $this->getSystemData( $_SERVER['HTTP_EVE_SOLARSYSTEMID'] );
-                    //$newSystemData = $this->getSystemData( $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] );
-                    //$update['systemData'] = $newSystemData;
-                    if( count( $update['systemData'] ) > 0 )
-                    {
-                            $update['systemUpdate'] = (int) 1;
-                            $currentSystemID = $update['systemData']['id'];
-                    }
-                }
-                //if specific system is picked, we have a forced update
-                elseif( $freeze  || $forceUpdate )
-                {
-                    $update['systemData'] = $this->getSystemData( $_POST['systemID'] );
-                    if( count( $update['systemData'] ) > 0 )
-                    {
-                            $update['systemUpdate'] = (int) 1;
-                            $currentSystemID = $update['systemData']['id'];
-                    }
-                }
-            }
-
-            //location tracking!
-            if( $this->igb && isset($_SERVER['HTTP_EVE_CHARID']) && isset($_SERVER['HTTP_EVE_CHARNAME']) && $actualCurrentSystemID != 0 )
-            {
-                if( ! Auth::$session->accessData['alwaysBroadcast'] )
-                {
-                    $broadcast = (isset($_COOKIE['broadcast']) ? intval($_COOKIE['broadcast']) : 1);
-                }
-                else
-                {
-                    $broadcast = 1;
-                }
-
-				DB::query(Database::INSERT, 'INSERT INTO chartracker (`charID`, `charName`, `currentSystemID`,`groupID`,`chainmap_id`,`lastBeep`, `broadcast`,`shipType`, `shipName`) VALUES(:charID, :charName, :systemID, :groupID, :chainmap, :lastBeep, :broadcast, :shipType, :shipName)'
-							. 'ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, currentSystemID = :systemID, broadcast = :broadcast, shipType = :shipType, shipName = :shipName')
-						->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )
-						->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
-						->param(':broadcast', $broadcast )
-						->param(':systemID', $actualCurrentSystemID )
-						->param(':groupID', Auth::$session->groupID )
-						->param(':shipType', isset($_SERVER['HTTP_EVE_SHIPTYPEID']) ? $_SERVER['HTTP_EVE_SHIPTYPEID'] : 0 )
-						->param(':shipName', isset($_SERVER['HTTP_EVE_SHIPNAME']) ? htmlentities($_SERVER['HTTP_EVE_SHIPNAME']) : '' )
-						->param(':chainmap', Auth::$session->accessData['active_chain_map'] )
-						->param(':lastBeep', time() )->execute();
+				$update['systemData'] = $this->getSystemData( $_POST['systemID'] );
+				if( count( $update['systemData'] ) > 0 )
+				{
+					$update['systemUpdate'] = (int) 1;
+				}
             }
 
 			$this->_update_process_map($update);
 
             $activeSystemQuery = DB::query(Database::SELECT, 'SELECT lastUpdate FROM activesystems WHERE systemID=:id AND groupID=:group AND chainmap_id=:chainmap')
-												->param(':id', $currentSystemID)
+												->param(':id', $selectedSystemID)
 												->param(':group',Auth::$session->groupID)
 												->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 												->execute();
@@ -495,31 +422,13 @@ class Controller_Siggy extends FrontController
 
                 $update['sigData'] = DB::query(Database::SELECT, "SELECT sigID,sig, type, siteID, description, created, creator,updated,lastUpdater".$additional." FROM systemsigs
 																	WHERE systemID=:id AND groupID=:group")
-                                 ->param(':id', $currentSystemID)
+                                 ->param(':id', $selectedSystemID)
 								 ->param(':group', Auth::$session->groupID)
 								 ->execute()
 								 ->as_array('sigID');
 
                 $update['sigUpdate'] = (int) 1;
             }
-
-			if( $group_last_cache_time < Auth::$session->accessData['cache_time'] )
-			{
-				$update['chainmaps_update'] = 1;
-
-				$chainmaps = array();
-				foreach( Auth::$session->accessData['accessible_chainmaps'] as $c )
-				{
-					$chainmaps[ $c['chainmap_id'] ] = array('id' => (int)$c['chainmap_id'],
-															'name' => $c['chainmap_name']);
-				}
-
-				$update['chainmaps'] = $chainmaps;
-
-				$update['globalNotesUpdate'] = (int) 1;
-				$update['group_cache_time'] = (int) Auth::$session->accessData['cache_time'];
-				$update['globalNotes'] = Auth::$session->accessData['groupNotes'];
-			}
 
 			$update['chainmap_id'] = Auth::$session->accessData['active_chain_map'];
 
@@ -530,6 +439,123 @@ class Controller_Siggy extends FrontController
             $update['error'] = 'You suck';
         }
 
+        echo json_encode( $update );
+
+        exit();
+	}
+	
+	public function action_update()
+	{
+        $this->profiler = NULL;
+        $this->auto_render = FALSE;
+        header('content-type: application/json');
+        header("Cache-Control: no-cache, must-revalidate");
+
+		if( Kohana::$environment == Kohana::PRODUCTION )
+		{
+			ob_start( 'ob_gzhandler' );
+		}
+
+        if(	!$this->siggyAccessGranted() )
+        {
+            echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
+            exit();
+        }
+		
+        $update = array( 'location' => array( 'id' => 0,
+											'name' => '' )
+						);
+		
+		if( $this->igb )
+        {
+			$currentSystemID = (int)$_SERVER['HTTP_EVE_SOLARSYSTEMID'];
+            $lastCurrentSystemID = (int)$_POST['last_location_id'];
+
+			if( $lastCurrentSystemID != $currentSystemID  )
+			{
+				if( $lastCurrentSystemID > 0 && $currentSystemID > 0  )
+				{
+					if( Auth::$session->accessData['recordJumps'] )
+					{
+						$hourStamp = miscUtils::getHourStamp();
+
+
+						DB::query(Database::INSERT, 'INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`) 
+														VALUES(:systemID, :groupID, :hourStamp, 1)
+														ON DUPLICATE KEY UPDATE jumps=jumps+1')
+											->param(':hourStamp', $hourStamp )
+											->param(':systemID', $currentSystemID )
+											->param(':groupID', Auth::$session->groupID )
+											->execute();
+
+						DB::query(Database::INSERT, 'INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`)
+														VALUES(:systemID, :groupID, :hourStamp, 1)
+														ON DUPLICATE KEY UPDATE jumps=jumps+1')
+											->param(':hourStamp', $hourStamp )
+											->param(':systemID', $lastCurrentSystemID )
+											->param(':groupID', Auth::$session->groupID )
+											->execute();
+					}
+
+					$this->__wormholeJump($lastCurrentSystemID, $currentSystemID);
+				}
+				
+				$update['location']['id'] = $currentSystemID;
+				$update['location']['name'] = $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'];
+			}
+
+			/* Location tracking */
+			if( isset($_SERVER['HTTP_EVE_CHARID']) && isset($_SERVER['HTTP_EVE_CHARNAME']) && $currentSystemID != 0 )
+			{
+				if( !Auth::$session->accessData['alwaysBroadcast'] )
+				{
+					$broadcast = isset($_COOKIE['broadcast']) ? intval($_COOKIE['broadcast']) : 1;
+				}
+				else
+				{
+					$broadcast = 1;
+				}
+
+				DB::query(Database::INSERT, 'INSERT INTO chartracker (`charID`, `charName`, `currentSystemID`,`groupID`,`chainmap_id`,`lastBeep`, `broadcast`,`shipType`, `shipName`) 
+											VALUES(:charID, :charName, :systemID, :groupID, :chainmap, :lastBeep, :broadcast, :shipType, :shipName)
+							ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, 
+													currentSystemID = :systemID, 
+													broadcast = :broadcast, 
+													shipType = :shipType, 
+													shipName = :shipName')
+						->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )
+						->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
+						->param(':broadcast', $broadcast )
+						->param(':systemID', $currentSystemID )
+						->param(':groupID', Auth::$session->groupID )
+						->param(':shipType', isset($_SERVER['HTTP_EVE_SHIPTYPEID']) ? (int)$_SERVER['HTTP_EVE_SHIPTYPEID'] : 0 )
+						->param(':shipName', isset($_SERVER['HTTP_EVE_SHIPNAME']) ? htmlentities($_SERVER['HTTP_EVE_SHIPNAME']) : '' )
+						->param(':chainmap', Auth::$session->accessData['active_chain_map'] )
+						->param(':lastBeep', time() )
+						->execute();
+			}
+        }
+		
+        $group_last_cache_time = isset($_POST['group_cache_time']) ? intval($_POST['group_cache_time']) : 0;
+		if( $group_last_cache_time < Auth::$session->accessData['cache_time'] )
+		{
+			$update['chainmaps_update'] = 1;
+
+			$chainmaps = array();
+			foreach( Auth::$session->accessData['accessible_chainmaps'] as $c )
+			{
+				$chainmaps[ $c['chainmap_id'] ] = array('id' => (int)$c['chainmap_id'],
+														'name' => $c['chainmap_name']);
+			}
+
+			$update['chainmaps'] = $chainmaps;
+
+			$update['global_notes_update'] = (int) 1;
+			$update['globalNotes'] = Auth::$session->accessData['groupNotes'];
+		}
+		
+		$update['group_cache_time'] = (int) Auth::$session->accessData['cache_time'];
+		
         echo json_encode( $update );
 
         exit();

@@ -385,7 +385,6 @@
             var options = {
                 baseUrl: '<?php echo URL::base(TRUE, TRUE);?>',
                 initialSystemID: <?php echo $systemData['id']; ?>,
-                initialSystemName: '<?php echo $systemData['name']; ?>',
 				igb: <?php echo ($igb ? 'true' : 'false'); ?>,
 				<?php if($requested): ?>
 				freezeSystem: true,

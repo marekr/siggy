@@ -17,24 +17,18 @@ siggy2.Activity.siggy = function(core)
 	this.systemName = '';
 	this.systemStats = [];
 	this.map = null;
-	this.freezeSystem = 0;
+	this.freezeSystem = false;
 	this.lastUpdate = 0;
-	this.acsid = 0;
 
 	this.chainMapID = 0;
-
-
-	this.groupCacheTime = 0;
 
 	this._updateTimeout = null;
 
 	this.key = 'siggy';
 
 	this.sigtable = null;
-	this.systemName = this.core.settings.initialSystemName;
 	this.setSystemID(this.core.settings.initialSystemID);
 
-	
 	if( this.core.settings.freezeSystem )
 	{
 		this.freeze();
@@ -43,6 +37,7 @@ siggy2.Activity.siggy = function(core)
 	this.templateEffectTooltip = Handlebars.compile( $("#template-effect-tooltip").html() );
 
 	$(document).bind('siggy.map.systemSelected', function(e, systemID) {
+		$this.freeze();
 		$this.switchSystem(systemID);
 	} );
 
@@ -51,7 +46,22 @@ siggy2.Activity.siggy = function(core)
 		$this.forceUpdate = force;
 		$this.updateNow();
 	} );
-
+	
+	
+	$(document).bind('siggy.locationChanged', function(e, oldID, newID ) {
+		if( !$this.freezeSystem )
+		{
+			// zero our last update to ensure a force update suceeds, 
+			// i.e. a failed update requested is undesired as we'll end up desynced
+			$this.lastUpdate = 0;
+			$this.switchSystem(newID);
+		}
+	});
+	
+	$(document).bind('siggy.mapsAvaliableUpdate', function(e) {
+		$this.updateChainMaps(siggy2.Maps.available);
+	});
+	
 	this.initModules();
 	this.setupFormSystemOptions();
 
@@ -62,8 +72,6 @@ siggy2.Activity.siggy = function(core)
 	$('#bear-C5').click(function() { $this.setBearTab(5); return false; });
 	$('#bear-C6').click(function() { $this.setBearTab(6); return false; });
 	
-
-
 	this.initializeHubJumpContextMenu();
 	this.initializeTabs();
 	this.initializeCollaspibles();
@@ -138,9 +146,6 @@ siggy2.Activity.siggy.prototype.initModules = function()
 	this.intelposes.siggyMain = this.core;
 	this.intelposes.settings.baseUrl = this.core.settings.baseUrl;
 
-	this.globalnotes = new globalnotes(this.core.settings.globalnotes);
-	this.globalnotes.siggyMain = this.core;
-	this.globalnotes.settings.baseUrl = this.core.settings.baseUrl;
 
 	// Initialize map
 	this.sigtable.initialize();
@@ -152,25 +157,22 @@ siggy2.Activity.siggy.prototype.initModules = function()
 
 	this.inteldscan.initialize();
 	this.intelposes.initialize();
-	this.globalnotes.initialize();
 }
 
 siggy2.Activity.siggy.prototype.freeze = function()
 {
-	this.freezeSystem = 1;
+	this.freezeSystem = true;
 }
 
 siggy2.Activity.siggy.prototype.unfreeze = function()
 {
-	this.freezeSystem = 0;
+	this.freezeSystem = false;
 }
 
-siggy2.Activity.siggy.prototype.switchSystem = function(systemID, systemName)
+siggy2.Activity.siggy.prototype.switchSystem = function(systemID)
 {
 	this.setSystemID(systemID);
-	this.systemName = systemName;
 	this.forceUpdate = true;
-	this.freeze();
 	clearTimeout(this._updateTimeout);
 
 	this.sigtable.clear();
@@ -197,13 +199,17 @@ siggy2.Activity.siggy.prototype.stop = function()
 
 siggy2.Activity.siggy.prototype.update = function()
 {
+	if( !this.freezeSystem && this.core.settings.igb )
+	{
+		this.systemID = this.core.location.id;
+	}
+	
+	if( typeof(this.systemID) == 'undefined' || this.systemID == 0 )
+		return;
+	
 	var request = {
 		systemID: this.systemID,
 		lastUpdate: this.lastUpdate,
-		group_cache_time: this.groupCacheTime,
-		systemName: this.systemName,
-		freezeSystem: this.freezeSystem,
-		acsid: this.acsid,
 		mapOpen: this.core.displayStates.map.open,
 		mapLastUpdate: this.map.lastUpdate,
 		forceUpdate: this.forceUpdate
@@ -212,20 +218,21 @@ siggy2.Activity.siggy.prototype.update = function()
 	var $this = this;
 
 	$.ajax({
-		url: $this.core.settings.baseUrl + 'update',
+		url: $this.core.settings.baseUrl + 'siggy/siggy',
 		data: request,
 		dataType: 'json',
 		cache: false,
 		async: true,
 		method: 'post',
 		beforeSend : function(xhr, opts){
-			if($this.fatalError == true) //just an example
+			if($this.fatalError == true)
 			{
 				xhr.abort();
 			}
 		},
 		success: function (data)
 		{
+			
 			if( data.redirect != undefined )
 			{
 				window.location = $this.core.settings.baseUrl + data.redirect;
@@ -248,11 +255,6 @@ siggy2.Activity.siggy.prototype.update = function()
 				$('#no-chain-map-warning').hide();
 			}
 
-			if( parseInt( data.acsid ) != 0 )
-			{
-				$this.acsid = data.acsid;
-			}
-
 			if (data.systemUpdate)
 			{
 				$this.updateSystemInfo(data.systemData);
@@ -264,19 +266,7 @@ siggy2.Activity.siggy.prototype.update = function()
 				var flashSigs = ( data.systemUpdate ? false : true );
 				$this.sigtable.updateSigs(data.sigData, flashSigs);
 			}
-
-			if(data.chainmaps_update)
-			{
-				$this.updateChainMaps(data.chainmaps);
-			}
-
-			if (data.globalNotesUpdate)
-			{
-				$this.globalnotes.update(data);
-			}
-			$this.groupCacheTime = data.group_cache_time;
-
-
+			
 			if( $this.core.displayStates.map.open  )
 			{
 				if( parseInt(data.mapUpdate) == 1  )
@@ -296,24 +286,27 @@ siggy2.Activity.siggy.prototype.update = function()
 					$this.map.updateActives(data.chainMap.actives);
 				}
 			}
-
 			$this.lastUpdate = data.lastUpdate;
 
 			delete data;
 		}
 	});
 
-
-
 	this.forceUpdate = false;
 	$('span.updateTime').text(this.core.getCurrentTime());
 
+	this.queueUpdate();
+
+	return true;
+}
+
+
+siggy2.Activity.siggy.prototype.queueUpdate = function()
+{
 	this._updateTimeout = setTimeout(function (thisObj)
 	{
 		thisObj.update(0)
 	}, 10000, this);
-
-	return true;
 }
 
 siggy2.Activity.siggy.prototype.updateChainMaps = function(data)
@@ -357,8 +350,6 @@ siggy2.Activity.siggy.prototype.updateChainMaps = function(data)
 				list.append(li);
 			}
 		}
-
-		siggy2.Maps.available = data;
 	}
 }
 

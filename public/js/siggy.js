@@ -18,15 +18,19 @@ siggy2.Core = function( options )
 {
 	this.fatalError = false;
 	this.ajaxErrors = 0;
+	this.groupCacheTime = 0;
 
 	this._updateTimeout = null;
+	
+	this.location = {
+		id: 0,
+		name: ''
+	};
 
 	this.defaults = {
 		baseUrl: '',
 		initialSystemID: 0,
-		initialSystemName: '',
 		freezeSystem: false,
-		sessionID: '',
 		charsettings: {
 			themeID: 0,
 			combineScanIntel: false,
@@ -81,6 +85,10 @@ siggy2.Core = function( options )
 	this.charactersettings.siggyMain = this;
 	this.charactersettings.settings.baseUrl = this.settings.baseUrl;
 
+	this.globalnotes = new globalnotes(this.settings.globalnotes);
+	this.globalnotes.siggyMain = this;
+	this.globalnotes.settings.baseUrl = this.settings.baseUrl;
+
 	this.hotkeyhelper = new hotkeyhelper();
 	this.hotkeyhelper.siggyMain = this;
 	this.hotkeyhelper.initialize();
@@ -94,9 +102,26 @@ siggy2.Core = function( options )
 					};
 }
 
+siggy2.Core.prototype.queueUpdate = function()
+{
+	this._updateTimeout = setTimeout(function (thisObj)
+	{
+		thisObj.update(0)
+	}, 10000, this);
+}
+
+
+siggy2.Core.prototype.updateNow = function()
+{
+	clearTimeout(this._updateTimeout);
+	return this.update();
+}
+
 
 siggy2.Core.prototype.initialize = function ()
 {
+	this.updateNow();
+	
 	siggy2.Helpers.setupHandlebars();
 
 	var that = this;
@@ -114,10 +139,70 @@ siggy2.Core.prototype.initialize = function ()
 
 
 	this.charactersettings.initialize();
-
+	this.globalnotes.initialize();
 	this.loadActivity('siggy');
 
 	this.registerMainMenu();
+}
+
+siggy2.Core.prototype.update = function()
+{
+	var $this = this;
+	var request = {
+		last_location_id: $this.location.id,
+		group_cache_time: $this.groupCacheTime
+	};
+	
+	$.ajax({
+		url: $this.settings.baseUrl + 'update',
+		data: request,
+		dataType: 'json',
+		cache: false,
+		async: true,
+		method: 'post',
+		beforeSend : function(xhr, opts){
+			if($this.fatalError == true) 
+			{
+				xhr.abort();
+			}
+		},
+		success: function (data)
+		{
+			if( data.redirect != undefined )
+			{
+				window.location = $this.settings.baseUrl + data.redirect;
+				return;
+			}
+			
+			if( parseInt( data.location.id ) != 0 )
+			{
+				var old = $this.location.id;
+				$this.location.id = data.location.id;
+				
+				if( old != $this.location.id )
+				{
+					$(document).trigger('siggy.locationChanged', [old, $this.location.id] );
+				}
+			}
+
+			if(data.chainmaps_update)
+			{
+				siggy2.Maps.available = data.chainmaps;
+				$(document).trigger('siggy.mapsAvaliableUpdate');
+			}
+
+			if (data.global_notes_update)
+			{
+				$this.globalnotes.update(data);
+			}
+			
+			$this.groupCacheTime = data.group_cache_time;
+			
+			delete data;
+		}
+	});
+
+	this.queueUpdate();
 }
 
 siggy2.Core.prototype.registerMainMenu = function()
