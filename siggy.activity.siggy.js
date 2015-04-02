@@ -33,7 +33,7 @@ siggy2.Activity.siggy = function(core)
 	{
 		this.freeze();
 	}
-	
+
 	this.templateEffectTooltip = Handlebars.compile( $("#template-effect-tooltip").html() );
 
 	$(document).bind('siggy.map.systemSelected', function(e, systemID) {
@@ -46,22 +46,22 @@ siggy2.Activity.siggy = function(core)
 		$this.forceUpdate = force;
 		$this.updateNow();
 	} );
-	
-	
+
+
 	$(document).bind('siggy.locationChanged', function(e, oldID, newID ) {
 		if( !$this.freezeSystem )
 		{
-			// zero our last update to ensure a force update suceeds, 
+			// zero our last update to ensure a force update suceeds,
 			// i.e. a failed update requested is undesired as we'll end up desynced
 			$this.lastUpdate = 0;
 			$this.switchSystem(newID);
 		}
 	});
-	
+
 	$(document).bind('siggy.mapsAvaliableUpdate', function(e) {
 		$this.updateChainMaps(siggy2.Maps.available);
 	});
-	
+
 	this.initModules();
 	this.setupFormSystemOptions();
 
@@ -71,7 +71,7 @@ siggy2.Activity.siggy = function(core)
 	$('#bear-C4').click(function() { $this.setBearTab(4); return false; });
 	$('#bear-C5').click(function() { $this.setBearTab(5); return false; });
 	$('#bear-C6').click(function() { $this.setBearTab(6); return false; });
-	
+
 	this.initializeHubJumpContextMenu();
 	this.initializeTabs();
 	this.initializeCollaspibles();
@@ -189,6 +189,7 @@ siggy2.Activity.siggy.prototype.start = function()
 {
 	$('#activity-' + this.key).show();
 	this.update();
+	this.map.draw();
 }
 
 siggy2.Activity.siggy.prototype.stop = function()
@@ -203,10 +204,10 @@ siggy2.Activity.siggy.prototype.update = function()
 	{
 		this.systemID = this.core.location.id;
 	}
-	
+
 	if( typeof(this.systemID) == 'undefined' || this.systemID == 0 )
 		return;
-	
+
 	var request = {
 		systemID: this.systemID,
 		lastUpdate: this.lastUpdate,
@@ -232,7 +233,7 @@ siggy2.Activity.siggy.prototype.update = function()
 		},
 		success: function (data)
 		{
-			
+
 			if( data.redirect != undefined )
 			{
 				window.location = $this.core.settings.baseUrl + data.redirect;
@@ -266,7 +267,7 @@ siggy2.Activity.siggy.prototype.update = function()
 				var flashSigs = ( data.systemUpdate ? false : true );
 				$this.sigtable.updateSigs(data.sigData, flashSigs);
 			}
-			
+
 			if( $this.core.displayStates.map.open  )
 			{
 				if( parseInt(data.mapUpdate) == 1  )
