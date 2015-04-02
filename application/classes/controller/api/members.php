@@ -7,21 +7,35 @@ class Controller_Api_Members extends Controller_Api
 	{
 		try
 		{
-			$this->rest_output( array(
-				'total' => 120,
-				'members' => array( 
-					array( 'type' => 'char',
-							'id' => 4125121,
-							'eve_id' => 12512512,
-							'chainmaps' => array(0,1,5) ),
-					array( 'type' => 'char',
-							'id' => 4125121,
-							'eve_id' => 12512512 ),
-					array( 'type' => 'char',
-							'id' => 4125121,
-							'eve_id' => 12512512 ),
-				)
-			) );
+			$data = groupUtils::getGroupData($this->_user->_id);
+
+			$output = array();
+			$output['total'] = count($data['members']);
+			foreach( $data['members'] as $member )
+			{
+				$memberEntry = array(
+						'id' => (int)$member['id'],
+						'eve_id' => (int)$member['eveID'],
+						'type' => $member['memberType']
+				);
+
+				$chainmaps = array();
+				foreach( $data['chainmaps'] as $chainmap )
+				{
+					foreach( $chainmap['access'] as $access )
+					{
+						if( $access['eveID'] == $memberEntry['eve_id']
+						&& $access['memberType'] == $memberEntry['type'])
+						{
+							$chainmaps[] = (int)$chainmap['chainmap_id'];
+						}
+					}
+				}
+				$memberEntry['chainmaps'] = array_unique($chainmaps);
+				$output['members'][] = $memberEntry;
+			}
+
+			$this->rest_output( $output );
 		}
 		catch (Kohana_HTTP_Exception $khe)
 		{
@@ -34,17 +48,17 @@ class Controller_Api_Members extends Controller_Api
 			throw $e;
 		}
 	}
-	
+
 	// POST
 	public function action_create()
 	{
 	}
-	
+
 	// PUT
 	public function action_update()
 	{
 	}
-	
+
 	// DELETE
 	public function action_delete()
 	{

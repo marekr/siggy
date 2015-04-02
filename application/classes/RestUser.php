@@ -12,7 +12,7 @@ class RestUser extends Kohana_RestUser {
 		// When the source is a header, it's expected that it'll begin
 		// with "Basic ", so let's remove it.
 		$prefix = 'siggy-HMAC-SHA256 Credential=';
-		if (substr($hash, 0, strlen($prefix)) == $prefix) 
+		if (substr($hash, 0, strlen($prefix)) == $prefix)
 		{
 			$hash = substr($hash, strlen($prefix));
 		}
@@ -20,7 +20,7 @@ class RestUser extends Kohana_RestUser {
 		{
 			throw $this->_altered_401_exception('Invalid '. self::AUTH_KEY_HASH .' value');
 		}
-		
+
 		$split = explode(':', $hash);
 		if (count($split) != 3)
 		{
@@ -43,14 +43,14 @@ class RestUser extends Kohana_RestUser {
 
 		$stringToSign = $this->_verb . "\n".
 						$timestamp;
-		
+
 		$checkHash = hash_hmac('sha256', $stringToSign, $this->_secret_key, true);
 
 		if (!$this->_secret_key || $secret_hash !== $checkHash) {
 			throw $this->_altered_401_exception('Invalid '. self::AUTH_KEY_HASH .' value');
 		}
 	}
-	
+
 	/**
 	 * A mock loading of a user object.
 	 */
@@ -58,7 +58,7 @@ class RestUser extends Kohana_RestUser {
 	{
 		$api = DB::query(Database::SELECT, 'SELECT * FROM siggyapikeys WHERE keyID = :keyID')->param(':keyID', $this->_api_key )->execute()->current();
 
-		
+
 		$this->_id = $api['groupID'];
 		$this->_secret_key = $api['keyCode'];
 		/*

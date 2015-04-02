@@ -49,7 +49,7 @@ abstract class Kohana_RestUser {
 	/**
 	 * Variables that the method _find() is required to populate.
 	 */
-	protected
+	public
 		$_id,			// The user's unique identifier, usually an integer.
 		$_secret_key,	// (Optional) The user's secret key, used in some of the authentication types.
 		$_roles			// An array of roles that the user has. More inf in README.md.
@@ -123,7 +123,7 @@ abstract class Kohana_RestUser {
 
 		// We load the user now, so that we can validate the hashed timestamp with the secret key.
 		$this->_load();
-		
+
 		if (!$this->_secret_key || $secret_hash !== md5($timestamp . $this->_secret_key)) {
 			throw $this->_altered_401_exception('Invalid '. self::AUTH_KEY_HASH .' value');
 		}
