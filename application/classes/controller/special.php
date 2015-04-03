@@ -5,8 +5,6 @@ use Pheal\Pheal;
 require_once APPPATH.'classes/groupUtils.php';
 require_once APPPATH.'classes/mapUtils.php';
 require_once APPPATH.'classes/miscUtils.php';
-require_once APPPATH.'classes/astar.php';
-require_once APPPATH.'classes/systempathfinder.php';
 
 class Controller_Special extends Controller {
 
@@ -22,7 +20,7 @@ class Controller_Special extends Controller {
 
 	public function action_searchCorpName()
 	{
-		$results = $this->searchEVEEntityByName( 'Dreddit', 'corp' );
+		$results = $this->searchEVEEntityByName( 'Blackjack And Hookers.', 'corp' );
 		print_r($results);
 	}
 
@@ -176,7 +174,7 @@ class Controller_Special extends Controller {
 	{
 		if( $type == 'corp' )
 		{
-			$nameArray = explode(',', $names);
+	/*		$nameArray = explode(',', $names);
 			$queryArray = array();
 			foreach($nameArray as $name)
 			{
@@ -192,7 +190,7 @@ class Controller_Special extends Controller {
 			if( count( $results ) )
 			{
 				return $results;
-			}
+			}*/
 		}
 
 		PhealHelper::configure();
