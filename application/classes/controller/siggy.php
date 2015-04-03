@@ -469,7 +469,7 @@ class Controller_Siggy extends FrontController
 		if( $this->igb )
         {
 			$currentSystemID = (int)$_SERVER['HTTP_EVE_SOLARSYSTEMID'];
-            $lastCurrentSystemID = (int)$_POST['last_location_id'];
+            $lastCurrentSystemID = isset($_POST['last_location_id']) ? (int)$_POST['last_location_id'] : 0;
 
 			if( $lastCurrentSystemID != $currentSystemID  )
 			{
