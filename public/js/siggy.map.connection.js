@@ -73,8 +73,7 @@ siggy2.MapConnection.prototype.getDefaultPaintStyle = function()
 				   strokeStyle: this.getMassColor(this.settings.wormhole.mass),
 				   outlineColor: this.getTimeColor(this.settings.wormhole.eol,
 													this.settings.wormhole.frigateSized),
-				   outlineWidth:3,
-				   dashstyle: this.getDashStyle(this.settings.wormhole.frigateSized)
+				   outlineWidth:3
 				};
 	}
 	else if( this.settings.type == 'stargate' )
