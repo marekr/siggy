@@ -10,12 +10,12 @@ function globalnotes(options)
 	};
 
 	this.settings = $.extend(this.defaults, options);
-	
+
 	this.globalNotesEle = null;
 	this._blinkNotesInterval = null;
 	this.globalNotes = '';
 	this.editingGlobalNotes = false;
-	
+
 	this.siggyMain = null;
 }
 
@@ -27,7 +27,7 @@ globalnotes.prototype.initialize = function()
 	$('#global-notes-button').click(function ()
 	{
 		$this.stopBlinkingNotes();
-	
+
 		$.blockUI({
 			message: $this.globalNotesEle,
 			css: {
