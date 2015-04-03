@@ -12,7 +12,7 @@
 --js=jquery/jquery.contextMenu.js ^
 --js=jquery/jquery.hotkeys.js ^
 --js=jquery/jsBezier-0.6-min.js ^
---js=jquery/jquery.jsPlumb-1.5.5-min.js ^
+--js=jquery/jquery.jsPlumb-1.7.5.js ^
 --js=jquery/jquery.placeholder.js ^
 --js=handlebars-v2.0.0.js ^
 --js=dropdown.js ^
