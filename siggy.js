@@ -21,7 +21,7 @@ siggy2.Core = function( options )
 	this.groupCacheTime = 0;
 
 	this._updateTimeout = null;
-	
+
 	this.location = {
 		id: 0,
 		name: ''
@@ -68,7 +68,7 @@ siggy2.Core = function( options )
 			height: 400
 		}
 	}
-	
+
 	// Display states cookie
 	var displayStatesCookie = getCookie('display_states');
 	var dispStates = '';
@@ -79,7 +79,7 @@ siggy2.Core = function( options )
 
 	this.displayStates = $.extend({}, this.defaultDisplayStates, dispStates);
 	this.displayStates.map = $.extend({}, this.defaultDisplayStates.map, dispStates.map);
-	
+
 
 	this.charactersettings = new charactersettings(this.settings.charsettings);
 	this.charactersettings.siggyMain = this;
@@ -120,8 +120,6 @@ siggy2.Core.prototype.updateNow = function()
 
 siggy2.Core.prototype.initialize = function ()
 {
-	this.updateNow();
-	
 	siggy2.Helpers.setupHandlebars();
 
 	var that = this;
@@ -143,6 +141,8 @@ siggy2.Core.prototype.initialize = function ()
 	this.loadActivity('siggy');
 
 	this.registerMainMenu();
+
+	this.updateNow();
 }
 
 siggy2.Core.prototype.update = function()
@@ -152,7 +152,7 @@ siggy2.Core.prototype.update = function()
 		last_location_id: $this.location.id,
 		group_cache_time: $this.groupCacheTime
 	};
-	
+
 	$.ajax({
 		url: $this.settings.baseUrl + 'update',
 		data: request,
@@ -161,7 +161,7 @@ siggy2.Core.prototype.update = function()
 		async: true,
 		method: 'post',
 		beforeSend : function(xhr, opts){
-			if($this.fatalError == true) 
+			if($this.fatalError == true)
 			{
 				xhr.abort();
 			}
@@ -173,12 +173,12 @@ siggy2.Core.prototype.update = function()
 				window.location = $this.settings.baseUrl + data.redirect;
 				return;
 			}
-			
+
 			if( parseInt( data.location.id ) != 0 )
 			{
 				var old = $this.location.id;
 				$this.location.id = data.location.id;
-				
+
 				if( old != $this.location.id )
 				{
 					$(document).trigger('siggy.locationChanged', [old, $this.location.id] );
@@ -195,9 +195,9 @@ siggy2.Core.prototype.update = function()
 			{
 				$this.globalnotes.update(data);
 			}
-			
+
 			$this.groupCacheTime = data.group_cache_time;
-			
+
 			delete data;
 		}
 	});
