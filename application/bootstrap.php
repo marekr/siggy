@@ -228,7 +228,7 @@ if (!Route::cache())
 			'controller' => 'siggy',
 			'action' => 'update',
 		));
-		
+
 	Route::set('login', 'manage/login')
 		->defaults(array(
 			'controller' => 'user',
@@ -241,8 +241,8 @@ if (!Route::cache())
 			'controller' => 'dashboard',
 			'action' => 'index',
 		));
-		
-	Route::set('api', 'api/<version>/<controller>(.<format>)', 
+
+	Route::set('api', 'api/<version>/<controller>(/<id>)(.<format>)', 
 					array(
 						'version' => 'v1',
 						'format'  => '(json|xml|csv|html)',

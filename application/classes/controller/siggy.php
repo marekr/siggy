@@ -378,7 +378,7 @@ class Controller_Siggy extends FrontController
         }
 
         $update = array(
-						'systemUpdate' => 0, 
+						'systemUpdate' => 0,
 						'sigUpdate' => 0,
 						'globalNotesUpdate' => 0,
 						'mapUpdate' => 0
@@ -443,7 +443,7 @@ class Controller_Siggy extends FrontController
 
         exit();
 	}
-	
+
 	public function action_update()
 	{
         $this->profiler = NULL;
@@ -461,11 +461,11 @@ class Controller_Siggy extends FrontController
             echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
             exit();
         }
-		
+
         $update = array( 'location' => array( 'id' => 0,
 											'name' => '' )
 						);
-		
+
 		if( $this->igb )
         {
 			$currentSystemID = (int)$_SERVER['HTTP_EVE_SOLARSYSTEMID'];
@@ -480,7 +480,7 @@ class Controller_Siggy extends FrontController
 						$hourStamp = miscUtils::getHourStamp();
 
 
-						DB::query(Database::INSERT, 'INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`) 
+						DB::query(Database::INSERT, 'INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`)
 														VALUES(:systemID, :groupID, :hourStamp, 1)
 														ON DUPLICATE KEY UPDATE jumps=jumps+1')
 											->param(':hourStamp', $hourStamp )
@@ -499,7 +499,7 @@ class Controller_Siggy extends FrontController
 
 					$this->__wormholeJump($lastCurrentSystemID, $currentSystemID);
 				}
-				
+
 				$update['location']['id'] = $currentSystemID;
 				$update['location']['name'] = $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'];
 			}
@@ -516,12 +516,12 @@ class Controller_Siggy extends FrontController
 					$broadcast = 1;
 				}
 
-				DB::query(Database::INSERT, 'INSERT INTO chartracker (`charID`, `charName`, `currentSystemID`,`groupID`,`chainmap_id`,`lastBeep`, `broadcast`,`shipType`, `shipName`) 
+				DB::query(Database::INSERT, 'INSERT INTO chartracker (`charID`, `charName`, `currentSystemID`,`groupID`,`chainmap_id`,`lastBeep`, `broadcast`,`shipType`, `shipName`)
 											VALUES(:charID, :charName, :systemID, :groupID, :chainmap, :lastBeep, :broadcast, :shipType, :shipName)
-							ON DUPLICATE KEY UPDATE lastBeep = :lastBeep, 
-													currentSystemID = :systemID, 
-													broadcast = :broadcast, 
-													shipType = :shipType, 
+							ON DUPLICATE KEY UPDATE lastBeep = :lastBeep,
+													currentSystemID = :systemID,
+													broadcast = :broadcast,
+													shipType = :shipType,
 													shipName = :shipName')
 						->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )
 						->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
@@ -535,7 +535,7 @@ class Controller_Siggy extends FrontController
 						->execute();
 			}
         }
-		
+
         $group_last_cache_time = isset($_POST['group_cache_time']) ? intval($_POST['group_cache_time']) : 0;
 		if( $group_last_cache_time < Auth::$session->accessData['cache_time'] )
 		{
@@ -553,9 +553,9 @@ class Controller_Siggy extends FrontController
 			$update['global_notes_update'] = (int) 1;
 			$update['globalNotes'] = Auth::$session->accessData['groupNotes'];
 		}
-		
+
 		$update['group_cache_time'] = (int) Auth::$session->accessData['cache_time'];
-		
+
         echo json_encode( $update );
 
         exit();
