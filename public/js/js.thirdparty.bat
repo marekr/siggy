@@ -11,7 +11,7 @@
 --js=jquery/jquery.ui.position.js ^
 --js=jquery/jquery.contextMenu.js ^
 --js=jquery/jquery.hotkeys.js ^
---js=jquery/jquery.jsPlumb-1.7.5.js ^
+--js=jquery/jquery.jsPlumb-1.6.4.js ^
 --js=jquery/jquery.placeholder.js ^
 --js=handlebars-v2.0.0.js ^
 --js=dropdown.js ^
