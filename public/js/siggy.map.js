@@ -314,7 +314,7 @@ siggy2.Map.prototype.initialize = function()
 						w: internalconn.w
 					};
 
-					var inside = jsPlumbGeom.intersects( bb, compareBB );
+					var inside = Biltong.intersects( bb, compareBB );
 
 					if( inside )
 					{
@@ -866,7 +866,7 @@ siggy2.Map.prototype.draw = function()
 
         //blob time for the title
         var systemName = $("<span>").addClass('map-system-blob-sysname');
-		
+
 		if(systemData.displayName == "")
 		{
 			var text = systemData.name;
@@ -880,7 +880,7 @@ siggy2.Map.prototype.draw = function()
 		{
 			systemName.text(systemData.displayName);
 		}
-		
+
 
         var titleClassBit = "";
         if( this.settings.alwaysShowClass || systemData.sysClass >= 7 || ( systemData.sysClass < 7 && systemData.displayName == "") )
