@@ -1578,7 +1578,7 @@
 			  el.style.left = xy[0] + "px";
 			  el.style.top = xy[1] + "px";
 		  }
-    },
+    }
 
 
 
