@@ -550,7 +550,10 @@ siggy2.Map.prototype.startMapEdit = function()
 
 	$('div.map-system-blob').qtip('disable');
 
-	jsPlumb.setDraggable($('.map-system-blob'), true);
+	$('.map-system-blob').each( function()
+	{
+		jsPlumb.setDraggable($(this), true);
+	});
 
 	this.showMessage('editing');
 }
@@ -641,6 +644,11 @@ siggy2.Map.prototype.registerEvents = function()
 
             saveSystemData.push(saveSystem);
         }
+
+		$('.map-system-blob').each( function()
+		{
+			jsPlumb.setDraggable($(this), false);
+		});
 
         $.post($this.baseUrl + 'chainmap/save', {
             systemData: JSON.stringify(saveSystemData)
@@ -1102,7 +1110,10 @@ siggy2.Map.prototype.draw = function()
 			stack: "div"
 		});
 
-		jsPlumb.setDraggable($('.map-system-blob'), false);
+		$('.map-system-blob').each( function()
+		{
+			jsPlumb.setDraggable($(this), false);
+		});
 	}
 }
 
