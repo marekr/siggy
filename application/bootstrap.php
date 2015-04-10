@@ -102,7 +102,7 @@ if (isset($_SERVER['SERVER_PROTOCOL']))
  * saying "Couldn't find constant Kohana::<INVALID_ENV_NAME>"
  */
 
-Kohana::$environment = ($_SERVER['SERVER_NAME'] !== 'localhost') ? Kohana::PRODUCTION : Kohana::DEVELOPMENT;
+Kohana::$environment = ($_SERVER['SERVER_NAME'] !== 'localhost' && $_SERVER['SERVER_NAME'] !== 'dev.siggy.borkedlabs.com') ? Kohana::PRODUCTION : Kohana::DEVELOPMENT;
 
 if( !isset($_SERVER['HTTP_EVE_SOLARSYSTEMID']) && isset($_SERVER['HTTP_EVE_SOLARSYSTEMNAME']) )
 {
@@ -174,7 +174,7 @@ if( Kohana::$environment == Kohana::PRODUCTION)
 }
 else
 {
-	$initOptions['base_url'] = 'http://localhost/evetel';
+	$initOptions['base_url'] = 'http://dev.siggy.borkedlabs.com';
 }
 
 Kohana::init($initOptions);
