@@ -2,8 +2,8 @@
 
 use Pheal\Core\Config;
 
-class PhealHelper
-{
+class PhealHelper {
+	
 	public static function configure()
 	{
 		Config::getInstance()->cache = new \Pheal\Cache\FileStorage(APPPATH.'cache/api/');

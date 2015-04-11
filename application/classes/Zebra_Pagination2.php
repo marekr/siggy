@@ -1,7 +1,6 @@
 <?php
 
-class Zebra_Pagination2
-{
+class Zebra_Pagination2 {
 
     /**
      *  Constructor of the class.
@@ -273,7 +272,7 @@ class Zebra_Pagination2
         $this->_records_per_page = (int)$records_per_page;
 
     }
-    
+
     public function next_page_offset()
     {
 		return ($this->get_page() - 1)*$this->_records_per_page;
@@ -615,7 +614,7 @@ class Zebra_Pagination2
             else parse_str($_SERVER['QUERY_STRING'], $query);
 
             // if not the first page
-            if ($page != 1) 
+            if ($page != 1)
 
                 // add/update the page number
                 $query[$this->_variable_name] = $page;

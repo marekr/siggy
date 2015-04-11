@@ -1,17 +1,17 @@
 <?php
 
-class UserSession
-{
+class UserSession {
+	
 	public $charID = 0;
 	public $charName = "";
 	public $corpID = 0;
 	public $groupID = 0;
-	
+
 	public $trusted = false;
 	public $igb = false;
-	
+
 	private $sessionID = "";
-	
+
 	public $accessData = array();
 	public $sessionData = array();
 
@@ -47,15 +47,15 @@ class UserSession
 				}
 
 			}
-			
+
 			$this->__generateSession();
 			$this->reloadUserSession();
 		}
-		
+
 
 		//attempt to find existing session
 		$this->sessionData = $this->__fetchSessionData();
-		
+
 		if( !isset($this->sessionData['sessionID']) )
 		{
 			$this->sessionID = $this->__generateSessionID();
@@ -72,18 +72,18 @@ class UserSession
 			}
 
 			$this->__generateSession();
-			
-			
+
+
 			$this->reloadUserSession();
 			$this->sessionData = $this->__fetchSessionData();
 		}
-		
+
 		// finally load user ID
 		if( $this->sessionData['userID'] != 0 )
 		{
 			Auth::$user->loadByID( $this->sessionData['userID'] );
 		}
-		
+
 		/* Don't use session data for char name, id and corp id to avoid
 		   IGB header issues */
 		$this->groupID = $this->sessionData['groupID'];
@@ -93,20 +93,20 @@ class UserSession
 			$this->charID = $this->sessionData['char_id'];
 			$this->corpID = $this->sessionData['corp_id'];
 		}
-		
+
 		$this->__updateSession();
-		
+
 		$this->getAccessData();
-		
+
 	}
-	
+
 	private function __fetchSessionData()
-	{			
+	{
 		$sess = DB::query(Database::SELECT, 'SELECT sessionID,userID,groupID,char_id,char_name,corp_id FROM siggysessions WHERE sessionID=:id')
 					->param(':id', $this->sessionID)
 					->execute()
 					->current();
-		
+
 		return $sess;
 	}
 
@@ -139,8 +139,8 @@ class UserSession
 						 );
 
 		DB::update('siggysessions')->set( $update )->where('sessionID', '=',  $this->sessionID)->execute();
-		
-		
+
+
 		$this->charID = $update['char_id'];
 		$this->charName = $update['char_name'];
 		$this->corpID = $update['corp_id'];
@@ -172,16 +172,16 @@ class UserSession
 
 		return TRUE;
 	}
-	
+
 	private function __determineSessionType()
 	{
 		$type = '';
-		
+
 		if( $this->igb )
 		{
 			$type = 'igb';
 		}
-		
+
 		if( Auth::loggedIn() )
 		{
 			if( Auth::$user->isLocal() )
@@ -193,7 +193,7 @@ class UserSession
 				$type = 'sso';
 			}
 		}
-		
+
 		return $type;
 	}
 
@@ -205,13 +205,13 @@ class UserSession
 		}
 
 		$type = $this->__determineSessionType();
-		
+
 		$update = array( 'lastBeep' => time(),
 						 'groupID' => ( isset($this->groupID) ? $this->groupID : 0 ),
 						 'sessionType' => $type,
 						 'chainmap_id' => ( isset($this->accessData['active_chain_map']) ? $this->accessData['active_chain_map'] : 0 )
 						);
-		
+
 		/* Buggy IGB fix, sometimes we could create
 			a session without a proper char or corp ID.
 			In IGB header only mode we need to compensate for this ~issue~ */
@@ -223,8 +223,8 @@ class UserSession
 
 		DB::update('siggysessions')->set( $update )->where('sessionID', '=',  $this->sessionID)->execute();
 	}
-	
-	
+
+
 	public function getAccessData()
 	{
 		/* Result array */
@@ -309,7 +309,7 @@ class UserSession
 		$groupData['access_groups'] = $all_groups;
 
 		$this->accessData = $groupData;
-		
+
 		$this->groupID = $accessGroupID;
 	}
 
@@ -345,7 +345,7 @@ class UserSession
 				}
 			}
 		}
-		
+
 		//otherwise grab the first one we do have access to
 		foreach($chainmaps as $id => $c)
 		{

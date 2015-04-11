@@ -6,8 +6,7 @@ require_once APPPATH.'classes/miscUtils.php';
 require_once APPPATH.'classes/formRenderer.php';
 require_once APPPATH.'classes/auth.php';
 
-class FrontController extends Controller
-{
+class FrontController extends Controller {
 	protected $groupData = array();
 	protected $trusted = false;
 	protected $igb = false;
@@ -112,14 +111,14 @@ class FrontController extends Controller
 						->param(':charID', Auth::$session->charID)
 						->execute()
 						->current();
-						
+
 			if( isset($settings['char_id']) )
 			{
 				if( $settings['language'] != 'en' )
 				{
 					i18n::lang($settings['language']);
 				}
-				
+
 				return $settings;
 			}
         }

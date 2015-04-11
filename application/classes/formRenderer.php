@@ -1,9 +1,6 @@
 <?php
 
-
-class formRenderer
-{
-
+class formRenderer {
 	/**
 	 * Creates a form input. If no type is specified, a "text" type input will
 	 * be returned.
@@ -22,35 +19,35 @@ class formRenderer
 		{
 			$value = Arr::get($_REQUEST, $key, $value);
 		}
-		
+
 		$attributes = array('class' => 'form-control');
-	
+
 		return self::wrap($name, $key, Form::input($key, $value, $attributes), $desc, $errors);
 	}
-	
-	
-	
+
+
+
 	public static function yesNo($name, $key, $value,  $desc = '', $errors = NULL, $useRequestValue = TRUE, $attributes = NULL) {
 		if( $useRequestValue )
 		{
 			$value = Arr::get($_REQUEST, $key, $value);
 		}
-		
+
 		$attributes['class'] = 'radio_buttons';
-		
+
       $result = "<label class='yes radio-inline'>";
-			$result .= Kohana_Form::radio($key, 1, ($value == 1 ? TRUE : FALSE), $attributes);	
+			$result .= Kohana_Form::radio($key, 1, ($value == 1 ? TRUE : FALSE), $attributes);
       $result .= "Yes </label><label class='no radio-inline'>";
-			$result .= Kohana_Form::radio($key, 0, ($value == 0 ? TRUE : FALSE), $attributes);	
+			$result .= Kohana_Form::radio($key, 0, ($value == 0 ? TRUE : FALSE), $attributes);
       $result .= "No </label>";
-      
+
 	  return self::wrap($name, $key, $result, $desc, $errors);
 	}
 
 	public static function password($name, $key, $value, $desc = '', $errors = NULL, array $attributes = NULL)
 	{
 		$attributes = array('class' => 'form-control');
-		
+
 		return self::wrap($name, $key, Form::password($key, $value, $attributes), $desc, $errors);
 	}
 
@@ -59,9 +56,9 @@ class formRenderer
 		if( $useRequestValue )
 		{
 			$value = Arr::get($_REQUEST, $key, $value);
-		}	
+		}
 		$attributes = array('class' => 'form-control');
-		
+
 		return self::wrap($name, $key, Form::textarea($key, $value, $attributes, $double_encode), $desc, $errors);
 	}
 
@@ -70,10 +67,10 @@ class formRenderer
 		if( $useRequestValue )
 		{
 			$selected = Arr::get($_REQUEST, $key, $selected);
-		}	
-	
+		}
+
 		$attributes = array('class' => 'form-control');
-		
+
 		return self::wrap($name, $key, Form::select($key, $options, $selected, $attributes), $desc, $errors);
 	}
 
@@ -82,19 +79,19 @@ class formRenderer
 		if( $useRequestValue )
 		{
 			$checked = Arr::get($_REQUEST, $key, $checked);
-		}	
-        
+		}
+
         //stupid set cause kohana does === compare
-        if( $checked ) 
+        if( $checked )
         {
             $checked = TRUE;
         }
-	
+
 		$attributes = array('class' => 'checkbox');
-		
+
 		return self::wrap($name, $key, Form::checkbox($key, "1", $checked, $attributes), $desc, $errors);
 	}
-	 
+
 	public static function wrap($name, $key, $form_element, $desc = "", $errors = NULL)
 	{
 		$is_error = ($errors != NULL) && (Arr::get($errors, $key) != NULL);

@@ -1,33 +1,33 @@
-<?php 
+<?php
 
-class Date_Pager
-{
+class Date_Pager {
+	
 	private $week = 0;
 	private $month = 0;
 	private $day = 0;
 	private $year = 0;
-	
+
 	private $prevWeek = 0;
 	private $prevMonth = 0;
 	private $prevDay = 0;
 	private $prevYear = 0;
-	
+
 	private $nextWeek = 0;
 	private $nextMonth = 0;
 	private $nextDay = 0;
 	private $nextYear = 0;
-	
+
 	const MODEWEEKLY = 0;
 	const MODEMONTHLY = 1;
 	const MODEDAILY = 2;
 	const MODEYEARLY = 3;
-	
+
 	public $mode = self::MODEWEEKLY;
 
 	public function __construct( $mode, $day, $month, $year, $week )
 	{
 		$this->mode = $mode;
-	
+
 		if( $year != NULL )
 		{
 			$this->year = $year;
@@ -36,7 +36,7 @@ class Date_Pager
 		{
 			$this->year = date("o");
 		}
-		
+
 		if( $this->mode == self::MODEWEEKLY )
 		{
 			if( $week != NULL )
@@ -47,13 +47,13 @@ class Date_Pager
 			{
 				$this->week = date("W");
 			}
-			
+
 			$now = strtotime($this->year."W".$this->week);
-			
+
 			$prevDate = strtotime('-1 week',$now);
 			$this->prevWeek = date("W",$prevDate);
 			$this->prevYear = date("o",$prevDate);
-			
+
 			$nextDate = strtotime('+1 week',$now);
 			$this->nextWeek = date("W",$nextDate);
 			$this->nextYear = date("o",$nextDate);
@@ -68,7 +68,7 @@ class Date_Pager
 			{
 				$this->month = date("m");
 			}
-			
+
 			$this->prevMonth = $this->month - 1;
 			if( $this->prevMonth < 1 )
 			{
@@ -79,7 +79,7 @@ class Date_Pager
 			{
 				$this->prevYear = $this->year;
 			}
-			
+
 			$this->nextMonth = $this->month + 1;
 			if( $this->nextMonth > 12 )
 			{
@@ -114,12 +114,12 @@ class Date_Pager
 			$this->nextYear = $next['year'];
 		}
 	}
-	
+
 	public function getTimestamps()
 	{
 		$start = 0;
 		$end = 0;
-		
+
 		if( $this->mode == self::MODEWEEKLY )
 		{
 			list($start, $end) = $this->weekTimestamps( $this->week, $this->year );
@@ -136,7 +136,7 @@ class Date_Pager
 		{
 			list($start, $end) = $this->dayTimestamps( $this->day, $this->month, $this->year );
 		}
-		
+
 		return array( 'start' => $start, 'end' => $end );
 	}
 
@@ -150,7 +150,7 @@ class Date_Pager
 
 		return array( $prev, $next );
 	}
-	
+
 	private function monthTimestamps($month, $year)
 	{
 		$str = $month .'/1/'.$year;
@@ -159,21 +159,21 @@ class Date_Pager
 		$end = strtotime($str. '+ 1 month - 1 day');
 		return array( $dateStart, $end );
 	}
-	
+
 	private function weekTimestamps($week, $year)
 	{
 		$start = strtotime($year."W".$week);
 		return array( $start, strtotime('+6 days 23:59:59', $start) );
 	}
-	
+
 	private function yearTimestamps($year)
 	{
 		$start = mktime(0,0,0,1,1,$year);
 		$stop = mktime(0,0,0,1,0,$year+1);
-		
+
 		return array( $start, $stop );
-	}	
-	
+	}
+
 	public function getPreviousDate()
 	{
 		if( $this->mode == self::MODEWEEKLY )
@@ -193,7 +193,7 @@ class Date_Pager
 			return array ('text' => $this->getMonthName( $this->prevMonth ) . ' ' . $this->prevDay . ', ' . $this->prevYear, 'urlbit' => 'year/' . $this->prevYear . '/month/' . $this->prevMonth . '/day/' . $this->prevDay);
 		}
 	}
-	
+
 	public function getCurrentDate()
 	{
 		if( $this->mode == self::MODEWEEKLY )
@@ -213,7 +213,7 @@ class Date_Pager
 			return array ('text' => $this->getMonthName( $this->month ) . ' ' . $this->day . ', ' . $this->year, 'urlbit' => 'year/' . $this->year . '/month/' . $this->month . '/day/' . $this->day);
 		}
 	}
-	
+
 	public function getNextDate()
 	{
 		if( $this->mode == self::MODEWEEKLY )
@@ -233,7 +233,7 @@ class Date_Pager
 			return array ('text' => $this->getMonthName( $this->nextMonth ) . ' ' . $this->nextDay . ', ' . $this->nextYear, 'urlbit' => 'year/' . $this->nextYear . '/month/' . $this->nextMonth . '/day/' . $this->nextDay);
 		}
 	}
-	
+
 	public function getMonthName($monthInt)
 	{
 		return date( "F", strtotime( date('d-'.$monthInt.'-y') ) );

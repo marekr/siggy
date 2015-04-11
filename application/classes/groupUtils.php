@@ -1,7 +1,7 @@
 <?php
 
-final class groupUtils
-{
+final class groupUtils {
+	
 	static function log_action( $group_id, $type, $message )
 	{
 		$insert = array( 'groupID' => $group_id,

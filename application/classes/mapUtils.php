@@ -1,7 +1,6 @@
 <?php
 
-final class MapUtils
-{
+final class MapUtils {
 
 	static function generatePossibleSystemLocations($x, $y)
 	{

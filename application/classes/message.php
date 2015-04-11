@@ -1,7 +1,7 @@
 <?php
 
-class Message
-{
+class Message {
+	
 	public static function add($type, $message)
 	{
 		@session_start();
@@ -49,7 +49,7 @@ class Message
 				{
 					$type = 'danger';
 				}
-				
+
 				foreach($messages as $message)
 				{
 					$str .= '<div class="alert alert-'.$type.'">'.$message.'</div>';

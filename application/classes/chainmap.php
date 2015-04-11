@@ -1,7 +1,7 @@
 <?php
 
-class chainmap
-{
+class chainmap {
+	
 	private $id = 0;
 	public $data = array();
 	private $group_id = 0;

@@ -2,8 +2,8 @@
 
 use Pheal\Pheal;
 
-final class miscUtils
-{
+final class miscUtils {
+	
 	const TIER1COST = 33000;
 	const TIER2COST = 29000;
 	const TIER3COST = 25000;

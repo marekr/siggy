@@ -1,7 +1,7 @@
 <?php
 
-class System
-{
+class System {
+	
 	public static function get($id, $groupID)
 	{
 		$systemData = DB::query(Database::SELECT, "SELECT

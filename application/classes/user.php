@@ -2,8 +2,7 @@
 
 use Pheal\Pheal;
 
-class User
-{
+class User {
 	public $data = array();
 	public $apiKeys = array();
 	public $perms = array();
