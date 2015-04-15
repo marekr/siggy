@@ -1,21 +1,18 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-require_once APPPATH.'classes/FrontController.php';
-
-class Controller_Access extends FrontController 
-{
+class Controller_Access extends FrontController {
 	public $groupData = array();
 	public $trusted = false;
-	
+
 	public $template = 'template/main';
-	
+
 	public function action_group_password()
 	{
 		if( $this->igb && !$this->trusted )
 		{
 			$this->siggyredirect('/pages/trust-required');
 		}
-			
+
 		$view = View::factory('access/groupPassword');
 		$view->groupData = Auth::$session->accessData;
 		$view->trusted = $this->trusted;
@@ -23,10 +20,10 @@ class Controller_Access extends FrontController
 		$this->template->siggyMode = false;
 
 		//load header tools
-		$this->template->headerTools = '';		
-		
+		$this->template->headerTools = '';
+
 		$groupID = intval(Auth::$session->groupID);
-		
+
 		if( isset($_POST['group_password']) )
 		{
 			$pass = sha1($_POST['group_password'].Auth::$session->accessData['group_password_salt']);
@@ -50,34 +47,34 @@ class Controller_Access extends FrontController
 				}
 			}
 		}
-		
+
 		$this->template->content = $view;
 	}
-	
+
 	public function action_blacklisted()
 	{
 		if( $this->igb && !$this->trusted )
 		{
 			$this->siggyredirect('/pages/trust-required');
 		}
-		
+
 		//load header tools
-		$this->template->headerTools = '';		
-		
+		$this->template->headerTools = '';
+
 		$view = View::factory('access/blacklisted');
-		
+
 		$view->groupName = Auth::$session->accessData['groupName'];
 		$view->reason = Auth::$session->accessData['character_blacklist'][ Auth::$session->charID ]['reason'];
 		$this->template->content = $view;
 	}
-	
+
 	public function action_switch_membership()
 	{
 		if( $this->igb && !$this->trusted )
 		{
 			$this->siggyredirect('/pages/trust-required');
 		}
-		
+
 		$k = $_GET['k'];
         if( count( Auth::$session->accessData['access_groups'] ) > 1 || count( current(Auth::$session->accessData['access_groups']) > 1) )
         {
@@ -92,14 +89,14 @@ class Controller_Access extends FrontController
         }
 		HTTP::redirect('/');
 	}
-	
+
 	public function before()
 	{
 		if( $this->request->action() == 'group_password' || $this->request->action() == 'blacklisted'  || $this->request->action() == "switch_membership" )
 		{
 			$this->noAutoAuthRedirects = TRUE;
 		}
-	
+
 		parent::before();
 	}
 }

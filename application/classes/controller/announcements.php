@@ -1,10 +1,8 @@
 <?php
 
-require_once APPPATH.'classes/FrontController.php';
 require_once APPPATH.'classes/Zebra_Pagination2.php';
 
-class Controller_Announcements extends FrontController
-{
+class Controller_Announcements extends FrontController {
 	private $auth;
 	private $user;
 	public $template = 'template/public_bootstrap32';

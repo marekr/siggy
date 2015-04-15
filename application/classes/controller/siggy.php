@@ -1,9 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-require_once APPPATH.'classes/FrontController.php';
-
-class Controller_Siggy extends FrontController
-{
+class Controller_Siggy extends FrontController {
 	public $trusted = false;
 
 	public $template = 'template/main';

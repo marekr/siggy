@@ -42,35 +42,35 @@ class Controller_Manage extends Controller
 	static function getAvaliableGroups()
 	{
 		$baseSQL = "SELECT g.groupID, g.groupName FROM groups g";
-		
-			
+
+
 		//if NOT AN ADMIN
 		if( !Auth::$user->isAdmin() )
 		{
-            $baseSQL .= " JOIN users_group_acl a ON (g.groupID = a.group_ID) 
+            $baseSQL .= " JOIN users_group_acl a ON (g.groupID = a.group_ID)
                           WHERE a.user_id = ".intval( Auth::$user->data['id'] );
 		}
-		
+
 		$baseSQL .= " ORDER BY g.groupName ASC";
-		
-		
+
+
 		$groups = DB::query(Database::SELECT, $baseSQL)->execute()->as_array();
-		
+
 		return $groups;
 	}
-    
+
     protected function hasAccess( $action )
     {
         if( Auth::$user->data['admin'] )
         {
             return TRUE;
         }
-        
+
         if( !isset( Auth::$user->perms[ Auth::$user->data['groupID'] ] ) )
         {
             return FALSE;
         }
-		
+
         if( isset( $this->secure_actions[ $action ] ) )
         {
             $perms = Auth::$user->perms[ Auth::$user->data['groupID'] ];
@@ -90,35 +90,35 @@ class Controller_Manage extends Controller
             //unprotected
             return TRUE;
         }
-        
+
         return FALSE;
     }
-	
+
 	public function before()
 	{
 		// Execute parent::before first
 		parent::before();
-		
-        
+
+
         if( !Auth::loggedIn() )
         {
             $this->login_required();
         }
-        
+
         $groupID = Auth::$user->data['groupID'];
         $groups = array_keys(Auth::$user->perms);
-        
+
         if( count($groups) > 0 && !in_array($groupID, $groups) )
         {
 			Auth::$user->data['groupID'] = $groups[0];
 			Auth::$user->save();
         }
-        
+
 		// Check user auth and role
 		$action_name = Request::current()->action();
 
 		if ( ($this->auth_required == 'admin' && Auth::$user->isAdmin() === FALSE )
-			|| ($this->auth_required == 'gadmin' 
+			|| ($this->auth_required == 'gadmin'
             && !$this->hasAccess( $action_name )
             ) )
 		{
@@ -147,7 +147,7 @@ class Controller_Manage extends Controller
 			$this->template->actionName = $this->request->action();
 			// next, it is expected that $this->template->content is set e.g. by rendering a view into it.
 		}
-		
+
 		$this->template->avaliableGroups = self::getAvaliableGroups();
 	}
 
@@ -160,7 +160,7 @@ class Controller_Manage extends Controller
    public function after()
    {
 		if ($this->auto_render === TRUE)
-		{         
+		{
 			$styles = array( 'public/css/manage.css' => 'screen');
 			$scripts = array();
 

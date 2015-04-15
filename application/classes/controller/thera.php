@@ -1,10 +1,8 @@
 <?php
 
 use Carbon\Carbon;
-require_once APPPATH.'classes/FrontController.php';
 
-class Controller_Thera extends FrontController
-{
+class Controller_Thera extends FrontController {
 	protected $output_array = array();
 
 	public function before()
@@ -72,8 +70,8 @@ class Controller_Thera extends FrontController
 							'out_signature' => $rawExit->signatureId,
 							'in_signature' => $rawExit->wormholeDestinationSignatureId
 						);
-						
-						
+
+
 			//skip thera to thera wormholes....yea thanks guys
 			if( (int)$rawExit->wormholeDestinationSolarSystemId == 31000005 )
 				continue;
@@ -173,7 +171,7 @@ class Controller_Thera extends FrontController
 					{
 						$chainmap->add_system_to_map(31000005, $exit['system']['id']);
 					}
-					catch (Exception $e) 
+					catch (Exception $e)
 					{
 					}
 				}

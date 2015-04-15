@@ -1,7 +1,6 @@
 <?php
 
-class Controller_Chainmap extends FrontController
-{
+class Controller_Chainmap extends FrontController {
 	/*
 		Key value array
 	*/

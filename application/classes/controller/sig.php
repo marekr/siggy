@@ -1,9 +1,6 @@
-<?php 
+<?php
 
-require_once APPPATH.'classes/FrontController.php';
-
-class Controller_Sig extends FrontController
-{
+class Controller_Sig extends FrontController {
 
 	public function before()
 	{
@@ -14,7 +11,7 @@ class Controller_Sig extends FrontController
 			$this->chainmap = new Chainmap(Auth::$session->accessData['active_chain_map'], Auth::$session->groupID);
 		}
 	}
-	
+
 	public function action_add()
 	{
 		$this->profiler = NULL;
@@ -71,7 +68,7 @@ class Controller_Sig extends FrontController
 			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
 			exit();
 		}
-		
+
 		//load settings to trigger localization
 		$this->loadSettings();
 
@@ -122,7 +119,7 @@ class Controller_Sig extends FrontController
 						$insert['groupID'] = Auth::$session->groupID;
 						$insert['sigSize'] = "";	//need to return this value for JS to fail gracefully
 						$insert['creator'] = Auth::$session->charName;
-							
+
 						$sigID = DB::insert('systemsigs', array_keys($insert) )->values(array_values($insert))->execute();
 
 						$insert['sigID'] = $sigID[0];
@@ -214,15 +211,15 @@ class Controller_Sig extends FrontController
 		}
 		die();
 	}
-	
+
 	public function action_scanned_systems()
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
 		header('content-type: application/json');
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-		
-		
+
+
 		$data = DB::query(Database::SELECT, "SELECT ss.name as system_name, ss.id,
 													r.regionName as region_name,
 													r.regionID as region_id,
@@ -233,8 +230,8 @@ class Controller_Sig extends FrontController
 													ORDER BY created DESC
 													LIMIT 1)
 													as last_scan
-												FROM solarsystems ss									
-												INNER JOIN regions r ON(r.regionID=ss.region)						
+												FROM solarsystems ss
+												INNER JOIN regions r ON(r.regionID=ss.region)
 												INNER JOIN constellations c ON(c.constellationID=ss.constellation)
 												WHERE ss.id IN (
 													SELECT s.systemID FROM	 systemsigs s
@@ -244,7 +241,7 @@ class Controller_Sig extends FrontController
 								->param(':groupID', Auth::$session->groupID)
 								->execute()
 								->as_array();
-								
+
 		print json_encode($data);
 		exit();
 	}

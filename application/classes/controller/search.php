@@ -1,10 +1,8 @@
 <?php
 
 use Carbon\Carbon;
-require_once APPPATH.'classes/FrontController.php';
 
-class Controller_Search extends FrontController
-{
+class Controller_Search extends FrontController {
 	protected $output_array = array();
 
 	public function before()

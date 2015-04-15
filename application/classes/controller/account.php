@@ -6,10 +6,7 @@ use OAuth\Common\Storage\Session;
 use OAuth\Common\Consumer\Credentials;
 use Pheal\Pheal;
 
-require_once APPPATH.'classes/FrontController.php';
-
-class Controller_Account extends FrontController
-{
+class Controller_Account extends FrontController {
 	private $auth;
 	private $user;
 	public $template = 'template/public_bootstrap32';
@@ -311,7 +308,7 @@ class Controller_Account extends FrontController
 		$entryID = intval($this->request->param('id',0));
 
 
-		$keyData = DB::query(Database::SELECT, "SELECT * FROM apikeys 
+		$keyData = DB::query(Database::SELECT, "SELECT * FROM apikeys
 												WHERE entryID=:entryID AND userID=:userID")
 										->param(':entryID', $entryID)
 										->param(':userID', Auth::$user->data['id'])
