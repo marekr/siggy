@@ -69,7 +69,6 @@ MAP */
 	z-index: 1;
 	border-radius: 8px;
 	-webkit-border-radius:  8px;
-	overflow:hidden;
 	font-size: 11px;
 	box-sizing: content-box;
 	-webkit-box-sizing: content-box;
