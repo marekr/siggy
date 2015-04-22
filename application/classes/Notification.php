@@ -7,9 +7,9 @@ class NotificationTypes {
 
 class Notification {
 
-	public static function latest($cutoff, $groupID, $charID = 0)
+	public static function latest($cutoff, $groupID, $charID = 0, $limit = 5)
 	{
-		$data = DB::query(Database::SELECT, "SELECT * FROM notifications
+		$data = DB::query(Database::SELECT, "SELECT id, data, type FROM notifications
 											WHERE (( group_id=:group AND
 												character_id=0 )
 											OR
@@ -17,15 +17,17 @@ class Notification {
 										 	character_id=:char ))
 											AND created_at > :cutoff
 											ORDER BY created_at DESC
-											LIMIT 10")
+											LIMIT :limit")
 						->param(':cutoff', $cutoff)
 						->param(':group', $groupID)
 						->param(':char', $charID)
+						->param(':limit', $limit)
 						->execute()
 						->as_array();
 
 		foreach($data as &$d)
 		{
+			$d['id'] = (int)$d['id'];
 			$d['data'] = json_decode($d['data']);
 		}
 		return $data;

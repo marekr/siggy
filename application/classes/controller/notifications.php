@@ -13,6 +13,14 @@ class Controller_Notifications extends FrontController {
 					->execute();
 	}
 
+	public function action_all()
+	{
+		$data = Notification::latest(0, Auth::$session->groupID, Auth::$session->charID, 50);
+
+		echo json_encode($data);
+		exit();
+	}
+
 	public function action_create_alert()
 	{
 
