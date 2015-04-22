@@ -147,6 +147,7 @@
     	<?php echo View::factory('siggy/activities/search'); ?>
     	<?php echo View::factory('siggy/activities/thera'); ?>
     	<?php echo View::factory('siggy/activities/scanned_systems'); ?>
+    	<?php echo View::factory('siggy/activities/notifications'); ?>
 		<div id="activity-siggy" class="wrapper">
 			<?php echo $content; ?>
 			<div id="footer-link" style="text-align:center;font-size:0.9em;margin-top:100px;">

@@ -241,8 +241,6 @@ siggy2.Core.prototype.loadActivity = function(activity, args)
 	if( typeof(args) == 'undefined' )
 		args = {};
 
-	console.log(args);
-
 	$this.activities[$this.activity].start( args );
 
 
