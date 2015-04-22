@@ -194,6 +194,7 @@
 						<th>Constellation</th>
 						<th>System</th>
 						<th>Last Scan</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>

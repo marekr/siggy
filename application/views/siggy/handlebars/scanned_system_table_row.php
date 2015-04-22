@@ -1,6 +1,6 @@
 
 	<script id="template-scanned-system-table-row" type="text/x-handlebars-template">?
-		<tr id='scanned-system-{{ system_id }}' data-id='{{ system_id }}' class='exit-row'>
+		<tr id='scanned-system-{{ id }}' data-id='{{ system_id }}' class='exit-row'>
 			<td class='center-text'>
 				<div class="dropdown">
 					 <button class="btn btn-default btn-hidden dropdown-toggle" type="button" id="region-drop" data-toggle="dropdown" aria-expanded="true">
@@ -47,6 +47,9 @@
 			</td>
 			<td class='center-text'>
 				{{ displayTimestamp last_scan }}
+			</td>
+			<td class='center-text'>
+				<button data-id='{{ id }}' class='scanned-system-view btn btn-primary'>View</button>
 			</td>
 		</tr>
 	</script>

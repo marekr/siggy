@@ -219,7 +219,7 @@ siggy2.Core.prototype.registerMainMenu = function()
 	});
 }
 
-siggy2.Core.prototype.loadActivity = function(activity)
+siggy2.Core.prototype.loadActivity = function(activity, args)
 {
 	var $this = this;
 
@@ -237,7 +237,12 @@ siggy2.Core.prototype.loadActivity = function(activity)
 
 	$this.activity = activity;
 
-	$this.activities[$this.activity].start();
+	if( typeof(args) == 'undefined' )
+		args = {};
+
+	console.log(args);
+
+	$this.activities[$this.activity].start( args );
 
 
 	$('.activity-menu-option').show();

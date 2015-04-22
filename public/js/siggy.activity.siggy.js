@@ -185,8 +185,17 @@ siggy2.Activity.siggy.prototype.switchSystem = function(systemID)
 	}
 }
 
-siggy2.Activity.siggy.prototype.start = function()
+siggy2.Activity.siggy.prototype.start = function(args)
 {
+	if( typeof(args) != 'undefined' )
+	{
+		if( typeof(args.systemID) != 'undefined' )
+		{
+			this.freeze();
+			this.switchSystem(args.systemID);
+		}
+	}
+
 	$('#activity-' + this.key).show();
 	this.update();
 	this.map.draw();
