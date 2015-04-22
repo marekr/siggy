@@ -1,6 +1,6 @@
 			<div id="pos-box" class="sub-display-group">
-                <h2 class="hover">POSes<i class="expand-collapse-indicator fa fa-caret-down pull-right fa-lg"></i></h2>
-                <div>
+                <div class='sub-display-group-header hover'>POSes<i class="expand-collapse-indicator fa fa-caret-down pull-right fa-lg"></i></div>
+                <div class='sub-display-group-content'>
                     <a href="#" id='system-intel-add-pos' class="btn btn-default btn-xs">Add POS</a><br /><br />
                     <table id="system-intel-poses" cellspacing="1" class='siggy-table bordered-wrap'>
 						<thead>

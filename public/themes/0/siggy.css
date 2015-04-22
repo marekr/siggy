@@ -4,10 +4,6 @@
 	box-sizing: border-box;
 }
 
-h1,h2,h3,h4,h5,h6
-{
-	font-weight:bold;
-}
 
 body
 {
@@ -80,7 +76,7 @@ select.siggy-input
 }
 
 table.siggy-table th,
-h2.header{
+div.header{
 	background: @header-background;
 	border: 1px solid #000000;
 	color: #DADADA;
@@ -357,7 +353,7 @@ label.no {
 
 
 /*sub display groups*/
-.sub-display-group h2
+.sub-display-group div.sub-display-group-header
 {
     background: @header-background;
     padding:6px;
@@ -366,7 +362,7 @@ label.no {
     text-align:left;
 }
 
-.sub-display-group h2.hover:hover
+.sub-display-group div.sub-display-group-header.hover:hover
 {
 	background-color: #A27C2B;
 	cursor:pointer;
@@ -383,18 +379,18 @@ label.no {
     padding: 10px;
 }
 
-#sig-add-box h2
+#sig-add-box div.sub-display-group-header
 {
 	line-height: 22px;
 	vertical-align:top;
 }
 
 /* Alignment css for "Signature Adder" text and the mass add input box */
-#sig-add-box h2 span
+#sig-add-box div.sub-display-group-header span
 {
 }
 
-#sig-add-box h2 textarea
+#sig-add-box div.sub-display-group-header textarea
 {
 	width: 400px;
 	margin-left:10px;
@@ -559,9 +555,6 @@ textarea:focus
 	border-bottom: 1px dashed #999;
 }
 
-
-
-
 #sigs
 {
     background-color: @primary-background;
@@ -574,7 +567,7 @@ textarea:focus
     font-weight: bold;
 }
 
-#system-advanced h2
+#system-advanced div
 {
     float:left;
     vertical-align:middle;
@@ -843,10 +836,6 @@ div.connection-editor-group > div
 .search-result h3 {
 	font-weight: bold;
 	font-size: 14px;
-}
-
-#activity-search h2 {
-	font-size:14px;
 }
 
 .highlight {

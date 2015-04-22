@@ -1,6 +1,6 @@
 	<?php if( $group['iskBalance'] < 0 ): ?>
 	<div class="box" style="background-color:rgb(179, 52, 52)">
-		<h2>Balance warning</h2>
+		<div>Balance warning</div>
 		<p>
 			The balance for this siggy group has gone negative. Payment must be made according to the information in the management panel or service may be discontinued at any time. Contact <b>Jack Tronic</b> if assitance is needed.
 		</p>
@@ -35,12 +35,12 @@
 	<br />
     <div id="main-body" class="bordered-wrap">
         <div id="system-advanced">
-            <h2>
+            <div>
                 <span id="system-name"><?php echo !empty($systemName) ? $systemName : 'System'; ?></span>
                 <a href='#' target='_blank' class='site-icon site-dotlan click-me'><img src='<?php echo URL::base(TRUE, TRUE);?>public/images/dotlan.png' width='16' height='16'/></a>
                 <a href='#' target='_blank' class='site-icon site-wormholes click-me'><img src='<?php echo URL::base(TRUE, TRUE);?>public/images/wormholes.png' width='16' height='16'/></a>
                 <a href='#' target='_blank' class='site-icon site-evekill click-me'><img src='<?php echo URL::base(TRUE, TRUE);?>public/images/evekill.png' width='16' height='16'/></a>
-            </h2>
+            </div>
             <ul class='option-bar tabs'>
                 <li class="active"><a href='#system-info'>Extra</a></li>
                 <li><a href='#sigs'>Scan</a></li>
@@ -79,8 +79,8 @@
             </table>
             <!-- carebear box -->
             <div id="carebear-box" class="sub-display-group">
-                <h2>Carebearing</h2>
-                <div>
+                <div class='sub-display-group-header'>Carebearing</div>
+                <div class='sub-display-group-content'>
                     <div id="bear-class-links">
                         <a href='#' id='bear-C1'>C1</a> |
                         <a href='#' id='bear-C2'>C2</a> |
@@ -235,8 +235,8 @@
             </table>
             <!-- start stats -->
             <div id='system-stats' class="sub-display-group">
-                <h2 class="hover">Statistics<i class="expand-collapse-indicator fa fa-caret-down pull-right fa-lg"></i></h2>
-                <div>
+                <div class='sub-display-group-header hover'>Statistics<i class="expand-collapse-indicator fa fa-caret-down pull-right fa-lg"></i></div>
+                <div class='sub-display-group-content'>
                     <div class="system-stats-graph">
                         <h4>Jumps</h4>
                         <div id='jumps'></div>
@@ -260,12 +260,12 @@
             </div>
             <!-- end stats -->
             <div id="sig-add-box" class="sub-display-group">
-                <h2 class="hover">
+                <div class='sub-display-group-header'>
 					<span>Signature Adder</span>
 					<textarea name='mass_sigs' placeholder=" Paste scan results here + Press Enter " type='text' class="siggy-input"></textarea>
 					<i class="expand-collapse-indicator fa fa-caret-down pull-right fa-lg"></i>
-				</h2>
-                <div>
+				</div>
+                <div class='sub-display-group-content'>
                     <a href="#" id="mass-add-sigs" class="btn btn-xs btn-default">Mass Sig Reader</a>
                     <div class="clear"></div>
                     <form>
@@ -317,10 +317,10 @@
                 </div>
             </div>
 			<div class="sub-display-group">
-				<h2>
+				<div class='sub-display-group-header'>
 					<span id='number-sigs'>0</span> <?php echo __('signature(s) shown'); ?>
 					<label style="float:right"><input id="checkbox-show-anomalies" type="checkbox" value="1" checked /> <?php echo __('Show anomalies'); ?> (<?php echo __('Combat Sites'); ?>)</label>
-				</h2>
+				</div>
 			</div>
             <table id="sig-table" cellspacing="1" class="siggy-table siggy-table-striped">
                 <thead>

@@ -13,7 +13,9 @@ siggy2.Activity.Notifications = function(core)
 	this._updateTimeout = null;
 	this.core = core;
 
-	
+	this.historyTable = $('#notifications-history-table tbody');
+
+
 }
 
 siggy2.Activity.Notifications.prototype.start = function()

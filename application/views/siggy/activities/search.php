@@ -7,7 +7,7 @@
 		</span>
 	</div>
 	<div class="clearfix"></div>
-	<h2>Results</h2>
+	<h3>Results</h3>
 	<div id="activity-search-results">
 	</div>
 </div>
