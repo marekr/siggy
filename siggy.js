@@ -146,6 +146,9 @@ siggy2.Core.prototype.initialize = function ()
 	this.registerMainMenu();
 
 	this.updateNow();
+
+
+	this.loadActivity('notifications');
 }
 
 siggy2.Core.prototype.update = function()
@@ -269,8 +272,8 @@ siggy2.Core.prototype.ecSetCollaspedArrow = function(ele)
 siggy2.Core.prototype.setupCollaspible = function(baseID, displayState, onShow)
 {
 	var $this = this;
-	var content = $(baseID + ' > div');
-	var h2 = $(baseID +' h2');
+	var content = $(baseID + ' div.sub-display-group-content');
+	var h2 = $(baseID +' div.sub-display-group-header');
 
 	if( $this.displayStates[displayState] )
 	{
