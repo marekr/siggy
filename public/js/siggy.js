@@ -93,6 +93,8 @@ siggy2.Core = function( options )
 	this.hotkeyhelper.siggyMain = this;
 	this.hotkeyhelper.initialize();
 
+	this.notifications = new siggy2.Notifications(this);
+
 
 	this.activity = '';
 	this.activities = { thera: new siggy2.Activity.Thera(this),
@@ -150,7 +152,8 @@ siggy2.Core.prototype.update = function()
 	var $this = this;
 	var request = {
 		last_location_id: $this.location.id,
-		group_cache_time: $this.groupCacheTime
+		group_cache_time: $this.groupCacheTime,
+		last_notification_read: $this.notifications.lastRead
 	};
 
 	$.ajax({
@@ -195,6 +198,8 @@ siggy2.Core.prototype.update = function()
 			{
 				$this.globalnotes.update(data);
 			}
+
+			$this.notifications.update(data.notifications);
 
 			$this.groupCacheTime = data.group_cache_time;
 

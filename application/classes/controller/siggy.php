@@ -104,7 +104,8 @@ class Controller_Siggy extends FrontController {
 
             if( count( $themes ) > 0 )
             {
-                DB::query(Database::INSERT, 'REPLACE INTO character_settings (`char_id`, `theme_id`,`combine_scan_intel`,`zoom`,`language`) VALUES(:charID, :themeID, :combineScanIntel, :zoom,:language)')
+                DB::query(Database::INSERT, 'REPLACE INTO character_settings (`char_id`, `theme_id`,`combine_scan_intel`,`zoom`,`language`)
+				VALUES(:charID, :themeID, :combineScanIntel, :zoom,:language)')
 							->param(':charID', $charID )
 							->param(':themeID', $themeID)
 							->param(':zoom', $zoom)
@@ -552,6 +553,18 @@ class Controller_Siggy extends FrontController {
 		}
 
 		$update['group_cache_time'] = (int) Auth::$session->accessData['cache_time'];
+
+
+
+		$returnLastRead = $lastRead = isset($_POST['last_notification_read']) ? (int) $_POST['last_notification_read']  : 0;
+		if( $lastRead == 0 )
+		{
+			$returnLastRead = Notification::lastReadTimestamp( Auth::$session->groupID, Auth::$session->charID );
+		}
+
+		$notifications = Notification::latest($lastRead, Auth::$session->groupID, Auth::$session->charID);
+		$update['notifications'] = array('last_read' => $returnLastRead, 'items' => $notifications);
+
 
         echo json_encode( $update );
 
