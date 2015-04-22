@@ -100,7 +100,8 @@ siggy2.Core = function( options )
 	this.activities = { thera: new siggy2.Activity.Thera(this),
 	  					search: new siggy2.Activity.Search(this),
 						siggy: new siggy2.Activity.siggy(this),
-						scannedsystems: new siggy2.Activity.ScannedSystems(this)
+						scannedsystems: new siggy2.Activity.ScannedSystems(this),
+						notifications: new siggy2.Activity.Notifications(this)
 					};
 }
 
