@@ -27,6 +27,10 @@ siggy2.Notifications = function(core)
 		});
 	});
 
+	$('.notification-dropdown-view-link').click( function() {
+		$this.core.loadActivity('notifications');
+	})
+
 }
 
 siggy2.Notifications.prototype.setNotificationCount = function(counter)
