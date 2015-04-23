@@ -67,7 +67,7 @@ siggy2.Notifications.prototype.update = function(data)
 		{
 			var n = data.items[i];
 			var ele = $('<li>');
-			ele.html( this.getNotificationString(n.type, n.data) );
+			ele.html( siggy2.Notifications.getNotificationString(n.type, n.data) );
 			ele.addClass('notification-dropdown-item');
 
 			$('#notifications-menu').prepend( ele );
@@ -82,7 +82,7 @@ siggy2.Notifications.prototype.update = function(data)
 }
 
 
-siggy2.Notifications.prototype.getNotificationString = function(type, data)
+siggy2.Notifications.getNotificationString = function(type, data)
 {
 	if( type == 'system_mapped' )
 	{

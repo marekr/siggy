@@ -48,6 +48,10 @@ siggy2.Helpers.setupHandlebars = function()
 		return number_format(number, decimals, dec_point, thousands_sep)
 	});
 
+	Handlebars.registerHelper('notificationToString', function(type, data) {
+		return siggy2.Notifications.getNotificationString(type, data);
+	});
+
 	Handlebars.registerHelper('notEqual', function(lvalue, rvalue, options) {
 		if (arguments.length < 3)
 			throw new Error("Handlebars Helper not equal needs 2 parameters");
