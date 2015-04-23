@@ -1,17 +1,17 @@
 	<script id="template-sig-table-row" type="text/x-handlebars-template">
 		<tr id='sig-{{ sigID }}' class='type-{{ type }} sig' data-sig-id='{{ sigID }}'>
-			<td class='center-text edit'>
+			<td class='text-center edit'>
 				<i class='icon icon-pencil icon-large'></i>
 			</td>
-			<td class='center-text sig'>
+			<td class='text-center sig'>
 				{{ sig }}
 			</td>
 			{{#if showSigSizeCol}}
-			<td class='center-text size'>
+			<td class='text-center size'>
 				{{ sigSize }}
 			</td>
 			{{/if}}
-			<td class='center-text type'>
+			<td class='text-center type'>
 				<p>
 					{{ sigTypeToText type }}
 				</p>
@@ -22,7 +22,7 @@
 					{{ description }}
 				</p>
 			</td>
-			<td class='center-text moreinfo'>
+			<td class='text-center moreinfo'>
 				<i class='icon icon-info-sign icon-large icon-yellow'></i>
 				<div id='creation-info-{{ sigID }}' class='tooltip'>
 					<b>Added by:</b> {{ creator }}
@@ -32,14 +32,14 @@
 					{{/if}}
 				</div>
 			</td>
-			<td class='center-text age'>
+			<td class='text-center age'>
 				<span class='age-clock'>--</span>
 				<p class='eol-clock'></p>
 				<div id='age-timestamp-{{ sigID }}' class='tooltip'>
 					{{ displayTimestamp created }}
 				</div>
 			</td>
-			<td class='center-text remove'>
+			<td class='text-center remove'>
 				<i class='icon icon-remove-sign icon-large icon-red'></i>
 			</td>
 		</tr>

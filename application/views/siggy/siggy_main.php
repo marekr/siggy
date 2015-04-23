@@ -353,7 +353,7 @@
             <p>This is for copy pasted signatures from your scanner window. Simply select a signature, hit CTRL+A, then CTRL-C, then paste into the box below. This tool can add AND update signatures.</p>
             <form>
                 <textarea name="blob" rows="12" style="width:100%;font-size:11px;"></textarea>
-                <div class="center-text form-actions">
+                <div class="text-center form-actions">
                     <button name='add' class="btn btn-primary" type="submit">Submit</button>
                     <button name='cancel' type="button" class="btn btn-default">Cancel</button>
                 </div>

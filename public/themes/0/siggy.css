@@ -55,24 +55,9 @@ select.siggy-input
 	padding: 70px 20px 0 20px;
 }
 
-.center-text
-{
-	text-align:center;
-}
-
-.text-left
-{
-    text-align:left;
-}
-
 .bordered-wrap
 {
     border: 3px solid #090909;
-}
-
-.clear
-{
-  clear:both;
 }
 
 table.siggy-table th,

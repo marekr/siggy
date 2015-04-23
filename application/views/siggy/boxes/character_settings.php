@@ -15,14 +15,14 @@
             <br />
 			<br />
 			<label>
-				EVE Client Language 
+				EVE Client Language
 				<select name="language" class="siggy-input">
 					<option value="en">English</option>
 					<option value="de">Deutsch</option>
 				</select>
 			</label>
-            
-            <div class="center-text form-actions">
+
+            <div class="text-center form-actions">
                 <button id="settings-save" type="submit" class="btn btn-primary btn-xs">Save</button>
                 <button id='settings-cancel' type="reset" class="btn btn-default btn-xs">Cancel</button><br />
             </div>

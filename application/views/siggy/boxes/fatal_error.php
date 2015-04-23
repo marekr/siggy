@@ -4,7 +4,7 @@
             <br />
             <p id="fatal-error-message"></p>
             <br />
-            <p style='text-align:center'>
+            <p class='text-center'>
                 <button id="fatal-error-refresh" class="btn btn-default">Refresh</button>
             </p>
         </div>

@@ -1,7 +1,7 @@
 
 	<script id="template-thera-table-row" type="text/x-handlebars-template">?
 		<tr id='thera-sig-{{ id }}' data-id='{{ id }}' class='exit-row'>
-			<td class='center-text'>
+			<td class='text-center'>
 
 				<div class="dropdown">
 					 <button class="btn btn-default btn-hidden dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
@@ -12,7 +12,7 @@
 					</ul>
 				</div>
 			</td>
-			<td class='center-text'>
+			<td class='text-center'>
 				<div class="dropdown">
 					<button class="btn btn-default btn-hidden dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
 						{{ system.name }}
@@ -36,23 +36,23 @@
 					</ul>
 				</div>
 			</td>
-			<td class='center-text'>
+			<td class='text-center'>
 				{{ system.sec }}
 			</td>
-			<td class='wormhole-type center-text'>
+			<td class='wormhole-type text-center'>
 				{{ wormhole_name }}
 			</td>
-			<td class='center-text'>
+			<td class='text-center'>
 				{{ out_signature }}
 			</td>
-			<td class='center-text'>
+			<td class='text-center'>
 				{{ in_signature }}
 			</td>
-			<td class='center-text age'>
+			<td class='text-center age'>
 				<span class='age-clock'>--</span>
 				<p class='eol-clock'></p>
 			</td>
-			<td class='center-text jumps'>
+			<td class='text-center jumps'>
 				{{ jumps }}
 			</td>
 		</tr>

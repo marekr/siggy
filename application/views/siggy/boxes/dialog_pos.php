@@ -50,7 +50,7 @@
 				Notes
 				<textarea name="pos_notes" rows="6" style="width:100%;font-size:11px;"></textarea>
 			</label>
-			<div class="center-text form-actions">
+			<div class="text-center form-actions">
 				<button name='submit' class="btn btn-primary btn-xs" type="submit">Submit</button>
 				<button name='cancel' type="button" class="btn btn-default btn-xs">Cancel</button>
 			</div>

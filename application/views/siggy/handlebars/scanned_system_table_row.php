@@ -1,7 +1,7 @@
 
 	<script id="template-scanned-system-table-row" type="text/x-handlebars-template">?
 		<tr id='scanned-system-{{ id }}' data-id='{{ system_id }}' class='exit-row'>
-			<td class='center-text'>
+			<td class='text-center'>
 				<div class="dropdown">
 					 <button class="btn btn-default btn-hidden dropdown-toggle" type="button" id="region-drop" data-toggle="dropdown" aria-expanded="true">
 						{{ region_name }}
@@ -11,7 +11,7 @@
 					</ul>
 				</div>
 			</td>
-			<td class='center-text'>
+			<td class='text-center'>
 				<div class="dropdown">
 					 <button class="btn btn-default btn-hidden dropdown-toggle" type="button" id="constellation-drop" data-toggle="dropdown" aria-expanded="true">
 						{{ constellation_name }}
@@ -21,7 +21,7 @@
 					</ul>
 				</div>
 			</td>
-			<td class='center-text'>
+			<td class='text-center'>
 				<div class="dropdown">
 					<button class="btn btn-default btn-hidden dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
 						{{ system_name }}
@@ -45,10 +45,10 @@
 					</ul>
 				</div>
 			</td>
-			<td class='center-text'>
+			<td class='text-center'>
 				{{ displayTimestamp last_scan }}
 			</td>
-			<td class='center-text'>
+			<td class='text-center'>
 				<button data-id='{{ id }}' class='scanned-system-view btn btn-primary'>View</button>
 			</td>
 		</tr>

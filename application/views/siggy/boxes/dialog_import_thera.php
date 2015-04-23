@@ -13,7 +13,7 @@
 				</select>
 			</div>
 
-			<div class="center-text form-actions">
+			<div class="text-center form-actions">
 				<button type="submit" class="btn btn-primary btn-xs">Import</button>
 				<button type="reset" class="btn btn-default btn-xs">Cancel</button>
 			</div>

@@ -22,7 +22,7 @@
 						<li><b>No exits found</b></li>
 					</ul>
 				</div>
-                <div class="center-text form-actions">
+                <div class="text-center form-actions">
                     <button name='cancel' type="button" class="btn btn-default btn-xs">Close</button>
                 </div>
             </form>

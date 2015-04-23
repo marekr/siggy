@@ -156,3 +156,10 @@ mark,
 .text-capitalize {
   text-transform: capitalize;
 }
+
+
+
+.clear
+{
+	clear:both;
+}

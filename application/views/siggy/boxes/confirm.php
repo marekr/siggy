@@ -2,7 +2,7 @@
         <h3><i class="fa fa-question-circle"></i> Confirm action!</h3>
         <div>
             <p id="confirm-dialog-message"></p>
-			<p class="center-text">
+			<p class="text-center">
 				<button id="confirm-dialog-yes">Yes</button>
 				<button id="confirm-dialog-no">No</button>
 			</p>

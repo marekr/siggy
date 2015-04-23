@@ -11,7 +11,7 @@
 				Scan
 				<textarea name="blob" rows="12" style="width:100%;font-size:11px;"></textarea>
 			</label>
-			<div class="center-text form-actions">
+			<div class="text-center form-actions">
 				<button name='submit' class="btn btn-primary" type="submit">Submit</button>
 				<button name='cancel' type="button" class="btn btn-default">Cancel</button>
 			</div>
