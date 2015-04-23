@@ -9,7 +9,7 @@ class Notification {
 
 	public static function latest($cutoff, $groupID, $charID = 0, $limit = 5)
 	{
-		$data = DB::query(Database::SELECT, "SELECT id, data, type FROM notifications
+		$data = DB::query(Database::SELECT, "SELECT id, data, type, created_at FROM notifications
 											WHERE (( group_id=:group AND
 												character_id=0 )
 											OR
@@ -28,6 +28,7 @@ class Notification {
 		foreach($data as &$d)
 		{
 			$d['id'] = (int)$d['id'];
+			$d['created_at'] = (int)$d['created_at'];
 			$d['data'] = json_decode($d['data']);
 		}
 		return $data;

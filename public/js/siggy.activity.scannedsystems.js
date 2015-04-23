@@ -78,14 +78,10 @@ siggy2.Activity.ScannedSystems.prototype.updateTable = function( systems )
 
 	$('#scanned-systems-table tbody').empty();
 
-
 	for( var i in systems )
 	{
 		var system = systems[i];
-
-
 		var row = this.templateRow( system );
-
 
 		this.table.append(row);
 	}
