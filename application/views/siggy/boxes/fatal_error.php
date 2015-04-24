@@ -1,6 +1,6 @@
     <div id="fatal-error" class="box" style="display:none;">
-        <h3><i class="fa fa-exclamation-circle"></i> Fatal error has ocurred</h3>
-        <div>
+        <div class='box-header'><i class="fa fa-exclamation-circle"></i> Fatal error has ocurred</div>
+        <div class='box-content'>
             <br />
             <p id="fatal-error-message"></p>
             <br />

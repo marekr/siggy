@@ -1,9 +1,9 @@
 	<?php if( $group['iskBalance'] < 0 ): ?>
 	<div class="box" style="background-color:rgb(179, 52, 52)">
-		<div>Balance warning</div>
-		<p>
+		<div class='box-header'>Balance warning</div>
+		<div class='box-content'>
 			The balance for this siggy group has gone negative. Payment must be made according to the information in the management panel or service may be discontinued at any time. Contact <b>Jack Tronic</b> if assitance is needed.
-		</p>
+		</div>
 	</div>
 	<br />
 	<br />
@@ -12,8 +12,8 @@
 	<?php
 	if(isset($_SERVER['HTTP_X_SSL_PROTOCOL']) && trim($_SERVER['HTTP_X_SSL_PROTOCOL']) == 'SSLv3' ): ?>
 	<div class="box" style="width:100%;background-color:rgb(179, 52, 52)">
-		<h3>Security warning!</h3>
-		<div>
+		<div class='box-header'>Security warning!</div>
+		<div class='box-content'>
 			You connected to siggy using SSLv3! This protocol is now insecure and being removed from browsers in the future. TLS is now the defacto standard for HTTPS connections. <br />
 			If you are getting this message in the EVE IGB or Internet Explorer, go to this guide on how to remove this message: <a href="http://wiki.siggy.borkedlabs.com/support:connection_reset">http://wiki.siggy.borkedlabs.com/support:connection_reset</a><br />
 			If you were getting a -101 connection reset error in the IGB, <b>THIS APPLIES TO YOU.</b> SSLv3 was re-enabled on the server temporarily
@@ -24,8 +24,8 @@
 	<?php endif; ?>
 
 	<div class="box" style="width:100%;display:none;" id="no-chain-map-warning">
-		<h3>No chain-maps configured</h3>
-		<div>
+		<div class='box-header'>No chain-maps configured</div>
+		<div class='box-content'>
 			Your group administrators have not configured chain-maps for your corporation or character. Please contact them to fix this.
 		</div>
 	</div>
@@ -348,8 +348,8 @@
     <br />
 
     <div id="mass-add-sig-box" class="box">
-        <h3>Mass Sig Reader</h3>
-        <div>
+		<div class='box-header'>Mass Sig Reader</div>
+		<div class='box-content'>
             <p>This is for copy pasted signatures from your scanner window. Simply select a signature, hit CTRL+A, then CTRL-C, then paste into the box below. This tool can add AND update signatures.</p>
             <form>
                 <textarea name="blob" rows="12" style="width:100%;font-size:11px;"></textarea>

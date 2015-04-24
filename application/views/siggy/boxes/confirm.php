@@ -1,6 +1,6 @@
     <div id="confirm-dialog" class="box" style="display:none;">
-        <h3><i class="fa fa-question-circle"></i> Confirm action!</h3>
-        <div>
+        <div class='box-header'><i class="fa fa-question-circle"></i> Confirm action!</div>
+    	<div class='box-content'>
             <p id="confirm-dialog-message"></p>
 			<p class="text-center">
 				<button id="confirm-dialog-yes">Yes</button>

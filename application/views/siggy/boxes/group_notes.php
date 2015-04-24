@@ -1,7 +1,7 @@
 
 <div id="global-notes" class="box" style="display:none;">
-	<h3>Notes <a href="#" id="global-notes-edit" class="btn btn-xs btn-primary">edit</a></h3>
-	<div>
+	<div class='box-header'>Notes <a href="#" id="global-notes-edit" class="btn btn-xs btn-primary">edit</a></div>
+	<div class='box-content'>
 		<textarea style="width:100%;height:100px;display:none;" id="global-notes-edit-box">
 		</textarea>
 		<div id="global-notes-content">No notes loaded.</div>

@@ -1,6 +1,6 @@
 <div id="settings-dialog" class="box" style="display:none;">
-	<h3><i class="fa fa-gear"></i> Settings</h3>
-	<div>
+	<div class='box-header'><i class="fa fa-gear"></i> Settings</div>
+	<div class='box-content'>
         <form action="#" id="settings-form" method="post">
             <label>Theme
                 <select name="theme_id" class="siggy-input">

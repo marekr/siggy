@@ -1,6 +1,6 @@
     <div id="hotkey-helper" class="box" style="display:none;">
-        <h3><i class="fa fa-keyboard-o "></i> Keyboard Shortcuts</h3>
-        <div>
+        <div class='box-header'><i class="fa fa-keyboard-o "></i> Keyboard Shortcuts</div>
+        <div class='box-content'>
 			<table class="siggy-table">
 				<tbody id="hotkey-list">
 				</tbody>

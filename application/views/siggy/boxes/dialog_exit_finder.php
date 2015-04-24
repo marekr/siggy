@@ -1,7 +1,6 @@
-
     <div id="exit-finder" class="box" style="display:none;">
-        <h3>Exit Finder</h3>
-        <div>
+        <div class='box-header'>Exit Finder</div>
+        <div class='box-content'>
             <p>Find's the nearest exit to the given system or your location.</p>
             <form>
 				<label>

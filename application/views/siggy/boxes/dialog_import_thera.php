@@ -1,6 +1,6 @@
 <div id="dialog-import-thera" class="box" style="display:none;">
-	<h3><i class="fa fa-arrow-circle-down"></i> Import Thera exits to chain map</h3>
-	<div>
+	<div class='box-header'><i class="fa fa-arrow-circle-down"></i> Import Thera exits to chain map</div>
+	<div class='box-content'>
 		<form action="#" id="settings-form" method="post">
 			<label> Delete existing connections to Thera on your map?
 				<input type="checkbox" name="clean" value="1" checked="checked" />

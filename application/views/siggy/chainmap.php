@@ -88,7 +88,7 @@
 			<?php endif; ?>
 			<div id="connection-editor" class="box-tab">
 				<div id="connection-editor-add" class="connection-editor-group">
-					<h3><i class="fa fa-link"></i> Create a connection</h3>
+					<div class='box-header'><i class="fa fa-link"></i> Create a connection</div>
 					<div>
 						<div style="float:left;text-align:right;">
 							From <input type='text' name='from-sys' /><br />
@@ -117,7 +117,7 @@
 					</div>
 				</div>
 				<div id="connection-editor-edit" class='connection-editor-group center-text'>
-					<h3 class="text-left"><i class="fa fa-link"></i> Editing Connection</h3>
+					<div class="box-header text-left"><i class="fa fa-link"></i> Editing Connection</div>
 					<div>
 						<p>
 							<span id="connection-editor-from"></span> to <span id="connection-editor-to"></span>
@@ -126,7 +126,7 @@
 					</div>
 				</div>
 				<div id="connection-editor-options-wh" class="connection-editor-group">
-					<h3>Options</h3>
+					<div class='box-header'>Options</div>
 					<ul class="errors">
 					</ul>
 					<div>
@@ -165,8 +165,8 @@
 		</div>
 
 		<div id="system-options-popup" class="box">
-			<h3>Editing System: <span id="editingSystemName">System</span></h3>
-			<div id="system-editor">
+			<div class='box-header'>Editing System: <span id="editingSystemName">System</span></div>
+			<div class='box-content' id="system-editor">
 				<ul class="errors">
 				</ul>
 				<b>System label/display name</b>

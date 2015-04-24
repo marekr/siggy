@@ -1,7 +1,7 @@
 <!-- mass add box start -->
 <div id="pos-form" class="box" style="display:none;">
-	<h3>Add POS</h3>
-	<div>
+	<div class='box-header'>Add POS</div>
+	<div class='box-content'>
 		<form>
 			<div>
 				Location(Planet - Moon)<br />
