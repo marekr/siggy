@@ -1,7 +1,15 @@
 
 <div id="activity-notifications" class="wrapper" style="display:none">
 	<p>
-		Hello
+		<div class="dropdown pull-right">
+			<button id="activity-notification-add" class="btn btn-primary" type="button" data-toggle="dropdown" aria-expanded="true">
+				New Notifier <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+				<li role="presentation"><a role="menuitem" id='notifier_add_system_mapped' tabindex="-1" href="#">System mapped</a></li>
+				<li role="presentation"><a role="menuitem" id='notifier_add_resident_found'tabindex="-1" href="#">Resident found</a></li>
+			</ul>
+		</div>
 	</p>
 	<h4>Settings</h4>
 	<table class="siggy-table siggy-table-striped table-with-dropdowns" id="notifications-settings-table">

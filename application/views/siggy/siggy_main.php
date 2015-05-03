@@ -370,6 +370,7 @@
 	<?php echo View::factory('siggy/boxes/dialog_exit_finder'); ?>
 	<?php echo View::factory('siggy/boxes/dialog_pos'); ?>
 	<?php echo View::factory('siggy/boxes/dialog_dscan'); ?>
+	<?php echo View::factory('siggy/boxes/dialog_notifier'); ?>
 	<?php echo View::factory('siggy/handlebars/sig_table_row'); ?>
 	<?php echo View::factory('siggy/handlebars/effect_tooltip'); ?>
 	<?php echo View::factory('siggy/handlebars/statics_tooltip'); ?>
@@ -380,6 +381,8 @@
 	<?php echo View::factory('siggy/handlebars/scanned_system_table_row'); ?>
 	<?php echo View::factory('siggy/handlebars/notification_history_table_row'); ?>
 	<?php echo View::factory('siggy/handlebars/notification_setting_table_row'); ?>
+	<?php echo View::factory('siggy/handlebars/notifier_form_mapped_system'); ?>
+	<?php echo View::factory('siggy/handlebars/notifier_form_resident_found'); ?>
 
     <script type='text/javascript'>
         $(document).ready(function() {

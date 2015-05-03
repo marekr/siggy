@@ -4,3 +4,5 @@
 /junk
 /.htaccess
 /application/vendor
+*.compiled.js
+*.compiled.js.map

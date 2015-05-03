@@ -25,6 +25,8 @@ siggy2.Helpers.displayTimeStamp = function(unixTimestamp)
 
 siggy2.Helpers.setupHandlebars = function()
 {
+	HandlebarsFormHelpers.register(Handlebars);
+	
 	Handlebars.registerHelper('_', function(str) {
 		return _(str);
 	});

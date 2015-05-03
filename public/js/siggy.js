@@ -364,7 +364,7 @@ siggy2.Core.prototype.setupFatalErrorHandler = function()
 			that.fatalError = true;
 		}
 	} );
-
+	
 	$(document).ajaxSuccess( function() {
 		that.ajaxErrors = 0;
 	} );
