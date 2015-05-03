@@ -18,21 +18,80 @@ siggy2.Activity.Notifications = function(core)
 
 
 	this.templateHistoryRow = Handlebars.compile( $("#template-notification-history-table-row").html() );
+	this.notifierFormSystemMapped = Handlebars.compile( $("#template-notification-mapped-system").html() );
+	this.notifierFormResidentFound = Handlebars.compile( $("#template-notification-resident-found").html() );
 
+	$('#notifier_add_system_mapped').click( function()
+	{
+		$this.openNotifierForm('system_mapped')
+	} );
 
+	$('#notifier_add_resident_found').click( function()
+	{
+		$this.openNotifierForm('resident_found')
+	} );
 }
 
 siggy2.Activity.Notifications.prototype.start = function()
 {
 	$('#activity-' + this.key).show();
 	this.update();
-
 }
 
 siggy2.Activity.Notifications.prototype.stop = function()
 {
 	clearTimeout(this._updateTimeout);
 	$('#activity-' + this.key).hide();
+}
+
+siggy2.Activity.Notifications.prototype.getNotifierTitle = function(notifier)
+{
+	switch( notifier )
+	{
+		case 'system_mapped':
+			return 'System Mapped';
+		case 'resident_found':
+			return 'Resident Found';
+	}
+}
+
+siggy2.Activity.Notifications.prototype.getNotifierTemplate = function(notifier)
+{
+	switch( notifier )
+	{
+		case 'system_mapped':
+			return this.notifierFormSystemMapped;
+		case 'resident_found':
+			return this.notifierFormResidentFound;
+	}
+}
+
+
+siggy2.Activity.Notifications.prototype.openNotifierForm = function(notifier)
+{
+	var $this = this;
+	var data = {
+		errors: {},
+		scopes: [
+			{
+				value: 'personal',
+				text: 'Personal'
+			},
+			{
+				value: 'group',
+				text: 'Group'
+			}
+		]
+	}
+
+	$this.core.openBox('#notifier-form');
+
+	var content = this.getNotifierTemplate(notifier);
+
+	$('#notifier-form div.form-content').html(content(data));
+
+	var title = _('Add {0} Notifier').format($this.getNotifierTitle(notifier));
+	$('#notifier-form div.box-header').html(title);
 }
 
 siggy2.Activity.Notifications.prototype.update = function()
