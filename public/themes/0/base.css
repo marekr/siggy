@@ -175,6 +175,15 @@ mark,
   border-right: 4px solid transparent;
   border-left: 4px solid transparent;
 }
+
 .btn .caret {
   margin-left: 0;
+}
+
+.tab-content>.tab-pane {
+  display: none;
+}
+
+.tab-content>.active {
+  display: block;
 }

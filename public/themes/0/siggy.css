@@ -249,21 +249,11 @@ a {
 	text-align:right;
 }
 
-
-.tab
-{
-    display:none;
-}
-
-
-
 .selected
 {
   background-color: #FF8308 !important;
   cursor: auto !important;
 }
-
-
 
 table td.button-row
 {
