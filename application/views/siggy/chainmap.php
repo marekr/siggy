@@ -80,7 +80,7 @@
 			<div class='tab-content'>
 				<?php if( $group['jumpLogEnabled'] ): ?>
 				<div role="tabpanel" id="jump-log" style="padding: 10px !important;" class="box-tab tab-pane">
-					<div class="center-text" style="margin:10px;">
+					<div class="text-center" style="margin:10px;">
 						<a id='jump-log-refresh' class="btn btn-primary btn-sm"><i class="fa fa-refresh"></i> Refresh Log</a>
 					</div>
 					<b>Recorded and Approximate Mass:</b> <span id='totalJumpedMass'>0.00</span>mil<br /><br />
@@ -90,7 +90,7 @@
 						</ul>
 
 					</div>
-					<div class="center-text">
+					<div class="text-center">
 						<button id='jumpLogClose' class="btn btn-default btn-xs">Close</button>
 					</div>
 				</div>
@@ -125,7 +125,7 @@
 							</div>
 						</div>
 					</div>
-					<div id="connection-editor-edit" class='connection-editor-group center-text'>
+					<div id="connection-editor-edit" class='connection-editor-group text-center'>
 						<div class="box-header text-left"><i class="fa fa-link"></i> Editing Connection</div>
 						<div>
 							<p>
@@ -166,7 +166,7 @@
 							</div>
 						</div>
 					</div>
-					<div id="connection-editor-button-bar" class="center-text connection-editor-group">
+					<div id="connection-editor-button-bar" class="text-center connection-editor-group">
 						<button id="connection-editor-save" class="btn btn-primary btn-xs">Save</button>
 						<button id='connection-editor-cancel' class="btn btn-default btn-xs">Cancel</button>
 					</div>
@@ -196,7 +196,7 @@
 				</select>
 				<br />
 				<br />
-				<div class="center-text form-actions">
+				<div class="text-center form-actions">
 					<button id="system-editor-save" class="btn btn-xs btn-primary">Save</button>
 					<button id='system-editor-cancel' class="btn btn-default btn-xs">Cancel</button><br />
 				</div>
