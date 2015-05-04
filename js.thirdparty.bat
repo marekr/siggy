@@ -16,6 +16,7 @@
 --js=handlebars-v2.0.0.js ^
 --js=handlebars.form-helpers.js ^
 --js=dropdown.js ^
+--js=tab.js ^
 --source_map_format=V3 ^
 --create_source_map thirdparty.compiled.js.map ^
 --js_output_file=thirdparty.compiled.js

@@ -673,38 +673,15 @@ siggy2.Activity.siggy.prototype.initializeTabs = function()
 {
 	var $this = this;
 
-	$('#system-advanced ul.tabs li a').click(function()
-	{
-		$this.changeTab( $(this).attr('href') );
-		return false;
-	});
+	$('#system-advanced a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 
-	this.changeTab( '#sigs' );
-}
-
-siggy2.Activity.siggy.prototype.changeTab = function( selectedTab )
-{
-	var $this = this;
-	$('#system-advanced ul.tabs li a').each(function()
-	{
-		var href = $(this).attr('href');
-
-		if( href == selectedTab )
-		{
-			$(this).parent().addClass('active');
-			$(href).show();
-		}
-		else
-		{
-			$(this).parent().removeClass('active');
-			$(href).hide();
-		}
+		var href = $(e.target).attr('href');
 
 		if( href == "#system-info" )
 		{
 			$this.renderStats();
 		}
 
-		setCookie('system-tab', href, 365);
-	} );
+		//setCookie('system-tab', href, 365);
+	});
 }
