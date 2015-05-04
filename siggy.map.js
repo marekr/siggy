@@ -1646,48 +1646,25 @@ siggy2.Map.prototype.initializeTabs = function()
 {
 	var $this = this;
 
-    $('#connection-popup ul.box-tabs li a').click(function()
-    {
-        $this.setWHPopupTab( $(this).attr('href') );
-        return false;
-    });
+	$('#connection-popup a[href="#connection-editor"]').tab('show');
 
-    this.setWHPopupTab( '#connection-editor' );
-}
+	$('#connection-popup a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 
+		var href = $(e.target).attr('href');
 
-siggy2.Map.prototype.setWHPopupTab = function( selectedTab )
-{
-	if( selectedTab == "#jump-log" )
-	{
-		if( this.settings.jumpTrackerEnabled )
+		if( href == "#jump-log" )
 		{
-			this.updateJumpLog(this.editingConnection.settings.hash);
+			if( $this.settings.jumpTrackerEnabled )
+			{
+				$this.updateJumpLog($this.editingConnection.settings.hash);
+			}
 		}
-	}
-
-    var $this = this;
-    $('#connection-popup ul.box-tabs li a').each(function()
-    {
-        var href = $(this).attr('href');
-
-
-        if( href == selectedTab )
-        {
-            $(this).parent().addClass('active');
-            $(href).show();
-        }
-        else
-        {
-            $(this).parent().removeClass('active');
-            $(href).hide();
-        }
-    } );
+	});
 }
 
 siggy2.Map.prototype.openWHEditor = function(mode)
 {
-	this.setWHPopupTab('#connection-editor');
+	$('#connection-popup a[href="#connection-editor"]').tab('show');
 	$('#chain-map-container').block({
 		message: $('#connection-popup'),
 		css: {
