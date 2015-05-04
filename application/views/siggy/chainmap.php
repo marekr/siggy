@@ -64,102 +64,112 @@
 
 		<div id="connection-popup" class="box box-tabbed" style="display:none">
 			<ul class="box-tabs">
-				<li class="active"><a href="#connection-editor"><i class="fa fa-pencil"></i> Edit</a></li>
+				<li role='presentation' class='active'>
+					<a href='#connection-editor' aria-controls='home' role='tab' data-toggle='tab'>
+						<i class="fa fa-pencil"></i> Edit
+					</a>
+				</li>
 				<?php if( $group['jumpLogEnabled'] ): ?>
-				<li><a href="#jump-log"><i class="fa fa-list"></i> Jump Log</a></li>
+				<li role='presentation'>
+					<a href='#jump-log' aria-controls='home' role='tab' data-toggle='tab'>
+						<i class="fa fa-list"></i> Jump Log
+					</a>
+				</li>
 				<?php endif; ?>
 			</ul>
-			<?php if( $group['jumpLogEnabled'] ): ?>
-			<div id="jump-log" style="display:none;padding: 10px !important;" class="box-tab">
-				<div class="center-text" style="margin:10px;">
-					<a id='jump-log-refresh' class="btn btn-primary btn-sm"><i class="fa fa-refresh"></i> Refresh Log</a>
-				</div>
-				<b>Recorded and Approximate Mass:</b> <span id='totalJumpedMass'>0.00</span>mil<br /><br />
-				<div id="jumpLogWrap" style='height:210px;overflow: auto;'>
-					<ul id="jumpLogList" class="itemList">
-						<li><b>No jumps recorded</b></li>
-					</ul>
+			<div class='tab-content'>
+				<?php if( $group['jumpLogEnabled'] ): ?>
+				<div role="tabpanel" id="jump-log" style="padding: 10px !important;" class="box-tab tab-pane">
+					<div class="center-text" style="margin:10px;">
+						<a id='jump-log-refresh' class="btn btn-primary btn-sm"><i class="fa fa-refresh"></i> Refresh Log</a>
+					</div>
+					<b>Recorded and Approximate Mass:</b> <span id='totalJumpedMass'>0.00</span>mil<br /><br />
+					<div id="jumpLogWrap" style='height:210px;overflow: auto;'>
+						<ul id="jumpLogList" class="itemList">
+							<li><b>No jumps recorded</b></li>
+						</ul>
 
-				</div>
-				<div class="center-text">
-					<button id='jumpLogClose' class="btn btn-default btn-xs">Close</button>
-				</div>
-			</div>
-			<?php endif; ?>
-			<div id="connection-editor" class="box-tab">
-				<div id="connection-editor-add" class="connection-editor-group">
-					<div class='box-header'><i class="fa fa-link"></i> Create a connection</div>
-					<div>
-						<div style="float:left;text-align:right;">
-							From <input type='text' name='from-sys' /><br />
-							<label style="display:block;margin-top:3px;">
-								<input type='checkbox' name='from-current-location' value='1' />  Current Location
-							</label>
-						</div>
-						<div style="float:right;text-align:right;">
-							To <input type='text' name='to-sys' /><br />
-							<label style="display:block;margin-top:3px;">
-								<input type='checkbox' name='to-current-location' value='1' />  Current Location
-							</label>
-						</div>
-						<div class="clearfix"></div>
-						<br />
-						<div class="form-group">
-							<label>Connection Type
-								<select name="connection-editor-type" class='siggy-input'>
-									<option value="wormhole"><?php echo __('Wormhole');?></option>
-									<option value="stargate">Stargate</option>
-									<option value="jumpbridge">Jumpbridge</option>
-									<option value="cyno">Cyno</option>
-								</select>
-							</label>
-						</div>
+					</div>
+					<div class="center-text">
+						<button id='jumpLogClose' class="btn btn-default btn-xs">Close</button>
 					</div>
 				</div>
-				<div id="connection-editor-edit" class='connection-editor-group center-text'>
-					<div class="box-header text-left"><i class="fa fa-link"></i> Editing Connection</div>
-					<div>
-						<p>
-							<span id="connection-editor-from"></span> to <span id="connection-editor-to"></span>
-						</p>
-						<button class="btn btn-default btn-xs btn-danger" id="connection-editor-disconnect"><i class="fa fa-chain-broken"></i> Disconnect Connection</button>
-					</div>
-				</div>
-				<div id="connection-editor-options-wh" class="connection-editor-group">
-					<div class='box-header'>Options</div>
-					<ul class="errors">
-					</ul>
-					<div>
-						<div class="form-group">
-							<label>WH Type Name <input type='text' name='wh_type_name' style='width:40px' class='siggy-input' /></label>
-						</div>
-						<div class="form-group">
-							<label>EOL?:
-									<label class="yes" style="display:inline;float:none;">Yes<input type="radio" name="eol" value="1" /></label>
-									<label class="no" style="display:inline;float:none;">No<input type="radio" name="eol" value="0" /></label>
-							</label>
-						</div>
-						<div class="form-group">
-							<label>
-							Frigate sized?: <label class="yes" style="display:inline;float:none;">Yes<input type="radio" name="frigate_sized" value="1" /></label>
-											<label class="no" style="display:inline;float:none;">No<input type="radio" name="frigate_sized" value="0" /></label>
-							</label>
-						</div>
-						<div class="form-group">
-							<label>
-								Mass Stage:
-								<select name='mass' class='siggy-input'>
-									<option value='0'>Stage 1/Default</option>
-									<option value='1'>Stage 2/Reduced</option>
-									<option value='2'>Stage 3/Critical</option>
-								</select>
-							</label>
+				<?php endif; ?>
+				<div role="tabpanel" id="connection-editor" class="tab-pane box-tab active">
+					<div id="connection-editor-add" class="connection-editor-group">
+						<div class='box-header'><i class="fa fa-link"></i> Create a connection</div>
+						<div>
+							<div style="float:left;text-align:right;">
+								From <input type='text' name='from-sys' /><br />
+								<label style="display:block;margin-top:3px;">
+									<input type='checkbox' name='from-current-location' value='1' />  Current Location
+								</label>
+							</div>
+							<div style="float:right;text-align:right;">
+								To <input type='text' name='to-sys' /><br />
+								<label style="display:block;margin-top:3px;">
+									<input type='checkbox' name='to-current-location' value='1' />  Current Location
+								</label>
+							</div>
+							<div class="clearfix"></div>
+							<br />
+							<div class="form-group">
+								<label>Connection Type
+									<select name="connection-editor-type" class='siggy-input'>
+										<option value="wormhole"><?php echo __('Wormhole');?></option>
+										<option value="stargate">Stargate</option>
+										<option value="jumpbridge">Jumpbridge</option>
+										<option value="cyno">Cyno</option>
+									</select>
+								</label>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div id="connection-editor-button-bar" class="center-text connection-editor-group">
-					<button id="connection-editor-save" class="btn btn-primary btn-xs">Save</button>
-					<button id='connection-editor-cancel' class="btn btn-default btn-xs">Cancel</button>
+					<div id="connection-editor-edit" class='connection-editor-group center-text'>
+						<div class="box-header text-left"><i class="fa fa-link"></i> Editing Connection</div>
+						<div>
+							<p>
+								<span id="connection-editor-from"></span> to <span id="connection-editor-to"></span>
+							</p>
+							<button class="btn btn-default btn-xs btn-danger" id="connection-editor-disconnect"><i class="fa fa-chain-broken"></i> Disconnect Connection</button>
+						</div>
+					</div>
+					<div id="connection-editor-options-wh" class="connection-editor-group">
+						<div class='box-header'>Options</div>
+						<ul class="errors">
+						</ul>
+						<div>
+							<div class="form-group">
+								<label>WH Type Name <input type='text' name='wh_type_name' style='width:40px' class='siggy-input' /></label>
+							</div>
+							<div class="form-group">
+								<label>EOL?:
+										<label class="yes" style="display:inline;float:none;">Yes<input type="radio" name="eol" value="1" /></label>
+										<label class="no" style="display:inline;float:none;">No<input type="radio" name="eol" value="0" /></label>
+								</label>
+							</div>
+							<div class="form-group">
+								<label>
+								Frigate sized?: <label class="yes" style="display:inline;float:none;">Yes<input type="radio" name="frigate_sized" value="1" /></label>
+												<label class="no" style="display:inline;float:none;">No<input type="radio" name="frigate_sized" value="0" /></label>
+								</label>
+							</div>
+							<div class="form-group">
+								<label>
+									Mass Stage:
+									<select name='mass' class='siggy-input'>
+										<option value='0'>Stage 1/Default</option>
+										<option value='1'>Stage 2/Reduced</option>
+										<option value='2'>Stage 3/Critical</option>
+									</select>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div id="connection-editor-button-bar" class="center-text connection-editor-group">
+						<button id="connection-editor-save" class="btn btn-primary btn-xs">Save</button>
+						<button id='connection-editor-cancel' class="btn btn-default btn-xs">Cancel</button>
+					</div>
 				</div>
 			</div>
 		</div>
