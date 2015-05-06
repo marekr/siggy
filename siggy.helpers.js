@@ -26,7 +26,7 @@ siggy2.Helpers.displayTimeStamp = function(unixTimestamp)
 siggy2.Helpers.setupHandlebars = function()
 {
 	HandlebarsFormHelpers.register(Handlebars);
-	
+
 	Handlebars.registerHelper('_', function(str) {
 		return _(str);
 	});
@@ -52,6 +52,18 @@ siggy2.Helpers.setupHandlebars = function()
 
 	Handlebars.registerHelper('notificationToString', function(type, data) {
 		return siggy2.Notifications.getNotificationString(type, data);
+	});
+
+	Handlebars.registerHelper('notifierToString', function(type, data) {
+		return siggy2.Notifications.getNotifierString(type, data);
+	});
+
+	Handlebars.registerHelper('toLowerCase', function(str) {
+		return str.toLowerCase();
+	});
+
+	Handlebars.registerHelper('capitalize', function(str) {
+			return str.charAt(0).toUpperCase() + str.slice(1);
 	});
 
 	Handlebars.registerHelper('notEqual', function(lvalue, rvalue, options) {

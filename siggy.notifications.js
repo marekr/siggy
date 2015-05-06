@@ -86,10 +86,22 @@ siggy2.Notifications.getNotificationString = function(type, data)
 {
 	if( type == 'system_mapped' )
 	{
-		return _('<b>{0}</b> found marked system <b>{1}').format(data.character_name, data.name)
+		return _('<b>{0}</b> found marked system <b>{1}').format(data.character_name, data.name);
 	}
 	else if( type == 'system_resident_found' )
 	{
-		return _('<b>{0}</b> found marked residents <b>{1}</b> in system <b>{2}</b>').format(data.discoverer_name, data.resident_name, data.system_name)
+		return _('<b>{0}</b> found marked residents <b>{1}</b> in system <b>{2}</b>').format(data.discoverer_name, data.resident_name, data.system_name);
+	}
+}
+
+siggy2.Notifications.getNotifierString = function(type, data)
+{
+	if( type == 'system_mapped' )
+	{
+		return _('Trigger when system <b>{0}</b> mapped via jump.').format(data.system_name);
+	}
+	else if( type == 'system_resident_found' )
+	{
+		return _('Trigger when POS belonging to <b>{0}</b> is present in a newly mapped system.').format(data.resident_name);
 	}
 }
