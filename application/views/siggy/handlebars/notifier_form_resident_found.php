@@ -1,4 +1,5 @@
 <script id="template-notification-resident-found" type="text/x-handlebars-template">
+	{{hidden "type" notifier.type}}
 	<div class="form-group">
         {{label_validation 'resident_name' 'Resident Name' errors}}
 

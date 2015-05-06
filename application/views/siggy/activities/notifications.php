@@ -1,5 +1,3 @@
-
-
 <div id="activity-notifications" class="wrapper" style="display:none">
 	<div class='clearfix'></div>
 	<ul class="box-tabs">
@@ -10,7 +8,7 @@
 		</li>
 		<li role='presentation'>
 			<a href='#notification-notifiers' aria-controls='home' role='tab' data-toggle='tab'>
-				Settings
+				Notifiers
 			</a>
 		</li>
 	</ul>
@@ -27,10 +25,11 @@
 					</ul>
 				</div>
 			</p>
-			<table class="siggy-table siggy-table-striped table-with-dropdowns" id="notifications-settings-table">
+			<table class="siggy-table siggy-table-striped table-with-dropdowns" id="notifications-notifier-table">
 				<thead>
 					<tr>
-						<th>Type</th>
+						<th>Scope</th>
+						<th>Date added</th>
 						<th>Action</th>
 						<th>&nbsp;</th>
 					</tr>

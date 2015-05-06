@@ -1,9 +1,10 @@
 <script id="template-notification-mapped-system" type="text/x-handlebars-template">
+	{{hidden 'type' notifier.type}}
 	<div class="form-group">
-        {{label_validation 'system_name' 'System Name' errors}}
+        {{label_validation 'notifier[system_name]' 'System Name' errors}}
 
-        {{input_validation 'system_name' notifier.system_name errors}}
-        {{field_errors 'system_name' errors class="help-block text-error"}}
+        {{input_validation 'notifier[system_name]' notifier.system_name errors}}
+        {{field_errors 'notifier[system_name]' errors class="help-block text-error"}}
 	</div>
 
 	<div class="form-group">

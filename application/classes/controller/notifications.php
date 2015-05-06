@@ -13,6 +13,14 @@ class Controller_Notifications extends FrontController {
 					->execute();
 	}
 
+	public function action_notifiers()
+	{
+		$data = Notifier::all(Auth::$session->groupID, Auth::$session->charID);
+
+		echo json_encode($data);
+		exit();
+	}
+
 	public function action_all()
 	{
 		$data = Notification::latest(0, Auth::$session->groupID, Auth::$session->charID, 50);
@@ -21,12 +29,32 @@ class Controller_Notifications extends FrontController {
 		exit();
 	}
 
-	public function action_create_alert()
+	public function action_notifiers_add()
 	{
+		$scope = $this->request->post('scope');
 
+		if( $scope == NULL || ($scope != 'personal' && $scope != 'group') )
+		{
+			//error
+			echo json_encode(array('error' => 1, 'error_message' => 'Invalid scope'));
+			exit();
+		}
+
+		$type = $this->request->post('type');
+
+		if( $type == NULL || !in_array($type, NotificationTypes::asArray()) )
+		{
+			//error
+			echo json_encode(array('error' => 1, 'error_message' => 'Invalid type'));
+			exit();
+		}
+
+		$data = $this->request->post('notifier');
+
+		$notifier = Notifier::create($type, $scope, Auth::$session->groupID, Auth::$session->charID, $data);
 	}
 
-	public function action_delete_alert()
+	public function action_notifiers_edit()
 	{
 
 	}

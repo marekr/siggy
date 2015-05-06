@@ -1,10 +1,5 @@
 <?php
 
-class NotificationTypes {
-	const SystemMappedByName = 'system_mapped';
-	const SystemMapppedWithResident = 'system_resident_found';
-}
-
 class Notification {
 
 	public static function latest($cutoff, $groupID, $charID = 0, $limit = 5)
