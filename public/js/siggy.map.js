@@ -784,7 +784,7 @@ siggy2.Map.prototype.updateActives = function( activesData )
     {
         var sysID = this.systems[i].systemID;
 
-        var ele =  $('#' + sysID + ' p.map-system-blob-actives');
+        var ele =  $('#' + sysID + ' .map-system-blob-actives');
         ele.empty();
 
         var fullActives = $("#fullactives"+sysID);
@@ -946,7 +946,7 @@ siggy2.Map.prototype.draw = function()
 		{
 			rallyIcon = $('<i>').addClass('fa fa-exclamation-triangle');
 		}
-        var systemBlobTitle = $("<p>").addClass('map-system-blob-title')
+        var systemBlobTitle = $("<div>").addClass('map-system-blob-title')
 																		.append(titleClassBit)
 																		.append(effectBit)
 																		.append(killBit)
@@ -955,7 +955,7 @@ siggy2.Map.prototype.draw = function()
 																		.append(rallyIcon);
 
         //add empty paragraph for the active chars
-        var systemBlobActives = $("<p>").addClass('map-system-blob-actives');
+        var systemBlobActives = $("<div>").addClass('map-system-blob-actives');
         sysBlob.append(systemBlobTitle).append(systemBlobActives);
 
         if( this.selectedSystemID == systemData.systemID )

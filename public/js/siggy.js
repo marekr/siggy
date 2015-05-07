@@ -148,7 +148,7 @@ siggy2.Core.prototype.initialize = function ()
 	this.updateNow();
 
 
-	this.loadActivity('notifications');
+	this.loadActivity('siggy');
 }
 
 siggy2.Core.prototype.update = function()
@@ -364,7 +364,7 @@ siggy2.Core.prototype.setupFatalErrorHandler = function()
 			that.fatalError = true;
 		}
 	} );
-	
+
 	$(document).ajaxSuccess( function() {
 		that.ajaxErrors = 0;
 	} );
