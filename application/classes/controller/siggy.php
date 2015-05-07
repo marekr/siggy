@@ -598,11 +598,8 @@ class Controller_Siggy extends FrontController {
 
 
 
-		$returnLastRead = $lastRead = isset($_POST['last_notification_read']) ? (int) $_POST['last_notification_read']  : 0;
-		if( $lastRead == 0 )
-		{
-			$returnLastRead = Notification::lastReadTimestamp( Auth::$session->groupID, Auth::$session->charID );
-		}
+		$lastRead = isset($_POST['last_notification_read']) ? (int) $_POST['last_notification_read']  : 0;
+		$returnLastRead = Notification::lastReadTimestamp( Auth::$session->groupID, Auth::$session->charID );
 
 		$notifications = Notification::latest($lastRead, Auth::$session->groupID, Auth::$session->charID);
 		$update['notifications'] = array('last_read' => $returnLastRead, 'items' => $notifications);
