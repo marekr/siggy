@@ -86,7 +86,7 @@ siggy2.Notifications.getNotificationString = function(type, data)
 {
 	if( type == 'system_mapped' )
 	{
-		return _('<b>{0}</b> found marked system <b>{1}').format(data.character_name, data.name);
+		return _('<b>{0}</b> found marked system <b>{1}').format(data.character_name, data.system_name);
 	}
 	else if( type == 'system_resident_found' )
 	{
