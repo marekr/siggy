@@ -94,4 +94,15 @@ class Notifier {
 				->where('id', '=', $id)
 				->execute();
 	}
+
+	public static function delete($id, $groupID, $charID)
+	{
+		DB::query(Database::DELETE, "DELETE FROM notifiers WHERE id=:id AND ((scope='group' AND group_id=:groupID) OR
+																			(scope='personal' AND character_id=:charID))")
+						->param(':id', $id)
+						->param(':groupID', $groupID)
+						->param(':charID', $charID)
+						->execute();
+
+	}
 }

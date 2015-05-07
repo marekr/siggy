@@ -58,4 +58,18 @@ class Controller_Notifications extends FrontController {
 	{
 
 	}
+
+	public function action_notifiers_delete()
+	{
+		$id = $this->request->post('id');
+
+		if( $id == NULL )
+		{
+			//error
+			echo json_encode(array('error' => 1, 'error_message' => 'ID missing'));
+			exit();
+		}
+
+		Notifier::delete( $id, Auth::$session->groupID, Auth::$session->charID );
+	}
 }

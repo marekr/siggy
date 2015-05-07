@@ -58,7 +58,13 @@ siggy2.Activity.Notifications = function(core)
 	{
 		e.preventDefault();
 		$this.notifierSubmit();
-	})
+	});
+
+
+	$('#notifications-notifier-table').on('click','.notifier-delete', function(e) {
+		//$(this).data('id')
+		$this.notifierDelete($(this).data('id'));
+	});
 }
 
 siggy2.Activity.Notifications.prototype.start = function()
@@ -77,6 +83,7 @@ siggy2.Activity.Notifications.prototype.stop = function()
 
 siggy2.Activity.Notifications.prototype.notifierSubmit = function()
 {
+	var $this = this;
 	var data = $('#notifier-form form').serializeObject();
 
 	var url = '';
@@ -98,9 +105,23 @@ siggy2.Activity.Notifications.prototype.notifierSubmit = function()
 	$.post(url, data,
 	function (ret)
 	{
+		$this.updateNotifiers();
 		$.unblockUI();
 	});
+}
 
+siggy2.Activity.Notifications.prototype.notifierDelete = function(id)
+{
+	var $this = this;
+	var data = {
+		id: id
+	}
+
+	$.post(this.core.settings.baseUrl + 'notifications/notifiers_delete', data,
+	function (ret)
+	{
+		$this.updateNotifiers();
+	});
 }
 
 siggy2.Activity.Notifications.prototype.getNotifierTitle = function(notifier)
@@ -195,6 +216,8 @@ siggy2.Activity.Notifications.prototype.updateTable = function( items )
 siggy2.Activity.Notifications.prototype.updateNotifiers = function()
 {
 	var $this = this;
+	clearTimeout(this._updateTimeoutNotifiers);
+
 	$.ajax({
 			url: this.core.settings.baseUrl + 'notifications/notifiers',
 			dataType: 'json',

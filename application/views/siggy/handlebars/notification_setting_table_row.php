@@ -10,7 +10,7 @@
 				{{{ notifierToString type data }}}
 			</td>
 			<td>
-				<button class='btn btn-default btn-xs btn-danger' class='notifier-delete' data-id='{{ id }}'>Delete</button>
+				<button class='btn btn-default btn-xs btn-danger notifier-delete' data-id='{{ id }}'>Delete</button>
 			</td>
 		</tr>
 	</script>
