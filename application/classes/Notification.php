@@ -48,4 +48,19 @@ class Notification {
 			return 0;
 		}
 	}
+
+	public static function create($groupID, $characterID, $type, $data)
+	{
+		$notification = array(
+							'type' => $type,
+							'data' => json_encode($data),
+							'group_id' => $groupID,
+							'character_id' => $characterID,
+							'created_at' => time()
+							);
+							
+		$dscanID = DB::insert('notifications', array_keys($notification) )
+							->values(array_values($notification) )
+							->execute();
+	}
 }

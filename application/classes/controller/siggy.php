@@ -320,8 +320,22 @@ class Controller_Siggy extends FrontController {
 
 		if( !isset($connection['hash'] ) )
 		{
+			$notifierSystems = array();
+			if( !$this->chainmap->system_is_mapped($origin) )
+			{
+				$notifierSystems[] = $origin;
+			}
+
+			if( !$this->chainmap->system_is_mapped($dest) )
+			{
+				$notifierSystems[] = $origin;
+			}
+
 			//new wh
 			$this->chainmap->add_system_to_map($origin, $dest);
+
+			$this->doSystemMappedNotifications($notifierSystems);
+
 
 			miscUtils::increment_stat('wormholes', Auth::$session->accessData);
 		}
@@ -355,6 +369,34 @@ class Controller_Siggy extends FrontController {
 						->param(':charName', $charName)
 						->execute();
         }
+	}
+
+	private function doSystemMappedNotifications($systems)
+	{
+		foreach( Auth::$session->accessData['notifiers'] as $notifier )
+		{
+			if( $notifier['type'] == NotificationTypes::SystemMappedByName )
+			{
+				$data = json_decode($notifier['data']);
+				if( in_array($data->system_id, $systems) )
+				{
+					$eventData = array(
+										'system_id' => $data->system_id,
+										'system_name' => $data->system_name,
+										'character_name' => Auth::$session->charName,
+										'character_id' => Auth::$session->charID
+										);
+
+					$charID = 0;
+					if( $notifier['scope'] == 'personal' )
+					{
+						$charID = Auth::$session->charID;
+					}
+
+					Notification::create(Auth::$session->groupID, $charID, $notifier['type'], $eventData);
+				}
+			}
+		}
 	}
 
 	public function action_siggy()

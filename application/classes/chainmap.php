@@ -1,7 +1,7 @@
 <?php
 
 class chainmap {
-	
+
 	private $id = 0;
 	public $data = array();
 	private $group_id = 0;
@@ -246,6 +246,23 @@ class chainmap {
 						->param(':chain', $this->id)
 						->execute()
 						->as_array();
+	}
+
+	public function system_is_mapped( $system )
+	{
+		$exists = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE (`from`=:system OR `to`=:system) AND group_id=:group AND chainmap_id=:chainmap")
+					->param(':system', $system)
+					->param(':group', Auth::$session->groupID)
+					->param(':chainmap', Auth::$session->accessData['active_chain_map'])
+					->execute()
+					->current();
+
+		if( isset($exists['hash'])  )
+		{
+			return true;
+		}
+
+		return false;
 	}
 
 	public function delete_all_system_connections( $system )

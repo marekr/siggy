@@ -5,7 +5,7 @@ class NotificationTypes {
 	const SystemMapppedWithResident = 'system_resident_found';
 
 
-	const SystemMappedByNameKeys = array('system_name');
+	const SystemMappedByNameKeys = array('system_name', 'system_id');
 
 	public static function asArray()
 	{

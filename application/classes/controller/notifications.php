@@ -51,7 +51,15 @@ class Controller_Notifications extends FrontController {
 
 		$data = $this->request->post('notifier');
 
+		if( $type == NotificationTypes::SystemMappedByName )
+		{
+			$data['system_id'] = miscUtils::findSystemByName($data['system_name']);
+		}
+
 		$notifier = Notifier::create($type, $scope, Auth::$session->groupID, Auth::$session->charID, $data);
+
+
+		groupUtils::recacheGroup(Auth::$session->groupID);
 	}
 
 	public function action_notifiers_edit()
@@ -71,5 +79,7 @@ class Controller_Notifications extends FrontController {
 		}
 
 		Notifier::delete( $id, Auth::$session->groupID, Auth::$session->charID );
+
+		groupUtils::recacheGroup(Auth::$session->groupID);
 	}
 }

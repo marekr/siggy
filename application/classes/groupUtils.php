@@ -1,7 +1,7 @@
 <?php
 
 final class groupUtils {
-	
+
 	static function log_action( $group_id, $type, $message )
 	{
 		$insert = array( 'groupID' => $group_id,
@@ -147,6 +147,11 @@ final class groupUtils {
 									->param(':group', $id)
 									->execute()
 									->as_array('character_id');
+
+			$group['notifiers'] = DB::query(Database::SELECT, "SELECT * FROM notifiers WHERE group_id = :group")
+									->param(':group', $id)
+									->execute()
+									->as_array();
 
 			$chainmaps = DB::query(Database::SELECT, "SELECT * FROM chainmaps WHERE group_id = :group")
 								->param(':group', $id)
