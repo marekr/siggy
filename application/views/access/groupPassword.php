@@ -19,7 +19,7 @@
 }
 
 #passError
-{    
+{
 	background: none repeat scroll 0 0 #910E0E;
 	margin-bottom: 15px;
 	padding: 4px;
@@ -28,8 +28,8 @@
 
 <div id="message">
 	<div class="box">
-		<h3>Authentication Required</h3>
-		<div>
+		<div class="box-header">Authentication Required</div>
+		<div class="box-content">
 			<p style='font-weight:bold'>
 			In order to continue, please enter your group's password below.</p>
 			<p>	This password should have been provided by your group in a bulletin, mail, etc.</p>
@@ -46,8 +46,8 @@
 
 <script type='text/javascript'>
 accessMenu = new siggyMenu(
-{	 
-		ele: 'accessMenu', 
+{
+		ele: 'accessMenu',
 		dir: 'down',
 		callback: function( id )
 		{
