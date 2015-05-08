@@ -834,10 +834,14 @@ div.connection-editor-group > div
 	font-weight: normal;
 	line-height: 1.428571429;
 	color: #fff;
-	white-space: nowrap;
 }
 .notification-dropdown-view-link
 {
 	text-align:center;
 	font-style: italic;
+}
+
+#notifications-menu
+{
+	width: 300px;
 }
