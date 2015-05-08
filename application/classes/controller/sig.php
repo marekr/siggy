@@ -50,10 +50,42 @@ class Controller_Sig extends FrontController {
 
 			miscUtils::increment_stat('adds', Auth::$session->accessData);
 
+			$this->notifierCheck($insert);
+
 			$insert['sigID'] = $sigID[0];
 			echo json_encode(array($sigID[0] => $insert ));
 		}
 		exit();
+	}
+
+	private function notifierCheck($sigData)
+	{
+		foreach( Auth::$session->accessData['notifiers'] as $notifier )
+		{
+			if( $notifier['type'] == NotificationTypes::SiteFound )
+			{
+				$data = json_decode($notifier['data']);
+				if( $sigData['siteID'] == $data->site_id )
+				{
+					$eventData = array(
+										'system_id' => $sigData['systemID'],
+										'system_name' => miscUtils::systemNameByID($sigData['systemID']),
+										'site_id' => $sigData['siteID'],
+										'discoverer_name' => Auth::$session->charName,
+										'discoverer_id' => Auth::$session->charID,
+										'signature' => $sigData['sig']
+										);
+
+					$charID = 0;
+					if( $notifier['scope'] == 'personal' )
+					{
+						$charID = Auth::$session->charID;
+					}
+
+					Notification::create(Auth::$session->groupID, $charID, $notifier['type'], $eventData);
+				}
+			}
+		}
 	}
 
 	public function action_mass_add()

@@ -3,7 +3,7 @@
 use Pheal\Pheal;
 
 final class miscUtils {
-	
+
 	const TIER1COST = 33000;
 	const TIER2COST = 29000;
 	const TIER3COST = 25000;
@@ -246,10 +246,24 @@ final class miscUtils {
 	static function findSystemByName($name)
 	{
 		$systemID = DB::query(Database::SELECT, 'SELECT id,name FROM solarsystems WHERE LOWER(name) = :name')
-															->param(':name', $name )->execute()->get('id', 0);
+															->param(':name', $name )
+															->execute()
+															->get('id', 0);
 
 
 		return $systemID;
+	}
+
+	static function systemNameByID($id)
+	{
+		$name = DB::query(Database::SELECT, 'SELECT id,name
+												FROM solarsystems WHERE id = :id')
+															->param(':id', $id )
+															->execute()
+															->get('name', '');
+
+
+		return $name;
 	}
 
 	static function apiFetchCorp( $corpID )
