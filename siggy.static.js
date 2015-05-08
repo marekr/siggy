@@ -382,7 +382,7 @@ siggy2.StaticData.getFullSiteListHandleBarDropdown = function()
 	for( var i in this.sites )
 	{
 		var info = this.sites[i];
-        result.push({ value: info.id, text: info.name });
+        result.push({ value: info.id, text: _(info.name) });
 	}
 
 	return result;

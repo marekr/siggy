@@ -94,8 +94,8 @@ siggy2.Notifications.getNotificationString = function(type, data)
 	}
 	else if( type == 'site_found' )
 	{
-		var site = siggy2.StaticData.getSiteByID(data.site_id);
-		return _('<b>{0}</b> found {1} in system {2} as signature {3}').format(data.discoverer_name, site.name, data.signature);
+		var name = siggy2.StaticData.getSiteNameByID(data.site_id);
+		return _('<b>{0}</b> found {1} in system {2} as signature {3}').format(data.discoverer_name, _(name), data.system_name, data.signature);
 	}
 }
 
@@ -111,7 +111,7 @@ siggy2.Notifications.getNotifierString = function(type, data)
 	}
 	else if( type == 'site_found' )
 	{
-		var site = siggy2.StaticData.getSiteByID(data.site_id);
-		return _('Trigger when site <b>{0}</b> is added as a signature.').format(site.name);
+		var name = siggy2.StaticData.getSiteNameByID(data.site_id);
+		return _('Trigger when site <b>{0}</b> is added as a signature.').format(_(name));
 	}
 }
