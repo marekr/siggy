@@ -2,7 +2,7 @@
  * @license Proprietary
  * @copyright Copyright (c) 2014 borkedLabs - All Rights Reserved
  */
- 
+
 var blackHoleEffects = {
 	1: [
 		['Missile Velocity', '+15%'],
@@ -35,7 +35,7 @@ var blackHoleEffects = {
 		['Stasis Webifier Strength', '-36%'],
 		['Inertia', '+36%'],
 		['Lock range', '+72%']
-	], 
+	],
 	5: [
 		['Missile Velocity', '+43%'],
 		['Missile Explosion Velocity', '+86%'],
@@ -78,7 +78,7 @@ var wolfRayetEffects = {
 		['Shield Resists', '-36%'],
 		['Small Weapon Damage', '+144%'],
 		['Signature Size', '-36%']
-	], 
+	],
 	5: [
 		['Armor HP', '+86%'],
 		['Shield Resists', '-43%'],
@@ -121,7 +121,7 @@ var redGiantEffects = {
 		['Smart Bomb Range', '+72%'],
 		['Smart Bomb Damage', '+72%'],
 		['Bomb Damage', '+72%']
-	], 
+	],
 	5: [
 		['Heat Damage', '+43%'],
 		['Overheat Bonus', '+86%'],
@@ -174,7 +174,7 @@ var catacylsmicEffects = {
 		['Capacitor capacity', '+72%'],
 		['Capacitor recharge time', '+72%'],
 		['Capacitor transfer amount', '-36%']
-	], 
+	],
 	5: [
 		['Armor Repair', '-43%'],
 		['Shield Boost', '-43%'],
@@ -203,7 +203,7 @@ var magnetarEffects = {
 		['Drone Velocity', '-15%'],
 		['Targeting Range', '-15%'],
 		['Tracking Speed (guns and drones)', '-15%']
-	], 
+	],
 	2: [
 		['Damage (weapons and drones)', '+44%'],
 		['Drone Tracking', '-22%'],
@@ -211,7 +211,7 @@ var magnetarEffects = {
 		['Drone Velocity', '-22%'],
 		['Targeting Range', '-22%'],
 		['Tracking Speed (guns and drones)', '-22%']
-	], 
+	],
 	3: [
 		['Damage (weapons and drones)', '+55%'],
 		['Drone Tracking', '-29%'],
@@ -227,7 +227,7 @@ var magnetarEffects = {
 		['Drone Velocity', '-36%'],
 		['Targeting Range', '-36%'],
 		['Tracking Speed (guns and drones)', '-36%']
-	], 
+	],
 	5: [
 		['Damage (weapons and drones)', '+86%'],
 		['Drone Tracking', '-43%'],
@@ -235,7 +235,7 @@ var magnetarEffects = {
 		['Drone Velocity', '-43%'],
 		['Targeting Range', '-43%'],
 		['Tracking Speed (guns and drones)', '-43%']
-	], 
+	],
 	6 :[
 		['Damage (weapons and drones)', '+100%'],
 		['Drone Tracking', '-50%'],
@@ -253,35 +253,35 @@ var pulsarEffects = {
 		['Capacitor recharge time', '-15%'],
 		['Signature Size', '+30%'],
 		['Energy neut/nos bonus', '+30%']
-	], 
+	],
 	2: [
 		['Shield HP', '+44%'],
 		['Armor Resists', '-22%'],
 		['Capacitor recharge time', '-22%'],
 		['Signature Size', '+44%'],
 		['Energy neut/nos bonus', '+44%']
-	], 
+	],
 	3: [
 		['Shield HP', '+58%'],
 		['Armor Resists', '-29%'],
 		['Capacitor recharge time', '-29%'],
 		['Signature Size', '+58%'],
 		['Energy neut/nos bonus', '+58%']
-	], 
+	],
 	4: [
 		['Shield HP', '+72%'],
 		['Armor Resists', '-36%'],
 		['Capacitor recharge time', '-36%'],
 		['Signature Size', '+72%'],
 		['Energy neut/nos bonus', '+72%']
-	], 
+	],
 	5: [
 		['Shield HP', '+86%'],
 		['Armor Resists', '-43%'],
 		['Capacitor recharge time', '-43%'],
 		['Signature Size', '+86%'],
 		['Energy neut/nos bonus', '+86%']
-	], 
+	],
 	6: [
 		['Shield HP', '+100%'],
 		['Armor Resists', '-50%'],
@@ -317,10 +317,10 @@ siggy2.StaticData = {
 siggy2.StaticData.load = function(baseURL)
 {
 	var $this = this;
-	
+
 	$this.templateWormholeInfoTooltip = Handlebars.compile( $("#template-statics-tooltip").html() );
 	$this.templateSiteTooltip = Handlebars.compile( $("#template-site-tooltip").html() );
-	
+
 	jQuery.ajax({
 		 url: baseURL + 'data/sig_types',
 		 success: function(result) {
@@ -352,17 +352,17 @@ siggy2.StaticData.getSiteByID = function( id )
 }
 
 siggy2.StaticData.getSiteList = function( type, sysClass )
-{	
+{
 	var result  = {0: ''};
-	
+
 	var map = this.maps[type];
 	if( typeof(map) == 'undefined' )
 	{
 		return result;
 	}
-	
+
 	map = map[sysClass];
-	
+
 	if( typeof(map) != 'undefined' )
 	{
 		for( var i in map )
@@ -371,7 +371,20 @@ siggy2.StaticData.getSiteList = function( type, sysClass )
 			result[info.id] = info.name;
 		}
 	}
-	
+
+	return result;
+}
+
+
+siggy2.StaticData.getFullSiteListHandleBarDropdown = function()
+{
+	var result  = [];
+	for( var i in this.sites )
+	{
+		var info = this.sites[i];
+        result.push({ value: info.id, text: info.name });
+	}
+
 	return result;
 }
 
@@ -417,7 +430,7 @@ siggy2.StaticData.getWormholeFancyNameByID = function( id )
 	else
 	{
 		var wh = this.getWormholeByID(id);
-		
+
 		if( wh != null )
 		{
 			return this.getWormholeFancyName( wh );
@@ -433,9 +446,9 @@ siggy2.StaticData.getWormholeFancyNameByID = function( id )
 siggy2.StaticData.getWormholesForList = function( sysClass )
 {
 	var result  = jQuery.extend({}, this.baseListWormholes);
-	
+
 	var map = this.wormholeClassMap[ sysClass ];
-	
+
 	if( typeof(map) != 'undefined' )
 	{
 		for( var i in map )
@@ -444,6 +457,6 @@ siggy2.StaticData.getWormholesForList = function( sysClass )
 			result[map[i].static_id] = this.getWormholeFancyName(whInfo);
 		}
 	}
-	
+
 	return result;
 }
