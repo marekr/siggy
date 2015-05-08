@@ -30,6 +30,7 @@ siggy2.Activity.Notifications = function(core)
 	this.templateNotifierRow = Handlebars.compile( $("#template-notification-notifier-table-row").html() )
 	this.notifierFormSystemMapped = Handlebars.compile( $("#template-notification-mapped-system").html() );
 	this.notifierFormResidentFound = Handlebars.compile( $("#template-notification-resident-found").html() );
+	this.notifierFormSiteFound = Handlebars.compile( $("#template-notification-site-found").html() );
 
 	var typeOptions = [
 		{
@@ -39,6 +40,10 @@ siggy2.Activity.Notifications = function(core)
 		{
 			selector: '#notifier_add_resident_found',
 			key: 'resident_found'
+		},
+		{
+			selector: '#notifier_add_site_found',
+			key: 'site_found'
 		}
 	]
 
@@ -132,6 +137,8 @@ siggy2.Activity.Notifications.prototype.getNotifierTitle = function(notifier)
 			return 'System Mapped';
 		case 'resident_found':
 			return 'Resident Found';
+		case 'site_found':
+			return 'Site found';
 	}
 }
 
@@ -143,6 +150,8 @@ siggy2.Activity.Notifications.prototype.getNotifierTemplate = function(notifier)
 			return this.notifierFormSystemMapped;
 		case 'resident_found':
 			return this.notifierFormResidentFound;
+		case 'site_found':
+			return this.notifierFormSiteFound;
 	}
 }
 
@@ -165,6 +174,11 @@ siggy2.Activity.Notifications.prototype.openNotifierForm = function(notifier)
 		notifier: {
 			type: notifier
 		}
+	};
+
+	if( notifier == 'site_found' )
+	{
+		data.sites = siggy2.StaticData.getFullSiteListHandleBarDropdown();
 	}
 
 	$this.core.openBox('#notifier-form');

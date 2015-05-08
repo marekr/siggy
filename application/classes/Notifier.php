@@ -29,7 +29,7 @@ class Notifier {
 	{
 		$keys = array();
 		$keys = NotificationTypes::getDataKeys($type);
-
+		
 		// validate keys
 		foreach($data as $k => $v)
 		{

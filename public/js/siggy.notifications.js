@@ -92,6 +92,11 @@ siggy2.Notifications.getNotificationString = function(type, data)
 	{
 		return _('<b>{0}</b> found marked residents <b>{1}</b> in system <b>{2}</b>').format(data.discoverer_name, data.resident_name, data.system_name);
 	}
+	else if( type == 'site_found' )
+	{
+		var site = siggy2.StaticData.getSiteByID(data.site_id);
+		return _('<b>{0}</b> found {1} in system {2} as signature {3}').format(data.discoverer_name, site.name, data.signature);
+	}
 }
 
 siggy2.Notifications.getNotifierString = function(type, data)
@@ -103,5 +108,10 @@ siggy2.Notifications.getNotifierString = function(type, data)
 	else if( type == 'system_resident_found' )
 	{
 		return _('Trigger when POS belonging to <b>{0}</b> is present in a newly mapped system.').format(data.resident_name);
+	}
+	else if( type == 'site_found' )
+	{
+		var site = siggy2.StaticData.getSiteByID(data.site_id);
+		return _('Trigger when site <b>{0}</b> is added as a signature.').format(site.name);
 	}
 }

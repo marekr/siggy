@@ -376,6 +376,7 @@
 	<?php echo View::factory('siggy/handlebars/notification_setting_table_row'); ?>
 	<?php echo View::factory('siggy/handlebars/notifier_form_mapped_system'); ?>
 	<?php echo View::factory('siggy/handlebars/notifier_form_resident_found'); ?>
+	<?php echo View::factory('siggy/handlebars/notifier_form_site_found'); ?>
 
     <script type='text/javascript'>
         $(document).ready(function() {

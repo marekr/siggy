@@ -22,6 +22,7 @@
 					<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
 						<li role="presentation"><a role="menuitem" id='notifier_add_system_mapped' tabindex="-1" href="#">System mapped</a></li>
 						<li role="presentation"><a role="menuitem" id='notifier_add_resident_found'tabindex="-1" href="#">Resident found</a></li>
+						<li role="presentation"><a role="menuitem" id='notifier_add_site_found'tabindex="-1" href="#">Site found</a></li>
 					</ul>
 				</div>
 			</p>
