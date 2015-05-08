@@ -8,7 +8,7 @@
 						{{ system.region_name }}
 					</button>
 					<ul class="dropdown-menu" role="menu">
-						<li><a target="_blank" href="http://evemaps.dotlan.net/map/{{system.region_name}}">DOTLAN</a></li>
+						<li><a target="_blank" href="http://evemaps.dotlan.net/map/{{escapeSpaceWithUnderscores system.region_name}}">DOTLAN</a></li>
 					</ul>
 				</div>
 			</td>
