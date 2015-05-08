@@ -112,7 +112,7 @@
 				<?php endif; ?>
 
 
-				<li class="dropdown">
+				<li id="notification-header-dropdown" class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="notifications-button">
                         <i class="fa fa-bell-o fa-lg"></i>
                         <span id="notification-count"></span>

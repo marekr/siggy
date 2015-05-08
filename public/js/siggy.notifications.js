@@ -11,21 +11,19 @@ siggy2.Notifications = function(core)
 	this.lastRead = 0;
 
 	var $this = this;
-	$('#notifications-button').click( function()
-	{
+
+	$('#notification-header-dropdown').on('show.bs.dropdown', function () {
 		$this.lastRead = time();
 		$this.setNotificationCount(0);
 		$.ajax({
 			url: $this.core.settings.baseUrl + 'notifications/read',
-			dataType: 'json',
 			cache: false,
-			async: true,
 			method: 'post',
 			success: function (data)
 			{
 			}
 		});
-	});
+	})
 
 	$('.notification-dropdown-view-link').click( function() {
 		$this.core.loadActivity('notifications');
@@ -63,6 +61,8 @@ siggy2.Notifications.prototype.update = function(data)
 
 
 		var counter = 0;
+
+		data.items = data.items.reverse();
 		for( var i in data.items )
 		{
 			var n = data.items[i];
