@@ -123,14 +123,14 @@ siggy2.Activity.Thera.prototype.updateTable = function( exits )
 
 			if( typeof $this.sigClocks[id] != 'undefined' )
 			{
-				$this.sigClocks[i].destroy();
-				delete $this.sigClocks[i];
+				$this.sigClocks[id].destroy();
+				delete $this.sigClocks[id];
 			}
 
 			if( typeof $this.eolClocks[id] != 'undefined' )
 			{
-				$this.eolClocks[i].destroy();
-				delete $this.eolClocks[i];
+				$this.eolClocks[id].destroy();
+				delete $this.eolClocks[id];
 			}
 
 			$(this).remove();
