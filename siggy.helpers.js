@@ -42,6 +42,10 @@ siggy2.Helpers.setupHandlebars = function()
 		}
 	});
 
+	Handlebars.registerHelper('escapeSpaceWithUnderscores', function(str) {
+		return str.replace(/ /g,"_");
+	});
+
 	Handlebars.registerHelper('displayTimestamp', function(stamp) {
 		return siggy2.Helpers.displayTimeStamp(stamp);
 	});
