@@ -40,6 +40,7 @@
 			</table>
 		</div>
 		<div role="tabpanel" id="notification-history" class="box-tab tab-pane active">
+			<div class='notifications-history-pagination'></div>
 			<table class="siggy-table siggy-table-striped table-with-dropdowns" id="notifications-history-table">
 				<thead>
 					<tr>
@@ -50,6 +51,7 @@
 				<tbody>
 				</tbody>
 			</table>
+			<div class='notifications-history-pagination'></div>
 		</div>
 	</div>
 </div>

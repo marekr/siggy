@@ -20,10 +20,21 @@ siggy2.Activity.Notifications = function(core)
 	this.notifierFormState = 'none';
 	this.notifierID = 0;
 	this.notifierType = '';
+	this.notificationHistoryPage = 1;
 
 
 	this.historyTable = $('#notifications-history-table tbody');
 	this.notifierTable = $('#notifications-notifier-table tbody');
+
+	$('.notifications-history-pagination').pagination({
+		pages: 2,
+		cssStyle: 'dark-theme',
+		onPageClick: function(pageNumber, event)
+		{
+			$this.notificationHistoryPage = pageNumber;
+			$this.update();
+		}
+	});
 
 
 	this.templateHistoryRow = Handlebars.compile( $("#template-notification-history-table-row").html() );
@@ -194,12 +205,15 @@ siggy2.Activity.Notifications.prototype.openNotifierForm = function(notifier)
 siggy2.Activity.Notifications.prototype.update = function()
 {
 	var $this = this;
+	clearTimeout(this._updateTimeout);
+
 	$.ajax({
 			url: this.core.settings.baseUrl + 'notifications/all',
 			dataType: 'json',
 			cache: false,
 			async: true,
 			method: 'get',
+			data: {page: $this.notificationHistoryPage},
 			success: function (data)
 			{
 				$this.updateTable(data);
@@ -212,18 +226,21 @@ siggy2.Activity.Notifications.prototype.update = function()
 		});
 }
 
-siggy2.Activity.Notifications.prototype.updateTable = function( items )
+siggy2.Activity.Notifications.prototype.updateTable = function( data )
 {
 	var $this = this;
 	this.historyTable.empty();
 
-	for( var i in items )
+	for( var i in data.items )
 	{
-		var item = items[i];
+		var item = data.items[i];
 		var row = this.templateHistoryRow( item );
 
 		this.historyTable.append(row);
 	}
+
+	$('.notifications-history-pagination').pagination('setPagesCount', data.total_pages);
+	$('.notifications-history-pagination').pagination('redraw');
 }
 
 

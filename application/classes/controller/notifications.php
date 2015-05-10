@@ -23,9 +23,22 @@ class Controller_Notifications extends FrontController {
 
 	public function action_all()
 	{
-		$data = Notification::latest(0, Auth::$session->groupID, Auth::$session->charID, 50);
+		$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+		if( $page < 1)
+		{
+			$page = 1;
+		}
 
-		echo json_encode($data);
+		$numberPerPage = 50;
+		$offset = $numberPerPage*($page-1);
+		$data = Notification::latest(0, Auth::$session->groupID, Auth::$session->charID, $offset, $numberPerPage);
+
+		$totalPages = ceil(Notification::total(0, Auth::$session->groupID, Auth::$session->charID) / $numberPerPage);
+		$response = array(
+			'items' => $data,
+			'total_pages' => $totalPages
+		);
+		echo json_encode($response);
 		exit();
 	}
 

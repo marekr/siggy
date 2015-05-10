@@ -29,7 +29,8 @@ $themeFiles = array( 'global_variables.css',
                       'overwrite.css',
 					  'glyphicons.css',
 					  'nav.css',
-					  'sidebar.css'
+					  'sidebar.css',
+                      'pagination.css'
 					);
 
 
