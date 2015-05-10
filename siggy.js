@@ -141,7 +141,6 @@ siggy2.Core.prototype.initialize = function ()
 
 	this.charactersettings.initialize();
 	this.globalnotes.initialize();
-	this.loadActivity('siggy');
 
 	this.registerMainMenu();
 
