@@ -15,6 +15,7 @@ class Controller_Siggy extends FrontController {
 
 		$ssname = $this->request->param('ssname', '');
 
+		$this->doSystemMappedNotifications(array(30000155));
 		// set default
 		$view->systemData = array('id' => 30000142, 'name' => 'Jita');
 
@@ -373,30 +374,77 @@ class Controller_Siggy extends FrontController {
 
 	private function doSystemMappedNotifications($systems)
 	{
+		$pather = new Pathfinder();
 		foreach( Auth::$session->accessData['notifiers'] as $notifier )
 		{
 			if( $notifier['type'] == NotificationTypes::SystemMappedByName )
 			{
+				$createEvent = false;
+
 				$data = json_decode($notifier['data']);
 				if( in_array($data->system_id, $systems) )
 				{
-					$eventData = array(
-										'system_id' => $data->system_id,
-										'system_name' => $data->system_name,
-										'character_name' => Auth::$session->charName,
-										'character_id' => Auth::$session->charID
-										);
-
-					$charID = 0;
-					if( $notifier['scope'] == 'personal' )
+					$this->createSystemMappedNotification(
+															$notifier,
+															$data->system_id,
+															$data->system_name,
+															Auth::$session->charName,
+															Auth::$session->charID,
+															0
+														);
+				}
+				else if (isset($data->num_jumps) &&
+						(int)$data->num_jumps > 0)
+				{
+					foreach($systems as $k => $system)
 					{
-						$charID = Auth::$session->charID;
-					}
+						$path = $pather->shortest($data->system_id, $system);
 
-					Notification::create(Auth::$session->groupID, $charID, $notifier['type'], $eventData);
+						if( $path['distance'] <= $data->num_jumps )
+						{
+							$this->createSystemMappedNotification(
+																	$notifier,
+																	$data->system_id,
+																	$data->system_name,
+																	Auth::$session->charName,
+																	Auth::$session->charID,
+																	$path['distance'],
+																	$system,
+																	miscUtils::systemNameByID($system)
+																);
+						}
+					}
 				}
 			}
 		}
+	}
+
+	public function createSystemMappedNotification($notifier,
+													$systemID,
+													$systemName,
+													 $characterName,
+													$characterID,
+													$numJumps,
+													$nearbySystemID = 0,
+													$nearbySystemName = '')
+	{
+		$eventData = array(
+							'system_id' => $systemID,
+							'system_name' => $systemName,
+							'character_name' => $characterName,
+							'character_id' => $characterID,
+							'number_jumps' => $numJumps,
+							'nearby_system_id' => $nearbySystemID,
+							'nearby_system_name' => $nearbySystemName
+							);
+
+		$charID = 0;
+		if( $notifier['scope'] == 'personal' )
+		{
+			$charID = $characterID;
+		}
+
+		Notification::create(Auth::$session->groupID, $charID, $notifier['type'], $eventData);
 	}
 
 	public function action_siggy()

@@ -6,7 +6,12 @@
         {{input_validation 'notifier[system_name]' notifier.system_name errors}}
         {{field_errors 'notifier[system_name]' errors class="help-block text-error"}}
 	</div>
+	<div class="form-group">
+        {{label_validation 'notifier[num_jumps]' 'Within number of jumps' errors}}
 
+        {{input_validation 'notifier[num_jumps]' notifier.num_jumps errors}}
+        {{field_errors 'notifier[num_jumps]' errors class="help-block text-error"}}
+	</div>
 	<div class="form-group">
         {{label_validation 'scope' 'Scope' errors}}
 

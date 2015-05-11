@@ -183,7 +183,8 @@ siggy2.Activity.Notifications.prototype.openNotifierForm = function(notifier)
 			}
 		],
 		notifier: {
-			type: notifier
+			type: notifier,
+			num_jumps: '0'
 		}
 	};
 

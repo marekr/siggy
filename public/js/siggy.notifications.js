@@ -86,7 +86,14 @@ siggy2.Notifications.getNotificationString = function(type, data)
 {
 	if( type == 'system_mapped' )
 	{
-		return _('<b>{0}</b> found marked system <b>{1}').format(data.character_name, data.system_name);
+		if(typeof(data.number_jumps) != 'undefined' && data.number_jumps > 0)
+		{
+			return _('<b>{0}</b> found system <b>{1}</b>, {2} jumps from <b>{3}</b>').format(data.character_name, data.nearby_system_name, data.number_jumps, data.system_name);
+		}
+		else
+		{
+			return _('<b>{0}</b> found system <b>{1}</b>').format(data.character_name, data.system_name);
+		}
 	}
 	else if( type == 'system_resident_found' )
 	{
