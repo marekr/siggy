@@ -120,14 +120,20 @@ siggy2.SigTable.prototype.setupAddDialog = function ()
 	var $this = this;
 	var massAddBlob = $('#mass-add-sig-box textarea[name=blob]');
 	massAddBlob.val('');
-	$('#mass-add-sig-box button[name=add]').click( function()
+
+	$('#mass-add-sig-box form').on('submit', function(e)
 	{
-		$this.massAddHandler($this.systemID,massAddBlob.val());
+		e.preventDefault();
+
+		var data = $('#mass-add-sig-box form').serializeObject();
+		$this.massAddHandler($this.systemID, data);
+
 		massAddBlob.val('');
 
+		$('#mass-add-sig-box input[name=delete_nonexistent_sigs]').prop('checked', false);
+
 		$.unblockUI();
-		return false;
-	} );
+	});
 
 	$('#mass-add-sig-box button[name=cancel]').click( function()
 	{
@@ -170,7 +176,7 @@ siggy2.SigTable.prototype.setupAddDialog = function ()
 		//enter key
 		if(e.which == 13)
 		{
-			$this.massAddHandler($this.systemID,$('#sig-add-box textarea[name=mass_sigs]').val());
+			$this.massAddHandler($this.systemID,{blob: $('#sig-add-box textarea[name=mass_sigs]').val()});
 			$('#sig-add-box textarea[name=mass_sigs]').val('');
 		}
 	}
@@ -264,12 +270,10 @@ siggy2.SigTable.prototype.massAddHandler = function(systemID, data)
 {
 	var $this = this;
 
-	var postData = {
-		systemID: systemID,
-		blob: data
-	};
+	data.systemID = systemID;
 
-	$.post( $this.settings.baseUrl + 'sig/mass_add', postData, function (newSig)
+	$.post( $this.settings.baseUrl + 'sig/mass_add', data,
+	function (newSig)
 	{
 		for (var i in newSig)
 		{
