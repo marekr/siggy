@@ -112,12 +112,36 @@ class Controller_Sig extends FrontController {
 
 			$addedSigs = array();
 
+
+			$deleteNonExisting = isset($_POST['delete_nonexistent_sigs']) ? (int)$_POST['delete_nonexistent_sigs'] : 0;
+			if( $deleteNonExisting )
+			{
+				$sigList = array();
+				foreach( $sigs as $sig )
+				{
+					$sigList[] = Database::instance()->escape($sig['sig']);
+				}
+
+				DB::query(Database::DELETE, "DELETE FROM systemsigs
+													WHERE groupID=:groupID
+													AND systemID=:id
+													AND sig NOT IN(".implode($sigList,',').")")
+								->param(':groupID', Auth::$session->groupID)
+								->param(':id', $systemID)
+								->execute();
+			}
+
+
 			if( count($sigs) > 0 && count($sigs) < 200 )	//200 is safety limit to prevent attacks, no system should have this many sigs
 			{
 				$doingUpdate = FALSE;
 				foreach( $sigs as $sig )
 				{
-					$sigData = DB::query(Database::SELECT, "SELECT sigID,sig, type, siteID, description, created FROM systemsigs WHERE systemID=:id AND groupID=:group AND sig=:sig")
+					$sigData = DB::query(Database::SELECT, "SELECT sigID,sig, type, siteID, description, created
+															FROM systemsigs
+															WHERE systemID=:id
+																AND groupID=:group
+																 AND sig=:sig")
 												->param(':id', $systemID)
 												->param(':group',Auth::$session->groupID)
 												->param(':sig', $sig['sig'] )
