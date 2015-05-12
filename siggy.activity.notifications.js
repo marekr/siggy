@@ -40,7 +40,7 @@ siggy2.Activity.Notifications = function(core)
 	this.templateHistoryRow = Handlebars.compile( $("#template-notification-history-table-row").html() );
 	this.templateNotifierRow = Handlebars.compile( $("#template-notification-notifier-table-row").html() )
 	this.notifierFormSystemMapped = Handlebars.compile( $("#template-notification-mapped-system").html() );
-	this.notifierFormResidentFound = Handlebars.compile( $("#template-notification-resident-found").html() );
+	this.notifierFormResidentFound = Handlebars.compile( $("#template-notification-system-resident-found").html() );
 	this.notifierFormSiteFound = Handlebars.compile( $("#template-notification-site-found").html() );
 
 	var typeOptions = [
@@ -49,8 +49,8 @@ siggy2.Activity.Notifications = function(core)
 			key: 'system_mapped'
 		},
 		{
-			selector: '#notifier_add_resident_found',
-			key: 'resident_found'
+			selector: '#notifier_add_system_resident_found',
+			key: 'system_resident_found'
 		},
 		{
 			selector: '#notifier_add_site_found',
@@ -146,7 +146,7 @@ siggy2.Activity.Notifications.prototype.getNotifierTitle = function(notifier)
 	{
 		case 'system_mapped':
 			return 'System Mapped';
-		case 'resident_found':
+		case 'system_resident_found':
 			return 'Resident Found';
 		case 'site_found':
 			return 'Site found';
@@ -159,7 +159,7 @@ siggy2.Activity.Notifications.prototype.getNotifierTemplate = function(notifier)
 	{
 		case 'system_mapped':
 			return this.notifierFormSystemMapped;
-		case 'resident_found':
+		case 'system_resident_found':
 			return this.notifierFormResidentFound;
 		case 'site_found':
 			return this.notifierFormSiteFound;
