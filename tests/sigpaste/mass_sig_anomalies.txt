@@ -1,0 +1,36 @@
+WCM-442	Cosmic Signature			0%	1.67 AU
+JEI-697	Cosmic Anomaly	Combat Site	Quarantine Area	100.00%	2.06 AU
+PPZ-631	Cosmic Anomaly	Combat Site	Core Garrison	100.00%	2.09 AU
+GVQ-208	Cosmic Anomaly	Combat Site	Core Garrison	100.00%	2.11 AU
+LNN-390	Cosmic Anomaly	Combat Site	Core Stronghold	100.00%	2.36 AU
+ZYX-515	Cosmic Anomaly	Combat Site	Quarantine Area	100.00%	2.41 AU
+FZW-985	Cosmic Anomaly	Combat Site	Core Garrison	100.00%	2.50 AU
+RVU-168	Cosmic Anomaly	Combat Site	Core Garrison	100.00%	2.61 AU
+IQF-232	Cosmic Signature			0%	2.68 AU
+ABR-530	Cosmic Anomaly	Combat Site	Quarantine Area	100.00%	3.25 AU
+KKL-330	Cosmic Signature			0%	3.34 AU
+AMW-592	Cosmic Anomaly	Combat Site	Core Garrison	100.00%	3.68 AU
+PTO-299	Cosmic Anomaly	Combat Site	Core Stronghold	100.00%	3.73 AU
+ANY-408	Cosmic Anomaly	Combat Site	Core Garrison	100.00%	3.73 AU
+FYX-993	Cosmic Anomaly	Combat Site	Core Garrison	100.00%	3.73 AU
+HUK-039	Cosmic Signature			0%	3.74 AU
+FGX-686	Cosmic Anomaly	Ore Site	Rarified Core Deposit	100.00%	3.76 AU
+VDZ-797	Cosmic Anomaly	Ore Site	Common Perimeter Deposit	100.00%	3.79 AU
+QCR-064	Cosmic Signature			0%	4.01 AU
+IGP-096	Cosmic Anomaly	Combat Site	Core Stronghold	100.00%	4.11 AU
+NNW-824	Cosmic Signature			0%	4.35 AU
+MIL-672	Cosmic Anomaly	Ore Site	Rarified Core Deposit	100.00%	5.94 AU
+QTH-598	Cosmic Signature			0%	6.81 AU
+GTR-784	Cosmic Signature			0%	9.91 AU
+QLJ-150	Cosmic Anomaly	Combat Site	Core Garrison	100.00%	10.83 AU
+FDK-970	Cosmic Anomaly	Combat Site	Quarantine Area	100.00%	11.47 AU
+EWI-512	Cosmic Anomaly	Combat Site	Oruze Osobnyk	100.00%	12.65 AU
+CMC-910	Cosmic Anomaly	Combat Site	Core Garrison	100.00%	12.66 AU
+FTN-235	Cosmic Anomaly	Combat Site	Core Stronghold	100.00%	26.26 AU
+RPW-896	Cosmic Anomaly	Ore Site	Unexceptional Frontier Deposit	100.00%	26.33 AU
+PUT-146	Cosmic Signature			0%	27.02 AU
+VJB-616	Cosmic Signature			0%	28.74 AU
+EMS-380	Cosmic Anomaly	Combat Site	Quarantine Area	100.00%	28.76 AU
+PGR-298	Cosmic Anomaly	Ore Site	Average Frontier Deposit	100.00%	28.96 AU
+QIH-916	Cosmic Signature			0%	29.20 AU
+GPA-060	Cosmic Signature			0%	34.39 AU

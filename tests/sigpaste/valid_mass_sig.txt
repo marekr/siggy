@@ -1,0 +1,11 @@
+LVF-195		Ore Site 	Cosmic Anomaly 		Unusual Core Deposit 	100.00% 2.54 AU
+SVF-240		Combat Site 	Cosmic Anomaly 		Fortification Frontier Stronghold 	100.00% 2.79 AU
+PVF-935 	Ore Site 	Cosmic Anomaly 		Ordinary Perimeter Deposit 	100.00% 8.37 AU
+WVF-980 	Wormhole 	Cosmic Signature 	Unstable Wormhole 		100.00% 5.44 AU
+TVF-675 	Wormhole 		Cosmic Signature 	Unstable Wormhole 	100.00% 	1,351 m
+NVF-065 	Relic Site 		Cosmic Signature 	Forgotten Frontier Recursive Depot 	100.00% 4.46 AU
+MVF-630 	Data Site 		Cosmic Signature 	Unsecured Frontier Database 	100.00% 10.72 AU
+RVF-805 	Relic Site 		Cosmic Signature 	Forgotten Frontier Recursive Depot 	100.00% 6.61 AU
+OVF-500 	Gas Site 	Cosmic Signature 	Bountiful Frontier Reservoir 		100.00% 1.51 AU
+XVF-415		 Relic Site 	Cosmic Signature 	0.00% 6.02 AU
+	
