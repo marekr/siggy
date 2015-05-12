@@ -97,7 +97,7 @@ siggy2.Notifications.getNotificationString = function(type, data)
 	}
 	else if( type == 'system_resident_found' )
 	{
-		return _('<b>{0}</b> found marked residents <b>{1}</b> in system <b>{2}</b>').format(data.discoverer_name, data.resident_name, data.system_name);
+		return _('<b>{0}</b> found residents <b>{1}</b> in system <b>{2}</b>').format(data.discoverer_name, data.resident_name, data.system_name);
 	}
 	else if( type == 'site_found' )
 	{

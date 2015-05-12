@@ -15,7 +15,6 @@ class Controller_Siggy extends FrontController {
 
 		$ssname = $this->request->param('ssname', '');
 
-		$this->doSystemMappedNotifications(array(30000155));
 		// set default
 		$view->systemData = array('id' => 30000142, 'name' => 'Jita');
 
@@ -374,15 +373,81 @@ class Controller_Siggy extends FrontController {
 
 	private function doSystemMappedNotifications($systems)
 	{
-		$pather = new Pathfinder();
 		foreach( Auth::$session->accessData['notifiers'] as $notifier )
 		{
 			if( $notifier['type'] == NotificationTypes::SystemMappedByName )
 			{
-				$createEvent = false;
+				$this->wormholeMappedNotificationHandler($notifier, $systems);
+			}
+			else if( $notifier['type'] == NotificationTypes::SystemMapppedWithResident )
+			{
+				$this->systemMappedResidentHandler($notifier, $systems);
+			}
+		}
+	}
 
-				$data = json_decode($notifier['data']);
-				if( in_array($data->system_id, $systems) )
+	private function systemMappedResidentHandler($notifier, $systems)
+	{
+		$data = json_decode($notifier['data']);
+		foreach($systems as $k => $system)
+		{
+			$posOnlineSQL = '';
+			if( !$data->include_offline )
+			{
+				$posOnlineSQL = ' AND pos.pos_online=1';
+			}
+
+			$pos = DB::query(Database::SELECT, "SELECT pos.pos_id,
+														pos.pos_system_id as system_id,
+														ss.name as system_name
+											FROM pos_tracker pos
+											INNER JOIN solarsystems ss ON ss.id = pos.pos_system_id
+											WHERE pos.group_id=:group_id
+											AND pos.pos_system_id=:system_id
+											AND pos.pos_owner LIKE :resident" . $posOnlineSQL)
+									->param(':group_id', Auth::$session->groupID)
+									->param(':system_id', $system)
+									->param(':resident', $data->resident_name)
+									->execute()
+									->current();
+
+			if( isset($pos['pos_id']) )
+			{
+				$this->createSystemResidentNotification(
+														$notifier,
+														$pos['system_id'],
+														$pos['system_name'],
+														$data->resident_name,
+														Auth::$session->charName,
+														Auth::$session->charID,
+														0);
+			}
+		}
+	}
+
+	private function wormholeMappedNotificationHandler($notifier, $systems)
+	{
+		$pather = new Pathfinder();
+		$data = json_decode($notifier['data']);
+		if( in_array($data->system_id, $systems) )
+		{
+			$this->createSystemMappedNotification(
+													$notifier,
+													$data->system_id,
+													$data->system_name,
+													Auth::$session->charName,
+													Auth::$session->charID,
+													0
+												);
+		}
+		else if (isset($data->num_jumps) &&
+				(int)$data->num_jumps > 0)
+		{
+			foreach($systems as $k => $system)
+			{
+				$path = $pather->shortest($data->system_id, $system);
+
+				if( $path['distance'] <= $data->num_jumps )
 				{
 					$this->createSystemMappedNotification(
 															$notifier,
@@ -390,30 +455,10 @@ class Controller_Siggy extends FrontController {
 															$data->system_name,
 															Auth::$session->charName,
 															Auth::$session->charID,
-															0
+															$path['distance'],
+															$system,
+															miscUtils::systemNameByID($system)
 														);
-				}
-				else if (isset($data->num_jumps) &&
-						(int)$data->num_jumps > 0)
-				{
-					foreach($systems as $k => $system)
-					{
-						$path = $pather->shortest($data->system_id, $system);
-
-						if( $path['distance'] <= $data->num_jumps )
-						{
-							$this->createSystemMappedNotification(
-																	$notifier,
-																	$data->system_id,
-																	$data->system_name,
-																	Auth::$session->charName,
-																	Auth::$session->charID,
-																	$path['distance'],
-																	$system,
-																	miscUtils::systemNameByID($system)
-																);
-						}
-					}
 				}
 			}
 		}
@@ -446,6 +491,31 @@ class Controller_Siggy extends FrontController {
 
 		Notification::create(Auth::$session->groupID, $charID, $notifier['type'], $eventData);
 	}
+
+	public function createSystemResidentNotification($notifier,
+														$systemID,
+														$systemName,
+														$resident,
+													 	$characterName,
+														$characterID)
+		{
+			$eventData = array(
+								'system_id' => $systemID,
+								'system_name' => $systemName,
+								'resident_name' => $resident,
+								'discoverer_name' => $characterName,
+								'discoverer_id' => $characterID
+								);
+
+			$charID = 0;
+			if( $notifier['scope'] == 'personal' )
+			{
+				$charID = $characterID;
+			}
+
+			Notification::create(Auth::$session->groupID, $charID, $notifier['type'], $eventData);
+		}
+
 
 	public function action_siggy()
 	{

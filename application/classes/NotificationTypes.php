@@ -6,6 +6,7 @@ class NotificationTypes {
 	const SiteFound = 'site_found';
 
 	const SystemMappedByNameKeys = array('system_name', 'system_id', 'num_jumps');
+	const SystemMapppedWithResidentKeys = array('resident_name','include_offline');
 	const SiteFoundKeys = array('site_id');
 
 	public static function asArray()
@@ -23,6 +24,10 @@ class NotificationTypes {
 		if( $type == NotificationTypes::SystemMappedByName )
 		{
 			$keys = NotificationTypes::SystemMappedByNameKeys;
+		}
+		else if( $type == NotificationTypes::SystemMapppedWithResident )
+		{
+			$keys = NotificationTypes::SystemMapppedWithResidentKeys;
 		}
 		else if( $type == NotificationTypes::SiteFound )
 		{

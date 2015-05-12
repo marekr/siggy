@@ -68,6 +68,10 @@ class Controller_Notifications extends FrontController {
 		{
 			$data['system_id'] = miscUtils::findSystemByName($data['system_name']);
 		}
+		else if( $type == NotificationTypes::SystemMapppedWithResident )
+		{
+			$data['include_offline'] = (isset($data['include_offline']) && $data['include_offline']) ? true : false;
+		}
 
 		$notifier = Notifier::create($type, $scope, Auth::$session->groupID, Auth::$session->charID, $data);
 
