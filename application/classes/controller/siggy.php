@@ -1,6 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 class Controller_Siggy extends FrontController {
+
 	public $trusted = false;
 
 	public $template = 'template/main';
@@ -716,10 +717,10 @@ class Controller_Siggy extends FrontController {
 
 
 
-		$lastRead = isset($_POST['last_notification_read']) ? (int) $_POST['last_notification_read']  : 0;
+		$latestDisplayed = isset($_POST['newest_notification']) ? (int) $_POST['newest_notification']  : 0;
 		$returnLastRead = Notification::lastReadTimestamp( Auth::$session->groupID, Auth::$session->charID );
 
-		$notifications = Notification::latest($lastRead, Auth::$session->groupID, Auth::$session->charID);
+		$notifications = Notification::latest($latestDisplayed, Auth::$session->groupID, Auth::$session->charID);
 		$update['notifications'] = array('last_read' => $returnLastRead, 'items' => $notifications);
 
 

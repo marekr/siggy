@@ -156,8 +156,9 @@ siggy2.Core.prototype.update = function()
 	var request = {
 		last_location_id: $this.location.id,
 		group_cache_time: $this.groupCacheTime,
-		last_notification_read: $this.notifications.lastRead
+		newest_notification: $this.notifications.newestTimestamp
 	};
+
 
 	$.ajax({
 		url: $this.settings.baseUrl + 'update',
