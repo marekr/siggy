@@ -9,6 +9,7 @@ siggy2.Notifications = function(core)
 	this.counter = $('#notification-count');
 
 	this.lastRead = 0;
+	this.newestTimestamp = 0;
 
 	var $this = this;
 
@@ -66,6 +67,7 @@ siggy2.Notifications.prototype.update = function(data)
 		for( var i in data.items )
 		{
 			var n = data.items[i];
+
 			var ele = $('<li>');
 			ele.html( siggy2.Notifications.getNotificationString(n.type, n.data) );
 			ele.addClass('notification-dropdown-item');
@@ -74,6 +76,9 @@ siggy2.Notifications.prototype.update = function(data)
 
 			if( n.created_at > this.lastRead )
 				counter++;
+
+			if( n.created_at > this.newestTimestamp )
+				this.newestTimestamp = n.created_at;
 		}
 
 		if( counter > 0 )
