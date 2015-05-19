@@ -83,7 +83,7 @@ siggy2.Map.prototype.showMessage = function(what)
 	if( what == 'loading' )
 	{
 		this.loadingMessage.css({	'top': 150,
-									'left': this.container.width()/2 - this.loadingMessage.width()/2,
+									'left': screen.width/2 - this.loadingMessage.width(),
 									'position':'relative',
 									'float':'left'
 								});
