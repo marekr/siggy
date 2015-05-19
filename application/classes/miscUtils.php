@@ -293,7 +293,7 @@ final class miscUtils {
 
 	static function getDateTimeString( $timestamp )
 	{
-		return date('Y-m-d H:i:s', $timestamp);
+		return date('Y-m-d g:m', $timestamp);
 	}
 
 	static function timeToHourString( $timestamp )

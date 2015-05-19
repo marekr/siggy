@@ -39,11 +39,11 @@
 				</td>
 				<td><?php echo $d['userID']; ?></td>
 				<td><?php echo $d['chainmap_name']; ?></td>
-				<td><?php echo date("d/m/y @ h:i:s",$d['created']); ?></td>
+				<td><?php echo date("d/m/y g:m", $d['created']); ?</td>
 				<td>
 				<?php echo $d['ipAddress']; ?>
 				</td>
-				<td><?php echo date("d/m/y @ h:i:s",$d['lastBeep']); ?></td>
+				<td><?php echo date("d/m/y g:m", $d['lastBeep']); ?</td>
 			</tr>
 			<?php endforeach; ?>
         </table>
