@@ -52,7 +52,7 @@
 			</label>
 			<div class="text-center form-actions">
 				<button name='submit' class="btn btn-primary btn-xs" type="submit">Submit</button>
-				<button name='cancel' type="button" class="btn btn-default btn-xs">Cancel</button>
+				<button name='cancel' type="button" class="btn btn-default btn-xs dialog-cancel">Cancel</button>
 			</div>
 		</form>
 	</div>

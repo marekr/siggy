@@ -22,7 +22,7 @@
 					</ul>
 				</div>
                 <div class="text-center form-actions">
-                    <button name='cancel' type="button" class="btn btn-default btn-xs">Close</button>
+                    <button name='cancel' type="button" class="btn btn-default btn-xs dialog-cancel">Close</button>
                 </div>
             </form>
         </div>

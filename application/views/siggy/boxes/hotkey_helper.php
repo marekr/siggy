@@ -6,7 +6,7 @@
 				</tbody>
 			</table>
             <p style='text-align:center'>
-                <button id="hotkey-helper-close" class="btn btn-xs btn-primary">Close</button>
+                <button id="hotkey-helper-close" class="btn btn-xs btn-primary dialog-cancel">Close</button>
             </p>
         </div>
     </div>

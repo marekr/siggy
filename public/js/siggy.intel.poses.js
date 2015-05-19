@@ -14,7 +14,7 @@ function intelposes(options)
 
 	/* POSes */
 	this.poses = {};
-	
+
 	/* temp hack */
 	this.systemID = 0;
 }
@@ -27,11 +27,6 @@ intelposes.prototype.initialize = function()
 	$('#system-intel-add-pos').click( function() {
 		$this.siggyMain.openBox('#pos-form');
 		$this.addPOS();
-		return false;
-	} );
-
-	$('#pos-form button[name=cancel]').click( function() {
-		$.unblockUI();
 		return false;
 	} );
 }

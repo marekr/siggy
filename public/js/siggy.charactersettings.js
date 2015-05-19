@@ -47,10 +47,6 @@ charactersettings.prototype.initialize = function()
 		$('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);
 	});
 
-	$('#settings-cancel').click( function() {
-		$.unblockUI();
-	});
-
 	$("#settings-form select[name=theme_id]").change( function() {
 		var themeID = $("#settings-form select[name=theme_id]").val();
 

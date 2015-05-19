@@ -24,7 +24,7 @@
 
             <div class="text-center form-actions">
                 <button id="settings-save" type="submit" class="btn btn-primary btn-xs">Save</button>
-                <button id='settings-cancel' type="reset" class="btn btn-default btn-xs">Cancel</button><br />
+                <button id='settings-cancel' type="reset" class="btn btn-default btn-xs dialog-cancel">Cancel</button><br />
             </div>
         </form>
 	</div>

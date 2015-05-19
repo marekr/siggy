@@ -15,10 +15,6 @@ hotkeyhelper.prototype.initialize = function()
 		$this.siggyMain.openBox("#hotkey-helper");
 	});
 	
-	$('#hotkey-helper-close').click( function()
-	{
-		$.unblockUI();
-	});
 	this.initializeHotkeys();
 }
 
@@ -34,10 +30,10 @@ hotkeyhelper.prototype.initializeHotkeys = function()
 hotkeyhelper.prototype.registerHotkey = function(keyString, description)
 {
 	var row = $('<tr>');
-	
+
 	var key = $('<td>').text(keyString);
 	var desc = $('<td>').text(description);
-	
+
 	row.append(key).append(desc);
 	$("#hotkey-list").append(row);
 }

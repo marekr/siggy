@@ -60,11 +60,6 @@ siggy2.Activity.Thera.prototype.setupDialogImport = function()
 
 		return false;
 	});
-
-	$('#dialog-import-thera button[type=reset]').click( function() {
-		$.unblockUI();
-		return false;
-	});
 }
 
 siggy2.Activity.Thera.prototype.dialogImport = function()

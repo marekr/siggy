@@ -135,12 +135,6 @@ siggy2.SigTable.prototype.setupAddDialog = function ()
 		$.unblockUI();
 	});
 
-	$('#mass-add-sig-box button[name=cancel]').click( function()
-	{
-		$.unblockUI();
-		return false;
-	} );
-
 	$('#mass-add-sigs').click(function ()
 	{
 		$.blockUI({

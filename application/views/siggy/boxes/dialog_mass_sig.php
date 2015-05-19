@@ -17,7 +17,7 @@
 
 			<div class="text-center form-actions">
 				<button name='add' class="btn btn-primary" type="submit">Submit</button>
-				<button name='cancel' type="button" class="btn btn-default">Cancel</button>
+				<button name='cancel' type="button" class="btn btn-default dialog-cancel">Cancel</button>
 			</div>
 		</form>
 	</div>

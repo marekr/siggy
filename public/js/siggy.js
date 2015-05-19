@@ -103,6 +103,13 @@ siggy2.Core = function( options )
 						scannedsystems: new siggy2.Activity.ScannedSystems(this),
 						notifications: new siggy2.Activity.Notifications(this)
 					};
+
+	$(document).on('click','button.dialog-cancel', function(e)
+	{
+		e.preventDefault();
+
+		$.unblockUI();
+	});
 }
 
 siggy2.Core.prototype.queueUpdate = function()

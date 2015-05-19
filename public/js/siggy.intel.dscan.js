@@ -27,11 +27,6 @@ inteldscan.prototype.initialize = function()
 		$this.setupDScanForm('add');
 		return false;
 	} );
-
-	$('#dscan-form button[name=cancel]').click( function() {
-		$.unblockUI();
-		return false;
-	} );
 }
 
 inteldscan.prototype.setupDScanForm = function(mode, posID)

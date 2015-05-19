@@ -7,7 +7,7 @@
 			</div>
 			<div class="text-center form-actions">
 				<button type="submit" class="btn btn-primary btn-xs">Submit</button>
-				<button type="reset" class="btn btn-default btn-xs">Cancel</button>
+				<button type="reset" class="btn btn-default btn-xs dialog-cancel">Cancel</button>
 			</div>
 		</form>
 	</div>

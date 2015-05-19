@@ -91,7 +91,7 @@
 
 					</div>
 					<div class="text-center">
-						<button id='jumpLogClose' class="btn btn-default btn-xs">Close</button>
+						<button class="btn btn-default btn-xs chainmap-dialog-cancel">Close</button>
 					</div>
 				</div>
 				<?php endif; ?>
@@ -168,7 +168,7 @@
 					</div>
 					<div id="connection-editor-button-bar" class="text-center connection-editor-group">
 						<button id="connection-editor-save" class="btn btn-primary btn-xs">Save</button>
-						<button id='connection-editor-cancel' class="btn btn-default btn-xs">Cancel</button>
+						<button class="btn btn-default btn-xs chainmap-dialog-cancel">Cancel</button>
 					</div>
 				</div>
 			</div>
