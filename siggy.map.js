@@ -68,6 +68,14 @@ siggy2.Map = function(core, options)
 	this.editingSystem = 0;
 
     this.selectionBox = $('<div>').addClass('selection-box');
+
+
+	$(document).on('click','button.chainmap-dialog-cancel', function(e)
+	{
+		e.preventDefault();
+
+		$('#chain-map-container').unblock();
+	});
 }
 
 siggy2.Map.prototype.showMessage = function(what)
@@ -387,11 +395,6 @@ siggy2.Map.prototype.initializeExitFinder = function()
     };
 
     $('#exit-finder form').submit(submitHandler);
-
-    $('#exit-finder button[name=cancel]').click( function() {
-        $.unblockUI();
-        return false;
-    } );
 }
 
 siggy2.Map.prototype.populateExitData = function(data)
@@ -1393,13 +1396,6 @@ siggy2.Map.prototype.setupEditor = function()
 		}
 	} );
 
-	$('#jumpLogClose').click( function() {
-		$('#chain-map-container').unblock();
-	});
-
-	$('#connection-editor-cancel').click( function() {
-		$('#chain-map-container').unblock();
-	});
 
 	$('select[name=connection-editor-type]').change( function() {
 		switch( $(this).val() )
