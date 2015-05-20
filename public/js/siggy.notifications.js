@@ -115,7 +115,14 @@ siggy2.Notifications.getNotifierString = function(type, data)
 {
 	if( type == 'system_mapped' )
 	{
-		return _('Trigger when system <b>{0}</b> mapped via jump.').format(data.system_name);
+		if(typeof(data.num_jumps) != 'undefined' && data.num_jumps > 0)
+		{
+			return _('Trigger a system is found within <b>{0}</b> jumps of system <b>{1}</b>.').format(data.num_jumps, data.system_name);
+		}
+		else
+		{
+			return _('Trigger when system <b>{0}</b> mapped via jump.').format(data.system_name);
+		}
 	}
 	else if( type == 'system_resident_found' )
 	{
