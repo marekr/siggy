@@ -154,19 +154,21 @@
     	<?php echo View::factory('siggy/activities/notifications'); ?>
 		<div id="activity-siggy" class="wrapper" style="display:none">
 			<?php echo $content; ?>
-			<div id="footer-link" style="text-align:center;font-size:0.9em;margin-top:100px;">
-				<p style="width:33%;float:left;text-align:left;">
-				&copy; 2011-<?php echo date("Y"); ?> borkedLabs
-				</p>
-				<p style="width:33%;float:left;text-align:center;">
-					Last Update: <span class="updateTime" title='Last update received'>00:00:00</span>
-				</p>
-				<p style="width:33%;float:left;text-align:right;">
-				<?php if( defined("SIGGY_VERSION") ): ?>
-					siggy version: <?php echo SIGGY_VERSION; ?>
-				<?php endif; ?>
-				</p>
-			</div>
 		</div>
+		<?php if(isset($alt_content)){ echo $alt_content; } ?>
+
+        <div id="footer-link" style="text-align:center;font-size:0.9em;margin-top:100px;">
+            <p style="width:33%;float:left;text-align:left;">
+            &copy; 2011-<?php echo date("Y"); ?> borkedLabs
+            </p>
+            <p style="width:33%;float:left;text-align:center;">
+                Last Update: <span class="updateTime" title='Last update received'>00:00:00</span>
+            </p>
+            <p style="width:33%;float:left;text-align:right;">
+            <?php if( defined("SIGGY_VERSION") ): ?>
+                siggy version: <?php echo SIGGY_VERSION; ?>
+            <?php endif; ?>
+            </p>
+        </div>
 	</body>
 </html>

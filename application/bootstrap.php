@@ -131,7 +131,7 @@ if( Kohana::$environment == Kohana::DEVELOPMENT && strpos($_SERVER['HTTP_USER_AG
   $_SERVER['HTTP_EVE_SOLARSYSTEMID'] = 31002019;
 	}
 }*/
-define('SIGGY_VERSION', '2.22a');
+define('SIGGY_VERSION', '2.22b');
 if( Kohana::$environment == Kohana::PRODUCTION)
 {
 	define('WIN_DEV', true);
@@ -242,7 +242,7 @@ if (!Route::cache())
 			'action' => 'index',
 		));
 
-	Route::set('api', 'api/<version>/<controller>(/<id>)(.<format>)', 
+	Route::set('api', 'api/<version>/<controller>(/<id>)(.<format>)',
 					array(
 						'version' => 'v1',
 						'format'  => '(json|xml|csv|html)',

@@ -48,7 +48,8 @@ class Controller_Access extends FrontController {
 			}
 		}
 
-		$this->template->content = $view;
+		$this->template->content = '';
+		$this->template->alt_content = $view;
 	}
 
 	public function action_blacklisted()
