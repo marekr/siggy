@@ -25,6 +25,32 @@ class Controller_Special extends Controller {
 	}
 
 
+	public function action_test2512()
+	{
+		if( empty($_GET['char']) )
+		{
+			print "Missing char parameter";
+			die();
+		}
+		
+		define("PHEAL_DEBUG",1);
+		print "<pre>";
+		PhealHelper::configure();
+		\Pheal\Core\Config::getInstance()->cache = new \Pheal\Cache\NullStorage();
+		$pheal = new Pheal( null, null, 'eve' );
+
+		try
+		{
+			$result = $pheal->eveScope->CharacterAffiliation(array('ids' => $_GET['char']));
+			print "Successfully fetched character data\n";
+			print_r($result);
+		}
+		catch (\Pheal\Exceptions\PhealException $e)
+		{
+			print_r($e);
+		}
+	}
+	
 	public function action_test3()
 	{
 		if( !isset($_GET['key']) || $_GET['key'] != 'PIZZAMOFO' )
