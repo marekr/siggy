@@ -5,7 +5,6 @@
     "require": {
         "nesbot/Carbon": "*",
 		"swiftmailer/swiftmailer": "@stable",
-        "3rdpartyeve/phealng": "~2.0",
-		"monolog/monolog": "1.13.1"
+        "3rdpartyeve/phealng": "~2.0"
     }
 }
