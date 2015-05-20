@@ -23,6 +23,24 @@ siggy2.Helpers.displayTimeStamp = function(unixTimestamp)
 	return time;
 }
 
+siggy2.Helpers.setupSystemTypeAhead = function(selector)
+{
+	$(selector).typeahead(null, {
+		name: 'solar-systems',
+		display: 'name',
+		source: siggy2.StaticData.systemTypeAhead,
+
+  		templates: {
+			empty: [
+			      '<div class="empty-message">',
+			        '',
+			      '</div>'
+			    ].join('\n'),
+			suggestion: Handlebars.compile('<div><strong>{{name}}</strong>{{#if display_name}}({{display_name}}){{/if}} – {{region_name}}</div>')
+		}
+	});
+}
+
 siggy2.Helpers.setupHandlebars = function()
 {
 	HandlebarsFormHelpers.register(Handlebars);

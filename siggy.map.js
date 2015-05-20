@@ -1313,11 +1313,9 @@ siggy2.Map.prototype.setupEditor = function()
 		$('#chain-map-container').unblock();
 	} );
 
-	var fromSysInput = this.registerSystemAutoComplete("#connection-editor input[name=from-sys]");
-	var toSysInput = this.registerSystemAutoComplete("#connection-editor input[name=to-sys]");
-
+	var fromSysInput = $("#connection-editor input[name=from-sys]");
+	var toSysInput = $("#connection-editor input[name=to-sys]");
 	var fromCurrentInput = $('#connection-editor input[name=from-current-location]');
-
 	var toCurrentInput = $('#connection-editor input[name=to-current-location]');
 
 	fromCurrentInput.change( function() {
@@ -1529,29 +1527,6 @@ siggy2.Map.prototype.updateJumpLog = function( hash )
 				logList.append( $('<li><b>No jumps recorded<b/></li>') );
 			}
 		} );
-}
-
-siggy2.Map.prototype.registerSystemAutoComplete = function(inputSelector)
-{
-    var that = this;
-    var input = $(inputSelector);
-    //resets cause fucking browsers
-    input.val('');
-    input.prop('disabled',false);
-    input.autocomplete({url: that.baseUrl+'chainmap/autocomplete_wh', minChars: 2,
-        showResult: function(value, data) {
-            if( data[0] != '' )
-            {
-                return  value + ' (' + data[0] + ')';
-            }
-            else
-            {
-                return  value;
-            }
-        }
-    });
-
-    return input;
 }
 
 siggy2.Map.prototype.resetWormholeEditor = function()

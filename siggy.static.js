@@ -291,6 +291,8 @@ var pulsarEffects = {
 	]
 }
 
+
+
 siggy2.StaticData = {
 	wormholeClassMap: [],
 	wormholeTypes: [],
@@ -310,11 +312,12 @@ siggy2.StaticData = {
 	},
 	templateSiteTooltip: function(dummy)
 	{
-	}
+	},
 
+	systemTypeAhead: null
 };
 
-siggy2.StaticData.load = function(baseURL)
+siggy2.StaticData.load = function(baseUrl)
 {
 	var $this = this;
 
@@ -322,7 +325,7 @@ siggy2.StaticData.load = function(baseURL)
 	$this.templateSiteTooltip = Handlebars.compile( $("#template-site-tooltip").html() );
 
 	jQuery.ajax({
-		 url: baseURL + 'data/sig_types',
+		 url: baseUrl + 'data/sig_types',
 		 success: function(result) {
 					$this.wormholeClassMap = result.wormholes;
 					$this.wormholeTypes = result.wormhole_types;
@@ -331,6 +334,18 @@ siggy2.StaticData.load = function(baseURL)
 				  },
 		 async: false,
 		 dataType: 'json'
+	});
+
+	this.systemTypeAhead = new Bloodhound({
+		datumTokenizer: function(d) {
+			return Bloodhound.tokenizers.whitespace(d.name);
+		},
+		queryTokenizer: Bloodhound.tokenizers.whitespace,
+		prefetch: baseUrl + 'data/systems?' + time(),
+		remote: {
+			url: baseUrl+'chainmap/autocomplete_wh?q=%QUERY',
+			wildcard: '%QUERY'
+		}
 	});
 }
 
