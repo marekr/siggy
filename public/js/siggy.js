@@ -144,6 +144,7 @@ siggy2.Core.prototype.initialize = function ()
 	} );
 
 	siggy2.StaticData.load(this.settings.baseUrl);
+	siggy2.Helpers.setupSystemTypeAhead('.system-typeahead');
 
 
 	this.charactersettings.initialize();

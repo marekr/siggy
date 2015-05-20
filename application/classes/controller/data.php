@@ -1,14 +1,30 @@
 <?php
 
 class Controller_Data extends FrontController {
-	public function action_sig_types()
-	{
+
+	public function before()
+    {
 		if( Kohana::$environment == Kohana::PRODUCTION )
 		{
 			header('content-type: application/json');
 			ob_start( 'ob_gzhandler' );
 		}
+	}
 
+	public function action_systems()
+	{
+        $systems = DB::query(Database::SELECT, "SELECT ss.id, ss.name, r.regionName as region_name
+													FROM solarsystems ss
+													LEFT JOIN regions r ON(ss.region = r.regionID)")
+								->execute()
+								->as_array();
+
+		print (json_encode($systems));
+		die();
+	}
+
+	public function action_sig_types()
+	{
 		$output = array();
 
         $wormholeTypes = DB::query(Database::SELECT, "SELECT * FROM statics")

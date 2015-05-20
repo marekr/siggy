@@ -99,20 +99,20 @@
 					<div id="connection-editor-add" class="connection-editor-group">
 						<div class='box-header'><i class="fa fa-link"></i> Create a connection</div>
 						<div>
-							<div style="float:left;text-align:right;">
-								From <input type='text' name='from-sys' /><br />
-								<label style="display:block;margin-top:3px;">
-									<input type='checkbox' name='from-current-location' value='1' />  Current Location
+							<div class='form-group'>
+								<label for='connection-editor-from'>From</label>
+								<input id='connection-editor-from' type='text' name='from-sys' class='typeahead system-typeahead form-control' /><br />
+								<label style="display:block">
+									<input type='checkbox' name='from-curr3ent-location' value='1' />  Current Location
 								</label>
 							</div>
-							<div style="float:right;text-align:right;">
-								To <input type='text' name='to-sys' /><br />
-								<label style="display:block;margin-top:3px;">
-									<input type='checkbox' name='to-current-location' value='1' />  Current Location
+							<div class='form-group'>
+								<label for='connection-editor-to'>To</label>
+								<input id='connection-editor-to' type='text' name='to-sys' class='typeahead system-typeahead form-control' /><br />
+								<label style="display:block;">
+									<input type='checkbox' name='to-curre3nt-location' value='1' />  Current Location
 								</label>
 							</div>
-							<div class="clearfix"></div>
-							<br />
 							<div class="form-group">
 								<label>Connection Type
 									<select name="connection-editor-type" class='siggy-input'>

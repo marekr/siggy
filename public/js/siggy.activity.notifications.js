@@ -169,6 +169,9 @@ siggy2.Activity.Notifications.prototype.getNotifierTemplate = function(notifier)
 
 siggy2.Activity.Notifications.prototype.openNotifierForm = function(notifier)
 {
+	$('.notifier-system-typeahead').typeahead('destroy');
+	$('#notifier-form div.form-content').empty();
+
 	var $this = this;
 	var data = {
 		errors: {},
@@ -201,6 +204,9 @@ siggy2.Activity.Notifications.prototype.openNotifierForm = function(notifier)
 
 	var title = _('Add {0} Notifier').format($this.getNotifierTitle(notifier));
 	$('#notifier-form div.box-header').html(title);
+
+
+	siggy2.Helpers.setupSystemTypeAhead('.notifier-system-typeahead');
 }
 
 siggy2.Activity.Notifications.prototype.update = function()

@@ -193,12 +193,12 @@ MAP */
 
 .map-class-low
 {
-	color: #FF9308;	
+	color: #FF9308;
 }
 
 .map-class-null
 {
-	color: #FF0D0D;	
+	color: #FF0D0D;
 }
 
 .map-class-unknown,
@@ -294,18 +294,18 @@ MAP */
 	width: 10px;
 	height:10px;
 }
- 
+
 /* Track */
 #chain-map-scrolltainer::-webkit-scrollbar-track {
-	
+
 }
- 
+
 /* Handle */
 #chain-map-scrolltainer::-webkit-scrollbar-thumb {
-	background-color: #A46D00; 
+	background-color: #A46D00;
 }
 #chain-map-scrolltainer::-webkit-scrollbar-thumb:window-inactive {
-	background: rgba(255,0,0,0.4); 
+	background: rgba(255,0,0,0.4);
 }
 
 #chain-map-scrolltainer::-webkit-scrollbar-track-piece {
@@ -399,14 +399,6 @@ button.centered
 	display:block;
 	margin:0 auto;
 }
-
-input[name=from-sys],
-input[name=to-sys]
-{
-    width:100px;
-}
-
-
 
 ul.itemList li
 {

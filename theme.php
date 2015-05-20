@@ -22,7 +22,6 @@ $themeFiles = array( 'global_variables.css',
                       'jquery.qtip.css',
 					  'jquery.ui.css',
 					  'jquery.contextMenu.css',
-                      'autocomplete.css',
                       'icons.css',
                       'buttons.css',
                       'dropdown.css',
@@ -30,7 +29,8 @@ $themeFiles = array( 'global_variables.css',
 					  'glyphicons.css',
 					  'nav.css',
 					  'sidebar.css',
-                      'pagination.css'
+                      'pagination.css',
+                      'autocomplete.css'
 					);
 
 

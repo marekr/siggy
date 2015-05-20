@@ -605,10 +605,18 @@ class Controller_Chainmap extends FrontController {
 			return;
 		}
 
-		$customsystems = DB::select( array('solarsystems.name', 'name'), array('activesystems.displayName', 'displayName') )
+		$output = array();
+		$customsystems = DB::select( array('solarsystems.id', 'id'),
+									array('solarsystems.name', 'name'),
+									array('activesystems.displayName', 'displayName'),
+									array('regions.regionName', 'regionName'),
+									array('solarsystems.sysClass', 'class')
+									)
 										->from('activesystems')
 										->join('solarsystems', 'LEFT')
 										->on('activesystems.systemID', '=', 'solarsystems.id')
+										->join('regions', 'LEFT')
+										->on('solarsystems.region', '=', 'regions.regionID')
 										->where('displayName','like',$q.'%')
 										->where('groupID', '=', Auth::$session->groupID)
 										->where('chainmap_id', '=', Auth::$session->accessData['active_chain_map'])
@@ -617,28 +625,13 @@ class Controller_Chainmap extends FrontController {
 
 		foreach($customsystems as $system)
 		{
-			print $system['displayName']."|".$system['name']."\n";
+			$output[] = array('id' => (int)$system['id'],
+								'name' =>$system['name'],
+								'display_name' => $system['displayName'],
+								'region_name' => $system['regionName'] );
 		}
 
-		$systems = DB::select(array('solarsystems.name', 'name'),array('regions.regionName', 'regionName'), array('solarsystems.sysClass', 'class'))
-								->from('solarsystems')
-								->join('regions', 'LEFT')
-								->on('solarsystems.region', '=', 'regions.regionID')
-								->where('name','like',$q.'%')
-								->execute()
-								->as_array();
-
-		foreach($systems as $system)
-		{
-			if( $system['class'] >= 7 )
-			{
-				print $system['name']."|".$system['regionName']."\n";
-			}
-			else
-			{
-				print $system['name']."|\n";
-			}
-		}
+		print (json_encode($output));
 		die();
 	}
 

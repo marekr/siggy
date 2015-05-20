@@ -3,7 +3,7 @@
 	<div class="form-group">
         {{label_validation 'notifier[system_name]' 'System Name' errors}}
 
-        {{input_validation 'notifier[system_name]' notifier.system_name errors}}
+        {{input_validation 'notifier[system_name]' notifier.system_name errors class="form-control typeahead notifier-system-typeahead"}}
         {{field_errors 'notifier[system_name]' errors class="help-block text-error"}}
 	</div>
 	<div class="form-group">
