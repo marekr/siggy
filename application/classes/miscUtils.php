@@ -121,6 +121,18 @@ final class miscUtils {
 
 		return 0;
 	}
+	
+	static function isWspaceID($id)
+	{
+		if( $id >= 31000000 )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 
 	static function searchEVEEntityByName( $names, $type = 'corp' )
 	{

@@ -444,8 +444,19 @@ class Controller_Siggy extends FrontController {
 		else if (isset($data->num_jumps) &&
 				(int)$data->num_jumps > 0)
 		{
+			/* incase its set for a wormhole jsig just return */
+			if( miscUtils::isWspaceID($data->system_id) )
+			{
+				return;
+			}
+			
 			foreach($systems as $k => $system)
 			{
+				if( miscUtils::isWspaceID($system) )
+				{
+					continue;
+				}
+				
 				$path = $pather->shortest($data->system_id, $system);
 
 				if( $path['distance'] <= $data->num_jumps )
