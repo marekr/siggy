@@ -206,8 +206,9 @@ class UserSession {
 
 		$type = $this->__determineSessionType();
 
+		/* Shitty fix, always update groupID because we don't on creaton have a valid one */
 		$update = array( 'lastBeep' => time(),
-						 'groupID' => ( isset($this->groupID) ? $this->groupID : 0 ),
+						 'groupID' => ( isset(Auth::$user->data['groupID']) ? Auth::$user->data['groupID'] : 0 ),
 						 'sessionType' => $type,
 						 'chainmap_id' => ( isset($this->accessData['active_chain_map']) ? $this->accessData['active_chain_map'] : 0 )
 						);
