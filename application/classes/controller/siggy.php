@@ -344,7 +344,7 @@ class Controller_Siggy extends FrontController {
 		{
 			//existing wh
 			DB::update('wormholes')
-				->set( array('lastJump' => time()) )
+				->set( array('last_jump' => time()) )
 				->where('hash', '=', $whHash)
 				->where('group_id', '=', Auth::$session->groupID)
 				->where('chainmap_id', '=', Auth::$session->accessData['active_chain_map'])
@@ -725,7 +725,6 @@ class Controller_Siggy extends FrontController {
 		}
 
 		$update['group_cache_time'] = (int) Auth::$session->accessData['cache_time'];
-
 
 
 		$latestDisplayed = isset($_POST['newest_notification']) ? (int) $_POST['newest_notification']  : 0;

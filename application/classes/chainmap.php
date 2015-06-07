@@ -58,7 +58,7 @@ class chainmap {
 
 		$data = array();
 
-		$wormholes = DB::query(Database::SELECT, "SELECT w.`hash`, w.`to`, w.`from`, w.eol, w.mass, w.eol_date_set, w.frigate_sized,
+		$wormholes = DB::query(Database::SELECT, "SELECT w.`hash`, w.to_system_id, w.from_system_id, w.eol, w.mass, w.eol_date_set, w.frigate_sized,
 														s.`mass` as wh_mass, s.`jump_mass` as wh_jump_mass, s.`lifetime` as wh_lifetime,
 														s.`regen` as wh_regen, s.`name` as wh_name
 			 										FROM wormholes AS w
@@ -87,8 +87,8 @@ class chainmap {
 
 			$wormholes[$k]['total_tracked_mass'] = $jumpTotal['total'];
 
-			$systemsToPoll[] = $wormhole['to'];
-			$systemsToPoll[] = $wormhole['from'];
+			$systemsToPoll[] = $wormhole['to_system_id'];
+			$systemsToPoll[] = $wormhole['from_system_id'];
 			$wormholeHashes[] = $wormhole['hash'];
 		}
 		$data['wormholes'] = $wormholes;
@@ -235,12 +235,13 @@ class chainmap {
 														WHERE groupID=:group AND
 														chainmap_id=:chain AND
 														systemID IN (SELECT
-																		CASE WHEN w.`to`=:sys
-																			THEN w.`from`
-																			ELSE w.`to`
+																		CASE WHEN w.to_system_id=:sys
+																			THEN w.from_system_id
+																			ELSE w.to_system_id
 																		END AS `connected_system`
 																		FROM wormholes w
-																		WHERE (w.`to`=:sys OR w.`from`=:sys) AND w.group_id=:group AND w.chainmap_id=:chain)")
+																		WHERE (w.to_system_id=:sys OR w.from_system_id=:sys) 
+																		AND w.group_id=:group AND w.chainmap_id=:chain)")
 						->param(':sys', intval($system))
 						->param(':group', $this->group_id)
 						->param(':chain', $this->id)
@@ -250,7 +251,7 @@ class chainmap {
 
 	public function system_is_mapped( $system )
 	{
-		$exists = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE (`from`=:system OR `to`=:system) AND group_id=:group AND chainmap_id=:chainmap")
+		$exists = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE (from_system_id=:system OR to_system_id=:system) AND group_id=:group AND chainmap_id=:chainmap")
 					->param(':system', $system)
 					->param(':group', Auth::$session->groupID)
 					->param(':chainmap', Auth::$session->accessData['active_chain_map'])
@@ -267,7 +268,7 @@ class chainmap {
 
 	public function delete_all_system_connections( $system )
 	{
-		DB::query(Database::DELETE, 'DELETE FROM wormholes WHERE (`to` = :system OR `from` = :system) AND group_id=:groupID AND chainmap_id=:chainmap')
+		DB::query(Database::DELETE, 'DELETE FROM wormholes WHERE (to_system_id = :system OR from_system_id = :system) AND group_id=:groupID AND chainmap_id=:chainmap')
 			->param(':groupID', Auth::$session->groupID)
 			->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 			->param(':system', $system)
@@ -283,14 +284,14 @@ class chainmap {
 		try
 		{
 			$insert = array('hash' => $whHash,
-							'to' => $sys1,
-							'from' => $sys2,
+							'to_system_id' => $sys1,
+							'from_system_id' => $sys2,
 							'eol' => $eol,
 							'mass' => $mass,
 							'group_id' => $this->group_id,
 							'wh_type_id' => $wh_type_id,
 							'chainmap_id' => $this->id,
-							'lastJump' => time()
+							'last_jump' => time()
 							);
 
 			DB::insert('wormholes', array_keys($insert) )->values(array_values($insert))->execute();
@@ -526,7 +527,7 @@ class chainmap {
 		{
 			if( !in_array($sys_id, $home_systems) )
 			{
-				$check = DB::query(Database::SELECT, 'SELECT * FROM	 wormholes WHERE group_id=:groupID AND chainmap_id=:chain_map AND (`to`=:id OR `from`=:id)')
+				$check = DB::query(Database::SELECT, 'SELECT * FROM	 wormholes WHERE group_id=:groupID AND chainmap_id=:chain_map AND (to_system_id=:id OR from_system_id=:id)')
 								->param(':groupID', $this->group_id)
 								->param(':chain_map', $this->id)
 								->param(':id', $sys_id)
@@ -549,7 +550,6 @@ class chainmap {
 			return 0;
 		}
 
-		$name = strtolower($name);
 		$systemID = DB::query(Database::SELECT, "SELECT systemID,displayName FROM activesystems WHERE groupID=:groupID AND chainmap_id=:chainmap AND displayName LIKE :name")
 													->param(':name', $name )
 													->param(':groupID', $this->group_id)
@@ -557,6 +557,7 @@ class chainmap {
 													->execute()
 													->get('systemID', 0);
 
+		$name = strtolower($name);
 		if( $systemID == 0 )
 		{
 			$systemID = DB::query(Database::SELECT, 'SELECT id,name FROM solarsystems WHERE LOWER(name) = :name')

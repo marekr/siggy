@@ -55,15 +55,15 @@ class Controller_Chainmap extends FrontController {
 			exit();
 		}
 
-		$systems = DB::query(Database::SELECT, "( SELECT DISTINCT w.`to` as sys_id,ss.name
+		$systems = DB::query(Database::SELECT, "( SELECT DISTINCT w.to_system_id as sys_id,ss.name
 												FROM wormholes w
-												LEFT JOIN solarsystems ss ON (ss.id = w.`to`)
-												WHERE w.`to`< 31000000 AND w.group_id=:group AND w.chainmap_id=:chainmap)
+												LEFT JOIN solarsystems ss ON (ss.id = w.to_system_id)
+												WHERE w.to_system_id < 31000000 AND w.group_id=:group AND w.chainmap_id=:chainmap)
 												UNION DISTINCT
-											( SELECT DISTINCT w.`from` as sys_id, ss.name
+											( SELECT DISTINCT w.from_system_id as sys_id, ss.name
 											FROM wormholes w
-											LEFT JOIN solarsystems ss ON (ss.id = w.`from`)
-											WHERE w.`from` < 31000000 AND w.group_id=:group AND w.chainmap_id=:chainmap)")
+											LEFT JOIN solarsystems ss ON (ss.id = w.from_system_id)
+											WHERE w.from_system_id < 31000000 AND w.group_id=:group AND w.chainmap_id=:chainmap)")
 						->param(':group', Auth::$session->groupID)
 						->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 						->execute()->as_array();

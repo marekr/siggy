@@ -310,7 +310,7 @@ class Controller_Cron extends Controller
 		$cutoff = time()-60*60*24;
 
 		//DB::update('activesystems')->set(array('displayName' => '', 'activity' => 0, 'lastActive' => 0, 'inUse' => 0))->where('lastActive', '<=', $cutoff)->where('lastActive', '!=', 0)->execute();
-		DB::delete('wormholes')->where('lastJump', '<=', $cutoff)->execute();
+		DB::delete('wormholes')->where('last_jump', '<=', $cutoff)->execute();
 
 		print 'done!';
 	}

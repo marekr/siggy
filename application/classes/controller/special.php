@@ -623,7 +623,7 @@ class Controller_Special extends Controller {
 	{
 			$data = array();
 
-			$wormholes = DB::query(Database::SELECT, "SELECT `hash`, `to`, `from`, eol, mass, eolToggled FROM wormholes WHERE groupID=:group AND subGroupID=:subGroupID")
+			$wormholes = DB::query(Database::SELECT, "SELECT `hash`, to_system_id, from_system_id, eol, mass, eol_date_set FROM wormholes WHERE groupID=:group AND subGroupID=:subGroupID")
 							 ->param(':group', $groupID)->param(':subGroupID', $subGroupID)->execute()->as_array('hash');
 
 			$systemsToPoll = array();
