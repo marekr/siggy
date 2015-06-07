@@ -1017,8 +1017,8 @@ siggy2.Map.prototype.draw = function()
         var wormhole = this.wormholes[w];
 
 		var options = {
-			to: wormhole.to,
-			from: wormhole.from,
+			to: wormhole.to_system_id,
+			from: wormhole.from_system_id,
 			hash: wormhole.hash,
 			type: 'wormhole',
 			wormhole: {
