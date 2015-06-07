@@ -145,7 +145,7 @@ final class miscUtils {
 				$name = trim($name);
 				if(!empty($name))
 				{
-					$queryArray[] = "corporationName LIKE ".Database::instance()->escape("%".$name."%");
+					$queryArray[] = "corporationName LIKE ".Database::instance()->escape($name."%");
 				}
 			}
 			$querySQL = implode(" OR ", $queryArray);
