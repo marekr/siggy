@@ -136,6 +136,7 @@ final class miscUtils {
 
 	static function searchEVEEntityByName( $names, $type = 'corp' )
 	{
+		$results = [];
 		if( $type == 'corp' )
 		{
 			$nameArray = explode(',', $names);
@@ -149,12 +150,9 @@ final class miscUtils {
 				}
 			}
 			$querySQL = implode(" OR ", $queryArray);
-			$results = DB::query(Database::SELECT, 'SELECT * FROM corporations WHERE '.$querySQL)->execute()->as_array();
-
-			if( count( $results ) )
-			{
-				return $results;
-			}
+			$results = DB::query(Database::SELECT, 'SELECT * FROM corporations WHERE '.$querySQL)
+						->execute()
+						->as_array('corporationID');
 		}
 
 		PhealHelper::configure();
@@ -172,7 +170,6 @@ final class miscUtils {
 			$pheal->scope = 'eve';
 		}
 
-		$resultArray = array();
 		foreach( $potentialCorps as $corp )
 		{
 			try
@@ -191,14 +188,14 @@ final class miscUtils {
 											->param(':ticker', $result['ticker'] )
 											->param(':lastUpdate', time() )
 											->execute();
-					$resultArray[] = $result;
+					$results[(string)$corp['characterID'] ] = $result;
 				}
 				else
 				{
 					$result = $pheal->CharacterInfo( array( 'characterID' => (int)$corp['characterID'] ) )->toArray();
 					$result = $result['result'];
 
-					$resultArray[] = $result;
+					$results[(string)$corp['characterID']] = $result;
 				}
 			}
 			catch (\Pheal\Exceptions\PhealException $e)
@@ -210,7 +207,7 @@ final class miscUtils {
 			}
 		}
 
-		return $resultArray;
+		return $results;
 	}
 
 	static function getDBCacheItem( $key )
