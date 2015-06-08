@@ -1590,14 +1590,14 @@ siggy2.Map.prototype.editWormhole = function(conn)
 	{
 		fromDName = ' ('+this.systems[conn.settings.from].displayName+')';
 	}
-	$('#connection-editor-from').text(this.systems[conn.settings.from].name+fromDName);
+	$('#connection-editor-from-text').text(this.systems[conn.settings.from].name+fromDName);
 
 	var toDName = '';
 	if( this.systems[conn.settings.to].displayName != '' )
 	{
 		toDName = ' ('+this.systems[conn.settings.to].displayName+')';
 	}
-	$('#connection-editor-to').text(this.systems[conn.settings.to].name+toDName);
+	$('#connection-editor-to-text').text(this.systems[conn.settings.to].name+toDName);
 
 	if( conn.settings.type == 'wormhole' )
 	{

@@ -129,7 +129,7 @@
 						<div class="box-header text-left"><i class="fa fa-link"></i> Editing Connection</div>
 						<div>
 							<p>
-								<span id="connection-editor-from"></span> to <span id="connection-editor-to"></span>
+								<span id="connection-editor-from-text"></span> to <span id="connection-editor-to-text"></span>
 							</p>
 							<button class="btn btn-default btn-xs btn-danger" id="connection-editor-disconnect"><i class="fa fa-chain-broken"></i> Disconnect Connection</button>
 						</div>
