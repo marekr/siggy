@@ -30,6 +30,36 @@ siggy2.Notifications = function(core)
 		$this.core.loadActivity('notifications');
 	})
 
+
+	$(document).on('click','.notification-link', function(e)
+	{
+		e.preventDefault();
+
+		$this.handleNotificationLinkClick($(this));
+	});
+}
+
+siggy2.Notifications.prototype.handleNotificationLinkClick = function(ele)
+{
+	var $this = this;
+	var type = $(ele).data('type');
+
+	if( type == 'siggy_announcement' )
+	{
+		$.ajax({
+			url: $this.core.settings.baseUrl + 'announcements/view',
+			cache: false,
+			dataType: 'json',
+			method: 'get',
+			data: {id: $(ele).data('id')},
+			success: function (data)
+			{
+				$('#dialog-notice .box-header').html(data.title);
+				$('#dialog-notice .notice-content').html(data.content);
+				$this.core.openBox($('#dialog-notice'));
+			}
+		});
+	}
 }
 
 siggy2.Notifications.prototype.setNotificationCount = function(counter)
@@ -64,6 +94,7 @@ siggy2.Notifications.prototype.update = function(data)
 		var counter = 0;
 
 		data.items = data.items.reverse();
+		console.log(data.items);
 		for( var i in data.items )
 		{
 			var n = data.items[i];
@@ -108,6 +139,10 @@ siggy2.Notifications.getNotificationString = function(type, data)
 	{
 		var name = siggy2.StaticData.getSiteNameByID(data.site_id);
 		return _('<b>{0}</b> found {1} in system {2} as signature {3}').format(data.discoverer_name, _(name), data.system_name, data.signature);
+	}
+	else if( type == 'siggy_announcement' )
+	{
+		return _('<b>siggy</b> <a class="notification-link" data-type="siggy_announcement" data-id="{1}">{0}</a>').format(data.announcement_title, data.announcement_id);
 	}
 }
 

@@ -3,9 +3,9 @@
  * @copyright Copyright (c) 2014 borkedLabs - All Rights Reserved
  */
 
-function charactersettings(options)
+function charactersettings(core, options)
 {
-	this.siggyMain = null;
+	this.core = core;
 	this.defaults = {
 		baseUrl: '',
 		themeID: 0,
@@ -15,9 +15,7 @@ function charactersettings(options)
 	};
 
 	this.settings = $.extend({}, this.defaults, options);
-	this.dscans = {};
 }
-
 
 charactersettings.prototype.initialize = function()
 {
@@ -26,25 +24,7 @@ charactersettings.prototype.initialize = function()
 	$('#settings-button').click(function ()
 	{
 		$this.initForm();
-		$.blockUI({
-			message: $('#settings-dialog'),
-			css: {
-				border: 'none',
-				padding: '15px',
-				background: 'transparent',
-				color: 'inherit',
-				cursor: 'auto',
-				textAlign: 'left',
-				centerX: true,
-				centerY: true
-			},
-			overlayCSS: {
-				cursor: 'auto'
-			},
-			fadeIn:  0,
-			fadeOut:  0
-		});
-		$('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);
+		$this.core.openBox($('#settings-dialog'));
 	});
 
 	$("#settings-form select[name=theme_id]").change( function() {
@@ -115,7 +95,7 @@ charactersettings.prototype.initializeHotkeys = function()
 {
 	var $this = this;
 
-	if( this.siggyMain.settings.igb )
+	if( this.core.settings.igb )
 	{
 		$(document).bind('keydown', 'ctrl+-', function(){
 			$this.zoomOut();
@@ -135,11 +115,11 @@ charactersettings.prototype.initializeHotkeys = function()
 			$this.resetZoom();
 		});
 
-		this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+Z', 'Reset page zoom');
-		this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+-', 'Zoom page in');
-		this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+=', 'Zoom page out');
-		this.siggyMain.hotkeyhelper.registerHotkey('+', 'Zoom page in');
-		this.siggyMain.hotkeyhelper.registerHotkey('-', 'Zoom page out');
+		this.core.hotkeyhelper.registerHotkey('Ctrl+Z', 'Reset page zoom');
+		this.core.hotkeyhelper.registerHotkey('Ctrl+-', 'Zoom page in');
+		this.core.hotkeyhelper.registerHotkey('Ctrl+=', 'Zoom page out');
+		this.core.hotkeyhelper.registerHotkey('+', 'Zoom page in');
+		this.core.hotkeyhelper.registerHotkey('-', 'Zoom page out');
 	}
 }
 
@@ -178,7 +158,7 @@ charactersettings.prototype.performSettingsRefresh = function()
 	}
 
 	//force a update to refresh
-	$this.siggyMain.forceUpdate = 1;
+	$this.core.forceUpdate = 1;
 	//do not call updateNow as on page load this will cause quirkyness/race condition with another update call
 }
 

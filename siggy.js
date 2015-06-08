@@ -81,8 +81,7 @@ siggy2.Core = function( options )
 	this.displayStates.map = $.extend({}, this.defaultDisplayStates.map, dispStates.map);
 
 
-	this.charactersettings = new charactersettings(this.settings.charsettings);
-	this.charactersettings.siggyMain = this;
+	this.charactersettings = new charactersettings(this, this.settings.charsettings);
 	this.charactersettings.settings.baseUrl = this.settings.baseUrl;
 
 	this.globalnotes = new globalnotes(this.settings.globalnotes);
