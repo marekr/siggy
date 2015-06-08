@@ -100,7 +100,9 @@ siggy2.Core = function( options )
 	  					search: new siggy2.Activity.Search(this),
 						siggy: new siggy2.Activity.siggy(this),
 						scannedsystems: new siggy2.Activity.ScannedSystems(this),
-						notifications: new siggy2.Activity.Notifications(this)
+						notifications: new siggy2.Activity.Notifications(this),
+						astrolabe: new siggy2.Activity.Astrolabe(this),
+						chainmap: new siggy2.Activity.Chainmap(this)
 					};
 
 	$(document).on('click','button.dialog-cancel', function(e)

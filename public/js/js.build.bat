@@ -18,6 +18,8 @@
 --js=siggy.activity.search.js ^
 --js=siggy.activity.thera.js ^
 --js=siggy.activity.notifications.js ^
+--js=siggy.activity.astrolabe.js ^
+--js=siggy.activity.chainmap.js ^
 --source_map_format=V3 ^
 --create_source_map siggy.compiled.js.map ^
 --js_output_file=siggy.compiled.js

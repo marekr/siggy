@@ -51,6 +51,8 @@
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.activity.siggy.js?<?php echo time(); ?>'></script>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.activity.scannedsystems.js?<?php echo time(); ?>'></script>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.activity.notifications.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.activity.astrolabe.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.activity.chainmap.js?<?php echo time(); ?>'></script>
         <?php else: ?>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/thirdparty.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>
@@ -65,6 +67,7 @@
 					</a>
 					<ul class="dropdown-menu siggy-main-navbar" role="menu">
 						<li><a class="activity-menu-option" data-activity="siggy" style="display:none"><span class="glyphicon glyphicon-list"></span> siggy</a></li>
+                        <!--- <li><a class="activity-menu-option" data-activity="astrolabe"><span class="glyphicon glyphicon-map-marker"></span> Astrolabe</a></li> -->
 						<li><a class="activity-menu-option" data-activity="scannedsystems" style="display:none"><span class="glyphicon glyphicon-list"></span> Scanned Systems</a></li>
 						<li><a class="activity-menu-option" data-activity="thera"><span class="glyphicon glyphicon-magnet"></span> Thera</a></li>
                         <li><a class="activity-menu-option" data-activity="notifications"><span class="glyphicon glyphicon-bell"></span> Notifications</a></li>
@@ -151,6 +154,7 @@
     	<?php echo View::factory('siggy/activities/thera'); ?>
     	<?php echo View::factory('siggy/activities/scanned_systems'); ?>
     	<?php echo View::factory('siggy/activities/notifications'); ?>
+    	<?php echo View::factory('siggy/activities/astrolabe'); ?>
 		<div id="activity-siggy" class="wrapper" style="display:none">
 			<?php echo $content; ?>
 		</div>
