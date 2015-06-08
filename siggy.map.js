@@ -1027,7 +1027,9 @@ siggy2.Map.prototype.draw = function()
 				eol:  parseInt(wormhole.eol),
 				frigateSized: parseInt(wormhole.frigate_sized),
 				totalTrackedMass: wormhole.total_tracked_mass
-			}
+			},
+			createdAt: wormhole.created_at,
+			updatedAt: wormhole.updated_at
 		};
 
 		if( wormhole.wh_name != null )
@@ -1057,7 +1059,9 @@ siggy2.Map.prototype.draw = function()
 			to: stargate.to_system_id,
 			from: stargate.from_system_id,
 			hash: stargate.hash,
-			type: 'stargate'
+			type: 'stargate',
+			createdAt: stargate.created_at,
+			updatedAt: stargate.updated_at
 		};
 
 		var connection = new siggy2.MapConnection(jsPlumb,options);
@@ -1076,7 +1080,9 @@ siggy2.Map.prototype.draw = function()
 			to: cyno.to_system_id,
 			from: cyno.from_system_id,
 			hash: cyno.hash,
-			type: 'cyno'
+			type: 'cyno',
+			createdAt: cyno.created_at,
+			updatedAt: cyno.updated_at
 		};
 
 		var connection = new siggy2.MapConnection(jsPlumb,options);
@@ -1096,7 +1102,9 @@ siggy2.Map.prototype.draw = function()
 			to: jumpbridge.to_system_id,
 			from: jumpbridge.from_system_id,
 			hash: jumpbridge.hash,
-			type: 'jumpbridge'
+			type: 'jumpbridge',
+			createdAt: jumpbridge.created_at,
+			updatedAt: jumpbridge.updated_at
 		};
 
 		var connection = new siggy2.MapConnection(jsPlumb,options);

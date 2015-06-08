@@ -27,7 +27,9 @@ siggy2.MapConnection = function(plumb, options)
 					regen: 0
 				}
 			},
-			type: 'wormhole'
+			type: 'wormhole',
+			createdAt: '',
+			updatedAt: ''
 	};
 
 	this.settings = $.extend({}, this.defaults, options);
@@ -303,19 +305,22 @@ siggy2.MapConnection.prototype.setupOverlay = function(connectionOptions)
 	}
 	else if( this.settings.type == 'stargate' )
 	{
-		this.label = 'Stargate';
+		this.label = 'Stargate' + "<br />";
 	}
 	else if( this.settings.type == 'jumpbridge' )
 	{
-		this.label = 'Jumpbridge';
+		this.label = 'Jumpbridge'+ "<br />";
 	}
 	else if( this.settings.type == 'cyno' )
 	{
-		this.label = 'Cyno';
+		this.label = 'Cyno'+ "<br />";
 	}
+
 
 	if( this.label != '' )
 	{
+		this.label += 'Created at: ' + this.settings.createdAt+ "<br />";
+
 		connectionOptions.overlays = [
 										["Label", {
 											cssClass:"map-connection-overlay",
