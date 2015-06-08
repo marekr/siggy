@@ -16,9 +16,7 @@ if( isset( $_GET['id'] ) )
 $themeFiles = array( 'global_variables.css',
                       'reset.css',
                       'base.css',
-                      'siggy.css',
                       'input.css',
-                      'siggy.map.css',
                       'jquery.qtip.css',
 					  'jquery.ui.css',
 					  'jquery.contextMenu.css',
@@ -30,7 +28,9 @@ $themeFiles = array( 'global_variables.css',
 					  'nav.css',
 					  'sidebar.css',
                       'pagination.css',
-                      'autocomplete.css'
+                      'autocomplete.css',
+                      'siggy.css',
+                      'siggy.map.css',
 					);
 
 

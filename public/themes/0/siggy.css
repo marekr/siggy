@@ -888,3 +888,9 @@ label {
 {
 	width: 300px;
 }
+
+.notification-link
+{
+	display: inline !important;
+	font-style: italic;
+}
