@@ -18,7 +18,7 @@ class Controller_Siggy extends FrontController {
 
 		// set default
 		$view->systemData = array('id' => 30000142, 'name' => 'Jita');
-
+		
 		// did we have an url requested system?
 		$requested = false;
 		if( !empty($ssname) )

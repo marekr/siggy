@@ -134,16 +134,16 @@ class Controller_Cron extends Controller
 
 		DB::delete('siggysessions')->where('lastBeep', '<=', $cutoff)->execute();
 	}
-	
+
 	public function action_purgeNotifications()
 	{
 		//15 day cutoff
 		$cutoff = time()-60*60*24*15;
-		
+
 		$query = DB::query(Database::DELETE, "DELETE FROM notifications WHERE created_at <= :cutoff")
 			->param(':cutoff',$cutoff)
 			->execute();
-			
+
 		print "done";
 	}
 

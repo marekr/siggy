@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 class chainmap {
 
 	private $id = 0;
@@ -240,7 +242,7 @@ class chainmap {
 																			ELSE w.to_system_id
 																		END AS `connected_system`
 																		FROM wormholes w
-																		WHERE (w.to_system_id=:sys OR w.from_system_id=:sys) 
+																		WHERE (w.to_system_id=:sys OR w.from_system_id=:sys)
 																		AND w.group_id=:group AND w.chainmap_id=:chain)")
 						->param(':sys', intval($system))
 						->param(':group', $this->group_id)
@@ -291,7 +293,8 @@ class chainmap {
 							'group_id' => $this->group_id,
 							'wh_type_id' => $wh_type_id,
 							'chainmap_id' => $this->id,
-							'last_jump' => time()
+							'last_jump' => time(),
+							'created_at' => Carbon::now()
 							);
 
 			DB::insert('wormholes', array_keys($insert) )->values(array_values($insert))->execute();
@@ -359,7 +362,8 @@ class chainmap {
 							'to_system_id' => $sys1,
 							'from_system_id' => $sys2,
 							'group_id' => $this->group_id,
-							'chainmap_id' => $this->id
+							'chainmap_id' => $this->id,
+							'created_at' => Carbon::now()
 							);
 
 			DB::insert('chainmap_stargates', array_keys($insert) )->values(array_values($insert))->execute();
@@ -385,7 +389,8 @@ class chainmap {
 							'to_system_id' => $sys1,
 							'from_system_id' => $sys2,
 							'group_id' => $this->group_id,
-							'chainmap_id' => $this->id
+							'chainmap_id' => $this->id,
+							'created_at' => Carbon::now()
 							);
 
 			DB::insert('chainmap_jumpbridges', array_keys($insert) )->values(array_values($insert))->execute();
@@ -411,7 +416,8 @@ class chainmap {
 							'to_system_id' => $sys1,
 							'from_system_id' => $sys2,
 							'group_id' => $this->group_id,
-							'chainmap_id' => $this->id
+							'chainmap_id' => $this->id,
+							'created_at' => Carbon::now()
 							);
 
 			DB::insert('chainmap_cynos', array_keys($insert) )->values(array_values($insert))->execute();
