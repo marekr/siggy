@@ -349,6 +349,7 @@
 	<?php echo View::factory('siggy/boxes/dialog_exit_finder'); ?>
 	<?php echo View::factory('siggy/boxes/dialog_pos'); ?>
 	<?php echo View::factory('siggy/boxes/dialog_dscan'); ?>
+	<?php echo View::factory('siggy/boxes/dialog_notice'); ?>
 	<?php echo View::factory('siggy/boxes/dialog_notifier'); ?>
 	<?php echo View::factory('siggy/boxes/dialog_mass_sig'); ?>
 	<?php echo View::factory('siggy/handlebars/sig_table_row'); ?>

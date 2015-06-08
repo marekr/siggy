@@ -15,6 +15,12 @@ class Controller_Announcements extends FrontController {
 
 	public function action_index()
 	{
+		$this->template->title = "siggy: announcements";
+		$this->template->selectedTab = "announcements";
+		$this->template->loggedIn = Auth::loggedIn();
+		$this->template->user = Auth::$user->data;
+		$this->template->layoutMode = 'blank';
+
 		$resultCount = DB::query(Database::SELECT, "SELECT COUNT(*) as total
 									FROM announcements
 									WHERE datePublished != 0 and visibility = 'all'")
@@ -45,14 +51,22 @@ class Controller_Announcements extends FrontController {
 		$this->template->content = $view;
 	}
 
-	public function before()
+	public function action_view()
 	{
-		parent::before();
+        $this->profiler = NULL;
+        $this->auto_render = FALSE;
 
-		$this->template->title = "siggy: announcements";
-		$this->template->selectedTab = "announcements";
-		$this->template->loggedIn = Auth::loggedIn();
-		$this->template->user = Auth::$user->data;
-		$this->template->layoutMode = 'blank';
+		$id = (int)$_GET['id'];
+
+		$result = DB::query(Database::SELECT, "SELECT *
+									FROM announcements
+									WHERE datePublished != 0 and visibility = 'all'
+									AND id = :id")
+								->param(':id', $id)
+								->execute()
+								->current();
+
+		print json_encode($result);
+		die();
 	}
 }

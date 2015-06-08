@@ -9,7 +9,10 @@ class Notification {
 												character_id=0 )
 											OR
 											( group_id=:group AND
-										 	character_id=:char ))
+										 	character_id=:char )
+											OR
+											( group_id=0 AND
+										 	character_id= 0 ) )
 											AND created_at > :cutoff
 											ORDER BY created_at DESC
 											LIMIT :offset, :limit")
@@ -20,7 +23,7 @@ class Notification {
 						->param(':offset', $offset)
 						->execute()
 						->as_array();
-
+						
 		foreach($data as &$d)
 		{
 			$d['id'] = (int)$d['id'];
@@ -37,7 +40,10 @@ class Notification {
 												character_id=0 )
 											OR
 											( group_id=:group AND
-										 	character_id=:char ))
+										 	character_id=:char )
+											OR
+											( group_id=0 AND
+										 	character_id= 0 ))
 											AND created_at > :cutoff")
 						->param(':cutoff', $cutoff)
 						->param(':group', $groupID)
