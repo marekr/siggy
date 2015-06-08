@@ -263,8 +263,8 @@ class Controller_Chainmap extends FrontController {
 
 			$wormholes = DB::query(Database::SELECT, 'SELECT w.*, sto.name as to_name, sfrom.name as from_name
 														FROM wormholes w
-														INNER JOIN solarsystems sto ON sto.id = w.to
-														INNER JOIN solarsystems sfrom ON sfrom.id = w.from
+														INNER JOIN solarsystems sto ON sto.id = w.to_system_id
+														INNER JOIN solarsystems sfrom ON sfrom.id = w.from_system_id
 														WHERE w.hash IN('.$wormholeHashes.') AND w.group_id=:groupID AND w.chainmap_id=:chainmap')
 							->param(':groupID', Auth::$session->groupID)
 							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
@@ -272,8 +272,8 @@ class Controller_Chainmap extends FrontController {
 
 			foreach( $wormholes as $wh )
 			{
-				$systemIDs[] = $wh['to'];
-				$systemIDs[] = $wh['from'];
+				$systemIDs[] = $wh['to_system_id'];
+				$systemIDs[] = $wh['from_system_id'];
 
 				$log_message .= $wh['to_name'] . ' to ' . $wh['from_name'] . ', ';
 			}
