@@ -94,7 +94,6 @@ siggy2.Notifications.prototype.update = function(data)
 		var counter = 0;
 
 		data.items = data.items.reverse();
-		console.log(data.items);
 		for( var i in data.items )
 		{
 			var n = data.items[i];
