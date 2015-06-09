@@ -161,7 +161,7 @@
 		</div>
 		<?php if(isset($alt_content)){ echo $alt_content; } ?>
 
-        <div id="footer-link" style="text-align:center;font-size:0.9em;margin-top:100px;">
+        <div id="footer-link" class="wrapper" style="font-size:0.9em;">
             <p style="width:33%;float:left;text-align:left;">
             &copy; 2011-<?php echo date("Y"); ?> borkedLabs
             </p>
