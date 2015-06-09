@@ -33,7 +33,7 @@ siggy2.Activity.Chainmap = function(core)
 
 	$('#chainmap-connections-table').on('click','.chainmap-connection-delete', function(e) {
 		var $row = this;
-		$this.core.confirmDialog("Are you sure you want to delete the wormhole?", function() {
+		$this.core.confirmDialog("Are you sure you want to delete the connection?", function() {
 			var type = $($row).data('type')+"s";
 
 			var hashes = {count: 1};
