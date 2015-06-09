@@ -1,10 +1,9 @@
 <div id="activity-chainmap" class="wrapper" style="display:none">
-	<h5>Chainmap
+	<h4>Chainmap
+	</h4>
 		<select id="chainmap-table-selected" name="chainmap" class="form-control">
 			<option></option>
 		</select>
-	</h5>
-	<br />
 	<h4>Connections</h4>
 	<table class="siggy-table siggy-table-striped table-with-dropdowns" id="chainmap-connections-table">
 		<thead>
@@ -13,6 +12,9 @@
 				<th>System 2</th>
 				<th>Type</th>
 				<th>Created at</th>
+				<th>EOL</th>
+				<th>Frigate</th>
+				<th>Mass Stage</th>
 				<th></th>
 			</tr>
 		</thead>

@@ -20,6 +20,17 @@ siggy2.Activity.Chainmap = function(core)
 
 	this.table = $('#chainmap-connections-table tbody');
 
+	var tableSorterHeaders = {
+		0: {
+			sortInitialOrder: 'asc'
+		}
+	};
+
+	$('#chainmap-connections-table').tablesorter(
+	{
+		headers: tableSorterHeaders
+	});
+
 	$('#chainmap-connections-table').on('click','.chainmap-connection-delete', function(e) {
 		var $row = this;
 		$this.core.confirmDialog("Are you sure you want to delete the wormhole?", function() {
@@ -78,6 +89,7 @@ siggy2.Activity.Chainmap.prototype.updateTable = function( data )
 	for( var i in data.connections )
 	{
 		var connection = data.connections[i];
+
 		var row = this.templateTableRow({
 										toSystem: data.systems[connection.to_system_id],
 										connection: connection,
@@ -86,6 +98,7 @@ siggy2.Activity.Chainmap.prototype.updateTable = function( data )
 
 		this.table.append(row);
 	}
+	$('#chainmap-connections-table').trigger('update');
 }
 
 siggy2.Activity.Chainmap.prototype.update = function()
