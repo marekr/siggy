@@ -88,6 +88,16 @@ siggy2.Helpers.setupHandlebars = function()
 			return str.charAt(0).toUpperCase() + str.slice(1);
 	});
 
+	Handlebars.registerHelper('equal', function(lvalue, rvalue, options) {
+		if (arguments.length < 3)
+			throw new Error("Handlebars Helper equal needs 2 parameters");
+		if( lvalue != rvalue ) {
+			return options.inverse(this);
+		} else {
+			return options.fn(this);
+		}
+	});
+
 	Handlebars.registerHelper('notEqual', function(lvalue, rvalue, options) {
 		if (arguments.length < 3)
 			throw new Error("Handlebars Helper not equal needs 2 parameters");
