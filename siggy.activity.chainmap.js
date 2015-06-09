@@ -33,6 +33,16 @@ siggy2.Activity.Chainmap = function(core)
 			$($row).parent().parent().remove();
 		});
 	});
+
+	$('#chainmap-table-selected').change( function() {
+		var id = $(this).val();
+
+		if( $this.chainMapID != id)
+		{
+			$this.chainMapID = id;
+			$this.update();
+		}
+	});
 }
 
 siggy2.Activity.Chainmap.prototype.start = function(args)
@@ -45,6 +55,10 @@ siggy2.Activity.Chainmap.prototype.start = function(args)
 			this.update();
 		}
 	}
+
+	var sel = siggy2.Maps.getSelectDropdown(this.chainMapID, "(current map)");
+	$('#chainmap-table-selected').html(sel.html());
+	$('#chainmap-table-selected').val(sel.val());
 
 	$('#activity-' + this.key).show();
 }
