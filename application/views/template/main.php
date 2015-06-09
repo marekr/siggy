@@ -155,6 +155,7 @@
     	<?php echo View::factory('siggy/activities/scanned_systems'); ?>
     	<?php echo View::factory('siggy/activities/notifications'); ?>
     	<?php echo View::factory('siggy/activities/astrolabe'); ?>
+    	<?php echo View::factory('siggy/activities/chainmap'); ?>
 		<div id="activity-siggy" class="wrapper" style="display:none">
 			<?php echo $content; ?>
 		</div>

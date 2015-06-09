@@ -41,6 +41,7 @@
 				<a href="#" id="chain-map-edit" class="btn btn-default btn-xs btn-warning"><i class="fa fa-pencil"></i> Edit</a>
 				<a href="#" id="chain-map-delete-whs" class="btn btn-default btn-xs btn-danger"><i class="fa fa-chain-broken"></i> Delete</a>
 				<a href="#" id="exit-finder-button" class="btn btn-default btn-xs btn-info"><i class="fa fa-binoculars"></i> Exit Finder</a>
+				<a href="#" id="chain-map-table-button" class="btn btn-default btn-xs btn-info"><i class="fa fa-table"></i></a>
 				<!--- end options -->
 			</div>
 			<div style="right: 0;position: absolute;">

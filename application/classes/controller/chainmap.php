@@ -593,6 +593,74 @@ class Controller_Chainmap extends FrontController {
 		}
 	}
 
+
+
+	public function action_connections()
+	{
+		$this->profiler = NULL;
+		$this->auto_render = FALSE;
+		header('content-type: application/json');
+		header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
+
+		if(	 !$this->siggyAccessGranted() )
+		{
+			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
+			exit();
+		}
+
+		if ( !isset($_GET['chainmap']) )
+		{
+			echo json_encode(array('error' => 1, 'errorMsg' => 'Missing chainmap'));
+			exit();
+		}
+
+		$chainmapID = (int)$_GET['chainmap'];
+
+		$chainmap = null;
+		if( $chainmapID != Auth::$session->accessData['active_chain_map'] )
+		{
+			$chainmap = new Chainmap($chainmapID,Auth::$session->groupID);
+		}
+		else
+		{
+			$chainmap = $this->chainmap;
+		}
+
+
+		$data = $chainmap->get_map_cache();
+
+		$output = [
+					'connections' => [],
+					'systems' => $data['systems']
+					];
+		foreach($data['wormholes'] as $c)
+		{
+			$c['type'] = 'wormhole';
+			$output['connections'][] = $c;
+		}
+
+		foreach($data['cynos'] as $c)
+		{
+			$c['type'] = 'cyno';
+			$output['connections'][] = $c;
+		}
+
+		foreach($data['stargates'] as $c)
+		{
+			$c['type'] = 'stargate';
+			$output['connections'][] = $c;
+		}
+
+		foreach($data['jumpbridges'] as $c)
+		{
+			$c['type'] = 'jumpbridge';
+			$output['connections'][] = $c;
+		}
+
+		print (json_encode($output));
+		die();
+	}
+
 	public function action_autocomplete_wh()
 	{
 		$this->profiler = NULL;
@@ -644,7 +712,7 @@ class Controller_Chainmap extends FrontController {
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
 		header('content-type: application/json');
-		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1\
+		header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
 
 		if(	!$this->siggyAccessGranted() )
 		{
