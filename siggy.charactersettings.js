@@ -100,14 +100,8 @@ charactersettings.prototype.initializeHotkeys = function()
 		$(document).bind('keydown', 'ctrl+-', function(){
 			$this.zoomOut();
 		});
-		$(document).bind('keydown', '-', function(){
-			$this.zoomOut();
-		});
 
 		$(document).bind('keydown', 'ctrl+=', function(){
-			$this.zoomIn();
-		});
-		$(document).bind('keydown', '+', function(){
 			$this.zoomIn();
 		});
 
