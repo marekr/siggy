@@ -1,5 +1,11 @@
 <div id="activity-chainmap" class="wrapper" style="display:none">
-	<h4>Chainmap "Test"</h4>
+	<h5>Chainmap
+		<select id="chainmap-table-selected" name="chainmap" class="form-control">
+			<option></option>
+		</select>
+	</h5>
+	<br />
+	<h4>Connections</h4>
 	<table class="siggy-table siggy-table-striped table-with-dropdowns" id="chainmap-connections-table">
 		<thead>
 			<tr>

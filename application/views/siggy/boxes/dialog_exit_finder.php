@@ -3,6 +3,13 @@
         <div class='box-content'>
             <p>Find's the nearest exit to the given system or your location.</p>
                 <form class='form-inline'>
+        			<div class="form-group">
+        				<label for="exit-finder-map">Chainmap</label>
+        				<select id="exit-finder-map" name="chainmap" class="form-control">
+        					<option></option>
+        				</select>
+        			</div>
+
                     <div class="form-group">
                         <label for="exit-finder-target-system">System  </label>
                         <input id='exit-finder-target-system' class="typeahead system-typeahead form-control" type="text" value="" name="target_system" style="width:150px" />

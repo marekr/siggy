@@ -15,9 +15,10 @@ class Controller_Chainmap extends FrontController {
 	{
 		parent::before();
 
-		if( Auth::$session->accessData['active_chain_map'] )
+		$chainmapID = (isset($_REQUEST['chainmap']) ? (int)$_REQUEST['chainmap'] : Auth::$session->accessData['active_chain_map'] );
+		if( $chainmapID )
 		{
-			$this->chainmap = new Chainmap(Auth::$session->accessData['active_chain_map'],Auth::$session->groupID);
+			$this->chainmap = new Chainmap($chainmapID,Auth::$session->groupID);
 		}
 	}
 
@@ -48,7 +49,7 @@ class Controller_Chainmap extends FrontController {
 		}
 		else if (!empty($target))
 		{
-			$targetID = mapUtils::findSystemByName($target, Auth::$session->groupID, Auth::$session->accessData['active_chain_map'] );
+			$targetID = mapUtils::findSystemByName($target, Auth::$session->groupID, $this->chainmap->id );
 		}
 
 		if( $targetID == 0 || $targetID >= 31000000 )
@@ -67,7 +68,7 @@ class Controller_Chainmap extends FrontController {
 											LEFT JOIN solarsystems ss ON (ss.id = w.from_system_id)
 											WHERE w.from_system_id < 31000000 AND w.group_id=:group AND w.chainmap_id=:chainmap)")
 						->param(':group', Auth::$session->groupID)
-						->param(':chainmap', Auth::$session->accessData['active_chain_map'])
+						->param(':chainmap', $this->chainmap->id)
 						->execute()->as_array();
 
 		$pather = new Pathfinder();
@@ -593,8 +594,6 @@ class Controller_Chainmap extends FrontController {
 		}
 	}
 
-
-
 	public function action_connections()
 	{
 		$this->profiler = NULL;
@@ -608,31 +607,13 @@ class Controller_Chainmap extends FrontController {
 			exit();
 		}
 
-		if ( !isset($_GET['chainmap']) )
-		{
-			echo json_encode(array('error' => 1, 'errorMsg' => 'Missing chainmap'));
-			exit();
-		}
-
-		$chainmapID = (int)$_GET['chainmap'];
-
-		$chainmap = null;
-		if( $chainmapID != Auth::$session->accessData['active_chain_map'] )
-		{
-			$chainmap = new Chainmap($chainmapID,Auth::$session->groupID);
-		}
-		else
-		{
-			$chainmap = $this->chainmap;
-		}
-
-
-		$data = $chainmap->get_map_cache();
+		$data = $this->chainmap->get_map_cache();
 
 		$output = [
 					'connections' => [],
 					'systems' => $data['systems']
 					];
+
 		foreach($data['wormholes'] as $c)
 		{
 			$c['type'] = 'wormhole';

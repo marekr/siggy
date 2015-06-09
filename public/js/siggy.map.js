@@ -364,6 +364,10 @@ siggy2.Map.prototype.initializeExitFinder = function()
     var $this = this;
 
     $("#exit-finder-button").click( function() {
+		var sel = siggy2.Maps.getSelectDropdown(siggy2.Maps.selected, "(current map)");
+		$('#exit-finder select[name=chainmap]').html(sel.html());
+		$('#exit-finder select[name=chainmap]').val(sel.val());
+
         $this.core.openBox('#exit-finder');
         $("#exit-finder-results-wrap").hide();
         return false;
@@ -373,7 +377,10 @@ siggy2.Map.prototype.initializeExitFinder = function()
         $("#exit-finder-loading").show();
         $("#exit-finder-results-wrap").hide();
         $.post($this.baseUrl + 'chainmap/find_nearest_exits',
-        {current_system: 1},
+        {
+			current_system: 1,
+			chainmap: $('#exit-finder select[name=chainmap]').val()
+		},
         function (data)
         {
             $("#exit-finder-loading").hide();
@@ -391,7 +398,10 @@ siggy2.Map.prototype.initializeExitFinder = function()
     $("#exit-finder-results-wrap").hide();
 
     $.post($this.baseUrl + 'chainmap/find_nearest_exits',
-        {target: target},
+        {
+			target: target,
+			chainmap: $('#exit-finder select[name=chainmap]').val()
+		},
         function (data)
         {
             $("#exit-finder-loading").hide();
@@ -403,6 +413,7 @@ siggy2.Map.prototype.initializeExitFinder = function()
     };
 
     $('#exit-finder form').submit(submitHandler);
+
 }
 
 siggy2.Map.prototype.populateExitData = function(data)
