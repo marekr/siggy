@@ -702,7 +702,7 @@ siggy2.Map.prototype.registerEvents = function()
     });
 }
 
-siggy2.Map.prototype.processConnectionDelete = function(hashes)
+siggy2.Map.prototype.processConnectionDelete = function(hashes, chainMapID)
 {
 	var $this = this;
 
@@ -719,13 +719,19 @@ siggy2.Map.prototype.processConnectionDelete = function(hashes)
 
 	if( hashes.count > 0 )
 	{
+		var data = {
+			wormhole_hashes: JSON.stringify(hashes.wormholes),
+			stargate_hashes:JSON.stringify(hashes.stargates),
+			jumpbridge_hashes:JSON.stringify(hashes.jumpbridges),
+			cyno_hashes: JSON.stringify(hashes.cynos)
+		};
+
+
+		if( typeof(chainMapID) == 'undefined' )
+			data.chainmap = chainMapID;
+
 		$.post(this.baseUrl + 'chainmap/connection_delete',
-			{
-				wormhole_hashes: JSON.stringify(hashes.wormholes),
-				stargate_hashes:JSON.stringify(hashes.stargates),
-				jumpbridge_hashes:JSON.stringify(hashes.jumpbridges),
-				cyno_hashes: JSON.stringify(hashes.cynos)
-			},
+			data,
 			function() {
 				$(document).trigger('siggy.updateRequested', false );
 		});

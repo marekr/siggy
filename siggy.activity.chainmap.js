@@ -28,7 +28,7 @@ siggy2.Activity.Chainmap = function(core)
 			var hashes = {count: 1};
 			hashes[type] = [ $($row).data('hash') ];
 
-			$this.core.activities.siggy.map.processConnectionDelete(hashes);
+			$this.core.activities.siggy.map.processConnectionDelete(hashes, $this.chainMapID);
 
 			$($row).parent().parent().remove();
 		});
