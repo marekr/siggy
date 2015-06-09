@@ -9,58 +9,89 @@ siggy2.Activity.Chainmap = function(core)
 {
 	var $this = this;
 	this.key = 'chainmap';
+	this._updateTimeout = null;
 	this.core = core;
+	this.updateRate = 10000;
 
-	this.templateResultPOS = Handlebars.compile( $("#template-search-result-pos").html() );
-	this.templateResultLegacyPOS = Handlebars.compile( $("#template-search-result-legacy-pos").html() );
-	this.input = $('#activity-search-input');
+	this.chainMapID = 0;
 
-	this.results = $('#activity-search-results');
 
-	$('#activity-search-go').click( function() {
-		$this.search();
+	this.templateTableRow = Handlebars.compile( $("#template-chainmap-table-row").html() );
+
+	this.table = $('#chainmap-connections-table tbody');
+
+	$('#chainmap-connections-table').on('click','.chainmap-connection-delete', function(e) {
+		var $row = this;
+		$this.core.confirmDialog("Are you sure you want to delete the wormhole?", function() {
+			var type = $($row).data('type')+"s";
+
+			var hashes = {count: 1};
+			hashes[type] = [ $($row).data('hash') ];
+
+			$this.core.activities.siggy.map.processConnectionDelete(hashes);
+
+			$($row).parent().parent().remove();
+		});
 	});
 }
 
-siggy2.Activity.Chainmap.prototype.search = function()
+siggy2.Activity.Chainmap.prototype.start = function(args)
 {
-	var $this = this;
-	$.ajax({
-		url: this.core.settings.baseUrl + 'search/everything',
-		dataType: 'json',
-		cache: false,
-		async: true,
-		method: 'get',
-		data: {query: this.input.val() },
-		success: function (data)
+	if( typeof(args) != 'undefined' )
+	{
+		if( typeof(args.chainMapID) != 'undefined' )
 		{
-			$this.results.empty();
-			for( var i in data )
-			{
-				var result = data[i];
-				if( result.type == 'pos' )
-				{
-					var html = $this.templateResultPOS(result);
-
-					$this.results.append($(html));
-				}
-				else if( result.type == 'legacy_pos' )
-				{
-					var html = $this.templateResultLegacyPOS(result);
-
-					$this.results.append($(html));
-				}
-			}
+			this.chainMapID = args.chainMapID;
+			this.update();
 		}
-	});
-}
+	}
 
-siggy2.Activity.Chainmap.prototype.start = function()
-{
 	$('#activity-' + this.key).show();
 }
 
 siggy2.Activity.Chainmap.prototype.stop = function()
 {
+	clearTimeout(this._updateTimeout);
 	$('#activity-' + this.key).hide();
+}
+
+siggy2.Activity.Chainmap.prototype.updateTable = function( data )
+{
+	var $this = this;
+
+	this.table.empty();
+
+	for( var i in data.connections )
+	{
+		var connection = data.connections[i];
+		var row = this.templateTableRow({
+										toSystem: data.systems[connection.to_system_id],
+										connection: connection,
+										fromSystem: data.systems[connection.from_system_id]
+									});
+
+		this.table.append(row);
+	}
+}
+
+siggy2.Activity.Chainmap.prototype.update = function()
+{
+	var $this = this;
+	$.ajax({
+			url: this.core.settings.baseUrl + 'chainmap/connections',
+			dataType: 'json',
+			cache: false,
+			async: true,
+			method: 'get',
+			data: {chainmap: this.chainMapID},
+			success: function (data)
+			{
+				$this.updateTable(data);
+
+				$this._updateTimeout = setTimeout(function(thisObj)
+				{
+					thisObj.update()
+				}, $this.updateRate, $this);
+			}
+		});
 }

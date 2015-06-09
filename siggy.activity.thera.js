@@ -138,7 +138,6 @@ siggy2.Activity.Thera.prototype.updateTable = function( exits )
 		}
 	});
 
-
 	for( var i in exits )
 	{
 		var exit = exits[i];
@@ -155,9 +154,7 @@ siggy2.Activity.Thera.prototype.updateTable = function( exits )
 
 		var row = this.templateRow( exit );
 
-
 		this.table.append(row);
-
 
 		this.sigClocks[exit.id] = new siggy2.Timer(exit.created_at * 1000, null, '#thera-sig-' + exit.id + ' td.age span.age-clock', "test");
 

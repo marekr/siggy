@@ -33,7 +33,7 @@ siggy2.Activity.ScannedSystems = function(core)
 	});
 
 	$('#scanned-systems-table').trigger("sorton", [ [[0,0]] ]);
-
+	
 	$('#scanned-systems-table').on('click','.scanned-system-view', function(e) {
 		$this.core.loadActivity('siggy', {systemID: $(this).data('id')});
 	});

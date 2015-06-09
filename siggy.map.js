@@ -5,6 +5,8 @@
 
 siggy2.Map = function(core, options)
 {
+	var $this = this;
+
 	this.core = core;
 	this.defaults = {
 		jumpTrackerEnabled: true,
@@ -75,6 +77,12 @@ siggy2.Map = function(core, options)
 		e.preventDefault();
 
 		$('#chain-map-container').unblock();
+	});
+
+
+
+	$('#chain-map-table-button').click(function(e) {
+		$this.core.loadActivity('chainmap', {chainMapID: $this.core.activities.siggy.chainMapID});
 	});
 }
 
@@ -698,7 +706,16 @@ siggy2.Map.prototype.processConnectionDelete = function(hashes)
 {
 	var $this = this;
 
-	var hashes = this.getSelectedHashes();
+	if( typeof(hashes) == 'undefined' )
+		hashes = this.getSelectedHashes();
+
+	hashes = $.extend({
+							wormholes: [],
+							stargates: [],
+							jumpbridges: [],
+							cynos: [],
+							count: 0
+						}, hashes);
 
 	if( hashes.count > 0 )
 	{
