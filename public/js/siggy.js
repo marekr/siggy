@@ -155,8 +155,13 @@ siggy2.Core.prototype.initialize = function ()
 
 	this.updateNow();
 
-
-	this.loadActivity('siggy');
+	var defaultActivity = 'siggy';
+	if(window.location.hash)
+	{
+		defaultActivity = window.location.hash.slice(1);;
+	}
+	
+	this.loadActivity(defaultActivity);
 }
 
 siggy2.Core.prototype.update = function()
