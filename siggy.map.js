@@ -80,7 +80,6 @@ siggy2.Map = function(core, options)
 	});
 
 
-
 	$('#chain-map-table-button').click(function(e) {
 		$this.core.loadActivity('chainmap', {chainMapID: $this.core.activities.siggy.chainMapID});
 	});
@@ -363,17 +362,20 @@ siggy2.Map.prototype.initializeExitFinder = function()
 {
     var $this = this;
 
-    $("#exit-finder-button").click( function() {
+    $("#exit-finder-button").click( function(e) {
+		e.preventDefault();
+
 		var sel = siggy2.Maps.getSelectDropdown(siggy2.Maps.selected, "(current map)");
 		$('#exit-finder select[name=chainmap]').html(sel.html());
 		$('#exit-finder select[name=chainmap]').val(sel.val());
 
         $this.core.openBox('#exit-finder');
         $("#exit-finder-results-wrap").hide();
-        return false;
     } );
 
-    $('#exit-finder button[name=current_location]').click( function() {
+    $('#exit-finder button[name=current_location]').click( function(e) {
+		e.preventDefault();
+
         $("#exit-finder-loading").show();
         $("#exit-finder-results-wrap").hide();
         $.post($this.baseUrl + 'chainmap/find_nearest_exits',
@@ -388,28 +390,29 @@ siggy2.Map.prototype.initializeExitFinder = function()
             $this.populateExitData(data);
             $("#exit-finder-results-wrap").show();
         });
-        return false;
     });
 
-    var submitHandler = function() {
-    var target = $("#exit-finder input[name=target_system]").val();
+    var submitHandler = function(e) {
+		e.preventDefault();
 
-    $("#exit-finder-loading").show();
-    $("#exit-finder-results-wrap").hide();
+	    var target = $("#exit-finder input[name=target_system]").val();
 
-    $.post($this.baseUrl + 'chainmap/find_nearest_exits',
-        {
-			target: target,
-			chainmap: $('#exit-finder select[name=chainmap]').val()
-		},
-        function (data)
-        {
-            $("#exit-finder-loading").hide();
-            $('#exit-finder-list').empty();
-            $this.populateExitData(data);
-            $("#exit-finder-results-wrap").show();
-        });
-        return false;
+	    $("#exit-finder-loading").show();
+	    $("#exit-finder-results-wrap").hide();
+
+	    $.post($this.baseUrl + 'chainmap/find_nearest_exits',
+	        {
+				target: target,
+				chainmap: $('#exit-finder select[name=chainmap]').val()
+			},
+	        function (data)
+	        {
+	            $("#exit-finder-loading").hide();
+	            $('#exit-finder-list').empty();
+	            $this.populateExitData(data);
+	            $("#exit-finder-results-wrap").show();
+	        });
+	        return false;
     };
 
     $('#exit-finder form').submit(submitHandler);
