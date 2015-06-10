@@ -47,7 +47,6 @@ siggy2.Activity.siggy = function(core)
 		$this.updateNow();
 	} );
 
-
 	$(document).bind('siggy.locationChanged', function(e, oldID, newID ) {
 		if( !$this.freezeSystem )
 		{
@@ -249,8 +248,13 @@ siggy2.Activity.siggy.prototype.update = function()
 				return;
 			}
 
-			$this.chainMapID = parseInt(data.chainmap_id);
-			siggy2.Maps.selected = $this.chainMapID;
+			var mapID = parseInt(data.chainmap_id);
+
+			if(mapID != $this.chainMapID)
+			{
+				siggy2.Maps.selected = $this.chainMapID = mapID;
+				$this.updateChainMaps(siggy2.Maps.available);
+			}
 
 			if( $this.chainMapID == 0 )
 			{
