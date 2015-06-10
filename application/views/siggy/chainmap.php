@@ -37,17 +37,17 @@
 		<div id='map-footer-bar'>
 			<div style="left: 0;position: absolute;">
 				<!-- options -->
-				<a href="#" id="chain-map-add-wh" class="btn btn-default btn-xs btn-primary"><i class="fa fa-link"></i> Add</a>
-				<a href="#" id="chain-map-edit" class="btn btn-default btn-xs btn-warning"><i class="fa fa-pencil"></i> Edit</a>
-				<a href="#" id="chain-map-delete-whs" class="btn btn-default btn-xs btn-danger"><i class="fa fa-chain-broken"></i> Delete</a>
-				<a href="#" id="exit-finder-button" class="btn btn-default btn-xs btn-info"><i class="fa fa-binoculars"></i> Exit Finder</a>
-				<a href="#" id="chain-map-table-button" class="btn btn-default btn-xs btn-info"><i class="fa fa-table"></i></a>
+				<button id="chain-map-add-wh" class="btn btn-default btn-xs btn-primary"><i class="fa fa-link"></i> Add</button>
+				<button id="chain-map-edit" class="btn btn-default btn-xs btn-warning"><i class="fa fa-pencil"></i> Edit</button>
+				<button id="chain-map-delete-whs" class="btn btn-default btn-xs btn-danger"><i class="fa fa-chain-broken"></i> Delete</button>
+				<button id="exit-finder-button" class="btn btn-default btn-xs btn-info"><i class="fa fa-binoculars"></i> Exit Finder</button>
+				<button id="chain-map-table-button" class="btn btn-default btn-xs btn-info"><i class="fa fa-table"></i></button>
 				<!--- end options -->
 			</div>
 			<div style="right: 0;position: absolute;">
 				<!--- broadcast -->
 				<?php if( !$group['alwaysBroadcast'] ): ?>
-				<a href="#" id="chainmap-broadcast-button" class="btn btn-default btn-xs"><i class="fa fa-wifi"></i><?php echo ( ( isset($_COOKIE['broadcast']) && $_COOKIE['broadcast'] == 0 ) ? "Enable location broadcast" : "Disable location broadcast" ); ?></a>
+				<button id="chainmap-broadcast-button" class="btn btn-default btn-xs"><i class="fa fa-wifi"></i><?php echo ( ( isset($_COOKIE['broadcast']) && $_COOKIE['broadcast'] == 0 ) ? "Enable location broadcast" : "Disable location broadcast" ); ?></button>
 				<?php endif; ?>
 			</div>
 			<!-- magic buttons -->
