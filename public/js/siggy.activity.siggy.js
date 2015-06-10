@@ -642,32 +642,44 @@ siggy2.Activity.siggy.prototype.initializeHubJumpContextMenu = function()
 {
 	$(document).contextMenu({
 		selector: '.basic-system-context',
-		callback: function(key, options) {
-			var sysID = $(this).data("sysID");
-			var sysName  = $(this).data("sysName");
-			if( key == "setdest" )
+        build: function($trigger, e) {
+			var items = {
+							"showinfo": {name: "Show Info"}
+						};
+
+			if( typeof(CCPEVE) != "undefined" )
 			{
-				if( typeof(CCPEVE) != "undefined" )
-				{
-					CCPEVE.setDestination(sysID);
-				}
+				items.sep1 = "---------";
+				items.setdest = {name:'Set Destination'};
+				items.addwaypoint = {name: 'Add Waypoint'};
 			}
-			else if( key == "showinfo" )
-			{
-				if( typeof(CCPEVE) != "undefined" )
-				{
-					CCPEVE.showInfo(5, sysID);
-				}
-				else
-				{
-					window.open('http://evemaps.dotlan.net/system/'+sysName , '_blank');
-				}
-			}
-		},
-		items: {
-			"setdest": {name: "Set Destination"},
-			"sep1": "---------",
-			"showinfo": {name: "Show Info"}
+
+            return {
+				callback: function(key, options) {
+					var sysID = $($trigger).data("sysID");
+					var sysName  = $($trigger).data("sysName");
+					if( key == "setdest" )
+					{
+						CCPEVE.setDestination(sysID);
+					}
+					else if( action == "addwaypoint" )
+					{
+						CCPEVE.addWaypoint(system.systemID);
+					}
+					else if( key == "showinfo" )
+					{
+						if( typeof(CCPEVE) != "undefined" )
+						{
+							CCPEVE.showInfo(5, sysID);
+						}
+						else
+						{
+							window.open('http://evemaps.dotlan.net/system/'+sysName , '_blank');
+						}
+					}
+				},
+				items: items
+            };
 		}
 	});
 }

@@ -496,7 +496,10 @@ siggy2.Map.prototype.initializeSystemBlobContextMenu = function()
 
 			if( typeof(CCPEVE) != "undefined" )
 			{
+				items.sep1 = "---------";
 				items.setdest = {name:'Set Destination'};
+				items.addwaypoint = {name: 'Add Waypoint'};
+				items.sep2 = "---------";
 			}
 
 			if( parseInt(sysData.rally) == 1 )
@@ -531,10 +534,11 @@ siggy2.Map.prototype.systemContextMenuHandler = function(action, system)
 	}
 	else if( action == "setdest" )
 	{
-		if( typeof(CCPEVE) != "undefined" )
-		{
-			CCPEVE.setDestination(system.systemID);
-		}
+		CCPEVE.setDestination(system.systemID);
+	}
+	else if( action == "addwaypoint" )
+	{
+		CCPEVE.addWaypoint(system.systemID);
 	}
 	else if( action == "showinfo" )
 	{
