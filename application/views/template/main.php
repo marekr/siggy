@@ -17,7 +17,7 @@
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/handlebars.form-helpers.js'></script>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/translate.js'></script>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery-1.11.2.js'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery-ui.1.11.2.min.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery-ui.1.11.4.min.js'></script>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery.tablesorter.js'></script>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery.blockUI.js'></script>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery.color.js'></script>
@@ -67,7 +67,7 @@
 					</a>
 					<ul class="dropdown-menu siggy-main-navbar" role="menu">
 						<li><a class="activity-menu-option" data-activity="siggy" style="display:none"><span class="glyphicon glyphicon-list"></span> siggy</a></li>
-                        <!--- <li><a class="activity-menu-option" data-activity="astrolabe"><span class="glyphicon glyphicon-map-marker"></span> Astrolabe</a></li> -->
+                         <li><a class="activity-menu-option" data-activity="astrolabe"><span class="glyphicon glyphicon-map-marker"></span> Astrolabe</a></li>
 						<li><a class="activity-menu-option" data-activity="scannedsystems" style="display:none"><span class="glyphicon glyphicon-list"></span> Scanned Systems</a></li>
 						<li><a class="activity-menu-option" data-activity="thera"><span class="glyphicon glyphicon-magnet"></span> Thera</a></li>
                         <li><a class="activity-menu-option" data-activity="notifications"><span class="glyphicon glyphicon-bell"></span> Notifications</a></li>

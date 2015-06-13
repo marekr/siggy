@@ -1,8 +1,8 @@
 <?php
 
 class System {
-	
-	public static function get($id, $groupID)
+
+	public static function get($id, $groupI, $mode = 'advanced')
 	{
 		$systemData = DB::query(Database::SELECT, "SELECT
 			ss.id,
@@ -47,47 +47,48 @@ class System {
 		$systemData['effect_id'] = (int)$systemData['effect_id'];
 		$systemData['id'] = (int)$systemData['id'];
 
-
-		$systemData['statics'] = array();
-
-		$staticData = DB::query(Database::SELECT, "SELECT sm.static_id as id FROM staticmap sm
-													WHERE sm.system_id=:id")
-									->param(':id', $systemData['id'])
-									->execute()
-									->as_array();
-
-		if( count( $staticData ) > 0 )
+		if( $mode != 'basic' )
 		{
-			$systemData['statics'] = $staticData;
+			$systemData['statics'] = array();
+
+			$staticData = DB::query(Database::SELECT, "SELECT sm.static_id as id FROM staticmap sm
+														WHERE sm.system_id=:id")
+										->param(':id', $systemData['id'])
+										->execute()
+										->as_array();
+
+			if( count( $staticData ) > 0 )
+			{
+				$systemData['statics'] = $staticData;
+			}
+
+			$end = miscUtils::getHourStamp();
+			$start = miscUtils::getHourStamp(-24);
+			$apiData = DB::query(Database::SELECT, "SELECT hourStamp, jumps, kills, npcKills FROM apihourlymapdata WHERE systemID=:system AND hourStamp >= :start AND hourStamp <= :end ORDER BY hourStamp asc LIMIT 0,24")
+										->param(':system', $systemData['id'])
+										->param(':start', $start)
+										->param(':end', $end)
+										->execute()
+										->as_array('hourStamp');
+
+			$trackedJumps = DB::query(Database::SELECT, "SELECT hourStamp, jumps FROM jumpstracker WHERE systemID=:system AND groupID=:group AND hourStamp >= :start AND hourStamp <= :end ORDER BY hourStamp asc LIMIT 0,24")
+										->param(':system', $systemData['id'])
+										->param(':group', $groupID)
+										->param(':start', $start)
+										->param(':end', $end)
+										->execute()->as_array('hourStamp');
+
+			$systemData['stats'] = array();
+			for($i = 23; $i >= 0; $i--)
+			{
+				$hourStamp = miscUtils::getHourStamp($i*-1);
+				$apiJumps = ( isset($apiData[ $hourStamp ]) ? $apiData[ $hourStamp ]['jumps'] : 0);
+				$apiKills = ( isset($apiData[ $hourStamp ]) ? $apiData[ $hourStamp ]['kills'] : 0);
+				$apiNPC = ( isset($apiData[ $hourStamp ]) ? $apiData[ $hourStamp ]['npcKills'] : 0);
+				$siggyJumps = ( isset($trackedJumps[ $hourStamp ]) ? $trackedJumps[ $hourStamp ]['jumps'] : 0);
+				$systemData['stats'][] = array( $hourStamp*1000, $apiJumps, $apiKills, $apiNPC, $siggyJumps);
+			}
 		}
-
-		$end = miscUtils::getHourStamp();
-		$start = miscUtils::getHourStamp(-24);
-		$apiData = DB::query(Database::SELECT, "SELECT hourStamp, jumps, kills, npcKills FROM apihourlymapdata WHERE systemID=:system AND hourStamp >= :start AND hourStamp <= :end ORDER BY hourStamp asc LIMIT 0,24")
-									->param(':system', $systemData['id'])
-									->param(':start', $start)
-									->param(':end', $end)
-									->execute()
-									->as_array('hourStamp');
-
-		$trackedJumps = DB::query(Database::SELECT, "SELECT hourStamp, jumps FROM jumpstracker WHERE systemID=:system AND groupID=:group AND hourStamp >= :start AND hourStamp <= :end ORDER BY hourStamp asc LIMIT 0,24")
-									->param(':system', $systemData['id'])
-									->param(':group', $groupID)
-									->param(':start', $start)
-									->param(':end', $end)
-									->execute()->as_array('hourStamp');
-
-		$systemData['stats'] = array();
-		for($i = 23; $i >= 0; $i--)
-		{
-			$hourStamp = miscUtils::getHourStamp($i*-1);
-			$apiJumps = ( isset($apiData[ $hourStamp ]) ? $apiData[ $hourStamp ]['jumps'] : 0);
-			$apiKills = ( isset($apiData[ $hourStamp ]) ? $apiData[ $hourStamp ]['kills'] : 0);
-			$apiNPC = ( isset($apiData[ $hourStamp ]) ? $apiData[ $hourStamp ]['npcKills'] : 0);
-			$siggyJumps = ( isset($trackedJumps[ $hourStamp ]) ? $trackedJumps[ $hourStamp ]['jumps'] : 0);
-			$systemData['stats'][] = array( $hourStamp*1000, $apiJumps, $apiKills, $apiNPC, $siggyJumps);
-		}
-
 	//	$systemData['poses'] = $this->getPOSes( $systemData['id'] );
 	//	$systemData['dscans'] = $this->getDScans( $systemData['id'] );
 

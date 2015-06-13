@@ -419,3 +419,9 @@ fieldset[disabled] .btn-link:focus
 	background-color: inherit;
 	color: inherit;
 }
+
+.btn-group, .btn-group-vertical {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+}

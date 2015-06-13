@@ -1,7 +1,7 @@
 <?php
 
 class Pathfinder {
-	
+
 	public $jumps = array();
 
 	public function __construct()
