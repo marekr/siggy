@@ -319,8 +319,8 @@ class Controller_Cron extends Controller
 	{
 		$cutoff = time()-(3600*24*2);
 
-		DB::delete('apiHourlyMapData')->where('hourStamp', '<=', $cutoff)->execute();
-		DB::delete('jumpsTracker')->where('hourStamp', '<=', $cutoff)->execute();
+		DB::delete('apihourlymapdata')->where('hourStamp', '<=', $cutoff)->execute();
+		DB::delete('jumpstracker')->where('hourStamp', '<=', $cutoff)->execute();
 
 		$systems = DB::select('id')->from('solarsystems')->order_by('id', 'ASC')->execute()->as_array('id');
 		foreach($systems as &$system)
@@ -362,7 +362,7 @@ class Controller_Cron extends Controller
 
 		foreach($systems as $system)
 		{
-			DB::query(Database::INSERT, 'INSERT INTO apiHourlyMapData (`systemID`,`hourStamp`, `jumps`, `kills`, `npcKills`, `podKills`) VALUES(:systemID, :hourStamp, :jumps, :kills, :npcKills, :podKills) ON DUPLICATE KEY UPDATE systemID=systemID')
+			DB::query(Database::INSERT, 'INSERT INTO apihourlymapdata (`systemID`,`hourStamp`, `jumps`, `kills`, `npcKills`, `podKills`) VALUES(:systemID, :hourStamp, :jumps, :kills, :npcKills, :podKills) ON DUPLICATE KEY UPDATE systemID=systemID')
 														->param(':systemID', $system['id'] )->param(':hourStamp', $time )->param(':jumps', $system['jumps'] )->param(':kills', $system['kills'] )->param(':npcKills', $system['npcKills'] )->param(':podKills', $system['podKills'] )->execute();
 
 		}
