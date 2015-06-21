@@ -17,6 +17,9 @@ siggy2.Activity.Astrolabe = function(core)
 
 	this.results = $('#activity-search-results');
 
+
+	this.waypointCache = [];
+
 	$('#activity-search-go').click( function() {
 		$this.search();
 	});
@@ -33,19 +36,17 @@ siggy2.Activity.Astrolabe = function(core)
 
 
 	var points = [
-		'Amarr',
-		'Huola',
-		'Rens',
-		'Dodixie'
+		{name: 'Amarr', id: 30002187, guid:'6ab8fb20-a31c-4a69-b266-f3c162ee5369'},
+		{name: 'Huola', id: 30003067, guid:'71152bf5-5db4-4d63-baf4-353b8b8245f7'},
+		{name: 'Rens', id: 30002510, guid:'70a9525d-b188-4564-a783-e9281e93143b'},
+		{name: 'Dodixie', id: 30002659, guid: 'bea3cbe8-9b9c-4aab-8a63-4d9764d7fbbe'}
 	];
 
 	for(i = 0; i < points.length; i++)
 	{
-		var html = this.waypointHTML({name: points[i]});
+		var html = this.waypointHTML({name: points[i].name, id: points[i].id, guid: points[i].guid});
 		$('#astrolabe-waypoints').append(html);
 	}
-
-	$this.search();
 
 	$('#astrolabe-new-waypoint-form').submit( function(e)
 	{
@@ -53,10 +54,21 @@ siggy2.Activity.Astrolabe = function(core)
 
 		var systemName = $('#astrolabe-new-waypoint-system').val();
 
+		function sync(datums)
+		{
+			if( Object.size(datums) != 1 )
+			{
+				//error
+				return;
+			}
 
-		var html = $this.waypointHTML({name: systemName});
-		$('#astrolabe-waypoints').append(html);
-		$this.search();
+			var html = $this.waypointHTML({name: datums[0].name, id: datums[0].id, guid: guid()});
+			$('#astrolabe-waypoints').append(html);
+			$this.search();
+		}
+
+		siggy2.StaticData.systemTypeAhead.search(systemName, sync, false);
+
 	});
 
 	$('#activity-astrolabe').on('click','.astrolabe-waypoint-option-close', function(e) {
@@ -67,59 +79,222 @@ siggy2.Activity.Astrolabe = function(core)
 	});
 }
 
+/*
+{
+  "method": "Route.Find",
+  "params": [{
+    "route": {
+      "from": {
+        "solarSystems": [30002553]
+      },
+      "to": {
+        "solarSystem": 30002575
+      }
+    },
+    "capabilities": {
+      "jumpGate": {}
+    },
+    "rules": {
+      "maxSecurity": {
+        "priority": 0,
+        "limit": 0.5
+		},
+      "transitCount": {
+        "priority": 1
+      }
+    }
+  }],
+  "id": 1
+}
+
+*/
+
+
+siggy2.Activity.Astrolabe.prototype.getRouteRules = function(secFilter)
+{
+	if( secFilter == 'safest' )
+	{
+		return {
+			"minSecurity": {
+				"priority": 0,
+				"limit": 0.5
+			},
+			"transitCount": {
+				"priority": 1
+			}
+		};
+	}
+	else if (secFilter == 'prefer_low_sec')
+	{
+		return {
+			"maxSecurity": {
+				"priority": 0,
+				"limit": 0.5
+			},
+			"transitCount": {
+				"priority": 1
+			}
+		};
+	}
+	else if( secFilter == 'nullsec' )
+	{
+		return {
+			"maxSecurity": {
+				"priority": 0,
+				"limit": 0.1
+			},
+			"transitCount": {
+				"priority": 1
+			}
+		};
+	}
+	else
+	{
+		return {};
+	}
+}
+
+siggy2.Activity.Astrolabe.prototype.getRequestStruct = function(from, to, secFilter)
+{
+	var base = {
+		"method": "Route.Find",
+		"params": [{
+			"route": {
+				"from": {
+					"solarSystems": [from]
+				},
+				"to": {
+					"solarSystem": to
+				}
+			},
+			"capabilities": {
+				"jumpGate": {}
+			},
+			"rules": this.getRouteRules(secFilter)
+		}],
+		"id": 1
+	};
+
+	return base;
+}
+
+
 siggy2.Activity.Astrolabe.prototype.search = function()
 {
 	var $this = this;
 
 	var waypoints = [];
 
+	console.log(siggy2.StaticData.systems);
+
 	$('.astrolabe-waypoint').each( function()
 	{
-		waypoints.push({system_name: $(this).data('system-name')});
+		waypoints.push({
+							system_name: $(this).data('system-name'),
+							system_id:  $(this).data('system-id'),
+							guid: $(this).data('guid'),
+							sec_filter: $(this).find('button[name=sec-filter]').val()
+						});
 	});
 
-	this.totalJumps = 0;
+	console.log(waypoints);
 
-	$.ajax({
-		url: this.core.settings.baseUrl + 'astrolabe/route',
-		dataType: 'json',
-		cache: false,
-		async: true,
-		method: 'get',
-		data: {waypoints: JSON.stringify(waypoints)},
-		success: function (data)
+	numberWaypointChanges = 0;
+	for(var i = 0; i < waypoints.length; i++)
+	{
+		var waypoint = waypoints[i];
+
+		/* only update if the cache does not have our waypoint */
+		if( i < waypoints.length - 1
+			 && (typeof(this.waypointCache[i]) == 'undefined' || this.waypointCache[i].guid != waypoint.guid) )
 		{
-			var waypoints = $('.astrolabe-waypoint');
+			numberWaypointChanges++;
 
-			var paths = data.paths;
-						console.log(data.paths);
-
-			var len = waypoints.length;
-
-			$this.totalJumps = 0;
-
-			for(var i = 0; i < len; i++)
-			{
-				var headerPosition = $(waypoints[i]).children().children('.astrolabe-waypoint-position').text(++$this.totalJumps);
-
-				var tableSelector = $(waypoints[i]).children().children('.astrolabe-waypoint-route');
-				$this.populateRouteTable(tableSelector, paths[i]);
-			}
+			$('#waypoint-'+waypoint.guid).find('.astrolabe-waypoint-route').empty().text('Loading');
 		}
+	}
+
+	for(var i = 0; i < waypoints.length; i++)
+	{
+		var waypoint = waypoints[i];
+
+		/* only update if the cache does not have our waypoint */
+		if( i < waypoints.length - 1
+			 && (typeof(this.waypointCache[i]) == 'undefined' || this.waypointCache[i].guid != waypoint.guid) )
+		{
+			(function(i,waypoint){
+				$.ajax({
+					url: 'https://siggy.borkedlabs.com:3000/',
+					dataType: 'json',
+					cache: false,
+					async: true,
+					method: 'post',
+					contentType: 'application/json',
+					data: JSON.stringify($this.getRequestStruct(waypoint.system_id, waypoints[i+1].system_id, waypoint.sec_filter)),
+					success: function (data)
+					{
+						$this.waypointCache[i] = waypoint;
+						var path = data.result.path;
+
+						path.splice(0,1);
+						path.splice(path.length-1,1);
+
+						$this.waypointCache[i].path = path;
+
+						numberWaypointChanges--;
+
+						if(numberWaypointChanges == 0)
+						{
+							$this.reprintRoute();
+						}
+					}
+				})
+			})(i,waypoint);
+		}
+	}
+}
+
+siggy2.Activity.Astrolabe.prototype.reprintRoute = function()
+{
+	var $this = this;
+
+	this.totalJumps = 0;
+	i = 0;
+	$('.astrolabe-waypoint').each( function()
+	{
+		var waypoint = $this.waypointCache[i];
+
+		$(this).find('.astrolabe-waypoint-position').text($this.totalJumps);
+
+		if( typeof(waypoint) == 'undefined' )
+			return;
+
+		var tableSelector = $(this).find('.astrolabe-waypoint-route');
+
+
+		$this.populateRouteTable(tableSelector, waypoint.path);
+
+		$this.totalJumps++;
+		i++;
 	});
 }
 
 
-siggy2.Activity.Astrolabe.prototype.populateRouteTable = function(table, route)
+siggy2.Activity.Astrolabe.prototype.populateRouteTable = function(table, path)
 {
 	table.empty();
 
-	if( typeof(route) == 'undefined' )
+	if( typeof(path) == 'undefined' )
 		return;
 
-	for(i = 1; i < route.length-1; i++)
+	for(var i in path)
 	{
-		var row = this.routeTableRow({position: ++this.totalJumps, system: route[i]});
+		var step = path[i];
+
+
+		var system = siggy2.StaticData.getSystemByID(step.solarSystemID);
+
+		var row = this.routeTableRow({position: ++this.totalJumps, system: system});
 		table.append(row);
 	}
 }

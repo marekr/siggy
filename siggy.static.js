@@ -313,7 +313,7 @@ siggy2.StaticData = {
 	templateSiteTooltip: function(dummy)
 	{
 	},
-
+	systems: {},
 	systemTypeAhead: null
 };
 
@@ -341,12 +341,30 @@ siggy2.StaticData.load = function(baseUrl)
 			return Bloodhound.tokenizers.whitespace(d.name);
 		},
 		queryTokenizer: Bloodhound.tokenizers.whitespace,
-		prefetch: baseUrl + 'data/systems?' + time(),
+		prefetch: {
+			url: baseUrl + 'data/systems?' + time(),
+			transform: function(response)
+			{
+				$this.systems = response;
+				return response;
+			}
+		},
 		remote: {
 			url: baseUrl+'chainmap/autocomplete_wh?q=%QUERY',
 			wildcard: '%QUERY'
 		}
 	});
+}
+
+siggy2.StaticData.getSystemByID = function( id )
+{
+	for( var i = 0; i < this.systems.length; i++ )
+	{
+		if( this.systems[i].id == id )
+			return this.systems[i]
+	}
+
+	return null;
 }
 
 siggy2.StaticData.getSiteNameByID = function( id )
