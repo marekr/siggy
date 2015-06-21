@@ -13,7 +13,7 @@ class Controller_Data extends FrontController {
 
 	public function action_systems()
 	{
-        $systems = DB::query(Database::SELECT, "SELECT ss.id, ss.name, r.regionName as region_name
+        $systems = DB::query(Database::SELECT, "SELECT ss.id, ss.name, r.regionName as region_name, ss.sec
 													FROM solarsystems ss
 													LEFT JOIN regions r ON(ss.region = r.regionID)")
 								->execute()

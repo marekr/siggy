@@ -56,25 +56,36 @@
 			<label for='astrolabe-new-waypoint-system'>New Waypoint </label>
 			<input id='astrolabe-new-waypoint-system' type='text' name='astrolabe-new-waypoint-system' class='typeahead system-typeahead form-control' /><br />
 		</div>
-			<div class="btn-group">
-				<button type="button" class="btn btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false" value="stargates">
-					<span class='label'>Use Stargates</span> <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu" role="menu">
-					<li><a data-value="stargates" href="javascript:void(0)">Use Stargates</a></li>
-					<li><a data-value="cyno" href="javascript:void(0)">Use Cyno</a></li>
-				</ul>
-			</div>
-			<div class="btn-group">
-				<button type="button" class="btn btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false" value="safest">
-					<span class='label'>Shortest</span> <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu" role="menu">
-					<li><a data-value="safest" href="javascript:void(0)">Safest</a></li>
-					<li><a data-value="shortest" href="javascript:void(0)">Shortest</a></li>
-					<li><a data-value="prefer_low_sec" href="javascript:void(0)">Prefer Low/Null Sec</a></li>
-				</ul>
-			</div>
+		<!--
+		<div class="btn-group">
+			<button type="button" class="btn btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false" value="stargates">
+				<span class='label'>Use Stargates</span> <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a data-value="stargates" href="javascript:void(0)">Use Stargates</a></li>
+				<li><a data-value="cyno" href="javascript:void(0)">Use Cyno</a></li>
+			</ul>
+		</div>
+		-->
+		<div class="btn-group">
+			<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false" value="safest">
+				<span class='label'>Shortest</span> <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a data-value="safest" href="javascript:void(0)">Safest</a></li>
+				<li><a data-value="shortest" href="javascript:void(0)">Shortest</a></li>
+				<li><a data-value="prefer_low_sec" href="javascript:void(0)">Prefer Low/Null Sec</a></li>
+			</ul>
+		</div>
+		<div class="btn-group">
+			<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false" value="wormholes">
+			<span class='label'>Use wormholes</span> <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a data-value="wormholes" href="javascript:void(0)">Use wormholes</a></li>
+				<li><a data-value="no_wormholes" href="javascript:void(0)">Don't use wormholes</a></li>
+			</ul>
+		</div>
 		<button type="submit" class="btn btn-primary">Add</button>
 	</form>
 
@@ -84,10 +95,11 @@
 	<div class="clear"></div>
 </div>
 <script id="template-astrolabe-waypoint" type="text/x-handlebars-template">
-	<li class="astrolabe-waypoint" data-system-name="{{name}}">
+	<li class="astrolabe-waypoint" data-system-name="{{name}}" data-system-id="{{id}}" data-guid="{{guid}}" id="waypoint-{{guid}}">
 		<div class='astrolabe-waypoint-header'>
 			<span class='astrolabe-waypoint-position'>0</span> {{name}}
 			<span class='astrolabe-waypoint-route-options'>
+			<!--
 				<div class="btn-group">
 					<button type="button" class="btn btn-xs btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false" value="stargates">
 						<span class='label'>Use Stargates</span> <span class="caret"></span>
@@ -97,8 +109,9 @@
 						<li><a data-value="cyno" href="javascript:void(0)">Use Cyno</a></li>
 					</ul>
 				</div>
+				-->
 				<div class="btn-group">
-					<button type="button" class="btn btn-xs btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false" value="safest">
+					<button type="button" name="sec-filter" class="btn btn-xs btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false" value="shortest">
 						<span class='label'>Shortest</span> <span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" role="menu">
@@ -135,7 +148,7 @@
 	<tr data-system-id='{{ system.id }}'>
 		<td>{{position}}</td>
 		<td>{{system.name}}</td>
-		<td>{{system.sec}}</td>
+	 	<td>{{system.sec}}</td>
 		<td>{{system.region_name}}</td>
 	</tr>
 </script>
