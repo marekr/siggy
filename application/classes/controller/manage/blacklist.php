@@ -90,12 +90,14 @@ class Controller_Manage_Blacklist extends Controller_Manage
 					$errors['character_name'] = "EVE character not found";
 				}
 				
+				$charSearchResults = current($charSearchResults);
+				
 				$chars = DB::query(Database::SELECT, 
 					"SELECT * FROM group_character_blacklist 
 					WHERE character_id =:charID AND group_id = :groupID"
 					)
 					->param(":groupID", Auth::$user->data['groupID'])
-					->param(":charID", $charSearchResults[0]['characterID'])
+					->param(":charID", $charSearchResults['characterID'])
 					->execute()
 					->current();
 					
@@ -110,8 +112,8 @@ class Controller_Manage_Blacklist extends Controller_Manage
 			{
                 $save = array(
                             'reason' => $_POST['reason'],
-                            'character_id' => $charSearchResults[0]['characterID'],
-                            'character_name' => $charSearchResults[0]['characterName'],
+                            'character_id' => $charSearchResults['characterID'],
+                            'character_name' => $charSearchResults['characterName'],
                             'group_id' => Auth::$user->data['groupID'],
 							'created' => time()
                         );
