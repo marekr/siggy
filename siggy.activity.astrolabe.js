@@ -29,25 +29,31 @@ siggy2.Activity.Astrolabe = function(core)
 		revert: true,
 		placeholder: "astrolabe-waypoint-placeholder",
 		update: function( event, ui ) {
+			$('.astrolabe-waypoint-route-options').show();
+			$('.astrolabe-waypoint:last').find('.astrolabe-waypoint-route-options').hide();
+			$('.astrolabe-waypoint:last').find('.astrolabe-waypoint-route').empty();
+
 			$this.search();
 		}
 	});
 	$( "ul, li" ).disableSelection();
-
+/*
 
 	var points = [
-		{name: 'Amarr', id: 30002187, guid:'6ab8fb20-a31c-4a69-b266-f3c162ee5369'},
-		{name: 'Huola', id: 30003067, guid:'71152bf5-5db4-4d63-baf4-353b8b8245f7'},
-		{name: 'Rens', id: 30002510, guid:'70a9525d-b188-4564-a783-e9281e93143b'},
-		{name: 'Dodixie', id: 30002659, guid: 'bea3cbe8-9b9c-4aab-8a63-4d9764d7fbbe'}
+		{name: 'Amarr', id: 30002187, guid:'6ab8fb20-a31c-4a69-b266-f3c162ee5369', sec_filter: 'shortest', use_wormholes: 'yes'},
+		{name: 'Huola', id: 30003067, guid:'71152bf5-5db4-4d63-baf4-353b8b8245f7', sec_filter: 'shortest', use_wormholes: 'no'},
+		{name: 'Rens', id: 30002510, guid:'70a9525d-b188-4564-a783-e9281e93143b', sec_filter: 'shortest', use_wormholes: 'yes'},
+		{name: 'Dodixie', id: 30002659, guid: 'bea3cbe8-9b9c-4aab-8a63-4d9764d7fbbe', sec_filter: 'shortest',  use_wormholes: 'yes'}
 	];
 
 	for(i = 0; i < points.length; i++)
 	{
-		var html = this.waypointHTML({name: points[i].name, id: points[i].id, guid: points[i].guid});
+		var html = this.waypointHTML(points[i]);
 		$('#astrolabe-waypoints').append(html);
+			$('.astrolabe-waypoint-route-options').show();
+			$('.astrolabe-waypoint:last').find('.astrolabe-waypoint-route-options').hide();
 	}
-
+*/
 	$('#astrolabe-new-waypoint-form').submit( function(e)
 	{
 		e.preventDefault();
@@ -62,20 +68,54 @@ siggy2.Activity.Astrolabe = function(core)
 				return;
 			}
 
-			var html = $this.waypointHTML({name: datums[0].name, id: datums[0].id, guid: guid()});
+			var secFilter = $('#astrolabe-new-waypoint-sec-filter').val();
+			var useWormholes = $('#astrolabe-new-waypoint-use-wormholes').val();
+
+			var html = $this.waypointHTML({
+											name: datums[0].name,
+											id: datums[0].id,
+											guid: guid(),
+											sec_filter: secFilter,
+											use_wormholes: useWormholes
+										});
+
 			$('#astrolabe-waypoints').append(html);
+
+			$('.astrolabe-waypoint-route-options').show();
+			$('.astrolabe-waypoint:last').find('.astrolabe-waypoint-route-options').hide();
+
 			$this.search();
 		}
 
 		siggy2.StaticData.systemTypeAhead.search(systemName, sync, false);
-
 	});
+
 
 	$('#activity-astrolabe').on('click','.astrolabe-waypoint-option-close', function(e) {
 		e.preventDefault();
 
+		var guid = $(this).parent().parent().parent().data('guid');
+		for(var i in $this.waypointCache)
+		{
+			if( $this.waypointCache[i].guid == guid )
+			{
+			console.log("deleted cached");
+				delete $this.waypointCache[i];
+			}
+		}
 		$(this).parent().parent().parent().remove();
+
 		$this.search();
+	});
+
+	$('#activity-astrolabe').on('click', '.dropdown-menu li a', function(){
+		$(this).parents(".btn-group").find(".btn:first-child span.label").text($(this).text());
+		$(this).parents(".btn-group").find(".btn:first-child").val($(this).data('value'));
+
+		if(  $(this).parents('form').length == 0 )
+		{
+			$this.search();
+		}
 	});
 }
 
@@ -154,23 +194,24 @@ siggy2.Activity.Astrolabe.prototype.getRouteRules = function(secFilter)
 	}
 }
 
-siggy2.Activity.Astrolabe.prototype.getRequestStruct = function(from, to, secFilter)
+siggy2.Activity.Astrolabe.prototype.getRequestStruct = function(from, to)
 {
 	var base = {
 		"method": "Route.Find",
 		"params": [{
 			"route": {
 				"from": {
-					"solarSystems": [from]
+					"solarSystems": [from.system_id]
 				},
 				"to": {
-					"solarSystem": to
+					"solarSystem": to.system_id
 				}
 			},
 			"capabilities": {
 				"jumpGate": {}
 			},
-			"rules": this.getRouteRules(secFilter)
+			"rules": this.getRouteRules(from.sec_filter),
+			"useWormholes": from.use_wormholes
 		}],
 		"id": 1
 	};
@@ -178,6 +219,18 @@ siggy2.Activity.Astrolabe.prototype.getRequestStruct = function(from, to, secFil
 	return base;
 }
 
+siggy2.Activity.Astrolabe.prototype.needsCacheUpdate = function(cached, waypoint)
+{
+	if( typeof(cached) == 'undefined'
+	|| cached.guid != waypoint.guid
+	|| cached.sec_filter != waypoint.sec_filter
+	|| cached.use_wormholes != waypoint.use_wormholes)
+	{
+		return true;
+	}
+
+	return false;
+}
 
 siggy2.Activity.Astrolabe.prototype.search = function()
 {
@@ -185,19 +238,16 @@ siggy2.Activity.Astrolabe.prototype.search = function()
 
 	var waypoints = [];
 
-	console.log(siggy2.StaticData.systems);
-
 	$('.astrolabe-waypoint').each( function()
 	{
 		waypoints.push({
 							system_name: $(this).data('system-name'),
 							system_id:  $(this).data('system-id'),
 							guid: $(this).data('guid'),
-							sec_filter: $(this).find('button[name=sec-filter]').val()
+							sec_filter: $(this).find('button[name=sec-filter]').val(),
+							use_wormholes: $(this).find('button[name=use-wormholes]').val() == 'yes' ? true : false
 						});
 	});
-
-	console.log(waypoints);
 
 	numberWaypointChanges = 0;
 	for(var i = 0; i < waypoints.length; i++)
@@ -206,7 +256,7 @@ siggy2.Activity.Astrolabe.prototype.search = function()
 
 		/* only update if the cache does not have our waypoint */
 		if( i < waypoints.length - 1
-			 && (typeof(this.waypointCache[i]) == 'undefined' || this.waypointCache[i].guid != waypoint.guid) )
+			 && this.needsCacheUpdate( this.waypointCache[i], waypoint ) )
 		{
 			numberWaypointChanges++;
 
@@ -220,7 +270,7 @@ siggy2.Activity.Astrolabe.prototype.search = function()
 
 		/* only update if the cache does not have our waypoint */
 		if( i < waypoints.length - 1
-			 && (typeof(this.waypointCache[i]) == 'undefined' || this.waypointCache[i].guid != waypoint.guid) )
+			 && this.needsCacheUpdate( this.waypointCache[i], waypoint ) )
 		{
 			(function(i,waypoint){
 				$.ajax({
@@ -230,7 +280,7 @@ siggy2.Activity.Astrolabe.prototype.search = function()
 					async: true,
 					method: 'post',
 					contentType: 'application/json',
-					data: JSON.stringify($this.getRequestStruct(waypoint.system_id, waypoints[i+1].system_id, waypoint.sec_filter)),
+					data: JSON.stringify($this.getRequestStruct(waypoint, waypoints[i+1])),
 					success: function (data)
 					{
 						$this.waypointCache[i] = waypoint;
@@ -260,6 +310,7 @@ siggy2.Activity.Astrolabe.prototype.reprintRoute = function()
 
 	this.totalJumps = 0;
 	i = 0;
+
 	$('.astrolabe-waypoint').each( function()
 	{
 		var waypoint = $this.waypointCache[i];

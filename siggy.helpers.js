@@ -60,6 +60,18 @@ siggy2.Helpers.setupHandlebars = function()
 		}
 	});
 
+	Handlebars.registerHelper('securityClass', function(str) {
+		var sec = parseFloat(str);
+		if( sec >= 0 )
+		{
+			return "security-status-"+str.replace(".","_");
+		}
+		else if( sec < 0.0 )
+		{
+			return "security-status-0_0";
+		}
+	});
+
 	Handlebars.registerHelper('escapeSpaceWithUnderscores', function(str) {
 		return str.replace(/ /g,"_");
 	});
