@@ -42,33 +42,13 @@
 	}
 	</td>
 </style>
-	<script>
-		$(function() {
-			$(document).on('click', '.dropdown-menu li a', function(){
-					console.log( $(this) );
-					$(this).parents(".btn-group").find(".btn:first-child span.label").text($(this).text());
-					$(this).parents(".btn-group").find(".btn:first-child").val($(this).data('value'));
-			});
-		});
-	</script>
 	<form class="form-inline" id='astrolabe-new-waypoint-form'>
 		<div class="form-group">
 			<label for='astrolabe-new-waypoint-system'>New Waypoint </label>
 			<input id='astrolabe-new-waypoint-system' type='text' name='astrolabe-new-waypoint-system' class='typeahead system-typeahead form-control' /><br />
 		</div>
-		<!--
 		<div class="btn-group">
-			<button type="button" class="btn btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false" value="stargates">
-				<span class='label'>Use Stargates</span> <span class="caret"></span>
-			</button>
-			<ul class="dropdown-menu" role="menu">
-				<li><a data-value="stargates" href="javascript:void(0)">Use Stargates</a></li>
-				<li><a data-value="cyno" href="javascript:void(0)">Use Cyno</a></li>
-			</ul>
-		</div>
-		-->
-		<div class="btn-group">
-			<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false" value="safest">
+			<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false" value="shortest" id="astrolabe-new-waypoint-sec-filter">
 				<span class='label'>Shortest</span> <span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" role="menu">
@@ -78,12 +58,12 @@
 			</ul>
 		</div>
 		<div class="btn-group">
-			<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false" value="wormholes">
+			<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false" value="yes" id="astrolabe-new-waypoint-use-wormholes">
 			<span class='label'>Use wormholes</span> <span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" role="menu">
-				<li><a data-value="wormholes" href="javascript:void(0)">Use wormholes</a></li>
-				<li><a data-value="no_wormholes" href="javascript:void(0)">Don't use wormholes</a></li>
+				<li><a data-value="yes" href="javascript:void(0)">Use wormholes</a></li>
+				<li><a data-value="no" href="javascript:void(0)">Don't use wormholes</a></li>
 			</ul>
 		</div>
 		<button type="submit" class="btn btn-primary">Add</button>
@@ -99,20 +79,23 @@
 		<div class='astrolabe-waypoint-header'>
 			<span class='astrolabe-waypoint-position'>0</span> {{name}}
 			<span class='astrolabe-waypoint-route-options'>
-			<!--
 				<div class="btn-group">
-					<button type="button" class="btn btn-xs btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false" value="stargates">
-						<span class='label'>Use Stargates</span> <span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" role="menu">
-						<li><a data-value="stargates" href="javascript:void(0)">Use Stargates</a></li>
-						<li><a data-value="cyno" href="javascript:void(0)">Use Cyno</a></li>
-					</ul>
-				</div>
-				-->
-				<div class="btn-group">
-					<button type="button" name="sec-filter" class="btn btn-xs btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false" value="shortest">
-						<span class='label'>Shortest</span> <span class="caret"></span>
+					<button type="button" name="sec-filter" class="btn btn-xs btn-info dropdown-toggle waypoint-route-option" data-toggle="dropdown" aria-expanded="false" value="{{sec_filter}}">
+						<span class='label'>
+						{{#equal sec_filter 'safest'}}
+						Safest
+						{{else}}
+							{{#equal sec_filter 'shortest'}}
+							Shortest
+							{{else}}
+								{{#equal sec_filter 'prefer_low_sec'}}
+								Prefer Low/Null Sec
+								{{/equal}}
+							{{/equal}}
+						{{/equal}}
+						</span>
+
+						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" role="menu">
 						<li><a data-value="safest" href="javascript:void(0)">Safest</a></li>
@@ -121,12 +104,20 @@
 					</ul>
 				</div>
 				<div class="btn-group">
-					<button type="button" class="btn-xs btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false" value="wormholes">
-					<span class='label'>Use wormholes</span> <span class="caret"></span>
+					<button type="button" name="use-wormholes" class="btn-xs btn btn-info dropdown-toggle waypoint-route-option" data-toggle="dropdown" aria-expanded="false" value="{{use_wormholes}}">
+					<span class='label'>
+					{{#equal use_wormholes 'yes'}}
+					Use wormholes
+					{{else}}
+					Don't use wormholes
+					{{/equal}}
+					</span>
+
+					<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" role="menu">
-						<li><a data-value="wormholes" href="javascript:void(0)">Use wormholes</a></li>
-						<li><a data-value="no_wormholes" href="javascript:void(0)">Don't use wormholes</a></li>
+						<li><a data-value="yes" href="javascript:void(0)">Use wormholes</a></li>
+						<li><a data-value="no" href="javascript:void(0)">Don't use wormholes</a></li>
 					</ul>
 				</div>
 
@@ -148,7 +139,7 @@
 	<tr data-system-id='{{ system.id }}'>
 		<td>{{position}}</td>
 		<td>{{system.name}}</td>
-	 	<td>{{system.sec}}</td>
+	 	<td class="{{securityClass system.sec}}">{{system.sec}}</td>
 		<td>{{system.region_name}}</td>
 	</tr>
 </script>

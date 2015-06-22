@@ -377,6 +377,7 @@
 				<?php if($requested): ?>
 				freezeSystem: true,
 				<?php endif; ?>
+				sessionID: '<?php echo Auth::$session->sessionData['sessionID']; ?>',
 				charsettings: {
 					themeID: <?php echo $settings['theme_id']; ?>,
 					combineScanIntel: <?php echo $settings['combine_scan_intel']; ?>,

@@ -68,6 +68,9 @@ siggy2.Core = function( options )
 			height: 400
 		}
 	}
+	
+	siggy2.Helpers.setupHandlebars();
+
 
 	// Display states cookie
 	var displayStatesCookie = getCookie('display_states');
@@ -131,8 +134,6 @@ siggy2.Core.prototype.updateNow = function()
 
 siggy2.Core.prototype.initialize = function ()
 {
-	siggy2.Helpers.setupHandlebars();
-
 	var that = this;
 	this.setupFatalErrorHandler();
 
@@ -160,7 +161,7 @@ siggy2.Core.prototype.initialize = function ()
 	{
 		defaultActivity = window.location.hash.slice(1);;
 	}
-	
+
 	this.loadActivity(defaultActivity);
 }
 
