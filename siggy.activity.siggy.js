@@ -71,7 +71,6 @@ siggy2.Activity.siggy = function(core)
 	$('#bear-C5').click(function() { $this.setBearTab(5); return false; });
 	$('#bear-C6').click(function() { $this.setBearTab(6); return false; });
 
-	this.initializeHubJumpContextMenu();
 	this.initializeTabs();
 	this.initializeCollaspibles();
 }
@@ -420,8 +419,8 @@ siggy2.Activity.siggy.prototype.updateSystemInfo = function (systemData)
 
 		var hubDiv = $("<div>").addClass('hub-jump').addClass('basic-system-context')
 		.text(hub.destination_name + " (" + hub.num_jumps + " "+_('Jumps')+")")
-		.data("sysID", hub.system_id)
-		.data("sysName", hub.destination_name);
+		.data("system-id", hub.system_id)
+		.data("system-name", hub.destination_name);
 
 		$('#hub-jumps').append(hubDiv);
 	}
@@ -633,53 +632,6 @@ siggy2.Activity.siggy.prototype.setBearTab = function( bearClass )
 		else
 		{
 			$(this).hide();
-		}
-	});
-}
-
-
-siggy2.Activity.siggy.prototype.initializeHubJumpContextMenu = function()
-{
-	$(document).contextMenu({
-		selector: '.basic-system-context',
-        build: function($trigger, e) {
-			var items = {
-							"showinfo": {name: "Show Info"}
-						};
-
-			if( typeof(CCPEVE) != "undefined" )
-			{
-				items.sep1 = "---------";
-				items.setdest = {name:'Set Destination'};
-				items.addwaypoint = {name: 'Add Waypoint'};
-			}
-
-            return {
-				callback: function(key, options) {
-					var sysID = $($trigger).data("sysID");
-					var sysName  = $($trigger).data("sysName");
-					if( key == "setdest" )
-					{
-						CCPEVE.setDestination(sysID);
-					}
-					else if( action == "addwaypoint" )
-					{
-						CCPEVE.addWaypoint(system.systemID);
-					}
-					else if( key == "showinfo" )
-					{
-						if( typeof(CCPEVE) != "undefined" )
-						{
-							CCPEVE.showInfo(5, sysID);
-						}
-						else
-						{
-							window.open('http://evemaps.dotlan.net/system/'+sysName , '_blank');
-						}
-					}
-				},
-				items: items
-            };
 		}
 	});
 }

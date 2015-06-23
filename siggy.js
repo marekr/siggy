@@ -68,8 +68,9 @@ siggy2.Core = function( options )
 			height: 400
 		}
 	}
-	
+
 	siggy2.Helpers.setupHandlebars();
+	this.initializeBasicSystemContextMenu();
 
 
 	// Display states cookie
@@ -173,7 +174,6 @@ siggy2.Core.prototype.update = function()
 		group_cache_time: $this.groupCacheTime,
 		newest_notification: $this.notifications.newestTimestamp
 	};
-
 
 	$.ajax({
 		url: $this.settings.baseUrl + 'update',
@@ -435,6 +435,53 @@ siggy2.Core.prototype.confirmDialog = function(message, yesCallback, noCallback)
 		$.unblockUI();
 		if (noCallback && $.isFunction(noCallback)) {
 			noCallback.call($this);
+		}
+	});
+}
+
+
+siggy2.Core.prototype.initializeBasicSystemContextMenu = function()
+{
+	$(document).contextMenu({
+		selector: '.basic-system-context',
+        build: function($trigger, e) {
+			var items = {
+							"showinfo": {name: "Show Info"}
+						};
+
+			if( typeof(CCPEVE) != "undefined" )
+			{
+				items.sep1 = "---------";
+				items.setdest = {name:'Set Destination'};
+				items.addwaypoint = {name: 'Add Waypoint'};
+			}
+
+            return {
+				callback: function(key, options) {
+					var sysID = $($trigger).data("system-id");
+					var sysName  = $($trigger).data("system-name");
+					if( key == "setdest" )
+					{
+						CCPEVE.setDestination(sysID);
+					}
+					else if( action == "addwaypoint" )
+					{
+						CCPEVE.addWaypoint(system.systemID);
+					}
+					else if( key == "showinfo" )
+					{
+						if( typeof(CCPEVE) != "undefined" )
+						{
+							CCPEVE.showInfo(5, sysID);
+						}
+						else
+						{
+							window.open('http://evemaps.dotlan.net/system/'+sysName , '_blank');
+						}
+					}
+				},
+				items: items
+            };
 		}
 	});
 }
