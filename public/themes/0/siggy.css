@@ -897,56 +897,103 @@ label {
 
 .security-status-1_0
 {
-	color: #2FEFEF;
+	background-color: #2FEFEF;
 }
 
 .security-status-0_9
 {
-	color: #48F0C0;
+	background-color: #48F0C0;
 }
 
 .security-status-0_8
 {
-	color: #00EF47;
+	background-color: #00EF47;
 }
 
 .security-status-0_7
 {
-	color: #00F000;
+	background-color: #00F000;
 }
 
 .security-status-0_6
 {
-	color: #8FEF2F;
+	background-color: #8FEF2F;
 }
 
 .security-status-0_5
 {
-	color: #EFEF00;
+	background-color: #EFEF00;
+	color: #000;
 }
 
 .security-status-0_4
 {
-	color: #D77700;
+	background-color: #D77700;
 }
 
 .security-status-0_3
 {
-	color: #F06000;
+	background-color: #F06000;
 }
 
 .security-status-0_2
 {
-	color: #F04800;
+	background-color: #F04800;
 }
 
 .security-status-0_1
 {
-	color: #D73000;
+	background-color: #D73000;
 }
 
-.security-status-0_0,
+.security-status-0_0
+{
+	background-color: #B60000;
+}
 .security-status--1_0
 {
-	color: #F00000;
+	background-color: #8B0000;
+}
+
+
+.ui-sortable-helper .astrolabe-waypoint-body
+{
+	display:none;
+
+}
+
+.ui-sortable-helper
+{
+	height: 40px !important;
+}
+
+.astrolabe-waypoint,
+.astrolabe-waypoint-placeholder
+{
+	background-color: #1C1C1C;
+	min-height: 40px;
+	margin-top:20px;
+}
+
+.astrolabe-waypoint-placeholder
+{
+	border: 2px dashed #fff;
+}
+
+.astrolabe-waypoint-header
+{
+	font-weight: bold;
+	padding:10px;
+	background-color: @footer-background;
+	cursor: move;
+}
+
+.astrolabe-waypoint-body
+{
+	padding-left: 20px;
+}
+
+.astrolabe-waypoint-route td
+{
+	padding: 5px;
 }

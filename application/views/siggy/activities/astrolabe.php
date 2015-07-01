@@ -1,46 +1,5 @@
 <div id="activity-astrolabe" class="wrapper" style="display:none">
 <style type='text/css'>
-	.ui-sortable-helper .astrolabe-waypoint-body
-	{
-		display:none;
-
-	}
-
-	.ui-sortable-helper
-	{
-		height: 40px !important;
-	}
-
-	.astrolabe-waypoint,
-	.astrolabe-waypoint-placeholder
-	{
-		background-color: #1C1C1C;
-		min-height: 40px;
-		padding:10px;
-		margin-top:20px;
-		cursor: pointer;
-	}
-
-	.astrolabe-waypoint-placeholder
-	{
-		border: 2px dashed #fff;
-	}
-
-	.astrolabe-waypoint-header
-	{
-		font-weight: bold;
-	}
-
-	.astrolabe-waypoint-body
-	{
-		padding-left: 20px;
-	}
-
-	.astrolabe-waypoint-route td
-	{
-		padding: 5px;
-	}
-	</td>
 </style>
 	<form class="form-inline" id='astrolabe-new-waypoint-form'>
 		<div class="form-group">
@@ -129,7 +88,7 @@
 		<div class='astrolabe-waypoint-body'>
 			<div class='astrolabe-waypoint-route-options'>
 			</div>
-			<table class='astrolabe-waypoint-route'>
+			<table class='astrolabe-waypoint-route siggy-table siggy-table-striped table-with-dropdowns'>
 			</table>
 		</div>
 	</li>
@@ -137,9 +96,41 @@
 
 <script id="template-astrolabe-route-table-row" type="text/x-handlebars-template">
 	<tr data-system-id='{{ system.id }}'>
-		<td>{{position}}</td>
-		<td>{{system.name}}</td>
-	 	<td class="{{securityClass system.sec}}">{{system.sec}}</td>
-		<td>{{system.region_name}}</td>
+		<td class='text-center'>{{position}}</td>
+		<td class='text-center'>
+			<div class="dropdown">
+				<button class="btn btn-default btn-hidden dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+					{{ system.name }}
+				</button>
+				<ul class="dropdown-menu" role="menu">
+					{{#isIGB}}
+					<li>
+					{{else}}
+					<li class='disabled'>
+					{{/isIGB}}
+						<a onclick="javascript:CCPEVE.setDestination({{ system.id }})">Set Destination</a>
+					</li>
+					{{#isIGB}}
+					<li>
+					{{else}}
+					<li class='disabled'>
+					{{/isIGB}}
+						<a onclick="javascript:CCPEVE.showInfo(5,{{ system.id }})">Show Info</a>
+					</li>
+					<li><a target="_blank" href="http://evemaps.dotlan.net/system/{{system.name}}">DOTLAN</a></li>
+				</ul>
+			</div>
+		</td>
+	 	<td class='text-center {{securityClass system.sec}}'>{{system.sec}}</td>
+		<td class='text-center'>
+			<div class="dropdown">
+				 <button class="btn btn-default btn-hidden dropdown-toggle" type="button" id="region-drop" data-toggle="dropdown" aria-expanded="true">
+					{{ system.region_name }}
+				</button>
+				<ul class="dropdown-menu" role="menu">
+					<li><a target="_blank" href="http://evemaps.dotlan.net/map/{{system.region_name}}">DOTLAN</a></li>
+				</ul>
+			</div>
+		</td>
 	</tr>
 </script>

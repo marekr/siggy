@@ -66,9 +66,13 @@ siggy2.Helpers.setupHandlebars = function()
 		{
 			return "security-status-"+str.replace(".","_");
 		}
-		else if( sec < 0.0 )
+		else if( sec < 0.0 && sec > -1.0 )
 		{
 			return "security-status-0_0";
+		}
+		else
+		{
+			return "security-status--1_0";
 		}
 	});
 

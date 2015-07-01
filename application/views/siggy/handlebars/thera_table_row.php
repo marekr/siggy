@@ -35,7 +35,7 @@
 					</ul>
 				</div>
 			</td>
-			<td class='text-center'>
+			<td class='text-center {{securityClass system.sec}}'>
 				{{ system.sec }}
 			</td>
 			<td class='wormhole-type text-center'>

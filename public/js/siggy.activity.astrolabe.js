@@ -28,6 +28,7 @@ siggy2.Activity.Astrolabe = function(core)
 	$( '#astrolabe-waypoints' ).sortable({
 		revert: true,
 		placeholder: "astrolabe-waypoint-placeholder",
+		handle: ".astrolabe-waypoint-header",
 		update: function( event, ui ) {
 			$('.astrolabe-waypoint-route-options').show();
 			$('.astrolabe-waypoint:last').find('.astrolabe-waypoint-route-options').hide();
@@ -260,7 +261,7 @@ siggy2.Activity.Astrolabe.prototype.search = function()
 		{
 			numberWaypointChanges++;
 
-			$('#waypoint-'+waypoint.guid).find('.astrolabe-waypoint-route').empty().text('Loading');
+			$('#waypoint-'+waypoint.guid).find('.astrolabe-waypoint-route').empty().text('Loading..');
 		}
 	}
 
