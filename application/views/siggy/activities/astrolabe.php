@@ -1,6 +1,7 @@
 <div id="activity-astrolabe" class="wrapper" style="display:none">
-<style type='text/css'>
-</style>
+	<p>
+		Welcome to astrolabe, a route planner and soon more. This feature is alpha quality, things may be funny.
+	</p>
 	<form class="form-inline" id='astrolabe-new-waypoint-form'>
 		<div class="form-group">
 			<label for='astrolabe-new-waypoint-system'>New Waypoint </label>
