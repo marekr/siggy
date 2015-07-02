@@ -212,7 +212,8 @@ siggy2.Activity.Astrolabe.prototype.getRequestStruct = function(from, to)
 				"jumpGate": {}
 			},
 			"rules": this.getRouteRules(from.sec_filter),
-			"useWormholes": from.use_wormholes
+			"useWormholes": from.use_wormholes,
+			"sessionID": this.core.settings.sessionID
 		}],
 		"id": 1
 	};
