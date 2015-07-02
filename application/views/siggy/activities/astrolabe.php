@@ -110,6 +110,13 @@
 					{{/isIGB}}
 						<a onclick="javascript:CCPEVE.setDestination({{ system.id }})">Set Destination</a>
 					</li>
+						{{#isIGB}}
+						<li>
+						{{else}}
+						<li class='disabled'>
+						{{/isIGB}}
+							<a onclick="javascript:CCPEVE.addWaypoint({{ system.id }})">Add Waypoint</a>
+						</li>
 					{{#isIGB}}
 					<li>
 					{{else}}
