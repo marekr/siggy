@@ -52,7 +52,8 @@ siggy2.Core = function( options )
 			poses: {
 			}
 		},
-		igb: true
+		igb: true,
+		sessionID: ''
 	};
 
 	this.settings = $.extend({}, this.defaults, options);
