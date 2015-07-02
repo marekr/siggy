@@ -997,3 +997,13 @@ label {
 {
 	padding: 5px;
 }
+
+.pos-status-online
+{
+	background-color:green;
+}
+
+.pos-status-offline
+{
+	background-color:red;
+}
