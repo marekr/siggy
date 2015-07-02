@@ -2,13 +2,17 @@
 
 /**
  * Fixup $_SERVER headers
+ * Need to strtoupper and replace dashes with udnerscores for eve headers
+ * as apache->fastcgi converts it
  */
 $headers = apache_request_headers();
 foreach($headers as $k => $v)
 {
 	if( strpos($k,'EVE') == 0 )
 	{
-		$_SERVER['HTTP_' . $k] = $v;
+		$k = 'HTTP_' . strtoupper(str_replace('-','_',$k));
+		if( !isset($_SERVER[$k]) )
+			$_SERVER[$k] = $v;
 	}
 }
 
@@ -160,7 +164,7 @@ Cookie::$salt = 'y[$e.swbDs@|Gd(ndtUSy^';
  * - boolean  caching     enable or disable internal caching                 FALSE
  */
 $initOptions = array(
-  'base_url'   => 'http://siggy.borkedlabs.com',
+  'base_url'   => 'http://siggy.borkedlabs.com:8080',
   'index_file' => FALSE,
   'profile'    => Kohana::$environment !== Kohana::PRODUCTION,
   'caching'    => Kohana::$environment === Kohana::PRODUCTION,
@@ -170,11 +174,11 @@ $initOptions = array(
 
 if( Kohana::$environment == Kohana::PRODUCTION)
 {
-	$initOptions['base_url'] = 'http://siggy.borkedlabs.com';
+	$initOptions['base_url'] = 'http://siggy.borkedlabs.com:8080';
 }
 else
 {
-	$initOptions['base_url'] = 'http://dev.siggy.borkedlabs.com';
+	$initOptions['base_url'] = 'http://dev.siggy.borkedlabs.com:8080';
 }
 
 Kohana::init($initOptions);
