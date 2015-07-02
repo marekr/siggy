@@ -44,6 +44,19 @@ intelposes.prototype.getPOSStatus = function( online )
 	}
 }
 
+intelposes.prototype.getPOSStatusClass = function( online )
+{
+	online = parseInt(online);
+	if( online )
+	{
+		return "pos-status-online";
+	}
+	else
+	{
+		return "pos-status-offline";
+	}
+}
+
 intelposes.prototype.updatePOSList = function( data )
 {
 	var $this = this;
@@ -65,7 +78,7 @@ intelposes.prototype.updatePOSList = function( data )
 
 			var row = $("<tr>").attr('id', 'pos-'+pos_id);
 
-			row.append($("<td>").text( $this.getPOSStatus(data[i].pos_online) ) );
+			row.append($("<td>").addClass($this.getPOSStatusClass(data[i].pos_online)).text( $this.getPOSStatus(data[i].pos_online) ) );
 			row.append($("<td>").text( data[i].pos_location_planet + " - " + data[i].pos_location_moon ) );
 			row.append($("<td>").text( data[i].pos_owner ) );
 			row.append($("<td>").text( data[i].pos_type_name ) );
