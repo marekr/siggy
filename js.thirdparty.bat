@@ -1,7 +1,7 @@
 "C:\Program Files (x86)\Java\jre1.8.0_45\bin\java.exe" -jar compiler.jar ^
 --js=translate.js ^
 --js=jquery/jquery-1.11.2.js ^
---js=jquery/jquery-ui.1.11.2.min.js ^
+--js=jquery/jquery-ui.1.11.4.min.js ^
 --js=jquery/jquery.qtip.js ^
 --js=jquery/jquery.blockUI.js ^
 --js=jquery/jquery.color.js ^
