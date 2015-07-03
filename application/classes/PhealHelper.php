@@ -7,8 +7,6 @@ class PhealHelper {
 	
 	public static function configure()
 	{
-		Config::getInstance()->log = new \Pheal\Log\FileStorage(APPPATH.'/logs/api/');
-	
 		Config::getInstance()->http_ssl_verifypeer = false;
 		Config::getInstance()->http_user_agent = 'siggy '.SIGGY_VERSION.' mark.roszko@gmail.com';
 		
