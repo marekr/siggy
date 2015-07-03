@@ -164,7 +164,7 @@ Cookie::$salt = 'y[$e.swbDs@|Gd(ndtUSy^';
  * - boolean  caching     enable or disable internal caching                 FALSE
  */
 $initOptions = array(
-  'base_url'   => 'http://siggy.borkedlabs.com:8080',
+  'base_url'   => 'http://siggy.borkedlabs.com',
   'index_file' => FALSE,
   'profile'    => Kohana::$environment !== Kohana::PRODUCTION,
   'caching'    => Kohana::$environment === Kohana::PRODUCTION,
@@ -174,11 +174,11 @@ $initOptions = array(
 
 if( Kohana::$environment == Kohana::PRODUCTION)
 {
-	$initOptions['base_url'] = 'http://siggy.borkedlabs.com:8080';
+	$initOptions['base_url'] = 'http://siggy.borkedlabs.com';
 }
 else
 {
-	$initOptions['base_url'] = 'http://dev.siggy.borkedlabs.com:8080';
+	$initOptions['base_url'] = 'http://dev.siggy.borkedlabs.com';
 }
 
 Kohana::init($initOptions);
