@@ -108,11 +108,6 @@ if (isset($_SERVER['SERVER_PROTOCOL']))
 
 Kohana::$environment = ($_SERVER['SERVER_NAME'] !== 'localhost' && $_SERVER['SERVER_NAME'] !== 'dev.siggy.borkedlabs.com') ? Kohana::PRODUCTION : Kohana::DEVELOPMENT;
 
-if( !isset($_SERVER['HTTP_EVE_SOLARSYSTEMID']) && isset($_SERVER['HTTP_EVE_SOLARSYSTEMNAME']) )
-{
-	require 'systemReference.php';
-	$_SERVER['HTTP_EVE_SOLARSYSTEMID'] = $systems[ $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] ];
-}
 /*
 if( Kohana::$environment == Kohana::DEVELOPMENT && strpos($_SERVER['HTTP_USER_AGENT'],'EVE-IGB') === false )
 {
