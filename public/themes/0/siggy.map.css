@@ -67,8 +67,8 @@ MAP */
 	padding: 2px;
 	cursor: pointer;
 	z-index: 1;
-	border-radius: 8px;
-	-webkit-border-radius:  8px;
+	border-radius: 5px;
+	-webkit-border-radius:  5px;
 	font-size: 11px;
 	box-sizing: content-box;
 	-webkit-box-sizing: content-box;

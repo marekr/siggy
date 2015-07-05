@@ -700,7 +700,7 @@ siggy2.Map.prototype.registerEvents = function()
             saveSystem.id = parseInt(sysID);
 
 
-            var offset = $( '#'+sysID ).position();
+            var offset = $( '#map-system-'+sysID ).position();
             saveSystem.x = offset.left;
             saveSystem.y = offset.top;
 
@@ -861,7 +861,7 @@ siggy2.Map.prototype.updateActives = function( activesData )
     {
         var sysID = this.systems[i].systemID;
 
-        var ele =  $('#' + sysID + ' .map-system-blob-actives');
+        var ele =  $('#map-system-' + sysID + ' .map-system-blob-actives');
         ele.empty();
 
         var fullActives = $("#fullactives"+sysID);

@@ -240,8 +240,9 @@
 				{{/if}}
 				{{#isKSpaceClass system.class}}
 					{{#if system.region_name }}
-					<br />
-					{{system.region_name}}
+					<i style="font-size:9px">
+						{{system.region_name}}
+					</i>
 					{{/if}}
 				{{/isKSpaceClass}}
 			</span>
