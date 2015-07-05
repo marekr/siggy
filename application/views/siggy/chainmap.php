@@ -238,6 +238,8 @@
 				{{else}}
 					{{system.name}}
 				{{/if}}
+			</span>
+			<span>
 				{{#isKSpaceClass system.class}}
 					{{#if system.region_name }}
 					<i style="font-size:9px">

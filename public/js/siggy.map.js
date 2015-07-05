@@ -960,7 +960,11 @@ siggy2.Map.prototype.draw = function()
 												})
 							);
 
-		newTypeBlob.offset({ top: systemData.y, left: systemData.x});
+		/* We use left and top instead of offset because the initial parent is funky */
+		(function(x,y){
+			newTypeBlob.css('left', x+"px");
+			newTypeBlob.css('top', y+"px");
+		})(systemData.x, systemData.y);
 
         if( this.selectedSystemID == systemData.systemID )
         {
