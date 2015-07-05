@@ -15,6 +15,7 @@
 --js=jquery/jquery.simplePagination.js ^
 --js=handlebars-v2.0.0.js ^
 --js=handlebars.form-helpers.js ^
+--js=handlebars.helpers.js ^
 --js=dropdown.js ^
 --js=tab.js ^
 --js=typeahead.bundle.js ^

@@ -15,6 +15,7 @@
         <?php if( Kohana::$environment == Kohana::DEVELOPMENT ): ?>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/handlebars-v2.0.0.js'></script>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/handlebars.form-helpers.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/handlebars.helpers.js'></script>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/translate.js'></script>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery-1.11.2.js'></script>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery-ui.1.11.4.min.js'></script>

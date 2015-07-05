@@ -71,6 +71,40 @@ siggy2.Map = function(core, options)
 
     this.selectionBox = $('<div>').addClass('selection-box');
 
+	this.blobTemplate = Handlebars.compile( $("#template-chainmap-system-blob").html() );
+
+	$(document).on('click','.system-show-info', function(e)
+	{
+		e.preventDefault();
+
+		if( $this.editing || $this.massDelete )
+		{
+			return false;
+		}
+
+		if( typeof(CCPEVE) != "undefined" )
+		{
+			var sysID = $(this).parent().parent().data('system-id');
+			CCPEVE.showInfo(5, sysID );
+		}
+		else
+		{
+			var sysName = $(this).parent().parent().data('system-name');
+			window.open('http://evemaps.dotlan.net/system/'+sysName , '_blank');
+		}
+	});
+
+	$(document).on('click','.map-system-blob', function(e)
+	{
+		e.preventDefault();
+        if( $this.editing || $this.massDelete )
+        {
+            return false;
+        }
+        var sysID = $(this).data('system-id');
+
+		$(document).trigger('siggy.map.systemSelected', sysID );
+    } );
 
 	$(document).on('click','button.chainmap-dialog-cancel', function(e)
 	{
@@ -78,7 +112,6 @@ siggy2.Map = function(core, options)
 
 		$('#chain-map-container').unblock();
 	});
-
 
 	$('#chain-map-table-button').click(function(e) {
 		$this.core.loadActivity('chainmap', {chainMapID: $this.core.activities.siggy.chainMapID});
@@ -483,7 +516,7 @@ siggy2.Map.prototype.initializeSystemBlobContextMenu = function()
 		selector: '.map-system-blob',
 
         build: function($trigger, e) {
-			var sysID = $($trigger).data('system_id');
+			var sysID = $($trigger).data('system-id');
 
 			var sysData = $this.systems[sysID];
 
@@ -513,7 +546,7 @@ siggy2.Map.prototype.initializeSystemBlobContextMenu = function()
 
             return {
                 callback: function(key, options) {
-					var sysID = $(this).data('system_id');
+					var sysID = $(this).data('system-id');
 					var sysData = $this.systems[sysID];
 					$this.systemContextMenuHandler(key,sysData);
                 },
@@ -602,9 +635,9 @@ siggy2.Map.prototype.setSelectedSystem = function( systemID )
 {
 	if( this.selectedSystemID != systemID )
 	{
-		$( "#"+this.selectedSystemID ).removeClass('map-system-blob-selected');
+		$( "#map-system-"+this.selectedSystemID ).removeClass('map-system-blob-selected');
 
-		$("#"+systemID ).addClass('map-system-blob-selected');
+		$("#map-system-"+systemID ).addClass('map-system-blob-selected');
 
 		this.selectedSystemID = systemID;
 	}
@@ -912,99 +945,26 @@ siggy2.Map.prototype.draw = function()
         //local variable assignment
         var systemData = this.systems[i];
 
-        var sysBlob = $("<div>").addClass('map-system-blob').offset({ top: systemData.y, left: systemData.x}).attr("id", systemData.systemID);
+		var newTypeBlob = $(this.blobTemplate({system: {
+															id: systemData.systemID,
+															region_name: systemData.region_name,
+															name:systemData.name,
+															display_name: systemData.displayName,
+															class: parseInt(systemData.sysClass),
+															kills_in_last_2_hours: parseInt(systemData.kills_in_last_2_hours),
+															npcs_kills_in_last_2_hours: parseInt(systemData.npcs_kills_in_last_2_hours),
+															showClass: ( this.settings.alwaysShowClass || systemData.sysClass >= 7 || ( systemData.sysClass < 7 && systemData.displayName == "") ),
+															rally: systemData.rally,
+															effect: parseInt(systemData.effect)
+														}
+												})
+							);
 
-		sysBlob.data('system_id', systemData.systemID);
-
-        //blob time for the title
-        var systemName = $("<span>").addClass('map-system-blob-sysname');
-
-		if(systemData.displayName == "")
-		{
-			var text = systemData.name;
-			if( siggy2.Helpers.isKSpaceClass(systemData.sysClass) )
-			{
-				text += '<br />' + systemData.region_name + '';
-			}
-			systemName.html(text);
-		}
-		else
-		{
-			systemName.text(systemData.displayName);
-		}
-
-
-        var titleClassBit = "";
-        if( this.settings.alwaysShowClass || systemData.sysClass >= 7 || ( systemData.sysClass < 7 && systemData.displayName == "") )
-        {
-            titleClassBit = $("<span>").addClass('map-system-blob-class').addClass( this.getClassColor( parseInt(systemData.sysClass) ) ).text( this.getClassText( parseInt(systemData.sysClass) ) );
-        }
-
-        //effect stuff
-        var effectBit = $("<span>");
-        var effectClass = this.getEffectColor( parseInt(systemData.effect) );
-        if(effectClass != "" )
-        {
-            effectBit.addClass('map-effect');
-            effectBit.addClass(effectClass);
-            effectBit.attr('title', this.getEffectText( parseInt(systemData.effect) ) );
-        }
-
-        //show info on the name
-        systemName.click( function(ele)
-        {
-            if( that.editing || that.massDelete )
-            {
-                return false;
-            }
-
-            var sysID = $(this).parent().parent().attr("id");
-            if( typeof(CCPEVE) != "undefined" )
-            {
-			   CCPEVE.showInfo(5, sysID );
-            }
-            else
-            {
-				window.open('http://evemaps.dotlan.net/system/'+that.systems[sysID].name , '_blank');
-            }
-        });
-
-		var killBit = $("<span>");
-
-		if( systemData.sysClass != 7 &&  systemData.sysClass != 8 )
-		{
-			if( parseInt(systemData.kills_in_last_2_hours) > 0 )
-			{
-				killBit.append($("<img>").attr("src", this.baseUrl + "public/images/evekill.png").addClass('map-system-blob-mini-icon').attr('title','Kills in last 2 hours'));
-			}
-
-
-			if( parseInt(systemData.npcs_kills_in_last_2_hours) > 0 )
-			{
-				killBit.append($("<img>").attr("src", this.baseUrl + "public/images/carebear.gif").addClass('map-system-blob-mini-icon').attr('title','NPC Kills in last 2 hours'));
-			}
-		}
-
-		var rallyIcon = '';
-		if( parseInt(systemData.rally) )
-		{
-			rallyIcon = $('<i>').addClass('fa fa-exclamation-triangle');
-		}
-        var systemBlobTitle = $("<div>").addClass('map-system-blob-title')
-																		.append(titleClassBit)
-																		.append(effectBit)
-																		.append(killBit)
-																		.append($(rallyIcon).clone())
-																		.append(systemName)
-																		.append(rallyIcon);
-
-        //add empty paragraph for the active chars
-        var systemBlobActives = $("<div>").addClass('map-system-blob-actives');
-        sysBlob.append(systemBlobTitle).append(systemBlobActives);
+		newTypeBlob.offset({ top: systemData.y, left: systemData.x});
 
         if( this.selectedSystemID == systemData.systemID )
         {
-            sysBlob.addClass('map-system-blob-selected');
+            newTypeBlob.addClass('map-system-blob-selected');
         }
 
         // get the activity color class
@@ -1017,27 +977,14 @@ siggy2.Map.prototype.draw = function()
 		{
 			activityClass = 'map-activity-rally-here';
 		}
-		sysBlob.addClass( activityClass) ;
+		newTypeBlob.addClass( activityClass) ;
 
-        $("#chain-map").append( sysBlob );
-
-
-        sysBlob.click( function() {
-            if( that.editing || that.massDelete )
-            {
-                return false;
-            }
-            var sysID = $(this).attr("id");
-        //    that.siggymain.switchSystem(sysID, that.systems[sysID].name);
-
-			$(document).trigger('siggy.map.systemSelected', sysID );
-		//	$(document).trigger('siggy.switchSystem', sysID );
-        } );
+		$("#chain-map").append( newTypeBlob );
 
         var tst = $("<div>").attr("id","fullactives"+systemData.systemID).addClass('tooltip').addClass('map-full-actives').text("");
         $("#chain-map-container").append(tst);
 
-        var res = sysBlob.qtip({
+        var res = newTypeBlob.qtip({
             content: {
                 text: $("#fullactives"+systemData.systemID) // Use the "div" element next to this for the content
             },
@@ -1199,126 +1146,6 @@ siggy2.Map.prototype.openSystemEdit = function( sysID )
 	$('#system-editor input[name=label]').val( label );
 	$('#system-editor input[name=label]').select();
 	$('#system-editor select[name=activity]').val(this.systems[ sysID ].activity);
-}
-
-siggy2.Map.prototype.getEffectText = function(effect)
-{
-    var effText = '';
-    switch( effect )
-    {
-            case 30574:
-                effText = 'Magnetar';
-                break;
-            case 30575:
-                effText = 'Black Hole';
-                break;
-            case 30576:
-                effText = 'Red Giant';
-                break;
-            case 30577:
-                effText = 'Pulsar';
-                break;
-            case 30669:
-                effText = 'Wolf-Rayet';
-                break;
-            case 30670:
-                effText = 'Cataclysmic Variable';
-                break;
-            default:
-                effText = 'No effect';
-                break;
-    }
-
-    return effText;
-}
-
-siggy2.Map.prototype.getEffectColor = function(effect)
-{
-    var eff = effect;
-    switch( effect )
-    {
-		case 30574:
-			eff = 'map-effect-magnetar'; //magnetar
-			break;
-		case 30575:	//black hole
-			eff = 'map-effect-blackhole';
-			break;
-		case 30576:
-			eff = 'map-effect-red-giant'; //red giant
-			break;
-		case 30577:
-			eff = 'map-effect-pulsar'; //pulsar
-			break;
-		case 30669:
-			eff = 'map-effect-wolf-rayet'; //wolf-rayet
-			break;
-		case 30670:
-			eff = 'map-effect-catalysmic'; //catalysmic
-			break;
-		default:
-			eff = '';
-			break;
-    }
-
-    return eff;
-}
-
-siggy2.Map.prototype.getClassText = function(sysClass)
-{
-    var text = "";
-
-    if( sysClass == 7 )
-    {
-		text = 'H';
-    }
-    else if( sysClass == 8 )
-    {
-		text = 'L';
-    }
-    else if( sysClass == 9 )
-    {
-		text = '0.0';
-    }
-    else
-    {
-		text = 'C'+sysClass;
-    }
-
-    return text;
-}
-
-siggy2.Map.prototype.getClassColor = function(sysClass)
-{
-    var classColor = '';
-    switch( sysClass )
-    {
-		case 1:
-		case 2:
-		case 3:
-				classColor = 'map-class-unknown';
-				break;
-		case 4:
-		case 5:
-				classColor = 'map-class-dangerous';
-				break;
-		case 6:
-				classColor = 'map-class-deadly';
-				break;
-		case 7:
-				classColor = 'map-class-high';
-				break;
-		case 8:
-				classColor = 'map-class-low';
-				break;
-		case 9:
-				classColor = 'map-class-null';
-				break;
-		default:
-				classColor = '';
-				break;
-    }
-
-    return classColor;
 }
 
 siggy2.Map.prototype.getActivityColor = function(activity)

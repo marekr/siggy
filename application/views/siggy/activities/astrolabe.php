@@ -42,17 +42,17 @@
 				<div class="btn-group">
 					<button type="button" name="sec-filter" class="btn btn-xs btn-info dropdown-toggle waypoint-route-option" data-toggle="dropdown" aria-expanded="false" value="{{sec_filter}}">
 						<span class='label'>
-						{{#equal sec_filter 'safest'}}
+						{{#is sec_filter "==" 'safest'}}
 						Safest
 						{{else}}
-							{{#equal sec_filter 'shortest'}}
+							{{#is sec_filter "==" 'shortest'}}
 							Shortest
 							{{else}}
-								{{#equal sec_filter 'prefer_low_sec'}}
+								{{#is sec_filter "==" 'prefer_low_sec'}}
 								Prefer Low/Null Sec
-								{{/equal}}
-							{{/equal}}
-						{{/equal}}
+								{{/is}}
+							{{/is}}
+						{{/is}}
 						</span>
 
 						<span class="caret"></span>
@@ -66,11 +66,11 @@
 				<div class="btn-group">
 					<button type="button" name="use-wormholes" class="btn-xs btn btn-info dropdown-toggle waypoint-route-option" data-toggle="dropdown" aria-expanded="false" value="{{use_wormholes}}">
 					<span class='label'>
-					{{#equal use_wormholes 'yes'}}
+					{{#is use_wormholes "==" 'yes'}}
 					Use wormholes
 					{{else}}
 					Don't use wormholes
-					{{/equal}}
+					{{/is}}
 					</span>
 
 					<span class="caret"></span>

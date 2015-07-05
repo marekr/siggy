@@ -56,40 +56,40 @@
 		</td>
 		<td class='text-center'>
 			{{#if connection.eol}}
-				{{#equal connection.eol 1 }}
+				{{#is connection.eol "==" 1 }}
 				Yes<br />
 					{{ displayTimestamp connection.eol_date_set }}
-				{{/equal}}
-				{{#equal connection.eol 0 }}
+				{{/is}}
+				{{#is connection.eol "==" 0 }}
 				No
-				{{/equal}}
+				{{/is}}
 			{{else}}
 			--
 			{{/if}}
 		</td>
 		<td class='text-center'>
 			{{#if connection.frigate_sized}}
-				{{#equal connection.frigate_sized 1 }}
+				{{#is connection.frigate_sized "==" 1 }}
 				Yes
 				{{/equal}}
-				{{#equal connection.frigate_sized 0 }}
+				{{#is connection.frigate_sized "==" 0 }}
 				No
-				{{/equal}}
+				{{/is}}
 			{{else}}
 			--
 			{{/if}}
 		</td>
 		<td class='text-center'>
 			{{#if connection.mass}}
-				{{#equal connection.mass 2 }}
+				{{#is connection.mass "==" 2 }}
 				Stage 3 Crit
-				{{/equal}}
-				{{#equal connection.mass 1 }}
+				{{/is}}
+				{{#is connection.mass "==" 1 }}
 				Stage 2 Reduced
-				{{/equal}}
-				{{#equal connection.mass 0 }}
+				{{/is}}
+				{{#is connection.mass "==" 0 }}
 				Stage 1 New
-				{{/equal}}
+				{{/is}}
 			{{else}}
 			--
 			{{/if}}
