@@ -60,6 +60,17 @@ siggy2.Helpers.setupHandlebars = function()
 		}
 	});
 
+	Handlebars.registerHelper('isKSpaceClass', function(systemClass, options) {
+		if ( siggy2.Helpers.isKSpaceClass(systemClass) )
+		{
+			return options.fn(this);
+		}
+		else
+		{
+			return options.inverse(this);
+		}
+	});
+
 	Handlebars.registerHelper('securityClass', function(str) {
 		var sec = parseFloat(str);
 		if( sec >= 0 )
@@ -74,6 +85,127 @@ siggy2.Helpers.setupHandlebars = function()
 		{
 			return "security-status--1_0";
 		}
+	});
+
+
+	Handlebars.registerHelper('systemClassTextColor', function(sysClass) {
+	    var classColor = '';
+		sysClass = parseInt(sysClass);
+
+	    switch( sysClass )
+	    {
+			case 1:
+			case 2:
+			case 3:
+					classColor = 'map-class-unknown';
+					break;
+			case 4:
+			case 5:
+					classColor = 'map-class-dangerous';
+					break;
+			case 6:
+					classColor = 'map-class-deadly';
+					break;
+			case 7:
+					classColor = 'map-class-high';
+					break;
+			case 8:
+					classColor = 'map-class-low';
+					break;
+			case 9:
+					classColor = 'map-class-null';
+					break;
+			default:
+					classColor = '';
+					break;
+	    }
+
+	    return classColor;
+	});
+
+	Handlebars.registerHelper('systemClassShortText', function(sysClass) {
+	    var text = "";
+		sysClass = parseInt(sysClass);
+
+	    if( sysClass == 7 )
+	    {
+			text = 'H';
+	    }
+	    else if( sysClass == 8 )
+	    {
+			text = 'L';
+	    }
+	    else if( sysClass == 9 )
+	    {
+			text = '0.0';
+	    }
+	    else
+	    {
+			text = 'C'+sysClass;
+	    }
+
+	    return text;
+	});
+
+	Handlebars.registerHelper('systemEffectIDToText', function(effect) {
+	    var effText = '';
+
+	    switch( effect )
+	    {
+	            case 30574:
+	                effText = 'Magnetar';
+	                break;
+	            case 30575:
+	                effText = 'Black Hole';
+	                break;
+	            case 30576:
+	                effText = 'Red Giant';
+	                break;
+	            case 30577:
+	                effText = 'Pulsar';
+	                break;
+	            case 30669:
+	                effText = 'Wolf-Rayet';
+	                break;
+	            case 30670:
+	                effText = 'Cataclysmic Variable';
+	                break;
+	            default:
+	                effText = 'No effect';
+	                break;
+	    }
+
+	    return effText;
+	});
+
+	Handlebars.registerHelper('systemEffectIDToColor', function(effect) {
+	    var eff = effect;
+	    switch( effect )
+	    {
+			case 30574:
+				eff = 'map-effect-magnetar'; //magnetar
+				break;
+			case 30575:	//black hole
+				eff = 'map-effect-blackhole';
+				break;
+			case 30576:
+				eff = 'map-effect-red-giant'; //red giant
+				break;
+			case 30577:
+				eff = 'map-effect-pulsar'; //pulsar
+				break;
+			case 30669:
+				eff = 'map-effect-wolf-rayet'; //wolf-rayet
+				break;
+			case 30670:
+				eff = 'map-effect-catalysmic'; //catalysmic
+				break;
+			default:
+				eff = '';
+				break;
+	    }
+
+	    return eff;
 	});
 
 	Handlebars.registerHelper('escapeSpaceWithUnderscores', function(str) {
@@ -102,26 +234,6 @@ siggy2.Helpers.setupHandlebars = function()
 
 	Handlebars.registerHelper('capitalize', function(str) {
 			return str.charAt(0).toUpperCase() + str.slice(1);
-	});
-
-	Handlebars.registerHelper('equal', function(lvalue, rvalue, options) {
-		if (arguments.length < 3)
-			throw new Error("Handlebars Helper equal needs 2 parameters");
-		if( lvalue != rvalue ) {
-			return options.inverse(this);
-		} else {
-			return options.fn(this);
-		}
-	});
-
-	Handlebars.registerHelper('notEqual', function(lvalue, rvalue, options) {
-		if (arguments.length < 3)
-			throw new Error("Handlebars Helper not equal needs 2 parameters");
-		if( lvalue==rvalue ) {
-			return options.inverse(this);
-		} else {
-			return options.fn(this);
-		}
 	});
 }
 
