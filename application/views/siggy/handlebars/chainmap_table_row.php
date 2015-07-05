@@ -1,4 +1,4 @@
-<script id="template-chainmap-table-row" type="text/x-handlebars-template">?
+<script id="template-chainmap-table-row" type="text/x-handlebars-template">
 	<tr id='notification-history-{{ id }}' data-id='{{ id }}' class='exit-row'>
 		<td class='text-center'>
 			<div class="dropdown">
