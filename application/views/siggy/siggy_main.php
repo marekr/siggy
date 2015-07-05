@@ -40,6 +40,7 @@
                 <a href='#' target='_blank' class='site-icon site-dotlan click-me'><img src='<?php echo URL::base(TRUE, TRUE);?>public/images/dotlan.png' width='16' height='16'/></a>
                 <a href='#' target='_blank' class='site-icon site-wormholes click-me'><img src='<?php echo URL::base(TRUE, TRUE);?>public/images/wormholes.png' width='16' height='16'/></a>
                 <a href='#' target='_blank' class='site-icon site-evekill click-me'><img src='<?php echo URL::base(TRUE, TRUE);?>public/images/evekill.png' width='16' height='16'/></a>
+                <a href='#' target='_blank' class='site-icon site-zkillboard click-me'><img src='<?php echo URL::base(TRUE, TRUE);?>public/images/wreck.png' width='16' height='16'/></a>
             </div>
             <ul class='option-bar tabs' role='tablist'>
                 <li role='presentation'><a href='#system-info' aria-controls='home' role='tab' data-toggle='tab'>Extra</a></li>
