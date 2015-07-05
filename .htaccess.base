@@ -17,5 +17,8 @@ RewriteRule ^(?:application|modules|system)\b.* index.php/$0 [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-# Rewrite all other URLs to index.php/URL
+#Non-FastCGI: Rewrite all other URLs to index.php/URL
 RewriteRule .* index.php/$0 [PT]
+
+#FastCGI: Rewrite all other URLs to index.php/URL
+#RewriteRule .* index.php?kohana_uri=$0 [PT,L,QSA]
