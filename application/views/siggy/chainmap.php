@@ -212,14 +212,14 @@
 		<div class="map-system-blob-title">
 
 			{{#if system.showClass}}
-				<span class="map-system-blob-class {{systemClassTextColor system.class }}">{{systemClassShortText system.class}}</span>
+				<span class="map-system-blob-class {{systemClassTextColor system.system_class }}">{{systemClassShortText system.system_class}}</span>
 			{{/if}}
 			<span></span>
 			{{#is system.effect "!=" 0 }}
 			<span class='map-effect {{ systemEffectIDToColor system.effect }}' title='{{ systemEffectIDToText system.effect }}'></span>
 			{{/is}}
 			<span>
-				{{#is system.class "==" 9 }}
+				{{#is system.system_class "==" 9 }}
 					{{#is system.kills_in_last_2_hours ">" 0 }}
 						<img src="public/images/evekill.png" class="map-system-blob-mini-icon" title="Kills in last 2 hours"
 					{{/is}}
@@ -240,7 +240,7 @@
 				{{/if}}
 			</span>
 			<span>
-				{{#isKSpaceClass system.class}}
+				{{#isKSpaceClass system.system_class}}
 					{{#if system.region_name }}
 					<i style="font-size:9px">
 						{{system.region_name}}

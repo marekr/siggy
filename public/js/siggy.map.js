@@ -950,7 +950,7 @@ siggy2.Map.prototype.draw = function()
 															region_name: systemData.region_name,
 															name:systemData.name,
 															display_name: systemData.displayName,
-															class: parseInt(systemData.sysClass),
+															system_class: parseInt(systemData.sysClass),
 															kills_in_last_2_hours: parseInt(systemData.kills_in_last_2_hours),
 															npcs_kills_in_last_2_hours: parseInt(systemData.npcs_kills_in_last_2_hours),
 															showClass: ( this.settings.alwaysShowClass || systemData.sysClass >= 7 || ( systemData.sysClass < 7 && systemData.displayName == "") ),
