@@ -231,7 +231,7 @@ siggy2.Map.prototype.initialize = function()
 	$('#chain-map-delete-whs').click( function() {
 		that.showMessage('deleting');
 		that.massSelect = true;
-
+		$('body').addClass('no-select');
 
 		$('#chain-map-mass-delete-confirm').show();
 		$('#chain-map-mass-delete-cancel').show();
@@ -729,6 +729,7 @@ siggy2.Map.prototype.registerEvents = function()
 
 		$this.hideMessage('deleting');
 		$this.massDelete = false;
+		$('body').removeClass('no-select');
 		$this.massSelect = false;
 
         $(this).hide();
@@ -746,6 +747,7 @@ siggy2.Map.prototype.registerEvents = function()
 
 		$this.hideMessage('deleting');
 		$this.massDelete = false;
+		$('body').removeClass('no-select');
 		$this.massSelect = false;
 
         $(this).hide();
