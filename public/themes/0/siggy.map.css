@@ -1,12 +1,16 @@
 
 
-/*
-
-MAP */
+/*MAP */
 
 #chain-map-container
 {
 	background-color: @chain-map-background;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 #chain-map-inner
@@ -21,12 +25,6 @@ MAP */
 	position:absolute;
 	font-size:1.4em;
 	display:none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-o-user-select: none;
-	user-select: none;
-	cursor: default;
 }
 
 
@@ -396,19 +394,6 @@ button.centered
 {
 	display:block;
 	margin:0 auto;
-}
-
-ul.itemList li
-{
-	border-bottom:1px solid #FEA800;
-	padding:4px;
-	font-size: 0.75em;
-	background-color: #121212;
-}
-
-ul.itemList
-{
-	border: 1px solid #000;
 }
 
 #connection-editor-options-wh

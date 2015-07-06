@@ -71,7 +71,7 @@
 			{{#if connection.frigate_sized}}
 				{{#is connection.frigate_sized "==" 1 }}
 				Yes
-				{{/equal}}
+				{{/is}}
 				{{#is connection.frigate_sized "==" 0 }}
 				No
 				{{/is}}

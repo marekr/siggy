@@ -86,7 +86,7 @@
 					</div>
 					<b>Recorded and Approximate Mass:</b> <span id='totalJumpedMass'>0.00</span>mil<br /><br />
 					<div id="jumpLogWrap" style='height:210px;overflow: auto;'>
-						<ul id="jumpLogList" class="itemList">
+						<ul id="jumpLogList" class="box-simple-list">
 							<li><b>No jumps recorded</b></li>
 						</ul>
 
