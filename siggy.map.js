@@ -73,27 +73,6 @@ siggy2.Map = function(core, options)
 
 	this.blobTemplate = Handlebars.compile( $("#template-chainmap-system-blob").html() );
 
-	$(document).on('click','.system-show-info', function(e)
-	{
-		e.preventDefault();
-
-		if( $this.editing || $this.massDelete )
-		{
-			return false;
-		}
-
-		if( typeof(CCPEVE) != "undefined" )
-		{
-			var sysID = $(this).parent().parent().data('system-id');
-			CCPEVE.showInfo(5, sysID );
-		}
-		else
-		{
-			var sysName = $(this).parent().parent().data('system-name');
-			window.open('http://evemaps.dotlan.net/system/'+sysName , '_blank');
-		}
-	});
-
 	$(document).on('click','.map-system-blob', function(e)
 	{
 		e.preventDefault();
