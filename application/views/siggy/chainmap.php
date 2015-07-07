@@ -232,7 +232,7 @@
 			{{#is system.rally "==" 1 }}
 			<i class="fa fa-exclamation-triangle"></i>
 			{{/is}}
-			<span class="map-system-blob-sysname system-show-info">
+			<span class="map-system-blob-sysname">
 				{{#if system.display_name }}
 					{{system.display_name}}
 				{{else}}
