@@ -233,7 +233,7 @@ siggy2.Activity.siggy.prototype.update = function()
 		async: true,
 		method: 'post',
 		beforeSend : function(xhr, opts){
-			if($this.fatalError == true)
+			if($this.core.fatalError == true)
 			{
 				xhr.abort();
 			}
