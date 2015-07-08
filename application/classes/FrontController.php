@@ -56,7 +56,7 @@ class FrontController extends Controller {
 	{
 		if( $this->ajaxRequest )
 		{
-			echo json_encode(array('redirect' => $url));
+			echo json_encode(array('redirect' => ltrim($url,'/')));
 			die();
 		}
 		else
