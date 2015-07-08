@@ -1,6 +1,6 @@
 <?php
 
-class Date_Pager {
+class DatePager {
 	
 	private $week = 0;
 	private $month = 0;

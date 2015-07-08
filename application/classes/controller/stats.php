@@ -3,7 +3,6 @@
 require_once APPPATH.'classes/groupUtils.php';
 require_once APPPATH.'classes/mapUtils.php';
 require_once APPPATH.'classes/miscUtils.php';
-require_once APPPATH.'classes/Date_Pager.php';
 require_once APPPATH.'classes/Zebra_Pagination2.php';
 
 class Controller_Stats extends FrontController {
@@ -199,21 +198,21 @@ class Controller_Stats extends FrontController {
 		$day = $this->request->param('day', NULL);
 		$week = $this->request->param('week', NULL);
 
-		$mode = Date_Pager::MODEWEEKLY;
+		$mode = DatePager::MODEWEEKLY;
 		if( $month != NULL )
 		{
-			$mode = Date_Pager::MODEMONTHLY;
+			$mode = DatePager::MODEMONTHLY;
 		}
 		else if( $day != NULL )
 		{
-			$mode = Date_Pager::MODEWEEKLY;
+			$mode = DatePager::MODEWEEKLY;
 		}
 		else if( $year != NULL && $week == NULL )
 		{
-			$mode = Date_Pager::MODEYEARLY;
+			$mode = DatePager::MODEYEARLY;
 		}
 
-		return new Date_Pager($mode, $day, $month, $year, $week);
+		return new DatePager($mode, $day, $month, $year, $week);
 	}
 
 	public function action_overview()

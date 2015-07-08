@@ -449,14 +449,14 @@ class Controller_Siggy extends FrontController {
 			{
 				return;
 			}
-			
+
 			foreach($systems as $k => $system)
 			{
 				if( miscUtils::isWspaceID($system) )
 				{
 					continue;
 				}
-				
+
 				$path = $pather->shortest($data->system_id, $system);
 
 				if( $path['distance'] <= $data->num_jumps )
