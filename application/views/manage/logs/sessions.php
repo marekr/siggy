@@ -26,7 +26,7 @@
 				<tr>
 					<th width="10%">Session Type</th>
 					<th width="10%">Account ID</th>
-					<th width="15%">Subgroup</th>
+					<th width="15%">Chainmap</th>
 					<th width="15%">Time created</th>
 					<th width="15%">IP Address</th>
 					<th width="15%">Last update</th>
@@ -35,7 +35,13 @@
 			<?php foreach($sess['data'] as $d): ?>
 			<tr>
 				<td>
-				<?php echo $d['sessionType'] == 'oog' ? 'Out of game' : 'Ingame'; ?>
+				<?php if( $d['sessionType'] == 'siggy' ): ?>
+				siggy account
+				<?php elseif( $d['sessionType'] == 'sso' ): ?>
+				EVE SSO
+				<?php else: ?>
+				IGB
+				<?php endif; ?>
 				</td>
 				<td><?php echo $d['userID']; ?></td>
 				<td><?php echo $d['chainmap_name']; ?></td>
