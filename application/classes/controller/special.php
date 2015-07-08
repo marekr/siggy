@@ -81,7 +81,7 @@ class Controller_Special extends Controller {
 		}
 
 
-		$systems = DB::select('solarSystemID')->from('mapsolarsystems')->where('solarSystemID', '<', 31000000)->order_by('solarSystemID', 'ASC')->execute()->as_array();
+		$systems = DB::select('solarSystemID')->from('eve_mapsolarsystems')->where('solarSystemID', '<', 31000000)->order_by('solarSystemID', 'ASC')->execute()->as_array();
 
 
 		//targets
@@ -343,16 +343,16 @@ class Controller_Special extends Controller {
 
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
-		$increment = 200;
+		$increment = 1000;
 
 		print $start."<br />";
 
-		$classMap = DB::query(Database::SELECT,'SELECT locationID, wormholeClassID AS class FROM maplocationwormholeclasses')->execute()->as_array('locationID');
+		$classMap = DB::query(Database::SELECT,'SELECT locationID, wormholeClassID AS class FROM eve_maplocationwormholeclasses')->execute()->as_array('locationID');
 
 
-		$total = DB::query(Database::SELECT, 'SELECT count(*) as total FROM mapsolarsystems')->execute()->get('total');
+		$total = DB::query(Database::SELECT, 'SELECT count(*) as total FROM eve_mapsolarsystems')->execute()->get('total');
 
-		$systems = DB::select()->from('mapsolarsystems')->order_by('solarSystemID', 'ASC')->limit($increment)->offset($start)->execute()->as_array();
+		$systems = DB::select()->from('eve_mapsolarsystems')->order_by('solarSystemID', 'ASC')->limit($increment)->offset($start)->execute()->as_array();
 
 		foreach($systems as $system)
 		{
@@ -400,7 +400,7 @@ class Controller_Special extends Controller {
 		}
 		else
 		{
-			print '<meta http-equiv="refresh" content="2; url=http://localhost/evetel/special/preProcess/?start='.$start.'&key=PIZZAMOFO" />';
+			print '<meta http-equiv="refresh" content="2; url=http://dev.siggy.borkedlabs.com/special/preProcess/?start='.$start.'&key=PIZZAMOFO" />';
 		}
 		die();
 	}
