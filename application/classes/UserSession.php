@@ -1,7 +1,7 @@
 <?php
 
 class UserSession {
-	
+
 	public $charID = 0;
 	public $charName = "";
 	public $corpID = 0;
@@ -87,6 +87,7 @@ class UserSession {
 		/* Don't use session data for char name, id and corp id to avoid
 		   IGB header issues */
 		$this->groupID = $this->sessionData['groupID'];
+
 		if( $this->__determineSessionType() != 'igb' )
 		{
 			$this->charName = $this->sessionData['char_name'];
@@ -94,10 +95,9 @@ class UserSession {
 			$this->corpID = $this->sessionData['corp_id'];
 		}
 
-		$this->__updateSession();
-
 		$this->getAccessData();
 
+		$this->__updateSession();
 	}
 
 	private function __fetchSessionData()
@@ -208,7 +208,7 @@ class UserSession {
 
 		/* Shitty fix, always update groupID because we don't on creaton have a valid one */
 		$update = array( 'lastBeep' => time(),
-						 'groupID' => ( isset(Auth::$user->data['groupID']) ? Auth::$user->data['groupID'] : 0 ),
+						 'groupID' => $this->groupID,
 						 'sessionType' => $type,
 						 'chainmap_id' => ( isset($this->accessData['active_chain_map']) ? $this->accessData['active_chain_map'] : 0 )
 						);
