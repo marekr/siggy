@@ -38,7 +38,11 @@
 	<li class="astrolabe-waypoint" data-system-name="{{name}}" data-system-id="{{id}}" data-guid="{{guid}}" id="waypoint-{{guid}}">
 		<div class='astrolabe-waypoint-header'>
 			<span class='astrolabe-waypoint-position'>0</span> {{name}}
-			<span class='astrolabe-waypoint-route-options'>
+			<span class='astrolabe-waypoint-sec {{securityClass sec}}'>{{sec}}</span>
+			<span class='astrolabe-waypoint-options pull-right'>
+				<i class='astrolabe-waypoint-option-close fa fa-close'></i>
+			</span>
+			<span class='astrolabe-waypoint-route-options pull-right'>
 				<div class="btn-group">
 					<button type="button" name="sec-filter" class="btn btn-xs btn-info dropdown-toggle waypoint-route-option" data-toggle="dropdown" aria-expanded="false" value="{{sec_filter}}">
 						<span class='label'>
@@ -81,9 +85,6 @@
 					</ul>
 				</div>
 
-			</span>
-			<span class='astrolabe-waypoint-options pull-right'>
-				<i class='astrolabe-waypoint-option-close fa fa-close'></i>
 			</span>
 		</div>
 		<div class='astrolabe-waypoint-body'>
