@@ -1,8 +1,5 @@
 <?php
 
-require_once APPPATH.'classes/usersession.php';
-require_once APPPATH.'classes/user.php';
-
 class AuthStatus {
 	const TRUSTREQUIRED = 0;
 	const NOACCESS = 1;
