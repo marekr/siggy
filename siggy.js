@@ -73,9 +73,11 @@ siggy2.Core = function( options )
 			gas: true,
 			data: true,
 			relic: true,
-			anomaly: true
+			anomaly: true,
+			none: true
 		}
 	}
+
 
 	siggy2.Helpers.setupHandlebars();
 	this.initializeBasicSystemContextMenu();
@@ -91,6 +93,7 @@ siggy2.Core = function( options )
 
 	this.displayStates = $.extend({}, this.defaultDisplayStates, dispStates);
 	this.displayStates.map = $.extend({}, this.defaultDisplayStates.map, dispStates.map);
+	this.displayStates.sigFilters = $.extend({}, this.defaultDisplayStates.sigFilters, dispStates.sigFilters);
 
 
 	this.charactersettings = new charactersettings(this, this.settings.charsettings);
