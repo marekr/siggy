@@ -130,7 +130,7 @@ if( Kohana::$environment == Kohana::DEVELOPMENT && strpos($_SERVER['HTTP_USER_AG
   $_SERVER['HTTP_EVE_SOLARSYSTEMID'] = 31002019;
 	}
 }*/
-define('SIGGY_VERSION', '2.24.4');
+define('SIGGY_VERSION', '2.24.4a');
 if( Kohana::$environment == Kohana::PRODUCTION)
 {
 	define('WIN_DEV', true);

@@ -314,7 +314,7 @@
 						<span id='number-sigs'>0</span> /
 							<span id='total-sigs'>0</span> <?php echo __('signature(s) shown'); ?>
 						<div id="sig-filter" class="button-group pull-right">
-							<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-filter"></span> Filter <span class="caret"></span></button>
+							<button type="button" class="btn btn-xs dropdown-toggle btn-info" data-toggle="dropdown"><span class="glyphicon glyphicon-filter"></span> Filter <i class="fa fa-caret-down"></i></button>
 							<ul class="dropdown-menu">
 								<li><a href="#" class="small" data-value="wh" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo __('Wormhole');?></a></li>
 								<li><a href="#" class="small" data-value="ore" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo __('Ore');?></a></li>
