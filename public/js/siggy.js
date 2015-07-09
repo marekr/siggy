@@ -61,12 +61,19 @@ siggy2.Core = function( options )
 	this.defaultDisplayStates = {
 		statsOpen: false,
 		sigsAddOpen: true,
-		showAnomalies: true,
 		posesOpen: true,
 		dscanOpen: true,
 		map: {
 			open: true,
 			height: 400
+		},
+		sigFilters: {
+			wh: true,
+			ore: true,
+			gas: true,
+			data: true,
+			relic: true,
+			anomaly: true
 		}
 	}
 

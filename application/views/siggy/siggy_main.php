@@ -311,8 +311,20 @@
 	            </div>
 				<div class="sub-display-group">
 					<div class='sub-display-group-header'>
-						<span id='number-sigs'>0</span> <?php echo __('signature(s) shown'); ?>
-						<label style="float:right"><input id="checkbox-show-anomalies" type="checkbox" value="1" checked /> <?php echo __('Show anomalies'); ?> (<?php echo __('Combat Sites'); ?>)</label>
+						<span id='number-sigs'>0</span> /
+							<span id='total-sigs'>0</span> <?php echo __('signature(s) shown'); ?>
+						<div id="sig-filter" class="button-group pull-right">
+							<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-filter"></span> Filter <span class="caret"></span></button>
+							<ul class="dropdown-menu">
+								<li><a href="#" class="small" data-value="wh" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo __('Wormhole');?></a></li>
+								<li><a href="#" class="small" data-value="ore" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo __('Ore');?></a></li>
+								<li><a href="#" class="small" data-value="gas" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo __('Gas');?></a></li>
+								<li><a href="#" class="small" data-value="data" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo __('Data');?></a></li>
+								<li><a href="#" class="small" data-value="relic" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo __('Relic');?></a></li>
+								<li><a href="#" class="small" data-value="anomaly" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo __('Combat');?></a></li>
+							</ul>
+						</div>
+						<div class='clear'></div>
 					</div>
 				</div>
 	            <table id="sig-table" cellspacing="1" class="siggy-table siggy-table-striped">

@@ -6,12 +6,12 @@
 /**
 * @constructor
 */
-siggy2.SigTable = function( options )
+siggy2.SigTable = function( core, options )
 {
 	this.sigData = {};
 	this.sigClocks = {};
 	this.eolClocks = {};
-	this.siggyMain = null;
+	this.siggyMain = core;
 	this.systemID = 0;
 	this.systemClass = 0;
 	this.editingSig = false;
@@ -20,6 +20,8 @@ siggy2.SigTable = function( options )
 		showSigSizeCol: false,
 		baseUrl:''
 	};
+
+	this.sigFilters = this.siggyMain.displayStates.sigFilters;
 
 	this.settings = $.extend(this.defaults, options);
 
@@ -84,12 +86,43 @@ siggy2.SigTable.prototype.initialize = function()
 	});
 
 
-	$('#checkbox-show-anomalies').prop('checked', this.siggyMain.displayStates.showAnomalies);
-	$('#checkbox-show-anomalies').change( function()
-	{
-		$this.changeAnomState($(this).is(':checked'));
+	$( '#sig-filter .dropdown-menu a' ).each(function(){
+		var $target = $( this ),
+			val = $target.attr( 'data-value' ),
+			$inp = $target.find( 'input' ),
+			idx;
+		if ( typeof($this.sigFilters[val]) != 'undefined' )
+		{
+			setTimeout( function() { $inp.prop( 'checked', $this.sigFilters[val] ) }, 0);
+		}
+	});
+
+	$( '#sig-filter .dropdown-menu a' ).on( 'click', function( event ) {
+
+		var $target = $( event.currentTarget ),
+			val = $target.attr( 'data-value' ),
+			$inp = $target.find( 'input' ),
+			idx;
+
+		if ( typeof($this.sigFilters[val]) != 'undefined' && $this.sigFilters[val])
+		{
+			$this.sigFilters[val] = false;
+			setTimeout( function() { $inp.prop( 'checked', false ) }, 0);
+		}
+		else
+		{
+			$this.sigFilters[val] = true;
+			setTimeout( function() { $inp.prop( 'checked', true ) }, 0);
+		}
+
+		$( event.target ).blur();
+
+		$this.updateSigFiltering();
 		$this.updateSigTotal();
+
 		$this.siggyMain.saveDisplayState();
+
+		return false;
 	});
 
 	$this.initializeHotkeys();
@@ -311,22 +344,20 @@ siggy2.SigTable.prototype.clear = function()
 	this.editingSig = false;
 }
 
-siggy2.SigTable.prototype.refreshAnomState = function()
+siggy2.SigTable.prototype.updateSigFiltering = function()
 {
-	this.changeAnomState(this.siggyMain.displayStates.showAnomalies);
-}
-
-siggy2.SigTable.prototype.changeAnomState = function(visible)
-{
-	this.siggyMain.displayStates.showAnomalies = visible;
-
-	if( visible )
+	for (var type in this.sigFilters)
 	{
-		$('#sig-table tbody tr').show();
-	}
-	else
-	{
-		$('#sig-table tbody tr.type-anomaly').hide();
+		var visible = this.sigFilters[type];
+
+		if( visible )
+		{
+			$('#sig-table tbody tr.type-'+type).show();
+		}
+		else
+		{
+			$('#sig-table tbody tr.type-'+type).hide();
+		}
 	}
 }
 
@@ -398,13 +429,14 @@ siggy2.SigTable.prototype.updateSigs = function (sigData, flashSigs)
 		$('#sig-table').trigger('update');
 	}
 
-	this.refreshAnomState();
+	this.updateSigFiltering();
 	this.updateSigTotal();
 }
 
 siggy2.SigTable.prototype.updateSigTotal = function()
 {
 	$('#number-sigs').text(	$('#sig-table tr.sig:visible').length );
+	$('#total-sigs').text(	$('#sig-table tr.sig').length );
 }
 
 siggy2.SigTable.prototype.removeSig = function (sigID)

@@ -73,6 +73,7 @@ siggy2.Activity.siggy = function(core)
 
 	this.initializeTabs();
 	this.initializeCollaspibles();
+
 }
 
 
@@ -132,8 +133,7 @@ siggy2.Activity.siggy.prototype.updateNow = function()
 
 siggy2.Activity.siggy.prototype.initModules = function()
 {
-	this.sigtable = new siggy2.SigTable(this.core.settings.sigtable);
-	this.sigtable.siggyMain = this.core;
+	this.sigtable = new siggy2.SigTable(this.core, this.core.settings.sigtable);
 	this.sigtable.settings.baseUrl = this.core.settings.baseUrl;
 
 	this.inteldscan = new inteldscan(this.core.settings.intel.dscan);
