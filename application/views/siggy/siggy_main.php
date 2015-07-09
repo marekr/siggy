@@ -322,6 +322,7 @@
 								<li><a href="#" class="small" data-value="data" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo __('Data');?></a></li>
 								<li><a href="#" class="small" data-value="relic" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo __('Relic');?></a></li>
 								<li><a href="#" class="small" data-value="anomaly" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo __('Combat');?></a></li>
+								<li><a href="#" class="small" data-value="none" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo __('None');?></a></li>
 							</ul>
 						</div>
 						<div class='clear'></div>
