@@ -47,7 +47,7 @@
 				<li><a href="http://wiki.siggy.borkedlabs.com">Guide</a></li>
 				<li<?php echo ($selectedTab == 'about' ? ' class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>pages/about">About</a></li>
 				<li<?php echo ($selectedTab == 'announcements' ? ' class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>announcements">Announcements</a></li>
-				<li><a href="http://wiki.siggy.borkedlabs.com/support">Support</a></li>
+				<li><a href="http://wiki.siggy.borkedlabs.com/support/contact/">Support</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<?php if( $loggedIn ): ?>

@@ -58,7 +58,7 @@
 		<div class="col-md-12">
 			<h2 class="featurette-heading">Getting Access</h2>
 			<p class="lead">Looking to gain access to your corp or alliance siggy?&nbsp;<a href="<?php echo URL::base(TRUE, TRUE);?>account/register" class="btn btn-default btn-primary btn-sm" />Register here</a></p>
-			<p class="lead">Looking to start using siggy for the first time?&nbsp;<a href="http://wiki.siggy.borkedlabs.com/getting_siggy" class="btn btn-default btn-sm" />Click here for info</a></p>
+			<p class="lead">Looking to start using siggy for the first time?&nbsp;<a href="http://wiki.siggy.borkedlabs.com/getting-siggy/" class="btn btn-default btn-sm" />Click here for info</a></p>
 		</div>
 	</div>
 
