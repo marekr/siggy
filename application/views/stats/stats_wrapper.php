@@ -3,9 +3,9 @@
 		<h2>siggy stats</h2>
 		<div class="btn-toolbar" role="toolbar">
 			<div class="btn-group">
-				<a class="btn btn-default<?php echo ( $stats_mode == Date_Pager::MODEWEEKLY ? ' active' : '') ?>" href="<?php echo URL::base(TRUE, TRUE);?>stats/<?php echo $sub_page; ?>/year/<?php echo date("Y");?>/week/<?php echo date("W");?>">Weekly</a>
-				<a class="btn btn-default<?php echo ( $stats_mode == Date_Pager::MODEMONTHLY  ? ' active' : '') ?>" href="<?php echo URL::base(TRUE, TRUE);?>stats/<?php echo $sub_page; ?>/year/<?php echo date("Y");?>/month/<?php echo date("n");?>">Monthly</a>
-				<a class="btn btn-default<?php echo ( $stats_mode == Date_Pager::MODEYEARLY  ? ' active' : '') ?>" href="<?php echo URL::base(TRUE, TRUE);?>stats/<?php echo $sub_page; ?>/year/<?php echo date("Y");?>">Yearly</a>
+				<a class="btn btn-default<?php echo ( $stats_mode == DatePager::MODEWEEKLY ? ' active' : '') ?>" href="<?php echo URL::base(TRUE, TRUE);?>stats/<?php echo $sub_page; ?>/year/<?php echo date("Y");?>/week/<?php echo date("W");?>">Weekly</a>
+				<a class="btn btn-default<?php echo ( $stats_mode == DatePager::MODEMONTHLY  ? ' active' : '') ?>" href="<?php echo URL::base(TRUE, TRUE);?>stats/<?php echo $sub_page; ?>/year/<?php echo date("Y");?>/month/<?php echo date("n");?>">Monthly</a>
+				<a class="btn btn-default<?php echo ( $stats_mode == DatePager::MODEYEARLY  ? ' active' : '') ?>" href="<?php echo URL::base(TRUE, TRUE);?>stats/<?php echo $sub_page; ?>/year/<?php echo date("Y");?>">Yearly</a>
 			</div>
 		</div>
 	</div>
