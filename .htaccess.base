@@ -12,6 +12,7 @@ RewriteBase /evetel/
 
 # Protect application and system files from being viewed
 RewriteRule ^(?:application|modules|system)\b.* index.php/$0 [L]
+RewriteRule "^(.*/)?\.git/" - [F,L]
 
 # Allow any files or directories that exist to be displayed directly
 RewriteCond %{REQUEST_FILENAME} !-f
