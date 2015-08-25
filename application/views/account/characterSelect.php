@@ -28,6 +28,6 @@
 					<br clear='all' />
 			</div>
 			<?php else: ?>
-			<div class="alert alert-danger">Sorry, you have no characters with access on your API key. If your corporation or character is already supposed to have access, verify your API key is not expired and has your character included, otherwise contact the person in charge. If you want siggy but don't have access, read the guide here: <a href="http://wiki.siggy.borkedlabs.com/getting_siggy">http://wiki.siggy.borkedlabs.com/getting_siggy</a></div>
+			<div class="alert alert-danger">Sorry, you have no characters with access on your API key. If your corporation or character is already supposed to have access, verify your API key is not expired and has your character included, otherwise contact the person in charge. If you want siggy but don't have access, read the guide here: <a href="http://wiki.siggy.borkedlabs.com/getting-siggy">http://wiki.siggy.borkedlabs.com/getting-siggy</a></div>
 			<?php endif; ?>
 		<?php endif; ?>

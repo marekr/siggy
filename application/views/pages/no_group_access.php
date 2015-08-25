@@ -11,7 +11,7 @@
 		</p>
 		<p>
 			If you want to obtain siggy access, please read the guide here:<br />
-			<a href="http://wiki.siggy.borkedlabs.com/getting_siggy">http://wiki.siggy.borkedlabs.com/getting_siggy</a>
+			<a href="http://wiki.siggy.borkedlabs.com/getting-siggy">http://wiki.siggy.borkedlabs.com/getting-siggy</a>
 		</p>
 	</div>
 </div>
