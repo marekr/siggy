@@ -1,6 +1,6 @@
 <?php
 
-if( $_SERVER['SERVER_NAME'] != 'localhost' )
+if( $_SERVER['SERVER_NAME'] != 'dev.siggy.borkedlabs.com' )
 {
 	exit("no access");
 }
@@ -9,7 +9,7 @@ function request( $verb, $url )
 {
 	global $apiID, $apiSecret;
 	$params     = array(
-		'host'          => 'localhost',
+		'host'          => 'dev.siggy.borkedlabs.com',
 		'content-type'  => 'application/json',
 		'user-agent'    => 'apitest',
 		'connection'    => 'keep-alive',
@@ -31,7 +31,7 @@ function request( $verb, $url )
 	{
 		$curl_headers[] = $p . ": " . $k;
 	}
-
+	
 	curl_setopt($ch, CURLOPT_URL,$url);
 	curl_setopt($ch, CURLOPT_HTTPHEADER, $curl_headers);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
@@ -56,10 +56,9 @@ function request( $verb, $url )
 function url()
 {
   return sprintf(
-		"%s://%s%s",
+		"%s://%s/",
 		isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
-		$_SERVER['SERVER_NAME'],
-		str_replace("apitest","",dirname($_SERVER['PHP_SELF']))
+		$_SERVER['SERVER_NAME']
   );
 }
 /*

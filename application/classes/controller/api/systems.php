@@ -5,8 +5,6 @@ class Controller_Api_Systems extends Controller_Api
 	// GET
 	public function action_index()
 	{
-
-
 		try
 		{
 			$systemID = $this->request->param('id', 0);
