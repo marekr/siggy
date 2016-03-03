@@ -406,7 +406,7 @@ siggy2.Activity.siggy.prototype.updateSystemInfo = function (systemData)
 	$('#region').text(systemData.regionName + " / " + systemData.constellationName);
 	$('#constellation').text(systemData.constellationName);
 	$('#planetsmoons').text(systemData.planets + "/" + systemData.moons + "/" + systemData.belts);
-	$('#truesec').text(systemData.truesec.substr(0,8));
+	$('#truesec').text(systemData.truesec);
 	$('#radius').text(systemData.radius + ' '+ _('AU'));
 
 	//HUB JUMPS
@@ -551,16 +551,19 @@ siggy2.Activity.siggy.prototype.updateSystemInfo = function (systemData)
 	this.setSystemClass(systemData.sysClass);
 	this.systemName = systemData.name;
 
-	if( systemData.stats.length > 0 )
+	if( typeof(systemData.stats) != 'undefined' )
 	{
-		this.systemStats = systemData.stats;
-		this.renderStats();
+		if( systemData.stats.length > 0 )
+		{
+			this.systemStats = systemData.stats;
+			this.renderStats();
+		}
+		else
+		{
+			this.systemStats = [];
+		}
 	}
-	else
-	{
-		this.systemStats = [];
-	}
-
+	
 	this.intelposes.updatePOSList( systemData.poses );
 	this.inteldscan.updateDScan( systemData.dscans );
 }
