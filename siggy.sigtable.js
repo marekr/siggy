@@ -471,17 +471,17 @@ siggy2.SigTable.prototype.updateSiteSelect = function( ele, whClass, type, siteI
 
 siggy2.SigTable.prototype.removeSigRow = function (sigData)
 {
-	if(this.sigClocks[sigData.sigID] != undefined )
+	if(this.sigClocks[sigData.id] != undefined )
 	{
-		this.sigClocks[sigData.sigID].destroy();
-		delete this.sigClocks[sigData.sigID];
+		this.sigClocks[sigData.id].destroy();
+		delete this.sigClocks[sigData.id];
 	}
 
-	$('#sig-' + sigData.sigID + ' td.moreinfo img').qtip('destroy');
-	$('#sig-' + sigData.sigID + ' td.age span').qtip('destroy');
-	$('#sig-' + sigData.sigID + ' td.desc').qtip('destroy');
+	$('#sig-' + sigData.id + ' td.moreinfo img').qtip('destroy');
+	$('#sig-' + sigData.id + ' td.age span').qtip('destroy');
+	$('#sig-' + sigData.id + ' td.desc').qtip('destroy');
 
-	$('#sig-' + sigData.sigID).remove();
+	$('#sig-' + sigData.id).remove();
 }
 
 siggy2.SigTable.prototype.setupHandlebars = function()
@@ -513,21 +513,21 @@ siggy2.SigTable.prototype.addSigRow = function (sigData, flashSig)
 
 	if( flashSig )
 	{
-		$('#sig-' + sigData.sigID).fadeOutFlash("#A46D00", 20000);
+		$('#sig-' + sigData.id).fadeOutFlash("#A46D00", 20000);
 	}
 }
 
 siggy2.SigTable.prototype.sigRowMagic = function(sigData)
 {
-	if( typeof(this.sigClocks[sigData.sigID]) != 'undefined' )
-		this.sigClocks[sigData.sigID].destroy();
-	delete this.sigClocks[sigData.sigID];
+	if( typeof(this.sigClocks[sigData.id]) != 'undefined' )
+		this.sigClocks[sigData.id].destroy();
+	delete this.sigClocks[sigData.id];
 
-	if( typeof(this.eolClocks[sigData.sigID]) != 'undefined' )
-		this.eolClocks[sigData.sigID].destroy();
+	if( typeof(this.eolClocks[sigData.id]) != 'undefined' )
+		this.eolClocks[sigData.id].destroy();
 
-	delete this.eolClocks[sigData.sigID];
-	this.sigClocks[sigData.sigID] = new siggy2.Timer(sigData.created * 1000, null, '#sig-' + sigData.sigID + ' td.age span.age-clock', "test");
+	delete this.eolClocks[sigData.id];
+	this.sigClocks[sigData.id] = new siggy2.Timer(sigData.created_at * 1000, null, '#sig-' + sigData.id + ' td.age span.age-clock', "test");
 
 	var wh = null;
 	if( sigData.type == 'wh' )
@@ -536,26 +536,26 @@ siggy2.SigTable.prototype.sigRowMagic = function(sigData)
 
 		if( wh != null )
 		{
-			var endDate = parseInt(sigData.created)+(3600*wh.lifetime);
-			this.eolClocks[sigData.sigID] = new siggy2.Timer(sigData.created * 1000, endDate* 1000, '#sig-' + sigData.sigID + ' td.age p.eol-clock', "test");
+			var endDate = parseInt(sigData.created_at)+(3600*wh.lifetime);
+			this.eolClocks[sigData.id] = new siggy2.Timer(sigData.created_at * 1000, endDate* 1000, '#sig-' + sigData.id + ' td.age p.eol-clock', "test");
 		}
 	}
 
-	$('#sig-' + sigData.sigID + ' td.moreinfo i').qtip('destroy');
-	$('#sig-' + sigData.sigID + ' td.moreinfo i').qtip({
+	$('#sig-' + sigData.id + ' td.moreinfo i').qtip('destroy');
+	$('#sig-' + sigData.id + ' td.moreinfo i').qtip({
 		content: {
-			text: $('#creation-info-' + sigData.sigID) // Use the "div" element next to this for the content
+			text: $('#creation-info-' + sigData.id) // Use the "div" element next to this for the content
 		}
 	});
 
-	$('#sig-' + sigData.sigID + ' td.age span').qtip('destroy');
-	$('#sig-' + sigData.sigID + ' td.age span').qtip({
+	$('#sig-' + sigData.id + ' td.age span').qtip('destroy');
+	$('#sig-' + sigData.id + ' td.age span').qtip({
 		content: {
-			text: $('#age-timestamp-' + sigData.sigID) // Use the "div" element next to this for the content
+			text: $('#age-timestamp-' + sigData.id) // Use the "div" element next to this for the content
 		}
 	});
 
-	$('#sig-' + sigData.sigID + ' td.desc').qtip('destroy');
+	$('#sig-' + sigData.id + ' td.desc').qtip('destroy');
 
 	var desc_tooltip = '';
 	if( sigData.type == 'wh' )
@@ -578,7 +578,7 @@ siggy2.SigTable.prototype.sigRowMagic = function(sigData)
 
 	if( desc_tooltip != '' )
 	{
-		$('#sig-' + sigData.sigID + ' td.desc').qtip({
+		$('#sig-' + sigData.id + ' td.desc').qtip({
 			content: {
 				text: desc_tooltip
 			},
@@ -791,7 +791,7 @@ siggy2.SigTable.prototype.generateSelect = function (options, select)
 
 siggy2.SigTable.prototype.updateSigRow = function (sigData, flashSig)
 {
-	var baseID = '#sig-' + sigData.sigID;
+	var baseID = '#sig-' + sigData.id;
 	sigData.showSigSizeCol = this.settings.showSigSizeCol;
 	sigData.sysClass = this.systemClass;
 
