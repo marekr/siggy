@@ -9,7 +9,6 @@ class Controller_Api_Systems extends Controller_Api
 		{
 			$systemID = $this->request->param('id', 0);
 			$groupID = (int)$this->_user->_id;
-			print "<pre>";
 			if( $systemID != 0 )
 			{
 				$system = new System();
