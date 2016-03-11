@@ -38,6 +38,7 @@ class Controller_Api_Chainmaps extends Controller_Api
 				}
 				$data = $chainmap->get_map_cache();
 				
+				$output['wormholes'] = [];
 				foreach($data['wormholes'] as $w)
 				{
 					$output['wormholes'][] = [
@@ -53,7 +54,6 @@ class Controller_Api_Chainmaps extends Controller_Api
 											];
 				}
 			}
-
 			$this->rest_output( $output );
 		}
 		catch (Kohana_HTTP_Exception $khe)
