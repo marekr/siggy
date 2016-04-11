@@ -1,4 +1,4 @@
-"C:\Program Files (x86)\Java\jre1.8.0_45\bin\java.exe" -jar compiler.jar ^
+java.exe -jar compiler.jar ^
 --js=misc.js ^
 --js=siggy.js ^
 --js=siggy.helpers.js ^
