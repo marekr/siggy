@@ -133,9 +133,6 @@ siggy2.Activity.siggy.prototype.updateNow = function()
 
 siggy2.Activity.siggy.prototype.initModules = function()
 {
-	this.sigtable = new siggy2.SigTable(this.core, this.core.settings.sigtable);
-	this.sigtable.settings.baseUrl = this.core.settings.baseUrl;
-
 	this.inteldscan = new inteldscan(this.core.settings.intel.dscan);
 	this.inteldscan.siggyMain = this.core;
 	this.inteldscan.settings.baseUrl = this.core.settings.baseUrl;
@@ -146,10 +143,14 @@ siggy2.Activity.siggy.prototype.initModules = function()
 
 
 	// Initialize map
-	this.sigtable.initialize();
 	this.map = new siggy2.Map(this.core, this.core.settings.map);
 	this.map.baseUrl = this.core.settings.baseUrl;
+
+	this.sigtable = new siggy2.SigTable(this.core, this.map, this.core.settings.sigtable);
+	this.sigtable.settings.baseUrl = this.core.settings.baseUrl;
+
 	this.map.initialize();
+	this.sigtable.initialize();
 
 	$(document).trigger('siggy.systemSwitched', this.systemID );
 
@@ -274,12 +275,6 @@ siggy2.Activity.siggy.prototype.update = function()
 				$this.updateSystemOptionsForm(data.systemData);
 			}
 
-			if (data.sigUpdate)
-			{
-				var flashSigs = ( data.systemUpdate ? false : true );
-				$this.sigtable.updateSigs(data.sigData, flashSigs);
-			}
-
 			if( $this.core.displayStates.map.open  )
 			{
 				if( parseInt(data.mapUpdate) == 1  )
@@ -299,6 +294,13 @@ siggy2.Activity.siggy.prototype.update = function()
 					$this.map.updateActives(data.chainMap.actives);
 				}
 			}
+
+			if (data.sigUpdate)
+			{
+				var flashSigs = ( data.systemUpdate ? false : true );
+				$this.sigtable.updateSigs(data.sigData, flashSigs);
+			}
+
 			$this.lastUpdate = data.lastUpdate;
 
 			delete data;

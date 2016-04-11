@@ -6,7 +6,7 @@
 /**
 * @constructor
 */
-siggy2.SigTable = function( core, options )
+siggy2.SigTable = function( core, map, options )
 {
 	this.sigData = {};
 	this.sigClocks = {};
@@ -20,6 +20,8 @@ siggy2.SigTable = function( core, options )
 		showSigSizeCol: false,
 		baseUrl:''
 	};
+
+	this.map = map;
 
 	this.sigFilters = this.siggyMain.displayStates.sigFilters;
 
@@ -270,16 +272,22 @@ siggy2.SigTable.prototype.sigAddHandler = function()
 		postData.sigSize = sizeEle.val();
 	}
 
-	$.post($this.settings.baseUrl + 'sig/add', postData, function (newSig)
-	{
-		for (var i in newSig)
-		{
-			$this.addSigRow(newSig[i]);
-		}
-		$.extend($this.sigData, newSig);
-		$('#sig-table').trigger('update');
-
-	}, 'json');
+	$.ajax({
+			type: 'post',
+			url: $this.settings.baseUrl + 'sig/add',
+			data: JSON.stringify(postData),
+			contentType: 'application/json',
+			success: function (newSig)
+					{
+						for (var i in newSig)
+						{
+							$this.addSigRow(newSig[i]);
+						}
+						$.extend($this.sigData, newSig);
+						$('#sig-table').trigger('update');
+					},
+			dataType: 'json'
+		});
 
 	sigEle.val('');
 	if( $this.settings.showSigSizeCol )
@@ -378,6 +386,28 @@ siggy2.SigTable.prototype.convertType = function(type)
 		return _("Combat");
 	else
 		return "";
+}
+
+siggy2.SigTable.prototype.whHashToDestination = function (hash)
+{
+	if(typeof(this.map.wormholes[hash]) == "undefined")
+	{
+		return "ERROR";
+	}
+
+	var mapWh = this.map.wormholes[hash];
+
+	var system = null;
+	if(mapWh.to_system_id != this.systemID)
+	{
+		system = siggy2.StaticData.getSystemByID(mapWh.to_system_id);
+	}
+	else if(mapWh.from_system_id != this.systemID)
+	{
+		system = siggy2.StaticData.getSystemByID(mapWh.from_system_id);
+	}
+
+	return _('to {0} ({1})').format(system.name, system.region_name);
 }
 
 siggy2.SigTable.prototype.convertSiteID = function (whClass, type, siteID)
@@ -488,7 +518,6 @@ siggy2.SigTable.prototype.setupHandlebars = function()
 {
 	var $this = this;
 
-
 	Handlebars.registerHelper('sigTypeToText', function(type) {
 		return $this.convertType(type);
 	});
@@ -497,13 +526,29 @@ siggy2.SigTable.prototype.setupHandlebars = function()
 		return $this.convertSiteID(sysClass, type, siteID);
 	});
 
-
+	Handlebars.registerHelper('whHashToDestination', function(hash) {
+		return $this.whHashToDestination(hash);
+	});
 }
 
 siggy2.SigTable.prototype.addSigRow = function (sigData, flashSig)
 {
 	var $this = this;
 	sigData.showSigSizeCol = this.settings.showSigSizeCol;
+	sigData.sysClass = this.systemClass;
+
+	sigData.showWormhole = false;
+	if(sigData.type == 'wh' && typeof(sigData.chainmap_wormholes) != "undefined")
+	{
+		var cid = $this.siggyMain.activities.siggy.chainMapID;
+		if(typeof(sigData.chainmap_wormholes[cid]) != "undefined")
+		{
+			sigData.showWormhole = true;
+
+			sigData.chainmap_wormhole = sigData.chainmap_wormholes[cid];
+		}
+	}
+
 	sigData.sysClass = this.systemClass;
 
 	var row = this.templateSigRow(sigData);
@@ -598,14 +643,16 @@ siggy2.SigTable.prototype.editSigForm = function (sigID)
 		return;
 	}
 
+	var sigData = this.sigData[sigID];
+
 	/*disable the tooltip or it will be annoying */
 	$('#sig-' + sigID + ' td.desc').qtip('disable');
 
-	this.sigData[sigID].editing = true;
+	sigData.editing = true;
 	this.editingSig = true;
 
 	var controlEle = $("#sig-" + sigID + " td.edit");
-	controlEle.text('');
+	controlEle.empty();
 
 	var that = this;
 	controlEle.append($('<img>').attr('src', this.settings.baseUrl + 'public/images/accept.png').click(function (e)
@@ -614,32 +661,32 @@ siggy2.SigTable.prototype.editSigForm = function (sigID)
 	}));
 
 	var sigEle = $("#sig-" + sigID + " td.sig");
-	sigEle.text('');
+	sigEle.empty();
 
-	var sigInput = $('<input>').val(this.sigData[sigID].sig)
+	var sigInput = $('<input>').val(sigData.sig)
 							.attr('maxlength', 3)
 							.keypress( function(e) { if(e.which == 13){ that.editSig(sigID)  } } );
 	sigEle.append(sigInput);
 
 	if( this.settings.showSigSizeCol )
 	{
-			var sizeEle = $("#sig-" + sigID + " td.size");
-			sizeEle.text('');
+		var sizeEle = $("#sig-" + sigID + " td.size");
+		sizeEle.text('');
 
-			sizeEle.append(this.generateOrderedSelect( [
-														['', '--'],
-														['1', '1'],
-														['2.2','2.2'],
-														['2.5','2.5'],
-														['4','4'],
-														['5', '5'],
-														['6.67','6.67'],
-														['10','10']
-														], this.sigData[sigID].sigSize));
+		sizeEle.append(this.generateOrderedSelect( [
+													['', '--'],
+													['1', '1'],
+													['2.2','2.2'],
+													['2.5','2.5'],
+													['4','4'],
+													['5', '5'],
+													['6.67','6.67'],
+													['10','10']
+													], sigData.sigSize));
 	}
 
 	var typeEle = $("#sig-" + sigID + " td.type");
-	typeEle.text('');
+	typeEle.empty();
 
 	typeEle.append(this.generateSelect({
 											none: '--',
@@ -649,19 +696,51 @@ siggy2.SigTable.prototype.editSigForm = function (sigID)
 											relic: 'Relic',
 											anomaly: 'Combat',
 											ore: 'Ore'
-										}, this.sigData[sigID].type)
+										}, sigData.type)
 										.change(function ()
 												{
 													that.editTypeSelectChange(sigID)
 												}));
 
+
 	var descEle = $('#sig-' + sigID + ' td.desc');
-	descEle.text('');
-	descEle.append(this.generateSiteSelect(this.systemClass, this.sigData[sigID].type, this.sigData[sigID].siteID)).append($('<br />'))
-		.append( $('<input>').val(this.sigData[sigID].description)
+	descEle.empty();
+	descEle.append(this.generateSiteSelect(this.systemClass, sigData.type, sigData.siteID))
+		.append($('<br />'));
+
+	if( sigData.type == 'wh' )
+	{
+		var whs = { none : '--' };
+		for(var i in this.map.wormholes)
+		{
+			var mapWh = this.map.wormholes[i];
+			mapWh.from_system_id = parseInt(mapWh.from_system_id);
+			if(mapWh.from_system_id != this.systemID &&
+				mapWh.to_system_id != this.systemID)
+			{
+				continue;
+			}
+
+			whs[mapWh.hash] = this.whHashToDestination(mapWh.hash);
+		}
+
+		var cid = this.siggyMain.activities.siggy.chainMapID;
+		var selected = 'none';
+		if(typeof(sigData.chainmap_wormholes) != "undefined" &&
+			typeof(sigData.chainmap_wormholes[cid]) != "undefined")
+		{
+			selected = sigData.chainmap_wormholes[cid];
+		}
+
+		descEle.append(this.generateSelect(whs, selected, 'chainmap-wh'))
+				.append($('<br />'));
+	}
+
+	descEle.append( $('<input>').val(sigData.description)
 								.keypress( function(e) { if(e.which == 13){ that.editSig(sigID)  } } )
 								.css('width', '100%')
 					);
+
 
 	sigInput.focus();
 }
@@ -675,15 +754,19 @@ siggy2.SigTable.prototype.editTypeSelectChange = function (sigID)
 
 siggy2.SigTable.prototype.editSig = function (sigID)
 {
+	var $this = this;
 	var sigEle = $("#sig-" + sigID + " td.sig input");
+
+	var sizeEle = null;
 	if( this.settings.showSigSizeCol )
 	{
-			var sizeEle = $("#sig-" + sigID + " td.size select");
-
+		sizeEle = $("#sig-" + sigID + " td.size select");
 	}
+
 	var typeEle = $("#sig-" + sigID + " td.type select");
 	var descEle = $("#sig-" + sigID + " td.desc input");
 	var siteEle = $("#sig-" + sigID + " td.desc select");
+	var whChainmapEle = $("#sig-" + sigID + " td.desc select.chainmap-wh");
 
 	if (sigEle.val().length != 3)
 	{
@@ -691,33 +774,57 @@ siggy2.SigTable.prototype.editSig = function (sigID)
 	}
 
 	var sigUpdate = {};
-	this.sigData[sigID].sig = sigEle.val().toUpperCase();
-	this.sigData[sigID].type = typeEle.val();
-	this.sigData[sigID].siteID = siteEle.val();
-	this.sigData[sigID].description = descEle.val();
+	var sigObj = this.sigData[sigID];
+	sigObj.sig = sigEle.val().toUpperCase();
+	sigObj.type = typeEle.val();
+	sigObj.siteID = siteEle.val();
+	sigObj.description = descEle.val();
+
+	var cmWh = {};
+	if(sigObj.type =='wh')
+	{
+		cmWh = {
+			hash: whChainmapEle.val(),
+			chainmap_id: $this.siggyMain.activities.siggy.chainMapID
+		}
+
+		sigObj.chainmap_wormholes = {};
+
+		if(cmWh.hash != 'none')
+		{
+			sigObj.chainmap_wormholes[cmWh.chainmap_id] = cmWh.hash;
+		}
+	}
 
 	var postData = {
 		sigID: sigID,
-		sig: this.sigData[sigID].sig,
-		type: this.sigData[sigID].type,
-		desc: this.sigData[sigID].description,
-		siteID: this.sigData[sigID].siteID,
-		systemID: this.systemID
+		sig: sigObj.sig,
+		type: sigObj.type,
+		desc: sigObj.description,
+		siteID: sigObj.siteID,
+		systemID: this.systemID,
+		chainmap_wormhole: cmWh
 	};
 
 	if( this.settings.showSigSizeCol )
 	{
-		this.sigData[sigID].sigSize = sizeEle.val();
-		postData.sigSize = this.sigData[sigID].sigSize;
+		sigObj.sigSize = sizeEle.val();
+		postData.sigSize = sigObj.sigSize;
 	}
 
-	var that = this;
-	$.post(this.settings.baseUrl + 'sig/edit', postData, function ( data )
-	{
-		that.editingSig = false;
-		that.sigData[sigID].editing = false;
-
-	},"json").fail( function(xhr, textStatus, errorThrown) { alert('Error') } );
+	$.ajax({
+			type: 'post',
+			url: $this.settings.baseUrl + 'sig/edit',
+			data: JSON.stringify(postData),
+			contentType: 'application/json',
+			success: function (newSig)
+					{
+						$this.editingSig = false;
+						sigObj.editing = false;
+					},
+			fail: function(xhr, textStatus, errorThrown) { alert('Error') },
+			dataType: 'json'
+		});
 
 	sigEle.remove();
 	if( this.settings.showSigSizeCol )
@@ -728,14 +835,15 @@ siggy2.SigTable.prototype.editSig = function (sigID)
 	descEle.remove();
 	siteEle.remove();
 
-	this.updateSigRow(this.sigData[sigID]);
+	this.updateSigRow(sigObj);
 
 	var controlEle = $("#sig-" + sigID + " td.edit");
 	controlEle.text('');
 	controlEle.append($('<i>').addClass('icon icon-pencil icon-large')
 							.click(function (e)
 									{
-										that.editSigForm(sigID)
+										console.log('hi');
+										$this.editSigForm(sigID)
 									})
 								);
 
@@ -775,25 +883,43 @@ siggy2.SigTable.prototype.generateOrderedSelect = function (options, select)
 	return newSelect;
 }
 
-siggy2.SigTable.prototype.generateSelect = function (options, select)
+siggy2.SigTable.prototype.generateSelect = function (options, selected, extraClass)
 {
 	var newSelect = $('<select>').addClass('siggy-input');
+
+	if(typeof(extraClass) != "undefined")
+	{
+		newSelect.addClass(extraClass);
+	}
 
 	for (var i in options)
 	{
 		newSelect.append($('<option>').attr('value', i).text(_(options[i])));
 	}
 
-	newSelect.val(select);
+	newSelect.val(selected);
 
 	return newSelect;
 }
 
 siggy2.SigTable.prototype.updateSigRow = function (sigData, flashSig)
 {
+	var $this = this;
 	var baseID = '#sig-' + sigData.sigID;
 	sigData.showSigSizeCol = this.settings.showSigSizeCol;
 	sigData.sysClass = this.systemClass;
+
+	sigData.showWormhole = false;
+	if(sigData.type == 'wh' && typeof(sigData.chainmap_wormholes) != "undefined")
+	{
+		var cid = $this.siggyMain.activities.siggy.chainMapID;
+		if(typeof(sigData.chainmap_wormholes[cid]) != "undefined")
+		{
+			sigData.showWormhole = true;
+
+			sigData.chainmap_wormhole = sigData.chainmap_wormholes[cid];
+		}
+	}
 
 	var row = this.templateSigRow(sigData);
 	$(baseID).replaceWith(row);

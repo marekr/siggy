@@ -336,19 +336,21 @@ siggy2.StaticData.load = function(baseUrl)
 		 dataType: 'json'
 	});
 
+	jQuery.ajax({
+		 url: baseUrl + 'data/systems?' + time(),
+		 success: function(result) {
+			 		$this.systems = result;
+				  },
+		 async: false,
+		 dataType: 'json'
+	});
+
 	this.systemTypeAhead = new Bloodhound({
 		datumTokenizer: function(d) {
 			return Bloodhound.tokenizers.whitespace(d.name);
 		},
 		queryTokenizer: Bloodhound.tokenizers.whitespace,
-		prefetch: {
-			url: baseUrl + 'data/systems?' + time(),
-			transform: function(response)
-			{
-				$this.systems = response;
-				return response;
-			}
-		},
+		local: $this.systems,
 		remote: {
 			url: baseUrl+'chainmap/autocomplete_wh?q=%QUERY',
 			wildcard: '%QUERY'
