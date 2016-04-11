@@ -819,11 +819,12 @@ siggy2.SigTable.prototype.editSig = function (sigID)
 			contentType: 'application/json',
 			success: function (newSig)
 					{
-						$this.editingSig = false;
-						sigObj.editing = false;
 					},
 			fail: function(xhr, textStatus, errorThrown) { alert('Error') },
 			dataType: 'json'
+		}).always(function(){
+			$this.editingSig = false;
+			sigObj.editing = false;
 		});
 
 	sigEle.remove();
