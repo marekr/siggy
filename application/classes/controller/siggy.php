@@ -18,7 +18,7 @@ class Controller_Siggy extends FrontController {
 
 		// set default
 		$view->systemData = array('id' => 30000142, 'name' => 'Jita');
-		
+
 		// did we have an url requested system?
 		$requested = false;
 		if( !empty($ssname) )
@@ -590,13 +590,30 @@ class Controller_Siggy extends FrontController {
 					$additional .= ',sigSize';
                 }
 
-                $update['sigData'] = DB::query(Database::SELECT, "SELECT sigID,sig, type, siteID, description, created, creator,updated,lastUpdater".$additional." FROM systemsigs
+                $update['sigData'] = DB::query(Database::SELECT, "SELECT sigID, sig, type, siteID, description, created, creator,updated,lastUpdater".$additional." FROM systemsigs
 																	WHERE systemID=:id AND groupID=:group")
                                  ->param(':id', $selectedSystemID)
 								 ->param(':group', Auth::$session->groupID)
 								 ->execute()
 								 ->as_array('sigID');
 
+				 foreach($update['sigData'] as &$sig)
+				 {
+					 if($sig['type'] != 'wh')
+					 	continue;
+
+ 					$whSigData = DB::query(Database::SELECT, "SELECT wormhole_hash,chainmap_id
+ 															FROM wormhole_signatures
+ 															WHERE signature_id=:sig")
+ 												->param(':sig', $sig['sigID'] )
+ 												->execute()
+ 												->as_array();
+
+					foreach($whSigData as $wh)
+					{
+						$sig['chainmap_wormholes'][ $wh['chainmap_id'] ] = $wh['wormhole_hash'];
+					}
+				 }
                 $update['sigUpdate'] = (int) 1;
             }
 

@@ -1,5 +1,5 @@
 <script id="template-chainmap-table-row" type="text/x-handlebars-template">
-	<tr id='notification-history-{{ id }}' data-id='{{ id }}' class='exit-row'>
+	<tr data-id='{{ id }}' class='exit-row'>
 		<td class='text-center'>
 			<div class="dropdown">
 				<button class="btn btn-default btn-hidden dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">

@@ -271,14 +271,31 @@ class Controller_Chainmap extends FrontController {
 							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 							->execute();
 
+			$sigs = [];
 			foreach( $wormholes as $wh )
 			{
+				$whSigData = DB::query(Database::SELECT, "SELECT signature_id
+													FROM wormhole_signatures
+													WHERE wormhole_hash=:hash
+													AND chainmap_id=:chainmap")
+										->param(':hash', $wh['hash'] )
+										->param(':chainmap', Auth::$session->accessData['active_chain_map'])
+										->execute()
+										->as_array();
+
+				foreach($whSigData as $whSig)
+				{
+					$sigs[] = $whSig['signature_id'];
+				}
+
 				$systemIDs[] = $wh['to_system_id'];
 				$systemIDs[] = $wh['from_system_id'];
 
 				$log_message .= $wh['to_name'] . ' to ' . $wh['from_name'] . ', ';
 			}
 			$systemIDs = array_unique( $systemIDs );
+			$sigs = array_unique( $sigs );
+			$sigs = implode(',', $sigs);
 
 			DB::query(Database::DELETE, 'DELETE FROM wormholes WHERE hash IN('.$wormholeHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
 							->param(':groupID', Auth::$session->groupID)
@@ -291,12 +308,28 @@ class Controller_Chainmap extends FrontController {
 							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 							->execute();
 
+
+			DB::query(Database::DELETE, 'DELETE FROM wormhole_signatures WHERE signature_id IN('.$sigs.')')
+							->execute();
+
+
+			DB::query(Database::DELETE, 'DELETE FROM systemsigs WHERE sigID IN('.$sigs.')')
+							->execute();
+
 			$log_message .= ' from the chainmap "'. $this->chainmap->data['chainmap_name'].'"';
 			groupUtils::log_action(Auth::$session->groupID,'delwhs', $log_message );
 		}
 
 		if(!empty($systemIDs))
 		{
+			//update system to make sigs we deleted disappear
+			foreach($systemIDs as $id)
+			{
+				$this->chainmap->update_system($id, array('lastUpdate' => time(),
+																	'lastActive' => time() )
+											);
+			}
+
 			$this->chainmap->reset_systems( $systemIDs );
 
 			$this->chainmap->rebuild_map_data_cache();

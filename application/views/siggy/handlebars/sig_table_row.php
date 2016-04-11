@@ -17,7 +17,11 @@
 				</p>
 			</td>
 			<td class='desc'>
+
 				{{ siteIDToText sysClass type siteID }}
+				{{#if showWormhole}}
+					{{ whHashToDestination chainmap_wormhole }}
+				{{/if}}
 				<p>
 					{{ description }}
 				</p>

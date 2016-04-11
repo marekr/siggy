@@ -13,18 +13,27 @@ class Controller_Data extends FrontController {
 
 	public function action_systems()
 	{
-        $systems = DB::query(Database::SELECT, "SELECT ss.id, ss.name, r.regionName as region_name, ss.sec
+		$this->profiler = NULL;
+		$this->auto_render = FALSE;
+		$this->response->headers('Content-Type','application/json');
+		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+
+        $systems = DB::query(Database::SELECT, "SELECT ss.id, ss.name, r.regionName as region_name, ss.sec, ss.sysClass as class
 													FROM solarsystems ss
 													LEFT JOIN regions r ON(ss.region = r.regionID)")
 								->execute()
 								->as_array();
 
-		print (json_encode($systems));
-		die();
+		$this->response->body(json_encode($systems,JSON_NUMERIC_CHECK));
 	}
 
 	public function action_sig_types()
 	{
+		$this->profiler = NULL;
+		$this->auto_render = FALSE;
+		$this->response->headers('Content-Type','application/json');
+		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+
 		$output = array();
 
         $wormholeTypes = DB::query(Database::SELECT, "SELECT * FROM statics")
@@ -81,7 +90,6 @@ class Controller_Data extends FrontController {
 			$output['maps'][ $site['type'] ][ $site['system_class'] ][] = $site['id'];
 		}
 
-		print (json_encode($output));
-		die();
+		$this->response->body(json_encode($output));
 	}
 }

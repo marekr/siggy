@@ -1,15 +1,11 @@
 <?php
 
-if( $_SERVER['SERVER_NAME'] != 'dev.siggy.borkedlabs.com' )
-{
-	exit("no access");
-}
 
 function request( $verb, $url )
 {
 	global $apiID, $apiSecret;
 	$params     = array(
-		'host'          => 'dev.siggy.borkedlabs.com',
+		'host'          => 'siggy.borkedlabs.com',
 		'content-type'  => 'application/json',
 		'user-agent'    => 'apitest',
 		'connection'    => 'keep-alive',
@@ -57,8 +53,8 @@ function url()
 {
   return sprintf(
 		"%s://%s/",
-		isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
-		$_SERVER['SERVER_NAME']
+		'https',
+		"siggy.borkedlabs.com"
   );
 }
 /*

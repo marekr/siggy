@@ -16,28 +16,30 @@ class Controller_Sig extends FrontController {
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
-		header('content-type: application/json');
-		header("Cache-Control: no-cache, must-revalidate");
+		$this->response->headers('Content-Type','application/json');
+		$this->response->headers('Cache-Control','no-cache, must-revalidate');
 
 		if(	 !$this->siggyAccessGranted() )
 		{
-			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
-			exit();
+			$this->response->body(json_encode(['error' => 1, 'errorMsg' => 'Invalid auth']));
+			return;
 		}
 
-		if( isset($_POST['systemID']) )
+		$sigData = json_decode($this->request->body(), true);
+
+		if( !empty($sigData) && isset($sigData['systemID']) )
 		{
-			$insert['systemID'] = intval($_POST['systemID']);
-			$insert['sig'] = strtoupper($_POST['sig']);
-			$insert['description'] = $_POST['desc'];
+			$insert['systemID'] = intval($sigData['systemID']);
+			$insert['sig'] = strtoupper($sigData['sig']);
+			$insert['description'] = $sigData['desc'];
 			$insert['created'] = time();
-			$insert['siteID'] = intval($_POST['siteID']);
-			$insert['type'] = $_POST['type'];
+			$insert['siteID'] = intval($sigData['siteID']);
+			$insert['type'] = $sigData['type'];
 			$insert['groupID'] = Auth::$session->groupID;
 
 			if( Auth::$session->accessData['showSigSizeCol'] )
 			{
-				$insert['sigSize'] = ( is_numeric( $_POST['sigSize'] ) ? $_POST['sigSize'] : '' );
+				$insert['sigSize'] = ( is_numeric( $sigData['sigSize'] ) ? $sigData['sigSize'] : '' );
 			}
 
 			$insert['creator'] = Auth::$session->charName;
@@ -53,9 +55,8 @@ class Controller_Sig extends FrontController {
 			$this->notifierCheck($insert);
 
 			$insert['sigID'] = $sigID[0];
-			echo json_encode(array($sigID[0] => $insert ));
+			$this->response->body(json_encode(array($sigID[0] => $insert )));
 		}
-		exit();
 	}
 
 	private function notifierCheck($sigData)
@@ -92,13 +93,13 @@ class Controller_Sig extends FrontController {
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
-		header('content-type: application/json');
-		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+		$this->response->headers('Content-Type','application/json');
+		$this->response->headers('Cache-Control','no-cache, must-revalidate');
 
 		if(	 !$this->siggyAccessGranted() )
 		{
-			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
-			exit();
+			$this->response->body(json_encode(['error' => 1, 'errorMsg' => 'Invalid auth']));
+			return;
 		}
 
 		//load settings to trigger localization
@@ -194,52 +195,77 @@ class Controller_Sig extends FrontController {
 					$this->chainmap->update_system($systemID, array('lastUpdate' => time(),'lastActive' => time() ) );
 				}
 
-				echo json_encode($addedSigs);
+				$this->response->body(json_encode($addedSigs));
 			}
 		}
-		exit();
 	}
 
 	public function action_edit()
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
-		header('content-type: application/json');
-		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+		$this->response->headers('Content-Type','application/json');
+		$this->response->headers('Cache-Control','no-cache, must-revalidate');
 
-		if( isset($_POST['sigID']) )
+		$sigData = json_decode($this->request->body(), true);
+
+		if( !empty($sigData) && isset($sigData['sigID']) )
 		{
-			$update['sig'] = strtoupper($_POST['sig']);
-			$update['description'] = $_POST['desc'];
+			$update['sig'] = strtoupper($sigData['sig']);
+			$update['description'] = $sigData['desc'];
 			$update['updated'] = time();
-			$update['siteID'] = isset($_POST['siteID']) ? intval($_POST['siteID']) : 0;
-			$update['type'] = $_POST['type'];
+			$update['siteID'] = isset($sigData['siteID']) ? intval($sigData['siteID']) : 0;
+			$update['type'] = $sigData['type'];
 
 			if( Auth::$session->accessData['showSigSizeCol'] )
 			{
-					$update['sigSize'] = ( is_numeric( $_POST['sigSize'] ) ? $_POST['sigSize'] : ''  );
+				$update['sigSize'] = ( is_numeric( $sigData['sigSize'] ) ? $sigData['sigSize'] : ''  );
 			}
 
 			$update['lastUpdater'] = Auth::$session->charName;
 
-			$id = intval($_POST['sigID']);
+			$id = intval($sigData['sigID']);
 
-			DB::update('systemsigs')->set( $update )->where('sigID', '=', $id)->execute();
-			$this->chainmap->update_system($_POST['systemID'], array('lastUpdate' => time(), 'lastActive' => time() ) );
+			DB::update('systemsigs')
+				->set( $update )
+				->where('groupID', '=', Auth::$session->groupID)
+				->where('sigID', '=', $id)
+				->execute();
+
+			$this->chainmap->update_system($sigData['systemID'], array('lastUpdate' => time(), 'lastActive' => time() ) );
+
+			if(!empty($sigData['chainmap_wormhole']))
+			{
+				if($sigData['chainmap_wormhole']['hash'] == 'none')
+				{
+	                DB::query(Database::DELETE, 'DELETE FROM wormhole_signatures WHERE `chainmap_id`=:chainMapID AND `signature_id` = :sigID')
+								->param(':chainMapID', $sigData['chainmap_wormhole']['chainmap_id'])
+								->param(':sigID', $id)
+								->execute();
+				}
+				else
+				{
+	                DB::query(Database::INSERT, 'REPLACE INTO wormhole_signatures (`wormhole_hash`, `chainmap_id`,`signature_id`)
+					VALUES(:hash, :chainMapID, :sigID)')
+								->param(':hash', $sigData['chainmap_wormhole']['hash'] )
+								->param(':chainMapID', $sigData['chainmap_wormhole']['chainmap_id'])
+								->param(':sigID', $id)
+								->execute();
+				}
+			}
 
 			miscUtils::increment_stat('updates', Auth::$session->accessData);
 
-			echo json_encode('1');
+			$this->response->body(json_encode('1'));
 		}
-		die();
 	}
 
 	public function action_remove()
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
-		header('content-type: application/json');
-		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+		$this->response->headers('Content-Type','application/json');
+		$this->response->headers('Cache-Control','no-cache, must-revalidate');
 
 		if( isset($_POST['sigID']) )
 		{
@@ -252,7 +278,10 @@ class Controller_Sig extends FrontController {
 									->execute()
 									->current();
 
-			DB::delete('systemsigs')->where('sigID', '=', $id)->execute();
+			DB::delete('systemsigs')
+			->where('groupID', '=', Auth::$session->groupID)
+			->where('sigID', '=', $id)
+			->execute();
 
 			$this->chainmap->update_system($_POST['systemID'], array('lastUpdate' => time() ));
 
@@ -263,18 +292,16 @@ class Controller_Sig extends FrontController {
 			}
 
 			groupUtils::log_action(Auth::$session->groupID, 'delsig', $message);
-			echo json_encode('1');
+			$this->response->body(json_encode('1'));
 		}
-		die();
 	}
 
 	public function action_scanned_systems()
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
-		header('content-type: application/json');
-		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-
+		$this->response->headers('Content-Type','application/json');
+		$this->response->headers('Cache-Control','no-cache, must-revalidate');
 
 		$data = DB::query(Database::SELECT, "SELECT ss.name as system_name, ss.id,
 													r.regionName as region_name,
@@ -298,7 +325,6 @@ class Controller_Sig extends FrontController {
 								->execute()
 								->as_array();
 
-		print json_encode($data);
-		exit();
+		$this->response->body(json_encode($data));
 	}
 }
