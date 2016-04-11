@@ -308,13 +308,15 @@ class Controller_Chainmap extends FrontController {
 							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 							->execute();
 
+			if(!empty($sigs))
+			{
+				DB::query(Database::DELETE, 'DELETE FROM wormhole_signatures WHERE signature_id IN('.$sigs.')')
+								->execute();
 
-			DB::query(Database::DELETE, 'DELETE FROM wormhole_signatures WHERE signature_id IN('.$sigs.')')
-							->execute();
 
-
-			DB::query(Database::DELETE, 'DELETE FROM systemsigs WHERE sigID IN('.$sigs.')')
-							->execute();
+				DB::query(Database::DELETE, 'DELETE FROM systemsigs WHERE sigID IN('.$sigs.')')
+								->execute();
+			}
 
 			$log_message .= ' from the chainmap "'. $this->chainmap->data['chainmap_name'].'"';
 			groupUtils::log_action(Auth::$session->groupID,'delwhs', $log_message );
