@@ -751,22 +751,29 @@ siggy2.Map.prototype.processConnectionDelete = function(hashes, chainMapID)
 
 	if( hashes.count > 0 )
 	{
-		var data = {
-			wormhole_hashes: JSON.stringify(hashes.wormholes),
-			stargate_hashes:JSON.stringify(hashes.stargates),
-			jumpbridge_hashes:JSON.stringify(hashes.jumpbridges),
-			cyno_hashes: JSON.stringify(hashes.cynos)
+		var postData = {
+			wormhole_hashes: hashes.wormholes,
+			stargate_hashes: hashes.stargates,
+			jumpbridge_hashes: hashes.jumpbridges,
+			cyno_hashes: hashes.cynos
 		};
 
-
 		if( typeof(chainMapID) == 'undefined' )
-			data.chainmap = chainMapID;
+			postData.chainmap = chainMapID;
 
-		$.post(this.baseUrl + 'chainmap/connection_delete',
-			data,
-			function() {
+		$.ajax({
+				type: 'post',
+				url: $this.baseUrl + 'chainmap/connection_delete',
+				data: JSON.stringify(postData),
+				contentType: 'application/json',
+				dataType: 'json'
+			})
+			.fail(function(){
+				alert('Error deleting connection');
+			})
+			.always(function(){
 				$(document).trigger('siggy.updateRequested', false );
-		});
+			});
 	}
 }
 
