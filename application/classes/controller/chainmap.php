@@ -146,15 +146,17 @@ class Controller_Chainmap extends FrontController {
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
-		header('content-type: application/json');
-		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+		$this->response->headers('Content-Type','application/json');
+		$this->response->headers('Cache-Control','no-cache, must-revalidate');
 
 		$systemIDs = array();
 
-		$wormholeHashes = json_decode($_POST['wormhole_hashes']);
-		$stargateHashes = json_decode($_POST['stargate_hashes']);
-		$jumpbridgeHashes = json_decode($_POST['jumpbridge_hashes']);
-		$cynoHashes = json_decode($_POST['cyno_hashes']);
+		$hashes = json_decode($this->request->body(), true);
+		
+		$wormholeHashes = $hashes['wormhole_hashes'];
+		$stargateHashes = $hashes['stargate_hashes'];
+		$jumpbridgeHashes = $hashes['jumpbridge_hashes'];
+		$cynoHashes = $hashes['cyno_hashes'];
 
 		if( is_array($cynoHashes) && count($cynoHashes) > 0 )
 		{
@@ -336,7 +338,7 @@ class Controller_Chainmap extends FrontController {
 
 			$this->chainmap->rebuild_map_data_cache();
 		}
-		exit();
+		$this->response->body(json_encode('1'));
 	}
 
 	public function action_connection_edit()
