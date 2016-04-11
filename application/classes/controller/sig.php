@@ -234,19 +234,19 @@ class Controller_Sig extends FrontController {
 
 			$this->chainmap->update_system($sigData['systemID'], array('lastUpdate' => time(), 'lastActive' => time() ) );
 
-			if(!empty($sigData['chainmap_wormhole']))
+			if(!empty($sigData['chainmap_wormhole']) && !empty($sigData['chainmap_wormhole']['hash']))
 			{
 				if($sigData['chainmap_wormhole']['hash'] == 'none')
 				{
-	                DB::query(Database::DELETE, 'DELETE FROM wormhole_signatures WHERE `chainmap_id`=:chainMapID AND `signature_id` = :sigID')
+					DB::query(Database::DELETE, 'DELETE FROM wormhole_signatures WHERE `chainmap_id`=:chainMapID AND `signature_id` = :sigID')
 								->param(':chainMapID', $sigData['chainmap_wormhole']['chainmap_id'])
 								->param(':sigID', $id)
 								->execute();
 				}
 				else
 				{
-	                DB::query(Database::INSERT, 'REPLACE INTO wormhole_signatures (`wormhole_hash`, `chainmap_id`,`signature_id`)
-					VALUES(:hash, :chainMapID, :sigID)')
+					DB::query(Database::INSERT, 'REPLACE INTO wormhole_signatures (`wormhole_hash`, `chainmap_id`,`signature_id`)
+						VALUES(:hash, :chainMapID, :sigID)')
 								->param(':hash', $sigData['chainmap_wormhole']['hash'] )
 								->param(':chainMapID', $sigData['chainmap_wormhole']['chainmap_id'])
 								->param(':sigID', $id)
