@@ -710,29 +710,7 @@ siggy2.SigTable.prototype.editSigForm = function (sigID)
 
 	if( sigData.type == 'wh' )
 	{
-		var whs = { none : '--' };
-		for(var i in this.map.wormholes)
-		{
-			var mapWh = this.map.wormholes[i];
-			mapWh.from_system_id = parseInt(mapWh.from_system_id);
-			if(mapWh.from_system_id != this.systemID &&
-				mapWh.to_system_id != this.systemID)
-			{
-				continue;
-			}
-
-			whs[mapWh.hash] = this.whHashToDestination(mapWh.hash);
-		}
-
-		var cid = this.siggyMain.activities.siggy.chainMapID;
-		var selected = 'none';
-		if(typeof(sigData.chainmap_wormholes) != "undefined" &&
-			typeof(sigData.chainmap_wormholes[cid]) != "undefined")
-		{
-			selected = sigData.chainmap_wormholes[cid];
-		}
-
-		descEle.append(this.generateSelect(whs, selected, 'chainmap-wh'))
+		descEle.append(this.generateMappedWormholeSelect(sigData))
 				.append($('<br />'));
 	}
 
@@ -745,11 +723,44 @@ siggy2.SigTable.prototype.editSigForm = function (sigID)
 	sigInput.focus();
 }
 
+siggy2.SigTable.prototype.generateMappedWormholeSelect = function( sigData )
+{
+	var cid = this.siggyMain.activities.siggy.chainMapID;
+	var selected = 'none';
+	if(typeof(sigData.chainmap_wormholes) != "undefined" &&
+		typeof(sigData.chainmap_wormholes[cid]) != "undefined")
+	{
+		selected = sigData.chainmap_wormholes[cid];
+	}
+
+	var whs = { none : '--' };
+	for(var i in this.map.wormholes)
+	{
+		var mapWh = this.map.wormholes[i];
+		mapWh.from_system_id = parseInt(mapWh.from_system_id);
+		if(mapWh.from_system_id != this.systemID &&
+			mapWh.to_system_id != this.systemID)
+		{
+			continue;
+		}
+
+		whs[mapWh.hash] = this.whHashToDestination(mapWh.hash);
+	}
+
+	return this.generateSelect(whs, selected, 'chainmap-wh');
+}
+
 siggy2.SigTable.prototype.editTypeSelectChange = function (sigID)
 {
 	var newType = $("#sig-" + sigID + " td.type select").val();
 
 	this.updateSiteSelect( '#sig-' + sigID + ' td.desc select', this.systemClass, newType, 0 );
+
+	$("#sig-" + sigID + " td.desc select.chainmap-wh").remove();
+	if(newType == 'wh')
+	{
+		$("#sig-" + sigID + " td.desc select").after(this.generateMappedWormholeSelect(this.sigData[sigID]));
+	}
 }
 
 siggy2.SigTable.prototype.editSig = function (sigID)
@@ -817,12 +828,12 @@ siggy2.SigTable.prototype.editSig = function (sigID)
 			url: $this.settings.baseUrl + 'sig/edit',
 			data: JSON.stringify(postData),
 			contentType: 'application/json',
-			success: function (newSig)
-					{
-					},
-			fail: function(xhr, textStatus, errorThrown) { alert('Error') },
 			dataType: 'json'
-		}).always(function(){
+		})
+		.fail(function(){
+			alert('Error saving sig');
+		})
+		.always(function(){
 			$this.editingSig = false;
 			sigObj.editing = false;
 		});
