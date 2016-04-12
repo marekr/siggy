@@ -121,7 +121,7 @@ final class miscUtils {
 
 		return 0;
 	}
-	
+
 	static function isWspaceID($id)
 	{
 		if( $id >= 31000000 )
@@ -208,6 +208,15 @@ final class miscUtils {
 		}
 
 		return $results;
+	}
+
+	static function hash_array_to_string($arr)
+	{
+		foreach( $arr as $k => $v )
+		{
+			$arr[$k] = Database::instance()->escape($v);
+		}
+		return implode(',', $arr);
 	}
 
 	static function getDBCacheItem( $key )

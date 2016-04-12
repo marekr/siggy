@@ -137,7 +137,7 @@ class Controller_Chainmap extends FrontController {
 	{
 		foreach( $arr as $k => $v )
 		{
-			$arr[$k] = "'".($v)."'";
+			$arr[$k] = Database::instance()->escape($v);
 		}
 		return implode(',', $arr);
 	}
@@ -152,7 +152,7 @@ class Controller_Chainmap extends FrontController {
 		$systemIDs = array();
 
 		$hashes = json_decode($this->request->body(), true);
-		
+
 		$wormholeHashes = $hashes['wormhole_hashes'];
 		$stargateHashes = $hashes['stargate_hashes'];
 		$jumpbridgeHashes = $hashes['jumpbridge_hashes'];
@@ -260,68 +260,11 @@ class Controller_Chainmap extends FrontController {
 
 		if( is_array($wormholeHashes) && count($wormholeHashes) > 0 )
 		{
-			$log_message = Auth::$session->charName.' performed a mass delete of the following wormholes: ';
-
-			$wormholeHashes = $this->_hash_array_to_string($wormholeHashes);
-
-			$wormholes = DB::query(Database::SELECT, 'SELECT w.*, sto.name as to_name, sfrom.name as from_name
-														FROM wormholes w
-														INNER JOIN solarsystems sto ON sto.id = w.to_system_id
-														INNER JOIN solarsystems sfrom ON sfrom.id = w.from_system_id
-														WHERE w.hash IN('.$wormholeHashes.') AND w.group_id=:groupID AND w.chainmap_id=:chainmap')
-							->param(':groupID', Auth::$session->groupID)
-							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
-							->execute();
-
-			$sigs = [];
-			foreach( $wormholes as $wh )
-			{
-				$whSigData = DB::query(Database::SELECT, "SELECT signature_id
-													FROM wormhole_signatures
-													WHERE wormhole_hash=:hash
-													AND chainmap_id=:chainmap")
-										->param(':hash', $wh['hash'] )
-										->param(':chainmap', Auth::$session->accessData['active_chain_map'])
-										->execute()
-										->as_array();
-
-				foreach($whSigData as $whSig)
-				{
-					$sigs[] = $whSig['signature_id'];
-				}
-
-				$systemIDs[] = $wh['to_system_id'];
-				$systemIDs[] = $wh['from_system_id'];
-
-				$log_message .= $wh['to_name'] . ' to ' . $wh['from_name'] . ', ';
-			}
+			$tmp = $this->chainmap->delete_wormholes($wormholeHashes);
+			$systemIDs = array_merge( $systemIDs, $tmp );
 			$systemIDs = array_unique( $systemIDs );
-			$sigs = array_unique( $sigs );
-			$sigs = implode(',', $sigs);
 
-			DB::query(Database::DELETE, 'DELETE FROM wormholes WHERE hash IN('.$wormholeHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
-							->param(':groupID', Auth::$session->groupID)
-							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
-							->execute();
-
-
-			DB::query(Database::DELETE, 'DELETE FROM wormholetracker WHERE wormhole_hash IN('.$wormholeHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
-							->param(':groupID', Auth::$session->groupID)
-							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
-							->execute();
-
-			if(!empty($sigs))
-			{
-				DB::query(Database::DELETE, 'DELETE FROM wormhole_signatures WHERE signature_id IN('.$sigs.')')
-								->execute();
-
-
-				DB::query(Database::DELETE, 'DELETE FROM systemsigs WHERE sigID IN('.$sigs.')')
-								->execute();
-			}
-
-			$log_message .= ' from the chainmap "'. $this->chainmap->data['chainmap_name'].'"';
-			groupUtils::log_action(Auth::$session->groupID,'delwhs', $log_message );
+			groupUtils::deleteLinkedSigWormholes(Auth::$session->groupID, $wormholeHashes);
 		}
 
 		if(!empty($systemIDs))
@@ -329,8 +272,8 @@ class Controller_Chainmap extends FrontController {
 			//update system to make sigs we deleted disappear
 			foreach($systemIDs as $id)
 			{
-				$this->chainmap->update_system($id, array('lastUpdate' => time(),
-																	'lastActive' => time() )
+				$this->chainmap->update_system( $id, array('lastUpdate' => time(),
+														   'lastActive' => time() )
 											);
 			}
 
@@ -338,6 +281,7 @@ class Controller_Chainmap extends FrontController {
 
 			$this->chainmap->rebuild_map_data_cache();
 		}
+
 		$this->response->body(json_encode('1'));
 	}
 

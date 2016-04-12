@@ -598,4 +598,59 @@ class chainmap {
 
 		return $systemID;
 	}
+
+	private function _hash_array_to_string($arr)
+	{
+		foreach( $arr as $k => $v )
+		{
+			$arr[$k] = "'".($v)."'";
+		}
+		return implode(',', $arr);
+	}
+
+	public function delete_wormholes($wormholeHashes)
+	{
+		$log_message = Auth::$session->charName.' performed a mass delete of the following wormholes: ';
+
+		$wormholeHashes = $this->_hash_array_to_string($wormholeHashes);
+
+		$wormholes = DB::query(Database::SELECT, 'SELECT w.*, sto.name as to_name, sfrom.name as from_name
+													FROM wormholes w
+													INNER JOIN solarsystems sto ON sto.id = w.to_system_id
+													INNER JOIN solarsystems sfrom ON sfrom.id = w.from_system_id
+													WHERE w.hash IN('.$wormholeHashes.') AND w.group_id=:groupID AND w.chainmap_id=:chainmap')
+						->param(':groupID', $this->group_id)
+						->param(':chainmap', $this->id)
+						->execute();
+
+		$sigs = [];
+		$systemIDs = [];
+		foreach( $wormholes as $wh )
+		{
+			$systemIDs[] = $wh['to_system_id'];
+			$systemIDs[] = $wh['from_system_id'];
+
+			$log_message .= $wh['to_name'] . ' to ' . $wh['from_name'] . ', ';
+		}
+
+		$systemIDs = array_unique( $systemIDs );
+		$sigs = array_unique( $sigs );
+		$sigs = implode(',', $sigs);
+
+		DB::query(Database::DELETE, 'DELETE FROM wormholes WHERE hash IN('.$wormholeHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
+						->param(':groupID', $this->group_id)
+						->param(':chainmap', $this->id)
+						->execute();
+
+
+		DB::query(Database::DELETE, 'DELETE FROM wormholetracker WHERE wormhole_hash IN('.$wormholeHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
+						->param(':groupID', $this->group_id)
+						->param(':chainmap', $this->id)
+						->execute();
+
+		$log_message .= ' from the chainmap "'. $this->data['chainmap_name'].'"';
+		groupUtils::log_action($this->group_id,'delwhs', $log_message );
+
+		return $systemIDs;
+	}
 }

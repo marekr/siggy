@@ -279,11 +279,27 @@ class Controller_Sig extends FrontController {
 									->current();
 
 			DB::delete('systemsigs')
-			->where('groupID', '=', Auth::$session->groupID)
-			->where('sigID', '=', $id)
-			->execute();
+				->where('groupID', '=', Auth::$session->groupID)
+				->where('sigID', '=', $id)
+				->execute();
 
 			$this->chainmap->update_system($_POST['systemID'], array('lastUpdate' => time() ));
+
+			// delete linked wormholes
+			$whlinks = DB::query(Database::SELECT, "SELECT s.*
+												FROM wormhole_signatures s
+												WHERE s.signature_id=:sigID")
+									->param(':sigID', $id)
+									->execute()
+									->as_array();
+			$wormholeHashes = [];
+			foreach($whlinks as $link)
+			{
+				$wormholeHashes[] = $link['wormhole_hash'];
+			}
+			$wormholeHashes = array_unique($wormholeHashes);
+
+			groupUtils::deleteLinkedSigWormholes(Auth::$session->groupID, $wormholeHashes);
 
 			$message = Auth::$session->charName.' deleted sig "'.$sigData['sig'].'" from system '.$sigData['systemName'];;
 			if( $sigData['type'] != 'none' )
