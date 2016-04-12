@@ -377,6 +377,8 @@ siggy2.Activity.siggy.prototype.handleChainMapSelect = function(id)
 	{
 		//clear group cache time or we dont update properly
 		$this.groupCacheTime = 0;
+		$this.map.lastUpdate = 0;
+
 		$(document).trigger('siggy.updateRequested', true );
 	});
 }
