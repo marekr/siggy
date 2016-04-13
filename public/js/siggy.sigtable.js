@@ -412,7 +412,11 @@ siggy2.SigTable.prototype.whHashToDestination = function (hash)
 
 siggy2.SigTable.prototype.systemToDestinationString = function (system)
 {
-	return _('to {0} ({1}) - {2}').format(system.name, system.region_name, siggy2.Helpers.systemClassMediumText(system.class));
+	var displayName = "";
+	if( typeof( this.map.systems[system.id] ) != "undefined" )
+		displayName = this.map.systems[ system.id ].displayName == '' ? system.name : this.map.systems[ system.id ].displayName;
+	
+	return _('to {0} ({1}) - {2}').format(displayName, system.region_name, siggy2.Helpers.systemClassMediumText(system.class));
 }
 
 siggy2.SigTable.prototype.convertSiteID = function (whClass, type, siteID)
