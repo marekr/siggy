@@ -471,6 +471,13 @@ siggy2.SigTable.prototype.updateSigTotal = function()
 
 siggy2.SigTable.prototype.removeSig = function (sigID)
 {
+	var sigData = this.sigData[ sigID ];
+	
+	if( sigData.editing )
+	{
+		return;
+	}
+	
 	this.removeSigRow(
 	{
 		sigID: sigID
