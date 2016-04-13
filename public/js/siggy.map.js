@@ -1301,22 +1301,36 @@ siggy2.Map.prototype.setupSystemEditor = function()
 	});
 
 	$('#system-editor-save').click( function() {
-		var label = $('#system-editor input[name=label]').val();
-
-		/* don't save the label if they didn't change the name */
-		if( that.systems[that.editingSystem].name == label )
-		{
-			label = '';
-		}
-
-		var data = {
-			label: label,
-			activity: $('#system-editor select[name=activity]').val()
-		};
-
-		that.saveSystemOptions(that.editingSystem, data);
-		$('#chain-map-container').unblock();
+		that.systemEditorSave();
 	});
+	
+	$('#system-options-popup').on('keypress', function(e) {
+		if(e.which == 13)
+		{
+			that.systemEditorSave();
+			e.stopPropagation();
+		}
+	});
+}
+
+siggy2.Map.prototype.systemEditorSave = function()
+{
+	var that = this;
+	var label = $('#system-editor input[name=label]').val();
+
+	/* don't save the label if they didn't change the name */
+	if( that.systems[that.editingSystem].name == label )
+	{
+		label = '';
+	}
+
+	var data = {
+		label: label,
+		activity: $('#system-editor select[name=activity]').val()
+	};
+
+	that.saveSystemOptions(that.editingSystem, data);
+	$('#chain-map-container').unblock();
 }
 
 siggy2.Map.prototype.updateJumpLog = function( hash )
