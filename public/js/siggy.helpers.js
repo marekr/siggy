@@ -41,6 +41,56 @@ siggy2.Helpers.setupSystemTypeAhead = function(selector)
 	});
 }
 
+siggy2.Helpers.systemClassMediumText = function(sysClass)
+{
+	var text = "";
+	sysClass = parseInt(sysClass);
+
+	if( sysClass == 7 )
+	{
+		text = 'Highsec';
+	}
+	else if( sysClass == 8 )
+	{
+		text = 'Lowsec';
+	}
+	else if( sysClass == 9 )
+	{
+		text = 'Nullsec';
+	}
+	else
+	{
+		text = 'Class '+sysClass;
+	}
+
+	return text;
+}
+
+siggy2.Helpers.systemClassShortText = function(sysClass)
+{
+	var text = "";
+	sysClass = parseInt(sysClass);
+
+	if( sysClass == 7 )
+	{
+		text = 'H';
+	}
+	else if( sysClass == 8 )
+	{
+		text = 'L';
+	}
+	else if( sysClass == 9 )
+	{
+		text = '0.0';
+	}
+	else
+	{
+		text = 'C'+sysClass;
+	}
+
+	return text;
+}
+
 siggy2.Helpers.setupHandlebars = function()
 {
 	HandlebarsFormHelpers.register(Handlebars);
@@ -124,27 +174,7 @@ siggy2.Helpers.setupHandlebars = function()
 	});
 
 	Handlebars.registerHelper('systemClassShortText', function(sysClass) {
-	    var text = "";
-		sysClass = parseInt(sysClass);
-
-	    if( sysClass == 7 )
-	    {
-			text = 'H';
-	    }
-	    else if( sysClass == 8 )
-	    {
-			text = 'L';
-	    }
-	    else if( sysClass == 9 )
-	    {
-			text = '0.0';
-	    }
-	    else
-	    {
-			text = 'C'+sysClass;
-	    }
-
-	    return text;
+		return siggy2.Helpers.systemClassShortText(sysClass);
 	});
 
 	Handlebars.registerHelper('systemEffectIDToText', function(effect) {

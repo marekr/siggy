@@ -407,7 +407,7 @@ siggy2.SigTable.prototype.whHashToDestination = function (hash)
 		system = siggy2.StaticData.getSystemByID(mapWh.from_system_id);
 	}
 
-	return _('to {0} ({1})').format(system.name, system.region_name);
+	return _('to {0} ({1}) - {2}').format(system.name, system.region_name, siggy2.Helpers.systemClassMediumText(system.class));
 }
 
 siggy2.SigTable.prototype.convertSiteID = function (whClass, type, siteID)
