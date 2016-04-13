@@ -407,6 +407,11 @@ siggy2.SigTable.prototype.whHashToDestination = function (hash)
 		system = siggy2.StaticData.getSystemByID(mapWh.from_system_id);
 	}
 
+	return this.systemToDestinationString(system);
+}
+
+siggy2.SigTable.prototype.systemToDestinationString = function (system)
+{
 	return _('to {0} ({1}) - {2}').format(system.name, system.region_name, siggy2.Helpers.systemClassMediumText(system.class));
 }
 
@@ -504,6 +509,8 @@ siggy2.SigTable.prototype.updateSiteSelect = function( ele, whClass, type, siteI
 	var newSel = this.generateSiteSelect( whClass, type, siteID );
 
 	elem.empty().html(newSel.html());
+	
+	return newSel;
 }
 
 siggy2.SigTable.prototype.removeSigRow = function (sigData)
@@ -661,10 +668,10 @@ siggy2.SigTable.prototype.editSigForm = function (sigID)
 	var controlEle = $("#sig-" + sigID + " td.edit");
 	controlEle.empty();
 
-	var that = this;
+	var $this = this;
 	controlEle.append($('<img>').attr('src', this.settings.baseUrl + 'public/images/accept.png').click(function (e)
 	{
-		that.editSig(sigID)
+		$this.editSig(sigID)
 	}));
 
 	var sigEle = $("#sig-" + sigID + " td.sig");
@@ -672,7 +679,7 @@ siggy2.SigTable.prototype.editSigForm = function (sigID)
 
 	var sigInput = $('<input>').val(sigData.sig)
 							.attr('maxlength', 3)
-							.keypress( function(e) { if(e.which == 13){ that.editSig(sigID)  } } );
+							.keypress( function(e) { if(e.which == 13){ $this.editSig(sigID)  } } );
 	sigEle.append(sigInput);
 
 	if( this.settings.showSigSizeCol )
@@ -706,23 +713,28 @@ siggy2.SigTable.prototype.editSigForm = function (sigID)
 										}, sigData.type)
 										.change(function ()
 												{
-													that.editTypeSelectChange(sigID)
+													$this.editTypeSelectChange(sigID)
 												}));
 
 
 	var descEle = $('#sig-' + sigID + ' td.desc');
 	descEle.empty();
-	descEle.append(this.generateSiteSelect(this.systemClass, sigData.type, sigData.siteID))
+	
+	var siteSelect = this.generateSiteSelect(this.systemClass, sigData.type, sigData.siteID);
+	descEle.append(siteSelect)
 		.append($('<br />'));
 
+	siteSelect.change( function() {
+		$this.editSiteChanged(sigID);
+	});	
+	
 	if( sigData.type == 'wh' )
 	{
 		descEle.append(this.generateMappedWormholeSelect(sigData))
-				.append($('<br />'));
 	}
 
 	descEle.append( $('<input>').val(sigData.description)
-								.keypress( function(e) { if(e.which == 13){ that.editSig(sigID)  } } )
+								.keypress( function(e) { if(e.which == 13){ $this.editSig(sigID)  } } )
 								.css('width', '100%')
 					);
 
@@ -740,30 +752,109 @@ siggy2.SigTable.prototype.generateMappedWormholeSelect = function( sigData )
 		selected = sigData.chainmap_wormholes[cid];
 	}
 
+	console.log(sigData);
+	var siteEle = $("#sig-" + sigData.sigID + " td.desc select[name=site]");
+	var wormholeType = parseInt(siteEle.val());
+	
 	var whs = { none : '--' };
 	for(var i in this.map.wormholes)
 	{
 		var mapWh = this.map.wormholes[i];
+		
+		//figure out which system
 		mapWh.from_system_id = parseInt(mapWh.from_system_id);
+		mapWh.to_system_id = parseInt(mapWh.to_system_id);
+		
 		if(mapWh.from_system_id != this.systemID &&
 			mapWh.to_system_id != this.systemID)
 		{
 			continue;
 		}
+		
+		var system = null;
+		if( mapWh.from_system_id != this.systemID )
+		{
+			system = siggy2.StaticData.getSystemByID(mapWh.from_system_id);
+		}
+		else if( mapWh.to_system_id != this.systemID )
+		{
+			system = siggy2.StaticData.getSystemByID(mapWh.to_system_id);
+		}
 
-		whs[mapWh.hash] = this.whHashToDestination(mapWh.hash);
+		if( wormholeType != 0 ) // 0 is unstable wormhole, allows all
+		{
+			if(wormholeType > 6)
+			{
+				var wormholeData = siggy2.StaticData.getWormholeByID(wormholeType);
+				
+				if( system.class != wormholeData.dest_class )
+					continue;
+			}
+			else
+			{
+				if( wormholeType == 1 )	//unknown
+				{
+					if( !( system.class >= 1 && system.class <= 3) )
+					{
+						continue;
+					}
+				}
+				else if( wormholeType == 2 ) //dangerous
+				{
+					if( !( system.class >= 4 && system.class <= 5) )
+					{
+						continue;
+					}
+				}
+				else if( wormholeType == 3 ) //deadly
+				{
+					if( !( system.class == 6) )
+					{
+						continue;
+					}
+				}
+				else if( wormholeType == 4 ) //null
+				{
+					if( !( system.class == 9) )
+					{
+						continue;
+					}
+				}
+				else if( wormholeType == 5 ) //low
+				{
+					if( !( system.class == 8) )
+					{
+						continue;
+					}
+				}
+				else if( wormholeType == 6 ) //high
+				{
+					if( !( system.class == 7) )
+					{
+						continue;
+					}
+				}
+			}
+		}
+	
+		whs[mapWh.hash] = this.systemToDestinationString(system);
 	}
 
-	return this.generateSelect(whs, selected, 'chainmap-wh');
+	return this.generateSelect(whs, selected).attr('name', 'chainmap-wh');;
 }
 
 siggy2.SigTable.prototype.editTypeSelectChange = function (sigID)
 {
 	var newType = $("#sig-" + sigID + " td.type select").val();
 
-	this.updateSiteSelect( '#sig-' + sigID + ' td.desc select', this.systemClass, newType, 0 );
+	var $this = this;
+	var siteSelect = this.updateSiteSelect( '#sig-' + sigID + ' td.desc select', this.systemClass, newType, 0 );
+	siteSelect.change( function() {
+		$this.editSiteChanged(sigID);
+	});	
 
-	$("#sig-" + sigID + " td.desc select.chainmap-wh").remove();
+	$("#sig-" + sigID + " td.desc select[name=chainmap-wh]").remove();
+	
 	if(newType == 'wh')
 	{
 		$("#sig-" + sigID + " td.desc select").after(this.generateMappedWormholeSelect(this.sigData[sigID]));
@@ -784,7 +875,7 @@ siggy2.SigTable.prototype.editSig = function (sigID)
 	var typeEle = $("#sig-" + sigID + " td.type select");
 	var descEle = $("#sig-" + sigID + " td.desc input");
 	var siteEle = $("#sig-" + sigID + " td.desc select");
-	var whChainmapEle = $("#sig-" + sigID + " td.desc select.chainmap-wh");
+	var whChainmapEle = $("#sig-" + sigID + " td.desc select[name=chainmap-wh]");
 
 	if (sigEle.val().length != 3)
 	{
@@ -801,8 +892,15 @@ siggy2.SigTable.prototype.editSig = function (sigID)
 	var cmWh = {};
 	if(sigObj.type =='wh')
 	{
+		var hash = whChainmapEle.val();
+		
+		if(hash == null)
+		{
+			hash = "none";
+		}
+		
 		cmWh = {
-			hash: whChainmapEle.val(),
+			hash: hash,
 			chainmap_id: $this.siggyMain.activities.siggy.chainMapID
 		}
 
@@ -868,22 +966,36 @@ siggy2.SigTable.prototype.editSig = function (sigID)
 
 }
 
+siggy2.SigTable.prototype.editSiteChanged = function (sigID)
+{
+	var newType = $("#sig-" + sigID + " td.type select").val();
+
+	if(newType == 'wh')
+	{
+		$("#sig-" + sigID + " td.desc select[name=chainmap-wh]").remove();
+		
+		$("#sig-" + sigID + " td.desc select[name=site]").after(this.generateMappedWormholeSelect(this.sigData[sigID]));
+	}
+}
+
 siggy2.SigTable.prototype.generateSiteSelect = function (whClass, type, siteID)
 {
 	if (type == 'wh')
 	{
-		return this.generateSelect(siggy2.StaticData.getWormholesForList(whClass), siteID);
+		var t = this.generateSelect(siggy2.StaticData.getWormholesForList(whClass), siteID).attr('name', 'site');
+		
+		return t;
 	}
 	else if (type == 'gas' || type == 'relic' || type == 'ore' || type == 'data' || type == 'anomaly')
 	{
-		return this.generateSelect(siggy2.StaticData.getSiteList(type,whClass), siteID);
+		return this.generateSelect(siggy2.StaticData.getSiteList(type,whClass), siteID).attr('name', 'site');
 	}
 	else
 	{
 		var t = this.generateSelect({
 										0: '--'
 									}, 0);
-		return t;
+		return t.attr('name', 'site');
 	}
 }
 
