@@ -725,8 +725,7 @@ siggy2.SigTable.prototype.editSigForm = function (sigID)
 	descEle.empty();
 	
 	var siteSelect = this.generateSiteSelect(this.systemClass, sigData.type, sigData.siteID);
-	descEle.append(siteSelect)
-		.append($('<br />'));
+	descEle.append(siteSelect);
 
 	siteSelect.change( function() {
 		$this.editSiteChanged(sigID);
@@ -734,8 +733,13 @@ siggy2.SigTable.prototype.editSigForm = function (sigID)
 	
 	if( sigData.type == 'wh' )
 	{
-		descEle.append(this.generateMappedWormholeSelect(sigData))
+		siteSelect.css('width','50%');
+		var whSelect = this.generateMappedWormholeSelect(sigData);
+		descEle.append(whSelect)
+		whSelect.css('width','50%');
 	}
+	
+	descEle.append($('<br />'))
 
 	descEle.append( $('<input>').val(sigData.description)
 								.keypress( function(e) { if(e.which == 13){ $this.editSig(sigID)  } } )
@@ -861,7 +865,7 @@ siggy2.SigTable.prototype.editTypeSelectChange = function (sigID)
 	
 	if(newType == 'wh')
 	{
-		$("#sig-" + sigID + " td.desc select").after(this.generateMappedWormholeSelect(this.sigData[sigID]));
+		$("#sig-" + sigID + " td.desc select").after(this.generateMappedWormholeSelect(this.sigData[sigID]).css('width','50%'));
 	}
 }
 
@@ -978,7 +982,7 @@ siggy2.SigTable.prototype.editSiteChanged = function (sigID)
 	{
 		$("#sig-" + sigID + " td.desc select[name=chainmap-wh]").remove();
 		
-		$("#sig-" + sigID + " td.desc select[name=site]").after(this.generateMappedWormholeSelect(this.sigData[sigID]));
+		$("#sig-" + sigID + " td.desc select[name=site]").after(this.generateMappedWormholeSelect(this.sigData[sigID]).css('width','50%'));
 	}
 }
 
