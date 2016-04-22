@@ -608,7 +608,7 @@ siggy2.SigTable.prototype.editSigForm = function (sigID)
 	controlEle.text('');
 
 	var that = this;
-	controlEle.append($('<img>').attr('src', this.settings.baseUrl + 'public/images/accept.png').click(function (e)
+	controlEle.append($('<img>').attr('src', this.settings.baseUrl + '/images/accept.png').click(function (e)
 	{
 		that.editSig(sigID)
 	}));
