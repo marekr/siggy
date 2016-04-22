@@ -6,12 +6,12 @@
     <title><?php echo $title; ?></title>
 
     <!-- Le styles -->
-    <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap3/css/bootstrap-yeti.min.css" rel="stylesheet">
-    <link href="<?php echo URL::base(TRUE, TRUE);?>public/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="<?php echo URL::base(TRUE, TRUE);?>public/css/manage.css" rel="stylesheet">
+    <link href="<?php echo URL::base(TRUE, TRUE);?>bootstrap3/css/bootstrap-yeti.min.css" rel="stylesheet">
+    <link href="<?php echo URL::base(TRUE, TRUE);?>font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="<?php echo URL::base(TRUE, TRUE);?>css/manage.css" rel="stylesheet">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap3/js/bootstrap.min.js"></script>
-    <script src="<?php echo URL::base(TRUE, TRUE);?>public/js/jquery.metisMenu.js"></script>
+    <script src="<?php echo URL::base(TRUE, TRUE);?>bootstrap3/js/bootstrap.min.js"></script>
+    <script src="<?php echo URL::base(TRUE, TRUE);?>js/jquery.metisMenu.js"></script>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -40,10 +40,10 @@
 
     <!-- Le fav and touch icons -->
     <link rel="shortcut icon" href="<?php echo URL::base(TRUE, TRUE);?>favicon.ico">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?php echo URL::base(TRUE, TRUE);?>bootstrap/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?php echo URL::base(TRUE, TRUE);?>bootstrap/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?php echo URL::base(TRUE, TRUE);?>bootstrap/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="<?php echo URL::base(TRUE, TRUE);?>bootstrap/ico/apple-touch-icon-57-precomposed.png">
 </head>
 <body>
 	<nav class="navbar navbar-inverse navbar-fixed-top navbar-siggy" role="navigation" style="margin-bottom: 0">

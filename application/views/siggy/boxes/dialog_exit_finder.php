@@ -24,7 +24,7 @@
             </form>
 
             <div id="exit-finder-loading" class="box-load-progress" style="display:none;">
-				<img src="<?php echo URL::base(TRUE, TRUE);?>public/images/ajax-loader.gif" />
+				<img src="<?php echo URL::base(TRUE, TRUE);?>images/ajax-loader.gif" />
 				<span>Calculating....</span>
 			</div>
 			<div id="exit-finder-results-wrap" style='max-height:210px;overflow: auto;margin-top: 10px;'>

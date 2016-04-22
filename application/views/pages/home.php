@@ -1,6 +1,6 @@
 <div class="jumbotron">
 	<div class="container">
-		<h1><img alt="Brand" width="150" src="<?php echo URL::base(TRUE, TRUE);?>public/images/siggy-blue.png">siggy</h1>
+		<h1><img alt="Brand" width="150" src="<?php echo URL::base(TRUE, TRUE);?>images/siggy-blue.png">siggy</h1>
 		<p>One of EVE's oldest WH scanning tool now 2 years old and counting! It has aided countless explorers of WH Space.</p>
 	</div>
 </div>
@@ -8,7 +8,7 @@
 
 	<div class="row featurette">
 		<div class="col-md-5">
-			<img class="featurette-image img-responsive" width="500" src="<?php echo URL::base(TRUE, TRUE);?>public/images/intro/intro-igboog.png">
+			<img class="featurette-image img-responsive" width="500" src="<?php echo URL::base(TRUE, TRUE);?>images/intro/intro-igboog.png">
 		</div>
 		<div class="col-md-7">
 			<h2 class="featurette-heading">IGB and OOG Support. <span class="text-muted">Works ingame and out of game!</span></h2>
@@ -24,7 +24,7 @@
 			<p class="lead">Wormholes automatically get mapped as you jump systems with siggy open. The map allows editing of system and wormhole states and positions on the map</p>
 		</div>
 		<div class="col-md-5">
-			<img class="featurette-image img-responsive" width="500" src="<?php echo URL::base(TRUE, TRUE);?>public/images/intro/intro-chainmap.png">
+			<img class="featurette-image img-responsive" width="500" src="<?php echo URL::base(TRUE, TRUE);?>images/intro/intro-chainmap.png">
 		</div>
 	</div>
 
@@ -32,7 +32,7 @@
 
 	<div class="row featurette">
 		<div class="col-md-5">
-			<img class="featurette-image img-responsive" width="500" src="<?php echo URL::base(TRUE, TRUE);?>public/images/intro/intro-sigs.png">
+			<img class="featurette-image img-responsive" width="500" src="<?php echo URL::base(TRUE, TRUE);?>images/intro/intro-sigs.png">
 		</div>
 		<div class="col-md-7">
 			<h2 class="featurette-heading">Signature Log.<span class="text-muted">Track signatures in systems.</span></h2>
@@ -48,7 +48,7 @@
 			<p class="lead">Non-english text is supported by default in siggy. Additionally, Deutsch language users are able to paste the EVE client's signatures into siggy and the Deutsch names of sites are handled properly.</p>
 		</div>
 		<div class="col-md-5">
-			<img class="featurette-image img-responsive" width="500" src="<?php echo URL::base(TRUE, TRUE);?>public/images/intro/intro-language.png">
+			<img class="featurette-image img-responsive" width="500" src="<?php echo URL::base(TRUE, TRUE);?>images/intro/intro-language.png">
 		</div>
 	</div>
 

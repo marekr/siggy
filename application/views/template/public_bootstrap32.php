@@ -7,11 +7,11 @@
     <title><?php echo $title; ?></title>
 
     <!-- Le styles -->
-    <link href="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap3/css/bootstrap.min.css?<?php echo SIGGY_VERSION; ?>" rel="stylesheet">
-    <link href="<?php echo URL::base(TRUE, TRUE);?>public/css/public.css?<?php echo SIGGY_VERSION; ?>" rel="stylesheet">
+    <link href="<?php echo URL::base(TRUE, TRUE);?>bootstrap3/css/bootstrap.min.css?<?php echo SIGGY_VERSION; ?>" rel="stylesheet">
+    <link href="<?php echo URL::base(TRUE, TRUE);?>css/public.css?<?php echo SIGGY_VERSION; ?>" rel="stylesheet">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="<?php echo URL::base(TRUE, TRUE);?>public/bootstrap3/js/bootstrap.min.js"></script>
-    <link href="<?php echo URL::base(TRUE, TRUE);?>public/css/public_bootstrap32.css?<?php echo SIGGY_VERSION; ?>" rel="stylesheet">
+    <script src="<?php echo URL::base(TRUE, TRUE);?>bootstrap3/js/bootstrap.min.js"></script>
+    <link href="<?php echo URL::base(TRUE, TRUE);?>css/public_bootstrap32.css?<?php echo SIGGY_VERSION; ?>" rel="stylesheet">
 
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -38,7 +38,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="<?php echo URL::base(TRUE, TRUE);?>"><img alt="Brand" width="24" src="<?php echo URL::base(TRUE, TRUE);?>public/images/siggy.png">siggy</a>
+			<a class="navbar-brand" href="<?php echo URL::base(TRUE, TRUE);?>"><img alt="Brand" width="24" src="<?php echo URL::base(TRUE, TRUE);?>images/siggy.png">siggy</a>
 		</div>
 		<div class="navbar-collapse collapse navbar-responsive-collapse">
 			<ul class="nav navbar-nav">

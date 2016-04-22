@@ -14,22 +14,22 @@ i.icon
 
 .icon-plus-sign
 {
-	background-image: url(public/images/icon_plus.png);
+	background-image: url(images/icon_plus.png);
 }
 
 .icon-pencil
 {
-	background-image: url(public/images/icon_pencil.png);
+	background-image: url(images/icon_pencil.png);
 }
 
 .icon-info-sign
 {
-	background-image: url(public/images/icon_info.png);
+	background-image: url(images/icon_info.png);
 }
 
 .icon-remove-sign
 {
-	background-image: url(public/images/icon_remove.png);
+	background-image: url(images/icon_remove.png);
 }
 
 
@@ -45,5 +45,5 @@ i.icon
 
 .icon-settings
 {
-	background-image: url(public/images/icon_settings.png);
+	background-image: url(images/icon_settings.png);
 }

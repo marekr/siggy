@@ -820,12 +820,12 @@ label {
 /* tablesorter styling */
 
 .tablesorter-headerAsc {
-	background-image: url(public/images/asc.gif) !important;
+	background-image: url(images/asc.gif) !important;
 	background-repeat: no-repeat  !important;
 	background-position: right center  !important;
 }
 .tablesorter-headerDesc {
-	background-image: url(public/images/desc.gif) !important;
+	background-image: url(images/desc.gif) !important;
 	background-repeat: no-repeat  !important;
 	background-position: right center  !important;
 }

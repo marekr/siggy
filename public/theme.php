@@ -3,7 +3,7 @@
 define('ROOT', realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR);
 //ALWAYS USE NUMERIC IDS FOR SECURITY
 
-require_once ROOT . 'application/vendor/lessphp/lessc.inc.php';
+require_once ROOT . '../application/vendor/lessphp/lessc.inc.php';
 
 $id = 0;
 if( isset( $_GET['id'] ) )
@@ -38,13 +38,13 @@ $cssBuffer = '';
 
 foreach( $themeFiles as $fileName )
 {
-    if( file_exists( ROOT . 'public/themes/' . $id . '/' . $fileName ) )
+    if( file_exists( ROOT . 'themes/' . $id . '/' . $fileName ) )
     {
-        $cssBuffer .= file_get_contents(ROOT . 'public/themes/' . $id . '/' . $fileName);
+        $cssBuffer .= file_get_contents(ROOT . 'themes/' . $id . '/' . $fileName);
     }
     else
     {
-        $cssBuffer .= file_get_contents(ROOT . 'public/themes/0/' . $fileName);
+        $cssBuffer .= file_get_contents(ROOT . 'themes/0/' . $fileName);
     }
 }
 

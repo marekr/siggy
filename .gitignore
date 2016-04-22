@@ -6,3 +6,4 @@
 /application/vendor
 *.compiled.js
 *.compiled.js.map
+/public/*.htaccess

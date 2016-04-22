@@ -161,7 +161,7 @@ class Controller_Manage extends Controller
    {
 		if ($this->auto_render === TRUE)
 		{
-			$styles = array( 'public/css/manage.css' => 'screen');
+			$styles = array( 'css/manage.css' => 'screen');
 			$scripts = array();
 
 			$this->template->styles = array_merge( $this->template->styles, $styles );

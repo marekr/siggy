@@ -221,10 +221,10 @@
 			<span>
 				{{#is system.system_class "==" 9 }}
 					{{#is system.kills_in_last_2_hours ">" 0 }}
-						<img src="public/images/evekill.png" class="map-system-blob-mini-icon" title="Kills in last 2 hours"
+						<img src="images/evekill.png" class="map-system-blob-mini-icon" title="Kills in last 2 hours"
 					{{/is}}
 					{{#is system.npcs_kills_in_last_2_hours ">" 0 }}
-						<img src="public/images/carebear.gif" class="map-system-blob-mini-icon" title="NPC Kills in last 2 hours"
+						<img src="images/carebear.gif" class="map-system-blob-mini-icon" title="NPC Kills in last 2 hours"
 					{{/is}}
 				{{/is}}
 

@@ -9,54 +9,54 @@
         <?php else: ?>
     	<link type="text/css" href="<?php echo URL::base(TRUE, TRUE);?>theme.php?id=<?php echo $settings['theme_id']; ?>" id="theme-css" rel="stylesheet" media="screen" />
         <?php endif; ?>
-        <link href="<?php echo URL::base(TRUE, TRUE);?>public/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="<?php echo URL::base(TRUE, TRUE);?>font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet">
     	<link rel="icon" href="<?php echo URL::base(TRUE, TRUE);?>favicon.ico">
 
         <?php if( Kohana::$environment == Kohana::DEVELOPMENT ): ?>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/handlebars-v2.0.0.js'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/handlebars.form-helpers.js'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/handlebars.helpers.js'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/translate.js'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery-1.11.2.js'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery-ui.1.11.4.min.js'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery.tablesorter.js'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery.blockUI.js'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery.color.js'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery.flot.js'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery.ui.position.js'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery.contextMenu.js'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery.qtip.js'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery.jsPlumb-1.6.4.js'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery.placeholder.js'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery.hotkeys.js'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/jquery/jquery.simplePagination.js'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/dropdown.js'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/tab.js'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/misc.js'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/typeahead.bundle.js'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.js?<?php echo time(); ?>'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.helpers.js?<?php echo time(); ?>'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.static.js?<?php echo time(); ?>'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.timer.js?<?php echo time(); ?>'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.sigtable.js?<?php echo time(); ?>'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.intel.poses.js?<?php echo time(); ?>'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.intel.dscan.js?<?php echo time(); ?>'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.globalnotes.js?<?php echo time(); ?>'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.charactersettings.js?<?php echo time(); ?>'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.hotkeyhelper.js?<?php echo time(); ?>'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.map.js?<?php echo time(); ?>'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.map.connection.js?<?php echo time(); ?>'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.notifications.js?<?php echo time(); ?>'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.activity.thera.js?<?php echo time(); ?>'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.activity.search.js?<?php echo time(); ?>'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.activity.siggy.js?<?php echo time(); ?>'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.activity.scannedsystems.js?<?php echo time(); ?>'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.activity.notifications.js?<?php echo time(); ?>'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.activity.astrolabe.js?<?php echo time(); ?>'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.activity.chainmap.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/handlebars-v2.0.0.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/handlebars.form-helpers.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/handlebars.helpers.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/translate.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/jquery/jquery-1.11.2.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/jquery/jquery-ui.1.11.4.min.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/jquery/jquery.tablesorter.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/jquery/jquery.blockUI.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/jquery/jquery.color.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/jquery/jquery.flot.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/jquery/jquery.ui.position.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/jquery/jquery.contextMenu.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/jquery/jquery.qtip.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/jquery/jquery.jsPlumb-1.6.4.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/jquery/jquery.placeholder.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/jquery/jquery.hotkeys.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/jquery/jquery.simplePagination.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/dropdown.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/tab.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/misc.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/typeahead.bundle.js'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.helpers.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.static.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.timer.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.sigtable.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.intel.poses.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.intel.dscan.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.globalnotes.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.charactersettings.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.hotkeyhelper.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.map.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.map.connection.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.notifications.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.activity.thera.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.activity.search.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.activity.siggy.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.activity.scannedsystems.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.activity.notifications.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.activity.astrolabe.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.activity.chainmap.js?<?php echo time(); ?>'></script>
         <?php else: ?>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/thirdparty.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>
-        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>public/js/siggy.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/thirdparty.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>
         <?php endif; ?>
 	</head>
 	<body>
