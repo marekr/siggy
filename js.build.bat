@@ -26,5 +26,3 @@ java.exe -jar compiler.jar ^
 
 
 echo //# sourceMappingURL=siggy.compiled.js.map >> siggy.compiled.js
-
-@pause

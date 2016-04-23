@@ -25,4 +25,3 @@ java -jar compiler.jar ^
 --js_output_file=thirdparty.compiled.js
 
 echo //# sourceMappingURL=thirdparty.compiled.js.map >> thirdparty.compiled.js
-@pause
