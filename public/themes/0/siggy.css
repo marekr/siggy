@@ -1022,3 +1022,8 @@ label {
 {
 	background-color:red;
 }
+
+#current-activity
+{
+	font-weight:100;
+}
