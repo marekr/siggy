@@ -6,21 +6,7 @@ siggy2.Helpers = siggy2.Helpers || {};
 
 siggy2.Helpers.displayTimeStamp = function(unixTimestamp)
 {
-	var date = new Date(unixTimestamp * 1000);
-
-	var day = pad(date.getUTCDate(), 2);
-	var month = pad(date.getUTCMonth() + 1, 2);
-	var year = date.getUTCFullYear().toString();
-
-	var hours = pad(date.getUTCHours(), 2);
-	var minutes = pad(date.getUTCMinutes(), 2);
-	var seconds = pad(date.getUTCSeconds(), 2);
-
-	var time = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
-
-	delete date;
-
-	return time;
+	return moment.unix(unixTimestamp).utc().format('YYYY-MM-DD hh:mm:ss');
 }
 
 siggy2.Helpers.setupSystemTypeAhead = function(selector)

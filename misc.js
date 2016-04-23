@@ -310,6 +310,23 @@ function pad(number, length)
 	return str;
 }
 
+String.prototype.lpad = function(len, c) 
+{ 
+	var s= '', c= c || ' ', len= (len || 2)-this.length;
+	while(s.length<len) s+= c; 
+	return s+this; 
+} 
+
+Number.prototype.lpad = function(len, c)
+{ 
+	return String(this).lpad(len, c); 
+} 
+
+Number.prototype.lpadZero = function(len) 
+{ 
+	return this.lpad(len,'0'); 
+}
+
 jQuery.extend(
 {
 	scope: function (fn, scope)
