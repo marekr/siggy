@@ -1,4 +1,4 @@
-"C:\Program Files (x86)\Java\jre1.8.0_45\bin\java.exe" -jar compiler.jar ^
+java -jar compiler.jar ^
 --js=translate.js ^
 --js=jquery/jquery-1.11.2.js ^
 --js=jquery/jquery-ui.1.11.4.min.js ^
@@ -19,6 +19,7 @@
 --js=dropdown.js ^
 --js=tab.js ^
 --js=typeahead.bundle.js ^
+--js=vendor/moment.js ^
 --source_map_format=V3 ^
 --create_source_map thirdparty.compiled.js.map ^
 --js_output_file=thirdparty.compiled.js
