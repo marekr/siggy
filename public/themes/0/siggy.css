@@ -57,7 +57,7 @@ select.siggy-input
 
 .bordered-wrap
 {
-    border: 3px solid #090909;
+    border: 3px solid @border-wrap-color;
 }
 
 table.siggy-table th,

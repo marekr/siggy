@@ -16,7 +16,7 @@
 .nav > li > a:hover,
 .nav > li > a:focus {
   text-decoration: none;
-  background-color: #303030;
+  background-color: @menu-hover;
 }
 
 .nav > li > a > img {
