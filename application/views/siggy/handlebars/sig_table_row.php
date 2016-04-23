@@ -1,5 +1,5 @@
 	<script id="template-sig-table-row" type="text/x-handlebars-template">
-		<tr id='sig-{{ sigID }}' class='type-{{ type }} sig' data-sig-id='{{ sigID }}'>
+		<tr id='sig-{{ id }}' class='type-{{ type }} sig' data-sig-id='{{ id }}'>
 			<td class='text-center edit'>
 				<i class='icon icon-pencil icon-large'></i>
 			</td>
@@ -28,19 +28,19 @@
 			</td>
 			<td class='text-center moreinfo'>
 				<i class='icon icon-info-sign icon-large icon-yellow'></i>
-				<div id='creation-info-{{ sigID }}' class='tooltip'>
+				<div id='creation-info-{{ id }}' class='tooltip'>
 					<b>Added by:</b> {{ creator }}
 					{{#if lastUpdater }}
 						<br /><b>Updated by:</b> {{ lastUpdater }}
-						<br /><b>Updated at:</b> {{ displayTimestamp updated }}
+						<br /><b>Updated at:</b> {{ updated_at }}
 					{{/if}}
 				</div>
 			</td>
 			<td class='text-center age'>
 				<span class='age-clock'>--</span>
 				<p class='eol-clock'></p>
-				<div id='age-timestamp-{{ sigID }}' class='tooltip'>
-					{{ displayTimestamp created }}
+				<div id='age-timestamp-{{ id }}' class='tooltip'>
+					{{ created_at }}
 				</div>
 			</td>
 			<td class='text-center remove'>

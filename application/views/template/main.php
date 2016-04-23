@@ -54,6 +54,7 @@
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.activity.notifications.js?<?php echo time(); ?>'></script>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.activity.astrolabe.js?<?php echo time(); ?>'></script>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.activity.chainmap.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/vendor/moment.js?<?php echo time(); ?>'></script>
         <?php else: ?>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/thirdparty.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>

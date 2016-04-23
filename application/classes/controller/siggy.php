@@ -1,5 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+use Carbon\Carbon;
+
 class Controller_Siggy extends FrontController {
 
 	public $trusted = false;
@@ -590,22 +592,25 @@ class Controller_Siggy extends FrontController {
 					$additional .= ',sigSize';
                 }
 
-                $update['sigData'] = DB::query(Database::SELECT, "SELECT sigID, sig, type, siteID, description, created, creator,updated,lastUpdater".$additional." FROM systemsigs
+                $update['sigData'] = DB::query(Database::SELECT, "SELECT id, sig, type, siteID, description, created_at, creator, updated_at,lastUpdater".$additional." FROM systemsigs
 																	WHERE systemID=:id AND groupID=:group")
                                  ->param(':id', $selectedSystemID)
 								 ->param(':group', Auth::$session->groupID)
 								 ->execute()
-								 ->as_array('sigID');
+								 ->as_array('id');
 
 				 foreach($update['sigData'] as &$sig)
 				 {
+					$sig['id'] = (int)$sig['id'];
+					$sig['siteID'] = (int)$sig['siteID'];
+
 					 if($sig['type'] != 'wh')
 					 	continue;
-
+					
  					$whSigData = DB::query(Database::SELECT, "SELECT wormhole_hash,chainmap_id
  															FROM wormhole_signatures
  															WHERE signature_id=:sig")
- 												->param(':sig', $sig['sigID'] )
+ 												->param(':sig', $sig['id'] )
  												->execute()
  												->as_array();
 

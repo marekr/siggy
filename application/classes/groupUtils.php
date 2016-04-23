@@ -85,7 +85,7 @@ final class groupUtils {
 							->execute();
 
 
-			DB::query(Database::DELETE, 'DELETE FROM systemsigs WHERE sigID IN('.$sigs.')')
+			DB::query(Database::DELETE, 'DELETE FROM systemsigs WHERE id IN('.$sigs.')')
 							->execute();
 		}
 	}

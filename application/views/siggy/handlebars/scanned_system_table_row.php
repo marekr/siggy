@@ -46,7 +46,7 @@
 				</div>
 			</td>
 			<td class='text-center'>
-				{{ displayTimestamp last_scan }}
+				{{ last_scan }}
 			</td>
 			<td class='text-center'>
 				<button data-id='{{ id }}' class='scanned-system-view btn btn-primary'>View</button>

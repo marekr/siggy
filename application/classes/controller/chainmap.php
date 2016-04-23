@@ -349,7 +349,7 @@ class Controller_Chainmap extends FrontController {
 			$update['wh_type_id'] = $this->lookupWHTypeByName($_POST['wh_type_name']);
 		}
 
-		$update['updated_at'] = Carbon::now();
+		$update['updated_at'] = Carbon::now()->toDateTimeString();
 
 		if( !empty($update) )
 		{
