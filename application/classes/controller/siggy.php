@@ -86,41 +86,45 @@ class Controller_Siggy extends FrontController {
 
     public function action_save_character_settings()
     {
-        $this->profiler = NULL;
-        $this->auto_render = FALSE;
+		$this->profiler = NULL;
+		$this->auto_render = FALSE;
+		$this->response->headers('Content-Type','application/json');
+		$this->response->headers('Cache-Control','no-cache, must-revalidate');
 
-        $charID = Auth::$session->charID;
+		$charID = Auth::$session->charID;
 
-        if( !empty($charID) )
-        {
-            $themeID = intval($_POST['theme_id']);
-            $combineScanIntel = intval($_POST['combine_scan_intel']);
-            $zoom = $_POST['zoom'];
-            $language = $_POST['language'];
+		if( !empty($charID) )
+		{
+			$settingsData = json_decode($this->request->body(), true);
 
-            $themes = DB::query(Database::SELECT, "SELECT theme_id, theme_name FROM themes
-                                                    WHERE theme_id = :themeID AND (visibility='all' OR (group_id=:group AND visibility='group'))")
+			$themeID = intval($settingsData['theme_id']);
+			$combineScanIntel = intval($settingsData['combine_scan_intel']);
+			$zoom = $settingsData['zoom'];
+			$language = $settingsData['language'];
+			$activity = !empty($settingsData['default_activity']) ? $settingsData['default_activity'] : null;
+
+			$themes = DB::query(Database::SELECT, "SELECT theme_id, theme_name FROM themes
+													WHERE theme_id = :themeID AND (visibility='all' OR (group_id=:group AND visibility='group'))")
 									->param(':themeID', $themeID)
 									->param(':group', Auth::$session->groupID)
 									->execute()
 									->as_array();
 
-            if( count( $themes ) > 0 )
-            {
-                DB::query(Database::INSERT, 'REPLACE INTO character_settings (`char_id`, `theme_id`,`combine_scan_intel`,`zoom`,`language`)
-				VALUES(:charID, :themeID, :combineScanIntel, :zoom,:language)')
+			if( count( $themes ) > 0 )
+			{
+				DB::query(Database::INSERT, 'REPLACE INTO character_settings (`char_id`, `theme_id`,`combine_scan_intel`,`zoom`,`language`, `default_activity`)
+				VALUES(:charID, :themeID, :combineScanIntel, :zoom,:language, :defaultActivity)')
 							->param(':charID', $charID )
 							->param(':themeID', $themeID)
 							->param(':zoom', $zoom)
 							->param(':language', $language)
 							->param(':combineScanIntel', $combineScanIntel)
+							->param(':defaultActivity', $activity)
 							->execute();
-            }
-        }
+			}
+		}
 
-        //HTTP::redirect('/');
-
-        exit();
+		$this->response->body(json_encode(''));
     }
 
 	public function before()
@@ -239,32 +243,32 @@ class Controller_Siggy extends FrontController {
 
     private function getPOSes( $systemID )
     {
-        $poses = DB::query(Database::SELECT, "SELECT p.pos_id, p.pos_location_planet, p.pos_location_moon, p.pos_online, p.pos_type, p.pos_size,
-                                                p.pos_added_date, p.pos_owner, pt.pos_type_name, p.pos_notes
+		$poses = DB::query(Database::SELECT, "SELECT p.pos_id, p.pos_location_planet, p.pos_location_moon, p.pos_online, p.pos_type, p.pos_size,
+												p.pos_added_date, p.pos_owner, pt.pos_type_name, p.pos_notes
 												FROM pos_tracker p
-                                                INNER JOIN pos_types pt ON(pt.pos_type_id = p.pos_type)
-                                                WHERE p.group_id=:group_id AND p.pos_system_id=:system_id
+												INNER JOIN pos_types pt ON(pt.pos_type_id = p.pos_type)
+												WHERE p.group_id=:group_id AND p.pos_system_id=:system_id
 												ORDER BY p.pos_location_planet ASC, p.pos_location_moon ASC")
 										->param(':group_id', Auth::$session->groupID)
-                                        ->param(':system_id', $systemID)
-                                        ->execute()
+										->param(':system_id', $systemID)
+										->execute()
 										->as_array();
 
-        return $poses;
-    }
+		return $poses;
+	}
 
-    private function getDScans( $systemID )
-    {
-        $dscans = DB::query(Database::SELECT, "SELECT dscan_id, dscan_title, dscan_date
+	private function getDScans( $systemID )
+	{
+		$dscans = DB::query(Database::SELECT, "SELECT dscan_id, dscan_title, dscan_date
 												FROM dscan
-                                                WHERE group_id=:group_id AND system_id=:system_id")
+												WHERE group_id=:group_id AND system_id=:system_id")
 										->param(':group_id', Auth::$session->groupID)
-                                        ->param(':system_id', $systemID)
-                                        ->execute()
+										->param(':system_id', $systemID)
+										->execute()
 										->as_array();
 
-        return $dscans;
-    }
+		return $dscans;
+	}
 
 	private function isWormholeSystemByName($name)
 	{
@@ -533,39 +537,39 @@ class Controller_Siggy extends FrontController {
 
 	public function action_siggy()
 	{
-        $this->profiler = NULL;
-        $this->auto_render = FALSE;
-        header('content-type: application/json');
-        header("Cache-Control: no-cache, must-revalidate");
+		$this->profiler = NULL;
+		$this->auto_render = FALSE;
+		$this->response->headers('Content-Type','application/json');
+		$this->response->headers('Cache-Control','no-cache, must-revalidate');
 
 		if( Kohana::$environment == Kohana::PRODUCTION )
 		{
 			ob_start( 'ob_gzhandler' );
 		}
 
-        if(	!$this->siggyAccessGranted() )
-        {
-            echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
-            exit();
-        }
+		if(	!$this->siggyAccessGranted() )
+		{
+			$this->response->body(json_encode(['error' => 1, 'errorMsg' => 'Invalid auth']));
+			return;
+		}
 
-        $update = array(
+		$update = array(
 						'systemUpdate' => 0,
 						'sigUpdate' => 0,
 						'globalNotesUpdate' => 0,
 						'mapUpdate' => 0
 						);
 
-        if( isset( $_POST['lastUpdate'] ) && isset( $_POST['systemID'] ) && $_POST['systemID'] != 0 )
-        {
-            $selectedSystemID = intval($_POST['systemID']);
-            $forceUpdate = $_POST['forceUpdate'] == 'true' ? 1 : 0;
-            $_POST['lastUpdate'] = intval($_POST['lastUpdate']);
+		if( isset( $_POST['lastUpdate'] ) && isset( $_POST['systemID'] ) && $_POST['systemID'] != 0 )
+		{
+			$selectedSystemID = intval($_POST['systemID']);
+			$forceUpdate = $_POST['forceUpdate'] == 'true' ? 1 : 0;
+			$_POST['lastUpdate'] = intval($_POST['lastUpdate']);
 
-            $newSystemData = array();
+			$newSystemData = array();
 
-            if( $forceUpdate )
-            {
+			if( $forceUpdate )
+			{
 				$update['systemData'] = $this->getSystemData( $_POST['systemID'] );
 				if( count( $update['systemData'] ) > 0 )
 				{
@@ -581,20 +585,20 @@ class Controller_Siggy extends FrontController {
 												->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 												->execute();
 
-            $activeSystem = $activeSystemQuery->current();
-            $recordedLastUpdate = ($activeSystem['lastUpdate'] > 0) ? $activeSystem['lastUpdate']: time();
+			$activeSystem = $activeSystemQuery->current();
+			$recordedLastUpdate = ($activeSystem['lastUpdate'] > 0) ? $activeSystem['lastUpdate']: time();
 
-            if( ($_POST['lastUpdate'] < $recordedLastUpdate) || ( $_POST['lastUpdate'] == 0 ) || $forceUpdate || $update['systemUpdate'] )
-            {
-                $additional = '';
-                if( Auth::$session->accessData['showSigSizeCol'] )
-                {
+			if( ($_POST['lastUpdate'] < $recordedLastUpdate) || ( $_POST['lastUpdate'] == 0 ) || $forceUpdate || $update['systemUpdate'] )
+			{
+				$additional = '';
+				if( Auth::$session->accessData['showSigSizeCol'] )
+				{
 					$additional .= ',sigSize';
-                }
+				}
 
-                $update['sigData'] = DB::query(Database::SELECT, "SELECT id, sig, type, siteID, description, created_at, creator, updated_at,lastUpdater".$additional." FROM systemsigs
+				$update['sigData'] = DB::query(Database::SELECT, "SELECT id, sig, type, siteID, description, created_at, creator, updated_at,lastUpdater".$additional." FROM systemsigs
 																	WHERE systemID=:id AND groupID=:group")
-                                 ->param(':id', $selectedSystemID)
+								->param(':id', $selectedSystemID)
 								 ->param(':group', Auth::$session->groupID)
 								 ->execute()
 								 ->as_array('id');
@@ -619,42 +623,40 @@ class Controller_Siggy extends FrontController {
 						$sig['chainmap_wormholes'][ $wh['chainmap_id'] ] = $wh['wormhole_hash'];
 					}
 				 }
-                $update['sigUpdate'] = (int) 1;
-            }
+				$update['sigUpdate'] = (int) 1;
+			}
 
 			$update['chainmap_id'] = Auth::$session->accessData['active_chain_map'];
 
-            $update['lastUpdate'] = (int)$recordedLastUpdate;
-        }
-        else
-        {
-            $update['error'] = 'You suck';
-        }
+			$update['lastUpdate'] = (int)$recordedLastUpdate;
+		}
+		else
+		{
+			$update['error'] = 'You suck';
+		}
 
-        echo json_encode( $update );
-
-        exit();
+		$this->response->body(json_encode($update));
 	}
 
 	public function action_update()
 	{
-        $this->profiler = NULL;
-        $this->auto_render = FALSE;
-        header('content-type: application/json');
-        header("Cache-Control: no-cache, must-revalidate");
+		$this->profiler = NULL;
+		$this->auto_render = FALSE;
+		$this->response->headers('Content-Type','application/json');
+		$this->response->headers('Cache-Control','no-cache, must-revalidate');
 
 		if( Kohana::$environment == Kohana::PRODUCTION )
 		{
 			ob_start( 'ob_gzhandler' );
 		}
 
-        if(	!$this->siggyAccessGranted() )
-        {
-            echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
-            exit();
-        }
+		if(	!$this->siggyAccessGranted() )
+		{
+			$this->response->body(json_encode(['error' => 1, 'errorMsg' => 'Invalid auth']));
+			return;
+		}
 
-        $update = array( 'location' => array( 'id' => 0,
+		$update = array( 'location' => array( 'id' => 0,
 											'name' => '' )
 						);
 
@@ -726,9 +728,9 @@ class Controller_Siggy extends FrontController {
 						->param(':lastBeep', time() )
 						->execute();
 			}
-        }
+		}
 
-        $group_last_cache_time = isset($_POST['group_cache_time']) ? intval($_POST['group_cache_time']) : 0;
+		$group_last_cache_time = isset($_POST['group_cache_time']) ? intval($_POST['group_cache_time']) : 0;
 		if( $group_last_cache_time < Auth::$session->accessData['cache_time'] )
 		{
 			$update['chainmaps_update'] = 1;
@@ -736,8 +738,8 @@ class Controller_Siggy extends FrontController {
 			$chainmaps = array();
 			foreach( Auth::$session->accessData['accessible_chainmaps'] as $c )
 			{
-				$chainmaps[ $c['chainmap_id'] ] = array('id' => (int)$c['chainmap_id'],
-														'name' => $c['chainmap_name']);
+				$chainmaps[ $c['chainmap_id'] ] = ['id' => (int)$c['chainmap_id'],
+														'name' => $c['chainmap_name']];
 			}
 
 			$update['chainmaps'] = $chainmaps;
@@ -756,14 +758,12 @@ class Controller_Siggy extends FrontController {
 		$update['notifications'] = array('last_read' => $returnLastRead, 'items' => $notifications);
 
 
-        echo json_encode( $update );
-
-        exit();
+		$this->response->body(json_encode($update));
 	}
 
 	private function _update_process_map(&$update)
 	{
-        $chainMapOpen = ( isset($_POST['mapOpen']) ? filter_var($_POST['mapOpen'], FILTER_VALIDATE_BOOLEAN) : false );
+		$chainMapOpen = ( isset($_POST['mapOpen']) ? filter_var($_POST['mapOpen'], FILTER_VALIDATE_BOOLEAN) : false );
 
 		if( $this->chainmap != null )
 		{

@@ -8,6 +8,7 @@
 	<fieldset>
 		<legend>Miscellaneous</legend>
 		<?php echo formRenderer::yesNo("Enable 'size' for sig entry?", 'showSigSizeCol', $data['showSigSizeCol'], 'If yes, an additional column and dropdown for entry will appear for sigs to list its calculator size. ', $errors); ?>
+		<?php echo formRenderer::select('Default activity', 'default_activity', ['' => 'None', 'siggy' => 'Scan', 'thera' => 'Thera', 'scannedsystems' => 'Scanned Systems'], $data['default_activity'], "", $errors); ?>
 	</fieldset>
   	
 	<fieldset>

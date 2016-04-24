@@ -381,40 +381,43 @@
 	<?php echo View::factory('siggy/handlebars/notifier_form_site_found'); ?>
 	<?php echo View::factory('siggy/handlebars/chainmap_table_row'); ?>
 
-    <script type='text/javascript'>
-        $(document).ready(function() {
+	<script type='text/javascript'>
+		$(document).ready(function() {
 
-            var options = {
-                baseUrl: '<?php echo URL::base(TRUE, TRUE);?>',
-                initialSystemID: <?php echo $systemData['id']; ?>,
+			var options = {
+				baseUrl: '<?php echo URL::base(TRUE, TRUE);?>',
+				initialSystemID: <?php echo $systemData['id']; ?>,
 				igb: <?php echo ($igb ? 'true' : 'false'); ?>,
 				<?php if($requested): ?>
 				freezeSystem: true,
 				<?php endif; ?>
+				
+				defaultActivity:  '<?php echo $group['default_activity']; ?>',
 				sessionID: '<?php echo Auth::$session->sessionData['sessionID']; ?>',
 				charsettings: {
 					themeID: <?php echo $settings['theme_id']; ?>,
 					combineScanIntel: <?php echo $settings['combine_scan_intel']; ?>,
 					zoom: <?php echo $settings['zoom']; ?>,
-					language: '<?php echo $settings['language']; ?>'
+					language: '<?php echo $settings['language']; ?>',
+					defaultActivity: '<?php echo $settings['default_activity']; ?>'
 				},
 				sigtable: {
-                	showSigSizeCol: <?php echo ( $group['showSigSizeCol'] ? 'true' : 'false' ); ?>
+					showSigSizeCol: <?php echo ( $group['showSigSizeCol'] ? 'true' : 'false' ); ?>
 				},
-                map: {
-                    jumpTrackerEnabled: <?php echo ( $group['jumpLogEnabled'] ? 'true' : 'false' ); ?>,
-                    jumpTrackerShowNames:  <?php echo ( $group['jumpLogRecordNames'] ? 'true' : 'false' ); ?>,
-                    jumpTrackerShowTime:  <?php echo ( $group['jumpLogRecordTime'] ? 'true' : 'false' ); ?>,
-                    showActivesShips:  <?php echo ( $group['chain_map_show_actives_ships'] ? 'true' : 'false' ); ?>,
+				map: {
+					jumpTrackerEnabled: <?php echo ( $group['jumpLogEnabled'] ? 'true' : 'false' ); ?>,
+					jumpTrackerShowNames:  <?php echo ( $group['jumpLogRecordNames'] ? 'true' : 'false' ); ?>,
+					jumpTrackerShowTime:  <?php echo ( $group['jumpLogRecordTime'] ? 'true' : 'false' ); ?>,
+					showActivesShips:  <?php echo ( $group['chain_map_show_actives_ships'] ? 'true' : 'false' ); ?>,
 					allowMapHeightExpand: <?php echo $group['allow_map_height_expand'] ? 'true' : 'false'; ?>,
 					alwaysShowClass: <?php echo $group['chainmap_always_show_class'] ? 'true' : 'false'; ?>,
 					maxCharactersShownInSystem: <?php echo (int)($group['chainmap_max_characters_shown']); ?>
-                }
-            };
+				}
+			};
 
-            var siggy = new siggy2.Core( options );
+			var siggy = new siggy2.Core( options );
 
 
-            siggy.initialize();
-        } );
-    </script>
+			siggy.initialize();
+		} );
+	</script>

@@ -188,6 +188,7 @@ class Controller_Manage_Settings extends Controller_Manage
 				$group->api_login_required = intval($_POST['api_login_required']);
 				$group->group_password_required = intval($_POST['group_password_required']);
 				$group->showSigSizeCol = intval($_POST['showSigSizeCol']);
+				$group->default_activity = !empty($_POST['default_activity']) ? $_POST['default_activity'] : null;
 				
 				if( !empty($_POST['password']) && !empty($_POST['password_confirm']) )
 				{
@@ -222,7 +223,8 @@ class Controller_Manage_Settings extends Controller_Manage
 										'groupTicker' => $_POST['groupTicker'], 
 										'api_login_required' => $_POST['api_login_required'],
 										'group_password_required' => $_POST['group_password_required'],
-										'showSigSizeCol' => false
+										'showSigSizeCol' => false,
+										'default_activity' => $_POST['default_activity']
 									 ) 
 				);
 			}
