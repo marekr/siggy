@@ -157,7 +157,7 @@ class Controller_Sig extends FrontController {
 						{
 							$doingUpdate = TRUE;
 							$update = array(
-											'updated' => Carbon::now()->toDateTimeString(),
+											'updated_at' => Carbon::now()->toDateTimeString(),
 											'siteID' => ( $sig['siteID'] != 0 ) ? $sig['siteID'] : $sigData['siteID'],
 											'type' => $sig['type'],
 											'lastUpdater' => Auth::$session->charName
