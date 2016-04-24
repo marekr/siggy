@@ -11,7 +11,8 @@ function charactersettings(core, options)
 		themeID: 0,
 		combineScanIntel: false,
 		zoom: 1.0,
-		language: 'en'
+		language: 'en',
+		defaultActivity: 'siggy'
 	};
 
 	this.settings = $.extend({}, this.defaults, options);
@@ -27,21 +28,22 @@ charactersettings.prototype.initialize = function()
 		$this.core.openBox($('#settings-dialog'));
 	});
 
-	$("#settings-form select[name=theme_id]").change( function() {
-		var themeID = $("#settings-form select[name=theme_id]").val();
+	$("#character-settings-form select[name=theme_id]").change( function() {
+		var themeID = $("#character-settings-form select[name=theme_id]").val();
 
 		$this.changeTheme(themeID);
 	});
 
 	this.initForm();
 
-	$('#settings-form').submit( function() {
+	$('#character-settings-form').submit( function() {
 
 		var data = {
-			theme_id: $('#settings-form select[name=theme_id]').val(),
-			combine_scan_intel: $('#settings-form input[name=combine_scan_intel]').is(':checked') ? 1 : 0,
+			theme_id: $('#character-settings-form select[name=theme_id]').val(),
+			combine_scan_intel: $('#character-settings-form input[name=combine_scan_intel]').is(':checked') ? 1 : 0,
 			zoom: $this.settings.zoom,
-			language: $('#settings-form select[name=language]').val()
+			language: $('#character-settings-form select[name=language]').val(),
+			default_activity: $('#character-settings-form select[name=default_activity]').val(),
 		};
 
 		$this.save(data);
@@ -56,24 +58,35 @@ charactersettings.prototype.initialize = function()
 
 charactersettings.prototype.initForm = function()
 {
-	$("#settings-form input[name=combine_scan_intel]").prop('checked', this.settings.combineScanIntel ? true : false);
+	$("#character-settings-form input[name=combine_scan_intel]").prop('checked', this.settings.combineScanIntel ? true : false);
 
-	$('#settings-form select[name=language]').val( this.settings.language );
+	$('#character-settings-form select[name=language]').val( this.settings.language );
+	
+	$('#character-settings-form select[name=default_activity]').val( this.settings.defaultActivity );
 }
 
 charactersettings.prototype.save = function(data)
 {
 	var $this = this;
 
-	$.post($this.settings.baseUrl + 'siggy/save_character_settings', data, function (ret)
-	{
-		$this.settings.themeID = data.theme_id;
-		$this.settings.combineScanIntel = data.combine_scan_intel;
-		$this.settings.language = data.language;
-
-		$this.performSettingsRefresh();
-		$.unblockUI();
-	});
+	$.ajax({
+			type: 'post',
+			url: $this.settings.baseUrl + 'siggy/save_character_settings',
+			data: JSON.stringify(data),
+			contentType: 'application/json',
+			success: function (ret)
+					{
+						$this.settings.themeID = data.theme_id;
+						$this.settings.combineScanIntel = data.combine_scan_intel;
+						$this.settings.language = data.language;
+						$this.settings.defaultActivity = data.defaultActivity;
+					},
+			dataType: 'json'
+		})
+		.always(function(){
+			$this.performSettingsRefresh();
+			$.unblockUI();
+		});
 }
 
 
@@ -85,7 +98,8 @@ charactersettings.prototype.saveAll = function()
 		theme_id: $this.settings.themeID,
 		combine_scan_intel: $this.settings.combineScanIntel,
 		zoom: $this.settings.zoom,
-		language: $this.settings.language
+		language: $this.settings.language,
+		default_activity: $this.settings.defaultActivity
 	};
 
 	$this.save(data);

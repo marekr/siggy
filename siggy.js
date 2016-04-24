@@ -36,12 +36,14 @@ siggy2.Core = function( options )
 		baseUrl: '',
 		initialSystemID: 0,
 		freezeSystem: false,
+        defaultActivity: 'siggy',
 		charsettings: {
 			themeID: 0,
 			combineScanIntel: false,
 			themeList: {},
 			zoom: 1.0,
-			language: 'en'
+			language: 'en',
+			defaultActivity: 'siggy'
 		},
 		map: {
 			jumpTrackerEnabled: true
@@ -174,6 +176,16 @@ siggy2.Core.prototype.initialize = function ()
 	this.updateNow();
 
 	var defaultActivity = 'siggy';
+	if( this.settings.defaultActivity != '' )
+	{
+		defaultActivity = this.settings.defaultActivity;
+	}
+
+	if( this.settings.charsettings.defaultActivity != '' )
+	{
+		defaultActivity = this.settings.charsettings.defaultActivity;
+	}
+
 	if(window.location.hash)
 	{
 		defaultActivity = window.location.hash.slice(1);;
