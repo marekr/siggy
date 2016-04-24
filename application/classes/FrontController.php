@@ -101,7 +101,7 @@ class FrontController extends Controller {
 
     protected function loadSettings()
     {
-        $default_settings = array('theme_id' => 0,'combine_scan_intel' => 0, 'zoom' => '1.0', 'language' => 'en' );
+        $default_settings = ['theme_id' => 0,'combine_scan_intel' => 0, 'zoom' => '1.0', 'language' => 'en', 'default_activity' => '' ];
 
         if( Auth::$session->charID != 0)
         {
