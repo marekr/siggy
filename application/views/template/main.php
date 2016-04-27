@@ -44,6 +44,7 @@
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.globalnotes.js?<?php echo time(); ?>'></script>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.charactersettings.js?<?php echo time(); ?>'></script>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.hotkeyhelper.js?<?php echo time(); ?>'></script>
+        <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.dialog.sigcreatewormhole.js?<?php echo time(); ?>'></script>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.map.js?<?php echo time(); ?>'></script>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.map.connection.js?<?php echo time(); ?>'></script>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.notifications.js?<?php echo time(); ?>'></script>
