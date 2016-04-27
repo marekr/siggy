@@ -8,7 +8,7 @@
 body
 {
 	background: @page-background;
-	font-family: Arial;
+	font-family: Arial, sans-serif;
 	font-size:13px;
 	color: white;
 }
