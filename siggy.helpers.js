@@ -6,7 +6,8 @@ siggy2.Helpers = siggy2.Helpers || {};
 
 siggy2.Helpers.displayTimeStamp = function(unixTimestamp)
 {
-	return moment.unix(unixTimestamp).utc().format('YYYY-MM-DD hh:mm:ss');
+	// siggy2.Helpers.displayTimeStamp(1461973780)	-> 2016-04-29T23:49:40
+	return moment.unix(unixTimestamp).utc().format('YYYY-MM-DD HH:mm:ss');
 }
 
 siggy2.Helpers.setupSystemTypeAhead = function(selector)
