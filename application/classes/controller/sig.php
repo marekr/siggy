@@ -262,6 +262,73 @@ class Controller_Sig extends FrontController {
 		}
 	}
 
+	public function action_create_wormholes()
+	{
+		$this->profiler = NULL;
+		$this->auto_render = FALSE;
+		$this->response->headers('Content-Type','application/json');
+		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+
+		$request = json_decode($this->request->body(),true);
+
+		if( isset($request['system_id']) )
+		{
+			$chainmapID = Auth::$session->accessData['active_chain_map'];
+			$chainmap = new Chainmap($chainmapID,Auth::$session->groupID);
+			foreach($request['sigs'] as $sig)
+			{
+				if(empty($sig['wh_destination']))
+					continue;
+
+
+				$toSysID = $chainmap->find_system_by_name($sig['wh_destination']);
+				if( !$toSysID )
+					continue;
+
+				//permission check
+				$sigData = DB::query(Database::SELECT, "SELECT id
+														FROM systemsigs
+														WHERE id=:id
+															AND groupID=:group")
+											->param(':group',Auth::$session->groupID)
+											->param(':id', $sig['id'] )
+											->execute()
+											->current();
+
+				if( !isset($sigData['id']) )
+					continue;
+
+				DB::update('systemsigs')
+					->set( ['siteID' => $sig['site_id']] )
+					->where('groupID', '=', Auth::$session->groupID)
+					->where('id', '=', $sig['id'])
+					->execute();
+
+				try {
+					$chainmap->add_system_to_map($request['system_id'], $toSysID, 0, 0, $sig['site_id']);
+				} catch (Exception $e) {
+
+				}
+
+				$whHash = mapUtils::whHashByID($request['system_id'], $toSysID);
+				DB::query(Database::INSERT, 'REPLACE INTO wormhole_signatures (`wormhole_hash`, `chainmap_id`,`signature_id`)
+					VALUES(:hash, :chainMapID, :id)')
+							->param(':hash', $whHash )
+							->param(':chainMapID', $chainmapID)
+							->param(':id', $sig['id'])
+							->execute();
+
+				$this->chainmap->update_system($toSysID, array('lastUpdate' => time() ));
+			}
+
+			$this->chainmap->update_system($request['system_id'], array('lastUpdate' => time() ));
+
+			$this->chainmap->rebuild_map_data_cache();
+		}
+
+		$this->response->body(json_encode('1'));
+	}
+
 	public function action_remove()
 	{
 		$this->profiler = NULL;
