@@ -5,7 +5,8 @@
     "require": {
         "nesbot/Carbon": "*",
 		"swiftmailer/swiftmailer": "@stable",
-        "3rdpartyeve/phealng": "~2.0"
+        "3rdpartyeve/phealng": "~2.0",
+		"robmorgan/phinx": "^0.5.3"
     },
 	"autoload": {
 		"psr-4": {
