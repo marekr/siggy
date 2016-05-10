@@ -495,3 +495,27 @@ siggy2.StaticData.getWormholesForList = function( sysClass )
 
 	return result;
 }
+
+
+siggy2.StaticData.getWormholesForListHandlebars = function( sysClass )
+{
+	var result  = [];
+
+	for( var i in this.baseListWormholes )
+	{
+		result.push({ value: i, text: this.baseListWormholes[i] });
+	}
+
+	var map = this.wormholeClassMap[ sysClass ];
+
+	if( typeof(map) != 'undefined' )
+	{
+		for( var i in map )
+		{
+			var whInfo = this.getWormholeByID(map[i].static_id);
+	        result.push({ value: map[i].static_id, text: this.getWormholeFancyName(whInfo) });
+		}
+	}
+
+	return result;
+}
