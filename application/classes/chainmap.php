@@ -196,6 +196,7 @@ class chainmap {
 															COALESCE(sa.activity,0) as activity,
 															COALESCE(sa.inUse,0) as inUse,
 															COALESCE(sa.rally,0) as rally,
+															COALESCE(sa.hazard,0) as hazard,
 															ss.sysClass,
 															ss.effect,
 															r.regionName as region_name,

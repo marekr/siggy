@@ -146,6 +146,7 @@
 	font-size:10px;
 }
 
+
 .map-activity-empty
 {
 	border: 3px solid #03B807 !important;
@@ -174,6 +175,23 @@
 {
 	color: red !important;
 }
+
+.map-activity-hazard
+{
+    background-color: #E6FF00;
+}
+
+.map-activity-hazard:after
+{
+    content: "\f071\00a0\00a0\f071\00a0\00a0\f071\00a0\00a0\f071";
+    font-family: 'FontAwesome';
+    width: 100%;
+    height: 100%;
+    font-size: 11px;
+    text-align: center;
+    display: block;
+}
+
 
 .map-class-unknown
 {

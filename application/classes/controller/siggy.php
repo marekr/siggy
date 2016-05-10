@@ -610,7 +610,7 @@ class Controller_Siggy extends FrontController {
 
 					 if($sig['type'] != 'wh')
 					 	continue;
-					
+
  					$whSigData = DB::query(Database::SELECT, "SELECT wormhole_hash,chainmap_id
  															FROM wormhole_signatures
  															WHERE signature_id=:sig")
@@ -883,6 +883,12 @@ class Controller_Siggy extends FrontController {
 			{
 				$update['rally'] = intval($_POST['rally']);
 				$log_message .= " Rally:" . $update['rally'] . ";";
+			}
+
+			if( isset($_POST['hazard']) )
+			{
+				$update['hazard'] = intval($_POST['hazard']);
+				$log_message .= " Hazard:" . $update['hazard'] . ";";
 			}
 
 			if( empty($update) )
