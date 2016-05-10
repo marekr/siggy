@@ -523,6 +523,15 @@ siggy2.Map.prototype.initializeSystemBlobContextMenu = function()
 				items.setrally = {name:'Set Rally'};
 			}
 
+			if( parseInt(sysData.hazard) == 1 )
+			{
+				items.clearhazard = {name:'Clear Hazard'};
+			}
+			else
+			{
+				items.sethazard = {name:'Set Hazard'};
+			}
+
             return {
                 callback: function(key, options) {
 					var sysID = $(this).data('system-id');
@@ -575,6 +584,22 @@ siggy2.Map.prototype.systemContextMenuHandler = function(action, system)
 	{
 		var data = {
 			rally: 0
+		};
+
+		$this.saveSystemOptions(system.systemID, data);
+	}
+	else if( action == "sethazard" )
+	{
+		var data = {
+			hazard: 1
+		};
+
+		$this.saveSystemOptions(system.systemID, data);
+	}
+	else if( action == "clearhazard" )
+	{
+		var data = {
+			hazard: 0
 		};
 
 		$this.saveSystemOptions(system.systemID, data);
@@ -943,6 +968,7 @@ siggy2.Map.prototype.draw = function()
 															npcs_kills_in_last_2_hours: parseInt(systemData.npcs_kills_in_last_2_hours),
 															showClass: ( this.settings.alwaysShowClass || systemData.sysClass >= 7 || ( systemData.sysClass < 7 && systemData.displayName == "") ),
 															rally: systemData.rally,
+															hazard: true,
 															effect: parseInt(systemData.effect)
 														}
 												})
@@ -969,7 +995,13 @@ siggy2.Map.prototype.draw = function()
 		{
 			activityClass = 'map-activity-rally-here';
 		}
-		newTypeBlob.addClass( activityClass) ;
+		newTypeBlob.addClass( activityClass);
+
+		if( parseInt(systemData.hazard) )
+		{
+			newTypeBlob.addClass('map-activity-hazard');
+		}
+
 
 		$("#chain-map").append( newTypeBlob );
 
@@ -1303,7 +1335,7 @@ siggy2.Map.prototype.setupSystemEditor = function()
 	$('#system-editor-save').click( function() {
 		that.systemEditorSave();
 	});
-	
+
 	$('#system-options-popup').on('keypress', function(e) {
 		if(e.which == 13)
 		{
