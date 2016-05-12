@@ -163,7 +163,7 @@ class Kohana_Kohana_Exception extends Exception {
 	public static function text(Exception $e)
 	{
 		return sprintf('%s [ %s ]: %s ~ %s [ %d ]',
-			get_class($e), $e->getCode(), strip_tags($e->getMessage()), Debug::path($e->getFile()), $e->getLine());
+			(new \ReflectionClass($e))->getShortName(), $e->getCode(), strip_tags($e->getMessage()), Debug::path($e->getFile()), $e->getLine());
 	}
 
 	/**
@@ -178,7 +178,7 @@ class Kohana_Kohana_Exception extends Exception {
 		try
 		{
 			// Get the exception information
-			$class   = get_class($e);
+			$class   = (new \ReflectionClass($e))->getShortName();
 			$code    = $e->getCode();
 			$message = $e->getMessage();
 			$file    = $e->getFile();

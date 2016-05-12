@@ -227,7 +227,7 @@ class Kohana_Debug {
 				$output[] = "{\n$space$s...\n$space}";
 			}
 
-			return '<small>object</small> <span>'.get_class($var).'('.count($array).')</span> '.implode("\n", $output);
+			return '<small>object</small> <span>'.(new \ReflectionClass($var))->getShortName().'('.count($array).')</span> '.implode("\n", $output);
 		}
 		else
 		{
