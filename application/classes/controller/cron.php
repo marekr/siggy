@@ -20,6 +20,7 @@ class eveAPIWalletJournalTypes
 }
 
 use Pheal\Pheal;
+use Carbon\Carbon;
 
 class Controller_Cron extends Controller
 {
@@ -258,8 +259,8 @@ class Controller_Cron extends Controller
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
 		//two days?
-		$cutoff = time()-60*60*24*26;
-		$whCutoff = time()-60*60*24*2;
+		$cutoff = Carbon::now()->subDays(26)->toDateTimeString();
+		$whCutoff = Carbon::now()->subDays(2)->toDateTimeString();
 
 		$groups = DB::query(Database::SELECT, "SELECT groupID,skipPurgeHomeSigs FROM groups")->execute()->as_array();
 		foreach( $groups as $group )
@@ -291,10 +292,11 @@ class Controller_Cron extends Controller
 				$ignoreSysExtra = "systemID NOT IN(".$ignoreSys.") AND ";
 			}
 
+			
 			$query = DB::query(Database::DELETE, "DELETE FROM systemsigs WHERE sig != 'POS' AND
 																		groupID=:groupID AND
 																		{$ignoreSysExtra}
-																		( created <= :cutoff OR (type = 'wh' AND created <= :whcutoff))")
+																		( created_at <= :cutoff OR (type = 'wh' AND created_at <= :whcutoff))")
 				->param(':cutoff',$cutoff)
 				->param(':groupID', $group['groupID'])
 				->param(':whcutoff', $whCutoff)
