@@ -284,12 +284,11 @@ class User {
 		//recheck
 		PhealHelper::configure();
 		$pheal = new Pheal( null, null, 'eve' );
-		
 		if( $this->data['char_id'] == 0 )
 			return 0;
 
 		$result = $pheal->eveScope->CharacterAffiliation(array('ids' => $this->data['char_id']));
-		if( isset ($result->characters[0]) )
+		if( count($result->characters[0]) > 0 )
 		{
 			if( $this->data['char_id'] == $result->characters[0]['characterID'] )
 			{
