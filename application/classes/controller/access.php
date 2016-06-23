@@ -8,11 +8,6 @@ class Controller_Access extends FrontController {
 
 	public function action_group_password()
 	{
-		if( $this->igb && !$this->trusted )
-		{
-			$this->siggyredirect('/pages/trust-required');
-		}
-
 		$view = View::factory('access/groupPassword');
 		$view->groupData = Auth::$session->accessData;
 		$view->trusted = $this->trusted;
@@ -54,11 +49,6 @@ class Controller_Access extends FrontController {
 
 	public function action_blacklisted()
 	{
-		if( $this->igb && !$this->trusted )
-		{
-			$this->siggyredirect('/pages/trust-required');
-		}
-
 		//load header tools
 		$this->template->headerTools = '';
 
@@ -71,11 +61,6 @@ class Controller_Access extends FrontController {
 
 	public function action_switch_membership()
 	{
-		if( $this->igb && !$this->trusted )
-		{
-			$this->siggyredirect('/pages/trust-required');
-		}
-
 		$k = $_GET['k'];
         if( count( Auth::$session->accessData['access_groups'] ) > 1 || count( current(Auth::$session->accessData['access_groups']) > 1) )
         {

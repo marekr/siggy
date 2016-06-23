@@ -1,13 +1,11 @@
 <?php
 
 class AuthStatus {
-	const TRUSTREQUIRED = 0;
 	const NOACCESS = 1;
 	const GPASSWRONG = 2;
 
 	const ACCEPTED = 3;
 
-	//igb state default state/not logged in
 	const APILOGINREQUIRED = 4;
 
 	//bad key or api errored
@@ -45,21 +43,11 @@ class Auth {
 
 	public static function authenticate()
 	{
-		if( miscUtils::isIGB() )
-		{
-			if( !miscUtils::getTrust() )
-			{
-				self::$authStatus = AuthStatus::TRUSTREQUIRED;
-				return self::$authStatus;
-			}
-		}
-
 		if( !self::$session->charID  )
 		{
 			self::$authStatus = AuthStatus::GUEST;
 			return self::$authStatus;
 		}
-
 
 		$success = TRUE;
 		if( self::loggedIn() )

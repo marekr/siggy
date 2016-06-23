@@ -338,7 +338,6 @@ final class miscUtils {
 		$start = date( 'Y-m-d', $start );
 	}
 
-
 	static function isIGB()
 	{
 		if ( isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'],'EVE-IGB') !== false )
@@ -370,23 +369,5 @@ final class miscUtils {
 		}
 
 		return $randomString;
-	}
-
-	static function getTrust()
-	{
-		if ( self::isIGB() )
-		{
-			//because CCP cant use integers.
-			if (!isset($_SERVER['HTTP_EVE_TRUSTED']) || strtolower($_SERVER['HTTP_EVE_TRUSTED']) == 'no')
-			{
-				return false;
-			}
-			else
-			{
-				return true;
-			}
-		}
-
-		return false;
 	}
 }

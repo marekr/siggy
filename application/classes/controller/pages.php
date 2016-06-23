@@ -57,18 +57,6 @@ class Controller_Pages extends FrontController {
 			$this->template->selectedTab = 'about';
 			$this->template->content = View::factory('pages/about');
 		}
-		else if( $page == 'trust-required')
-		{
-			if( $this->igb && $this->trusted )
-			{
-				HTTP::redirect('/');
-			}
-
-			$this->template->title = "Trust required";
-			$this->template->selectedTab = 'home';
-
-			$this->template->content = $view = View::factory('pages/trust_required');
-		}
 		else if( $page == 'no-group-access')
 		{
 			$this->template->title = "No group access";
@@ -97,11 +85,6 @@ class Controller_Pages extends FrontController {
 
 	public function action_createGroup()
 	{
-		if( $this->igb || !Auth::loggedIn() )
-		{
-			HTTP::redirect('/');
-		}
-
 		$this->template->title = 'Create siggy group';
 		$this->template->selectedTab = 'createGroup';
 		$this->template->layoutMode = 'blank';

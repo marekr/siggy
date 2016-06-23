@@ -60,7 +60,6 @@ class Controller_Siggy extends FrontController {
 		$view->initialSystem = true;
 		$view->group = Auth::$session->accessData;
 		$view->requested = $requested;
-		$view->igb = $this->igb;
         $view->settings = $this->template->settings;
 
 		$view->sessionID = '';

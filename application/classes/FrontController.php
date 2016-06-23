@@ -29,9 +29,6 @@ class FrontController extends Controller {
 
 	function __construct(Kohana_Request $request, Kohana_Response $response)
 	{
-		$this->igb = miscUtils::isIGB();
-		$this->trusted = miscUtils::getTrust();
-
 		Auth::initialize();
 		$this->authStatus = Auth::authenticate();
 
@@ -84,10 +81,6 @@ class FrontController extends Controller {
 		if( !$this->ajaxRequest && $this->template != '' )
 		{
 			$this->template = View::factory( $this->template );
-
-
-			$this->template->igb = $this->igb;
-			$this->template->trusted = $this->trusted;
 
 
 			$settings = $this->loadSettings();
