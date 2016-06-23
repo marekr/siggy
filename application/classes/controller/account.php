@@ -105,7 +105,10 @@ class Controller_Account extends FrontController {
 				);
 			}
 
-			$eveService = $serviceFactory->createService('Eve', $credentials, $storage);
+			$eveService = $serviceFactory->createService('Eve', $credentials, $storage, [
+																						\OAuth\OAuth2\Service\Eve::SCOPE_CHARACTER_LOCATION_READ,
+																						\OAuth\OAuth2\Service\Eve::SCOPE_CHARACTER_NAVIGATION_WRITE
+																						]);
 			if ( !empty($_GET['code']) )
 			{
 				// retrieve the CSRF state parameter

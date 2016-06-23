@@ -120,17 +120,7 @@ class FrontController extends Controller {
 
     public function authCheckAndRedirect()
     {
-		if( $this->authStatus == AuthStatus::TRUSTREQUIRED )
-		{
-			if( isset($_GET['httpsbounce']) ) {
-				print '<html><head>';
-				print '<meta http-equiv="refresh" content="0; url='.URL::base(TRUE, TRUE).'" />';
-				print '</head><body>Automatically redirecting....<br />Please bookmark and go to https://siggy.borkedlabs.com directly ingame to avoid this page. HTTPS instead of HTTP avoids a browser bug!</body></html>';
-				die();
-			}
-			$this->siggyredirect('/pages/trust-required');
-		}
-		elseif( $this->authStatus == AuthStatus::GPASSWRONG )
+		if( $this->authStatus == AuthStatus::GPASSWRONG )
 		{
 			$this->siggyredirect('/access/group_password');
 		}
