@@ -209,7 +209,7 @@ class UserSession {
 		$access_data = array();
 
 
-		$default = array('groupID' =>0, 'group_password_required' => false, 'group_password' => '', 'api_login_required' => false, 'data_type' => 'none');
+		$default = array('groupID' =>0, 'group_password_required' => false, 'group_password' => '', 'data_type' => 'none');
 
 		if( empty( $this->corpID ) || empty($this->charID)  )
 		{

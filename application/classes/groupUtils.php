@@ -103,7 +103,6 @@ final class groupUtils {
 							'groupName' => $data['groupName'],
 							'groupTicker' => $data['groupTicker'],
 							'group_password_required' => $data['group_password_required'],
-							'api_login_required' => $data['api_login_required'],
 							'group_password_salt' => $salt,
 							'group_password' => $password,
 							'dateCreated' => time(),

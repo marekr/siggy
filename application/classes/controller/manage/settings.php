@@ -185,7 +185,6 @@ class Controller_Manage_Settings extends Controller_Manage
 			{
 				$group->groupName = $_POST['groupName'];
 				$group->groupTicker = $_POST['groupTicker'];
-				$group->api_login_required = intval($_POST['api_login_required']);
 				$group->group_password_required = intval($_POST['group_password_required']);
 				$group->showSigSizeCol = intval($_POST['showSigSizeCol']);
 				$group->default_activity = !empty($_POST['default_activity']) ? $_POST['default_activity'] : null;
@@ -221,7 +220,6 @@ class Controller_Manage_Settings extends Controller_Manage
 
 				$view->set('data',array('groupName' => $_POST['groupName'],
 										'groupTicker' => $_POST['groupTicker'], 
-										'api_login_required' => $_POST['api_login_required'],
 										'group_password_required' => $_POST['group_password_required'],
 										'showSigSizeCol' => false,
 										'default_activity' => $_POST['default_activity']

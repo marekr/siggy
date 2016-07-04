@@ -20,8 +20,6 @@
 				</fieldset>
 				<fieldset>
 				<legend>Basic Settings</legend>
-					<?php echo formRenderer::yesNo("API login required?", 'api_login_required', '', 'If yes, users will have to log into an siggy account with an valid EVE API key to prove their identity.', $errors); ?>
-
 					<?php echo formRenderer::yesNo("Group password required?", 'group_password_required', '', 'If yes, siggy will prompt for a password from all users, this is highly recommended.', $errors); ?>
 
 				

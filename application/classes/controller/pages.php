@@ -118,8 +118,7 @@ class Controller_Pages extends FrontController {
 						$groupID = groupUtils::createNewGroup( array( 'groupName' => $_POST['groupName'],
 															'groupTicker' => $_POST['groupTicker'],
 															'group_password' => $_POST['group_password'],
-															'group_password_required' => intval($_POST['group_password_required']),
-															'api_login_required' => intval($_POST['api_login_required'])
+															'group_password_required' => intval($_POST['group_password_required'])
 														)
 													);
 
