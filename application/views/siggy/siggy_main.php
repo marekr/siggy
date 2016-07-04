@@ -394,7 +394,7 @@
 				<?php endif; ?>
 				
 				defaultActivity:  '<?php echo $group['default_activity']; ?>',
-				sessionID: '<?php echo Auth::$session->sessionData['sessionID']; ?>',
+				sessionID: '<?php echo Auth::$session->sessionID; ?>',
 				charsettings: {
 					themeID: <?php echo $settings['theme_id']; ?>,
 					combineScanIntel: <?php echo $settings['combine_scan_intel']; ?>,

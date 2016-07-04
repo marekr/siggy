@@ -5,6 +5,7 @@ require_once APPPATH.'classes/mapUtils.php';
 require_once APPPATH.'classes/miscUtils.php';
 require_once APPPATH.'classes/formRenderer.php';
 
+
 class FrontController extends Controller {
 	protected $groupData = array();
 	protected $trusted = false;
@@ -25,7 +26,7 @@ class FrontController extends Controller {
 
 	public $template = '';
 
-    public $auto_render = true;
+	public $auto_render = true;
 
 	function __construct(Kohana_Request $request, Kohana_Response $response)
 	{
@@ -63,7 +64,7 @@ class FrontController extends Controller {
 	}
 
 	public function before()
-    {
+	{
 		//we are not caching any of our pages insanely
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 
@@ -90,47 +91,39 @@ class FrontController extends Controller {
 
 			$this->template->apilogin = Auth::loggedIn();
 		}
-    }
+	}
 
-    protected function loadSettings()
-    {
-        $default_settings = ['theme_id' => 0,'combine_scan_intel' => 0, 'zoom' => '1.0', 'language' => 'en', 'default_activity' => '' ];
+	protected function loadSettings()
+	{
+		$default_settings = ['theme_id' => 0,'combine_scan_intel' => 0, 'zoom' => '1.0', 'language' => 'en', 'default_activity' => '' ];
 
-        if( Auth::$session->charID != 0)
-        {
-			$settings = DB::query(Database::SELECT, "SELECT * FROM character_settings
-							WHERE char_id=:charID")
-						->param(':charID', Auth::$session->charID)
-						->execute()
-						->current();
+		if( Auth::$session->charID != 0)
+		{
+				$settings = DB::query(Database::SELECT, "SELECT * FROM character_settings
+								WHERE char_id=:charID")
+							->param(':charID', Auth::$session->charID)
+							->execute()
+							->current();
 
-			if( isset($settings['char_id']) )
-			{
-				if( $settings['language'] != 'en' )
+				if( isset($settings['char_id']) )
 				{
-					i18n::lang($settings['language']);
-				}
+					if( $settings['language'] != 'en' )
+					{
+						i18n::lang($settings['language']);
+					}
 
-				return $settings;
-			}
-        }
+					return $settings;
+				}
+		}
 
 		return $default_settings;
-    }
+	}
 
-    public function authCheckAndRedirect()
-    {
+	public function authCheckAndRedirect()
+	{
 		if( $this->authStatus == AuthStatus::GPASSWRONG )
 		{
 			$this->siggyredirect('/access/group_password');
-		}
-		elseif( $this->authStatus == AuthStatus::APILOGINNOACCESS )
-		{
-			$this->siggyredirect('/account/noAPIAccess');
-		}
-		elseif( $this->authStatus == AuthStatus::APILOGINREQUIRED )
-		{
-			$this->siggyredirect('/account/login');
 		}
 		elseif( $this->authStatus == AuthStatus::BLACKLISTED )
 		{
@@ -138,9 +131,9 @@ class FrontController extends Controller {
 		}
 		elseif( $this->authStatus != AuthStatus::ACCEPTED )
 		{
-			if( Auth::loggedIn() && Auth::$user->isLocal() )
+			if( Auth::loggedIn() )
 			{
-				$this->siggyredirect('/account/noAPIAccess');
+				$this->siggyredirect('/account/characters');
 			}
 			else if( $this->authStatus == AuthStatus::GUEST )
 			{
@@ -151,7 +144,7 @@ class FrontController extends Controller {
 				$this->siggyredirect('/pages/no-group-access');
 			}
 		}
-    }
+	}
 
 	public function after()
 	{

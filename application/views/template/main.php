@@ -144,12 +144,10 @@
 					</a>
 					<?php if( Auth::loggedIn() ): ?>
 					<ul class="dropdown-menu" role="menu">
-						<?php if( Auth::$user->isLocal() ): ?>
 						<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/apiKeys">API Keys</a></li>
-						<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/characterSelect">Switch Character</a></li>
+						<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/characters">Switch Character</a></li>
 						<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/changePassword">Change Password</a></li>
 						<li class="divider"></li>
-						<?php endif; ?>
 						<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/logout">Logout</a></li>
 					</ul>
 					<?php endif; ?>

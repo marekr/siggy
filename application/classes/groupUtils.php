@@ -14,8 +14,8 @@ final class groupUtils {
 
 	static function getCharacterUsageCount( $group_id )
 	{
-		$num_corps = DB::query(Database::SELECT, "SELECT SUM(DISTINCT c.memberCount) as total FROM groupmembers gm
-										LEFT JOIN corporations c ON(gm.eveID = c.corporationID)
+		$num_corps = DB::query(Database::SELECT, "SELECT SUM(DISTINCT c.member_count) as total FROM groupmembers gm
+										LEFT JOIN corporations c ON(gm.eveID = c.id)
 										WHERE gm.groupID=:group AND gm.memberType='corp'")
 										->param(':group', $group_id)->execute()->current();
 

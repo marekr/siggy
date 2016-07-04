@@ -15,11 +15,6 @@ class User {
 		return (isset($this->data['id']) && $this->data['id'] > 0);
 	}
 
-	public function isLocal()
-	{
-		return ($this->data['provider'] == 0);
-	}
-
 	public function save()
 	{
 		if( !$this->userLoaded() )
@@ -47,16 +42,6 @@ class User {
 						 );
 
 		DB::update('users')->set( $userArray )->where('id', '=',  $this->data['id'])->execute();
-
-
-		if( $this->data['selected_apikey_id'] != 0 )
-		{
-			$apiArray = array( 'apiKeyInvalid' => $this->data['apiKeyInvalid'],
-								'apiFailures' => $this->data['apiFailures'],
-								'apiLastCheck' => $this->data['apiLastCheck']
-							 );
-			DB::update('apikeys')->set( $apiArray )->where('entryID', '=',  $this->data['selected_apikey_id'])->execute();
-		}
 
 		//are we the current user?
 		if( isset(Auth::$user->data['id']) && $this->data['id'] == Auth::$user->data['id'] )
@@ -120,47 +105,29 @@ class User {
 			return FALSE;
 		}
 
-		if( $this->isLocal() )
+		$character = Character::find( $this->data['char_id'] );
+		if( $character == null )
 		{
-			$apiCharInfo = $this->apiKeyCheck();
-
-			if( $apiCharInfo !== FALSE )
-			{
-				/* update the corp id */
-				if( $this->data['corp_id'] != $apiCharInfo['corpID'] )
-				{
-					$this->data['corp_id'] = $corpID;
-					$this->save();
-				}
-			}
-			else
-			{
-				return FALSE;
-			}
+			return FALSE;
 		}
-		else
+
+		/* update the corp id */
+		if( $character->corporation_id != $this->data['corp_id'] )
 		{
-			$corpID = $this->apiCharacterAffiliationGetCorp();
+			$this->data['corp_id'] = $character->corporation_id;
+			$this->save();
 
-			/* update the corp id */
-			if( $corpID != $this->data['corp_id'] )
+			if( $this->data['id'] == Auth::$user->data['id'] )
 			{
-				$this->data['corp_id'] = $corpID;
-				$this->save();
-
-				if( $this->data['id'] == Auth::$user->data['id'] )
-				{
-					Auth::$session->reloadUserSession();
-				}
+				Auth::$session->reloadUserSession();
 			}
 		}
 
 		return TRUE;
 	}
 
-	public static function create($data)
+	public static function create(array $data)
 	{
-		$insert = array();
 		$insert = $data;
 
 		$insert['password'] = Auth::hash($insert['password']);
@@ -171,39 +138,48 @@ class User {
 		return TRUE;
 	}
 
-	public function getAPIKeys()
+	public function getSSOCharacters()
 	{
-		if( !$this->userLoaded() )
-		{
-			return;
-		}
+		$characters = DB::query(Database::SELECT, "SELECT * FROM user_ssocharacter WHERE user_id=:userid")->param(':userid', $this->data['id'])
+										->execute()
+										->as_array();
 
-		$keys = DB::query(Database::SELECT, "SELECT * FROM apikeys WHERE userID=:userid")->param(':userid', $this->data['id'])
-										->execute()->as_array();
+		return $characters;
+	}
 
-		foreach($keys as &$key)
-		{
-			if( $key['apiID'] == 0 || $key['apiKey'] == '' )
-			{
-					$status = 'Missing';
-			}
-			elseif( $key['apiFailures'] > 3 )
-			{
-					$status = 'Failed';
-			}
-			elseif ( $key['apiKeyInvalid'] )
-			{
-					$status = 'Invalid';
-			}
-			else
-			{
-					$status = 'Good';
-			}
+	public function updateSSOCharacter($characterId, $token, $refreshToken, $expiration)
+	{
+		$data = [
+			'access_token' => $token,
+			'access_token_expiration' => $expiration,
+			'refresh_token' => $refreshToken,
+			'valid' => 1
+		];
 
-			$key['status'] = $status;
-		}
+		DB::update('user_ssocharacter')->set( $data )
+			->where('user_id', '=',  $this->data['id'])
+			->where('character_id', '=',  $characterId)
+			->execute();
+		
+		return TRUE;
+	}
 
-		return $keys;
+	public function addSSOCharacter($hash, $characterId, $token, $expiration, $refreshToken)
+	{
+		
+		$insert = [
+			'user_id' => $this->data['id'],
+			'character_owner_hash' => $hash,
+			'character_id' => $characterId,
+			'access_token' => $token,
+			'access_token_expiration' => $expiration,
+			'refresh_token' => $refreshToken,
+			'valid' => 1
+		];
+
+		$userID = DB::insert('user_ssocharacter', array_keys($insert) )->values(array_values($insert))->execute();
+
+		return TRUE;
 	}
 
 	public function loadByEmail($email)
@@ -271,153 +247,11 @@ class User {
 
 	public function isGroupAdmin()
 	{
-        if( isset( $this->perms[ $this->data['groupID'] ] ) )
-        {
-            return TRUE;
-        }
-
-        return FALSE;
-	}
-
-	public function apiCharacterAffiliationGetCorp()
-	{
-		//recheck
-		PhealHelper::configure();
-		$pheal = new Pheal( null, null, 'eve' );
-		if( $this->data['char_id'] == 0 )
-			return 0;
-
-		$result = $pheal->eveScope->CharacterAffiliation(array('ids' => $this->data['char_id']));
-		if( count($result->characters[0]) > 0 )
+		if( isset( $this->perms[ $this->data['groupID'] ] ) )
 		{
-			if( $this->data['char_id'] == $result->characters[0]['characterID'] )
-			{
-				return $result->characters[0]['corporationID'];
-			}
+			return TRUE;
 		}
 
-		return 0;
-	}
-
-
-    public function apiKeyCheck()
-    {
-		if( !self::userLoaded() )
-		{
-			return FALSE;
-		}
-
-		//compatbility issue with last update, make them reselect
-		if( !isset($this->data['apiLastCheck']) || !isset($this->data['apiKeyInvalid']) )
-		{
-			return FALSE;
-		}
-
-		if( $this->data['apiLastCheck'] < time()-60*120 )
-		{
-			if( $this->data['apiID'] == 0 ||  $this->data['apiKey'] == '' || $this->data['char_id'] == 0 || $this->data['apiKeyInvalid'] || ($this->data['apiFailures'] >= 3) )
-			{
-				$this->data['char_id'] = 0;
-				$this->data['corp_id'] = 0;
-				$this->save();
-
-				return FALSE;
-			}
-
-			//recheck
-			PhealHelper::configure();
-			$pheal = new Pheal( $this->data['apiID'], $this->data['apiKey'], 'eve' );
-
-			try
-			{
-				//get all chars on the key
-				$result = $pheal->accountScope->Characters();
-				foreach($result->characters as $char )
-				{
-					if( $char->characterID == $this->data['char_id'] )
-					{
-						$this->data['corp_id'] = $char->corporationID;
-
-						$this->data['apiLastCheck'] = time();
-						$this->data['apiFailures'] = 0;
-						$this->data['apiKeyInvalid'] = 0;
-						$this->save();
-
-						return array( 'corpID' => $this->data['corp_id'], 'charID' => $this->data['char_id'], 'charName' => $this->data['char_name'] );
-					}
-				}
-
-				//key no longer exists?
-				return FALSE;
-			}
-			catch (\Pheal\Exceptions\PhealException $e)
-			{
-				if ($e instanceof \Pheal\Exceptions\APIException OR $e instanceof \Pheal\Exceptions\HTTPException)
-				{
-					 switch( $e->getCode() )
-					 {
-						//bad char
-						case 105:
-							//$this->update_user( $this->data['id'], array('apiCharID' => 0, 'apiCorpID' => 0 ) );
-							//$this->reload_user();
-							$this->data['char_id'] = 0;
-							$this->data['corp_id'] = 0;
-							$this->save();
-							return FALSE;
-							break;
-
-						case 202:
-						case 203:
-						case 204:
-						case 205:
-						case 210:
-						case 212:
-							//increment fuck you count
-							//$this->update_user( $this->data['id'], array('apiFailures' => $this->data['apiFailures']+1 ) );
-							//$this->reload_user();
-							if( $this->data['apiFailures'] < 3 )
-							{
-								$this->data['apiFailures'] = $this->data['apiFailures']+1;
-							}
-							else
-							{
-								$this->data['apiKeyInvalid'] = 1;
-							}
-
-							$this->save();
-							return FALSE;
-							break;
-
-						case 221:
-						case 222:
-						case 223:
-						case 521:
-						case 403:
-							//bad api entirely
-							//$this->update_user( $this->data['id'], array('apiInvalid' => 1) );
-							$this->data['apiKeyInvalid'] = 1;
-
-
-							$this->save();
-							return FALSE;
-							break;
-
-						case 211:
-							//expired account
-							return FALSE;
-							break;
-
-						default:
-							return FALSE;
-							break;
-					 }
-				}
-			}
-		}
-		else
-		{
-			return array( 'corpID' => $this->data['corp_id'], 'charID' => $this->data['char_id'], 'charName' => $this->data['char_name'] );
-		}
 		return FALSE;
-    }
+	}
 }

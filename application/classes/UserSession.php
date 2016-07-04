@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 class UserSession {
 
 	public $charID = 0;
@@ -7,7 +9,7 @@ class UserSession {
 	public $corpID = 0;
 	public $groupID = 0;
 
-	private $sessionID = "";
+	public $sessionID = "";
 
 	public $accessData = array();
 	public $sessionData = array();
@@ -48,7 +50,7 @@ class UserSession {
 		//attempt to find existing session
 		$this->sessionData = $this->__fetchSessionData();
 
-		if( !isset($this->sessionData['sessionID']) )
+		if( !isset($this->sessionData['id']) )
 		{
 			$this->sessionID = $this->__generateSessionID();
 
@@ -71,18 +73,18 @@ class UserSession {
 		}
 
 		// finally load user ID
-		if( $this->sessionData['userID'] != 0 )
+		if( $this->sessionData['user_id'] != 0 )
 		{
-			Auth::$user->loadByID( $this->sessionData['userID'] );
+			Auth::$user->loadByID( $this->sessionData['user_id'] );
 		}
 
 		/* Don't use session data for char name, id and corp id to avoid
 		   IGB header issues */
-		$this->groupID = $this->sessionData['groupID'];
+		$this->groupID = $this->sessionData['group_id'];
 
-		$this->charName = $this->sessionData['char_name'];
-		$this->charID = $this->sessionData['char_id'];
-		$this->corpID = $this->sessionData['corp_id'];
+		$this->charName = $this->sessionData['character_name'];
+		$this->charID = $this->sessionData['character_id'];
+		$this->corpID = $this->sessionData['corporation_id'];
 
 		$this->getAccessData();
 
@@ -91,7 +93,7 @@ class UserSession {
 
 	private function __fetchSessionData()
 	{
-		$sess = DB::query(Database::SELECT, 'SELECT sessionID,userID,groupID,char_id,char_name,corp_id FROM siggysessions WHERE sessionID=:id')
+		$sess = DB::query(Database::SELECT, 'SELECT id,user_id,group_id,character_id,character_name,corporation_id FROM sessions WHERE id=:id')
 					->param(':id', $this->sessionID)
 					->execute()
 					->current();
@@ -101,7 +103,7 @@ class UserSession {
 
 	public function destroy()
 	{
-		DB::delete('siggysessions')->where('sessionID', '=', $this->sessionID)->execute();
+		DB::delete('sessions')->where('id', '=', $this->sessionID)->execute();
 
 		Cookie::delete('sessionID');
 	}
@@ -119,21 +121,24 @@ class UserSession {
 			return;
 		}
 
-		$update = array( 'userID' => Auth::$user->data['id'],
-						 'groupID' => Auth::$user->data['groupID'],
+		$update = array( 'user_id' => Auth::$user->data['id'],
+						 'group_id' => Auth::$user->data['groupID'],
 					//	 'chainmap_id' => Auth::$user->data['active_chain_map'],
-                         'char_name' => Auth::$user->data['char_name'],
-                         'char_id' => Auth::$user->data['char_id'],
-                         'corp_id' => Auth::$user->data['corp_id']
+                         'character_name' => Auth::$user->data['char_name'],
+                         'character_id' => Auth::$user->data['char_id'],
+                         'corporation_id' => Auth::$user->data['corp_id']
 						 );
 
-		DB::update('siggysessions')->set( $update )->where('sessionID', '=',  $this->sessionID)->execute();
+		DB::update('sessions')
+			->set( $update )
+			->where('id', '=',  $this->sessionID)
+			->execute();
 
 
-		$this->charID = $update['char_id'];
-		$this->charName = $update['char_name'];
-		$this->corpID = $update['corp_id'];
-		$this->groupID = $update['groupID'];
+		$this->charID = $update['character_id'];
+		$this->charName = $update['character_name'];
+		$this->corpID = $update['corporation_id'];
+		$this->groupID = $update['group_id'];
 
 		$this->getAccessData();
 	}
@@ -142,20 +147,20 @@ class UserSession {
 	{
 		// corp_id will most likely only be "valid" for IGB/non-auth user sessions
 		// so we must update it too
-		$insert = array( 'sessionID' => $this->sessionID,
-					'char_id' => $this->charID,
-					'char_name' => $this->charName,
-					'corp_id' => $this->corpID,
-					'created' => time(),
-					'ipAddress' => Request::$client_ip,
-					'userAgent' => Request::$user_agent,
-					'sessionType' => 'oog',
-					'userID' => ( isset(Auth::$user->data['id']) ? Auth::$user->data['id'] : 0 ),
-					'groupID' => ( isset(Auth::$user->data['groupID']) ? Auth::$user->data['groupID'] : 0 ),
+		$insert = array( 'id' => $this->sessionID,
+					'character_id' => $this->charID,
+					'character_name' => $this->charName,
+					'corporation_id' => $this->corpID,
+					'created_at' => Carbon::now()->toDateTimeString(),
+					'ip_address' => Request::$client_ip,
+					'user_agent' => Request::$user_agent,
+					'type' => 'guest',
+					'user_id' => ( isset(Auth::$user->data['id']) ? Auth::$user->data['id'] : 0 ),
+					'group_id' => ( isset(Auth::$user->data['groupID']) ? Auth::$user->data['groupID'] : 0 ),
 				//	'chainmap_id' =>  ( isset(Auth::$user->data['active_chain_map']) ? Auth::$user->data['active_chain_map'] : 0 ),
 				  );
 
-		DB::insert('siggysessions', array_keys($insert) )->values(array_values($insert))->execute();
+		DB::insert('sessions', array_keys($insert) )->values(array_values($insert))->execute();
 
 		Cookie::set('sessionID', $this->sessionID);
 
@@ -164,18 +169,11 @@ class UserSession {
 
 	private function __determineSessionType()
 	{
-		$type = '';
+		$type = 'guest';
 
 		if( Auth::loggedIn() )
 		{
-			if( Auth::$user->isLocal() )
-			{
-				$type = 'siggy';
-			}
-			else
-			{
-				$type = 'sso';
-			}
+			$type = 'user';
 		}
 
 		return $type;
@@ -191,14 +189,17 @@ class UserSession {
 		$type = $this->__determineSessionType();
 
 		/* Shitty fix, always update groupID because we don't on creaton have a valid one */
-		$update = array( 'lastBeep' => time(),
-						 'groupID' => $this->groupID,
-						 'sessionType' => $type,
+		$update = array( 'updated_at' => Carbon::now()->toDateTimeString(),
+						 'group_id' => $this->groupID,
+						 'type' => $type,
 						 'chainmap_id' => ( isset($this->accessData['active_chain_map']) ? $this->accessData['active_chain_map'] : 0 )
 						);
 
 
-		DB::update('siggysessions')->set( $update )->where('sessionID', '=',  $this->sessionID)->execute();
+		DB::update('sessions')
+			->set( $update )
+			->where('id', '=',  $this->sessionID)
+			->execute();
 	}
 
 

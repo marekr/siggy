@@ -257,6 +257,13 @@ if (!Route::cache())
 			'action' => 'login'
 		));
 
+    Route::set('account', 'account/sso/complete')
+		->defaults(array(
+			'controller' => 'account',
+			'action' => 'sso_complete'
+		));
+		
+
 	Route::set('stats', 'stats(/year/<year>(/month(/<month>))(/week/<week>))')
 		->defaults(array(
 			'controller' => 'stats',

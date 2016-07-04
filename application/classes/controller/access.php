@@ -62,17 +62,17 @@ class Controller_Access extends FrontController {
 	public function action_switch_membership()
 	{
 		$k = $_GET['k'];
-        if( count( Auth::$session->accessData['access_groups'] ) > 1 || count( current(Auth::$session->accessData['access_groups']) > 1) )
-        {
-            foreach( Auth::$session->accessData['access_groups'] as $g )
-            {
+		if( count( Auth::$session->accessData['access_groups'] ) > 1 || count( current(Auth::$session->accessData['access_groups']) > 1) )
+		{
+			foreach( Auth::$session->accessData['access_groups'] as $g )
+			{
 				if( md5($g['group_id']) == $k )
 				{
 					Cookie::set('membershipChoice', $g['group_id'], 365*60*60*24);
 					break;
 				}
-            }
-        }
+			}
+		}
 		HTTP::redirect('/');
 	}
 

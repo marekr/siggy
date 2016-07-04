@@ -2,9 +2,10 @@
 
 require Kohana::find_file('vendor', 'OAuth\bootstrap');
 use OAuth\OAuth2\Service\Eve;
-use OAuth\Common\Storage\Session;
+use OAuth\Common\Storage\Session as OSession;
 use OAuth\Common\Consumer\Credentials;
 use Pheal\Pheal;
+use Carbon\Carbon;
 
 class Controller_Account extends FrontController {
 	private $auth;
@@ -22,6 +23,7 @@ class Controller_Account extends FrontController {
 		switch( $this->request->action() )
 		{
 			case 'sso':
+			case 'sso_complete':
 			case 'login':
 			case 'logout':
 			case 'register':
@@ -45,6 +47,7 @@ class Controller_Account extends FrontController {
 		{
 			case 'login':
 			case 'forgotPassword':
+			case 'sso_complete':
 			case 'completePasswordReset':
 				$this->template->selectedTab = 'login';
 				$this->template->layoutMode = 'blank';
@@ -67,16 +70,25 @@ class Controller_Account extends FrontController {
 		parent::after();
 	}
 
+	public function action_sso_complete()
+	{
+		$this->template->title = "Complete SSO Login";
+		$this->template->content =  View::Factory('account/sso_complete')->set('invalidLogin', false);
+	}
+
 	public function action_sso()
 	{
+		$session = Session::instance();
+
 		$sso_type = $this->request->param('id');
 
 		if( $sso_type == 'eve' )
 		{
+
 			/** @var $serviceFactory \OAuth\ServiceFactory An OAuth service factory. */
 			$serviceFactory = new \OAuth\ServiceFactory();
 			// Session storage
-			$storage = new Session();
+			$storage = new OSession();
 
 
 			/**
@@ -115,43 +127,71 @@ class Controller_Account extends FrontController {
 				$state = isset($_GET['state']) ? $_GET['state'] : null;
 
 				// This was a callback request from reddit, get the token
-				$eveService->requestAccessToken($_GET['code'], $state);
+				$token = $eveService->requestAccessToken($_GET['code'], $state);
 
 				$result = json_decode($eveService->request('https://login.eveonline.com/oauth/verify'), true);
 
-				//find username by CharacterOwnerHash
-				if( !is_array($result) )
+				if( $session->get('sso_connect') )
 				{
-					HTTP::redirect('/');
-				}
+					if( !is_array($result) )
+					{
+						HTTP::redirect('/account/connected');
+					}
 
-				$fakeEmail = $result['CharacterOwnerHash'].'@eveonline.com';
-				if( $userID = Auth::usernameExists( $fakeEmail ) )
-				{
-					$fakeEmail = $result['CharacterOwnerHash'].'@eveonline.com';
-					$status = Auth::processLogin($fakeEmail, $result['CharacterOwnerHash']);
-					HTTP::redirect('/');
+					$expiration = Carbon::now()->addSeconds($token->getEndOfLife())->toDateTimeString();
+
+					if( $userID = Auth::characterOwnerHashTied( $result['CharacterOwnerHash'] ) )
+					{
+						Auth::$user->updateSSOCharacter($result['CharacterID'],
+															$token->getAccessToken(),
+															$token->getRefreshToken(),
+															$expiration);
+
+						HTTP::redirect('/account/connected');
+					}
+					else
+					{
+						Auth::$user->addSSOCharacter($result['CharacterOwnerHash'], 
+													$result['CharacterID'], 
+													$token->getAccessToken(), 
+													$expiration, 
+													$token->getRefreshToken());
+						
+						HTTP::redirect('/account/connected');
+					}
 				}
 				else
 				{
-
-					$data = array( 'email' => $fakeEmail,
-									'username' => $fakeEmail,
-									'char_id' => $result['CharacterID'],
-									'char_name' => $result['CharacterName'],
-									'password' => $result['CharacterOwnerHash'],		//we aren't using password but this is a good placeholder (non blank)
-									'provider' => 1			//provider 1 == eve sso for now
-									);
-
-
-					if( User::create( $data ) )
+					//find username by CharacterOwnerHash
+					if( !is_array($result) )
 					{
-						Auth::processLogin($fakeEmail, $result['CharacterOwnerHash']);
+						HTTP::redirect('/');
+					}
+
+					$expiration = Carbon::createFromTimeStampUTC($token->getEndOfLife())->toDateTimeString();
+
+					if( $userID = Auth::characterOwnerHashTied( $result['CharacterOwnerHash'] ) )
+					{
+						$status = Auth::forceLogin($userID);
+
+						Auth::$user->updateSSOCharacter($result['CharacterID'],
+														$token->getAccessToken(),
+														$token->getRefreshToken(),
+														$expiration);
+
 						HTTP::redirect('/');
 					}
 					else
 					{
-						$errors['username'] = 'Unknown error has occured.';
+						$session->set('sso_login', true);
+						$session->set('sso_character_owner_hash', $result['CharacterOwnerHash']);
+						$session->set('sso_character_id', $result['CharacterID']);
+						$session->set('sso_access_token', $token->getAccessToken());
+						$session->set('sso_refresh_token', $token->getRefreshToken());
+
+						$session->set('sso_token_eol', $expiration);
+						
+						HTTP::redirect('/account/sso/complete');
 					}
 				}
 			}
@@ -160,18 +200,18 @@ class Controller_Account extends FrontController {
 				HTTP::redirect($eveService->getAuthorizationUri());
 			}
 		}
+	}
+	
+	public function action_connect()
+	{
+		$session = Session::instance();
 
-		exit();
+		$session->set('sso_connect', true);
+		HTTP::redirect('/account/sso/eve');
 	}
 
 	public function action_overview()
 	{
-		if( !Auth::$user->isLocal() )
-		{
-			HTTP::redirect('/');
-		}
-
-
 		$this->template->title = "Account overview";
 
 		$view = View::factory('account/overview');
@@ -242,25 +282,6 @@ class Controller_Account extends FrontController {
 		$this->template->content =  View::Factory('account/register')->bind('errors', $errors);
 	}
 
-	public function action_apiKeys()
-	{
-		if( !Auth::loggedIn() )
-		{
-			HTTP::redirect('/');
-			return;
-		}
-
-		if( !Auth::$user->isLocal() )
-		{
-			HTTP::redirect('/');
-		}
-
-		$view = View::factory('account/apiKeys');
-		$view->set('keys', Auth::$user->getAPIKeys());
-		$this->template->content = $view;
-		$this->template->title = 'siggy - set api';
-	}
-
 	public function action_addAPI()
 	{
 		if( !Auth::loggedIn() )
@@ -269,29 +290,7 @@ class Controller_Account extends FrontController {
 			return;
 		}
 
-		if( !Auth::$user->isLocal() )
-		{
-			HTTP::redirect('/');
-		}
-
 		$this->apiKeyForm('add');
-	}
-
-
-	public function action_editAPI()
-	{
-		if( !Auth::loggedIn() )
-		{
-			HTTP::redirect('/');
-			return;
-		}
-
-		if( !Auth::$user->isLocal() )
-		{
-			HTTP::redirect('/');
-		}
-
-		$this->apiKeyForm('edit');
 	}
 
 	public function action_removeAPI()
@@ -300,11 +299,6 @@ class Controller_Account extends FrontController {
 		{
 			HTTP::redirect('/');
 			return;
-		}
-
-		if( !Auth::$user->isLocal() )
-		{
-			HTTP::redirect('/');
 		}
 
 
@@ -336,126 +330,12 @@ class Controller_Account extends FrontController {
 		HTTP::redirect('/account/apiKeys');
 	}
 
-	private function apiKeyForm($mode)
-	{
-		$errors = array();
-
-		$entryID = intval($this->request->param('id',0));
-
-
-		$keyData = array('apiID' => '', 'apiKey' => '', 'entryID' => 0);
-		if( $mode == 'edit' )
-		{
-			$keyData = DB::query(Database::SELECT, "SELECT * FROM apikeys WHERE entryID=:entryID AND userID=:userID")
-											->param(':entryID', $entryID)
-											->param(':userID', Auth::$user->data['id'])
-											->execute()
-											->current();
-
-
-			if( !isset($keyData['entryID']) )
-			{
-				HTTP::redirect('/account/apiKeys');
-			}
-		}
-
-		if ($this->request->method() == "POST")
-		{
-			if( empty( $_POST['apiID'] ) )
-			{
-				$errors['apiID'] = 'An API ID must be provided';
-			}
-
-			if( empty( $_POST['apiKey'] ) )
-			{
-				$errors['apiKey'] = 'An API key must be provided';
-			}
-
-			if( $mode != 'edit' )
-			{
-				$keyData = DB::query(Database::SELECT, "SELECT * FROM apikeys WHERE apiID=:apiID AND userID=:userID")
-												->param(':apiID', $_POST['apiID'])
-												->param(':userID', Auth::$user->data['id'])
-												->execute()->current();
-				if( isset($keyData['apiID']) )
-				{
-					$errors['apiID'] = 'API ID already on your account';
-				}
-			}
-
-			if( !(count($errors) > 0 ) )
-			{
-				PhealHelper::configure();
-				$pheal = new Pheal( $_POST['apiID'], $_POST['apiKey'] );
-
-				try
-				{
-					$result = $pheal->accountScope->APIKeyInfo();
-
-					$success = true;
-				}
-				catch (\Pheal\Exceptions\PhealException $e)
-				{
-					$success = false;
-				}
-
-
-				if( $success )
-				{
-					$data['apiID'] = intval($_POST['apiID']);
-					$data['apiKey'] = $_POST['apiKey'];
-					$data['apiLastCheck'] = 0;
-					$data['apiKeyInvalid'] = 0;
-					$data['apiFailures'] = 0;
-					$data['userID'] = Auth::$user->data['id'];
-
-					if( $mode == 'edit' )
-					{
-						DB::update('apikeys')->set( $data )->where('entryID', '=',  $entryID)->execute();
-
-
-						if( Auth::$user->data['selected_apikey_id'] == $entryID )
-						{
-							Auth::$user->data['corp_id'] = 0;
-							Auth::$user->data['char_id'] = 0;
-							Auth::$user->data['char_name'] = '';
-							Auth::$user->data['selected_apikey_id'] = 0;
-
-							Auth::$user->save();
-						}
-					}
-					else
-					{
-						DB::insert('apikeys', array_keys($data) )->values(array_values($data))->execute();
-					}
-
-					HTTP::redirect('/account/characterSelect');
-				}
-				else
-				{
-					$errors['apiKey'] = 'The API key is invalid.';
-				}
-			}
-		}
-		$this->template->title = 'siggy - api key';
-		$view = View::factory('account/apiKeyForm');
-		$view->set('mode', $mode);
-		$view->set('errors', $errors);
-		$view->set('keyData', $keyData);
-		$this->template->content = $view;
-	}
-
 	public function action_changePassword()
 	{
 		if( !Auth::loggedIn() )
 		{
 			HTTP::redirect('/');
 			return;
-		}
-
-		if( !Auth::$user->isLocal() )
-		{
-			HTTP::redirect('/');
 		}
 
 		$this->template->title = __('siggy: change password');
@@ -696,7 +576,7 @@ class Controller_Account extends FrontController {
 		$this->template->content = $view;
 	}
 
-	public function action_characterSelect()
+	public function action_characters()
 	{
 		if( !Auth::loggedIn() )
 		{
@@ -704,72 +584,44 @@ class Controller_Account extends FrontController {
 			return;
 		}
 
-		if( !Auth::$user->isLocal() )
-		{
-			HTTP::redirect('/');
-		}
 
-		$keys = Auth::$user->getAPIKeys();
-		if( !count($keys) )
+		$charID =  Auth::$user->data['char_id'];
+		$ssoChars = Auth::$user->getSSOCharacters();
+		if( !count($ssoChars) )
 		{
 			HTTP::redirect('/account/apiKeys');
 		}
 
-		$this->template->title = __('siggy: character selection');
+		$this->template->title = __('siggy: characters');
 
-		Auth::$user->loadByID(Auth::$user->data['id']);
-		Auth::$user->save();
-		$charID =  Auth::$user->data['char_id'];
-
-		PhealHelper::configure();
-
-		$chars = array();
-		foreach($keys as $key)
+		$chars = [];
+		$selectableChars = [];
+		$unselectableChars = [];
+		foreach($ssoChars as $ssoChar)
 		{
-			try
+			$corpList = $this->getCorpList();
+			$charList = $this->getCharList();
+
+			$char = Character::find($ssoChar['character_id']);
+
+			if( in_array($char->corporation_id, $corpList) || in_array($char->id, $charList) )
 			{
-				$pheal = new Pheal( $key['apiID'], $key['apiKey']);
-
-				$corpList = $this->getCorpList();
-				$charList = $this->getCharList();
-
-				$apiError = FALSE;
-				$result = $pheal->accountScope->Characters();
-
-				foreach($result->characters as $char )
-				{
-						if( in_array($char->corporationID, $corpList) || in_array($char->characterID, $charList) )
-						{
-							$chars[ $char->characterID ] = array( 'name' => $char->name,
-																'corpID' => $char->corporationID,
-																'corpName' => $char->corporationName,
-																'charID' => $char->characterID,
-																'entryID' => $key['entryID']
-																);
-						}
-				}
-
-
+				$selectableChars[ $char->id ] = $char;
 			}
-			catch(\Pheal\Exceptions\PhealException $e)
+			else 
 			{
-				$apiError = true;
+				$unselectableChars[ $char->id ] = $char;
 			}
 		}
 
 		if ($this->request->method() == "POST")
 		{
 			$charID = intval($_POST['charID']);
-			if( $charID && isset( $chars[ $charID ] ) )
+			if( $charID && isset( $selectableChars[ $charID ] ) )
 			{
-				Auth::$user->data['corp_id'] = $chars[ $charID ]['corpID'];
-				Auth::$user->data['char_name'] = $chars[ $charID ]['name'];
+				Auth::$user->data['corp_id'] = $selectableChars[ $charID ]->corporation_id;
+				Auth::$user->data['char_name'] = $selectableChars[ $charID ]->name;
 				Auth::$user->data['char_id'] = $charID;
-				Auth::$user->data['selected_apikey_id'] = $chars[ $charID ]['entryID'];
-
-				Auth::$user->data['apiLastCheck'] = 0;
-				Auth::$user->data['apiInvalid'] = 0;
-				Auth::$user->data['apiFailures'] = 0;
 
 				Auth::$user->save();
 
@@ -777,10 +629,40 @@ class Controller_Account extends FrontController {
 			}
 		}
 
-		$view = View::factory('account/characterSelect');
-		$view->chars = $chars;
+		$view = View::factory('account/characters');
+		$view->selectableChars = $selectableChars;
+		$view->unselectableChars = $unselectableChars;
 		$view->selectedCharID = $charID;
-		$view->apiError = $apiError;
+		$this->template->content = $view;
+	}
+
+	public function action_connected()
+	{
+		if( !Auth::loggedIn() )
+		{
+			HTTP::redirect('/');
+			return;
+		}
+
+		$charID =  Auth::$user->data['char_id'];
+		$ssoChars = Auth::$user->getSSOCharacters();
+
+		
+		$charData = [];
+		foreach($ssoChars as $ssoChar)
+		{
+			$corpList = $this->getCorpList();
+			$charList = $this->getCharList();
+
+			$char = Character::find($ssoChar['character_id']);
+			$charData[ $char->id ] = $char;
+		}
+
+		$this->template->title = __('siggy: connected accounts');
+
+		$view = View::factory('account/connected');
+		$view->characters = $ssoChars;
+		$view->character_data = $charData;
 		$this->template->content = $view;
 	}
 
@@ -799,6 +681,17 @@ class Controller_Account extends FrontController {
 			$rememberMe = (isset($_POST['rememberMe']) ? TRUE : FALSE);
 			if( Auth::processLogin($_POST['username'], $_POST['password'], $rememberMe) === Auth::LOGIN_SUCCESS )
 			{
+				$session = Session::instance();
+
+				if( $session->get_once('sso_login',false) )
+				{
+					Auth::$user->addSSOCharacter($session->get_once('sso_character_owner_hash'), 
+												$session->get_once('sso_character_id'), 
+												$session->get_once('sso_access_token'), 
+												$session->get_once('sso_token_eol'), 
+												$session->get_once('sso_refresh_token'));
+				}
+
 				if( isset($_REQUEST['bounce'] ) )
 				{
 					HTTP::redirect(URL::base(TRUE, TRUE) . $_REQUEST['bounce']);
@@ -831,6 +724,9 @@ class Controller_Account extends FrontController {
 	{
 		// Sign out the user
 		Auth::processLogout();
+		
+		$session = Session::instance();
+		$session->destroy();
 
 		HTTP::redirect('/');
 	}

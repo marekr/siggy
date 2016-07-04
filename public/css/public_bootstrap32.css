@@ -1,29 +1,46 @@
-#characterSelect
+#character-select
 {
-	width: 440px;
 	margin: 0 auto;
 	list-style-type: none;
 }
 
-#characterSelect input
+#character-select input
 {
 	border: 0;
 }
 
-#characterSelect li
+#character-select li
 {
-	float:left;
-	padding:5px;
-	text-align:center;
+	padding:10px;
+	text-align:left;
 }
 
-#characterSelect li.selected
+#character-select li.selected
 {
 	background-color: #0F0F0F;
 }
 
-#characterSelect li:hover
+#character-select li:hover
 {
 	background-color: #4D4D4D;
 	cursor:pointer;
+}
+
+#character-select div.details
+{
+	display:inline-block;
+    vertical-align: top;
+}
+
+
+#character-select li.disabled
+{
+	opacity:0.5;
+}
+
+
+#character-select li.disabled:hover
+{
+	background-color: inherit;
+	cursor:inherit;
 }

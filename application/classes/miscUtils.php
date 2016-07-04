@@ -146,13 +146,13 @@ final class miscUtils {
 				$name = trim($name);
 				if(!empty($name))
 				{
-					$queryArray[] = "corporationName LIKE ".Database::instance()->escape($name."%");
+					$queryArray[] = "name LIKE ".Database::instance()->escape($name."%");
 				}
 			}
 			$querySQL = implode(" OR ", $queryArray);
 			$results = DB::query(Database::SELECT, 'SELECT * FROM corporations WHERE '.$querySQL)
 						->execute()
-						->as_array('corporationID');
+						->as_array('id');
 		}
 
 		PhealHelper::configure();
@@ -179,7 +179,7 @@ final class miscUtils {
 					$result = $pheal->CorporationSheet( array( 'corporationID' => (int)$corp['characterID'] ) )->toArray();
 					//print 'found corp, storing locally!';
 					$result = $result['result'];
-					DB::query(Database::INSERT, 'INSERT INTO corporations (`corporationID`, `corporationName`, `memberCount`, `ticker`, `description`, `lastUpdate`) VALUES(:corporationID, :corporationName, :memberCount, :ticker, :description, :lastUpdate)'
+					DB::query(Database::INSERT, 'INSERT INTO corporations (`id`, `name`, `member_count`, `ticker`, `description`, `lastUpdate`) VALUES(:corporationID, :corporationName, :memberCount, :ticker, :description, :lastUpdate)'
 											   .' ON DUPLICATE KEY UPDATE description = :description, memberCount = :memberCount, lastUpdate = :lastUpdate')
 											->param(':memberCount', $result['memberCount'] )
 											->param(':corporationID', $result['corporationID'] )
@@ -283,16 +283,6 @@ final class miscUtils {
 
 		return $name;
 	}
-
-	static function apiFetchCorp( $corpID )
-	{
-		PhealHelper::configure();
-		$pheal = new Pheal(null,null,'corp');
-
-		$result = $pheal->CorporationSheet( array( 'corporationID' => (int)$gm->eveID ) );
-		$count = $result->memberCount;
-	}
-
 
 	static function getDayStamp()
 	{

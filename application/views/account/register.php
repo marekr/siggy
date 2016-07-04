@@ -1,6 +1,6 @@
 
 <div class="container">
-    <div class="row">
+	<div class="row">
 		<div class="well">
 			<h2>Register</h2>
 			<p>To create an account, please fill in the fields below. All passwords are salted when stored and are secured, your email address is only used for password recovery.</p>

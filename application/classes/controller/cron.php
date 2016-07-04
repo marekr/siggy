@@ -233,24 +233,9 @@ class Controller_Cron extends Controller
 
 		foreach($corpsToUpdate as $gm)
 		{
-			try
-			{
-					$result = $pheal->CorporationSheet( array( 'corporationID' => (int)$gm['eveID'] ) );
+			$corp = Corporation::find((int)$gm['eveID']);
 
-					DB::query(Database::INSERT, 'INSERT INTO corporations (`corporationID`, `corporationName`, `memberCount`, `ticker`, `description`, `lastUpdate`) VALUES(:corporationID, :corporationName, :memberCount, :ticker, :description, :lastUpdate)'
-											   .' ON DUPLICATE KEY UPDATE description = :description, memberCount = :memberCount, lastUpdate = :lastUpdate')
-											->param(':memberCount', $result->memberCount )
-											->param(':corporationID', $gm['eveID'] )
-											->param(':corporationName', $result->corporationName )
-											->param(':description', $result->description )
-											->param(':ticker', $result->ticker )
-											->param(':lastUpdate', time() )
-											->execute();
-			}
-			catch( Exception $e )
-			{
-				echo $e->getMessage();
-			}
+			$corp->syncWithApi();
 		}
 	}
 

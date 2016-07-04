@@ -122,37 +122,6 @@ legend
 		margin-left:0 !important;
 	}
 
-      #characterSelect
-      {
-				width: 440px;
-				margin: 0 auto;
-				list-style-type: none;
-      }
-      
-      #characterSelect input
-      {
-				border: 0;
-      }
-      
-      #characterSelect li
-      {
-				float:left;
-				padding:5px;
-				text-align:center;
-      }
-      
-      #characterSelect li.selected
-      {
-				background-color: #0F0F0F;
-      }
-      
-      #characterSelect li:hover
-      {
-				background-color: #4D4D4D;
-				cursor:pointer;
-      }
-
-
 
 /* Footer
 -------------------------------------------------- */

@@ -6,17 +6,6 @@ class AuthStatus {
 
 	const ACCEPTED = 3;
 
-	const APILOGINREQUIRED = 4;
-
-	//bad key or api errored
-	const APILOGININVALID = 5;
-
-	//nuff said
-	const APILOGINNOTENABLED = 6;
-
-	//api char has no access/group
-	const APILOGINNOACCESS = 7;
-
 	const BLACKLISTED = 9;
 
 	const GUEST = 8;
@@ -63,11 +52,7 @@ class Auth {
 
 		if( self::$session->groupID )
 		{
-			if( self::$session->accessData['api_login_required'] && !self::loggedIn() )
-			{
-				self::$authStatus = AuthStatus::APILOGINREQUIRED;
-			}
-			else if( isset( self::$session->accessData['character_blacklist'] ) &&
+			if( isset( self::$session->accessData['character_blacklist'] ) &&
 						array_key_exists( self::$session->charID, self::$session->accessData['character_blacklist'] ) )
 			{
 				self::$authStatus = AuthStatus::BLACKLISTED;
@@ -135,6 +120,23 @@ class Auth {
 		return (self::$user->userLoaded());
 	}
 
+	public static function characterOwnerHashTied($hash)
+	{
+		$user = DB::query(Database::SELECT, 'SELECT u.id FROM users u
+											JOIN user_ssocharacter sc ON(sc.user_id=u.id)
+											WHERE sc.character_owner_hash=:hash')
+									->param(':hash', $hash)
+									->execute()
+									->current();
+
+		if( isset($user['id']) && $user['id'] > 0)
+		{
+			return $user['id'];
+		}
+
+		return FALSE;
+	}
+
 	public static function usernameExists($username)
 	{
 		$user = DB::query(Database::SELECT, 'SELECT id FROM users WHERE LOWER(username)=:username')->param(':username', strtolower($username))->execute()->current();
@@ -160,11 +162,39 @@ class Auth {
 		return FALSE;
 	}
 
+	/*
+	 * Forces the login on a given user id because...SSO, better solution later
+	 */
+	public static function forceLogin($id, $rememberMe = FALSE)
+	{
+		$tmp = new User();
+		$tmp->loadByID($id);
+
+		if( !isset($tmp->data['id']) )
+		{
+			return self::LOGIN_INVALID;
+		}
+
+		$lifetime = 0;
+		if( $rememberMe )
+		{
+			$lifetime = 60*60*24*365;	//1 year
+		}
+
+		self::$user = $tmp;
+
+		Cookie::set('userID', self::$user->data['id'], $lifetime);
+		Cookie::set('passHash', self::$user->data['password'], $lifetime);
+
+		self::$session->reloadUserSession();
+
+		return self::LOGIN_SUCCESS;
+	}
+
 	public static function processLogin($username, $password, $rememberMe = FALSE)
 	{
 		$tmp = new User();
 		$tmp->loadByUsername($username);
-
 
 		if( !isset($tmp->data['id']) )
 		{
