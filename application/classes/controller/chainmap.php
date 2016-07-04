@@ -42,10 +42,10 @@ class Controller_Chainmap extends FrontController {
 
 		$targetID = 0;
 
-
-		if( $targetCurrentSys )
+		$currentLocation = CharacterLocation::findWithinCutoff(Auth::$session->charID);
+		if( $targetCurrentSys && $currentLocation != null )
 		{
-			$targetID = $_SERVER['HTTP_EVE_SOLARSYSTEMID'];
+			$targetID = $currentLocation->system_id;
 		}
 		else if (!empty($target))
 		{
@@ -414,12 +414,13 @@ class Controller_Chainmap extends FrontController {
 			$errors[] = "You cannot link a system to itself!";
 		}
 
+		$currentLocation = CharacterLocation::findWithinCutoff(Auth::$session->charID);
 		$fromSysID = 0;
 		if( $fromSysCurrent )
 		{
-			if( isset($_SERVER['HTTP_EVE_SOLARSYSTEMID']) )
+			if( $currentLocation != null )
 			{
-				$fromSysID = $_SERVER['HTTP_EVE_SOLARSYSTEMID'];
+				$fromSysID = $currentLocation->system_id;
 			}
 			else
 			{
@@ -438,9 +439,9 @@ class Controller_Chainmap extends FrontController {
 		$toSysID = 0;
 		if( $toSysCurrent )
 		{
-			if( isset($_SERVER['HTTP_EVE_SOLARSYSTEMID']) )
+			if( $currentLocation != null )
 			{
-				$toSysID = $_SERVER['HTTP_EVE_SOLARSYSTEMID'];
+				$toSysID = $currentLocation->system_id;
 			}
 			else
 			{

@@ -13,7 +13,7 @@ class Pathfinder {
 
 		if( !($this->jumps = $cache->get( $cacheName, FALSE ) ) )
 		{
-			$data = DB::select()->from('mapsolarsystemjumps')->order_by('fromSolarSystemID', 'ASC')->execute()->as_array();
+			$data = DB::select()->from('eve_mapsolarsystemjumps')->order_by('fromSolarSystemID', 'ASC')->execute()->as_array();
 
 			$this->jumps = array();
 			foreach($data as $j)

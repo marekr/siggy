@@ -66,7 +66,7 @@ class Controller_Special extends Controller {
 		}
 
 
-		$data = DB::select()->from('mapsolarsystemjumps')->order_by('fromSolarSystemID', 'ASC')->execute()->as_array();
+		$data = DB::select()->from('eve_mapsolarsystemjumps')->order_by('fromSolarSystemID', 'ASC')->execute()->as_array();
 
 		$jumps = array();
 		foreach($data as $j)

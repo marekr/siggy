@@ -138,7 +138,7 @@ class Controller_Account extends FrontController {
 						HTTP::redirect('/account/connected');
 					}
 
-					$expiration = Carbon::now()->addSeconds($token->getEndOfLife())->toDateTimeString();
+					$expiration = Carbon::createFromTimeStampUTC($token->getEndOfLife())->toDateTimeString();
 
 					if( $userID = Auth::characterOwnerHashTied( $result['CharacterOwnerHash'] ) )
 					{

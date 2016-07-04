@@ -286,23 +286,14 @@ class Controller_Siggy extends FrontController {
 			return;
 		}
 
-        if( $origin == $dest )
-        {
-            //failure condition that happens sometimes, bad for the JS engine
-            return;
-        }
-
-		$shipTypeID = isset($_SERVER['HTTP_EVE_SHIPTYPEID']) ? $_SERVER['HTTP_EVE_SHIPTYPEID']  : 0;
-
-		if( $shipTypeID == 0 || $shipTypeID == 670 || $shipTypeID == 33328 )
+		if( $origin == $dest )
 		{
-			//pods
-			//return because we could be podded :)
+			//failure condition that happens sometimes, bad for the JS engine
 			return;
 		}
 
 		$kspaceJump = DB::query(Database::SELECT, "SELECT `fromSolarSystemID`, `toSolarSystemID`
-													FROM mapsolarsystemjumps
+													FROM eve_mapsolarsystemjumps
 													WHERE (fromSolarSystemID=:sys1 AND toSolarSystemID=:sys2) OR
 														 (fromSolarSystemID=:sys2 AND toSolarSystemID=:sys1)")
 						->param(':sys1', $origin)
@@ -315,7 +306,7 @@ class Controller_Siggy extends FrontController {
 			return;
 		}
 
-        $whHash = mapUtils::whHashByID($origin, $dest);
+		$whHash = mapUtils::whHashByID($origin, $dest);
 
 		$connection = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE hash=:hash AND group_id=:group AND chainmap_id=:chainmap")
 						->param(':hash', $whHash)
@@ -356,14 +347,16 @@ class Controller_Siggy extends FrontController {
 				->execute();
 		}
 
-        if( Auth::$session->accessData['jumpLogEnabled']  && !empty( $_SERVER['HTTP_EVE_SHIPTYPEID'] ) )
-        {
-            $charID = ( Auth::$session->accessData['jumpLogRecordNames'] ? $_SERVER['HTTP_EVE_CHARID'] : 0 );
-            $charName = ( Auth::$session->accessData['jumpLogRecordNames'] ? $_SERVER['HTTP_EVE_CHARNAME'] : '' );
-            $jumpTime = ( Auth::$session->accessData['jumpLogRecordTime'] ? time() : 0 );
+		//TODO fix me......this is a more involved one
+		/*
+		if( Auth::$session->accessData['jumpLogEnabled']  && !empty( $_SERVER['HTTP_EVE_SHIPTYPEID'] ) )
+		{
+			$charID = ( Auth::$session->accessData['jumpLogRecordNames'] ? $_SERVER['HTTP_EVE_CHARID'] : 0 );
+			$charName = ( Auth::$session->accessData['jumpLogRecordNames'] ? $_SERVER['HTTP_EVE_CHARNAME'] : '' );
+			$jumpTime = ( Auth::$session->accessData['jumpLogRecordTime'] ? time() : 0 );
 
-            DB::query(Database::INSERT, 'INSERT INTO wormholetracker (`wormhole_hash`, `origin`, `destination`, `group_id`, `chainmap_id`, `time`, `shipTypeID`,`charID`, `charName`)
-															   VALUES(:hash, :origin, :dest, :groupID, :chainmap, :time,:shipTypeID,:charID,:charName)')
+			DB::query(Database::INSERT, 'INSERT INTO wormholetracker (`wormhole_hash`, `origin`, `destination`, `group_id`, `chainmap_id`, `time`, `shipTypeID`,`charID`, `charName`)
+																VALUES(:hash, :origin, :dest, :groupID, :chainmap, :time,:shipTypeID,:charID,:charName)')
 						->param(':hash', $whHash )
 						->param(':dest', $dest)
 						->param(':origin', $origin )
@@ -374,7 +367,7 @@ class Controller_Siggy extends FrontController {
 						->param(':charID', $charID)
 						->param(':charName', $charName)
 						->execute();
-        }
+		}*/
 	}
 
 	private function doSystemMappedNotifications($systems)
@@ -659,9 +652,10 @@ class Controller_Siggy extends FrontController {
 											'name' => '' )
 						);
 
-		if( $this->igb )
+		$currentLocation = CharacterLocation::findWithinCutoff(Auth::$session->charID);
+		if( $currentLocation != null )
         {
-			$currentSystemID = (int)$_SERVER['HTTP_EVE_SOLARSYSTEMID'];
+			$currentSystemID = (int)$currentLocation->system_id;
             $lastCurrentSystemID = isset($_POST['last_location_id']) ? (int)$_POST['last_location_id'] : 0;
 
 			if( $lastCurrentSystemID != $currentSystemID  )
@@ -694,11 +688,12 @@ class Controller_Siggy extends FrontController {
 				}
 
 				$update['location']['id'] = $currentSystemID;
-				$update['location']['name'] = $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'];
+				//TODO reimplement this? i wonder what this is used for... lol
+			//	$update['location']['name'] = $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'];
 			}
 
 			/* Location tracking */
-			if( isset($_SERVER['HTTP_EVE_CHARID']) && isset($_SERVER['HTTP_EVE_CHARNAME']) && $currentSystemID != 0 )
+			if( $currentSystemID != 0 )
 			{
 				if( !Auth::$session->accessData['alwaysBroadcast'] )
 				{
@@ -716,13 +711,13 @@ class Controller_Siggy extends FrontController {
 													broadcast = :broadcast,
 													shipType = :shipType,
 													shipName = :shipName')
-						->param(':charID', $_SERVER['HTTP_EVE_CHARID'] )
-						->param(':charName', $_SERVER['HTTP_EVE_CHARNAME'] )
+						->param(':charID', Auth::$session->charID )
+						->param(':charName', Auth::$session->charName )
 						->param(':broadcast', $broadcast )
 						->param(':systemID', $currentSystemID )
 						->param(':groupID', Auth::$session->groupID )
-						->param(':shipType', isset($_SERVER['HTTP_EVE_SHIPTYPEID']) ? (int)$_SERVER['HTTP_EVE_SHIPTYPEID'] : 0 )
-						->param(':shipName', isset($_SERVER['HTTP_EVE_SHIPNAME']) ? htmlentities($_SERVER['HTTP_EVE_SHIPNAME']) : '' )
+						->param(':shipType', 0 )
+						->param(':shipName', '' )
 						->param(':chainmap', Auth::$session->accessData['active_chain_map'] )
 						->param(':lastBeep', time() )
 						->execute();

@@ -33,11 +33,12 @@ class Controller_Thera extends FrontController {
 			}
 		}
 
-		if( $this->igb && isset($_SERVER['HTTP_EVE_SOLARSYSTEMID']) )
+		$currentLocation = CharacterLocation::findWithinCutoff(Auth::$session->charID);
+		if( $currentLocation != null )
 		{
 			$pather = new Pathfinder();
 
-			$targetID = intval($_SERVER['HTTP_EVE_SOLARSYSTEMID']);
+			$targetID = $currentLocation->system_id;
 
 			if( $targetID < 31000000 )
 			{
