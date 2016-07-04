@@ -144,8 +144,9 @@
 					</a>
 					<?php if( Auth::loggedIn() ): ?>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/apiKeys">API Keys</a></li>
 						<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/characters">Switch Character</a></li>
+						<li class="divider"></li>
+						<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/connected">Connected Characters</a></li>
 						<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/changePassword">Change Password</a></li>
 						<li class="divider"></li>
 						<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/logout">Logout</a></li>
