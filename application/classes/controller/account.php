@@ -522,7 +522,6 @@ class Controller_Account extends FrontController {
 					}
 					catch(Exception $e)
 					{
-						print_r($e);
 					}
 					$view = $this->template->content = View::factory('messages/passwordResetCompleteMessage');
 				}
