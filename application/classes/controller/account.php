@@ -538,44 +538,6 @@ class Controller_Account extends FrontController {
 		}
 	}
 
-	public function action_noAPIAccess()
-	{
-		if( !Auth::loggedIn() )
-		{
-				HTTP::redirect('/');
-				return;
-		}
-		$this->template->title = __('siggy: no access');
-
-		$view = View::factory('siggy/noAPIAccess');
-
-		if(	!isset(Auth::$user->data['selected_apikey_id']) )
-		{
-			Auth::$user->loadByID(Auth::$user->data['id']);
-			Auth::$user->save();
-		}
-
-		if( Auth::$user->data['selected_apikey_id'] && ( Auth::$user->data['char_id'] == 0 || Auth::$user->data['corp_id'] == 0 ) )
-		{
-			//char select
-			$view->messageType = 'selectChar';
-		}
-		elseif ( !count(Auth::$user->getAPIKeys()) )
-		{
-			$view->messageType = 'missingAPI';
-		}
-		elseif( Auth::$user->data['apiKeyInvalid'] == 1 )
-		{
-			$view->messageType = 'badAPI';
-		}
-		else
-		{
-			$view->messageType = 'noAccess';
-		}
-
-		$this->template->content = $view;
-	}
-
 	public function action_characters()
 	{
 		if( !Auth::loggedIn() )
