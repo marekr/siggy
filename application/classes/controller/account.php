@@ -140,7 +140,9 @@ class Controller_Account extends FrontController {
 
 					$expiration = Carbon::createFromTimeStampUTC($token->getEndOfLife())->toDateTimeString();
 
-					if( $userID = Auth::characterOwnerHashTied( $result['CharacterOwnerHash'] ) )
+					$userID = Auth::characterOwnerHashTied( $result['CharacterOwnerHash'] );
+
+					if( $userID == Auth::$user->data['id'] )
 					{
 						Auth::$user->updateSSOCharacter($result['CharacterID'],
 															$token->getAccessToken(),
@@ -149,7 +151,7 @@ class Controller_Account extends FrontController {
 
 						HTTP::redirect('/account/connected');
 					}
-					else
+					else if ( $userID == null )
 					{
 						Auth::$user->addSSOCharacter($result['CharacterOwnerHash'], 
 													$result['CharacterID'], 
@@ -158,6 +160,10 @@ class Controller_Account extends FrontController {
 													$token->getRefreshToken());
 						
 						HTTP::redirect('/account/connected');
+					}
+					else
+					{
+
 					}
 				}
 				else

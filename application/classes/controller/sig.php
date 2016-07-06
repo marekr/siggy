@@ -33,7 +33,7 @@ class Controller_Sig extends FrontController {
 		{
 			$insert['systemID'] = intval($sigData['systemID']);
 			$insert['sig'] = strtoupper($sigData['sig']);
-			$insert['description'] = $sigData['desc'];
+			$insert['description'] = htmlspecialchars($sigData['desc']);
 			$insert['created_at'] = Carbon::now()->toDateTimeString();
 			$insert['siteID'] = intval($sigData['siteID']);
 			$insert['type'] = $sigData['type'];
@@ -214,7 +214,7 @@ class Controller_Sig extends FrontController {
 		if( !empty($sigData) && isset($sigData['id']) )
 		{
 			$update['sig'] = strtoupper($sigData['sig']);
-			$update['description'] = $sigData['desc'];
+			$update['description'] = htmlspecialchars($sigData['desc']);
 			$update['updated_at'] = Carbon::now()->toDateTimeString();
 			$update['siteID'] = isset($sigData['siteID']) ? intval($sigData['siteID']) : 0;
 			$update['type'] = $sigData['type'];

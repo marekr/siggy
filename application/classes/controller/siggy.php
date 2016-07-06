@@ -831,7 +831,7 @@ class Controller_Siggy extends FrontController {
 			exit();
 		}
 
-		$notes = strip_tags($_POST['notes']);
+		$notes = htmlspecialchars($_POST['notes']);
 
 		$update = array('groupNotes' => $notes);
 
@@ -863,7 +863,7 @@ class Controller_Siggy extends FrontController {
 
 			if( isset($_POST['label']) )
 			{
-				$update['displayName'] = trim(strip_tags($_POST['label']));
+				$update['displayName'] = trim(htmlspecialchars($_POST['label']));
 				$log_message .= " Display Name:" . $update['displayName'] . ";";
 			}
 

@@ -16,13 +16,13 @@ class Controller_Pos extends FrontController {
 		}
 
 		$data = array(
-			'pos_location_planet' => $_POST['pos_location_planet'],
-			'pos_location_moon' => $_POST['pos_location_moon'],
+			'pos_location_planet' => htmlspecialchars($_POST['pos_location_planet']),
+			'pos_location_moon' => htmlspecialchars($_POST['pos_location_moon']),
 			'pos_owner' => $_POST['pos_owner'],
 			'pos_type' => isset($_POST['pos_type']) ? intval($_POST['pos_type']) : 1,
 			'pos_online' => intval($_POST['pos_online']),
 			'pos_size' => $_POST['pos_size'],
-			'pos_notes' => $_POST['pos_notes'],
+			'pos_notes' => htmlspecialchars($_POST['pos_notes']),
 			'group_id' => Auth::$session->groupID,
 			'pos_added_date' => time(),
 			'pos_system_id' => intval($_POST['pos_system_id'])
@@ -64,13 +64,13 @@ class Controller_Pos extends FrontController {
 		}
 
 		$data = array(
-			'pos_location_planet' => $_POST['pos_location_planet'],
-			'pos_location_moon' => $_POST['pos_location_moon'],
+			'pos_location_planet' => htmlspecialchars($_POST['pos_location_planet']),
+			'pos_location_moon' => htmlspecialchars($_POST['pos_location_moon']),
 			'pos_owner' => $_POST['pos_owner'],
 			'pos_type' => isset($_POST['pos_type']) ? intval($_POST['pos_type']) : 1,
 			'pos_online' => intval($_POST['pos_online']),
 			'pos_size' => $_POST['pos_size'],
-			'pos_notes' => $_POST['pos_notes']
+			'pos_notes' => htmlspecialchars($_POST['pos_notes'])
 		);
 
 		if( empty($data['pos_location_planet'] ) || empty($data['pos_location_moon'] ) )
