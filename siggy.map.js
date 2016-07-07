@@ -506,13 +506,10 @@ siggy2.Map.prototype.initializeSystemBlobContextMenu = function()
 						  'showinfo': {name: 'Show Info'}
 						};
 
-			if( typeof(CCPEVE) != "undefined" )
-			{
-				items.sep1 = "---------";
-				items.setdest = {name:'Set Destination'};
-				items.addwaypoint = {name: 'Add Waypoint'};
-				items.sep2 = "---------";
-			}
+			items.sep1 = "---------";
+			items.setdest = {name:'Set Destination'};
+			items.addwaypoint = {name: 'Add Waypoint'};
+			items.sep2 = "---------";
 
 			if( parseInt(sysData.rally) == 1 )
 			{
@@ -553,24 +550,28 @@ siggy2.Map.prototype.systemContextMenuHandler = function(action, system)
 	{
 		$this.openSystemEdit( system.systemID );
 	}
-	else if( action == "setdest" )
+	else if( action == "setdest" ||
+		action == "addwaypoint" )
 	{
-		CCPEVE.setDestination(system.systemID);
-	}
-	else if( action == "addwaypoint" )
-	{
-		CCPEVE.addWaypoint(system.systemID);
+		var postData = {
+			system_id: parseInt(system.systemID),
+			waypoint: (action == "addwaypoint")
+		}
+
+		$.ajax({
+			type: 'post',
+			url: $this.baseUrl + 'crest/waypoint',
+			data: JSON.stringify(postData),
+			contentType: 'application/json',
+			success: function (result)
+			{
+			},
+			dataType: 'json'
+		});
 	}
 	else if( action == "showinfo" )
 	{
-		if( typeof(CCPEVE) != "undefined" )
-		{
-			CCPEVE.showInfo(5, system.systemID );
-		}
-		else
-		{
-			window.open('http://evemaps.dotlan.net/system/'+ system.name , '_blank');
-		}
+		window.open('http://evemaps.dotlan.net/system/'+ system.name , '_blank');
 	}
 	else if( action == "setrally" )
 	{
