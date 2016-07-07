@@ -3,15 +3,16 @@
  * @copyright Copyright (c) 2014 borkedLabs - All Rights Reserved
  */
 
-$.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
 
 $( function()
 {
 	$('input, textarea').placeholder();
+
+	$.ajaxSetup({
+		headers: {
+			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		}
+	});
 });
 
 var siggy2 = siggy2 || {};
