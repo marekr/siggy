@@ -138,6 +138,18 @@ class User {
 		return TRUE;
 	}
 
+
+	public function getActiveSSOCharacter()
+	{
+		$char = DB::query(Database::SELECT, "SELECT * FROM user_ssocharacter WHERE user_id=:userid AND character_id=:char_id")
+			->param(':char_id', $this->data['char_id'])
+			->param(':userid', $this->data['id'])
+			->execute()
+			->current();
+
+		return $char;
+	}
+
 	public function getSSOCharacters()
 	{
 		$characters = DB::query(Database::SELECT, "SELECT * FROM user_ssocharacter WHERE user_id=:userid")->param(':userid', $this->data['id'])

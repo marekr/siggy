@@ -63,6 +63,16 @@ class FrontController extends Controller {
 		}
 	}
 
+	public function validateCSRF()
+	{
+		$csrf = isset($_SERVER['HTTP_X_CSRF_TOKEN']) ? $_SERVER['HTTP_X_CSRF_TOKEN'] : ( isset($_POST['_token']) ? $_POST['_token'] : '');
+
+		if( Auth::$session->sessionData['csrf_token'] != $csrf )
+		{
+			$this->siggyredirect('/');
+		}
+	}
+
 	public function before()
 	{
 		//we are not caching any of our pages insanely
