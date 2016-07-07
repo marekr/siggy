@@ -93,7 +93,7 @@ class UserSession {
 
 	private function __fetchSessionData()
 	{
-		$sess = DB::query(Database::SELECT, 'SELECT id,user_id,group_id,character_id,character_name,corporation_id FROM sessions WHERE id=:id')
+		$sess = DB::query(Database::SELECT, 'SELECT id,user_id,group_id,character_id,character_name,corporation_id,csrf_token FROM sessions WHERE id=:id')
 					->param(':id', $this->sessionID)
 					->execute()
 					->current();
@@ -111,6 +111,12 @@ class UserSession {
 	private function __generateSessionID()
 	{
 		$sessionID = md5(uniqid(microtime()) . Request::$client_ip . Request::$user_agent);
+		return $sessionID;
+	}
+
+	private function __generateCSRF()
+	{
+		$sessionID = sha1(uniqid(microtime()) . Request::$client_ip . Request::$user_agent);
 		return $sessionID;
 	}
 
@@ -154,6 +160,7 @@ class UserSession {
 					'created_at' => Carbon::now()->toDateTimeString(),
 					'ip_address' => Request::$client_ip,
 					'user_agent' => Request::$user_agent,
+					'csrf_token' => $this->__generateCSRF(),
 					'type' => 'guest',
 					'user_id' => ( isset(Auth::$user->data['id']) ? Auth::$user->data['id'] : 0 ),
 					'group_id' => ( isset(Auth::$user->data['groupID']) ? Auth::$user->data['groupID'] : 0 ),

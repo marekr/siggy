@@ -61,6 +61,7 @@
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/thirdparty.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>
         <script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>
         <?php endif; ?>
+		<meta name="csrf-token" content="<?php echo Auth::$session->sessionData['csrf_token']; ?>">
 	</head>
 	<body>
 		<div class="navbar navbar-default navbar-fixed-top">
