@@ -27,12 +27,8 @@
 						{{ system_name }}
 					</button>
 					<ul class="dropdown-menu" role="menu">
-						{{#isIGB}}
 						<li>
-						{{else}}
-						<li class='disabled'>
-						{{/isIGB}}
-							<a onclick="javascript:CCPEVE.setDestination({{ system_id }})">Set Destination</a>
+							<a onclick="javascript:siggy2.Eve.SetDestination({{ system_id }})">Set Destination</a>
 						</li>
 						{{#isIGB}}
 						<li>

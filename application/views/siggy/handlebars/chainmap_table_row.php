@@ -6,12 +6,8 @@
 					{{toSystem.name}}
 				</button>
 				<ul class="dropdown-menu" role="menu">
-					{{#isIGB}}
 					<li>
-					{{else}}
-					<li class='disabled'>
-					{{/isIGB}}
-						<a onclick="javascript:CCPEVE.setDestination({{ toSystem.id }})">Set Destination</a>
+						<a onclick="javascript:siggy2.Eve.SetDestination({{ toSystem.id }})">Set Destination</a>
 					</li>
 					{{#isIGB}}
 					<li>
@@ -35,7 +31,7 @@
 					{{else}}
 					<li class='disabled'>
 					{{/isIGB}}
-						<a onclick="javascript:CCPEVE.setDestination({{ fromSystem.id }})">Set Destination</a>
+						<a onclick="javascript:siggy2.Eve.SetDestination({{ fromSystem.id }})">Set Destination</a>
 					</li>
 					{{#isIGB}}
 					<li>
