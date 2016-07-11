@@ -550,24 +550,13 @@ siggy2.Map.prototype.systemContextMenuHandler = function(action, system)
 	{
 		$this.openSystemEdit( system.systemID );
 	}
-	else if( action == "setdest" ||
-		action == "addwaypoint" )
+	else if( action == "setdest" )
 	{
-		var postData = {
-			system_id: parseInt(system.systemID),
-			waypoint: (action == "addwaypoint")
-		}
-
-		$.ajax({
-			type: 'post',
-			url: $this.baseUrl + 'crest/waypoint',
-			data: JSON.stringify(postData),
-			contentType: 'application/json',
-			success: function (result)
-			{
-			},
-			dataType: 'json'
-		});
+		siggy2.Eve.SetDestination(system.systemID);
+	}
+	else if( action == "addwaypoint" )
+	{
+		siggy2.Eve.AddWaypoint(system.systemID);
 	}
 	else if( action == "showinfo" )
 	{

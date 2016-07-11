@@ -13,6 +13,7 @@ java.exe -jar compiler.jar ^
 --js=siggy.map.connection.js ^
 --js=siggy.hotkeyhelper.js ^
 --js=siggy.map.js ^
+--js=siggy.eve.js ^
 --js=siggy.activity.siggy.js ^
 --js=siggy.activity.scannedsystems.js ^
 --js=siggy.activity.search.js ^

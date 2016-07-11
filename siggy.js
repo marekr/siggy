@@ -8,11 +8,6 @@ $( function()
 {
 	$('input, textarea').placeholder();
 
-	$.ajaxSetup({
-		headers: {
-			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		}
-	});
 });
 
 var siggy2 = siggy2 || {};
@@ -86,6 +81,7 @@ siggy2.Core = function( options )
 		}
 	}
 
+	siggy2.Eve.Initialize(this.settings.baseUrl);
 
 	siggy2.Helpers.setupHandlebars();
 	this.initializeBasicSystemContextMenu();
@@ -479,12 +475,9 @@ siggy2.Core.prototype.initializeBasicSystemContextMenu = function()
 							"showinfo": {name: "Show Info"}
 						};
 
-			if( typeof(CCPEVE) != "undefined" )
-			{
-				items.sep1 = "---------";
-				items.setdest = {name:'Set Destination'};
-				items.addwaypoint = {name: 'Add Waypoint'};
-			}
+			items.sep1 = "---------";
+			items.setdest = {name:'Set Destination'};
+			items.addwaypoint = {name: 'Add Waypoint'};
 
             return {
 				callback: function(key, options) {
@@ -492,11 +485,11 @@ siggy2.Core.prototype.initializeBasicSystemContextMenu = function()
 					var sysName  = $($trigger).data("system-name");
 					if( key == "setdest" )
 					{
-						CCPEVE.setDestination(sysID);
+						siggy2.Eve.SetDestination(sysID);
 					}
 					else if( action == "addwaypoint" )
 					{
-						CCPEVE.addWaypoint(system.systemID);
+						siggy2.Eve.AddWaypoint(sysID);
 					}
 					else if( key == "showinfo" )
 					{
