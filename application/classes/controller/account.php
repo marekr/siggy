@@ -131,10 +131,11 @@ class Controller_Account extends FrontController {
 
 				$result = json_decode($eveService->request('https://login.eveonline.com/oauth/verify'), true);
 
-				if( $session->get('sso_connect') )
+				if( $session->get_once('sso_connect',false) )
 				{
 					if( !is_array($result) )
 					{
+						Message::add('danger', __('Error getting SSO data.'));
 						HTTP::redirect('/account/connected');
 					}
 
@@ -144,6 +145,7 @@ class Controller_Account extends FrontController {
 
 					if( $userID == Auth::$user->data['id'] )
 					{
+						Message::add('info', __('The character\'s connection has been updated successfully.'));
 						Auth::$user->updateSSOCharacter($result['CharacterID'],
 															$token->getAccessToken(),
 															$token->getRefreshToken(),
@@ -153,6 +155,7 @@ class Controller_Account extends FrontController {
 					}
 					else if ( $userID == null )
 					{
+						Message::add('success', __('The character has been successfully connected to your siggy account.'));
 						Auth::$user->addSSOCharacter($result['CharacterOwnerHash'], 
 													$result['CharacterID'], 
 													$token->getAccessToken(), 
@@ -163,7 +166,8 @@ class Controller_Account extends FrontController {
 					}
 					else
 					{
-
+						Message::add('danger', __('The character is connected to a different account. You must disconnect it first if you want to connect it to this one.'));
+						HTTP::redirect('/account/connected');
 					}
 				}
 				else

@@ -75,16 +75,25 @@
 		</div>
 	</div>
 	<?php if( $layoutMode == 'blank' ): ?>
+		<?php if(Message::count() > 0): ?>
+			<div class="row">
+				<?php echo Message::output(); ?>
+			</div>
+		<?php endif; ?>
 		<?php echo $content; ?>
 	<?php elseif( $layoutMode == 'leftMenu' ): ?>
 
 		<div class="container">
-
 			<div class="row">
 				<div class="sidenav col-lg-3">
 				<?php echo $leftMenu; ?>
 				</div>
 				<div class=" col-lg-9">
+					<?php if(Message::count() > 0): ?>
+						<div class="row">
+							<?php echo Message::output(); ?>
+						</div>
+					<?php endif; ?>
 				<?php echo $content; ?>
 				</div>
 			</div>

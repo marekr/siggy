@@ -2,48 +2,54 @@
 
 class Message {
 	
-	public static function add($type, $message)
+	public static function add(string $type, string $message)
 	{
-		@session_start();
-		// get session messages
-		if( isset($_SESSION['messages']) )
+		$session = Session::instance();
+
+		$messages = json_decode($session->get('messages',''), true);
+
+		if(!is_array($messages))
 		{
-			$messages = $_SESSION['messages'];
-		}
-		else
-		{
-			$messages = array();
+			$messages = [];
 		}
 
 		// append to messages
 		$messages[$type][] = $message;
 
 		// set messages
-		$_SESSION['messages'] = $messages;
-	}
+		$session->set('messages', json_encode($messages));
+ 	}
 
 	public static function count()
 	{
-		@session_start();
-		$count = 0;
+		$session = Session::instance();
 
-		if( isset($_SESSION['messages']) )
+		$messages = json_decode($session->get('messages',''), true);
+		if(!is_array($messages))
 		{
-			$count = count($_SESSION['messages']);
+			$messages = [];
 		}
 
-		return $count;
+		return count($messages);
 	}
 
 	public static function output()
 	{
-		$str = '';
-		$messages = $_SESSION['messages'];
-		unset($_SESSION['messages']);
+		$session = Session::instance();
 
-		if(!empty($messages))
+		$str = '';
+
+		$data = $session->get_once('messages','');
+		$allMessages = json_decode($data, true);
+
+		if(!is_array($allMessages))
 		{
-			foreach($messages as $type => $messages)
+			$allMessages = [];
+		}
+
+		if(!empty($allMessages))
+		{
+			foreach($allMessages as $type => $messages)
 			{
 				if( $type == 'error' )
 				{

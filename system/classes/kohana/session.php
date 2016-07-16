@@ -213,6 +213,8 @@ abstract class Kohana_Session {
 		return array_key_exists($key, $this->_data) ? $this->_data[$key] : $default;
 	}
 
+	private $purgeKeys = [];
+
 	/**
 	 * Get and delete a variable from the session array.
 	 *
@@ -226,7 +228,7 @@ abstract class Kohana_Session {
 	{
 		$value = $this->get($key, $default);
 
-		unset($this->_data[$key]);
+		$this->purgeKeys[] = $key;
 
 		return $value;
 	}
@@ -366,6 +368,11 @@ abstract class Kohana_Session {
 
 		// Set the last active timestamp
 		$this->_data['last_active'] = time();
+
+		foreach($this->purgeKeys as $k)
+		{
+			unset($this->_data[$k]);
+		}
 
 		try
 		{

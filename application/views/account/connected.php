@@ -7,6 +7,7 @@
 				<li>If the status of a character is "invalid", you must relogin via SSO on that character to allow siggy to regain access.</li>
 			</ul>
 	</p>
+
 	<?php echo Html::anchor('account/connect', __('<i class="glyphicon glyphicon-plus"></i>&nbsp;Connect new character'), array('class' => 'btn btn-primary pull-right') ); ?>
 	<br clear='all' />
 	<br />
