@@ -593,9 +593,6 @@ class Controller_Account extends FrontController {
 		$charData = [];
 		foreach($ssoChars as $ssoChar)
 		{
-			$corpList = $this->getCorpList();
-			$charList = $this->getCharList();
-
 			$char = Character::find($ssoChar['character_id']);
 			$charData[ $char->id ] = $char;
 		}
