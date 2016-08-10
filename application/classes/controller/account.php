@@ -265,6 +265,8 @@ class Controller_Account extends FrontController {
 
 				if( empty( $errors ) )
 				{
+					$session = Session::instance();
+
 					$userData = array('username' => $_POST['username'],
 									 'password' => $_POST['password'],
 									 'email' => $_POST['email'],
@@ -275,7 +277,21 @@ class Controller_Account extends FrontController {
 					if( User::create( $userData ) )
 					{
 						Auth::processLogin($_POST['username'], $_POST['password']);
-						HTTP::redirect('account/apiKeys');
+
+						if( $session->get_once('sso_login',false) )
+						{
+							Auth::$user->addSSOCharacter($session->get_once('sso_character_owner_hash'),
+								$session->get_once('sso_character_id'),
+								$session->get_once('sso_access_token'),
+								$session->get_once('sso_token_eol'),
+								$session->get_once('sso_refresh_token'));
+
+							HTTP::redirect('account/connected');
+						}
+						else
+						{
+							HTTP::redirect('account/connected');
+						}
 					}
 					else
 					{
@@ -290,54 +306,6 @@ class Controller_Account extends FrontController {
 		}
 
 		$this->template->content =  View::Factory('account/register')->bind('errors', $errors);
-	}
-
-	public function action_addAPI()
-	{
-		if( !Auth::loggedIn() )
-		{
-			HTTP::redirect('/');
-			return;
-		}
-
-		$this->apiKeyForm('add');
-	}
-
-	public function action_removeAPI()
-	{
-		if( !Auth::loggedIn() )
-		{
-			HTTP::redirect('/');
-			return;
-		}
-
-
-		$entryID = intval($this->request->param('id',0));
-
-
-		$keyData = DB::query(Database::SELECT, "SELECT * FROM apikeys
-												WHERE entryID=:entryID AND userID=:userID")
-										->param(':entryID', $entryID)
-										->param(':userID', Auth::$user->data['id'])
-										->execute()
-										->current();
-		if( !isset($keyData['entryID']) )
-		{
-			HTTP::redirect('/account/apiKeys');
-		}
-
-		DB::delete('apikeys')->where('entryID', '=', $entryID)->execute();
-
-		if( Auth::$user->data['selected_apikey_id'] == $keyData['entryID'] )
-		{
-			Auth::$user->data['corp_id'] = 0;
-			Auth::$user->data['char_id'] = 0;
-			Auth::$user->data['char_name'] = '';
-			Auth::$user->data['selected_apikey_id'] = 0;
-
-			Auth::$user->save();
-		}
-		HTTP::redirect('/account/apiKeys');
 	}
 
 	public function action_changePassword()
@@ -560,7 +528,7 @@ class Controller_Account extends FrontController {
 		$ssoChars = Auth::$user->getSSOCharacters();
 		if( !count($ssoChars) )
 		{
-			HTTP::redirect('/account/apiKeys');
+			HTTP::redirect('/account/connected');
 		}
 
 		$this->template->title = __('siggy: characters');
@@ -575,13 +543,16 @@ class Controller_Account extends FrontController {
 
 			$char = Character::find($ssoChar['character_id']);
 
-			if( in_array($char->corporation_id, $corpList) || in_array($char->id, $charList) )
+			if($char != null && $char->corporation() != null)
 			{
-				$selectableChars[ $char->id ] = $char;
-			}
-			else 
-			{
-				$unselectableChars[ $char->id ] = $char;
+				if( in_array($char->corporation_id, $corpList) || in_array($char->id, $charList) )
+				{
+					$selectableChars[ $char->id ] = $char;
+				}
+				else
+				{
+					$unselectableChars[ $char->id ] = $char;
+				}
 			}
 		}
 
@@ -635,6 +606,28 @@ class Controller_Account extends FrontController {
 		$view->characters = $ssoChars;
 		$view->character_data = $charData;
 		$this->template->content = $view;
+	}
+
+	public function action_disconnect()
+	{
+		if( !Auth::loggedIn() )
+		{
+			HTTP::redirect('/');
+			return;
+		}
+
+		$this->validateCSRF();
+
+		if( $this->request->method() == "POST" ) {
+
+			$charId = (int)$_POST['character_id'];
+
+			Auth::$user->removeSSOCharacter($charId);
+
+			Message::add('success', __('The character has been disconnected from your siggy account. You must remove the character permissions on the EVE Online website if you want to ensure siggy no longer has permission to access the character (not required)'));
+
+			HTTP::redirect('account/connected');
+		}
 	}
 
 	public function action_login()
@@ -703,7 +696,7 @@ class Controller_Account extends FrontController {
 	}
 
 
-	public function getCorpList()
+	private function getCorpList()
 	{
 		$cache = Cache::instance(CACHE_METHOD);
 
@@ -732,7 +725,7 @@ class Controller_Account extends FrontController {
 		}
 	}
 
-	public function getCharList()
+	private function getCharList()
 	{
 		$cache = Cache::instance(CACHE_METHOD);
 

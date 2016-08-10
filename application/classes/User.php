@@ -1,10 +1,8 @@
 <?php
 
-use Pheal\Pheal;
 
 class User {
 	public $data = array();
-	public $apiKeys = array();
 	public $perms = array();
 
 	public $groupID = 0;
@@ -159,6 +157,16 @@ class User {
 		return $characters;
 	}
 
+	public function removeSSOCharacter($characterId)
+	{
+		DB::delete('user_ssocharacter')
+			->where('user_id', '=',  $this->data['id'])
+			->where('character_id', '=',  $characterId)
+			->execute();
+
+		return TRUE;
+	}
+
 	public function updateSSOCharacter($characterId, $token, $refreshToken, $expiration)
 	{
 		$data = [
@@ -189,7 +197,7 @@ class User {
 			'valid' => 1
 		];
 
-		$userID = DB::insert('user_ssocharacter', array_keys($insert) )->values(array_values($insert))->execute();
+		DB::insert('user_ssocharacter', array_keys($insert) )->values(array_values($insert))->execute();
 
 		return TRUE;
 	}
@@ -211,6 +219,7 @@ class User {
 
 	public function loadBy($identifier, $key)
 	{
+		$user = [];
 		$baseSQL = "SELECT u.*,
 					COALESCE(ak.apiID,0) as apiID,
 					COALESCE(ak.apiKey,0) as apiKey,

@@ -59,7 +59,6 @@ class Character {
 												->param(':id', $id)
 												->execute()
 												->current();
-
 		if($char != null)
 		{
 			if( $char['updated_at'] != null &&
@@ -103,8 +102,6 @@ class Character {
 			
 			return $res;
 		}
-
-		return null;
 	}
 
 	public static function getAPICharacterAffiliation(int $id)
@@ -113,21 +110,23 @@ class Character {
 		PhealHelper::configure();
 		$pheal = new Pheal( null, null, 'eve' );
 
-		$results = $pheal->eveScope->CharacterAffiliation(array('ids' => $id));
-		if(array_key_exists(0, $results->characters))
-		{
-			$charData = $results->characters[0];
-			if( count($charData) > 0 )
-			{
-				if( $id == $charData['characterID'] )
-				{
-					return [
+		try {
+			$results = $pheal->eveScope->CharacterAffiliation(array('ids' => $id));
+			if (array_key_exists(0, $results->characters)) {
+				$charData = $results->characters[0];
+				if (count($charData) > 0) {
+					if ($id == $charData['characterID']) {
+						return [
 							'corporation_id' => $charData['corporationID'],
 							'corporation_name' => $charData['corporationName'],
 							'character_name' => $charData['characterName']
-							];
+						];
+					}
 				}
 			}
+		}
+		catch(Exception $e) {
+			return null;
 		}
 
 		return null;

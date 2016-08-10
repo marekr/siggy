@@ -101,8 +101,6 @@ class Corporation {
 			
 			return $res;
 		}
-
-		return null;
 	}
 
 	
@@ -113,16 +111,21 @@ class Corporation {
 		PhealHelper::configure();
 		$pheal = new Pheal(null,null,'corp');
 
-		$result = $pheal->CorporationSheet( array( 'corporationID' => $id ) )->toArray();
-		//print 'found corp, storing locally!';
-		$result = $result['result'];
+		try {
+			$result = $pheal->CorporationSheet(array('corporationID' => $id))->toArray();
+			//print 'found corp, storing locally!';
+			$result = $result['result'];
 
-		$details = ['member_count' => (int)$result['memberCount'],
-					'name' => $result['corporationName'],
-					'description' => mb_convert_encoding ($result['description'],"ASCII"),
-					'ticker' => $result['ticker'],
-					'alliance_id' => (int)$result['allianceID']
-					];
+			$details = ['member_count' => (int)$result['memberCount'],
+				'name' => $result['corporationName'],
+				'description' => mb_convert_encoding($result['description'], "ASCII"),
+				'ticker' => $result['ticker'],
+				'alliance_id' => (int)$result['allianceID']
+			];
+		}
+		catch(Exception $e) {
+			return null;
+		}
 
 		return $details;
 	}
