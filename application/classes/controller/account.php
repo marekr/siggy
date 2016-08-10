@@ -536,11 +536,15 @@ class Controller_Account extends FrontController {
 		$chars = [];
 		$selectableChars = [];
 		$unselectableChars = [];
+
+		$corpList = $this->getCorpList();
+		$charList = $this->getCharList();
+
 		foreach($ssoChars as $ssoChar)
 		{
-			$corpList = $this->getCorpList();
-			$charList = $this->getCharList();
-
+			if( $ssoChar['valid'] != 1 )
+				continue;
+			
 			$char = Character::find($ssoChar['character_id']);
 
 			if($char != null && $char->corporation() != null)
