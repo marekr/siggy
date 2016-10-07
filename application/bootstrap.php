@@ -108,28 +108,6 @@ if (isset($_SERVER['SERVER_PROTOCOL']))
 
 Kohana::$environment = ($_SERVER['SERVER_NAME'] !== 'localhost' && $_SERVER['SERVER_NAME'] !== 'dev.siggy.borkedlabs.com') ? Kohana::PRODUCTION : Kohana::DEVELOPMENT;
 
-/*
-if( Kohana::$environment == Kohana::DEVELOPMENT && strpos($_SERVER['HTTP_USER_AGENT'],'EVE-IGB') === false )
-{
-  $_SERVER['HTTP_EVE_CORPID'] = 389326446;
-  $_SERVER['HTTP_EVE_CHARID'] = 460256976;
-  $_SERVER['HTTP_EVE_CHARNAME'] = 'Messoroz ROCKS';
-  $_SERVER['HTTP_EVE_TRUSTED'] = 'Yes';
-  //$_SERVER['HTTP_EVE_TRUSTED'] = 'No';
-  $_SERVER['HTTP_USER_AGENT'] = 'Boo EVE-IGB';
-  $_SERVER['HTTP_EVE_SHIPTYPEID'] = 1252;
-  $lol = false;
-	if( $lol )
-	{
-		$_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] = 'Fricoure';
-		$_SERVER['HTTP_EVE_SOLARSYSTEMID'] = 30002734;
-	}
-	else
-	{
-  $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] = 'J100549';
-  $_SERVER['HTTP_EVE_SOLARSYSTEMID'] = 31002019;
-	}
-}*/
 define('SIGGY_VERSION', '2.25.5');
 if( Kohana::$environment == Kohana::PRODUCTION)
 {

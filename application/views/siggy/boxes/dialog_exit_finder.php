@@ -16,11 +16,9 @@
                 <div class="form-group">
                     <button name='submit' class="btn btn-default btn-xs" type="submit" style="margin-top: -4px;">Search</button>
                 </div>
-				<?php if( miscUtils::isIGB() ): ?>
                 <div class="form-group">
 	                <button name='current_location' class="btn btn-default btn-xs">Exits near my location</button>
                 </div>
-				<?php endif; ?>
             </form>
 
             <div id="exit-finder-loading" class="box-load-progress" style="display:none;">

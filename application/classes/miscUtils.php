@@ -328,20 +328,6 @@ final class miscUtils {
 		$start = date( 'Y-m-d', $start );
 	}
 
-	static function isIGB()
-	{
-		if ( isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'],'EVE-IGB') !== false )
-		{
-			return TRUE;
-		}
-
-		if ( isset($_SERVER['HTTP_EVE_TRUSTED']) )
-		{
-			return TRUE;
-		}
-
-		return FALSE;
-	}
 
 	static function generateString($length = 14)
 	{
