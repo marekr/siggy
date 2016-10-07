@@ -103,6 +103,11 @@ class User {
 			return FALSE;
 		}
 
+		if( $this->findSSOCharacter( $this->data['char_id'] ) == null )
+		{
+			return FALSE;
+		}
+
 		$character = Character::find( $this->data['char_id'] );
 		if( $character == null )
 		{
@@ -139,13 +144,7 @@ class User {
 
 	public function getActiveSSOCharacter()
 	{
-		$char = DB::query(Database::SELECT, "SELECT * FROM user_ssocharacter WHERE user_id=:userid AND character_id=:char_id")
-			->param(':char_id', $this->data['char_id'])
-			->param(':userid', $this->data['id'])
-			->execute()
-			->current();
-
-		return $char;
+		return $this->findSSOCharacter($this->data['char_id']);
 	}
 
 	public function getSSOCharacters()
@@ -155,6 +154,17 @@ class User {
 										->as_array();
 
 		return $characters;
+	}
+
+	public function findSSOCharacter($characterId)
+	{
+		$char = DB::query(Database::SELECT, "SELECT * FROM user_ssocharacter WHERE user_id=:userid AND character_id=:char_id")
+			->param(':char_id', $characterId)
+			->param(':userid', $this->data['id'])
+			->execute()
+			->current();
+
+		return $char;
 	}
 
 	public function removeSSOCharacter($characterId)
