@@ -18,7 +18,7 @@
 		<ul id='character-select'>
 			<?php foreach($selectableChars as $char): ?>
 
-			<li <?php echo ($char->id == $selectedCharID ? 'class="selected"' : ''); ?>>
+			<li <?php echo ($char->id == $selectedCharID ? 'class="selected"' : ''); ?> onClick="javascript:$(this).find('form').submit();">
 				<form action='<?php echo URL::base(TRUE, TRUE);?>account/characters' method='POST'>
 					<input type='hidden' name='charID' value='<?php echo $char->id; ?>' />
 
