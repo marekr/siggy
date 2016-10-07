@@ -286,7 +286,7 @@ class Controller_Account extends FrontController {
 								$session->get_once('sso_token_eol'),
 								$session->get_once('sso_refresh_token'));
 
-							HTTP::redirect('account/connected');
+							HTTP::redirect('/');
 						}
 						else
 						{

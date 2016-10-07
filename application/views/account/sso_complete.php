@@ -86,7 +86,7 @@
 					</div>
 
 					<div class="text-center">
-						<a href="" class="btn btn-lg btn-primary">Create a siggy account</a>
+						<a href="<?php echo URL::base(TRUE, TRUE);?>account/register" class="btn btn-lg btn-primary">Create a siggy account</a>
 					</div>
 				</div>
 			</div>

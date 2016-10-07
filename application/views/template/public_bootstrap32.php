@@ -54,8 +54,6 @@
 
 					<?php if( count(Auth::$user->perms) > 0 ): ?>
 				<li <?php echo ($selectedTab == 'admin' ? 'class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>manage">Admin</a></li>
-					<?php elseif( !$igb ): ?>
-				<li><a href="<?php echo URL::base(TRUE, TRUE);?>pages/createGroup">Create Siggy Group</a></li>
 					<?php endif; ?>
 				
 				<li class="dropdown">

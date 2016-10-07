@@ -9,7 +9,6 @@ require_once APPPATH.'classes/formRenderer.php';
 class FrontController extends Controller {
 	protected $groupData = array();
 	protected $trusted = false;
-	protected $igb = false;
 
 	//new
 	protected $authStatus = false;

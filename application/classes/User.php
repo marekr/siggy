@@ -196,7 +196,6 @@ class User {
 
 	public function addSSOCharacter($hash, $characterId, $token, $expiration, $refreshToken)
 	{
-		
 		$insert = [
 			'user_id' => $this->data['id'],
 			'character_owner_hash' => $hash,
