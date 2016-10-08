@@ -51,9 +51,9 @@ class Controller_Manage_Logs extends Controller_Manage
 	public function action_sessions()
 	{
 		$sessions = array();
-		$sessions = DB::query(Database::SELECT, "SELECT ss.*,cm.chainmap_name FROM siggysessions ss
+		$sessions = DB::query(Database::SELECT, "SELECT ss.*,cm.chainmap_name FROM sessions ss
 												LEFT JOIN chainmaps cm ON(cm.chainmap_id = ss.chainmap_id)
-												WHERE ss.groupID=:group ORDER BY ss.lastBeep DESC")
+												WHERE ss.group_id=:group ORDER BY ss.updated_at DESC")
 							  ->param(':group', Auth::$user->data['groupID'])
 							  ->execute()
 							  ->as_array();
@@ -64,12 +64,12 @@ class Controller_Manage_Logs extends Controller_Manage
 		$sessData = array();
 		foreach( $sessions as $sess )
 		{
-			$charID = $sess['char_id'];
+			$charID = $sess['character_id'];
 			if( !isset($sessData[ $charID ] ) )
 			{
 				$sessData[ $charID ]['charID'] = $charID;
-				$sessData[ $charID ]['charName'] = $sess['char_name'];
-				$sessData[ $charID ]['lastBeep'] = $sess['lastBeep'];
+				$sessData[ $charID ]['charName'] = $sess['character_name'];
+				$sessData[ $charID ]['lastBeep'] = $sess['updated_at'];
 			}
 			
 			$sessData[ $charID ]['data'][] = $sess;

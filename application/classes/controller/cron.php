@@ -131,9 +131,9 @@ class Controller_Cron extends Controller
 		$this->auto_render = FALSE;
 
 		//30 minute cutoff
-		$cutoff = time()-60*30;
+		$cutoff = Carbon::now()->subMinutes(30)->toDateTimeString();
 
-		DB::delete('siggysessions')->where('lastBeep', '<=', $cutoff)->execute();
+		DB::delete('sessions')->where('updated_at', '<=', $cutoff)->execute();
 	}
 
 	public function action_purgeNotifications()
