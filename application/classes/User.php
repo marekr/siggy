@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 
 class User {
 	public $data = array();
