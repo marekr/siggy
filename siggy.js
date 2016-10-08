@@ -493,14 +493,7 @@ siggy2.Core.prototype.initializeBasicSystemContextMenu = function()
 					}
 					else if( key == "showinfo" )
 					{
-						if( typeof(CCPEVE) != "undefined" )
-						{
-							CCPEVE.showInfo(5, sysID);
-						}
-						else
-						{
-							window.open('http://evemaps.dotlan.net/system/'+sysName , '_blank');
-						}
+						window.open('http://evemaps.dotlan.net/system/'+sysName , '_blank');
 					}
 				},
 				items: items
