@@ -183,7 +183,8 @@ class User {
 			'access_token' => $token,
 			'access_token_expiration' => $expiration,
 			'refresh_token' => $refreshToken,
-			'valid' => 1
+			'valid' => 1,
+			'updated_at' => Carbon::now()->toDateTimeString(),
 		];
 
 		DB::update('user_ssocharacter')->set( $data )
@@ -203,7 +204,8 @@ class User {
 			'access_token' => $token,
 			'access_token_expiration' => $expiration,
 			'refresh_token' => $refreshToken,
-			'valid' => 1
+			'valid' => 1,
+			'created_at' => Carbon::now()->toDateTimeString(),
 		];
 
 		DB::insert('user_ssocharacter', array_keys($insert) )->values(array_values($insert))->execute();
