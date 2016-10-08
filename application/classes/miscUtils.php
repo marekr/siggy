@@ -181,7 +181,7 @@ final class miscUtils {
 					//print 'found corp, storing locally!';
 					$result = $result['result'];
 					DB::query(Database::INSERT, 'INSERT INTO corporations (`id`, `name`, `member_count`, `ticker`, `description`, `updated_at`) VALUES(:corporationID, :corporationName, :memberCount, :ticker, :description, :updated_at)'
-											   .' ON DUPLICATE KEY UPDATE description = :description, memberCount = :memberCount, updated_at = :updated_at')
+											   .' ON DUPLICATE KEY UPDATE description = :description, member_count = :memberCount, updated_at = :updated_at')
 											->param(':memberCount', $result['memberCount'] )
 											->param(':corporationID', $result['corporationID'] )
 											->param(':corporationName', $result['corporationName'] )

@@ -1,14 +1,4 @@
 <?php
-
-/*
-$select = array();
-$select[0] = 'Default/No sub group';
-$subgroups = $group->subgroups->find_all()->as_array();
-foreach($subgroups as $s )
-{
-	$select[$s->subGroupID] =$s->sgName;
-}*/
-
 $type = array('corp' => 'Corp', 'char' => 'Character');
 
 ?>
