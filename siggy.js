@@ -122,7 +122,7 @@ siggy2.Core = function( options )
 						notifications: new siggy2.Activity.Notifications(this),
 						astrolabe: new siggy2.Activity.Astrolabe(this),
 						chainmap: new siggy2.Activity.Chainmap(this),
-						homestead: new siggy2.Activity.Homestead(this)
+					//	homestead: new siggy2.Activity.Homestead(this)
 					};
 
 	$(document).on('click','button.dialog-cancel', function(e)
