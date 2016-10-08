@@ -1,6 +1,7 @@
 <?php
 
 use Pheal\Pheal;
+use Carbon\Carbon;
 
 final class miscUtils {
 
@@ -179,14 +180,14 @@ final class miscUtils {
 					$result = $pheal->CorporationSheet( array( 'corporationID' => (int)$corp['characterID'] ) )->toArray();
 					//print 'found corp, storing locally!';
 					$result = $result['result'];
-					DB::query(Database::INSERT, 'INSERT INTO corporations (`id`, `name`, `member_count`, `ticker`, `description`, `lastUpdate`) VALUES(:corporationID, :corporationName, :memberCount, :ticker, :description, :lastUpdate)'
-											   .' ON DUPLICATE KEY UPDATE description = :description, memberCount = :memberCount, lastUpdate = :lastUpdate')
+					DB::query(Database::INSERT, 'INSERT INTO corporations (`id`, `name`, `member_count`, `ticker`, `description`, `updated_at`) VALUES(:corporationID, :corporationName, :memberCount, :ticker, :description, :updated_at)'
+											   .' ON DUPLICATE KEY UPDATE description = :description, memberCount = :memberCount, updated_at = :updated_at')
 											->param(':memberCount', $result['memberCount'] )
 											->param(':corporationID', $result['corporationID'] )
 											->param(':corporationName', $result['corporationName'] )
 											->param(':description', $result['description'] )
 											->param(':ticker', $result['ticker'] )
-											->param(':lastUpdate', time() )
+											->param(':updated_at', Carbon::now()->toDateTimeString() )
 											->execute();
 					$results[(string)$corp['characterID'] ] = $result;
 				}
