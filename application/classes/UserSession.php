@@ -216,11 +216,20 @@ class UserSession {
 		$access_data = array();
 
 
-		$default = array('groupID' =>0, 'group_password_required' => false, 'group_password' => '', 'data_type' => 'none');
+		$default = [
+					'groupID' =>0, 
+					'group_password_required' => false, 
+					'group_password' => '', 
+					'active_chain_map' => 0,
+					'access_type' => '',
+					'accessible_chainmaps' => [],
+					'access_groups' => []
+					];
 
 		if( empty( $this->corpID ) || empty($this->charID)  )
 		{
-			return $default;
+			$this->accessData = $default;
+			return;
 		}
 
 		$chosenGroupID = intval(Cookie::get('membershipChoice', -1));
@@ -257,7 +266,8 @@ class UserSession {
 		//check if we have any groups
 		if( !count($all_groups) )
 		{
-			return $default;
+			$this->accessData = $default;
+			return;
 		}
 
 		//did we want to select a group? check if we have access :)
@@ -280,7 +290,8 @@ class UserSession {
 		$groupData = groupUtils::getGroupData( $accessGroupID );
 		if( !$groupData )
 		{
-			return $default;
+			$this->accessData = $default;
+			return;
 		}
 
 
