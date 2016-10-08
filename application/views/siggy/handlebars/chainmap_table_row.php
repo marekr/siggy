@@ -26,11 +26,7 @@
 					{{fromSystem.name}}
 				</button>
 				<ul class="dropdown-menu" role="menu">
-					{{#isIGB}}
 					<li>
-					{{else}}
-					<li class='disabled'>
-					{{/isIGB}}
 						<a onclick="javascript:siggy2.Eve.SetDestination({{ fromSystem.id }})">Set Destination</a>
 					</li>
 					{{#isIGB}}
