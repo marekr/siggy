@@ -68,6 +68,7 @@ class FrontController extends Controller {
 
 		if( Auth::$session->sessionData['csrf_token'] != $csrf )
 		{
+			http_response_code(403);
 			$this->siggyredirect('/');
 		}
 	}
