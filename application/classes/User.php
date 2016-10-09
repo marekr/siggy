@@ -232,14 +232,8 @@ class User {
 	public function loadBy($identifier, $key)
 	{
 		$user = [];
-		$baseSQL = "SELECT u.*,
-					COALESCE(ak.apiID,0) as apiID,
-					COALESCE(ak.apiKey,0) as apiKey,
-					COALESCE(ak.apiKeyInvalid,0) as apiKeyInvalid,
-					COALESCE(ak.apiFailures,0) as apiFailures,
-					COALESCE(ak.apiLastCheck,0) as apiLastCheck
-					FROM users u
-					LEFT JOIN apikeys ak ON(ak.entryID = u.selected_apikey_id)";
+		$baseSQL = "SELECT u.*
+					FROM users u";
 
 		if( $identifier == 'username' )
 		{
