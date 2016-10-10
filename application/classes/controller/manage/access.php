@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 class Controller_Manage_Access extends Controller_Manage
 {
 	public $template = 'template/manage';
@@ -132,7 +134,8 @@ class Controller_Manage_Access extends Controller_Manage
                             'can_view_financial' => isset( $_POST['can_view_financial'] ) ? intval( $_POST['can_view_financial'] ) : 0,
                             'can_manage_access' => isset( $_POST['can_manage_access'] ) ? intval( $_POST['can_manage_access'] ) : 0,
                             'user_id' => $userID,
-                            'group_id' => Auth::$user->data['groupID']
+                            'group_id' => Auth::$user->data['groupID'],
+							'created_at' => Carbon::now()->toDateTimeString()
                         );
                 
                 
@@ -176,7 +179,8 @@ class Controller_Manage_Access extends Controller_Manage
                         'can_manage_group_members' => isset( $_POST['can_manage_group_members'] ) ? intval( $_POST['can_manage_group_members'] ) : 0,
                         'can_manage_settings' => isset( $_POST['can_manage_settings'] ) ? intval( $_POST['can_manage_settings'] ) : 0,
                         'can_view_financial' => isset( $_POST['can_view_financial'] ) ? intval( $_POST['can_view_financial'] ) : 0,
-                        'can_manage_access' => isset( $_POST['can_manage_access'] ) ? intval( $_POST['can_manage_access'] ) : 0
+                        'can_manage_access' => isset( $_POST['can_manage_access'] ) ? intval( $_POST['can_manage_access'] ) : 0,
+						'updated_at' => Carbon::now()->toDateTimeString()
                     );
 			
             DB::update('users_group_acl')->set( $update )->where( 'user_id', '=', $id )->where('group_id','=',Auth::$user->data['groupID'])->execute();

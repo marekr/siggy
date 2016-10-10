@@ -50,7 +50,7 @@ class Controller_Manage_Logs extends Controller_Manage
 	
 	public function action_sessions()
 	{
-		$sessions = array();
+		$sessions = [];
 		$sessions = DB::query(Database::SELECT, "SELECT ss.*,cm.chainmap_name FROM sessions ss
 												LEFT JOIN chainmaps cm ON(cm.chainmap_id = ss.chainmap_id)
 												WHERE ss.group_id=:group ORDER BY ss.updated_at DESC")
@@ -61,7 +61,7 @@ class Controller_Manage_Logs extends Controller_Manage
 		$view = View::factory('manage/logs/sessions');
 		
 		//lump the data by chars
-		$sessData = array();
+		$sessData = [];
 		foreach( $sessions as $sess )
 		{
 			$charID = $sess['character_id'];

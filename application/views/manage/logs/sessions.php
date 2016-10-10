@@ -24,7 +24,6 @@
 		<table class="table table-condensed">
 			<thead>
 				<tr>
-					<th width="10%">Session Type</th>
 					<th width="10%">Account ID</th>
 					<th width="15%">Chainmap</th>
 					<th width="15%">Time created</th>
@@ -34,22 +33,13 @@
 			</thead>
 			<?php foreach($sess['data'] as $d): ?>
 			<tr>
-				<td>
-				<?php if( $d['sessionType'] == 'siggy' ): ?>
-				siggy account
-				<?php elseif( $d['sessionType'] == 'sso' ): ?>
-				EVE SSO
-				<?php else: ?>
-				IGB
-				<?php endif; ?>
-				</td>
-				<td><?php echo $d['userID']; ?></td>
+				<td><?php echo $d['user_id']; ?></td>
 				<td><?php echo $d['chainmap_name']; ?></td>
-				<td><?php echo date("d/m/y g:m", $d['created']); ?></td>
+				<td><?php echo $d['created_at']; ?></td>
 				<td>
-				<?php echo $d['ipAddress']; ?>
+				<?php echo $d['ip_address']; ?>
 				</td>
-				<td><?php echo date("d/m/y g:m", $d['lastBeep']); ?></td>
+				<td><?php $d['updated_at']; ?></td>
 			</tr>
 			<?php endforeach; ?>
         </table>

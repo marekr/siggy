@@ -1,6 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 use Pheal\Pheal;
+use Carbon\Carbon;
 
 require_once APPPATH.'classes/groupUtils.php';
 require_once APPPATH.'classes/mapUtils.php';
@@ -56,6 +57,63 @@ class Controller_Special extends Controller {
 		$pather = new SystemPathFinder();
 		print_r($pather->PathFind("30000142", "30002187"));
 		echo memory_get_usage() . "\n"; // 36640
+	}
+
+	
+	public function action_fuckedup()
+	{
+		if( !isset($_GET['key']) || $_GET['key'] != 'PIZZAMOFO' )
+		{
+			exit('GTFO');
+		}
+
+		$csv = array_map('str_getcsv', file(APPPATH.DIRECTORY_SEPARATOR.'sso_fuckup.csv'));
+
+
+		$headerSkipped = false;
+		$total = 0;
+		foreach($csv as $row)
+		{
+			if(!$headerSkipped)
+			{
+				$headerSkipped = true;
+				continue;
+			}
+
+			$userID = Auth::characterOwnerHashTied( $row[0] );
+
+			if(!empty($userID))
+			{
+				$group = $row[2];
+				$link = DB::query(Database::SELECT, 'SELECT * FROM users_group_acl WHERE user_id=:id AND group_id=:gid')
+														->param(':id', $userID)
+														->param(':gid', $group)
+														->execute()
+														->current();
+				if($link == null)
+				{
+					//$row[1] = user_id old
+					$acl = [
+						'user_id' => $userID,
+						'group_id' => $row[2],
+						'can_view_logs' => $row[3],
+						'can_manage_group_members' => $row[4],
+						'can_manage_settings' => $row[5],
+						'can_view_financial' => $row[6],
+						'can_manage_access' => $row[7],
+						'created_at' => Carbon::now()->toDateTimeString()
+					];
+
+					DB::insert('users_group_acl', array_keys($acl) )
+							->values(array_values($acl))
+							->execute();
+					
+					$total++;
+				}
+			}
+		}
+
+		print $total;
 	}
 
 	public function action_generateHubJumps()
