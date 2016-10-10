@@ -235,7 +235,11 @@ class Controller_Cron extends Controller
 		{
 			$corp = Corporation::find((int)$gm['eveID']);
 
-			$corp->syncWithApi();
+			//incase this fails...
+			if($corp != null)
+			{
+				$corp->syncWithApi();
+			}
 		}
 	}
 
