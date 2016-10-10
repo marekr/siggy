@@ -492,7 +492,7 @@ siggy2.Core.prototype.initializeBasicSystemContextMenu = function()
 					{
 						siggy2.Eve.SetDestination(sysID);
 					}
-					else if( action == "addwaypoint" )
+					else if( key == "addwaypoint" )
 					{
 						siggy2.Eve.AddWaypoint(sysID);
 					}
