@@ -31,9 +31,9 @@ class CharacterLocation
 		return null;
 	}
 
-	public static function findWithinCutoff(int $id, int $cutoffTimeMins = 1)
+	public static function findWithinCutoff(int $id, int $cutOffSeconds = 15)
 	{
-		$cutoff = Carbon::now()->subMinutes($cutoffTimeMins)->toDateTimeString();
+		$cutoff = Carbon::now()->subSeconds($cutOffSeconds)->toDateTimeString();
 		$data = DB::query(Database::SELECT, 'SELECT * FROM character_location 
 											WHERE character_id=:id
 											AND updated_at >= :cutoff')
