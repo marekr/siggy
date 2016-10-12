@@ -138,23 +138,6 @@ final class miscUtils {
 	static function searchEVEEntityByName( $names, $type = 'corp' )
 	{
 		$results = [];
-		if( $type == 'corp' )
-		{
-			$nameArray = explode(',', $names);
-			$queryArray = array();
-			foreach($nameArray as $name)
-			{
-				$name = trim($name);
-				if(!empty($name))
-				{
-					$queryArray[] = "name LIKE ".Database::instance()->escape($name."%");
-				}
-			}
-			$querySQL = implode(" OR ", $queryArray);
-			$results = DB::query(Database::SELECT, 'SELECT * FROM corporations WHERE '.$querySQL)
-						->execute()
-						->as_array('id');
-		}
 
 		PhealHelper::configure();
 		$pheal = new Pheal(null,null,'eve');
@@ -173,38 +156,15 @@ final class miscUtils {
 
 		foreach( $potentialCorps as $corp )
 		{
-			try
-			{
-				if( $type == 'corp' )
-				{
-					$result = $pheal->CorporationSheet( array( 'corporationID' => (int)$corp['characterID'] ) )->toArray();
-					//print 'found corp, storing locally!';
-					$result = $result['result'];
-					DB::query(Database::INSERT, 'INSERT INTO corporations (`id`, `name`, `member_count`, `ticker`, `description`, `updated_at`) VALUES(:corporationID, :corporationName, :memberCount, :ticker, :description, :updated_at)'
-											   .' ON DUPLICATE KEY UPDATE description = :description, member_count = :memberCount, updated_at = :updated_at')
-											->param(':memberCount', $result['memberCount'] )
-											->param(':corporationID', $result['corporationID'] )
-											->param(':corporationName', $result['corporationName'] )
-											->param(':description', $result['description'] )
-											->param(':ticker', $result['ticker'] )
-											->param(':updated_at', Carbon::now()->toDateTimeString() )
-											->execute();
-					$results[(string)$corp['characterID'] ] = $result;
-				}
-				else
-				{
-					$result = $pheal->CharacterInfo( array( 'characterID' => (int)$corp['characterID'] ) )->toArray();
-					$result = $result['result'];
+			$id = (int)$corp['characterID'];
 
-					$results[(string)$corp['characterID']] = $result;
-				}
-			}
-			catch (\Pheal\Exceptions\PhealException $e)
+			if( $type == 'corp' )
 			{
-				if( $e->getCode() == 523 || $e->getCode() == 522 )	//not a corp error
-				{
-					continue;
-				}
+				$results[$id] = Corporation::find($id);
+			}
+			else
+			{
+				$results[$id] = Character::find($id);
 			}
 		}
 

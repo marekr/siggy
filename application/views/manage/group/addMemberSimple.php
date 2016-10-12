@@ -19,27 +19,27 @@ $type = array('corp' => 'Corp', 'char' => 'Character');
 			<?php foreach( $results as $result ): ?>
 			<tr>
 				<?php if( $memberType == 'corp' ): ?>
-				<td><img src="http://image.eveonline.com/Corporation/<?php echo $result['corporationID']; ?>_64.png" width="64" height="64" /></td>
-				<td><?php echo $result['corporationName']; ?></td>
-				<td><?php echo $result['corporationID']; ?></td>
+				<td><img src="http://image.eveonline.com/Corporation/<?php echo $result->id; ?>_64.png" width="64" height="64" /></td>
+				<td><?php echo $result->name; ?></td>
+				<td><?php echo $result->id; ?></td>
 				<td>
 					<form class="form-inline" action="<?php echo URL::base(TRUE,TRUE).'manage/group/addMember/2'; ?>" method="post">
 						<input type="hidden" name="act" value="doForm" />
-						<input type="hidden" name="eveID" value="<?php echo $result['corporationID']; ?>" />
-						<input type="hidden" name="accessName" value="<?php echo $result['corporationName']; ?>" />
+						<input type="hidden" name="eveID" value="<?php echo $result->id; ?>" />
+						<input type="hidden" name="accessName" value="<?php echo $result->name; ?>" />
 						<input type="hidden" name="memberType" value="<?php echo $memberType; ?>" />
 						<button type="submit" class="btn btn-primary">Select</button>
 					</form>
 				</td>
 				<?php else: ?>
-				<td><img src="http://image.eveonline.com/Character/<?php echo $result['characterID']; ?>_64.jpg" width="64" height="64" /></td>
-				<td><?php echo $result['characterName']; ?></td>
-				<td><?php echo $result['characterID']; ?></td>
+				<td><img src="http://image.eveonline.com/Character/<?php echo $result->id; ?>_64.jpg" width="64" height="64" /></td>
+				<td><?php echo $result->name; ?></td>
+				<td><?php echo $result->id; ?></td>
 				<td>
 					<form class="form-inline" action="<?php echo URL::base(TRUE,TRUE).'manage/group/addMember/2'; ?>" method="post">
 						<input type="hidden" name="act" value="doForm" />
-						<input type="hidden" name="eveID" value="<?php echo $result['characterID']; ?>" />
-						<input type="hidden" name="accessName" value="<?php echo $result['characterName']; ?>" />
+						<input type="hidden" name="eveID" value="<?php echo $result->id; ?>" />
+						<input type="hidden" name="accessName" value="<?php echo $result->name; ?>" />
 						<input type="hidden" name="memberType" value="<?php echo $memberType; ?>" />
 						<button type="submit" class="btn btn-primary">Select</button>
 					</form>
