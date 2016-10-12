@@ -143,7 +143,7 @@ siggy2.Core.prototype.queueUpdate = function()
 	this._updateTimeout = setTimeout(function (thisObj)
 	{
 		thisObj.update(0)
-	}, 10000, this);
+	}, 5000, this);
 }
 
 
