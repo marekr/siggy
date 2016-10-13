@@ -44,7 +44,7 @@ class Auth {
 			$success = self::$user->validateCorpChar();
 		}
 
-		if( !$success || !self::$session->charID || !self::$session->corpID || empty(self::$session->accessData) )
+		if( !$success || !self::$session->charID || !self::$session->corpID || empty(self::$session->accessData) || self::$session->accessData['groupID'] == 0)
 		{
 			self::$authStatus = AuthStatus::NOACCESS;
 			return self::$authStatus;

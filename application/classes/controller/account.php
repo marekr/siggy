@@ -537,9 +537,6 @@ class Controller_Account extends FrontController {
 		$selectableChars = [];
 		$unselectableChars = [];
 
-		$corpList = $this->getCorpList();
-		$charList = $this->getCharList();
-
 		foreach($ssoChars as $ssoChar)
 		{
 			if( $ssoChar['valid'] != 1 )
@@ -549,7 +546,10 @@ class Controller_Account extends FrontController {
 
 			if($char != null && $char->corporation() != null)
 			{
-				if( in_array($char->corporation_id, $corpList) || in_array($char->id, $charList) )
+				$gmChars = GroupMember::findByType(GroupMember::TypeChar, $char->id);
+				$gmCorps = GroupMember::findByType(GroupMember::TypeCorp, $char->corporation_id);
+
+				if( count($gmCorps) || count($gmChars) > 0 )
 				{
 					$selectableChars[ $char->id ] = $char;
 				}

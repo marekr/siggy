@@ -217,7 +217,7 @@ class UserSession {
 
 
 		$default = [
-					'groupID' =>0, 
+					'groupID' => 0, 
 					'group_password_required' => false, 
 					'group_password' => '', 
 					'active_chain_map' => 0,
