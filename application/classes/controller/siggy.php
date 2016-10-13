@@ -704,15 +704,14 @@ class Controller_Siggy extends FrontController {
 					$broadcast = 1;
 				}
 
-				DB::query(Database::INSERT, 'INSERT INTO chartracker (`charID`, `charName`, `currentSystemID`,`groupID`,`chainmap_id`,`lastBeep`, `broadcast`,`shipType`, `shipName`)
-											VALUES(:charID, :charName, :systemID, :groupID, :chainmap, :lastBeep, :broadcast, :shipType, :shipName)
+				DB::query(Database::INSERT, 'INSERT INTO chartracker (`charID`, `currentSystemID`,`groupID`,`chainmap_id`,`lastBeep`, `broadcast`,`shipType`, `shipName`)
+											VALUES(:charID, :systemID, :groupID, :chainmap, :lastBeep, :broadcast, :shipType, :shipName)
 							ON DUPLICATE KEY UPDATE lastBeep = :lastBeep,
 													currentSystemID = :systemID,
 													broadcast = :broadcast,
 													shipType = :shipType,
 													shipName = :shipName')
 						->param(':charID', Auth::$session->charID )
-						->param(':charName', Auth::$session->charName )
 						->param(':broadcast', $broadcast )
 						->param(':systemID', $currentSystemID )
 						->param(':groupID', Auth::$session->groupID )
@@ -773,8 +772,9 @@ class Controller_Siggy extends FrontController {
 				if( is_array($this->mapData['systemIDs']) && count($this->mapData['systemIDs'])	 > 0 )
 				{
 					$activesData = array();
-					$activesData = DB::query(Database::SELECT, "SELECT ct.charName, ct.currentSystemID, s.shipName FROM chartracker ct
+					$activesData = DB::query(Database::SELECT, "SELECT c.name as charName, ct.currentSystemID, s.shipName FROM chartracker ct
 																LEFT JOIN ships s ON (ct.shipType=s.shipID)
+																LEFT JOIN characters c ON(c.id=ct.charID)
 																WHERE ct.groupID = :groupID AND ct.chainmap_id = :chainmap AND ct.broadcast=1 AND
 																	ct.currentSystemID IN(".implode(',',$this->mapData['systemIDs']).") AND ct.lastBeep >= :lastBeep")
 										->param(':lastBeep', time()-60)
