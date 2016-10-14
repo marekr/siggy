@@ -4,13 +4,15 @@ class Controller_Notifications extends FrontController {
 
 	public function action_read()
 	{
-		DB::query(Database::INSERT, 'INSERT INTO character_group (`id`, `group_id`,`last_notification_read`)
-									VALUES(:char, :group, :last)
-									ON DUPLICATE KEY UPDATE last_notification_read=:last')
-					->param(':char', Auth::$session->charID )
-					->param(':group', Auth::$session->groupID )
-					->param(':last', time() )
-					->execute();
+		$characterGroup = CharacterGroup::find(Auth::$session->charID, Auth::$session->groupID);
+		if($characterGroup == null)
+		{
+			$characterGroup = new CharacterGroup();
+			$characterGroup->character_id = Auth::$session->charID;
+			$characterGroup->group_id = Auth::$session->groupID;
+		}
+
+		$characterGroup->save(['last_notification_read' => time()]);
 	}
 
 	public function action_notifiers()

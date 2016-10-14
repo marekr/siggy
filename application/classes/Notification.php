@@ -61,17 +61,11 @@ class Notification {
 
 	public static function lastReadTimestamp( $groupID, $charID )
 	{
-		$data = DB::query(Database::SELECT, "SELECT last_notification_read FROM character_group
-											WHERE group_id=:group AND
-											id=:char ")
-						->param(':group', $groupID)
-						->param(':char', $charID)
-						->execute()
-						->current();
+		$characterGroup = CharacterGroup::find($charID, $groupID);
 
-		if( isset($data['last_notification_read']) && !empty($data['last_notification_read']) )
+		if( $characterGroup != null )
 		{
-			return $data['last_notification_read'];
+			return $characterGroup->last_notification_read;
 		}
 		else
 		{
