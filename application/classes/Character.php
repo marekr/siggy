@@ -10,10 +10,11 @@ class Character {
 	public $created_at;
 	public $updated_at;
 	public $name;
+	public $location_processed_at;
 
 	public $corporation = null;
 
-	public function __construct($props)
+	public function __construct(array $props)
 	{
 		foreach ($props as $key => $value) 
 		{
@@ -21,7 +22,7 @@ class Character {
 		}
 	}
 	
-	public function save($props)
+	public function save(array $props)
 	{
 		foreach ($props as $key => $value) 
 		{
@@ -34,7 +35,29 @@ class Character {
 			->execute();
 	}
 
-	public static function create($props)
+	public function canAccessMap(int $groupId, int $chainmap): bool
+	{
+		$access = DB::query(Database::SELECT, 'SELECT * FROM groupmembers gm 
+														JOIN chainmaps_access ca ON(gm.id=ca.groupmember_id)
+														WHERE gm.groupID=:groupID AND ca.chainmap_id = :chainmap
+														AND ((gm.memberType="corp" AND gm.eveID=:corpID) 
+														OR (gm.memberType="char" AND gm.eveID=:charID))')
+												->param(':groupID', $groupId)
+												->param(':chainmap', $chainmap)
+												->param(':corpID', $this->corporation_id)
+												->param(':charID', $this->id)
+												->execute()
+												->current();
+
+		if($access != null)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	public static function create(array $props)
 	{
 		DB::insert('characters', array_keys($props) )
 				->values(array_values($props))
@@ -53,7 +76,7 @@ class Character {
 		return $this->corporation;
 	}
 
-	public static function find(int $id)
+	public static function find(int $id, bool $avoidAPIFetch = false)
 	{
 		$char = DB::query(Database::SELECT, 'SELECT * FROM characters WHERE id=:id')
 												->param(':id', $id)
@@ -61,8 +84,9 @@ class Character {
 												->current();
 		if($char != null)
 		{
-			if( $char['updated_at'] != null &&
-				Carbon::parse($char['updated_at'])->addMinutes(60) > Carbon::now() )
+			if( ($char['updated_at'] != null &&
+				Carbon::parse($char['updated_at'])->addMinutes(60) > Carbon::now()) ||
+				$avoidAPIFetch )
 			{
 				return new Character($char);
 			}

@@ -648,78 +648,96 @@ class Controller_Siggy extends FrontController {
 			return;
 		}
 
-		$update = array( 'location' => array( 'id' => 0,
-											'name' => '' )
-						);
+		$update = ['location' => [ 'id' => 0, 'name' => ''] ];
 
-		$currentLocation = CharacterLocation::findWithinCutoff(Auth::$session->charID);
-		if( $currentLocation != null )
-        {
-			$currentSystemID = (int)$currentLocation->system_id;
-            $lastCurrentSystemID = isset($_POST['last_location_id']) ? (int)$_POST['last_location_id'] : 0;
-
-			if( $lastCurrentSystemID != $currentSystemID  )
+		$ssoCharacters = Auth::$user->getSSOCharacters();
+		foreach($ssoCharacters as $character)
+		{
+			if( $character['character_id'] != Auth::$session->charID 
+				&& !$character['always_track_location'] )
 			{
-				if( $lastCurrentSystemID > 0 && $currentSystemID > 0  )
-				{
-					if( Auth::$session->accessData['recordJumps'] )
-					{
-						$hourStamp = miscUtils::getHourStamp();
-
-
-						DB::query(Database::INSERT, 'INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`)
-														VALUES(:systemID, :groupID, :hourStamp, 1)
-														ON DUPLICATE KEY UPDATE jumps=jumps+1')
-											->param(':hourStamp', $hourStamp )
-											->param(':systemID', $currentSystemID )
-											->param(':groupID', Auth::$session->groupID )
-											->execute();
-
-						DB::query(Database::INSERT, 'INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`)
-														VALUES(:systemID, :groupID, :hourStamp, 1)
-														ON DUPLICATE KEY UPDATE jumps=jumps+1')
-											->param(':hourStamp', $hourStamp )
-											->param(':systemID', $lastCurrentSystemID )
-											->param(':groupID', Auth::$session->groupID )
-											->execute();
-					}
-
-					$this->__wormholeJump($lastCurrentSystemID, $currentSystemID);
-				}
-
-				$update['location']['id'] = $currentSystemID;
-				//TODO reimplement this? i wonder what this is used for... lol
-			//	$update['location']['name'] = $_SERVER['HTTP_EVE_SOLARSYSTEMNAME'];
+				continue;
 			}
 
-			/* Location tracking */
-			if( $currentSystemID != 0 )
+			$charData = Character::find($character['character_id']);
+
+			$currentLocation = CharacterLocation::findWithinCutoff($character['character_id']);
+
+			if($charData->canAccessMap(Auth::$session->groupID,Auth::$session->accessData['active_chain_map']))
 			{
-				if( !Auth::$session->accessData['alwaysBroadcast'] )
+				$locationThreshold = $charData->location_processed_at;
+				if($locationThreshold == null)
 				{
-					$broadcast = isset($_COOKIE['broadcast']) ? intval($_COOKIE['broadcast']) : 1;
+					$locationThreshold = Carbon::now()->subMinutes(1);
 				}
 				else
 				{
-					$broadcast = 1;
+					$locationThreshold = Carbon::parse($locationThreshold);
 				}
 
-				DB::query(Database::INSERT, 'INSERT INTO chartracker (`charID`, `currentSystemID`,`groupID`,`chainmap_id`,`lastBeep`, `broadcast`,`shipType`, `shipName`)
-											VALUES(:charID, :systemID, :groupID, :chainmap, :lastBeep, :broadcast, :shipType, :shipName)
-							ON DUPLICATE KEY UPDATE lastBeep = :lastBeep,
-													currentSystemID = :systemID,
-													broadcast = :broadcast,
-													shipType = :shipType,
-													shipName = :shipName')
-						->param(':charID', Auth::$session->charID )
-						->param(':broadcast', $broadcast )
-						->param(':systemID', $currentSystemID )
-						->param(':groupID', Auth::$session->groupID )
-						->param(':shipType', 0 )
-						->param(':shipName', '' )
-						->param(':chainmap', Auth::$session->accessData['active_chain_map'] )
-						->param(':lastBeep', time() )
-						->execute();
+				$history = CharacterLocationHistory::findNewerThan($character['character_id'], $locationThreshold);
+
+				foreach($history as $record)
+				{
+					if($record->current_system_id != $record->previous_system_id)
+					{
+						if( Auth::$session->accessData['recordJumps'] )
+						{
+							$hourStamp = miscUtils::getHourStamp();
+
+
+							DB::query(Database::INSERT, 'INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`)
+															VALUES(:systemID, :groupID, :hourStamp, 1)
+															ON DUPLICATE KEY UPDATE jumps=jumps+1')
+												->param(':hourStamp', $hourStamp )
+												->param(':systemID', $record->current_system_id )
+												->param(':groupID', Auth::$session->groupID )
+												->execute();
+
+							DB::query(Database::INSERT, 'INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`)
+															VALUES(:systemID, :groupID, :hourStamp, 1)
+															ON DUPLICATE KEY UPDATE jumps=jumps+1')
+												->param(':hourStamp', $hourStamp )
+												->param(':systemID', $record->previous_system_id )
+												->param(':groupID', Auth::$session->groupID )
+												->execute();
+						}
+
+						$this->__wormholeJump($record->current_system_id, $record->previous_system_id);
+					}
+				}
+
+			
+				if( $currentLocation != null )
+				{
+					if( !Auth::$session->accessData['alwaysBroadcast'] )
+					{
+						$broadcast = isset($_COOKIE['broadcast']) ? intval($_COOKIE['broadcast']) : 1;
+					}
+					else
+					{
+						$broadcast = 1;
+					}
+
+					DB::query(Database::INSERT, 'INSERT INTO chartracker (`charID`, `currentSystemID`,`groupID`,`chainmap_id`,`lastBeep`, `broadcast`,`shipType`, `shipName`)
+												VALUES(:charID, :systemID, :groupID, :chainmap, :lastBeep, :broadcast, :shipType, :shipName)
+												ON DUPLICATE KEY UPDATE lastBeep = :lastBeep,
+														currentSystemID = :systemID,
+														broadcast = :broadcast,
+														shipType = :shipType,
+														shipName = :shipName')
+							->param(':charID', $character['character_id'] )
+							->param(':broadcast', $broadcast )
+							->param(':systemID', (int)$currentLocation->system_id )
+							->param(':groupID', Auth::$session->groupID )
+							->param(':shipType', 0 )
+							->param(':shipName', '' )
+							->param(':chainmap', Auth::$session->accessData['active_chain_map'] )
+							->param(':lastBeep', time() )
+							->execute();
+				}
+				
+				$charData->save(['location_processed_at' => Carbon::now()->toDateTimeString()]);
 			}
 		}
 
@@ -763,12 +781,12 @@ class Controller_Siggy extends FrontController {
 			$this->mapData = $this->chainmap->get_map_cache();
 			if( $chainMapOpen == true )
 			{
-				$update['chainMap']['actives'] = array();
-				$update['chainMap']['systems'] = array();
-				$update['chainMap']['wormholes'] = array();
-				$update['chainMap']['stargates'] = array();
-				$update['chainMap']['jumpbridges'] = array();
-				$update['chainMap']['cynos'] = array();
+				$update['chainMap']['actives'] = [];
+				$update['chainMap']['systems'] = [];
+				$update['chainMap']['wormholes'] = [];
+				$update['chainMap']['stargates'] = [];
+				$update['chainMap']['jumpbridges'] = [];
+				$update['chainMap']['cynos'] = [];
 				if( is_array($this->mapData['systemIDs']) && count($this->mapData['systemIDs'])	 > 0 )
 				{
 					$activesData = array();
@@ -785,7 +803,7 @@ class Controller_Siggy extends FrontController {
 
 					if( is_array($activesData) && count($activesData) > 0 )
 					{
-						$actives = array();
+						$actives = [];
 						foreach( $activesData as $act )
 						{
 							if( strlen( $act['charName']) > 15 )
