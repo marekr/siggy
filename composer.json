@@ -6,7 +6,8 @@
         "nesbot/Carbon": "*",
 		"swiftmailer/swiftmailer": "@stable",
         "3rdpartyeve/phealng": "~2.0",
-		"guzzlehttp/guzzle": "^6.2"
+		"guzzlehttp/guzzle": "^6.2",
+		"michelf/php-markdown": "^1.6"
     },
 	"autoload": {
 		"psr-4": {

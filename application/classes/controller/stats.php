@@ -3,7 +3,7 @@
 require_once APPPATH.'classes/groupUtils.php';
 require_once APPPATH.'classes/mapUtils.php';
 require_once APPPATH.'classes/miscUtils.php';
-require_once APPPATH.'classes/Zebra_Pagination2.php';
+require_once APPPATH.'classes/ZebraPagination2.php';
 
 class Controller_Stats extends FrontController {
 	private $auth;
@@ -57,7 +57,7 @@ class Controller_Stats extends FrontController {
 								->execute()
 								->current();
 
-		$pagination = new Zebra_Pagination2();
+		$pagination = new ZebraPagination2();
 		$pagination->records($resultCount['total']);
 		$pagination->records_per_page($number_per_page);
 
@@ -166,7 +166,7 @@ class Controller_Stats extends FrontController {
 								->execute()
 								->current();
 
-		$pagination = new Zebra_Pagination2();
+		$pagination = new ZebraPagination2();
 		$pagination->records($resultCount['total']);
 		$pagination->records_per_page(50);
 

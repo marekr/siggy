@@ -3,7 +3,7 @@
 require_once APPPATH.'classes/groupUtils.php';
 require_once APPPATH.'classes/mapUtils.php';
 require_once APPPATH.'classes/miscUtils.php';
-require_once APPPATH.'classes/Zebra_Pagination2.php';
+require_once APPPATH.'classes/ZebraPagination2.php';
 /**
  * User controller: user administration, also user accounts/profiles.
  *
@@ -124,7 +124,7 @@ class Controller_Manage_Logs extends Controller_Manage
 
 		$logsTotal = $logsTotal['total'];
 
-		$pagination = new Zebra_Pagination2();
+		$pagination = new ZebraPagination2();
 		$pagination->records($logsTotal);
 		$pagination->records_per_page(20);
 

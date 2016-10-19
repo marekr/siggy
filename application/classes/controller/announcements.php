@@ -1,6 +1,6 @@
 <?php
 
-require_once APPPATH.'classes/Zebra_Pagination2.php';
+use \Michelf\Markdown;
 
 class Controller_Announcements extends FrontController {
 	private $auth;
@@ -28,7 +28,7 @@ class Controller_Announcements extends FrontController {
 						->current();
 
 
-		$pagination = new Zebra_Pagination2();
+		$pagination = new ZebraPagination2();
 		$pagination->records($resultCount['total']);
 		$pagination->records_per_page(5);
 

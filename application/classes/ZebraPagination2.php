@@ -1,6 +1,6 @@
 <?php
 
-class Zebra_Pagination2 {
+class ZebraPagination2 {
 
     /**
      *  Constructor of the class.
