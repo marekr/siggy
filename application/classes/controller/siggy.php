@@ -648,7 +648,7 @@ class Controller_Siggy extends FrontController {
 			return;
 		}
 
-		$update = ['location' => [ 'id' => 0, 'name' => ''] ];
+		$update = ['location' => [ 'id' => 0] ];
 
 		$ssoCharacters = Auth::$user->getSSOCharacters();
 		foreach($ssoCharacters as $character)
@@ -662,6 +662,7 @@ class Controller_Siggy extends FrontController {
 			$charData = Character::find($character['character_id']);
 
 			$currentLocation = CharacterLocation::findWithinCutoff($character['character_id']);
+
 
 			if($charData->canAccessMap(Auth::$session->groupID,Auth::$session->accessData['active_chain_map']))
 			{
@@ -710,6 +711,11 @@ class Controller_Siggy extends FrontController {
 			
 				if( $currentLocation != null )
 				{
+					if( $character['character_id'] == Auth::$session->charID )
+					{
+						$update['location']['id'] = $currentLocation->system_id;
+					}
+
 					if( !Auth::$session->accessData['alwaysBroadcast'] )
 					{
 						$broadcast = isset($_COOKIE['broadcast']) ? intval($_COOKIE['broadcast']) : 1;
