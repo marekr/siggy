@@ -713,7 +713,7 @@ class Controller_Siggy extends FrontController {
 				{
 					if( $character['character_id'] == Auth::$session->charID )
 					{
-						$update['location']['id'] = $currentLocation->system_id;
+						$update['location']['id'] = (int)$currentLocation->system_id;
 					}
 
 					if( !Auth::$session->accessData['alwaysBroadcast'] )
