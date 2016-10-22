@@ -541,7 +541,7 @@ siggy2.Activity.siggy.prototype.updateSystemInfo = function (systemData)
 	{
 		sysName += " - [0.0]";
 	}
-	$('#system-name').text(sysName);
+	$('#system-name').html(sysName);
 
 
 	$('a.site-dotlan').attr('href', 'http://evemaps.dotlan.net/system/'+systemData.name);
