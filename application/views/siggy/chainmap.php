@@ -234,7 +234,7 @@
 			{{/is}}
 			<span class="map-system-blob-sysname">
 				{{#if system.display_name }}
-					{{system.display_name}}
+					{{{system.display_name}}}
 				{{else}}
 					{{system.name}}
 				{{/if}}
