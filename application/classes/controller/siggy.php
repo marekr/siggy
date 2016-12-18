@@ -58,7 +58,8 @@ class Controller_Siggy extends FrontController {
 		}
 
 		$view->initialSystem = true;
-		$view->group = Auth::$session->accessData;
+		$view->group = Auth::$session->group;
+		$view->accessData = Auth::$session->accessData;
 		$view->requested = $requested;
         $view->settings = $this->template->settings;
 
@@ -68,7 +69,8 @@ class Controller_Siggy extends FrontController {
 
 		//load chain map html
 		$chainMapHTML = View::factory('siggy/chainmap');
-		$chainMapHTML->group = Auth::$session->accessData;
+		$chainMapHTML->group = Auth::$session->group;
+		$chainMapHTML->accessData = Auth::$session->accessData;
 		$view->chainMap = $chainMapHTML;
 
 		//load header tools
@@ -173,7 +175,7 @@ class Controller_Siggy extends FrontController {
 													LEFT OUTER JOIN activesystems sa ON (ss.id = sa.systemID  AND sa.groupID = :group AND sa.chainmap_id=:chainmap)
 													WHERE ss.id=:id")
 									->param(':id', $id)
-									->param(':group', Auth::$session->groupID)
+									->param(':group', Auth::$session->group->id)
 									->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 									->execute()
 									->current();
@@ -207,7 +209,7 @@ class Controller_Siggy extends FrontController {
 
 		$trackedJumps = DB::query(Database::SELECT, "SELECT hourStamp, jumps FROM jumpstracker WHERE systemID=:system AND groupID=:group AND hourStamp >= :start AND hourStamp <= :end ORDER BY hourStamp asc LIMIT 0,24")
 									->param(':system', $systemData['id'])
-									->param(':group', Auth::$session->groupID)
+									->param(':group', Auth::$session->group->id)
 									->param(':start', $start)
 									->param(':end', $end)
 									->execute()->as_array('hourStamp');
@@ -248,7 +250,7 @@ class Controller_Siggy extends FrontController {
 												INNER JOIN pos_types pt ON(pt.pos_type_id = p.pos_type)
 												WHERE p.group_id=:group_id AND p.pos_system_id=:system_id
 												ORDER BY p.pos_location_planet ASC, p.pos_location_moon ASC")
-										->param(':group_id', Auth::$session->groupID)
+										->param(':group_id', Auth::$session->group->id)
 										->param(':system_id', $systemID)
 										->execute()
 										->as_array();
@@ -261,7 +263,7 @@ class Controller_Siggy extends FrontController {
 		$dscans = DB::query(Database::SELECT, "SELECT dscan_id, dscan_title, dscan_date
 												FROM dscan
 												WHERE group_id=:group_id AND system_id=:system_id")
-										->param(':group_id', Auth::$session->groupID)
+										->param(':group_id', Auth::$session->group->id)
 										->param(':system_id', $systemID)
 										->execute()
 										->as_array();
@@ -310,7 +312,7 @@ class Controller_Siggy extends FrontController {
 
 		$connection = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE hash=:hash AND group_id=:group AND chainmap_id=:chainmap")
 						->param(':hash', $whHash)
-						->param(':group', Auth::$session->groupID)
+						->param(':group', Auth::$session->group->id)
 						->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 						->execute()
 						->current();
@@ -334,7 +336,7 @@ class Controller_Siggy extends FrontController {
 			$this->doSystemMappedNotifications($notifierSystems);
 
 
-			miscUtils::increment_stat('wormholes', Auth::$session->accessData);
+			Auth::$session->group->incrementStat('wormholes', Auth::$session->accessData);
 		}
 		else
 		{
@@ -342,7 +344,7 @@ class Controller_Siggy extends FrontController {
 			DB::update('wormholes')
 				->set( array('last_jump' => time()) )
 				->where('hash', '=', $whHash)
-				->where('group_id', '=', Auth::$session->groupID)
+				->where('group_id', '=', Auth::$session->group->id)
 				->where('chainmap_id', '=', Auth::$session->accessData['active_chain_map'])
 				->execute();
 		}
@@ -372,7 +374,7 @@ class Controller_Siggy extends FrontController {
 
 	private function doSystemMappedNotifications($systems)
 	{
-		foreach( Auth::$session->accessData['notifiers'] as $notifier )
+		foreach( Notifier::all(Auth::$session->groupID, Auth::$session->charID) as $notifier )
 		{
 			if( $notifier['type'] == NotificationTypes::SystemMappedByName )
 			{
@@ -404,7 +406,7 @@ class Controller_Siggy extends FrontController {
 											WHERE pos.group_id=:group_id
 											AND pos.pos_system_id=:system_id
 											AND pos.pos_owner LIKE :resident" . $posOnlineSQL)
-									->param(':group_id', Auth::$session->groupID)
+									->param(':group_id', Auth::$session->group->id)
 									->param(':system_id', $system)
 									->param(':resident', $data->resident_name)
 									->execute()
@@ -573,7 +575,7 @@ class Controller_Siggy extends FrontController {
 
             $activeSystemQuery = DB::query(Database::SELECT, 'SELECT lastUpdate FROM activesystems WHERE systemID=:id AND groupID=:group AND chainmap_id=:chainmap')
 												->param(':id', $selectedSystemID)
-												->param(':group',Auth::$session->groupID)
+												->param(':group',Auth::$session->group->id)
 												->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 												->execute();
 
@@ -583,7 +585,7 @@ class Controller_Siggy extends FrontController {
 			if( ($_POST['lastUpdate'] < $recordedLastUpdate) || ( $_POST['lastUpdate'] == 0 ) || $forceUpdate || $update['systemUpdate'] )
 			{
 				$additional = '';
-				if( Auth::$session->accessData['showSigSizeCol'] )
+				if( Auth::$session->group->show_sig_size_col )
 				{
 					$additional .= ',sigSize';
 				}
@@ -591,7 +593,7 @@ class Controller_Siggy extends FrontController {
 				$update['sigData'] = DB::query(Database::SELECT, "SELECT id, sig, type, siteID, description, created_at, creator, updated_at,lastUpdater".$additional." FROM systemsigs
 																	WHERE systemID=:id AND groupID=:group")
 								->param(':id', $selectedSystemID)
-								 ->param(':group', Auth::$session->groupID)
+								 ->param(':group', Auth::$session->group->id)
 								 ->execute()
 								 ->as_array('id');
 
@@ -692,7 +694,7 @@ class Controller_Siggy extends FrontController {
 															ON DUPLICATE KEY UPDATE jumps=jumps+1')
 												->param(':hourStamp', $hourStamp )
 												->param(':systemID', $record->current_system_id )
-												->param(':groupID', Auth::$session->groupID )
+												->param(':groupID', Auth::$session->group->id)
 												->execute();
 
 							DB::query(Database::INSERT, 'INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`)
@@ -700,7 +702,7 @@ class Controller_Siggy extends FrontController {
 															ON DUPLICATE KEY UPDATE jumps=jumps+1')
 												->param(':hourStamp', $hourStamp )
 												->param(':systemID', $record->previous_system_id )
-												->param(':groupID', Auth::$session->groupID )
+												->param(':groupID', Auth::$session->group->id)
 												->execute();
 						}
 
@@ -735,7 +737,7 @@ class Controller_Siggy extends FrontController {
 							->param(':charID', $character['character_id'] )
 							->param(':broadcast', $broadcast )
 							->param(':systemID', (int)$currentLocation->system_id )
-							->param(':groupID', Auth::$session->groupID )
+							->param(':groupID', Auth::$session->group->id)
 							->param(':shipType', 0 )
 							->param(':shipName', '' )
 							->param(':chainmap', Auth::$session->accessData['active_chain_map'] )
@@ -748,7 +750,7 @@ class Controller_Siggy extends FrontController {
 		}
 
 		$group_last_cache_time = isset($_POST['group_cache_time']) ? intval($_POST['group_cache_time']) : 0;
-		if( $group_last_cache_time < Auth::$session->accessData['cache_time'] )
+		if( $group_last_cache_time < Auth::$session->group->cache_time )
 		{
 			$update['chainmaps_update'] = 1;
 
@@ -762,16 +764,16 @@ class Controller_Siggy extends FrontController {
 			$update['chainmaps'] = $chainmaps;
 
 			$update['global_notes_update'] = (int) 1;
-			$update['globalNotes'] = Auth::$session->accessData['groupNotes'];
+			$update['globalNotes'] = Auth::$session->group->notes;
 		}
 
-		$update['group_cache_time'] = (int) Auth::$session->accessData['cache_time'];
+		$update['group_cache_time'] = (int) Auth::$session->group->cache_time;
 
 
 		$latestDisplayed = isset($_POST['newest_notification']) ? (int) $_POST['newest_notification']  : 0;
-		$returnLastRead = Notification::lastReadTimestamp( Auth::$session->groupID, Auth::$session->charID );
+		$returnLastRead = Notification::lastReadTimestamp( Auth::$session->group->id, Auth::$session->charID );
 
-		$notifications = Notification::latest($latestDisplayed, Auth::$session->groupID, Auth::$session->charID);
+		$notifications = Notification::latest($latestDisplayed, Auth::$session->group->id, Auth::$session->charID);
 		$update['notifications'] = array('last_read' => $returnLastRead, 'items' => $notifications);
 
 
@@ -802,7 +804,7 @@ class Controller_Siggy extends FrontController {
 																WHERE ct.groupID = :groupID AND ct.chainmap_id = :chainmap AND ct.broadcast=1 AND
 																	ct.currentSystemID IN(".implode(',',$this->mapData['systemIDs']).") AND ct.lastBeep >= :lastBeep")
 										->param(':lastBeep', time()-60)
-										->param(':groupID', Auth::$session->groupID)
+										->param(':groupID', Auth::$session->group->id)
 										->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 										->execute()
 										->as_array();
@@ -857,13 +859,11 @@ class Controller_Siggy extends FrontController {
 
 		$notes = htmlspecialchars($_POST['notes']);
 
-		$update = array('groupNotes' => $notes);
-
 		groupUtils::update_group(Auth::$session->groupID,$update);
+		Auth::$session->group->save(['notes' => $notes]);
 		groupUtils::recacheGroup(Auth::$session->groupID);
 
-		echo json_encode(time());
-		exit();
+		$this->response->body(json_encode(time()));
 	}
 
 	public function action_save_system()
@@ -918,10 +918,11 @@ class Controller_Siggy extends FrontController {
 			echo json_encode('1');
 
 
-			groupUtils::log_action(Auth::$session->groupID,'editsystem', $log_message );
+			Auth::$session->group->logAction('editsystem', $log_message );
 
 			$this->chainmap->rebuild_map_data_cache();
 		}
-		exit();
+
+		$this->response->body('');
 	}
 }

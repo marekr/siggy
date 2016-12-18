@@ -8,6 +8,7 @@ class UserSession {
 	public $charName = "";
 	public $corpID = 0;
 	public $groupID = 0;
+	public $group = null;
 
 	public $sessionID = "";
 
@@ -81,6 +82,7 @@ class UserSession {
 		/* Don't use session data for char name, id and corp id to avoid
 		   IGB header issues */
 		$this->groupID = $this->sessionData['group_id'];
+		$this->group = Group::find($this->groupID);
 
 		$this->charName = $this->sessionData['character_name'];
 		$this->charID = $this->sessionData['character_id'];
@@ -214,24 +216,6 @@ class UserSession {
 	{
 		/* Result array */
 		$access_data = array();
-
-
-		$default = [
-					'groupID' => 0, 
-					'group_password_required' => false, 
-					'group_password' => '', 
-					'active_chain_map' => 0,
-					'access_type' => '',
-					'accessible_chainmaps' => [],
-					'access_groups' => []
-					];
-
-		if( empty( $this->corpID ) || empty($this->charID)  )
-		{
-			$this->accessData = $default;
-			return;
-		}
-
 		$chosenGroupID = intval(Cookie::get('membershipChoice', -1));
 
 		$accessGroupID = 0;
@@ -286,22 +270,12 @@ class UserSession {
 			$accessGroupID = $tmp['group_id'];
 		}
 
-		//finally load the group data!
-		$groupData = groupUtils::getGroupData( $accessGroupID );
-		if( !$groupData )
-		{
-			$this->accessData = $default;
-			return;
-		}
-
-
-
 		//store the possible groups
 		$groupData['access_type'] = $access_type;
 		$groupData['corpID'] = $this->corpID;
 		$groupData['charID'] = $this->charID;
-		$groupData['accessible_chainmaps'] = $this->_buildAccessChainmaps($groupData['chainmaps']);
-		$groupData['active_chain_map'] = $this->_getChainMapID($groupData['chainmaps']);
+		$groupData['accessible_chainmaps'] = $this->_buildAccessChainmaps($this->group->chainMaps());
+		$groupData['active_chain_map'] = $this->_getChainMapID($this->group->chainMaps());
 		$groupData['access_groups'] = $all_groups;
 
 		$this->accessData = $groupData;

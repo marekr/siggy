@@ -65,7 +65,7 @@ class GroupMember {
 
 		if($data != null)
 		{
-			return new CharacterLocation($data);
+			return new GroupMember($data);
 		}
 
 		return null;
@@ -76,6 +76,25 @@ class GroupMember {
 		$data = DB::query(Database::SELECT, 'SELECT * FROM groupmembers WHERE eveID=:id AND memberType=:type')
 												->param(':id', $id)
 												->param(':type', $type)
+												->execute()
+												->as_array();
+
+		$results = [];
+		if($data != null)
+		{
+			foreach($data as $item)
+			{
+				$results[] = new GroupMember($item);
+			}
+		}
+
+		return $results;
+	}
+	
+	public static function findByGroup(int $groupId)
+	{
+		$data = DB::query(Database::SELECT, 'SELECT * FROM groupmembers WHERE groupID=:id')
+												->param(':id', $groupId)
 												->execute()
 												->as_array();
 

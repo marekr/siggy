@@ -44,34 +44,33 @@ class Auth {
 			$success = self::$user->validateCorpChar();
 		}
 
-		if( !$success || !self::$session->charID || !self::$session->corpID || empty(self::$session->accessData) || self::$session->accessData['groupID'] == 0)
+		if( !$success || self::$session->group == null )
 		{
 			self::$authStatus = AuthStatus::NOACCESS;
 			return self::$authStatus;
 		}
 
-		if( self::$session->groupID )
+		if( self::$session->group != null )
 		{
-			if( isset( self::$session->accessData['character_blacklist'] ) &&
-						array_key_exists( self::$session->charID, self::$session->accessData['character_blacklist'] ) )
+			if( count( self::$session->group->blacklistCharacters() ) &&
+						array_key_exists( self::$session->charID, self::$session->group->blacklistCharacters() ) )
 			{
 				self::$authStatus = AuthStatus::BLACKLISTED;
 			}
-			else if( self::$session->accessData['group_password_required'] )	//group password only?
+			else if( self::$session->group->password_required )	//group password only?
 			{
-				$groupID = intval(self::$session->accessData['groupID']);
 				$authPassword = '';
 
 				if( self::loggedIn() )
 				{
-					$authPassword = self::$user->getSavedPassword( $groupID );
+					$authPassword = self::$user->getSavedPassword( self::$session->group->id );
 				}
 				else
 				{
-					$authPassword = Cookie::get('auth-password-' .$groupID, '');
+					$authPassword = Cookie::get('auth-password-' .self::$session->group->id, '');
 				}
 
-				if( $authPassword === self::$session->accessData['group_password'] )
+				if( $authPassword === self::$session->group->password )
 				{
 					self::$authStatus = AuthStatus::ACCEPTED;
 				}

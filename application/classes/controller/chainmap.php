@@ -117,7 +117,7 @@ class Controller_Chainmap extends FrontController {
 					$system['x'] = 0;
 				}
 
-				if( !Auth::$session->accessData['allow_map_height_expand'] && $system['y'] > 400 )
+				if( !Auth::$session->group->allow_map_height_expand && $system['y'] > 400 )
 				{
 					$system['y'] = 380;
 				}
@@ -125,7 +125,7 @@ class Controller_Chainmap extends FrontController {
 				$this->chainmap->update_system($system['id'], array('x' => $system['x'], 'y' => $system['y']));
 			}
 
-			groupUtils::log_action(Auth::$session->groupID, 'editmap', Auth::$session->charName. " edited the map");
+			Auth::$session->group->logAction('editmap', Auth::$session->charName. " edited the map");
 
 			$this->chainmap->rebuild_map_data_cache();
 		}
@@ -188,7 +188,8 @@ class Controller_Chainmap extends FrontController {
 							->execute();
 
 			$log_message .= ' from the chainmap "'. $this->chainmap->data['chainmap_name'].'"';
-			groupUtils::log_action(Auth::$session->groupID,'delwhs', $log_message );
+			
+			Auth::$session->group->logAction('delwhs', $log_message );
 		}
 
 		if( is_array($jumpbridgeHashes) && count($jumpbridgeHashes) > 0 )
@@ -221,7 +222,7 @@ class Controller_Chainmap extends FrontController {
 							->execute();
 
 			$log_message .= ' from the chainmap "'. $this->chainmap->data['chainmap_name'].'"';
-			groupUtils::log_action(Auth::$session->groupID,'delwhs', $log_message );
+			Auth::$session->group->logAction('delwhs', $log_message );
 		}
 
 		if( is_array($stargateHashes) && count($stargateHashes) > 0 )
@@ -254,7 +255,7 @@ class Controller_Chainmap extends FrontController {
 							->execute();
 
 			$log_message .= ' from the chainmap "'. $this->chainmap->data['chainmap_name'].'"';
-			groupUtils::log_action(Auth::$session->groupID,'delwhs', $log_message );
+			Auth::$session->group->logAction('delwhs', $log_message );
 		}
 
 
@@ -511,7 +512,7 @@ class Controller_Chainmap extends FrontController {
 
 			$message = Auth::$session->charName.' added wormhole manually between system IDs' . $fromSysID . ' and ' . $toSysID;
 
-			groupUtils::log_action(Auth::$session->groupID,'addwh', $message );
+			Auth::$session->group->logAction('addwh', $message );
 		}
 		else if( $type == 'stargate' )
 		{

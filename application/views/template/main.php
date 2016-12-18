@@ -101,13 +101,13 @@
 				</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<?php if( count($group['access_groups']) > 1 ): ?>
+				<?php if( count($accessData['access_groups']) > 1 ): ?>
 				<li class="dropdown">
 					<a data-toggle="dropdown" href="#">
-						<?php echo substr($group['groupName'],0,10); ?>&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-down"></i>
+						<?php echo substr($group->name,0,10); ?>&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-down"></i>
 					</a>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-						<?php foreach( $group['access_groups'] as $g ): ?>
+						<?php foreach( $accessData['access_groups'] as $g ): ?>
 							<li>
 								<a href="<?php echo URL::base(TRUE, TRUE); ?>access/switch_membership/?k=<?php echo md5($g['group_id']); ?>">
 								<?php echo $g['group_name']; ?>
@@ -119,7 +119,7 @@
 				<?php else: ?>
 				<li>
 					<a href="#">
-						<?php echo substr($group['groupName'],0,10); ?>
+						<?php echo substr($group->name,0,10); ?>
 					</a>
 				</li>
 				<?php endif; ?>

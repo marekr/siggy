@@ -21,10 +21,10 @@ class Controller_Access extends FrontController {
 
 		if( isset($_POST['group_password']) )
 		{
-			$pass = sha1($_POST['group_password'].Auth::$session->accessData['group_password_salt']);
-			if( !empty(Auth::$session->accessData['group_password']) )
+			$pass = sha1($_POST['group_password'].Auth::$session->group->password_salt);
+			if( !empty(Auth::$session->group->password) )
 			{
-				if( $pass == Auth::$session->accessData['group_password'] )
+				if( $pass == Auth::$session->group->password )
 				{
 					if( Auth::loggedIn() )
 					{
@@ -54,8 +54,17 @@ class Controller_Access extends FrontController {
 
 		$view = View::factory('access/blacklisted');
 
-		$view->groupName = Auth::$session->accessData['groupName'];
-		$view->reason = Auth::$session->accessData['character_blacklist'][ Auth::$session->charID ]['reason'];
+		$view->groupName = Auth::$session->group->name;
+
+		foreach(Auth::$session->group->blacklistCharacters() as $char)
+		{
+			if($char->character_id == Auth::$session->charID )
+			{
+				$view->reason = $char->reason;
+				break;
+			}
+		}
+		
 		$this->template->content = $view;
 	}
 

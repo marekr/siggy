@@ -650,7 +650,9 @@ class chainmap {
 						->execute();
 
 		$log_message .= ' from the chainmap "'. $this->data['chainmap_name'].'"';
-		groupUtils::log_action($this->group_id,'delwhs', $log_message );
+
+		$group = Group::find($this->group_id);
+		$group->logAction('delwhs', $log_message );
 
 		return $systemIDs;
 	}

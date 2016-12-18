@@ -197,31 +197,6 @@ final class miscUtils {
 			->execute();
 	}
 
-	static function increment_stat($stat, $groupData)
-	{
-		if( !$groupData['statsEnabled'] )
-		{
-			return;
-		}
-
-		if( !in_array( $stat, array('adds','updates','wormholes','pos_adds','pos_updates') ) )
-		{
-			throw new Exception("invalid stat key");
-		}
-
-		$duplicate_update_string = $stat .'='. $stat .'+1';
-
-		DB::query(Database::INSERT, 'INSERT INTO stats (`charID`,`charName`,`groupID`,`chainmap_id`,`dayStamp`,`'.$stat.'`)
-												VALUES(:charID, :charName, :groupID, :chainmap, :dayStamp, 1)
-												ON DUPLICATE KEY UPDATE '.$duplicate_update_string)
-							->param(':charID',  Auth::$session->charID )
-							->param(':charName', Auth::$session->charName )
-							->param(':groupID', Auth::$session->groupID )
-							->param(':chainmap', $groupData['active_chain_map'] )
-							->param(':dayStamp', miscUtils::getDayStamp() )
-							->execute();
-	}
-
 	static function findSystemByName($name)
 	{
 		$systemID = DB::query(Database::SELECT, 'SELECT id,name FROM solarsystems WHERE LOWER(name) = :name')

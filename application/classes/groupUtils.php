@@ -2,16 +2,6 @@
 
 final class groupUtils {
 
-	static function log_action( $group_id, $type, $message )
-	{
-		$insert = array( 'groupID' => $group_id,
-										'type' => $type,
-										'message' => $message,
-										'entryTime' => time()
-						);
-		DB::insert('logs', array_keys($insert) )->values(array_values($insert))->execute();
-	}
-
 	static function getCharacterUsageCount( $group_id )
 	{
 		$num_corps = DB::query(Database::SELECT, "SELECT SUM(DISTINCT c.member_count) as total FROM groupmembers gm
@@ -100,11 +90,11 @@ final class groupUtils {
 		}
 
 		$insert = array(
-							'groupName' => $data['groupName'],
-							'groupTicker' => $data['groupTicker'],
-							'group_password_required' => $data['group_password_required'],
-							'group_password_salt' => $salt,
-							'group_password' => $password,
+							'name' => $data['groupName'],
+							'ticker' => $data['groupTicker'],
+							'password_required' => $data['group_password_required'],
+							'password_salt' => $salt,
+							'password' => $password,
 							'dateCreated' => time(),
 							'paymentCode' => miscUtils::generateString(14),
 							'billable' => 1
@@ -173,12 +163,12 @@ final class groupUtils {
 
 	static function applyISKCharge($group_id, $amount)
 	{
-		DB::update('groups')->set( array( 'iskBalance' => DB::expr('iskBalance - :amount') ) )->param(':amount', $amount)->where('groupID', '=',  $group_id)->execute();
+		DB::update('groups')->set( array( 'iskBalance' => DB::expr('iskBalance - :amount') ) )->param(':amount', $amount)->where('id', '=',  $group_id)->execute();
 	}
 
 	static function applyISKPayment($group_id, $amount)
 	{
-		DB::update('groups')->set( array( 'iskBalance' => DB::expr('iskBalance + :amount'), 'billable' => 1 ) )->param(':amount', $amount)->where('groupID', '=',  $group_id)->execute();
+		DB::update('groups')->set( array( 'iskBalance' => DB::expr('iskBalance + :amount'), 'billable' => 1 ) )->param(':amount', $amount)->where('id', '=',  $group_id)->execute();
 	}
 
 	static function recacheGroup( $id )
@@ -190,49 +180,17 @@ final class groupUtils {
 		}
 
 		$cache = Cache::instance( CACHE_METHOD );
-		$group = DB::query(Database::SELECT, "SELECT * FROM groups WHERE groupID = :group")
+		$group = DB::query(Database::SELECT, "SELECT * FROM groups WHERE id = :group")
 								->param(':group', $id)
 								->execute()
 								->current();
 
 
-		if( $group['groupID'] )
+		if( $group['id'] )
 		{
-			$group['members'] = DB::query(Database::SELECT, "SELECT * FROM groupmembers WHERE groupID = :group")
-									->param(':group', $id)
-									->execute()
-									->as_array();
-
-			$group['character_blacklist'] = DB::query(Database::SELECT, "SELECT * FROM group_character_blacklist WHERE group_id = :group")
-									->param(':group', $id)
-									->execute()
-									->as_array('character_id');
-
-			$group['notifiers'] = DB::query(Database::SELECT, "SELECT * FROM notifiers WHERE group_id = :group")
-									->param(':group', $id)
-									->execute()
-									->as_array();
-
-			$chainmaps = DB::query(Database::SELECT, "SELECT * FROM chainmaps WHERE group_id = :group")
-								->param(':group', $id)
-								->execute()
-								->as_array('chainmap_id');
-
-			foreach($chainmaps as &$c)
-			{
-				$members = DB::query(Database::SELECT, "SELECT gm.memberType, gm.eveID FROM groupmembers gm
-													LEFT JOIN chainmaps_access a ON(gm.id=a.groupmember_id) WHERE chainmap_id=:chainmap")
-							->param(':chainmap', $c['chainmap_id'])
-							->execute()
-							->as_array();
-				$c['access'] = $members;
-			}
-
-			$group['chainmaps'] = $chainmaps;
-
 			$group['cache_time'] = time();
 
-			$cache->set('group-'.$group['groupID'], $group);
+			$cache->set('group-'.$group['id'], $group);
 			return $group;
 		}
 		else
@@ -251,9 +209,9 @@ final class groupUtils {
 
 		$cache = Cache::instance( CACHE_METHOD );
 
-		$corp_memberships = DB::query(Database::SELECT, "SELECT g.*,gr.groupName, gr.groupTicker
+		$corp_memberships = DB::query(Database::SELECT, "SELECT g.*,gr.name, gr.ticker
 														FROM groupmembers g
-														LEFT JOIN groups as gr ON(g.groupID=gr.groupID)
+														LEFT JOIN groups as gr ON(g.groupID=gr.id)
 														WHERE g.memberType='corp' AND g.eveID= :id")
 										->param(':id', $id)
 										->execute()
@@ -270,7 +228,7 @@ final class groupUtils {
 			{
 				$corp['groups'][ $cm['groupID'] ]  = array(
 															 'group_id' => $cm['groupID'],
-															 'group_name' => $cm['groupName']
+															 'group_name' => $cm['name']
 															 );
 			}
 
@@ -293,8 +251,8 @@ final class groupUtils {
 		}
 
 		$cache = Cache::instance( CACHE_METHOD );
-		$char_memberships = DB::query(Database::SELECT, "SELECT g.*,gr.groupName, gr.groupTicker FROM groupmembers g
-													LEFT JOIN groups as gr ON(g.groupID=gr.groupID)
+		$char_memberships = DB::query(Database::SELECT, "SELECT g.*,gr.name, gr.ticker FROM groupmembers g
+													LEFT JOIN groups as gr ON(g.groupID=gr.id)
 													WHERE g.memberType='char' AND g.eveID= :id")
 										->param(':id', $id)
 										->execute()->as_array();
@@ -309,7 +267,7 @@ final class groupUtils {
 			{
 				$char['groups'][ $cm['groupID'] ]  = array(
 															 'group_id' => $cm['groupID'],
-															 'group_name' => $cm['groupName']
+															 'group_name' => $cm['name']
 															 );
 			}
 
@@ -364,12 +322,7 @@ final class groupUtils {
 				return FALSE;
 		}
 
-		$cache = Cache::instance(CACHE_METHOD);
-		$group_data = $cache->get('group-'.$group_id);
-		if( $group_data == null )
-		{
-			return self::recacheGroup($group_id);
-		}
+		return self::recacheGroup($group_id);
 
 		return $group_data;
 	}
@@ -398,6 +351,6 @@ final class groupUtils {
 	static function update_group($group_id, $update = array())
 	{
 		$update['last_update'] = time();
-		DB::update('groups')->set( $update )->where('groupID', '=', $group_id)->execute();
+		DB::update('groups')->set( $update )->where('id', '=', $group_id)->execute();
 	}
 }

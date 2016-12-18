@@ -97,7 +97,9 @@ class FrontController extends Controller {
 			$settings = $this->loadSettings();
 			$this->template->settings = $settings;
 
-			$this->template->group = Auth::$session->accessData;
+			$this->template->group = Auth::$session->group;
+			$this->template->accessData = Auth::$session->accessData;
+					
 
 			$this->template->apilogin = Auth::loggedIn();
 		}

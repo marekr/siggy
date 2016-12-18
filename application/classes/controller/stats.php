@@ -33,11 +33,11 @@ class Controller_Stats extends FrontController {
 		$dateRange = $datep->getTimestamps();
 
 		//short names for vars for multipliers
-		$view->wormhole = $wormhole = (double)Auth::$session->accessData['stats_wh_map_points'];
-		$view->sig_add = $sig_add = (double)Auth::$session->accessData['stats_sig_add_points'];
-		$view->sig_update = $sig_update = (double)Auth::$session->accessData['stats_sig_update_points'];
-		$view->pos_add = $pos_add= (double)Auth::$session->accessData['stats_pos_add_points'];
-		$view->pos_update = $pos_update = (double)Auth::$session->accessData['stats_pos_update_points'];
+		$view->wormhole = $wormhole = (double)Auth::$session->group->stats_wh_map_points;
+		$view->sig_add = $sig_add = (double)Auth::$session->group->stats_sig_add_points;
+		$view->sig_update = $sig_update = (double)Auth::$session->group->stats_sig_update_points;
+		$view->pos_add = $pos_add= (double)Auth::$session->group->stats_pos_add_points;
+		$view->pos_update = $pos_update = (double)Auth::$session->group->stats_pos_update_points;
 
 		$number_per_page = 25;
 

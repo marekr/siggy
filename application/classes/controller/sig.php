@@ -39,7 +39,7 @@ class Controller_Sig extends FrontController {
 			$insert['type'] = $sigData['type'];
 			$insert['groupID'] = Auth::$session->groupID;
 
-			if( Auth::$session->accessData['showSigSizeCol'] )
+			if( Auth::$session->group->show_sig_size_col )
 			{
 				$insert['sigSize'] = ( is_numeric( $sigData['sigSize'] ) ? $sigData['sigSize'] : '' );
 			}
@@ -52,7 +52,7 @@ class Controller_Sig extends FrontController {
 																'lastActive' => time() )
 										);
 
-			miscUtils::increment_stat('adds', Auth::$session->accessData);
+			Auth::$session->group->incrementStat('adds', Auth::$session->accessData);
 
 			$this->notifierCheck($insert);
 
@@ -63,7 +63,7 @@ class Controller_Sig extends FrontController {
 
 	private function notifierCheck($sigData)
 	{
-		foreach( Auth::$session->accessData['notifiers'] as $notifier )
+		foreach( Notifier::all(Auth::$session->groupID, Auth::$session->charID) as $notifier )
 		{
 			if( $notifier['type'] == NotificationTypes::SiteFound )
 			{
@@ -85,7 +85,7 @@ class Controller_Sig extends FrontController {
 						$charID = Auth::$session->charID;
 					}
 
-					Notification::create(Auth::$session->groupID, $charID, $notifier['type'], $eventData);
+					Notification::create(Auth::$session->group->id, $charID, $notifier['type'], $eventData);
 				}
 			}
 		}
@@ -187,7 +187,7 @@ class Controller_Sig extends FrontController {
 
 						if( $insert['type'] != 'none' )
 						{
-							miscUtils::increment_stat('adds', Auth::$session->accessData);
+							Auth::$session->group->incrementStat('adds', Auth::$session->accessData);
 						}
 					}
 				}
@@ -219,7 +219,7 @@ class Controller_Sig extends FrontController {
 			$update['siteID'] = isset($sigData['siteID']) ? intval($sigData['siteID']) : 0;
 			$update['type'] = $sigData['type'];
 
-			if( Auth::$session->accessData['showSigSizeCol'] )
+			if( Auth::$session->group->show_sig_size_col )
 			{
 				$update['sigSize'] = ( is_numeric( $sigData['sigSize'] ) ? $sigData['sigSize'] : ''  );
 			}
@@ -256,7 +256,7 @@ class Controller_Sig extends FrontController {
 				}
 			}
 
-			miscUtils::increment_stat('updates', Auth::$session->accessData);
+			Auth::$session->group->incrementStat('updates', Auth::$session->accessData);
 
 			$this->response->body(json_encode('1'));
 		}
@@ -376,7 +376,7 @@ class Controller_Sig extends FrontController {
 				$message .= '" which was of type '.strtoupper($sigData['type']);
 			}
 
-			groupUtils::log_action(Auth::$session->groupID, 'delsig', $message);
+			Auth::$session->group->logAction('delsig', $message);
 			$this->response->body(json_encode('1'));
 		}
 	}

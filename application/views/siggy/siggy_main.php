@@ -1,4 +1,4 @@
-	<?php if( $group['iskBalance'] < 0 ): ?>
+	<?php if( $group->isk_balance < 0 ): ?>
 	<div class="box" style="background-color:rgb(179, 52, 52)">
 		<div class='box-header'>Balance warning</div>
 		<div class='box-content'>
@@ -267,7 +267,7 @@
 	                                <label>Sig ID</label>
 	                                <input type="text" class="siggy-input" name="sig" maxlength="3" placeholder="ABC" />
 	                            </div>
-	                            <?php if( $group['showSigSizeCol'] ): ?>
+	                            <?php if( $group->show_sig_size_col ): ?>
 	                            <div class="input-group"  style="width:100px;">
 	                                <label>Sig Size</label>
 	                                <select name="size" class="siggy-input">
@@ -333,7 +333,7 @@
 	                    <tr>
 	                        <th width="2%">&nbsp;</th>
 	                        <th width="5%">Sig</th>
-	                        <?php if( $group['showSigSizeCol']) :?>
+	                        <?php if( $group->show_sig_size_col) :?>
 	                        <th width="3%">Size</th>
 	                        <th width="5%">Type</th>
 	                        <th width="74%">Name/Description</th>
@@ -393,7 +393,8 @@
 				freezeSystem: true,
 				<?php endif; ?>
 				
-				defaultActivity:  '<?php echo $group['default_activity']; ?>',
+
+				defaultActivity:  '<?php echo $group->default_activity; ?>',
 				sessionID: '<?php echo Auth::$session->sessionID; ?>',
 				charsettings: {
 					themeID: <?php echo $settings['theme_id']; ?>,
@@ -403,16 +404,16 @@
 					defaultActivity: '<?php echo $settings['default_activity']; ?>'
 				},
 				sigtable: {
-					showSigSizeCol: <?php echo ( $group['showSigSizeCol'] ? 'true' : 'false' ); ?>
+					showSigSizeCol: <?php echo ( $group->show_sig_size_col ? 'true' : 'false' ); ?>
 				},
 				map: {
-					jumpTrackerEnabled: <?php echo ( $group['jumpLogEnabled'] ? 'true' : 'false' ); ?>,
-					jumpTrackerShowNames:  <?php echo ( $group['jumpLogRecordNames'] ? 'true' : 'false' ); ?>,
-					jumpTrackerShowTime:  <?php echo ( $group['jumpLogRecordTime'] ? 'true' : 'false' ); ?>,
-					showActivesShips:  <?php echo ( $group['chain_map_show_actives_ships'] ? 'true' : 'false' ); ?>,
-					allowMapHeightExpand: <?php echo $group['allow_map_height_expand'] ? 'true' : 'false'; ?>,
-					alwaysShowClass: <?php echo $group['chainmap_always_show_class'] ? 'true' : 'false'; ?>,
-					maxCharactersShownInSystem: <?php echo (int)($group['chainmap_max_characters_shown']); ?>
+					jumpTrackerEnabled: <?php echo ( $group->jump_log_enabled ? 'true' : 'false' ); ?>,
+					jumpTrackerShowNames:  <?php echo ( $group->jump_log_record_names ? 'true' : 'false' ); ?>,
+					jumpTrackerShowTime:  <?php echo ( $group->jump_log_record_time ? 'true' : 'false' ); ?>,
+					showActivesShips:  <?php echo ( $group->chain_map_show_actives_ships ? 'true' : 'false' ); ?>,
+					allowMapHeightExpand: <?php echo $group->allow_map_height_expand ? 'true' : 'false'; ?>,
+					alwaysShowClass: <?php echo $group->chainmap_always_show_class ? 'true' : 'false'; ?>,
+					maxCharactersShownInSystem: <?php echo (int)($group->chainmap_max_characters_shown); ?>
 				}
 			};
 

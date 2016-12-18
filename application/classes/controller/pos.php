@@ -42,7 +42,7 @@ class Controller_Pos extends FrontController {
 
 		$posID = DB::insert('pos_tracker', array_keys($data) )->values(array_values($data))->execute();
 
-		miscUtils::increment_stat('pos_adds', Auth::$session->accessData);
+		Auth::$session->group->incrementStat('pos_adds', Auth::$session->accessData);
 	}
 
 	public function action_edit()
@@ -87,10 +87,10 @@ class Controller_Pos extends FrontController {
 
 		DB::update('pos_tracker')->set( $data )->where('pos_id', '=', $pos['pos_id'])->execute();
 
-		miscUtils::increment_stat('pos_updates', Auth::$session->accessData);
+		Auth::$session->group->incrementStat('pos_updates', Auth::$session->accessData);
 
 		$log_message = sprintf("%s edit POS in system %s", Auth::$session->charName, $pos['system_name']);
-		groupUtils::log_action(Auth::$session->groupID, 'editpos', $log_message);
+		Auth::$session->group->logAction('editpos', $log_message);
 	}
 
 	public function action_remove()
@@ -114,6 +114,6 @@ class Controller_Pos extends FrontController {
 		DB::delete('pos_tracker')->where('pos_id', '=', $id)->execute();
 
 		$log_message = sprintf("%s deleted POS from system %s", Auth::$session->charName, $pos['system_name']);
-		groupUtils::log_action(Auth::$session->groupID, 'delpos', $log_message);
+		Auth::$session->group->logAction('delpos', $log_message);
 	}
 }
