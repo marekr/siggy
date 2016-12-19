@@ -101,13 +101,13 @@
 				</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<?php if( count($accessData['access_groups']) > 1 ): ?>
+				<?php if( count(Auth::$session->accessibleGroups()) > 1 ): ?>
 				<li class="dropdown">
 					<a data-toggle="dropdown" href="#">
 						<?php echo substr($group->name,0,10); ?>&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-down"></i>
 					</a>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-						<?php foreach( $accessData['access_groups'] as $g ): ?>
+						<?php foreach( Auth::$session->accessibleGroups() as $g ): ?>
 							<li>
 								<a href="<?php echo URL::base(TRUE, TRUE); ?>access/switch_membership/?k=<?php echo md5($g['group_id']); ?>">
 								<?php echo $g['group_name']; ?>

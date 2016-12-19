@@ -1,8 +1,10 @@
 <?php
 
 class AuthStatus {
-	const NOACCESS = 1;
-	const GPASSWRONG = 2;
+	const NOACCESS = 0;
+	const GROUP_SELECT_REQUIRED = 1;
+	const CHAR_CORP_INVALID = 2;
+	const GPASSWRONG = 5;
 
 	const ACCEPTED = 3;
 
@@ -41,13 +43,17 @@ class Auth {
 		$success = TRUE;
 		if( self::loggedIn() )
 		{
-			$success = self::$user->validateCorpChar();
-		}
+			if( !self::$user->validateCorpChar() )
+			{
+				self::$authStatus = AuthStatus::CHAR_CORP_INVALID;
+				return self::$authStatus;
+			}
 
-		if( !$success || self::$session->group == null )
-		{
-			self::$authStatus = AuthStatus::NOACCESS;
-			return self::$authStatus;
+			if( self::$session->group == null || !self::$session->validateGroup() )
+			{
+				self::$authStatus = AuthStatus::GROUP_SELECT_REQUIRED;
+				return self::$authStatus;
+			}
 		}
 
 		if( self::$session->group != null )

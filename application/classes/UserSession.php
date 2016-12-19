@@ -93,6 +93,7 @@ class UserSession {
 		$this->__updateSession();
 	}
 
+
 	private function __fetchSessionData()
 	{
 		$sess = DB::query(Database::SELECT, 'SELECT id,user_id,group_id,character_id,character_name,corporation_id,csrf_token FROM sessions WHERE id=:id')
@@ -211,82 +212,81 @@ class UserSession {
 			->execute();
 	}
 
+	public function validateGroup()
+	{
+		if( Auth::$session->group->findGroupMember('char', $this->charID) != null )
+		{
+			return TRUE;
+		}
+		
+		if( Auth::$session->group->findGroupMember('corp', $this->corpID) != null )
+		{
+			return TRUE;
+		}
+
+		return FALSE;
+	}
 
 	public function getAccessData()
 	{
 		/* Result array */
-		$access_data = array();
-		$chosenGroupID = intval(Cookie::get('membershipChoice', -1));
-
-		$accessGroupID = 0;
-
-		//start forming a list of possible groups
-		$all_groups = array();
-		$corp_data = groupUtils::getCorpData( $this->corpID );
-		$char_data = groupUtils::getCharData( $this->charID );
-
-		$access_type = 'char';
-		if( $corp_data !== FALSE && $char_data != FALSE )
-		{
-			$all_groups = array_replace($corp_data['groups'],$char_data['groups']);
-
-			//helper property for the chain map acl
-			$access_type = 'char_corp';
-		}
-		else if( $corp_data !== FALSE )
-		{
-			$all_groups = $corp_data['groups'];
-
-			//helper property for the chain map acl
-			$access_type = 'corp';
-		}
-		else if ($char_data != FALSE )
-		{
-			$all_groups = $char_data['groups'];
-
-			$access_type = 'char';
-		}
-
-		//check if we have any groups
-		if( !count($all_groups) )
-		{
-			$this->accessData = $default;
-			return;
-		}
-
-		//did we want to select a group? check if we have access :)
-		if( !empty($chosenGroupID) )
-		{
-			if( array_key_exists ($chosenGroupID,$all_groups) )
-			{
-				$accessGroupID = $chosenGroupID;
-			}
-		}
-
-		//no group selected? try and pick the first one
-		if( !$accessGroupID  )
-		{
-			$tmp = current($all_groups);
-			$accessGroupID = $tmp['group_id'];
-		}
+		$accessData = [];
 
 		//store the possible groups
-		$groupData['access_type'] = $access_type;
-		$groupData['corpID'] = $this->corpID;
-		$groupData['charID'] = $this->charID;
-		$groupData['accessible_chainmaps'] = $this->_buildAccessChainmaps($this->group->chainMaps());
-		$groupData['active_chain_map'] = $this->_getChainMapID($this->group->chainMaps());
-		$groupData['access_groups'] = $all_groups;
+		if($this->group != null)
+		{
+			$accessData['active_chain_map'] = $this->_getChainMapID($this->group->chainMaps());
+		}
 
-		$this->accessData = $groupData;
-
-		$this->groupID = $accessGroupID;
+		$this->accessData = $accessData;
 	}
 
+	private $accessibleGroups = null;
+
+	public function accessibleGroups()
+	{
+		if($this->accessibleGroups == null)
+		{
+			//start forming a list of possible groups
+			$all_groups = [];
+			$corp_data = groupUtils::getCorpData( $this->corpID );
+			$char_data = groupUtils::getCharData( $this->charID );
+
+			$access_type = 'char';
+			if( $corp_data !== FALSE && $char_data != FALSE )
+			{
+				$all_groups = array_replace($corp_data['groups'],$char_data['groups']);
+			}
+			else if( $corp_data !== FALSE )
+			{
+				$all_groups = $corp_data['groups'];
+			}
+			else if ($char_data != FALSE )
+			{
+				$all_groups = $char_data['groups'];
+			}
+
+			$this->accessibleGroups = $all_groups;
+		}
+
+		return $this->accessibleGroups;
+	}
+
+	private $accessibleChainMaps = null;
+
+	public function accessibleChainMaps()
+	{
+		if($this->accessibleChainMaps == null)
+		{
+			$this->accessibleChainMaps  = $this->_buildAccessChainmaps($this->group->chainMaps());
+		}
+
+		return $this->accessibleChainMaps;
+	}
 
 	private function _buildAccessChainmaps($chainmaps)
 	{
-		$accessibleChainmaps = array();
+		$accessibleChainmaps = [];
 		foreach($chainmaps as $id => $c)
 		{
 			foreach($c['access'] as $p)

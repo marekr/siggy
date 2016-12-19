@@ -74,6 +74,11 @@ class Group {
 		return $this->groupMembers;
 	}
 
+	public function findGroupMember(string $type, int $id)
+	{
+		return GroupMember::findByGroupAndType($this->id, $type, $id);
+	}
+
 	public function blacklistCharacters()
 	{
 		if($this->blacklistCharacters == null)

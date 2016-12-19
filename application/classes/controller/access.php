@@ -71,9 +71,9 @@ class Controller_Access extends FrontController {
 	public function action_switch_membership()
 	{
 		$k = $_GET['k'];
-		if( count( Auth::$session->accessData['access_groups'] ) > 1 || count( current(Auth::$session->accessData['access_groups']) > 1) )
+		if( count( Auth::$session->accessibleGroups() ) > 1 || count( current(Auth::$session->accessibleGroups()) > 1) )
 		{
-			foreach( Auth::$session->accessData['access_groups'] as $g )
+			foreach( Auth::$session->accessibleGroups() as $g )
 			{
 				if( md5($g['group_id']) == $k )
 				{

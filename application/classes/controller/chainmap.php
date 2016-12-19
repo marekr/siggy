@@ -557,7 +557,7 @@ class Controller_Chainmap extends FrontController {
 
 		$selected_id = 0;
 		$default_id = 0;
-		foreach(Auth::$session->accessData['accessible_chainmaps'] as $c)
+		foreach(Auth::$session->accessibleChainMaps() as $c)
 		{
 			if( $c['chainmap_id'] == $desired_chainmap )
 			{
@@ -568,7 +568,6 @@ class Controller_Chainmap extends FrontController {
 		if( $selected_id )
 		{
 			Cookie::set('chainmap', $selected_id);
-					print_r($selected_id);
 		}
 
 		if( !$selected_id )

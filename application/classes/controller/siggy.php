@@ -755,7 +755,7 @@ class Controller_Siggy extends FrontController {
 			$update['chainmaps_update'] = 1;
 
 			$chainmaps = array();
-			foreach( Auth::$session->accessData['accessible_chainmaps'] as $c )
+			foreach( Auth::$session->accessibleChainMaps() as $c )
 			{
 				$chainmaps[ $c['chainmap_id'] ] = ['id' => (int)$c['chainmap_id'],
 														'name' => $c['chainmap_name']];

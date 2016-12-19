@@ -22,7 +22,7 @@ class GroupBlacklistCharacter
 	{
 		foreach ($props as $key => $value) 
 		{
-    		$this->$key = $value;
+			$this->$key = $value;
 		}
 
 		DB::update('group_character_blacklist')

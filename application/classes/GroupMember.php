@@ -91,6 +91,26 @@ class GroupMember {
 		return $results;
 	}
 	
+	public static function findByGroupAndType(int $groupId, string $type, int $id)
+	{
+		$data = DB::query(Database::SELECT, 'SELECT * FROM groupmembers 
+													WHERE eveID=:id AND 
+														memberType=:type AND 
+														groupID = :groupId')
+												->param(':id', $id)
+												->param(':type', $type)
+												->param(':groupId', $groupId)
+												->execute()
+												->current();
+
+		if($data != null)
+		{
+			return new GroupMember($data);
+		}
+
+		return null;
+	}
+
 	public static function findByGroup(int $groupId)
 	{
 		$data = DB::query(Database::SELECT, 'SELECT * FROM groupmembers WHERE groupID=:id')
