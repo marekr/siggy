@@ -31,7 +31,7 @@ class GroupBlacklistCharacter
 			->execute();
 	}
 
-	public static function create(array $props)
+	public static function create(array $props): GroupBlacklistCharacter
 	{
 		$props['created_at'] = Carbon::now()->toDateTimeString();
 
@@ -42,7 +42,7 @@ class GroupBlacklistCharacter
 		return new GroupBlacklistCharacter($props);
 	}
 
-	public static function findByGroup(int $groupId)
+	public static function findByGroup(int $groupId): array
 	{
 		$data = DB::query(Database::SELECT, 'SELECT * FROM group_character_blacklist WHERE group_id=:id')
 												->param(':id', $groupId)

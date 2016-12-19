@@ -42,12 +42,12 @@ class Group {
 			->execute();
 	}
 	
-	private static function hashGroupPassword( $password, $salt )
+	private static function hashGroupPassword(string $password, string $salt): string
 	{
 		return sha1($password . $salt);
 	}
 
-	public static function createFancy(array $data)
+	public static function createFancy(array $data): int
 	{
 		$salt = miscUtils::generateSalt(10);
 		$password = "";
@@ -80,7 +80,7 @@ class Group {
 		return $result;
 	}
 
-	public static function create(array $props)
+	public static function create(array $props): Group
 	{
 		DB::insert('groups', array_keys($props) )
 				->values(array_values($props))
@@ -104,7 +104,7 @@ class Group {
 		return null;
 	}
 	
-	public function groupMembers()
+	public function groupMembers(): array
 	{
 		if($this->groupMembers == null)
 		{
@@ -119,7 +119,7 @@ class Group {
 		return GroupMember::findByGroupAndType($this->id, $type, $id);
 	}
 
-	public function blacklistCharacters()
+	public function blacklistCharacters(): array
 	{
 		if($this->blacklistCharacters == null)
 		{
@@ -129,7 +129,7 @@ class Group {
 		return $this->blacklistCharacters;
 	}
 
-	public function chainMaps()
+	public function chainMaps(): array
 	{
 		if($this->chainMaps == null)
 		{
@@ -165,7 +165,7 @@ class Group {
 		DB::insert('logs', array_keys($insert) )->values(array_values($insert))->execute();
 	}
 
-	public function getCharacterUsageCount()
+	public function getCharacterUsageCount(): int
 	{
 		$num_corps = DB::query(Database::SELECT, "SELECT SUM(DISTINCT c.member_count) as total FROM groupmembers gm
 										LEFT JOIN corporations c ON(gm.eveID = c.id)
@@ -186,7 +186,7 @@ class Group {
 		return ($num_corps + $num_chars);
 	}
 	
-	public function incrementStat($stat, $acccessData)
+	public function incrementStat(string $stat, array $acccessData)
 	{
 		if( !$this->stats_enabled )
 		{
