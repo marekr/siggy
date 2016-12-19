@@ -18,7 +18,7 @@ class Group {
 	//todo, implement
 	public $cache_time = 1;
 
-	public function __construct($props)
+	public function __construct(array $props)
 	{
 		foreach ($props as $key => $value) 
 		{
@@ -26,8 +26,11 @@ class Group {
 		}
 	}
 	
-	public function save($props)
+	public function save(array $props)
 	{
+		//todo, remove this compatibility hack
+		$props['last_update'] = time();
+
 		foreach ($props as $key => $value) 
 		{
     		$this->$key = $value;
@@ -39,8 +42,45 @@ class Group {
 			->execute();
 	}
 	
+	private static function hashGroupPassword( $password, $salt )
+	{
+		return sha1($password . $salt);
+	}
 
-	public static function create($props)
+	public static function createFancy(array $data)
+	{
+		$salt = miscUtils::generateSalt(10);
+		$password = "";
+		if( $data['group_password'] != "" && $data['group_password_required'] == 1 )
+		{
+			$password = self::hashGroupPassword( $data['group_password'], $salt );
+		}
+
+		$insert = array(
+							'name' => $data['groupName'],
+							'ticker' => $data['groupTicker'],
+							'password_required' => $data['group_password_required'],
+							'password_salt' => $salt,
+							'password' => $password,
+							'dateCreated' => time(),
+							'paymentCode' => miscUtils::generateString(14),
+							'billable' => 1
+						);
+		$result = DB::insert('groups', array_keys($insert) )->values( array_values($insert) )->execute();
+		$result = $result[0];
+
+		$insert = array( 'group_id' => $result,
+						 'chainmap_type' => 'default',
+						 'chainmap_name' => 'Default',
+						 'chainmap_homesystems' => '',
+						 'chainmap_homesystems_ids' => ''
+						);
+		DB::insert('chainmaps', array_keys($insert) )->values( array_values($insert) )->execute();
+
+		return $result;
+	}
+
+	public static function create(array $props)
 	{
 		DB::insert('groups', array_keys($props) )
 				->values(array_values($props))

@@ -859,7 +859,6 @@ class Controller_Siggy extends FrontController {
 
 		$notes = htmlspecialchars($_POST['notes']);
 
-		groupUtils::update_group(Auth::$session->groupID,$update);
 		Auth::$session->group->save(['notes' => $notes]);
 		groupUtils::recacheGroup(Auth::$session->groupID);
 

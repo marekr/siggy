@@ -171,7 +171,7 @@ class Controller_Manage_Group extends Controller_Manage
 							groupUtils::recacheChar($member->eveID);
 						}
 
-						groupUtils::update_group(Auth::$user->data['groupID']);	//trigger last_update value to change
+						Auth::$session->group->save([]);
 						groupUtils::recacheGroup(Auth::$user->data['groupID']);
 
 						Message::add('success', 'Group member added');
@@ -311,7 +311,7 @@ class Controller_Manage_Group extends Controller_Manage
 					groupUtils::recacheChar($member->eveID);
 				}
 
-				groupUtils::update_group(Auth::$user->data['groupID']);	//trigger last_update value to change
+				Auth::$session->group->save([]);
 				groupUtils::recacheGroup(Auth::$user->data['groupID']);
 
 				HTTP::redirect('manage/group/members');
@@ -369,7 +369,7 @@ class Controller_Manage_Group extends Controller_Manage
 			}
 
 			//trigger last_update value to change
-			groupUtils::update_group(Auth::$user->data['groupID']);
+			Auth::$session->group->save([]);
 			groupUtils::recacheGroup(Auth::$user->data['groupID']);
 
 			HTTP::redirect('manage/group/members');

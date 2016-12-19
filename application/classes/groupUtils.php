@@ -80,86 +80,6 @@ final class groupUtils {
 		}
 	}
 
-	static function createNewGroup($data)
-	{
-		$salt = miscUtils::generateSalt(10);
-		$password = "";
-		if( $data['group_password'] != "" && $data['group_password_required'] == 1 )
-		{
-			$password = self::hashGroupPassword( $data['group_password'], $salt );
-		}
-
-		$insert = array(
-							'name' => $data['groupName'],
-							'ticker' => $data['groupTicker'],
-							'password_required' => $data['group_password_required'],
-							'password_salt' => $salt,
-							'password' => $password,
-							'dateCreated' => time(),
-							'paymentCode' => miscUtils::generateString(14),
-							'billable' => 1
-						);
-		$result = DB::insert('groups', array_keys($insert) )->values( array_values($insert) )->execute();
-		$result = $result[0];
-
-		$insert = array( 'group_id' => $result,
-						 'chainmap_type' => 'default',
-						 'chainmap_name' => 'Default',
-						 'chainmap_homesystems' => '',
-						 'chainmap_homesystems_ids' => ''
-						);
-		DB::insert('chainmaps', array_keys($insert) )->values( array_values($insert) )->execute();
-
-		return $result;
-	}
-
-	static function hashGroupPassword( $password, $salt )
-	{
-		return sha1($password . $salt);
-	}
-
-	static function parseHomeSystems( $home_systems )
-	{
-		$return = array();
-
-		$home_systems = trim($home_systems);
-		if( !empty($home_systems) )
-		{
-			$home_systems = explode(',', $home_systems);
-			$home_system_ids = array();
-			if( is_array( $home_systems ) )
-			{
-				foreach($home_systems as $k => $v)
-				{
-					if( trim($v) != '' )
-					{
-						$id = miscUtils::findSystemByName(trim($v));
-						if( $id != 0 )
-						{
-							$home_system_ids[] = $id;
-						}
-						else
-						{
-							unset($home_systems[ $k ] );
-						}
-					}
-					else
-					{
-						unset($home_systems[ $k ] );
-					}
-				}
-			}
-			$return['homeSystemIDs'] = implode(',', $home_system_ids);
-			$return['homeSystems'] = implode(',', $home_systems);
-		}
-		else
-		{
-			$return['homeSystems'] = '';
-			$return['homeSystemIDs'] = '';
-		}
-
-		return $return;
-	}
 
 	static function applyISKCharge($group_id, $amount)
 	{
@@ -346,11 +266,5 @@ final class groupUtils {
 		{
 			return self::recacheChar($char_id);
 		}
-	}
-
-	static function update_group($group_id, $update = array())
-	{
-		$update['last_update'] = time();
-		DB::update('groups')->set( $update )->where('id', '=', $group_id)->execute();
 	}
 }

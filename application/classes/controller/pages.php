@@ -115,11 +115,11 @@ class Controller_Pages extends FrontController {
 
 				if ( $validator->check() )
 				{
-						$groupID = groupUtils::createNewGroup( array( 'groupName' => $_POST['groupName'],
+						$groupID = Group::createFancy( [ 'groupName' => $_POST['groupName'],
 															'groupTicker' => $_POST['groupTicker'],
 															'group_password' => $_POST['group_password'],
 															'group_password_required' => intval($_POST['group_password_required'])
-														)
+														]
 													);
 
 						if( $groupID )
