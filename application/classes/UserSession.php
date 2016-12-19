@@ -214,14 +214,22 @@ class UserSession {
 
 	public function validateGroup()
 	{
-		if( Auth::$session->group->findGroupMember('char', $this->charID) != null )
+		if( Auth::$session->group->findGroupMember(GroupMember::TypeChar, $this->charID) != null )
 		{
 			return TRUE;
 		}
 		
-		if( Auth::$session->group->findGroupMember('corp', $this->corpID) != null )
+		if( Auth::$session->group->findGroupMember(GroupMember::TypeCorp, $this->corpID) != null )
 		{
 			return TRUE;
+		}
+
+		if( $this->group != null )
+		{
+			$this->group = null;
+			$this->groupID = 0;
+
+			$this->__updateSession();
 		}
 
 		return FALSE;

@@ -15,6 +15,7 @@ class GroupMember {
 
 	public $corporation = null;
 	public $character = null;
+	public $group = null;
 
 	public function __construct($props)
 	{
@@ -54,6 +55,16 @@ class GroupMember {
 		}
 
 		return $this->corporation;
+	}
+	
+	public function group()
+	{
+		if( $this->group == null || $this->group->id != $this->groupID )
+		{
+			$this->group = Group::find($this->groupID);
+		}
+
+		return $this->group;
 	}
 
 	public static function find(int $id)

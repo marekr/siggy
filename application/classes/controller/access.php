@@ -67,6 +67,40 @@ class Controller_Access extends FrontController {
 		
 		$this->template->content = $view;
 	}
+	
+	public function action_groups()
+	{
+		//load header tools
+		$this->template->headerTools = '';
+
+		$groupMemberships = array_merge(GroupMember::findByType(GroupMember::TypeChar, Auth::$session->charID), 
+										GroupMember::findByType(GroupMember::TypeCorp, Auth::$session->corpID));
+
+		$groups = [];
+		foreach($groupMemberships as $gm)
+		{
+			if($gm->group() != null)	//sanity check...
+			{
+				$groups[$gm->group()->id] = $gm->group();
+			}
+		}
+
+		if ($this->request->method() == "POST")
+		{
+			$selectedGroupId = intval($_POST['group_id']);
+			if( $selectedGroupId && isset( $groups[ $selectedGroupId ] ) )
+			{
+				Auth::$user->data['group_id'] = $selectedGroupId;
+				Auth::$user->save();
+
+				HTTP::redirect('/');
+			}
+		}
+
+		$view = View::factory('access/groups');
+		$view->groups = $groups;
+		$this->template->content = $view;
+	}
 
 	public function action_switch_membership()
 	{

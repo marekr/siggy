@@ -143,7 +143,7 @@ class FrontController extends Controller {
 		}
 		elseif( $this->authStatus == AuthStatus::GROUP_SELECT_REQUIRED )
 		{
-			$this->siggyredirect('/account/groups');
+			$this->siggyredirect('/access/groups');
 		}
 		elseif( $this->authStatus != AuthStatus::ACCEPTED )
 		{

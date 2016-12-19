@@ -21,16 +21,5 @@
 </div>
 
 <script type='text/javascript'>
-accessMenu = new siggyMenu(
-{	 
-		ele: 'accessMenu', 
-		dir: 'down',
-		callback: function( id )
-		{
-			window.location.replace(  '<?php echo URL::base(true,true); ?>access/switch_membership/?k=' + id );
-		},
-		callbackMode: 'wildcard'
-});
-
-accessMenu.initialize();
+$('#activity-siggy').show();
 </script>
