@@ -7,7 +7,7 @@ This page lists all the chainmaps that are setup. There is a "default" chain map
 <br />
 <br />
 <br />
-<?php if( count( $chainmaps->as_array() ) > 0 ): ?>
+<?php if( count( $chainmaps ) > 0 ): ?>
 <table class="table table-striped" width="100%">
 	<thead>
 		<tr>
@@ -19,12 +19,12 @@ This page lists all the chainmaps that are setup. There is a "default" chain map
 	<tbody>
 		<?php foreach( $chainmaps as $s ): ?>
 		<tr>
-			<td><?php echo $s->chainmap_name ?></td>
-			<td><?php echo $s->groupmembers->count_all(); ?></td>
+			<td><?php echo $s['chainmap_name'] ?></td>
+			<td><?php //echo $s->groupmembers->count_all(); ?></td>
 			<td>
-				<?php echo Html::anchor('manage/chainmaps/edit/'.$s->chainmap_id, __('<i class="icon-edit"></i>&nbsp;Edit'),array('class' => 'btn btn-default btn-xs')); ?>
-				<?php if( $s->chainmap_type != 'default' ): ?>
-				<?php echo Html::anchor('manage/chainmaps/remove/'.$s->chainmap_id, __('<i class="icon-trash"></i>&nbsp;Remove'),array('class' => 'btn btn-danger btn-xs')); ?>
+				<?php echo Html::anchor('manage/chainmaps/edit/'.$s['chainmap_id'], __('<i class="icon-edit"></i>&nbsp;Edit'),array('class' => 'btn btn-default btn-xs')); ?>
+				<?php if( $s['chainmap_type'] != 'default' ): ?>
+				<?php echo Html::anchor('manage/chainmaps/remove/'.$s['chainmap_id'], __('<i class="icon-trash"></i>&nbsp;Remove'),array('class' => 'btn btn-danger btn-xs')); ?>
 				<?php endif; ?>
 			</td>
 		</tr>

@@ -45,8 +45,8 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
 		$view->set('user', Auth::$user->data);
 
-		$group = ORM::factory('group', Auth::$user->data['groupID']);
-		$chainmaps = $group->chainmaps->find_all();
+		$group = Auth::$user->group();
+		$chainmaps = $group->chainMaps();
 
 		$view->set('chainmaps', $chainmaps );
 	}
@@ -57,7 +57,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
 		$this->template->title = __('Add a Chain Map');
 
-		$group = ORM::factory('group', Auth::$user->data['groupID']);
+		$group = Auth::$user->group();
 
 		$data = array(	'chainmap_name' => '',
 						'chainmap_homesystems' => '',
@@ -86,8 +86,8 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
 				$chainmap = new chainmap($sg->chainmap_id, Auth::$user->data['groupID']);
 				$chainmap->rebuild_map_data_cache();
-				Auth::$session->group->save([]);
-				groupUtils::recacheGroup(Auth::$user->data['groupID']);
+				Auth::$user->group()->save([]);
+				Auth::$user->group()->recacheChainmaps();
 
 				HTTP::redirect('manage/chainmaps/list');
 				return;
@@ -203,8 +203,8 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 			}
 
 			//trigger last_update value to change
-			Auth::$session->group->save([]);
-			groupUtils::recacheGroup(Auth::$user->data['groupID']);
+			Auth::$user->group()->save([]);
+			Auth::$user->group()->recacheChainmaps();
 
 			HTTP::redirect('manage/group/members');
 		}
@@ -226,7 +226,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 			Message::add('error', __('Error: You do not have permission to edit that chainmap.'));
 			HTTP::redirect('manage/chainmaps');
 		}
-		$group = ORM::factory('group', Auth::$user->data['groupID']);
+		$group = Auth::$user->group();
 
 		$errors = array();
 
@@ -250,8 +250,8 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				$sg->save();
 
 				$chainmap->rebuild_map_data_cache();
-				Auth::$session->group->save([]);
-				groupUtils::recacheGroup(Auth::$user->data['groupID']);
+				Auth::$user->group()->save([]);
+				Auth::$user->group()->recacheChainmaps();
 
 				HTTP::redirect('manage/chainmaps/list');
 				return;
@@ -345,8 +345,8 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 					}
 				}
 				
-				Auth::$session->group->save([]);
-				groupUtils::recacheGroup(Auth::$user->data['groupID']);
+				Auth::$user->group()->save([]);
+				Auth::$user->group()->recacheChainmaps();
 				$chainmap->delete();
 
 				//$this->__recacheCorpMembers();

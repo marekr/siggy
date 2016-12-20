@@ -227,4 +227,9 @@ class Group {
 	{
 		//placeholder in case we want to implement
 	}
+
+	public function recacheChainmaps()
+	{
+		//placeholder in case we want to implement
+	}
 }
