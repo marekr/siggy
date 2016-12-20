@@ -62,9 +62,9 @@ class Group {
 							'password_required' => $data['group_password_required'],
 							'password_salt' => $salt,
 							'password' => $password,
-							'dateCreated' => time(),
 							'paymentCode' => miscUtils::generateString(14),
-							'billable' => 1
+							'billable' => 1,
+							'created_at' => Carbon::now()->toDateTimeString(),
 						);
 		$result = DB::insert('groups', array_keys($insert) )->values( array_values($insert) )->execute();
 		$result = $result[0];
@@ -82,6 +82,11 @@ class Group {
 
 	public static function create(array $props): Group
 	{
+		if(!isset($props['created_at']))
+		{
+			$props['created_at'] = Carbon::now()->toDateTimeString();
+		}
+
 		DB::insert('groups', array_keys($props) )
 				->values(array_values($props))
 				->execute();
