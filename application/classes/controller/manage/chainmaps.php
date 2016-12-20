@@ -83,7 +83,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
 				$sg->save();
 
-				$chainmap = new chainmap($sg->chainmap_id, Auth::$user->data['groupID']);
+				$chainmap = new Chainmap($sg->chainmap_id, Auth::$user->data['groupID']);
 				$chainmap->rebuild_map_data_cache();
 				Auth::$user->group()->save([]);
 				Auth::$user->group()->recacheChainmaps();
@@ -225,7 +225,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		$view->set('mode', 'edit');
 		$view->set('id', $id);
 
-		$chainmap = new chainmap($id, Auth::$user->data['groupID']);
+		$chainmap = new Chainmap($id, Auth::$user->data['groupID']);
 
 		if ( !empty($_POST)  )
 		{

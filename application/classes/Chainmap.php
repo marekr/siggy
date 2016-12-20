@@ -2,7 +2,7 @@
 
 use Carbon\Carbon;
 
-class chainmap {
+class Chainmap {
 
 	public $id = 0;
 	public $data = array();
