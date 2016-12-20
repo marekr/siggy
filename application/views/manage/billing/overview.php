@@ -9,7 +9,7 @@ Please be warned, as this new method of billing phases in, you will be automatic
 <h4>Overview</h4>
 <dl class="dl-horizontal">
 	<dt>Account Balance</dt>
-	<dd><?php echo number_format($group->iskBalance); ?> isk</dd>
+	<dd><?php echo number_format($group->isk_balance); ?> isk</dd>
 	<dt>Member Count</dt>
 	<dd> <?php echo ($numUsers > 0) ? $numUsers : 'Pending'; ?></dd>
 	<dt>Daily cost*</dt>
@@ -23,7 +23,7 @@ Please be warned, as this new method of billing phases in, you will be automatic
 <h4>Make a payment</h4>
 <p>All isk should be sent to the corp <strong><a onclick="javascript:CCPEVE.showInfo(2,98046548);" style="cursor:pointer">borkedLabs</a></strong>.<br />
 You <strong>must</strong> enter the following text as the reason:
-<input class="input-large" id="disabledInput" type="text" readonly="readonly" value="siggy-<?php echo $group->paymentCode; ?>" style="cursor:text; "/>
+<input class="input-large" id="disabledInput" type="text" readonly="readonly" value="siggy-<?php echo $group->payment_code; ?>" style="cursor:text; "/>
 </strong><br />
 * Any payments without the proper text as the reason cannot be proceeded automatically and may count as donations.<br />
 </p>

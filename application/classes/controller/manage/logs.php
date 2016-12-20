@@ -77,7 +77,7 @@ class Controller_Manage_Logs extends Controller_Manage
 
 		$view->bind('sessions', $sessData);
 
-		$group = ORM::factory('group', Auth::$user->data['groupID']);
+		$group = Auth::$user->group();
 
 		$this->template->content = $view;
 		$this->template->title = "Active Sessions";
@@ -141,7 +141,7 @@ class Controller_Manage_Logs extends Controller_Manage
 		$view->bind('pagination', $paginationHTML);
 		$view->set('filterType', $filterType);
 
-		$group = ORM::factory('group', Auth::$user->data['groupID']);
+		$group = Auth::$user->group();
 
 		$this->template->content = $view;
 		$this->template->title = "Activity Logs";

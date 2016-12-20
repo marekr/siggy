@@ -56,7 +56,7 @@ class Controller_Manage_Billing extends Controller_Manage
 		$view->bind('payments', $payments);
 		$view->bind('charges', $charges);
 		
-		$group = ORM::factory('group', Auth::$user->data['groupID']);
+		$group = Auth::$user->group();
 		$view->set('group', $group );
 		
 		$view->set('numUsers', $numUsers);
