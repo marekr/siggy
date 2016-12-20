@@ -134,7 +134,7 @@ class Controller_Siggy extends FrontController {
 
 		if( Auth::$session->accessData['active_chain_map'] )
 		{
-			$this->chainmap = new Chainmap(Auth::$session->accessData['active_chain_map'],Auth::$session->groupID);
+			$this->chainmap = Chainmap::find(Auth::$session->accessData['active_chain_map'],Auth::$session->groupID);
 		}
 	}
 

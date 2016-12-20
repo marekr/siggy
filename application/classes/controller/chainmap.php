@@ -18,7 +18,7 @@ class Controller_Chainmap extends FrontController {
 		$chainmapID = (isset($_REQUEST['chainmap']) ? (int)$_REQUEST['chainmap'] : Auth::$session->accessData['active_chain_map'] );
 		if( $chainmapID )
 		{
-			$this->chainmap = new Chainmap($chainmapID,Auth::$session->groupID);
+			$this->chainmap = Chainmap::find($chainmapID,Auth::$session->groupID);
 		}
 	}
 

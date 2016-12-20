@@ -5,35 +5,35 @@ use Carbon\Carbon;
 class Chainmap {
 
 	public $id = 0;
-	public $data = array();
+	public $data = [];
 	private $group_id = 0;
 
-	public function __construct($chainmap_id, $group_id)
+	public function __construct(array $props)
 	{
-		$this->load($chainmap_id, $group_id);
+		foreach ($props as $key => $value) 
+		{
+			$this->$key = $value;
+		}
+
+		$this->id = $props['chainmap_id'];
+		$this->data = $data;
 	}
 
-	public function load($chainmap_id, $group_id)
-	{
-		$this->id = 0;
-		$this->group_id = 0;
-		$this->data = array();
-
+	public static function find(int $chainmapId, int $groupId)
+	{		
 		$data = DB::query(Database::SELECT, "SELECT * FROM chainmaps
 											  WHERE chainmap_id=:chainmap_id AND group_id=:group")
-						->param(':chainmap_id', $chainmap_id)
-						->param(':group', $group_id)
+						->param(':chainmap_id', $chainmapId)
+						->param(':group', $groupId)
 						->execute()
 						->current();
 
-		if( !isset($data['chainmap_id']) )
+		if($data != null)
 		{
-			throw new Exception("Invalid chain map ID");
+			return new Chainmap($data);
 		}
 
-		$this->id = $chainmap_id;
-		$this->data = $data;
-		$this->group_id = $group_id;
+		return null
 	}
 
 	public function get_map_cache()

@@ -29,7 +29,7 @@ class Controller_Api_Chainmaps extends Controller_Api
 				
 				try
 				{
-					$chainmap = new Chainmap($chainMapID, $this->_user->_id);
+					$chainmap = Chainmap::find($chainMapID, $this->_user->_id);
 				}
 				catch(Exception $e)
 				{

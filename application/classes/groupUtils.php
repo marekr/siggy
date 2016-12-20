@@ -33,7 +33,7 @@ final class groupUtils {
 
 		foreach($chainmaps as $k => $cId)
 		{
-			$c = new Chainmap($cId,$groupID);
+			$c = Chainmap::find($cId,$groupID);
 			$systemIDs = $c->delete_wormholes($hashes);
 
 			//update system to make sigs we deleted disappear

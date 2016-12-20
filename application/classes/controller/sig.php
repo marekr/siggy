@@ -10,7 +10,7 @@ class Controller_Sig extends FrontController {
 
 		if( Auth::$session->accessData['active_chain_map'] )
 		{
-			$this->chainmap = new Chainmap(Auth::$session->accessData['active_chain_map'], Auth::$session->groupID);
+			$this->chainmap = Chainmap::find(Auth::$session->accessData['active_chain_map'], Auth::$session->groupID);
 		}
 	}
 
@@ -274,7 +274,7 @@ class Controller_Sig extends FrontController {
 		if( isset($request['system_id']) )
 		{
 			$chainmapID = Auth::$session->accessData['active_chain_map'];
-			$chainmap = new Chainmap($chainmapID,Auth::$session->groupID);
+			$chainmap = Chainmap::find($chainmapID,Auth::$session->groupID);
 			foreach($request['sigs'] as $sig)
 			{
 				if(empty($sig['wh_destination']))

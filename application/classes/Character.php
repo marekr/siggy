@@ -18,7 +18,7 @@ class Character {
 	{
 		foreach ($props as $key => $value) 
 		{
-    		$this->$key = $value;
+			$this->$key = $value;
 		}
 	}
 	
@@ -26,7 +26,7 @@ class Character {
 	{
 		foreach ($props as $key => $value) 
 		{
-    		$this->$key = $value;
+			$this->$key = $value;
 		}
 
 		DB::update('characters')
