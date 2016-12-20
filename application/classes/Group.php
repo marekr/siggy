@@ -104,6 +104,29 @@ class Group {
 		return null;
 	}
 	
+
+	public static function findAllByGroupMembership(string $type, int $eveID): array
+	{
+		$data = DB::query(Database::SELECT, 'SELECT g.* 
+												FROM groups g
+												JOIN groupmembers gm ON(g.id = gm.groupID)
+												WHERE gm.eveID=:id AND gm.memberType=:type')
+												->param(':id', $eveID)
+												->param(':type', $type)
+												->execute();
+
+		$results = [];
+		if($data != null)
+		{
+			foreach($data as $item)
+			{
+				$results[$item['id']] = new Group($item);
+			}
+		}
+
+		return $results;
+	}
+
 	public function groupMembers(): array
 	{
 		if($this->groupMembers == null)

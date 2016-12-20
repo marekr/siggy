@@ -257,8 +257,8 @@ class UserSession {
 		{
 			//start forming a list of possible groups
 			$all_groups = [];
-			$corp_data = groupUtils::getCorpData( $this->corpID );
-			$char_data = groupUtils::getCharData( $this->charID );
+			$corp_data = Group::findAllByGroupMembership('corp', $this->corpID);
+			$char_data = Group::findAllByGroupMembership('char', $this->charID);
 
 			$access_type = 'char';
 			if( $corp_data !== FALSE && $char_data != FALSE )
@@ -267,13 +267,12 @@ class UserSession {
 			}
 			else if( $corp_data !== FALSE )
 			{
-				$all_groups = $corp_data['groups'];
+				$all_groups = $corp_data;
 			}
 			else if ($char_data != FALSE )
 			{
-				$all_groups = $char_data['groups'];
+				$all_groups = $char_data;
 			}
-
 			$this->accessibleGroups = $all_groups;
 		}
 
