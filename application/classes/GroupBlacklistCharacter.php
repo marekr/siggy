@@ -10,6 +10,8 @@ class GroupBlacklistCharacter
 	public $reason;
 	public $created;
 
+	public $character = null;
+
 	public function __construct($props)
 	{
 		foreach ($props as $key => $value) 
@@ -29,6 +31,24 @@ class GroupBlacklistCharacter
 			->set( $props )
 			->where('id', '=',  $this->id)
 			->execute();
+	}
+
+	public static function destroy(int $groupID, int $id)
+	{
+		DB::delete('group_character_blacklist')
+			->where('id', '=', $id)
+			->where('group_id','=', $groupID)
+			->execute();
+	}
+
+	public function character()
+	{
+		if( $this->character == null || $this->character->id != $this->character_id )
+		{
+			$this->character = Character::find($this->character_id);
+		}
+
+		return $this->character;
 	}
 
 	public static function create(array $props): GroupBlacklistCharacter
@@ -59,5 +79,23 @@ class GroupBlacklistCharacter
 		}
 
 		return $results;
+	}
+	
+	public static function findByGroupAndChar(int $groupId, int $charId)
+	{
+		$data = DB::query(Database::SELECT, 'SELECT * FROM group_character_blacklist 
+												WHERE character_id =:charID 
+													AND group_id = :groupId')
+												->param(':groupId', $groupId)
+												->param(":charID", $charId)
+												->execute()
+												->as_array();
+
+		if($data != null)
+		{
+			return new GroupBlacklistCharacter($data);
+		}
+
+		return null;
 	}
 }

@@ -10,7 +10,7 @@
 <?php endif; ?>
 
 
-<?php if( !$group->group_password_required ): ?>
+<?php if( !$group->password_required ): ?>
 <h3>Security warning!</h3>
 <div class="alert alert-warning">
 	<p>

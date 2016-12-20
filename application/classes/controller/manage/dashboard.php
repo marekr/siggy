@@ -38,17 +38,15 @@ class Controller_Manage_Dashboard extends Controller_Manage
 		
 		$view->perms = isset(Auth::$user->perms[ Auth::$user->data['groupID'] ]) ? Auth::$user->perms[ Auth::$user->data['groupID'] ] : array();
 		
-		
-		$group = ORM::factory('group', Auth::$user->data['groupID']);
-		
+
 		$members = DB::query(Database::SELECT, "SELECT COUNT(*) as total FROM groupmembers gm 
 												WHERE gm.groupID=:group")
-						->param(':group', Auth::$user->data['groupID'])
+						->param(':group', Auth::$user->group()->id)
 						->execute()
 						->current();
 							
 		$view->set('member_count', $members['total'] );
-		$view->set('group', $group );
+		$view->set('group', Auth::$user->group() );
 
 		$this->template->content = $view;
 	}

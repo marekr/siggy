@@ -42,39 +42,27 @@ class Controller_Manage_Blacklist extends Controller_Manage
 		$this->template->title = __('Manage Blacklist');
 		
 		$view = $this->template->content = View::factory('manage/blacklist/list');
-		
-		
-		$chars = DB::query(Database::SELECT, 
-							"SELECT * FROM group_character_blacklist
-                            WHERE group_id = :groupID"
-							)
-							->param(":groupID", Auth::$user->data['groupID'])
-							->execute()
-							->as_array();
-		
-		$view->chars = $chars;
-	}
-    
-    public function action_remove()
-    {
-        $id = $this->request->param('id');
-        
-        DB::delete('group_character_blacklist')->where('id', '=', $id)->where('group_id','=', Auth::$user->data['groupID'])->execute();
-		
-		groupUtils::recacheGroup( Auth::$user->data['groupID'] );
-				
-        Message::add('success', 'Blacklisted character removed succesfully');
-        HTTP::redirect('manage/blacklist/list');
-    }
-    
-    public function action_add()
-    {
-		$this->template->title = __('Add Character To Blacklist');
-        
-        $errors = array();
 
-        if ($this->request->method() == "POST") 
-        {
+		$view->chars = Auth::$user->group()->blacklistCharacters();
+	}
+
+	public function action_remove()
+	{
+		$id = $this->request->param('id');
+		GroupBlacklistCharacter::destroy(Auth::$user->groupID, $id);
+				
+		Message::add('success', 'Blacklisted character removed succesfully');
+		HTTP::redirect('manage/blacklist/list');
+	}
+
+	public function action_add()
+	{
+		$this->template->title = __('Add Character To Blacklist');
+		
+		$errors = array();
+
+		if ($this->request->method() == "POST") 
+		{
 			$charSearchResults = array();
 			if( empty($_POST['character_name']) )
 			{
@@ -84,44 +72,34 @@ class Controller_Manage_Blacklist extends Controller_Manage
 			{
 			
 				$charSearchResults = miscUtils::searchEVEEntityByName( $_POST['character_name'], 'char' );
-				
-				if( !count($charSearchResults) )
+				if( $charSearchResults == null )
 				{
 					$errors['character_name'] = "EVE character not found";
 				}
-				
-				$charSearchResults = current($charSearchResults);
-				
-				$chars = DB::query(Database::SELECT, 
-					"SELECT * FROM group_character_blacklist 
-					WHERE character_id =:charID AND group_id = :groupID"
-					)
-					->param(":groupID", Auth::$user->data['groupID'])
-					->param(":charID", $charSearchResults['characterID'])
-					->execute()
-					->current();
-					
-				if( isset($chars['character_id']) )
+				else
 				{
-					$errors['character_name'] = "The character is already blacklisted";
+					$charSearchResults = current($charSearchResults);
+					
+					$char = GroupBlacklistCharacter::findByGroupAndChar(Auth::$user->groupID, $charSearchResults->id);
+						
+					if( $char != null )
+					{
+						$errors['character_name'] = "The character is already blacklisted";
+					}
 				}
 			}
 				
         
-            if( !count($errors) )
+            if( count($errors) == 0 )
 			{
-                $save = array(
+                $save = [
                             'reason' => $_POST['reason'],
-                            'character_id' => $charSearchResults['characterID'],
-                            'character_name' => $charSearchResults['characterName'],
-                            'group_id' => Auth::$user->data['groupID'],
-							'created' => time()
-                        );
+                            'character_id' => $charSearchResults->id,
+                            'group_id' => Auth::$user->data['groupID']
+				];
+
+				GroupBlacklistCharacter::create($save);
                 
-                DB::insert('group_character_blacklist', array_keys($save) )->values(array_values($save))->execute();
-                
-				groupUtils::recacheGroup( Auth::$user->data['groupID'] );
-				
                 Message::add('success', 'Character added to blacklist succesfully');
                 HTTP::redirect('manage/blacklist/list');
             }

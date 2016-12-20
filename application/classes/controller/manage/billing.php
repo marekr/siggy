@@ -42,8 +42,7 @@ class Controller_Manage_Billing extends Controller_Manage
 	{
 		$user = Auth::$user->data;
 		
-										
-		$numUsers = groupUtils::getCharacterUsageCount(Auth::$user->data['groupID']);
+		$numUsers = Auth::$user->group()->getCharacterUsageCount();
 		
 		
 		$payments = array();

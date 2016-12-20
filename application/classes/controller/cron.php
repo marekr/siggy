@@ -182,9 +182,10 @@ class Controller_Cron extends Controller
 	public function action_billingCharges()
 	{
 		$groups = DB::select()->from('groups')->where('billable','=',1)->execute()->as_array();
-		foreach($groups as $group)
+		foreach($groups as $g)
 		{
-			$numUsers = groupUtils::getCharacterUsageCount($group['groupID']);
+			$group = Group::find($g['id']);
+			$numUsers = $group->getCharacterUsageCount();
 			if( $numUsers == 0 )
 			{
 				continue;
@@ -197,14 +198,13 @@ class Controller_Cron extends Controller
 			$insert = array(
 								'amount' => $cost,
 								'date' => time(),
-								'groupID' => $group['groupID'],
+								'groupID' => $group->id,
 								'memberCount' => $numUsers,
 								'message' => $message
 							);
 			$result = DB::insert('billing_charges', array_keys($insert) )->values( array_values($insert) )->execute();
 
-			groupUtils::applyISKCharge( $group['groupID'], $cost );
-
+			$group->applyISKCharge( $cost );
 		}
 	}
 

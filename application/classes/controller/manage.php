@@ -41,17 +41,17 @@ class Controller_Manage extends Controller
 
 	static function getAvaliableGroups()
 	{
-		$baseSQL = "SELECT g.groupID, g.groupName FROM groups g";
+		$baseSQL = "SELECT g.id, g.name FROM groups g";
 
 
 		//if NOT AN ADMIN
 		if( !Auth::$user->isAdmin() )
 		{
-            $baseSQL .= " JOIN users_group_acl a ON (g.groupID = a.group_ID)
+            $baseSQL .= " JOIN users_group_acl a ON (g.id = a.group_ID)
                           WHERE a.user_id = ".intval( Auth::$user->data['id'] );
 		}
 
-		$baseSQL .= " ORDER BY g.groupName ASC";
+		$baseSQL .= " ORDER BY g.name ASC";
 
 
 		$groups = DB::query(Database::SELECT, $baseSQL)->execute()->as_array();

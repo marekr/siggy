@@ -101,7 +101,7 @@ class GroupMember {
 
 		return $results;
 	}
-	
+
 	public static function findByGroupAndType(int $groupId, string $type, int $id)
 	{
 		$data = DB::query(Database::SELECT, 'SELECT * FROM groupmembers 

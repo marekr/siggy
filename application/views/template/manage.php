@@ -67,9 +67,9 @@
 						<form action='<?php echo URL::base(TRUE, TRUE);?>manage/admin/changeGroup' method='post' style="padding: 6px;">
 							<select name='group' class="form-control input-sm " onchange='submit();'>
 							<?php
-								$selected = Auth::$user->data['groupID'];
+								$selected = Auth::$user->data['id'];
 								foreach( $avaliableGroups as $m ): ?>
-								<option value="<?php echo $m['groupID']; ?>" <?php echo ( ($selected == $m['groupID']) ? "selected='seleced'" : ''); ?>><?php echo $m['groupName']; ?></option>
+								<option value="<?php echo $m['id']; ?>" <?php echo ( ($selected == $m['id']) ? "selected='seleced'" : ''); ?>><?php echo $m['name']; ?></option>
 							<?php endforeach; ?>
 							</select>
 						</form>

@@ -5,6 +5,7 @@ use Carbon\Carbon;
 class User {
 	public $data = array();
 	public $perms = array();
+	public $group = null;
 
 	public $groupID = 0;
 	public $activeChainMap = 0;
@@ -12,6 +13,16 @@ class User {
 	public function userLoaded()
 	{
 		return (isset($this->data['id']) && $this->data['id'] > 0);
+	}
+
+	public function group()
+	{
+		if($this->group == null || $this->groupID != $this->group->id)
+		{
+			$this->group = Group::find($this->groupID);
+		}
+
+		return $this->group;
 	}
 
 	public function save()
@@ -252,6 +263,7 @@ class User {
 		}
 
 		$this->data = $user;
+		$this->groupID = $this->data['groupID'];
 
 
 		$perms = DB::query(Database::SELECT, 'SELECT * FROM users_group_acl WHERE user_id = :id')

@@ -1,6 +1,5 @@
 <?php
 
-require_once APPPATH.'classes/groupUtils.php';
 require_once APPPATH.'classes/mapUtils.php';
 require_once APPPATH.'classes/miscUtils.php';
 
@@ -58,10 +57,7 @@ class Controller_Manage_Group extends Controller_Manage
 
 		$view->set('user', Auth::$user->data );
 
-		$group = DB::query(Database::SELECT, "SELECT * FROM groups WHERE groupID=:group")
-						->param(':group', Auth::$user->data['groupID'])
-						->execute()
-						->current();
+		$group = Auth::$user->group;
 
 		$chainmaps = DB::query(Database::SELECT, "SELECT * FROM chainmaps WHERE group_id=:group")
 						->param(':group', Auth::$user->data['groupID'])
@@ -119,7 +115,7 @@ class Controller_Manage_Group extends Controller_Manage
 			}
 
 
-			$group = ORM::factory('group', Auth::$user->data['groupID']);
+			$group = Auth::$user->group();
 			$view->set('group', $group );
 			$view->bind('data', $data);
 			$view->bind('errors', $errors);
@@ -161,18 +157,8 @@ class Controller_Manage_Group extends Controller_Manage
 							DB::insert('chainmaps_access', array_keys($insert) )->values(array_values($insert))->execute();
 						}
 
-						groupUtils::recacheGroup(Auth::$user->data['groupID']);
-						if( $member->memberType == 'corp' )
-						{
-							groupUtils::recacheCorp($member->eveID);
-						}
-						elseif( $member->memberType == 'char' )
-						{
-							groupUtils::recacheChar($member->eveID);
-						}
-
 						Auth::$session->group->save([]);
-						groupUtils::recacheGroup(Auth::$user->data['groupID']);
+						Auth::$user->group()->recacheMembers();
 
 						Message::add('success', 'Group member added');
 						HTTP::redirect('manage/group/members');
@@ -193,7 +179,7 @@ class Controller_Manage_Group extends Controller_Manage
 					}
 
 					$view = View::factory('manage/group/addMemberSimpleSelected');
-					$group = ORM::factory('group', Auth::$user->data['groupID']);
+					$group = Auth::$user->group();
 
 					//see if member exists?
 					$member = ORM::factory('groupmember')->where('eveID','=',$_POST['eveID'])
@@ -279,15 +265,6 @@ class Controller_Manage_Group extends Controller_Manage
 			try
 			{
 				//delete to prevent LOLs
-				if( $member->memberType == 'corp' )
-				{
-					groupUtils::deleteCorpCache( $member->eveID );
-				}
-				else
-				{
-					groupUtils::deleteCharCache( $member->eveID );
-				}
-
 				$member->eveID = $_POST['eveID'];
 				$member->accessName = $_POST['accessName'];
 				$member->groupID = Auth::$user->data['groupID'];
@@ -302,17 +279,9 @@ class Controller_Manage_Group extends Controller_Manage
 				}
 
 				$member->save();
-				if( $member->memberType == 'corp' )
-				{
-					groupUtils::recacheCorp($member->eveID);
-				}
-				elseif( $member->memberType == 'char' )
-				{
-					groupUtils::recacheChar($member->eveID);
-				}
 
 				Auth::$session->group->save([]);
-				groupUtils::recacheGroup(Auth::$user->data['groupID']);
+				Auth::$user->group()->recacheMembers();
 
 				HTTP::redirect('manage/group/members');
 				return;
@@ -335,7 +304,7 @@ class Controller_Manage_Group extends Controller_Manage
 
 		$view->set('user', Auth::$user->data);
 
-		$group = ORM::factory('group', Auth::$user->data['groupID']);
+		$group = Auth::$user->group();
 		$view->set('group', $group );
 
 		$this->template->content = $view;
@@ -358,19 +327,9 @@ class Controller_Manage_Group extends Controller_Manage
 		$view->set('id', $id);
 		if ($this->request->method() == HTTP_Request::POST)
 		{
-			/* Delete the cache so it gets rebuilt */
-			if( $member->memberType == 'corp' )
-			{
-				groupUtils::deleteCorpCache( $member->eveID );
-			}
-			elseif( $member->memberType == 'char' )
-			{
-				groupUtils::deleteCharCache( $member->eveID );
-			}
-
 			//trigger last_update value to change
 			Auth::$session->group->save([]);
-			groupUtils::recacheGroup(Auth::$user->data['groupID']);
+			Auth::$user->group()->recacheMembers();
 
 			HTTP::redirect('manage/group/members');
 		}

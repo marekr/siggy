@@ -18,15 +18,15 @@
 	<tbody>
 	<?php foreach($chars as $char): ?>
 		<tr>
-			<td><?php echo $char['character_id']; ?></td>
+			<td><?php echo $char->character_id; ?></td>
 			<td>
-				<img src="https://image.eveonline.com/Character/<?php echo $char['character_id']; ?>_32.jpg" width="32" height="32" />
-				<?php echo $char['character_name']; ?>
+				<img src="https://image.eveonline.com/Character/<?php echo $char->character_id; ?>_32.jpg" width="32" height="32" />
+				<?php echo $char->character()->name; ?>
 			</td>
-			<td><?php echo $char['reason']; ?></td>
-			<td><?php echo miscUtils::getDateTimeString($char['created']); ?></td>
+			<td><?php echo $char->reason; ?></td>
+			<td><?php echo $char->created_at; ?></td>
 			<td>
-				<?php echo Html::anchor('manage/blacklist/remove/'.$char['id'], __('<i class="icon-trash"></i>&nbsp;Remove'), array('class' => 'btn btn-xs btn-danger')); ?>
+				<?php echo Html::anchor('manage/blacklist/remove/'.$char->id, __('<i class="icon-trash"></i>&nbsp;Remove'), array('class' => 'btn btn-xs btn-danger')); ?>
 			</td>
 		</tr>
 		<?php endforeach; ?>

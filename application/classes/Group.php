@@ -210,4 +210,21 @@ class Group {
 							->param(':dayStamp', miscUtils::getDayStamp() )
 							->execute();
 	}
+
+
+	public function applyISKCharge(float $amount)
+	{
+		DB::update('groups')->set( array( 'iskBalance' => DB::expr('iskBalance - :amount') ) )->param(':amount', $amount)->where('id', '=',  $group_id)->execute();
+	}
+
+	public function applyISKPayment(float $amount)
+	{
+		DB::update('groups')->set( array( 'iskBalance' => DB::expr('iskBalance + :amount'), 'billable' => 1 ) )->param(':amount', $amount)->where('id', '=',  $group_id)->execute();
+	}
+
+
+	public function recacheMembers()
+	{
+		//placeholder in case we want to implement
+	}
 }
