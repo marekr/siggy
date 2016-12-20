@@ -1,7 +1,7 @@
 <div id="message">
-	<div class="box" style="width:auto; ">
-		<h3>Blacklisted</h3>
-		<div>
+	<div class="box" style="width:auto;">
+		<div class="box-header">Blacklisted</div>
+		<div class="box-content">
 			<p>
 				Your character has been blacklisted from <b><?php echo $groupName; ?></b>
 				<?php if( !empty($reason) ): ?>
@@ -15,7 +15,6 @@
 			<br />
 			<h4>IMPORTANT NOTE:</h4>
 			<p>You are only blacklisted from this siggy group, you are still able to use siggy with other groups.</p>
-
 		</div>
 	</div>
 </div>

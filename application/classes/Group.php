@@ -103,7 +103,21 @@ class Group {
 
 		return null;
 	}
-	
+
+	public static function findByPaymentCode(string $code)
+	{
+		$data = DB::query(Database::SELECT, 'SELECT * FROM groups WHERE payment_code=:code')
+												->param(':code', $code)
+												->execute()
+												->current();
+
+		if($data != null)
+		{
+			return new Group($data);
+		}
+
+		return null;
+	}
 
 	public static function findAllByGroupMembership(string $type, int $eveID): array
 	{

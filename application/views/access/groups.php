@@ -1,7 +1,7 @@
 <div id="message">
 	<div class="box" style="width:auto;">
-		<h3>Select a group</h3>
-		<div>
+		<div class="box-header">Groups</div>
+		<div class="box-content">
 			<ul id='character-select'>
 			<?php foreach($groups as $group): ?>
 				<li onClick="javascript:$(this).find('form').submit();">
@@ -15,6 +15,7 @@
 		</div>
 	</div>
 </div>
+
 
 <script type='text/javascript'>
 $('#activity-siggy').show();

@@ -54,9 +54,9 @@ class Controller_Cron extends Controller
 							if( !isset($res['eveRefID']) )
 							{
 								$paymentCode = strtolower($matches[1]);	//get 14 char "account code"
-								$group = DB::query(Database::SELECT, 'SELECT * FROM	groups WHERE paymentCode=:paymentCode')->param(':paymentCode', $paymentCode)->execute()->current();
+								$group = Group::findByPaymentCode($paymentCode);
 
-								if( isset( $group['groupID'] ) )
+								if( $group != null )
 								{
 
 									$insert = array( 'groupID' => $group['groupID'],
@@ -72,7 +72,7 @@ class Controller_Cron extends Controller
 													);
 									DB::insert( 'billing_payments', array_keys($insert) )->values( array_values($insert) )->execute();
 
-									groupUtils::applyISKPayment($group['groupID'], (float)$trans['amount']);
+									$group->applyISKPayment((float)$trans['amount']);
 								}
 								else
 								{
