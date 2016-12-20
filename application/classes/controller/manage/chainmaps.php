@@ -192,15 +192,6 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				$member->delete();
 			}
 
-			if( $memberType == 'corp' )
-			{
-				groupUtils::deleteCorpCache( $eveID );
-			}
-			elseif( $memberType == 'char' )
-			{
-				groupUtils::deleteCharCache( $eveID );
-			}
-
 			//trigger last_update value to change
 			Auth::$user->group()->save([]);
 			Auth::$user->group()->recacheChainmaps();
@@ -331,15 +322,6 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 											->param(':member_id', $member['id'])
 											->execute();
 
-						}
-
-						if( $member['memberType'] == 'corp' )
-						{
-							groupUtils::deleteCorpCache( $member['eveID'] );
-						}
-						elseif( $member['memberType'] == 'char' )
-						{
-							groupUtils::deleteCharCache( $member['eveID'] );
 						}
 					}
 				}

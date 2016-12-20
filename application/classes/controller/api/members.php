@@ -7,20 +7,20 @@ class Controller_Api_Members extends Controller_Api
 	{
 		try
 		{
-			$data = groupUtils::getGroupData($this->_user->_id);
+			$group = Group::find($this->_user->_id);
 
 			$output = array();
-			$output['total'] = count($data['members']);
-			foreach( $data['members'] as $member )
+			$output['total'] = count($group->groupMembers());
+			foreach( $group->groupMembers() as $member )
 			{
 				$memberEntry = array(
-						'id' => (int)$member['id'],
-						'eve_id' => (int)$member['eveID'],
-						'type' => $member['memberType']
+						'id' => (int)$member->id,
+						'eve_id' => (int)$member->eveID,
+						'type' => $member->memberType
 				);
 
 				$chainmaps = array();
-				foreach( $data['chainmaps'] as $chainmap )
+				foreach( $group->chainMaps() as $chainmap )
 				{
 					foreach( $chainmap['access'] as $access )
 					{

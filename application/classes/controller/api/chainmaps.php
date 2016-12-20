@@ -7,13 +7,13 @@ class Controller_Api_Chainmaps extends Controller_Api
 	{
 		try
 		{
-			$data = groupUtils::getGroupData($this->_user->_id);
+			$group = Group::find($this->_user->_id);
 			$chainMapID = $this->request->param('id', 0);
 
 			$output = [];
 			if( $chainMapID == 0 )
 			{
-				foreach($data['chainmaps'] as $c)
+				foreach($group->chainMaps() as $c)
 				{
 					$hs = explode(",", $c['chainmap_homesystems']);
 					$output[] = [

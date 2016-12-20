@@ -76,9 +76,6 @@ class Controller_Notifications extends FrontController {
 		}
 
 		$notifier = Notifier::create($type, $scope, Auth::$session->groupID, Auth::$session->charID, $data);
-
-
-		groupUtils::recacheGroup(Auth::$session->groupID);
 	}
 
 	public function action_notifiers_edit()
@@ -98,7 +95,5 @@ class Controller_Notifications extends FrontController {
 		}
 
 		Notifier::delete( $id, Auth::$session->groupID, Auth::$session->charID );
-
-		groupUtils::recacheGroup(Auth::$session->groupID);
 	}
 }
