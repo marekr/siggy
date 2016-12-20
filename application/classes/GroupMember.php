@@ -17,7 +17,7 @@ class GroupMember {
 	public $character = null;
 	public $group = null;
 
-	public function __construct($props)
+	public function __construct(array $props)
 	{
 		foreach ($props as $key => $value) 
 		{
@@ -25,7 +25,7 @@ class GroupMember {
 		}
 	}
 	
-	public function save($props)
+	public function save(array $props)
 	{
 		foreach ($props as $key => $value) 
 		{
@@ -38,13 +38,13 @@ class GroupMember {
 			->execute();
 	}
 
-	public static function create($props)
+	public static function create(array $props) : GroupMember
 	{
-		DB::insert('groupmembers', array_keys($props) )
+		$id = DB::insert('groupmembers', array_keys($props) )
 				->values(array_values($props))
 				->execute();
 
-		return new GroupMember($props);
+		return GroupMember::find($id[0]);
 	}
 
 	public function corporation()
@@ -82,7 +82,7 @@ class GroupMember {
 		return null;
 	}
 
-	public static function findByType(string $type, int $id)
+	public static function findByType(string $type, int $id): array
 	{
 		$data = DB::query(Database::SELECT, 'SELECT * FROM groupmembers WHERE eveID=:id AND memberType=:type')
 												->param(':id', $id)
@@ -122,7 +122,7 @@ class GroupMember {
 		return null;
 	}
 
-	public static function findByGroup(int $groupId)
+	public static function findByGroup(int $groupId): array
 	{
 		$data = DB::query(Database::SELECT, 'SELECT * FROM groupmembers WHERE groupID=:id')
 												->param(':id', $groupId)

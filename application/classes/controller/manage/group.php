@@ -133,20 +133,18 @@ class Controller_Manage_Group extends Controller_Manage
 				{
 					try
 					{
-						$member = ORM::factory('groupmember')->where('eveID','=',$_POST['eveID'])
-															->where('groupID','=', Auth::$user->data['groupID'])
-															->where('memberType','=', $_POST['memberType'])
-															->find();
+						$member = GroupMember::findByGroupAndType(Auth::$user->groupID, $_POST['memberType'], (int)$_POST['eveID']);
 
-
-						if( !$member->id )
+						if( $member == null )
 						{
-							$member = ORM::factory('groupmember');
-							$member->eveID = $_POST['eveID'];
-							$member->accessName = $_POST['accessName'];
-							$member->groupID = Auth::$user->data['groupID'];
-							$member->memberType = $_POST['memberType'];
-							$member->save();
+							$data = [
+								'eveID' => $_POST['eveID'],
+								'accessName' => $_POST['accessName'],
+								'groupID' => Auth::$user->data['groupID'],
+								'memberType' => $_POST['memberType'],
+							];						
+
+							$member = GroupMember::create($data);
 						}
 
 						if( isset( $_POST['chainmap_id'] ) && intval($_POST['chainmap_id']) > 0)
@@ -182,13 +180,10 @@ class Controller_Manage_Group extends Controller_Manage
 					$group = Auth::$user->group();
 
 					//see if member exists?
-					$member = ORM::factory('groupmember')->where('eveID','=',$_POST['eveID'])
-														->where('groupID','=', Auth::$user->data['groupID'])
-														->where('memberType','=', $_POST['memberType'])
-														->find();
+					$member = GroupMember::findByGroupAndType(Auth::$user->groupID, $_POST['memberType'], (int)$_POST['eveID']);
 
 					$chainmaps = array();
-					if( $member->id )
+					if( $member != null )
 					{
 						$chainmaps = DB::query(Database::SELECT, "SELECT * FROM chainmaps
 																	WHERE group_id=:group AND
@@ -246,7 +241,7 @@ class Controller_Manage_Group extends Controller_Manage
 
 		$this->template->title = __('Group management');
 
-		$member = ORM::factory('groupmember', $id);
+		$member = GroupMember::find($id);
 		if( $member->groupID != Auth::$user->data['groupID'] )
 		{
 			Message::add('error', __('Error: You do not have permission to edit that group member.'));
@@ -262,42 +257,21 @@ class Controller_Manage_Group extends Controller_Manage
 
 		if ($this->request->method() == HTTP_Request::POST)
 		{
-			try
-			{
-				//delete to prevent LOLs
-				$member->eveID = $_POST['eveID'];
-				$member->accessName = $_POST['accessName'];
-				$member->groupID = Auth::$user->data['groupID'];
-				$member->memberType = $_POST['memberType'];
-				if( isset( $_POST['subGroupID'] ) )
-				{
-					$member->subGroupID = $_POST['subGroupID'];
-				}
-				else
-				{
-					$member->subGroupID = 0;
-				}
+			//delete to prevent LOLs
+			$save = [
+				'eveID' => $_POST['eveID'],
+				'accessName' => $_POST['accessName'],
+				'groupID' => Auth::$user->data['groupID'],
+				'memberType' => $_POST['memberType']
+			];
 
-				$member->save();
+			$member->save($save);
 
-				Auth::$session->group->save([]);
-				Auth::$user->group()->recacheMembers();
+			Auth::$session->group->save([]);
+			Auth::$user->group()->recacheMembers();
 
-				HTTP::redirect('manage/group/members');
-				return;
-			}
-			catch (ORM_Validation_Exception $e)
-			{
-				// Get errors for display in view
-				// Note how the first param is the path to the message file (e.g. /messages/register.php)
-				Message::add('error', __('Error: Values could not be saved.'));
-				$errors = $e->errors('editMember');
-				$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
-				$view->set('errors', $errors);
-				// Pass on the old form values
-
-				$view->set('data', array('eveID' => $_POST['eveID'], 'accessName' => $_POST['accessName']) );
-			}
+			HTTP::redirect('manage/group/members');
+			return;
 		}
 
 		$view->set('data', $member->as_array() );
@@ -316,7 +290,7 @@ class Controller_Manage_Group extends Controller_Manage
 
 		$this->template->title = __('Group management');
 
-		$member = ORM::factory('groupmember', $id);
+		$member = GroupMember::find($id);
 		if( $member->groupID != Auth::$user->data['groupID'] )
 		{
 			Message::add('error', __('Error: You do not have permission to remove that group member.'));
