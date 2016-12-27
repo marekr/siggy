@@ -16,7 +16,7 @@ class Chainmap {
 		}
 
 		$this->id = $props['chainmap_id'];
-		$this->data = $data;
+		$this->data = $props;
 	}
 
 	public static function find(int $chainmapId, int $groupId)
@@ -33,7 +33,7 @@ class Chainmap {
 			return new Chainmap($data);
 		}
 
-		return null
+		return null;
 	}
 
 	public function save(array $props)
@@ -49,7 +49,7 @@ class Chainmap {
 			->execute();
 
 		//keep in sync, just in case
-		$this->id = this->chainmap_id;
+		$this->id = $this->chainmap_id;
 	}
 
 	public static function create(array $props): Chainmap

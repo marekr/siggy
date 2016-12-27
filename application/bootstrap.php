@@ -172,7 +172,6 @@ Kohana::$config->attach(new Config_File);
 Kohana::modules(array(
 	 'cache'      => MODPATH.'cache',      // Caching with multiple backends
 	 'database'   => MODPATH.'database',   // Database access
-	 'orm'        => MODPATH.'orm',        // Object Relationship Mapping
 	 'restful_api' => MODPATH.'restful-api',        // Object Relationship Mapping
 	));
 
