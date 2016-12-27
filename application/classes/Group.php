@@ -56,25 +56,23 @@ class Group {
 			$password = self::hashGroupPassword( $data['group_password'], $salt );
 		}
 
-		$insert = array(
+		$insert = [
 							'name' => $data['groupName'],
 							'ticker' => $data['groupTicker'],
 							'password_required' => $data['group_password_required'],
 							'password_salt' => $salt,
 							'password' => $password,
 							'payment_code' => miscUtils::generateString(14),
-							'billable' => 1,
-							'created_at' => Carbon::now()->toDateTimeString(),
-						);
-		$result = DB::insert('groups', array_keys($insert) )->values( array_values($insert) )->execute();
-		$result = $result[0];
+							'billable' => 1
+		];
+		$group = self::create($insert);
 
-		$insert = array( 'group_id' => $result,
+		$insert = ['group_id' => $group->id,
 						 'chainmap_type' => 'default',
 						 'chainmap_name' => 'Default',
 						 'chainmap_homesystems' => '',
 						 'chainmap_homesystems_ids' => ''
-						);
+		];
 		DB::insert('chainmaps', array_keys($insert) )->values( array_values($insert) )->execute();
 
 		return $result;
@@ -87,10 +85,11 @@ class Group {
 			$props['created_at'] = Carbon::now()->toDateTimeString();
 		}
 
-		DB::insert('groups', array_keys($props) )
+		$result = DB::insert('groups', array_keys($props) )
 				->values(array_values($props))
 				->execute();
 
+		$props['id'] = $result[0];
 		return new Group($props);
 	}
 

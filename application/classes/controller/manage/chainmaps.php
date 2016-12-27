@@ -58,51 +58,34 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
 		$group = Auth::$user->group();
 
-		$data = array(	'chainmap_name' => '',
+		$data =		['chainmap_name' => '',
 						'chainmap_homesystems' => '',
 						'chainmap_skip_purge_home_sigs' => 1
-						);
+					];
 		$view = View::factory('manage/chainmaps/add_edit_form');
 		$view->bind('errors', $errors);
-		$view->bind('data', $data);
+		$view->bind('data', (object)$data);
 
 		$view->set('mode', 'add');
 
 		if ($this->request->method() == "POST")
 		{
-			try
-			{
-				$sg = ORM::factory('chainmap');
-				$sg->chainmap_name = $_POST['chainmap_name'];
-				$sg->group_id = Auth::$user->data['groupID'];
-				$sg->chainmap_type = 'fixed';
+			$new = [
+				'chainmap_name' => $_POST['chainmap_name'],
+				'group_id' => Auth::$user->data['groupID'],
+				'chainmap_type' => 'fixed',
+				'chainmap_skip_purge_home_sigs' => intval($_POST['chainmap_skip_purge_home_sigs']),
+			];
+			
+			list($new['chainmap_homesystems_ids'], $new['chainmap_homesystems']) = $this->__process_home_system_input($_POST['chainmap_homesystems']);
 
-				list($sg->chainmap_homesystems_ids, $sg->chainmap_homesystems) = $this->__process_home_system_input($_POST['chainmap_homesystems']);
+			$chainmap = Chainmap::create($new);
+			$chainmap->rebuild_map_data_cache();
 
-				$sg->chainmap_skip_purge_home_sigs = intval($_POST['chainmap_skip_purge_home_sigs']);
+			Auth::$user->group()->save([]);
+			Auth::$user->group()->recacheChainmaps();
 
-				$sg->save();
-
-				$chainmap = Chainmap::find($sg->chainmap_id, Auth::$user->data['groupID']);
-				$chainmap->rebuild_map_data_cache();
-				Auth::$user->group()->save([]);
-				Auth::$user->group()->recacheChainmaps();
-
-				HTTP::redirect('manage/chainmaps/list');
-				return;
-			}
-			catch (ORM_Validation_Exception $e)
-			{
-				// Get errors for display in view
-				// Note how the first param is the path to the message file (e.g. /messages/register.php)
-				Message::add('error', __('Error: Values could not be saved.'));
-				$errors = $e->errors('add_chain_map');
-				$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
-				$view->set('errors', $errors);
-				// Pass on the old form values
-
-				$view->set('data', $data);
-			}
+			HTTP::redirect('manage/chainmaps/list');
 		}
 
 		$this->template->content = $view;
@@ -151,14 +134,14 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		$id = $this->request->param('id');
 		list($chainmap_id, $groupMemberID) = explode('-', $id);
 
-		$cm = ORM::factory('chainmap', $chainmap_id);
-		if( $cm->group_id != Auth::$user->data['groupID'] )
+		$cm = Chainmap::find($chainmap_id, Auth::$user->data['groupID']);
+		if( $cm == null )
 		{
 			Message::add('error', __('Error: You do not have permission for that chainmap.'));
 			HTTP::redirect('manage/chainmaps');
 		}
 
-		$member = ORM::factory('groupmember', $groupMemberID);
+		$member = GroupMember::find($groupMemberID);
 		if( $member->groupID != Auth::$user->data['groupID'] )
 		{
 			Message::add('error', __('Error: The group member does not exist.'));
@@ -210,12 +193,13 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
 		$this->template->title = __('Edit Chain Map');
 
-		$sg = ORM::factory('chainmap', $id);
-		if( $sg->group_id != Auth::$user->data['groupID'] )
+		$chainmap = Chainmap::find($id, Auth::$user->data['groupID']);
+		if( $chainmap == null )
 		{
 			Message::add('error', __('Error: You do not have permission to edit that chainmap.'));
 			HTTP::redirect('manage/chainmaps');
 		}
+
 		$group = Auth::$user->group();
 
 		$errors = array();
@@ -225,45 +209,26 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		$view->set('mode', 'edit');
 		$view->set('id', $id);
 
-		$chainmap = Chainmap::find($id, Auth::$user->data['groupID']);
 
 		if ( !empty($_POST)  )
 		{
-			try
-			{
-				$sg->chainmap_name = $_POST['chainmap_name'];
+			$update = [
+				'chainmap_name' => $_POST['chainmap_name'],
+				'chainmap_skip_purge_home_sigs' => intval($_POST['chainmap_skip_purge_home_sigs'])
+			];
 
-				list($sg->chainmap_homesystems_ids, $sg->chainmap_homesystems) = $this->__process_home_system_input($_POST['chainmap_homesystems']);
+			list($update['chainmap_homesystems_ids'], $update['chainmap_homesystems']) = $this->__process_home_system_input($_POST['chainmap_homesystems']);
 
-				$sg->chainmap_skip_purge_home_sigs = intval($_POST['chainmap_skip_purge_home_sigs']);
+			$chainmap->save($update);
 
-				$sg->save();
+			$chainmap->rebuild_map_data_cache();
+			Auth::$user->group()->save([]);
+			Auth::$user->group()->recacheChainmaps();
 
-				$chainmap->rebuild_map_data_cache();
-				Auth::$user->group()->save([]);
-				Auth::$user->group()->recacheChainmaps();
-
-				HTTP::redirect('manage/chainmaps/list');
-				return;
-			}
-			catch (ORM_Validation_Exception $e)
-			{
-				// Get errors for display in view
-				// Note how the first param is the path to the message file (e.g. /messages/register.php)
-				Message::add('error', __('Error: Values could not be saved.'));
-				$errors = $e->errors('edit_chain_map');
-				$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
-				$view->set('errors', $errors);
-				// Pass on the old form values
-
-				$view->set('data', array( 'chainmap_name' => $_POST['chainmap_name'],
-											'chainmap_homesystems' => $_POST['chainmap_homesystems'],
-											'chainmap_skip_purge_home_sigs' => $_POST['chainmap_skip_purge_home_sigs']
-										 ) );
-			}
+			HTTP::redirect('manage/chainmaps/list');
 		}
 
-		$view->set('data', $sg->as_array() );
+		$view->set('chainmap', $chainmap );
 
 		$this->template->content = $view;
 	}
@@ -275,8 +240,8 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
 		$this->template->title = __('Remove Chain Map');
 
-		$chainmap = ORM::factory('chainmap', $id);
-		if( $chainmap->group_id != Auth::$user->data['groupID'] )
+		$chainmap = Chainmap::find($id, Auth::$user->data['groupID']);
+		if( $chainmap == null )
 		{
 			Message::add('error', __('Error: You do not have permission to remove that chainmap.'));
 			HTTP::redirect('manage/chainmaps');

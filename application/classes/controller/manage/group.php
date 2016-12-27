@@ -131,42 +131,33 @@ class Controller_Manage_Group extends Controller_Manage
 
 				if( $action == 'doAdd' )
 				{
-					try
+					$member = GroupMember::findByGroupAndType(Auth::$user->groupID, $_POST['memberType'], (int)$_POST['eveID']);
+
+					if( $member == null )
 					{
-						$member = GroupMember::findByGroupAndType(Auth::$user->groupID, $_POST['memberType'], (int)$_POST['eveID']);
+						$data = [
+							'eveID' => $_POST['eveID'],
+							'accessName' => $_POST['accessName'],
+							'groupID' => Auth::$user->data['groupID'],
+							'memberType' => $_POST['memberType'],
+						];						
 
-						if( $member == null )
-						{
-							$data = [
-								'eveID' => $_POST['eveID'],
-								'accessName' => $_POST['accessName'],
-								'groupID' => Auth::$user->data['groupID'],
-								'memberType' => $_POST['memberType'],
-							];						
-
-							$member = GroupMember::create($data);
-						}
-
-						if( isset( $_POST['chainmap_id'] ) && intval($_POST['chainmap_id']) > 0)
-						{
-							$insert['group_id'] = Auth::$user->data['groupID'];
-							$insert['chainmap_id'] = intval($_POST['chainmap_id']);
-							$insert['groupmember_id'] = $member->id;
-							DB::insert('chainmaps_access', array_keys($insert) )->values(array_values($insert))->execute();
-						}
-
-						Auth::$session->group->save([]);
-						Auth::$user->group()->recacheMembers();
-
-						Message::add('success', 'Group member added');
-						HTTP::redirect('manage/group/members');
-						return;
+						$member = GroupMember::create($data);
 					}
-					catch (ORM_Validation_Exception $e)
+
+					if( isset( $_POST['chainmap_id'] ) && intval($_POST['chainmap_id']) > 0)
 					{
-						//something broke, restart because our form is currently idiot proof anyway
-						HTTP::redirect('manage/group/addMember');
+						$insert['group_id'] = Auth::$user->data['groupID'];
+						$insert['chainmap_id'] = intval($_POST['chainmap_id']);
+						$insert['groupmember_id'] = $member->id;
+						DB::insert('chainmaps_access', array_keys($insert) )->values(array_values($insert))->execute();
 					}
+
+					Auth::$session->group->save([]);
+					Auth::$user->group()->recacheMembers();
+
+					Message::add('success', 'Group member added');
+					HTTP::redirect('manage/group/members');
 				}
 				else if ( $action == 'doForm' )
 				{

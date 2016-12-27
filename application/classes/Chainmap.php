@@ -36,6 +36,37 @@ class Chainmap {
 		return null
 	}
 
+	public function save(array $props)
+	{
+		foreach ($props as $key => $value) 
+		{
+    		$this->$key = $value;
+		}
+
+		DB::update('chainmaps')
+			->set( $props )
+			->where('chainmap_id', '=',  $this->id)
+			->execute();
+
+		//keep in sync, just in case
+		$this->id = this->chainmap_id;
+	}
+
+	public static function create(array $props): Chainmap
+	{
+		if(!isset($props['created_at']))
+		{
+			$props['created_at'] = Carbon::now()->toDateTimeString();
+		}
+
+		$result = DB::insert('chainmaps', array_keys($props) )
+				->values(array_values($props))
+				->execute();
+
+		$props['chainmap_id'] = $result[0];
+		return new Group($props);
+	}
+
 	public function get_map_cache()
 	{
 		$cache = Cache::instance( CACHE_METHOD );
