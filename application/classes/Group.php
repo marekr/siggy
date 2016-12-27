@@ -62,7 +62,7 @@ class Group {
 							'password_required' => $data['group_password_required'],
 							'password_salt' => $salt,
 							'password' => $password,
-							'paymentCode' => miscUtils::generateString(14),
+							'payment_code' => miscUtils::generateString(14),
 							'billable' => 1,
 							'created_at' => Carbon::now()->toDateTimeString(),
 						);

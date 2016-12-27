@@ -59,7 +59,7 @@ class Controller_Cron extends Controller
 								if( $group != null )
 								{
 
-									$insert = array( 'groupID' => $group['groupID'],
+									$insert = array( 'groupID' => $group->id,
 													 'eveRefID' => $trans['refID'],
 													 'paymentTime' => strtotime($trans['date']),
 													 'paymentProcessedTime' => time(),
@@ -83,11 +83,11 @@ class Controller_Cron extends Controller
 							{
 								//processed already!
 								//do nothing
-									print_r($entryCode);
-									print_r($res);
+								print_r($entryCode);
+								print_r($res);
 								print "Payment already processed";
-									print "<br />";
-									print "<br />";
+								print "<br />";
+								print "<br />";
 							}
 
 						}
@@ -251,14 +251,14 @@ class Controller_Cron extends Controller
 		$cutoff = Carbon::now()->subDays(26)->toDateTimeString();
 		$whCutoff = Carbon::now()->subDays(2)->toDateTimeString();
 
-		$groups = DB::query(Database::SELECT, "SELECT groupID,skipPurgeHomeSigs FROM groups")->execute()->as_array();
+		$groups = DB::query(Database::SELECT, "SELECT group_id,skip_purge_home_sigs FROM groups")->execute()->as_array();
 		foreach( $groups as $group )
 		{
 			$ignoreSys = '';
 			$chains = DB::query(Database::SELECT, "SELECT chainmap_homesystems_ids FROM chainmaps
 													WHERE group_id = :groupID AND
 													chainmap_skip_purge_home_sigs=1")
-							->param(':groupID', $group['groupID'])
+							->param(':groupID', $group['id'])
 							->execute()
 							->as_array();
 			if( count($chains) > 0 )
@@ -287,7 +287,7 @@ class Controller_Cron extends Controller
 																		{$ignoreSysExtra}
 																		( created_at <= :cutoff OR (type = 'wh' AND created_at <= :whcutoff))")
 				->param(':cutoff',$cutoff)
-				->param(':groupID', $group['groupID'])
+				->param(':groupID', $group['id'])
 				->param(':whcutoff', $whCutoff)
 				->execute();
 		}
