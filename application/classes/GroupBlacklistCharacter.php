@@ -55,10 +55,11 @@ class GroupBlacklistCharacter
 	{
 		$props['created_at'] = Carbon::now()->toDateTimeString();
 
-		DB::insert('group_character_blacklist', array_keys($props) )
+		$result = DB::insert('group_character_blacklist', array_keys($props) )
 				->values(array_values($props))
 				->execute();
 
+		$props['id'] = $result[0];
 		return new GroupBlacklistCharacter($props);
 	}
 

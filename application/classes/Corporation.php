@@ -34,12 +34,13 @@ class Corporation {
 			->execute();
 	}
 
-	public static function create($props)
+	public static function create($props): Corporation
 	{
 		DB::insert('corporations', array_keys($props) )
 				->values(array_values($props))
 				->execute();
 
+		$props['id'] = $result[0];
 		return new Corporation($props);
 	}
 

@@ -57,11 +57,13 @@ class Character {
 		return false;
 	}
 
-	public static function create(array $props)
+	public static function create(array $props): Character
 	{
-		DB::insert('characters', array_keys($props) )
+		$result = DB::insert('characters', array_keys($props) )
 				->values(array_values($props))
 				->execute();
+
+		$props['id'] = $result[0];
 
 		return new Character($props);
 	}

@@ -40,11 +40,12 @@ class GroupMember {
 
 	public static function create(array $props) : GroupMember
 	{
-		$id = DB::insert('groupmembers', array_keys($props) )
+		$result = DB::insert('groupmembers', array_keys($props) )
 				->values(array_values($props))
 				->execute();
 
-		return GroupMember::find($id[0]);
+		$props['id'] = $result[0];
+		return GroupMember::find($props['id']);
 	}
 
 	public function corporation()

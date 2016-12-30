@@ -34,10 +34,11 @@ class CharacterGroup {
 
 	public static function create($props)
 	{
-		DB::insert('character_group', array_keys($props) )
+		$result = DB::insert('character_group', array_keys($props) )
 				->values(array_values($props))
 				->execute();
 
+		$props['id'] = $result[0];
 		return new GroupMember($props);
 	}
 
