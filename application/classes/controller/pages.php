@@ -115,19 +115,28 @@ class Controller_Pages extends FrontController {
 
 				if ( $validator->check() )
 				{
-						$groupID = Group::createFancy( [ 'groupName' => $_POST['groupName'],
-															'groupTicker' => $_POST['groupTicker'],
-															'group_password' => $_POST['group_password'],
-															'group_password_required' => intval($_POST['group_password_required'])
+						$group = Group::createFancy( [ 'name' => $_POST['groupName'],
+															'ticker' => $_POST['groupTicker'],
+															'password' => $_POST['group_password'],
+															'password_required' => intval($_POST['group_password_required'])
 														]
 													);
 
-						if( $groupID )
+						if( $group != null )
 						{
-							$insert = array('user_id' => Auth::$user->data['id'], 'group_id' => $groupID, 'can_manage_access' => 1, 'can_view_financial' => 1, 'can_manage_settings' => 1, 'can_manage_group_members' => 1, 'can_view_logs' => 1 );
-							DB::insert('users_group_acl', array_keys($insert) )->values( array_values($insert) )->execute();
+							$insert = ['user_id' => Auth::$user->data['id'], 
+										'group_id' => $group->id, 
+										'can_manage_access' => 1, 
+										'can_view_financial' => 1, 
+										'can_manage_settings' => 1, 
+										'can_manage_group_members' => 1, 
+										'can_view_logs' => 1 
+										];
+							DB::insert('users_group_acl', array_keys($insert) )
+									->values( array_values($insert) )
+									->execute();
 
-							Auth::$user->data['groupID'] = $groupID;
+							Auth::$user->data['groupID'] = $group->id;
 							Auth::$user->save();
 
 							Auth::$user->loadByID( Auth::$user->data['id'] );

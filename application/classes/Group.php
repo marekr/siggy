@@ -47,19 +47,19 @@ class Group {
 		return sha1($password . $salt);
 	}
 
-	public static function createFancy(array $data): int
+	public static function createFancy(array $data): Group
 	{
 		$salt = miscUtils::generateSalt(10);
 		$password = "";
-		if( $data['group_password'] != "" && $data['group_password_required'] == 1 )
+		if( $data['password'] != "" && $data['password_required'] == 1 )
 		{
-			$password = self::hashGroupPassword( $data['group_password'], $salt );
+			$password = self::hashGroupPassword( $data['password'], $salt );
 		}
 
 		$insert = [
-							'name' => $data['groupName'],
-							'ticker' => $data['groupTicker'],
-							'password_required' => $data['group_password_required'],
+							'name' => $data['name'],
+							'ticker' => $data['ticker'],
+							'password_required' => $data['password_required'],
 							'password_salt' => $salt,
 							'password' => $password,
 							'payment_code' => miscUtils::generateString(14),
@@ -73,9 +73,12 @@ class Group {
 						 'chainmap_homesystems' => '',
 						 'chainmap_homesystems_ids' => ''
 		];
-		DB::insert('chainmaps', array_keys($insert) )->values( array_values($insert) )->execute();
 
-		return $result;
+		DB::insert('chainmaps', array_keys($insert) )
+			->values( array_values($insert) )
+			->execute();
+
+		return $group;
 	}
 
 	public static function create(array $props): Group
