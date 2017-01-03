@@ -261,15 +261,15 @@ class UserSession {
 			$char_data = Group::findAllByGroupMembership('char', $this->charID);
 
 			$access_type = 'char';
-			if( $corp_data !== FALSE && $char_data != FALSE )
+			if( count($corp_data) && count($char_data) !== FALSE )
 			{
-				$all_groups = array_replace($corp_data['groups'],$char_data['groups']);
+				$all_groups = array_replace($corp_data,$char_data);
 			}
-			else if( $corp_data !== FALSE )
+			else if( count($corp_data) )
 			{
 				$all_groups = $corp_data;
 			}
-			else if ($char_data != FALSE )
+			else if (count($char_data) )
 			{
 				$all_groups = $char_data;
 			}

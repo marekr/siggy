@@ -8,10 +8,9 @@
 
     <!-- Le styles -->
     <link href="<?php echo URL::base(TRUE, TRUE);?>bootstrap3/css/bootstrap.min.css?<?php echo SIGGY_VERSION; ?>" rel="stylesheet">
-    <link href="<?php echo URL::base(TRUE, TRUE);?>css/public.css?<?php echo SIGGY_VERSION; ?>" rel="stylesheet">
+    <link href="<?php echo URL::base(TRUE, TRUE);?>css/frontend.css?<?php echo SIGGY_VERSION; ?>" rel="stylesheet">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="<?php echo URL::base(TRUE, TRUE);?>bootstrap3/js/bootstrap.min.js"></script>
-    <link href="<?php echo URL::base(TRUE, TRUE);?>css/public_bootstrap32.css?<?php echo SIGGY_VERSION; ?>" rel="stylesheet">
 
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->

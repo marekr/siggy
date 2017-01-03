@@ -64,10 +64,8 @@ class Controller_Manage_Admin extends Controller_Manage
 			Auth::$user->data['groupID'] = intval($_POST['group']);
 			Auth::$user->save();
 		}
-      
-	  HTTP::redirect('/manage');
-      
+		
+		HTTP::redirect('/manage');
+		
 	}
-
-  
 }

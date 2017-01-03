@@ -90,7 +90,7 @@ class Controller_Access extends FrontController {
 			$selectedGroupId = intval($_POST['group_id']);
 			if( $selectedGroupId && isset( $groups[ $selectedGroupId ] ) )
 			{
-				Auth::$user->data['group_id'] = $selectedGroupId;
+				Auth::$user->data['groupID'] = $selectedGroupId;
 				Auth::$user->save();
 
 				HTTP::redirect('/');
@@ -102,26 +102,11 @@ class Controller_Access extends FrontController {
 		$this->template->content = $view;
 	}
 
-	public function action_switch_membership()
-	{
-		$k = $_GET['k'];
-		if( count( Auth::$session->accessibleGroups() ) > 1 || count( current(Auth::$session->accessibleGroups()) > 1) )
-		{
-			foreach( Auth::$session->accessibleGroups() as $g )
-			{
-				if( md5($g['group_id']) == $k )
-				{
-					Cookie::set('membershipChoice', $g['group_id'], 365*60*60*24);
-					break;
-				}
-			}
-		}
-		HTTP::redirect('/');
-	}
-
 	public function before()
 	{
-		if( $this->request->action() == 'group_password' || $this->request->action() == 'blacklisted'  || $this->request->action() == "switch_membership" )
+		if( $this->request->action() == 'group_password' 
+			|| $this->request->action() == 'blacklisted' 
+			|| $this->request->action() == "groups"  )
 		{
 			$this->noAutoAuthRedirects = TRUE;
 		}

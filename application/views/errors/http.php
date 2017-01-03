@@ -8,7 +8,7 @@
 
     <!-- Le styles -->
     <link href="<?php echo URL::base(TRUE, TRUE);?>bootstrap3/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?php echo URL::base(TRUE, TRUE);?>css/public.css" rel="stylesheet">
+    <link href="<?php echo URL::base(TRUE, TRUE);?>css/frontend.css" rel="stylesheet">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="<?php echo URL::base(TRUE, TRUE);?>bootstrap3/js/bootstrap.min.js"></script>
 

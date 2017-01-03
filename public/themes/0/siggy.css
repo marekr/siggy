@@ -1027,3 +1027,55 @@ label {
 {
 	font-weight:100;
 }
+
+
+.selection-list
+{
+	margin: 0 auto;
+	list-style-type: none;
+	padding: 0;
+}
+
+.selection-list input
+{
+	border: 0;
+}
+
+.selection-list li
+{
+	padding:10px;
+	text-align:left;
+	background-color: @primary-background;
+}
+
+.selection-list li:nth-child(odd) {
+	background-color: @alt-primary-background;
+}
+
+.selection-list li.selected
+{
+	background-color: @menu-hover;
+}
+
+.selection-list li:hover
+{
+	background-color: @menu-hover;
+	cursor:pointer;
+}
+
+.selection-list div.details
+{
+	display:inline-block;
+	vertical-align: top;
+}
+
+.selection-list li.disabled
+{
+	opacity:0.5;
+}
+
+.selection-list li.disabled:hover
+{
+	background-color: inherit;
+	cursor:inherit;
+}
