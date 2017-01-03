@@ -67,7 +67,7 @@ class Controller_Sig extends FrontController {
 		{
 			if( $notifier['type'] == NotificationTypes::SiteFound )
 			{
-				$data = json_decode($notifier['data']);
+				$data = $notifier['data'];
 				if( $sigData['siteID'] == $data->site_id )
 				{
 					$eventData = array(
