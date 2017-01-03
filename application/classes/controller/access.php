@@ -14,9 +14,6 @@ class Controller_Access extends FrontController {
 		$view->wrongPass = false;
 		$this->template->siggyMode = false;
 
-		//load header tools
-		$this->template->headerTools = '';
-
 		$groupID = intval(Auth::$session->groupID);
 
 		if( isset($_POST['group_password']) )
@@ -49,9 +46,6 @@ class Controller_Access extends FrontController {
 
 	public function action_blacklisted()
 	{
-		//load header tools
-		$this->template->headerTools = '';
-
 		$view = View::factory('access/blacklisted');
 
 		$view->groupName = Auth::$session->group->name;
@@ -70,8 +64,7 @@ class Controller_Access extends FrontController {
 	
 	public function action_groups()
 	{
-		//load header tools
-		$this->template->headerTools = '';
+		$this->validateCSRF();
 
 		$groupMemberships = array_merge(GroupMember::findByType(GroupMember::TypeChar, Auth::$session->charID), 
 										GroupMember::findByType(GroupMember::TypeCorp, Auth::$session->corpID));
