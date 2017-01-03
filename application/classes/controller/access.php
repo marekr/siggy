@@ -66,8 +66,10 @@ class Controller_Access extends FrontController {
 	{
 		$this->validateCSRF();
 
-		$groupMemberships = array_merge(GroupMember::findByType(GroupMember::TypeChar, Auth::$session->charID), 
-										GroupMember::findByType(GroupMember::TypeCorp, Auth::$session->corpID));
+		$groupMemberships = [
+								GroupMember::findByType(GroupMember::TypeChar, Auth::$session->charID), 
+								GroupMember::findByType(GroupMember::TypeCorp, Auth::$session->corpID)
+							];
 
 		$groups = [];
 		foreach($groupMemberships as $gm)
