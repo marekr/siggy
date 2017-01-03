@@ -160,11 +160,19 @@ final class miscUtils {
 
 			if( $type == 'corp' )
 			{
-				$results[$id] = Corporation::find($id);
+				$corp = Corporation::find($id);
+				if($corp != null)
+				{
+					$results[$id] = $corp;
+				}
 			}
 			else
 			{
-				$results[$id] = Character::find($id);
+				$char = Character::find($id);
+				if($char != null)
+				{
+					$results[$id] = $char;
+				}
 			}
 		}
 

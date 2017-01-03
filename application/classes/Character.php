@@ -63,7 +63,10 @@ class Character {
 				->values(array_values($props))
 				->execute();
 
-		$props['id'] = $result[0];
+		if(!isset($props['id']))
+		{
+			$props['id'] = $result[0];
+		}
 
 		return new Character($props);
 	}
