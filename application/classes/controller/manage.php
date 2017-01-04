@@ -47,8 +47,8 @@ class Controller_Manage extends Controller
 		//if NOT AN ADMIN
 		if( !Auth::$user->isAdmin() )
 		{
-            $baseSQL .= " JOIN users_group_acl a ON (g.id = a.group_ID)
-                          WHERE a.user_id = ".intval( Auth::$user->data['id'] );
+			$baseSQL .= " JOIN users_group_acl a ON (g.id = a.group_ID)
+							WHERE a.user_id = ".intval( Auth::$user->data['id'] );
 		}
 
 		$baseSQL .= " ORDER BY g.name ASC";
@@ -59,40 +59,40 @@ class Controller_Manage extends Controller
 		return $groups;
 	}
 
-    protected function hasAccess( $action )
-    {
-        if( Auth::$user->data['admin'] )
-        {
-            return TRUE;
-        }
+	protected function hasAccess( $action )
+	{
+		if( Auth::$user->data['admin'] )
+		{
+			return TRUE;
+		}
 
-        if( !isset( Auth::$user->perms[ Auth::$user->data['groupID'] ] ) )
-        {
-            return FALSE;
-        }
+		if( !isset( Auth::$user->perms[ Auth::$user->data['groupID'] ] ) )
+		{
+			return FALSE;
+		}
 
-        if( isset( $this->secure_actions[ $action ] ) )
-        {
-            $perms = Auth::$user->perms[ Auth::$user->data['groupID'] ];
-            foreach( $perms as $k => $v )
-            {
-                if( $v == 1 )
-                {
-                    if( in_array( $k, $this->secure_actions[ $action ] ) )
-                    {
-                        return TRUE;
-                    }
-                }
-            }
-        }
-        else
-        {
-            //unprotected
-            return TRUE;
-        }
+		if( isset( $this->secure_actions[ $action ] ) )
+		{
+			$perms = Auth::$user->perms[ Auth::$user->data['groupID'] ];
+			foreach( $perms as $k => $v )
+			{
+				if( $v == 1 )
+				{
+					if( in_array( $k, $this->secure_actions[ $action ] ) )
+					{
+						return TRUE;
+					}
+				}
+			}
+		}
+		else
+		{
+			//unprotected
+			return TRUE;
+		}
 
-        return FALSE;
-    }
+		return FALSE;
+	}
 
 	public function before()
 	{
@@ -100,29 +100,29 @@ class Controller_Manage extends Controller
 		parent::before();
 
 
-        if( !Auth::loggedIn() )
-        {
-            $this->login_required();
-        }
+		if( !Auth::loggedIn() )
+		{
+			$this->login_required();
+		}
 
-        $groupID = Auth::$user->data['groupID'];
-        $groups = array_keys(Auth::$user->perms);
+		$groupID = Auth::$user->data['groupID'];
+		$groups = array_keys(Auth::$user->perms);
 
-        if( count($groups) > 0 && !in_array($groupID, $groups) )
-        {
+		if( count($groups) > 0 && !in_array($groupID, $groups) )
+		{
 			Auth::$user->data['groupID'] = $groups[0];
 			Auth::$user->save();
-        }
+		}
 
 		// Check user auth and role
 		$action_name = Request::current()->action();
 
 		if ( ($this->auth_required == 'admin' && Auth::$user->isAdmin() === FALSE )
 			|| ($this->auth_required == 'gadmin'
-            && !$this->hasAccess( $action_name )
-            ) )
+			&& !$this->hasAccess( $action_name )
+			) )
 		{
-            $this->access_required();
+			$this->access_required();
 		}
 
 		if ($this->auto_render)
@@ -131,7 +131,7 @@ class Controller_Manage extends Controller
 			// only load the template if the template has not been set..
 			$this->template = View::factory($this->template);
 
-            $this->template->perms = isset(Auth::$user->perms[ Auth::$user->data['groupID'] ]) ? Auth::$user->perms[ Auth::$user->data['groupID'] ] : array();
+			$this->template->perms = isset(Auth::$user->perms[ Auth::$user->data['groupID'] ]) ? Auth::$user->perms[ Auth::$user->data['groupID'] ] : array();
 			// Initialize empty values
 			// Page title
 			$this->template->title   = '';
@@ -151,14 +151,14 @@ class Controller_Manage extends Controller
 		$this->template->avaliableGroups = self::getAvaliableGroups();
 	}
 
-   /**
-    * The after() method is called after your controller action.
-    * In our template controller we override this method so that we can
-    * make any last minute modifications to the template before anything
-    * is rendered.
-    */
-   public function after()
-   {
+	/**
+	* The after() method is called after your controller action.
+	* In our template controller we override this method so that we can
+	* make any last minute modifications to the template before anything
+	* is rendered.
+	*/
+	public function after()
+	{
 		if ($this->auto_render === TRUE)
 		{
 			$styles = array( 'css/manage.css' => 'screen');
@@ -170,5 +170,5 @@ class Controller_Manage extends Controller
 			$this->response->body( $this->template );
 		}
 		parent::after();
-   }
+	}
 }

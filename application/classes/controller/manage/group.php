@@ -153,7 +153,7 @@ class Controller_Manage_Group extends Controller_Manage
 						DB::insert('chainmaps_access', array_keys($insert) )->values(array_values($insert))->execute();
 					}
 
-					Auth::$session->group->save([]);
+					Auth::$user->group()->save([]);
 					Auth::$user->group()->recacheMembers();
 
 					Message::add('success', 'Group member added');
@@ -258,7 +258,7 @@ class Controller_Manage_Group extends Controller_Manage
 
 			$member->save($save);
 
-			Auth::$session->group->save([]);
+			Auth::$user->group()->save([]);
 			Auth::$user->group()->recacheMembers();
 
 			HTTP::redirect('manage/group/members');
@@ -293,7 +293,7 @@ class Controller_Manage_Group extends Controller_Manage
 		if ($this->request->method() == HTTP_Request::POST)
 		{
 			//trigger last_update value to change
-			Auth::$session->group->save([]);
+			Auth::$user->group()->save([]);
 			Auth::$user->group()->recacheMembers();
 
 			HTTP::redirect('manage/group/members');
