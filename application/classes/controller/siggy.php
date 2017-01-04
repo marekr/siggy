@@ -684,7 +684,7 @@ class Controller_Siggy extends FrontController {
 				{
 					if($record->current_system_id != $record->previous_system_id)
 					{
-						if( Auth::$session->accessData['recordJumps'] )
+						if( Auth::$session->group->record_jumps )
 						{
 							$hourStamp = miscUtils::getHourStamp();
 
@@ -718,7 +718,7 @@ class Controller_Siggy extends FrontController {
 						$update['location']['id'] = (int)$currentLocation->system_id;
 					}
 
-					if( !Auth::$session->accessData['alwaysBroadcast'] )
+					if( !Auth::$session->group->always_broadcast )
 					{
 						$broadcast = isset($_COOKIE['broadcast']) ? intval($_COOKIE['broadcast']) : 1;
 					}
