@@ -258,12 +258,20 @@ class Group {
 
 	public function applyISKCharge(float $amount)
 	{
-		DB::update('groups')->set( array( 'iskBalance' => DB::expr('iskBalance - :amount') ) )->param(':amount', $amount)->where('id', '=',  $group_id)->execute();
+		DB::update('groups')
+			->set( array( 'isk_balance' => DB::expr('isk_balance - :amount') ) )
+			->param(':amount', $amount)
+			->where('id', '=',  $this->id)
+			->execute();
 	}
 
 	public function applyISKPayment(float $amount)
 	{
-		DB::update('groups')->set( array( 'iskBalance' => DB::expr('iskBalance + :amount'), 'billable' => 1 ) )->param(':amount', $amount)->where('id', '=',  $group_id)->execute();
+		DB::update('groups')
+			->set( array( 'isk_balance' => DB::expr('isk_balance + :amount'), 'billable' => 1 ) )
+			->param(':amount', $amount)
+			->where('id', '=',  $this->id)
+			->execute();
 	}
 
 

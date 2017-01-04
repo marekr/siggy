@@ -76,6 +76,7 @@ class Controller_Cron extends Controller
 								}
 								else
 								{
+									continue;
 									//free money!
 								}
 							}
@@ -150,7 +151,7 @@ class Controller_Cron extends Controller
 
 	public function action_billingTransactions()
 	{
-		ini_set('memory_limit', '128M');
+		ini_set('memory_limit', '256M');
 		ini_set('max_execution_time', 0);
 		set_time_limit(0);
 
@@ -251,7 +252,7 @@ class Controller_Cron extends Controller
 		$cutoff = Carbon::now()->subDays(26)->toDateTimeString();
 		$whCutoff = Carbon::now()->subDays(2)->toDateTimeString();
 
-		$groups = DB::query(Database::SELECT, "SELECT group_id,skip_purge_home_sigs FROM groups")->execute()->as_array();
+		$groups = DB::query(Database::SELECT, "SELECT id,skip_purge_home_sigs FROM groups")->execute()->as_array();
 		foreach( $groups as $group )
 		{
 			$ignoreSys = '';
