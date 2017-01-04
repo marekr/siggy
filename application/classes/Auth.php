@@ -39,8 +39,8 @@ class Auth {
 			self::$authStatus = AuthStatus::GUEST;
 			return self::$authStatus;
 		}
+		
 
-		$success = TRUE;
 		if( !self::$user->validateCorpChar() )
 		{
 			self::$authStatus = AuthStatus::CHAR_CORP_INVALID;
@@ -62,8 +62,6 @@ class Auth {
 			}
 			else if( self::$session->group->password_required )	//group password only?
 			{
-				$authPassword = '';
-
 				$authPassword = self::$user->getSavedPassword( self::$session->group->id );
 
 				if( $authPassword === self::$session->group->password )

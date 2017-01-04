@@ -57,12 +57,9 @@ class Controller_Access extends FrontController {
 	
 	public function action_groups()
 	{
-		$this->validateCSRF();
 
-		$groupMemberships = [
-								GroupMember::findByType(GroupMember::TypeChar, Auth::$session->charID), 
-								GroupMember::findByType(GroupMember::TypeCorp, Auth::$session->corpID)
-							];
+		$groupMemberships = array_replace(GroupMember::findByType(GroupMember::TypeChar, Auth::$session->charID), 
+											GroupMember::findByType(GroupMember::TypeCorp, Auth::$session->corpID) );
 
 		$groups = [];
 		foreach($groupMemberships as $gm)
@@ -75,6 +72,8 @@ class Controller_Access extends FrontController {
 
 		if ($this->request->method() == "POST")
 		{
+			$this->validateCSRF();
+
 			$selectedGroupId = intval($_POST['group_id']);
 			if( $selectedGroupId && isset( $groups[ $selectedGroupId ] ) )
 			{
