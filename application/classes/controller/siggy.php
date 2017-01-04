@@ -767,7 +767,7 @@ class Controller_Siggy extends FrontController {
 			$update['globalNotes'] = Auth::$session->group->notes;
 		}
 
-		$update['group_cache_time'] = (int) Auth::$session->group->cache_time;
+		$update['group_cache_time'] = (int) Auth::$session->group->last_update;
 
 
 		$latestDisplayed = isset($_POST['newest_notification']) ? (int) $_POST['newest_notification']  : 0;
