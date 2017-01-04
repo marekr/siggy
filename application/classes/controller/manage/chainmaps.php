@@ -182,7 +182,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 			HTTP::redirect('manage/group/members');
 		}
 
-		$view->set('data', $member->as_array() );
+		$view->set('member', $member );
 
 		$this->template->content = $view;
 	}

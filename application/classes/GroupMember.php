@@ -38,6 +38,14 @@ class GroupMember {
 			->execute();
 	}
 
+	public function delete()
+	{
+		DB::query(Database::DELETE, 'DELETE FROM groupmembers
+										WHERE id=:id')
+						->param(':id', $this->id)
+						->execute();
+	}
+
 	public static function create(array $props) : GroupMember
 	{
 		$result = DB::insert('groupmembers', array_keys($props) )
