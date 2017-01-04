@@ -67,6 +67,14 @@ class Chainmap {
 		return new Group($props);
 	}
 
+	public function delete()
+	{
+		DB::query(Database::DELETE, 'DELETE FROM chainmaps
+										WHERE chainmap_id=:id')
+						->param(':id', $this->id)
+						->execute();
+	}
+
 	public function get_map_cache()
 	{
 		$cache = Cache::instance( CACHE_METHOD );

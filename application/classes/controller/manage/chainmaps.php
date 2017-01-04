@@ -311,7 +311,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 			}
 		}
 
-		$view->set('data', $chainmap->as_array());
+		$view->set('chainmap', $chainmap);
 
 		$this->template->content = $view;
 	}
