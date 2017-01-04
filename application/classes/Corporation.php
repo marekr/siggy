@@ -13,7 +13,7 @@ class Corporation {
 	public $created_at;
 	public $updated_at;
 
-	public function __construct($props)
+	public function __construct(array $props)
 	{
 		foreach ($props as $key => $value) 
 		{
@@ -21,7 +21,7 @@ class Corporation {
 		}
 	}
 	
-	public function save($props)
+	public function save(array $props)
 	{
 		foreach ($props as $key => $value) 
 		{
@@ -34,7 +34,7 @@ class Corporation {
 			->execute();
 	}
 
-	public static function create($props): Corporation
+	public static function create(array $props): Corporation
 	{
 		DB::insert('corporations', array_keys($props) )
 				->values(array_values($props))
