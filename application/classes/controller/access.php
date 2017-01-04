@@ -57,18 +57,7 @@ class Controller_Access extends FrontController {
 	
 	public function action_groups()
 	{
-
-		$groupMemberships = array_replace(GroupMember::findByType(GroupMember::TypeChar, Auth::$session->charID), 
-											GroupMember::findByType(GroupMember::TypeCorp, Auth::$session->corpID) );
-
-		$groups = [];
-		foreach($groupMemberships as $gm)
-		{
-			if($gm->group() != null)	//sanity check...
-			{
-				$groups[$gm->group()->id] = $gm->group();
-			}
-		}
+		$groups = Auth::$session->accessibleGroups();
 
 		if ($this->request->method() == "POST")
 		{
