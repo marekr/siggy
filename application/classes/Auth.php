@@ -34,26 +34,23 @@ class Auth {
 
 	public static function authenticate()
 	{
-		if( !self::$session->charID  )
+		if( !self::$session->charID  || !self::loggedIn() )
 		{
 			self::$authStatus = AuthStatus::GUEST;
 			return self::$authStatus;
 		}
 
 		$success = TRUE;
-		if( self::loggedIn() )
+		if( !self::$user->validateCorpChar() )
 		{
-			if( !self::$user->validateCorpChar() )
-			{
-				self::$authStatus = AuthStatus::CHAR_CORP_INVALID;
-				return self::$authStatus;
-			}
+			self::$authStatus = AuthStatus::CHAR_CORP_INVALID;
+			return self::$authStatus;
+		}
 
-			if( self::$session->group == null || !self::$session->validateGroup() )
-			{
-				self::$authStatus = AuthStatus::GROUP_SELECT_REQUIRED;
-				return self::$authStatus;
-			}
+		if( self::$session->group == null || !self::$session->validateGroup() )
+		{
+			self::$authStatus = AuthStatus::GROUP_SELECT_REQUIRED;
+			return self::$authStatus;
 		}
 
 		if( self::$session->group != null )
@@ -67,14 +64,7 @@ class Auth {
 			{
 				$authPassword = '';
 
-				if( self::loggedIn() )
-				{
-					$authPassword = self::$user->getSavedPassword( self::$session->group->id );
-				}
-				else
-				{
-					$authPassword = Cookie::get('auth-password-' .self::$session->group->id, '');
-				}
+				$authPassword = self::$user->getSavedPassword( self::$session->group->id );
 
 				if( $authPassword === self::$session->group->password )
 				{

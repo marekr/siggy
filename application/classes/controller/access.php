@@ -21,16 +21,9 @@ class Controller_Access extends FrontController {
 			$pass = sha1($_POST['group_password'].Auth::$session->group->password_salt);
 			if( !empty(Auth::$session->group->password) )
 			{
-				if( $pass == Auth::$session->group->password )
+				if( $pass === Auth::$session->group->password )
 				{
-					if( Auth::loggedIn() )
-					{
-						Auth::$user->savePassword( $groupID, $pass );
-					}
-					else
-					{
-						Cookie::set('auth-password-' .$groupID, $pass, 365*60*60*24);
-					}
+					Auth::$user->savePassword( $groupID, $pass );
 					HTTP::redirect('/');
 				}
 				else
