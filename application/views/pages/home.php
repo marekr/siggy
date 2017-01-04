@@ -1,7 +1,7 @@
 <div class="jumbotron">
 	<div class="container">
 		<h1><img alt="Brand" width="150" src="<?php echo URL::base(TRUE, TRUE);?>images/siggy-blue.png">siggy</h1>
-		<p>One of EVE's oldest WH scanning tool now 2 years old and counting! It has aided countless explorers of WH Space.</p>
+		<p>One of EVE's oldest WH scanning tool now <?php echo (date('Y')-2011);?> years old and counting! It has aided countless explorers of WH Space.</p>
 	</div>
 </div>
 <div class="container marketing">
