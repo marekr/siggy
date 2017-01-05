@@ -389,7 +389,7 @@ class Controller_Siggy extends FrontController {
 
 	private function systemMappedResidentHandler($notifier, $systems)
 	{
-		$data = json_decode($notifier['data']);
+		$data = $notifier['data'];
 		foreach($systems as $k => $system)
 		{
 			$posOnlineSQL = '';
@@ -429,7 +429,7 @@ class Controller_Siggy extends FrontController {
 	private function wormholeMappedNotificationHandler($notifier, $systems)
 	{
 		$pather = new Pathfinder();
-		$data = json_decode($notifier['data']);
+		$data = $notifier['data'];
 		if( in_array($data->system_id, $systems) )
 		{
 			$this->createSystemMappedNotification(
