@@ -43,7 +43,7 @@ class Controller_Search extends FrontController {
 		}
 
 		$sigs = DB::query(Database::SELECT, "SELECT ss.sig, ss.systemID as system_id, s.name as system_name, ss.description,
-												ss.type, ss.created, ss.siteID as type_id
+												ss.type, ss.created_at, ss.siteID as type_id
 												FROM systemsigs ss
 												INNER JOIN  solarsystems s ON(ss.systemID=s.id)
 												WHERE ss.groupID = :groupID AND ss.description LIKE :query

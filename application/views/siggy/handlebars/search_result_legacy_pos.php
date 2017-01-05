@@ -10,7 +10,7 @@
 			</tr>
 			<tr>
 				<td class="title">Date Added</td>
-				<td class="content">{{ displayTimestamp data.created }}</td>
+				<td class="content">{{ data.created_at }}</td>
 				<td class="title"></td>
 				<td class="content"></td>
 			</tr>

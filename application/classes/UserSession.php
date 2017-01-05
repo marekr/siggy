@@ -15,6 +15,8 @@ class UserSession {
 	public $accessData = array();
 	public $sessionData = array();
 
+	private $accessibleGroups = null;
+
 	public function __construct()
 	{
 		// default char,corp id
@@ -248,8 +250,6 @@ class UserSession {
 
 		$this->accessData = $accessData;
 	}
-
-	private $accessibleGroups = null;
 
 	public function accessibleGroups()
 	{
