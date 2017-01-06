@@ -9,21 +9,19 @@ class UserSession {
 	public $group_id = 0;
 	public $corporation_id = 0;
 
-	public $charID = 0;
-	public $charName = "";
+	public $character_id = 0;
+	public $character_name = "";
+
+	public $csrf_token = "";
+
 	public $group = null;
 	public $accessData = array();
-	public $sessionData = array();
 
 	private $accessibleGroups = null;
+	private $accessibleChainMaps = null;
 
 	public function __construct()
 	{
-		// default char,corp id
-		$this->charID = 0;
-		$this->charName = '';
-		$this->corporation_id = 0;
-
 		//try to find existing session
 		$this->id = Cookie::get('sessionID');
 	
@@ -51,7 +49,7 @@ class UserSession {
 		}
 
 		//attempt to find existing session
-		$this->sessionData = $this->__fetchSessionData();
+		$this->__fetchSessionData();
 
 		if( empty($this->id) )
 		{
@@ -72,13 +70,13 @@ class UserSession {
 
 
 			$this->reloadUserSession();
-			$this->sessionData = $this->__fetchSessionData();
+			$this->__fetchSessionData();
 		}
 
 		// finally load user ID
 		if( $this->user_id != 0 )
 		{
-			Auth::$user->loadByID( $this->sessionData['user_id'] );
+			Auth::$user->loadByID( $this->user_id );
 		}
 
 		$this->group = Group::find($this->group_id);
@@ -101,13 +99,13 @@ class UserSession {
 		$this->group_id = $sess['group_id'];
 		if(isset($sess['character_name']))
 		{
-			$this->charName = $sess['character_name'];
+			$this->character_name = $sess['character_name'];
 		}
-		$this->charID = $sess['character_id'];
+
+		$this->character_id = $sess['character_id'];
 		$this->corporation_id = $sess['corporation_id'];
 		$this->user_id = $sess['user_id'];
-
-		return $sess;
+		$this->csrf_token = $sess['csrf_token'];
 	}
 
 	public function destroy()
@@ -147,11 +145,7 @@ class UserSession {
 			->where('id', '=',  $this->id)
 			->execute();
 
-
-		$this->charID = $update['character_id'];
-		$this->corporation_id = $update['corporation_id'];
-		$this->group_id = $update['group_id'];
-		$this->user_id = $update['user_id'];
+		$this->__fetchSessionData();
 
 		$this->getAccessData();
 	}
@@ -161,7 +155,7 @@ class UserSession {
 		// corp_id will most likely only be "valid" for IGB/non-auth user sessions
 		// so we must update it too
 		$insert = array( 'id' => $this->id,
-					'character_id' => $this->charID,
+					'character_id' => $this->character_id,
 					'created_at' => Carbon::now()->toDateTimeString(),
 					'ip_address' => Request::$client_ip,
 					'user_agent' => Request::$user_agent,
@@ -216,7 +210,7 @@ class UserSession {
 
 	public function validateGroup()
 	{
-		if( Auth::$session->group->findGroupMember(GroupMember::TypeChar, $this->charID) != null )
+		if( Auth::$session->group->findGroupMember(GroupMember::TypeChar, $this->character_id) != null )
 		{
 			return TRUE;
 		}
@@ -258,7 +252,7 @@ class UserSession {
 			//start forming a list of possible groups
 			$all_groups = [];
 			$corp_data = Group::findAllByGroupMembership('corp', $this->corporation_id);
-			$char_data = Group::findAllByGroupMembership('char', $this->charID);
+			$char_data = Group::findAllByGroupMembership('char', $this->character_id);
 
 			$access_type = 'char';
 			if( count($corp_data) && count($char_data) !== FALSE )
@@ -279,8 +273,6 @@ class UserSession {
 		return $this->accessibleGroups;
 	}
 
-	private $accessibleChainMaps = null;
-
 	public function accessibleChainMaps()
 	{
 		if($this->accessibleChainMaps == null)
@@ -299,7 +291,7 @@ class UserSession {
 			foreach($c['access'] as $p)
 			{
 				if( ($p['memberType'] == 'corp' && $p['eveID'] == $this->corporation_id)
-						|| ($p['memberType'] == 'char' && $p['eveID'] == $this->charID) )
+						|| ($p['memberType'] == 'char' && $p['eveID'] == $this->character_id) )
 				{
 					$accessibleChainmaps[$c['chainmap_id']] = $c;
 				}
@@ -316,7 +308,7 @@ class UserSession {
 			foreach($c['access'] as $p)
 			{
 				if( $c['chainmap_type'] == 'default' && ( ($p['memberType'] == 'corp' && $p['eveID'] == $this->corporation_id)
-														|| ($p['memberType'] == 'char' && $p['eveID'] == $this->charID) ) )
+														|| ($p['memberType'] == 'char' && $p['eveID'] == $this->character_id) ) )
 				{
 					return $c['chainmap_id'];
 				}
@@ -329,7 +321,7 @@ class UserSession {
 			foreach($c['access'] as $p)
 			{
 				if( ($p['memberType'] == 'corp' && $p['eveID'] == $this->corporation_id)
-						|| ($p['memberType'] == 'char' && $p['eveID'] == $this->charID) )
+						|| ($p['memberType'] == 'char' && $p['eveID'] == $this->character_id) )
 				{
 					return $c['chainmap_id'];
 				}
@@ -353,7 +345,7 @@ class UserSession {
 			foreach($chainmaps[ $desired_id ]['access'] as $p)
 			{
 				if( ($p['memberType'] == 'corp' && $p['eveID'] == $this->corporation_id)
-						|| ($p['memberType'] == 'char' && $p['eveID'] == $this->charID) )
+						|| ($p['memberType'] == 'char' && $p['eveID'] == $this->character_id) )
 				{
 					return $desired_id;
 				}

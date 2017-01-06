@@ -92,7 +92,7 @@ class Controller_Siggy extends FrontController {
 		$this->response->headers('Content-Type','application/json');
 		$this->response->headers('Cache-Control','no-cache, must-revalidate');
 
-		$charID = Auth::$session->charID;
+		$charID = Auth::$session->character_id;
 
 		if( !empty($charID) )
 		{
@@ -374,7 +374,7 @@ class Controller_Siggy extends FrontController {
 
 	private function doSystemMappedNotifications($systems)
 	{
-		foreach( Notifier::all(Auth::$session->group->id, Auth::$session->charID) as $notifier )
+		foreach( Notifier::all(Auth::$session->group->id, Auth::$session->character_id) as $notifier )
 		{
 			if( $notifier['type'] == NotificationTypes::SystemMappedByName )
 			{
@@ -419,8 +419,8 @@ class Controller_Siggy extends FrontController {
 														$pos['system_id'],
 														$pos['system_name'],
 														$data->resident_name,
-														Auth::$session->charName,
-														Auth::$session->charID,
+														Auth::$session->character_name,
+														Auth::$session->character_id,
 														0);
 			}
 		}
@@ -436,8 +436,8 @@ class Controller_Siggy extends FrontController {
 													$notifier,
 													$data->system_id,
 													$data->system_name,
-													Auth::$session->charName,
-													Auth::$session->charID,
+													Auth::$session->character_name,
+													Auth::$session->character_id,
 													0
 												);
 		}
@@ -465,8 +465,8 @@ class Controller_Siggy extends FrontController {
 															$notifier,
 															$data->system_id,
 															$data->system_name,
-															Auth::$session->charName,
-															Auth::$session->charID,
+															Auth::$session->character_name,
+															Auth::$session->character_id,
 															$path['distance'],
 															$system,
 															miscUtils::systemNameByID($system)
@@ -655,7 +655,7 @@ class Controller_Siggy extends FrontController {
 		$ssoCharacters = Auth::$user->getSSOCharacters();
 		foreach($ssoCharacters as $character)
 		{
-			if( $character['character_id'] != Auth::$session->charID 
+			if( $character['character_id'] != Auth::$session->character_id 
 				&& !$character['always_track_location'] )
 			{
 				continue;
@@ -713,7 +713,7 @@ class Controller_Siggy extends FrontController {
 			
 				if( $currentLocation != null )
 				{
-					if( $character['character_id'] == Auth::$session->charID )
+					if( $character['character_id'] == Auth::$session->character_id )
 					{
 						$update['location']['id'] = (int)$currentLocation->system_id;
 					}
@@ -771,9 +771,9 @@ class Controller_Siggy extends FrontController {
 
 
 		$latestDisplayed = isset($_POST['newest_notification']) ? (int) $_POST['newest_notification']  : 0;
-		$returnLastRead = Notification::lastReadTimestamp( Auth::$session->group->id, Auth::$session->charID );
+		$returnLastRead = Notification::lastReadTimestamp( Auth::$session->group->id, Auth::$session->character_id );
 
-		$notifications = Notification::latest($latestDisplayed, Auth::$session->group->id, Auth::$session->charID);
+		$notifications = Notification::latest($latestDisplayed, Auth::$session->group->id, Auth::$session->character_id);
 		$update['notifications'] = array('last_read' => $returnLastRead, 'items' => $notifications);
 
 
@@ -881,7 +881,7 @@ class Controller_Siggy extends FrontController {
 			$update = array();
 
 			$system_data = $this->getSystemData($id);
-			$log_message = sprintf('%s edited system %s; ', Auth::$session->charName, $system_data['name'] );
+			$log_message = sprintf('%s edited system %s; ', Auth::$session->character_name, $system_data['name'] );
 
 			if( isset($_POST['label']) )
 			{

@@ -27,7 +27,7 @@
 			<td><?php echo $character['valid'] ? 'Ok' : 'Invalid' ?></td>
 			<td>
 				<form action="<?php echo URL::base(TRUE, TRUE);?>account/disconnect" method="post">
-					<input type="hidden" name="_token" value="<?php echo Auth::$session->sessionData['csrf_token'];?>" />
+					<input type="hidden" name="_token" value="<?php echo Auth::$session->csrf_token;?>" />
 					<input type="hidden" name="character_id" value="<?php echo $character_data[$character['character_id']]->id; ?>" />
 					<button class='btn btn-danger btn-xs' type="submit">Disconnect</button>
 				</form>

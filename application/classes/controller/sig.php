@@ -44,7 +44,7 @@ class Controller_Sig extends FrontController {
 				$insert['sigSize'] = ( is_numeric( $sigData['sigSize'] ) ? $sigData['sigSize'] : '' );
 			}
 
-			$insert['creator'] = Auth::$session->charName;
+			$insert['creator'] = Auth::$session->character_name;
 
 			$id = DB::insert('systemsigs', array_keys($insert) )->values(array_values($insert))->execute();
 
@@ -63,7 +63,7 @@ class Controller_Sig extends FrontController {
 
 	private function notifierCheck($sigData)
 	{
-		foreach( Notifier::all(Auth::$session->group->id, Auth::$session->charID) as $notifier )
+		foreach( Notifier::all(Auth::$session->group->id, Auth::$session->character_id) as $notifier )
 		{
 			if( $notifier['type'] == NotificationTypes::SiteFound )
 			{
@@ -74,15 +74,15 @@ class Controller_Sig extends FrontController {
 										'system_id' => $sigData['systemID'],
 										'system_name' => miscUtils::systemNameByID($sigData['systemID']),
 										'site_id' => $sigData['siteID'],
-										'discoverer_name' => Auth::$session->charName,
-										'discoverer_id' => Auth::$session->charID,
+										'discoverer_name' => Auth::$session->character_name,
+										'discoverer_id' => Auth::$session->character_id,
 										'signature' => $sigData['sig']
 										);
 
 					$charID = 0;
 					if( $notifier['scope'] == 'personal' )
 					{
-						$charID = Auth::$session->charID;
+						$charID = Auth::$session->character_id;
 					}
 
 					Notification::create(Auth::$session->group->id, $charID, $notifier['type'], $eventData);
@@ -160,7 +160,7 @@ class Controller_Sig extends FrontController {
 											'updated_at' => Carbon::now()->toDateTimeString(),
 											'siteID' => ( $sig['siteID'] != 0 ) ? $sig['siteID'] : $sigData['siteID'],
 											'type' => $sig['type'],
-											'lastUpdater' => Auth::$session->charName
+											'lastUpdater' => Auth::$session->character_name
 											);
 
 							DB::update('systemsigs')->set( $update )->where('id', '=', $sigData['id'])->execute();
@@ -177,7 +177,7 @@ class Controller_Sig extends FrontController {
 						$insert['type'] = $sig['type'];
 						$insert['groupID'] = Auth::$session->group->id;
 						$insert['sigSize'] = "";	//need to return this value for JS to fail gracefully
-						$insert['creator'] = Auth::$session->charName;
+						$insert['creator'] = Auth::$session->character_name;
 
 						$id = DB::insert('systemsigs', array_keys($insert) )->values(array_values($insert))->execute();
 
@@ -224,7 +224,7 @@ class Controller_Sig extends FrontController {
 				$update['sigSize'] = ( is_numeric( $sigData['sigSize'] ) ? $sigData['sigSize'] : ''  );
 			}
 
-			$update['lastUpdater'] = Auth::$session->charName;
+			$update['lastUpdater'] = Auth::$session->character_name;
 
 			$id = intval($sigData['id']);
 
@@ -370,7 +370,7 @@ class Controller_Sig extends FrontController {
 
 			groupUtils::deleteLinkedSigWormholes(Auth::$session->group->id, $wormholeHashes);
 
-			$message = Auth::$session->charName.' deleted sig "'.$sigData['sig'].'" from system '.$sigData['systemName'];;
+			$message = Auth::$session->character_name.' deleted sig "'.$sigData['sig'].'" from system '.$sigData['systemName'];;
 			if( $sigData['type'] != 'none' )
 			{
 				$message .= '" which was of type '.strtoupper($sigData['type']);

@@ -34,7 +34,7 @@ class Auth {
 
 	public static function authenticate()
 	{
-		if( !self::$session->charID  || !self::loggedIn() )
+		if( !self::$session->character_id  || !self::loggedIn() )
 		{
 			self::$authStatus = AuthStatus::GUEST;
 			return self::$authStatus;
@@ -56,7 +56,7 @@ class Auth {
 		if( self::$session->group != null )
 		{
 			if( count( self::$session->group->blacklistCharacters() ) &&
-						array_key_exists( self::$session->charID, self::$session->group->blacklistCharacters() ) )
+						array_key_exists( self::$session->character_id, self::$session->group->blacklistCharacters() ) )
 			{
 				self::$authStatus = AuthStatus::BLACKLISTED;
 			}

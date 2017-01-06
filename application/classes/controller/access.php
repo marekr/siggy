@@ -45,7 +45,7 @@ class Controller_Access extends FrontController {
 
 		foreach(Auth::$session->group->blacklistCharacters() as $char)
 		{
-			if($char->character_id == Auth::$session->charID )
+			if($char->character_id == Auth::$session->character_id )
 			{
 				$view->reason = $char->reason;
 				break;

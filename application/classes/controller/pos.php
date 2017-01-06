@@ -89,7 +89,7 @@ class Controller_Pos extends FrontController {
 
 		Auth::$session->group->incrementStat('pos_updates', Auth::$session->accessData);
 
-		$log_message = sprintf("%s edit POS in system %s", Auth::$session->charName, $pos['system_name']);
+		$log_message = sprintf("%s edit POS in system %s", Auth::$session->character_name, $pos['system_name']);
 		Auth::$session->group->logAction('editpos', $log_message);
 	}
 
@@ -113,7 +113,7 @@ class Controller_Pos extends FrontController {
 
 		DB::delete('pos_tracker')->where('pos_id', '=', $id)->execute();
 
-		$log_message = sprintf("%s deleted POS from system %s", Auth::$session->charName, $pos['system_name']);
+		$log_message = sprintf("%s deleted POS from system %s", Auth::$session->character_name, $pos['system_name']);
 		Auth::$session->group->logAction('delpos', $log_message);
 	}
 }

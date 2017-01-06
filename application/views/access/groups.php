@@ -4,7 +4,7 @@
 	<?php foreach($groups as $group): ?>
 		<li onClick="javascript:$(this).find('form').submit();">
 			<form action='<?php echo URL::base(TRUE, TRUE);?>access/groups' method='POST'>
-				<input type="hidden" name="_token" value="<?php echo Auth::$session->sessionData['csrf_token'];?>" />
+				<input type="hidden" name="_token" value="<?php echo Auth::$session->csrf_token;?>" />
 				<input type='hidden' name='group_id' value='<?php echo $group->id; ?>' />
 				<?php if($group->password_required): ?>
 					<i class="fa fa-lock" aria-hidden="true"></i>

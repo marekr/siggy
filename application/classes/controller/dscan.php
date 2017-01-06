@@ -78,7 +78,7 @@ class Controller_Dscan extends FrontController {
 				'group_id' => Auth::$session->group->id,
 				'dscan_title' => htmlentities($_POST['dscan_title']),
 				'dscan_id' => $id,
-				'dscan_added_by' => Auth::$session->charName
+				'dscan_added_by' => Auth::$session->character_name
 			);
 
 			$dscanID = DB::insert('dscan', array_keys($data) )

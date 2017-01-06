@@ -62,7 +62,7 @@
 		<script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/thirdparty.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>
 		<script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.compiled.js?<?php echo SIGGY_VERSION; ?>'></script>
 		<?php endif; ?>
-		<meta name="csrf-token" content="<?php echo Auth::$session->sessionData['csrf_token']; ?>">
+		<meta name="csrf-token" content="<?php echo Auth::$session->csrf_token; ?>">
 	</head>
 	<body>
 		<div class="navbar navbar-default navbar-fixed-top">
@@ -120,7 +120,7 @@
 								<li onClick="javascript:$(this).find('form').submit();">
 									<a>
 									<form action='<?php echo URL::base(TRUE, TRUE);?>access/groups' method='POST'>
-										<input type="hidden" name="_token" value="<?php echo Auth::$session->sessionData['csrf_token'];?>" />
+										<input type="hidden" name="_token" value="<?php echo Auth::$session->csrf_token;?>" />
 										<input type='hidden' name='group_id' value='<?php echo $g->id; ?>' />
 										<?php echo $g->name; ?>
 									</form>
@@ -157,8 +157,8 @@
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 						 <img class="navbar-eve-image" src="https://image.eveonline.com/Corporation/<?php echo Auth::$session->corporation_id; ?>_64.png" height="32px"/>
-						 <img class="navbar-eve-image" src="https://image.eveonline.com/Character/<?php echo Auth::$session->charID; ?>_64.jpg" height="32px"/>
-						<?php echo Auth::$session->charName; ?>
+						 <img class="navbar-eve-image" src="https://image.eveonline.com/Character/<?php echo Auth::$session->character_id; ?>_64.jpg" height="32px"/>
+						<?php echo Auth::$session->character_name; ?>
 						<?php if( Auth::loggedIn() ): ?>
 						<i class="fa fa-caret-down"></i>
 						<?php endif; ?>

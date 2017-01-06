@@ -42,7 +42,7 @@ class Controller_Chainmap extends FrontController {
 
 		$targetID = 0;
 
-		$currentLocation = CharacterLocation::findWithinCutoff(Auth::$session->charID);
+		$currentLocation = CharacterLocation::findWithinCutoff(Auth::$session->character_id);
 		if( $targetCurrentSys && $currentLocation != null )
 		{
 			$targetID = $currentLocation->system_id;
@@ -125,7 +125,7 @@ class Controller_Chainmap extends FrontController {
 				$this->chainmap->update_system($system['id'], array('x' => $system['x'], 'y' => $system['y']));
 			}
 
-			Auth::$session->group->logAction('editmap', Auth::$session->charName. " edited the map");
+			Auth::$session->group->logAction('editmap', Auth::$session->character_name. " edited the map");
 
 			$this->chainmap->rebuild_map_data_cache();
 		}
@@ -160,7 +160,7 @@ class Controller_Chainmap extends FrontController {
 
 		if( is_array($cynoHashes) && count($cynoHashes) > 0 )
 		{
-			$log_message = Auth::$session->charName.' performed a mass delete of the following cynos: ';
+			$log_message = Auth::$session->character_name.' performed a mass delete of the following cynos: ';
 
 			$cynoHashes = $this->_hash_array_to_string($cynoHashes);
 
@@ -194,7 +194,7 @@ class Controller_Chainmap extends FrontController {
 
 		if( is_array($jumpbridgeHashes) && count($jumpbridgeHashes) > 0 )
 		{
-			$log_message = Auth::$session->charName.' performed a mass delete of the following jumpbridges: ';
+			$log_message = Auth::$session->character_name.' performed a mass delete of the following jumpbridges: ';
 
 			$jumpbridgeHashes = $this->_hash_array_to_string($jumpbridgeHashes);
 
@@ -227,7 +227,7 @@ class Controller_Chainmap extends FrontController {
 
 		if( is_array($stargateHashes) && count($stargateHashes) > 0 )
 		{
-			$log_message = Auth::$session->charName.' performed a mass delete of the following stargates: ';
+			$log_message = Auth::$session->character_name.' performed a mass delete of the following stargates: ';
 
 			$stargateHashes = $this->_hash_array_to_string($stargateHashes);
 
@@ -415,7 +415,7 @@ class Controller_Chainmap extends FrontController {
 			$errors[] = "You cannot link a system to itself!";
 		}
 
-		$currentLocation = CharacterLocation::findWithinCutoff(Auth::$session->charID);
+		$currentLocation = CharacterLocation::findWithinCutoff(Auth::$session->character_id);
 		$fromSysID = 0;
 		if( $fromSysCurrent )
 		{
@@ -510,7 +510,7 @@ class Controller_Chainmap extends FrontController {
 
 			$this->chainmap->add_system_to_map($fromSysID, $toSysID, $eol, $mass, $whTypeID);
 
-			$message = Auth::$session->charName.' added wormhole manually between system IDs' . $fromSysID . ' and ' . $toSysID;
+			$message = Auth::$session->character_name.' added wormhole manually between system IDs' . $fromSysID . ' and ' . $toSysID;
 
 			Auth::$session->group->logAction('addwh', $message );
 		}

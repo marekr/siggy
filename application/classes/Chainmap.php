@@ -650,7 +650,7 @@ class Chainmap {
 
 	public function delete_wormholes($wormholeHashes)
 	{
-		$log_message = Auth::$session->charName.' performed a mass delete of the following wormholes: ';
+		$log_message = Auth::$session->character_name.' performed a mass delete of the following wormholes: ';
 
 		$wormholeHashes = $this->_hash_array_to_string($wormholeHashes);
 

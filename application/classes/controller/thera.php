@@ -33,7 +33,7 @@ class Controller_Thera extends FrontController {
 			}
 		}
 
-		$currentLocation = CharacterLocation::findWithinCutoff(Auth::$session->charID);
+		$currentLocation = CharacterLocation::findWithinCutoff(Auth::$session->character_id);
 		if( $currentLocation != null )
 		{
 			$pather = new Pathfinder();

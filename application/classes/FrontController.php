@@ -64,7 +64,7 @@ class FrontController extends Controller {
 	{
 		$csrf = isset($_SERVER['HTTP_X_CSRF_TOKEN']) ? $_SERVER['HTTP_X_CSRF_TOKEN'] : ( isset($_POST['_token']) ? $_POST['_token'] : '');
 
-		if( Auth::$session->sessionData['csrf_token'] != $csrf )
+		if( Auth::$session->csrf_token != $csrf )
 		{
 			http_response_code(403);
 			$this->siggyredirect('/');
@@ -107,11 +107,11 @@ class FrontController extends Controller {
 	{
 		$default_settings = ['theme_id' => 0,'combine_scan_intel' => 0, 'zoom' => '1.0', 'language' => 'en', 'default_activity' => '' ];
 
-		if( Auth::$session->charID != 0)
+		if( Auth::$session->character_id != 0)
 		{
 				$settings = DB::query(Database::SELECT, "SELECT * FROM character_settings
 								WHERE char_id=:charID")
-							->param(':charID', Auth::$session->charID)
+							->param(':charID', Auth::$session->character_id)
 							->execute()
 							->current();
 
