@@ -23,13 +23,17 @@ class UserSession {
 	public function __construct()
 	{
 		//try to find existing session
-		$this->id = Cookie::get('sessionID');
-	
-		if( $this->id == NULL )
+		$this->id = Cookie::get('sessionID','');
+
+		//try to load the session data
+		//session data fetch failed? then recreate it, or create one if no id
+		if( !(!empty($this->id) && $this->__fetchSessionData())
+			|| empty($this->id))
 		{
+			//create a new session ID
 			$this->id = $this->__generateSessionID();
 
-			$userData = array();
+			$userData = [];
 
 			//reauth the member
 			//remember me check
@@ -46,31 +50,7 @@ class UserSession {
 
 			$this->__generateSession();
 			$this->reloadUserSession();
-		}
-
-		//attempt to find existing session
-		$this->__fetchSessionData();
-
-		if( empty($this->id) )
-		{
-			$this->id = $this->__generateSessionID();
-
-			$memberID = Cookie::get('userID');
-			$passHash = Cookie::get('passHash');
-			if( $memberID && $passHash )
-			{
-				if( !Auth::autoLogin($memberID, $passHash) )
-				{
-					Cookie::delete('userID');
-					Cookie::delete('passHash');
-				}
-			}
-
-			$this->__generateSession();
-
-
-			$this->reloadUserSession();
-			$this->__fetchSessionData();
+			//reload user session will have reloaded the session data from db
 		}
 
 		// finally load user ID
@@ -86,9 +66,9 @@ class UserSession {
 	}
 
 
-	private function __fetchSessionData()
+	private function __fetchSessionData(): bool
 	{
-		$sess = DB::query(Database::SELECT, 'SELECT s.*,c.name as character_name,c.corporation_id
+		$session = DB::query(Database::SELECT, 'SELECT s.*,c.name as character_name,c.corporation_id
 											FROM sessions s
 											LEFT JOIN characters c ON(c.id=s.character_id)
 											WHERE s.id=:id')
@@ -96,16 +76,23 @@ class UserSession {
 					->execute()
 					->current();
 
-		$this->group_id = $sess['group_id'];
-		if(isset($sess['character_name']))
+		if($session != null)
 		{
-			$this->character_name = $sess['character_name'];
-		}
+			$this->group_id = $session['group_id'];
+			if(isset($session['character_name']))
+			{
+				$this->character_name = $session['character_name'];
+			}
 
-		$this->character_id = $sess['character_id'];
-		$this->corporation_id = $sess['corporation_id'];
-		$this->user_id = $sess['user_id'];
-		$this->csrf_token = $sess['csrf_token'];
+			$this->character_id = $session['character_id'];
+			$this->corporation_id = $session['corporation_id'];
+			$this->user_id = $session['user_id'];
+			$this->csrf_token = $session['csrf_token'];
+
+			return TRUE;
+		}
+		
+		return FALSE;
 	}
 
 	public function destroy()
