@@ -115,13 +115,13 @@ class UserSession {
 		Cookie::delete('sessionID');
 	}
 
-	private function __generateSessionID()
+	private function __generateSessionID(): string
 	{
 		$sessionID = md5(uniqid(microtime()) . Request::$client_ip . Request::$user_agent);
 		return $sessionID;
 	}
 
-	private function __generateCSRF()
+	private function __generateCSRF(): string
 	{
 		$sessionID = sha1(uniqid(microtime()) . Request::$client_ip . Request::$user_agent);
 		return $sessionID;
@@ -150,7 +150,7 @@ class UserSession {
 		$this->getAccessData();
 	}
 
-	private function __generateSession()
+	private function __generateSession(): bool
 	{
 		// corp_id will most likely only be "valid" for IGB/non-auth user sessions
 		// so we must update it too
@@ -173,7 +173,7 @@ class UserSession {
 		return TRUE;
 	}
 
-	private function __determineSessionType()
+	private function __determineSessionType(): string
 	{
 		$type = 'guest';
 
@@ -208,7 +208,7 @@ class UserSession {
 			->execute();
 	}
 
-	public function validateGroup()
+	public function validateGroup(): bool
 	{
 		if( Auth::$session->group->findGroupMember(GroupMember::TypeChar, $this->character_id) != null )
 		{
@@ -283,7 +283,7 @@ class UserSession {
 		return $this->accessibleChainMaps;
 	}
 
-	private function _buildAccessChainmaps($chainmaps)
+	private function _buildAccessChainmaps(array $chainmaps)
 	{
 		$accessibleChainmaps = [];
 		foreach($chainmaps as $id => $c)
@@ -300,7 +300,7 @@ class UserSession {
 		return $accessibleChainmaps;
 	}
 
-	private function _getDefaultChainMapID($chainmaps)
+	private function _getDefaultChainMapID(array $chainmaps): int
 	{
 		//to make usage "neat" for now, we first see if we have access to a default chain map
 		foreach($chainmaps as $id => $c)
@@ -331,7 +331,7 @@ class UserSession {
 		return 0;
 	}
 
-	private function _getChainMapID($chainmaps)
+	private function _getChainMapID(array $chainmaps): int
 	{
 		$desired_id = intval(Cookie::get('chainmap', 0));
 		$default_id = 0;
