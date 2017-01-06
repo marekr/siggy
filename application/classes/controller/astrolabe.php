@@ -34,15 +34,15 @@ class Controller_Astrolabe extends FrontController {
 		$pather = new Pathfinder();
 		for( $i = 0; $i < count($waypoints) - 1; $i++ )
 		{
-			$sourceID = mapUtils::findSystemByName($waypoints[$i]->system_name, Auth::$session->groupID, Auth::$session->accessData['active_chain_map'] );
-			$targetID = mapUtils::findSystemByName($waypoints[$i+1]->system_name, Auth::$session->groupID, Auth::$session->accessData['active_chain_map'] );
+			$sourceID = mapUtils::findSystemByName($waypoints[$i]->system_name, Auth::$session->group->id, Auth::$session->accessData['active_chain_map'] );
+			$targetID = mapUtils::findSystemByName($waypoints[$i+1]->system_name, Auth::$session->group->id, Auth::$session->accessData['active_chain_map'] );
 
 			$path = $pather->shortest($sourceID, $targetID);
 
 			$parts = [];
 			foreach(explode(',',$path['jumps']) as $systemJumpID)
 			{
-				$parts[] = System::get($systemJumpID, Auth::$session->groupID, 'basic');
+				$parts[] = System::get($systemJumpID, Auth::$session->group->id, 'basic');
 			}
 			$paths[] = $parts;
 		}

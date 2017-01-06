@@ -14,7 +14,7 @@ class Controller_Access extends FrontController {
 		$view->wrongPass = false;
 		$this->template->siggyMode = false;
 
-		$groupID = intval(Auth::$session->groupID);
+		$groupID = intval(Auth::$session->group->id);
 
 		if( isset($_POST['group_password']) )
 		{

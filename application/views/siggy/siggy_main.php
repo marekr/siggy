@@ -395,7 +395,7 @@
 				
 
 				defaultActivity:  '<?php echo $group->default_activity; ?>',
-				sessionID: '<?php echo Auth::$session->sessionID; ?>',
+				sessionID: '<?php echo Auth::$session->id; ?>',
 				charsettings: {
 					themeID: <?php echo $settings['theme_id']; ?>,
 					combineScanIntel: <?php echo $settings['combine_scan_intel']; ?>,

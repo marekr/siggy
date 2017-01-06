@@ -23,7 +23,7 @@ class Controller_Pos extends FrontController {
 			'pos_online' => intval($_POST['pos_online']),
 			'pos_size' => $_POST['pos_size'],
 			'pos_notes' => htmlspecialchars($_POST['pos_notes']),
-			'group_id' => Auth::$session->groupID,
+			'group_id' => Auth::$session->group->id,
 			'pos_added_date' => time(),
 			'pos_system_id' => intval($_POST['pos_system_id'])
 		);
@@ -53,7 +53,7 @@ class Controller_Pos extends FrontController {
 										FROM pos_tracker pos
 										INNER JOIN solarsystems ss ON ss.id = pos.pos_system_id
 										WHERE pos.pos_id=:pos_id AND pos.group_id=:group_id")
-								->param(':group_id', Auth::$session->groupID)
+								->param(':group_id', Auth::$session->group->id)
 								->param(':pos_id', $id)
 								->execute()->current();
 
@@ -101,7 +101,7 @@ class Controller_Pos extends FrontController {
 										FROM pos_tracker pos
 										INNER JOIN solarsystems ss ON ss.id = pos.pos_system_id
 										WHERE pos.pos_id=:pos_id AND pos.group_id=:group_id")
-								->param(':group_id', Auth::$session->groupID)
+								->param(':group_id', Auth::$session->group->id)
 								->param(':pos_id', $id)
 								->execute()->current();
 

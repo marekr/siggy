@@ -29,7 +29,7 @@ class Controller_Search extends FrontController {
 												INNER JOIN  solarsystems s ON(p.pos_system_id=s.id)
 												WHERE p.group_id = :groupID AND p.pos_owner LIKE :query
 												")
-			->param(':groupID', Auth::$session->groupID )
+			->param(':groupID', Auth::$session->group->id )
 			->param(':query', $query)
 			->execute()
 			->as_array();
@@ -48,7 +48,7 @@ class Controller_Search extends FrontController {
 												INNER JOIN  solarsystems s ON(ss.systemID=s.id)
 												WHERE ss.groupID = :groupID AND ss.description LIKE :query
 												")
-			->param(':groupID', Auth::$session->groupID )
+			->param(':groupID', Auth::$session->group->id )
 			->param(':query', $query)
 			->execute()
 			->as_array();

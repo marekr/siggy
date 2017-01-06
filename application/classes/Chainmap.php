@@ -318,7 +318,7 @@ class Chainmap {
 	{
 		$exists = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE (from_system_id=:system OR to_system_id=:system) AND group_id=:group AND chainmap_id=:chainmap")
 					->param(':system', $system)
-					->param(':group', Auth::$session->groupID)
+					->param(':group', Auth::$session->group->id)
 					->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 					->execute()
 					->current();
@@ -334,7 +334,7 @@ class Chainmap {
 	public function delete_all_system_connections( $system )
 	{
 		DB::query(Database::DELETE, 'DELETE FROM wormholes WHERE (to_system_id = :system OR from_system_id = :system) AND group_id=:groupID AND chainmap_id=:chainmap')
-			->param(':groupID', Auth::$session->groupID)
+			->param(':groupID', Auth::$session->group->id)
 			->param(':chainmap', Auth::$session->accessData['active_chain_map'])
 			->param(':system', $system)
 			->execute();

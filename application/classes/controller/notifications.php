@@ -4,12 +4,12 @@ class Controller_Notifications extends FrontController {
 
 	public function action_read()
 	{
-		$characterGroup = CharacterGroup::find(Auth::$session->charID, Auth::$session->groupID);
+		$characterGroup = CharacterGroup::find(Auth::$session->charID, Auth::$session->group->id);
 		if($characterGroup == null)
 		{
 			$characterGroup = new CharacterGroup();
 			$characterGroup->character_id = Auth::$session->charID;
-			$characterGroup->group_id = Auth::$session->groupID;
+			$characterGroup->group_id = Auth::$session->group->id;
 		}
 
 		$characterGroup->save(['last_notification_read' => time()]);
@@ -17,7 +17,7 @@ class Controller_Notifications extends FrontController {
 
 	public function action_notifiers()
 	{
-		$data = Notifier::all(Auth::$session->groupID, Auth::$session->charID);
+		$data = Notifier::all(Auth::$session->group->id, Auth::$session->charID);
 
 		echo json_encode($data);
 		exit();
@@ -33,9 +33,9 @@ class Controller_Notifications extends FrontController {
 
 		$numberPerPage = 50;
 		$offset = $numberPerPage*($page-1);
-		$data = Notification::latest(0, Auth::$session->groupID, Auth::$session->charID, $offset, $numberPerPage);
+		$data = Notification::latest(0, Auth::$session->group->id, Auth::$session->charID, $offset, $numberPerPage);
 
-		$totalPages = ceil(Notification::total(0, Auth::$session->groupID, Auth::$session->charID) / $numberPerPage);
+		$totalPages = ceil(Notification::total(0, Auth::$session->group->id, Auth::$session->charID) / $numberPerPage);
 		$response = array(
 			'items' => $data,
 			'total_pages' => $totalPages
@@ -75,7 +75,7 @@ class Controller_Notifications extends FrontController {
 			$data['include_offline'] = (isset($data['include_offline']) && $data['include_offline']) ? true : false;
 		}
 
-		$notifier = Notifier::create($type, $scope, Auth::$session->groupID, Auth::$session->charID, $data);
+		$notifier = Notifier::create($type, $scope, Auth::$session->group->id, Auth::$session->charID, $data);
 	}
 
 	public function action_notifiers_edit()
@@ -94,6 +94,6 @@ class Controller_Notifications extends FrontController {
 			exit();
 		}
 
-		Notifier::delete( $id, Auth::$session->groupID, Auth::$session->charID );
+		Notifier::delete( $id, Auth::$session->group->id, Auth::$session->charID );
 	}
 }

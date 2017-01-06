@@ -149,7 +149,7 @@ class Controller_Thera extends FrontController {
 		$chainmap = null;
 		if( isset($_POST['chainmap']) )
 		{
-			$chainmap = Chainmap::find(intval($_POST['chainmap']),Auth::$session->groupID);
+			$chainmap = Chainmap::find(intval($_POST['chainmap']),Auth::$session->group->id);
 		}
 
 		if( $chainmap == null )

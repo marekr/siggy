@@ -4,14 +4,14 @@ use Carbon\Carbon;
 
 class UserSession {
 
+	public $id = "";
+	public $user_id = 0;
+	public $group_id = 0;
+	public $corporation_id = 0;
+
 	public $charID = 0;
 	public $charName = "";
-	public $corpID = 0;
-	public $groupID = 0;
 	public $group = null;
-
-	public $sessionID = "";
-
 	public $accessData = array();
 	public $sessionData = array();
 
@@ -22,13 +22,14 @@ class UserSession {
 		// default char,corp id
 		$this->charID = 0;
 		$this->charName = '';
-		$this->corpID = 0;
+		$this->corporation_id = 0;
 
 		//try to find existing session
-		$this->sessionID = Cookie::get('sessionID');
-		if( $this->sessionID == NULL )
+		$this->id = Cookie::get('sessionID');
+	
+		if( $this->id == NULL )
 		{
-			$this->sessionID = $this->__generateSessionID();
+			$this->id = $this->__generateSessionID();
 
 			$userData = array();
 
@@ -49,13 +50,12 @@ class UserSession {
 			$this->reloadUserSession();
 		}
 
-
 		//attempt to find existing session
 		$this->sessionData = $this->__fetchSessionData();
 
-		if( !isset($this->sessionData['id']) )
+		if( empty($this->id) )
 		{
-			$this->sessionID = $this->__generateSessionID();
+			$this->id = $this->__generateSessionID();
 
 			$memberID = Cookie::get('userID');
 			$passHash = Cookie::get('passHash');
@@ -76,20 +76,12 @@ class UserSession {
 		}
 
 		// finally load user ID
-		if( $this->sessionData['user_id'] != 0 )
+		if( $this->user_id != 0 )
 		{
 			Auth::$user->loadByID( $this->sessionData['user_id'] );
 		}
 
-		/* Don't use session data for char name, id and corp id to avoid
-		   IGB header issues */
-		$this->groupID = $this->sessionData['group_id'];
-		$this->group = Group::find($this->groupID);
-
-		$this->charName = $this->sessionData['character_name'];
-		$this->charID = $this->sessionData['character_id'];
-		$this->corpID = $this->sessionData['corporation_id'];
-
+		$this->group = Group::find($this->group_id);
 		$this->getAccessData();
 
 		$this->__updateSession();
@@ -98,17 +90,29 @@ class UserSession {
 
 	private function __fetchSessionData()
 	{
-		$sess = DB::query(Database::SELECT, 'SELECT id,user_id,group_id,character_id,character_name,corporation_id,csrf_token FROM sessions WHERE id=:id')
-					->param(':id', $this->sessionID)
+		$sess = DB::query(Database::SELECT, 'SELECT s.*,c.name as character_name,c.corporation_id
+											FROM sessions s
+											LEFT JOIN characters c ON(c.id=s.character_id)
+											WHERE s.id=:id')
+					->param(':id', $this->id)
 					->execute()
 					->current();
+
+		$this->group_id = $sess['group_id'];
+		if(isset($sess['character_name']))
+		{
+			$this->charName = $sess['character_name'];
+		}
+		$this->charID = $sess['character_id'];
+		$this->corporation_id = $sess['corporation_id'];
+		$this->user_id = $sess['user_id'];
 
 		return $sess;
 	}
 
 	public function destroy()
 	{
-		DB::delete('sessions')->where('id', '=', $this->sessionID)->execute();
+		DB::delete('sessions')->where('id', '=', $this->id)->execute();
 
 		Cookie::delete('sessionID');
 	}
@@ -127,7 +131,7 @@ class UserSession {
 
 	public function reloadUserSession()
 	{
-		if( empty($this->sessionID) || !Auth::loggedIn() )
+		if( empty($this->id) || !Auth::loggedIn() )
 		{
 			return;
 		}
@@ -135,21 +139,19 @@ class UserSession {
 		$update = array( 'user_id' => Auth::$user->data['id'],
 						 'group_id' => Auth::$user->data['groupID'],
 					//	 'chainmap_id' => Auth::$user->data['active_chain_map'],
-                         'character_name' => Auth::$user->data['char_name'],
-                         'character_id' => Auth::$user->data['char_id'],
-                         'corporation_id' => Auth::$user->data['corp_id']
+                         'character_id' => Auth::$user->data['char_id']
 						 );
 
 		DB::update('sessions')
 			->set( $update )
-			->where('id', '=',  $this->sessionID)
+			->where('id', '=',  $this->id)
 			->execute();
 
 
 		$this->charID = $update['character_id'];
-		$this->charName = $update['character_name'];
-		$this->corpID = $update['corporation_id'];
-		$this->groupID = $update['group_id'];
+		$this->corporation_id = $update['corporation_id'];
+		$this->group_id = $update['group_id'];
+		$this->user_id = $update['user_id'];
 
 		$this->getAccessData();
 	}
@@ -158,10 +160,8 @@ class UserSession {
 	{
 		// corp_id will most likely only be "valid" for IGB/non-auth user sessions
 		// so we must update it too
-		$insert = array( 'id' => $this->sessionID,
+		$insert = array( 'id' => $this->id,
 					'character_id' => $this->charID,
-					'character_name' => $this->charName,
-					'corporation_id' => $this->corpID,
 					'created_at' => Carbon::now()->toDateTimeString(),
 					'ip_address' => Request::$client_ip,
 					'user_agent' => Request::$user_agent,
@@ -174,7 +174,7 @@ class UserSession {
 
 		DB::insert('sessions', array_keys($insert) )->values(array_values($insert))->execute();
 
-		Cookie::set('sessionID', $this->sessionID);
+		Cookie::set('sessionID', $this->id);
 
 		return TRUE;
 	}
@@ -193,7 +193,7 @@ class UserSession {
 
 	private function __updateSession()
 	{
-		if( empty($this->sessionID) )
+		if( empty($this->id) )
 		{
 			return;
 		}
@@ -202,7 +202,7 @@ class UserSession {
 
 		/* Shitty fix, always update groupID because we don't on creaton have a valid one */
 		$update = array( 'updated_at' => Carbon::now()->toDateTimeString(),
-						 'group_id' => $this->groupID,
+						 'group_id' => $this->group_id,
 						 'type' => $type,
 						 'chainmap_id' => ( isset($this->accessData['active_chain_map']) ? $this->accessData['active_chain_map'] : 0 )
 						);
@@ -210,7 +210,7 @@ class UserSession {
 
 		DB::update('sessions')
 			->set( $update )
-			->where('id', '=',  $this->sessionID)
+			->where('id', '=',  $this->id)
 			->execute();
 	}
 
@@ -221,7 +221,7 @@ class UserSession {
 			return TRUE;
 		}
 		
-		if( Auth::$session->group->findGroupMember(GroupMember::TypeCorp, $this->corpID) != null )
+		if( Auth::$session->group->findGroupMember(GroupMember::TypeCorp, $this->corporation_id) != null )
 		{
 			return TRUE;
 		}
@@ -229,7 +229,7 @@ class UserSession {
 		if( $this->group != null )
 		{
 			$this->group = null;
-			$this->groupID = 0;
+			$this->group_id = 0;
 
 			$this->__updateSession();
 		}
@@ -257,7 +257,7 @@ class UserSession {
 		{
 			//start forming a list of possible groups
 			$all_groups = [];
-			$corp_data = Group::findAllByGroupMembership('corp', $this->corpID);
+			$corp_data = Group::findAllByGroupMembership('corp', $this->corporation_id);
 			$char_data = Group::findAllByGroupMembership('char', $this->charID);
 
 			$access_type = 'char';
@@ -298,7 +298,7 @@ class UserSession {
 		{
 			foreach($c['access'] as $p)
 			{
-				if( ($p['memberType'] == 'corp' && $p['eveID'] == $this->corpID)
+				if( ($p['memberType'] == 'corp' && $p['eveID'] == $this->corporation_id)
 						|| ($p['memberType'] == 'char' && $p['eveID'] == $this->charID) )
 				{
 					$accessibleChainmaps[$c['chainmap_id']] = $c;
@@ -315,7 +315,7 @@ class UserSession {
 		{
 			foreach($c['access'] as $p)
 			{
-				if( $c['chainmap_type'] == 'default' && ( ($p['memberType'] == 'corp' && $p['eveID'] == $this->corpID)
+				if( $c['chainmap_type'] == 'default' && ( ($p['memberType'] == 'corp' && $p['eveID'] == $this->corporation_id)
 														|| ($p['memberType'] == 'char' && $p['eveID'] == $this->charID) ) )
 				{
 					return $c['chainmap_id'];
@@ -328,7 +328,7 @@ class UserSession {
 		{
 			foreach($c['access'] as $p)
 			{
-				if( ($p['memberType'] == 'corp' && $p['eveID'] == $this->corpID)
+				if( ($p['memberType'] == 'corp' && $p['eveID'] == $this->corporation_id)
 						|| ($p['memberType'] == 'char' && $p['eveID'] == $this->charID) )
 				{
 					return $c['chainmap_id'];
@@ -352,7 +352,7 @@ class UserSession {
 		{
 			foreach($chainmaps[ $desired_id ]['access'] as $p)
 			{
-				if( ($p['memberType'] == 'corp' && $p['eveID'] == $this->corpID)
+				if( ($p['memberType'] == 'corp' && $p['eveID'] == $this->corporation_id)
 						|| ($p['memberType'] == 'char' && $p['eveID'] == $this->charID) )
 				{
 					return $desired_id;

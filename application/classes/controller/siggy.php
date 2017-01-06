@@ -77,7 +77,7 @@ class Controller_Siggy extends FrontController {
         $themes = DB::query(Database::SELECT, "SELECT theme_id, theme_name FROM themes
                                                 WHERE visibility='all' OR (group_id=:group AND visibility='group')
                                                 ORDER BY theme_id ASC")
-								->param(':group', Auth::$session->groupID)
+								->param(':group', Auth::$session->group->id)
 								->execute()
 								->as_array();
 
@@ -107,7 +107,7 @@ class Controller_Siggy extends FrontController {
 			$themes = DB::query(Database::SELECT, "SELECT theme_id, theme_name FROM themes
 													WHERE theme_id = :themeID AND (visibility='all' OR (group_id=:group AND visibility='group'))")
 									->param(':themeID', $themeID)
-									->param(':group', Auth::$session->groupID)
+									->param(':group', Auth::$session->group->id)
 									->execute()
 									->as_array();
 
@@ -134,7 +134,7 @@ class Controller_Siggy extends FrontController {
 
 		if( Auth::$session->accessData['active_chain_map'] )
 		{
-			$this->chainmap = Chainmap::find(Auth::$session->accessData['active_chain_map'],Auth::$session->groupID);
+			$this->chainmap = Chainmap::find(Auth::$session->accessData['active_chain_map'],Auth::$session->group->id);
 		}
 	}
 
@@ -362,7 +362,7 @@ class Controller_Siggy extends FrontController {
 						->param(':hash', $whHash )
 						->param(':dest', $dest)
 						->param(':origin', $origin )
-						->param(':groupID', Auth::$session->groupID )
+						->param(':groupID', Auth::$session->group->id )
 						->param(':chainmap', Auth::$session->accessData['active_chain_map'] )
 						->param(':time', $jumpTime )
 						->param(':shipTypeID',  $_SERVER['HTTP_EVE_SHIPTYPEID'] )
@@ -374,7 +374,7 @@ class Controller_Siggy extends FrontController {
 
 	private function doSystemMappedNotifications($systems)
 	{
-		foreach( Notifier::all(Auth::$session->groupID, Auth::$session->charID) as $notifier )
+		foreach( Notifier::all(Auth::$session->group->id, Auth::$session->charID) as $notifier )
 		{
 			if( $notifier['type'] == NotificationTypes::SystemMappedByName )
 			{
@@ -501,7 +501,7 @@ class Controller_Siggy extends FrontController {
 			$charID = $characterID;
 		}
 
-		Notification::create(Auth::$session->groupID, $charID, $notifier['type'], $eventData);
+		Notification::create(Auth::$session->group->id, $charID, $notifier['type'], $eventData);
 	}
 
 	public function createSystemResidentNotification($notifier,
@@ -525,7 +525,7 @@ class Controller_Siggy extends FrontController {
 				$charID = $characterID;
 			}
 
-			Notification::create(Auth::$session->groupID, $charID, $notifier['type'], $eventData);
+			Notification::create(Auth::$session->group->id, $charID, $notifier['type'], $eventData);
 		}
 
 
@@ -666,7 +666,7 @@ class Controller_Siggy extends FrontController {
 			$currentLocation = CharacterLocation::findWithinCutoff($character['character_id']);
 
 
-			if($charData->canAccessMap(Auth::$session->groupID,Auth::$session->accessData['active_chain_map']))
+			if($charData->canAccessMap(Auth::$session->group->id,Auth::$session->accessData['active_chain_map']))
 			{
 				$locationThreshold = $charData->location_processed_at;
 				if($locationThreshold == null)

@@ -10,7 +10,7 @@ class Controller_Sig extends FrontController {
 
 		if( Auth::$session->accessData['active_chain_map'] )
 		{
-			$this->chainmap = Chainmap::find(Auth::$session->accessData['active_chain_map'], Auth::$session->groupID);
+			$this->chainmap = Chainmap::find(Auth::$session->accessData['active_chain_map'], Auth::$session->group->id);
 		}
 	}
 
@@ -37,7 +37,7 @@ class Controller_Sig extends FrontController {
 			$insert['created_at'] = Carbon::now()->toDateTimeString();
 			$insert['siteID'] = intval($sigData['siteID']);
 			$insert['type'] = $sigData['type'];
-			$insert['groupID'] = Auth::$session->groupID;
+			$insert['groupID'] = Auth::$session->group->id;
 
 			if( Auth::$session->group->show_sig_size_col )
 			{
@@ -63,7 +63,7 @@ class Controller_Sig extends FrontController {
 
 	private function notifierCheck($sigData)
 	{
-		foreach( Notifier::all(Auth::$session->groupID, Auth::$session->charID) as $notifier )
+		foreach( Notifier::all(Auth::$session->group->id, Auth::$session->charID) as $notifier )
 		{
 			if( $notifier['type'] == NotificationTypes::SiteFound )
 			{
@@ -129,7 +129,7 @@ class Controller_Sig extends FrontController {
 													WHERE groupID=:groupID
 													AND systemID=:id
 													AND sig NOT IN(".implode($sigList,',').")")
-								->param(':groupID', Auth::$session->groupID)
+								->param(':groupID', Auth::$session->group->id)
 								->param(':id', $systemID)
 								->execute();
 			}
@@ -146,7 +146,7 @@ class Controller_Sig extends FrontController {
 																AND groupID=:group
 																 AND sig=:sig")
 												->param(':id', $systemID)
-												->param(':group',Auth::$session->groupID)
+												->param(':group',Auth::$session->group->id)
 												->param(':sig', $sig['sig'] )
 												->execute()
 												->current();
@@ -175,7 +175,7 @@ class Controller_Sig extends FrontController {
 						$insert['created_at'] = Carbon::now()->toDateTimeString();
 						$insert['siteID'] = intval($sig['siteID']);
 						$insert['type'] = $sig['type'];
-						$insert['groupID'] = Auth::$session->groupID;
+						$insert['groupID'] = Auth::$session->group->id;
 						$insert['sigSize'] = "";	//need to return this value for JS to fail gracefully
 						$insert['creator'] = Auth::$session->charName;
 
@@ -230,7 +230,7 @@ class Controller_Sig extends FrontController {
 
 			DB::update('systemsigs')
 				->set( $update )
-				->where('groupID', '=', Auth::$session->groupID)
+				->where('groupID', '=', Auth::$session->group->id)
 				->where('id', '=', $id)
 				->execute();
 
@@ -274,7 +274,7 @@ class Controller_Sig extends FrontController {
 		if( isset($request['system_id']) )
 		{
 			$chainmapID = Auth::$session->accessData['active_chain_map'];
-			$chainmap = Chainmap::find($chainmapID,Auth::$session->groupID);
+			$chainmap = Chainmap::find($chainmapID,Auth::$session->group->id);
 			foreach($request['sigs'] as $sig)
 			{
 				if(empty($sig['wh_destination']))
@@ -290,7 +290,7 @@ class Controller_Sig extends FrontController {
 														FROM systemsigs
 														WHERE id=:id
 															AND groupID=:group")
-											->param(':group',Auth::$session->groupID)
+											->param(':group',Auth::$session->group->id)
 											->param(':id', $sig['id'] )
 											->execute()
 											->current();
@@ -300,7 +300,7 @@ class Controller_Sig extends FrontController {
 
 				DB::update('systemsigs')
 					->set( ['siteID' => $sig['site_id']] )
-					->where('groupID', '=', Auth::$session->groupID)
+					->where('groupID', '=', Auth::$session->group->id)
 					->where('id', '=', $sig['id'])
 					->execute();
 
@@ -342,13 +342,13 @@ class Controller_Sig extends FrontController {
 			$sigData = DB::query(Database::SELECT, 'SELECT *,ss.name as systemName FROM	 systemsigs s
 													INNER JOIN solarsystems ss ON ss.id = s.systemID
 													WHERE s.id=:id AND s.groupID=:groupID')
-									->param(':groupID', Auth::$session->groupID)
+									->param(':groupID', Auth::$session->group->id)
 									->param(':id', $id)
 									->execute()
 									->current();
 
 			DB::delete('systemsigs')
-				->where('groupID', '=', Auth::$session->groupID)
+				->where('groupID', '=', Auth::$session->group->id)
 				->where('id', '=', $id)
 				->execute();
 
@@ -368,7 +368,7 @@ class Controller_Sig extends FrontController {
 			}
 			$wormholeHashes = array_unique($wormholeHashes);
 
-			groupUtils::deleteLinkedSigWormholes(Auth::$session->groupID, $wormholeHashes);
+			groupUtils::deleteLinkedSigWormholes(Auth::$session->group->id, $wormholeHashes);
 
 			$message = Auth::$session->charName.' deleted sig "'.$sigData['sig'].'" from system '.$sigData['systemName'];;
 			if( $sigData['type'] != 'none' )
@@ -406,7 +406,7 @@ class Controller_Sig extends FrontController {
 													WHERE s.sig !='POS' AND s.groupID=:groupID
 													GROUP BY s.systemID
 												)")
-								->param(':groupID', Auth::$session->groupID)
+								->param(':groupID', Auth::$session->group->id)
 								->execute()
 								->as_array();
 

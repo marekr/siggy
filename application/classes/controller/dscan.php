@@ -75,7 +75,7 @@ class Controller_Dscan extends FrontController {
 			$data = array(
 				'dscan_date' => time(),
 				'system_id' => intval($_POST['system_id']),
-				'group_id' => Auth::$session->groupID,
+				'group_id' => Auth::$session->group->id,
 				'dscan_title' => htmlentities($_POST['dscan_title']),
 				'dscan_id' => $id,
 				'dscan_added_by' => Auth::$session->charName
@@ -139,7 +139,7 @@ class Controller_Dscan extends FrontController {
 										FROM dscan d
 										LEFT JOIN solarsystems ss ON (ss.id=d.system_id)
 										WHERE d.dscan_id=:dscan_id AND d.group_id=:group_id")
-								->param(':group_id', Auth::$session->groupID)
+								->param(':group_id', Auth::$session->group->id)
 								->param(':dscan_id', $id)
 								->execute()->current();
 
@@ -155,7 +155,7 @@ class Controller_Dscan extends FrontController {
 										LEFT JOIN invgroups g ON(g.groupID = i.groupID)
 										WHERE r.dscan_id=:dscan_id
 										ORDER BY g.groupName ASC,i.typeName ASC")
-								->param(':group_id', Auth::$session->groupID)
+								->param(':group_id', Auth::$session->group->id)
 								->param(':dscan_id', $id)
 								->execute()->as_array();
 
@@ -205,7 +205,7 @@ class Controller_Dscan extends FrontController {
 		$dscan = DB::query(Database::SELECT, "SELECT dscan_id, dscan_title, dscan_date
 										FROM dscan
 										WHERE dscan_id=:dscan_id AND group_id=:group_id")
-								->param(':group_id', Auth::$session->groupID)
+								->param(':group_id', Auth::$session->group->id)
 								->param(':dscan_id', $id)
 								->execute()->current();
 
