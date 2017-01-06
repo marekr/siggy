@@ -7,9 +7,7 @@ class Controller_Notifications extends FrontController {
 		$characterGroup = CharacterGroup::find(Auth::$session->character_id, Auth::$session->group->id);
 		if($characterGroup == null)
 		{
-			$characterGroup = new CharacterGroup();
-			$characterGroup->character_id = Auth::$session->character_id;
-			$characterGroup->group_id = Auth::$session->group->id;
+			$characterGroup = CharacterGroup::create(['character_id' => Auth::$session->character_id, 'group_id' => Auth::$session->group->id]);
 		}
 
 		$characterGroup->save(['last_notification_read' => time()]);

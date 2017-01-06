@@ -139,6 +139,17 @@ class UserSession {
 			->where('id', '=',  $this->id)
 			->execute();
 
+		if(!empty(Auth::$user->data['char_id']) &&
+			!empty(Auth::$user->data['groupID']) )
+		{
+			$chargroup = CharacterGroup::find(Auth::$user->data['char_id'],Auth::$user->data['groupID']);
+			if($chargroup == null)
+			{
+				$chargroup = CharacterGroup::create(['character_id' => Auth::$user->data['char_id'],'group_id' => Auth::$user->data['groupID']]);
+			}
+			$chargroup->updateGroupAccess();
+		}
+
 		$this->__fetchSessionData();
 
 		$this->getAccessData();

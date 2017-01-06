@@ -34,7 +34,7 @@ class CharacterGroup {
 
 	public function updateGroupAccess()
 	{
-		$this->save(['last_group_access' => Carbon::now()->toDateTimeString()]);
+		$this->save(['last_group_access_at' => Carbon::now()->toDateTimeString()]);
 	}
 
 	public static function create($props)
@@ -44,7 +44,7 @@ class CharacterGroup {
 				->execute();
 
 		$props['id'] = $result[0];
-		return new GroupMember($props);
+		return new CharacterGroup($props);
 	}
 
 	public static function find(int $character, int $group)
