@@ -32,6 +32,11 @@ class CharacterGroup {
 			->execute();
 	}
 
+	public function updateGroupAccess()
+	{
+		$this->save(['last_group_access' => Carbon::now()->toDateTimeString()]);
+	}
+
 	public static function create($props)
 	{
 		$result = DB::insert('character_group', array_keys($props) )

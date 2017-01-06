@@ -79,9 +79,16 @@ class UserSession {
 		if($session != null)
 		{
 			$this->group_id = $session['group_id'];
+
+			///crappy error handling...
 			if(isset($session['character_name']))
 			{
 				$this->character_name = $session['character_name'];
+			}
+
+			if(isset($session['corporation_id']))
+			{
+				$this->corporation_id = $session['corporation_id'];
 			}
 
 			$this->character_id = $session['character_id'];
