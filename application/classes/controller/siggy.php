@@ -585,12 +585,10 @@ class Controller_Siggy extends FrontController {
 			if( ($_POST['lastUpdate'] < $recordedLastUpdate) || ( $_POST['lastUpdate'] == 0 ) || $forceUpdate || $update['systemUpdate'] )
 			{
 				$additional = '';
-				if( Auth::$session->group->show_sig_size_col )
-				{
-					$additional .= ',sigSize';
-				}
 
-				$update['sigData'] = DB::query(Database::SELECT, "SELECT id, sig, type, siteID, description, created_at, creator, updated_at,lastUpdater".$additional." FROM systemsigs
+				$update['sigData'] = DB::query(Database::SELECT, "SELECT id, sig, type, siteID, description, 
+																	created_at, creator, updated_at,lastUpdater,sigSize
+																	FROM systemsigs
 																	WHERE systemID=:id AND groupID=:group")
 								->param(':id', $selectedSystemID)
 								 ->param(':group', Auth::$session->group->id)
