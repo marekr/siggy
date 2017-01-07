@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Illuminate\Database\Capsule\Manager as DB;
 
 class UserSession {
 
@@ -56,7 +57,7 @@ class UserSession {
 		// finally load user ID
 		if( $this->user_id != 0 )
 		{
-			Auth::$user->loadByID( $this->user_id );
+			Auth::$user = User::find( $this->user_id );
 		}
 
 		$this->group = Group::find($this->group_id);
@@ -68,33 +69,30 @@ class UserSession {
 
 	private function __fetchSessionData(): bool
 	{
-		$session = DB::query(Database::SELECT, 'SELECT s.*,c.name as character_name,c.corporation_id
+		$session = DB::selectOne('SELECT s.*,c.name as character_name,c.corporation_id
 											FROM sessions s
 											LEFT JOIN characters c ON(c.id=s.character_id)
-											WHERE s.id=:id')
-					->param(':id', $this->id)
-					->execute()
-					->current();
+												WHERE s.id=?',[$this->id]);
 
 		if($session != null)
 		{
-			$this->group_id = $session['group_id'];
+			$this->group_id = $session->group_id;
 
 			///crappy error handling...
-			if(isset($session['character_name']))
+			if(isset($session->character_name))
 			{
-				$this->character_name = $session['character_name'];
+				$this->character_name = $session->character_name;
 			}
 
-			if(isset($session['corporation_id']))
+			if(isset($session->corporation_id))
 			{
-				$this->corporation_id = $session['corporation_id'];
+				$this->corporation_id = $session->corporation_id;
 			}
 
-			$this->character_id = $session['character_id'];
-			$this->corporation_id = $session['corporation_id'];
-			$this->user_id = $session['user_id'];
-			$this->csrf_token = $session['csrf_token'];
+			$this->character_id = $session->character_id;
+			$this->corporation_id = $session->corporation_id;
+			$this->user_id = $session->user_id;
+			$this->csrf_token = $session->csrf_token;
 
 			return TRUE;
 		}
@@ -104,7 +102,7 @@ class UserSession {
 
 	public function destroy()
 	{
-		DB::delete('sessions')->where('id', '=', $this->id)->execute();
+		DB::table('sessions')->where('id', '=', $this->id)->delete();
 
 		Cookie::delete('sessionID');
 	}
@@ -128,24 +126,23 @@ class UserSession {
 			return;
 		}
 
-		$update = array( 'user_id' => Auth::$user->data['id'],
-						 'group_id' => Auth::$user->data['groupID'],
-					//	 'chainmap_id' => Auth::$user->data['active_chain_map'],
-                         'character_id' => Auth::$user->data['char_id']
+		$update = array( 'user_id' => Auth::$user->id,
+						 'group_id' => Auth::$user->groupID,
+					//	 'chainmap_id' => Auth::$user->active_chain_map,
+                         'character_id' => Auth::$user->char_id
 						 );
-
-		DB::update('sessions')
-			->set( $update )
+						 
+		DB::table('sessions')
 			->where('id', '=',  $this->id)
-			->execute();
+			->update( $update );
 
-		if(!empty(Auth::$user->data['char_id']) &&
-			!empty(Auth::$user->data['groupID']) )
+		if(!empty(Auth::$user->char_id) &&
+			!empty(Auth::$user->groupID) )
 		{
-			$chargroup = CharacterGroup::find(Auth::$user->data['char_id'],Auth::$user->data['groupID']);
+			$chargroup = CharacterGroup::find(Auth::$user->char_id,Auth::$user->groupID);
 			if($chargroup == null)
 			{
-				$chargroup = CharacterGroup::create(['character_id' => Auth::$user->data['char_id'],'group_id' => Auth::$user->data['groupID']]);
+				$chargroup = CharacterGroup::create(['character_id' => Auth::$user->char_id,'group_id' => Auth::$user->groupID]);
 			}
 			$chargroup->updateGroupAccess();
 		}
@@ -166,12 +163,12 @@ class UserSession {
 					'user_agent' => Request::$user_agent,
 					'csrf_token' => $this->__generateCSRF(),
 					'type' => 'guest',
-					'user_id' => ( isset(Auth::$user->data['id']) ? Auth::$user->data['id'] : 0 ),
-					'group_id' => ( isset(Auth::$user->data['groupID']) ? Auth::$user->data['groupID'] : 0 ),
+					'user_id' => ( isset(Auth::$user->id) ? Auth::$user->id : 0 ),
+					'group_id' => ( isset(Auth::$user->groupID) ? Auth::$user->groupID : 0 ),
 				//	'chainmap_id' =>  ( isset(Auth::$user->data['active_chain_map']) ? Auth::$user->data['active_chain_map'] : 0 ),
 				  );
 
-		DB::insert('sessions', array_keys($insert) )->values(array_values($insert))->execute();
+		DB::table('sessions')->insert($insert);
 
 		Cookie::set('sessionID', $this->id);
 
@@ -207,10 +204,9 @@ class UserSession {
 						);
 
 
-		DB::update('sessions')
-			->set( $update )
+		DB::table('sessions')
 			->where('id', '=',  $this->id)
-			->execute();
+			->update( $update );
 	}
 
 	public function validateGroup(): bool

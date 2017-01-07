@@ -2,8 +2,17 @@
 
 use Carbon\Carbon;
 use Pheal\Pheal;
+use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Database\Eloquent\Model;
 
-class Group {
+class Group extends Model {
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = true;
+
 	public $id;
 	public $name;
 	public $isk_balance;
@@ -18,14 +27,7 @@ class Group {
 	//todo, implement
 	public $cache_time = 1;
 
-	public function __construct(array $props)
-	{
-		foreach ($props as $key => $value) 
-		{
-    		$this->$key = $value;
-		}
-	}
-	
+	/*
 	public function save(array $props)
 	{
 		//todo, remove this compatibility hack
@@ -36,11 +38,10 @@ class Group {
     		$this->$key = $value;
 		}
 
-		DB::update('groups')
-			->set( $props )
+		DB::table('groups')
 			->where('id', '=',  $this->id)
-			->execute();
-	}
+			->update( $props );
+	}*/
 	
 	private static function hashGroupPassword(string $password, string $salt): string
 	{
@@ -57,13 +58,13 @@ class Group {
 		}
 
 		$insert = [
-							'name' => $data['name'],
-							'ticker' => $data['ticker'],
-							'password_required' => $data['password_required'],
-							'password_salt' => $salt,
-							'password' => $password,
-							'payment_code' => miscUtils::generateString(14),
-							'billable' => 1
+			'name' => $data['name'],
+			'ticker' => $data['ticker'],
+			'password_required' => $data['password_required'],
+			'password_salt' => $salt,
+			'password' => $password,
+			'payment_code' => miscUtils::generateString(14),
+			'billable' => 1
 		];
 		$group = self::create($insert);
 
@@ -74,49 +75,14 @@ class Group {
 						 'chainmap_homesystems_ids' => ''
 		];
 
-		DB::insert('chainmaps', array_keys($insert) )
-			->values( array_values($insert) )
-			->execute();
+		DB::table('chainmaps')->insert($insert);
 
 		return $group;
 	}
 
-	public static function create(array $props): Group
-	{
-		if(!isset($props['created_at']))
-		{
-			$props['created_at'] = Carbon::now()->toDateTimeString();
-		}
-
-		$result = DB::insert('groups', array_keys($props) )
-				->values(array_values($props))
-				->execute();
-
-		$props['id'] = $result[0];
-		return new Group($props);
-	}
-
-	public static function find(int $id)
-	{
-		$data = DB::query(Database::SELECT, 'SELECT * FROM groups WHERE id=:id')
-												->param(':id', $id)
-												->execute()
-												->current();
-
-		if($data != null)
-		{
-			return new Group($data);
-		}
-
-		return null;
-	}
-
 	public static function findByPaymentCode(string $code)
 	{
-		$data = DB::query(Database::SELECT, 'SELECT * FROM groups WHERE payment_code=:code')
-												->param(':code', $code)
-												->execute()
-												->current();
+		$data = DB::selectOne(Database::SELECT, 'SELECT * FROM groups WHERE payment_code=?',[$code]);
 
 		if($data != null)
 		{
@@ -128,13 +94,10 @@ class Group {
 
 	public static function findAllByGroupMembership(string $type, int $eveID): array
 	{
-		$data = DB::query(Database::SELECT, 'SELECT g.* 
+		$data = DB::selectOne(Database::SELECT, 'SELECT g.* 
 												FROM groups g
 												JOIN groupmembers gm ON(g.id = gm.groupID)
-												WHERE gm.eveID=:id AND gm.memberType=:type')
-												->param(':id', $eveID)
-												->param(':type', $type)
-												->execute();
+												WHERE gm.eveID=? AND gm.memberType=?',[$eveID, $type]);
 
 		$results = [];
 		if($data != null)
@@ -177,18 +140,13 @@ class Group {
 	{
 		if($this->chainMaps == null)
 		{
-			$chainmaps = DB::query(Database::SELECT, "SELECT * FROM chainmaps WHERE group_id = :group")
-								->param(':group', $this->id)
-								->execute()
-								->as_array('chainmap_id');
+			$chainmaps = DB::select("SELECT * FROM chainmaps WHERE group_id = ?",[$this->id]);
+					//			->as_array('chainmap_id');
 
 			foreach($chainmaps as &$c)
 			{
-				$members = DB::query(Database::SELECT, "SELECT gm.memberType, gm.eveID FROM groupmembers gm
-													LEFT JOIN chainmaps_access a ON(gm.id=a.groupmember_id) WHERE chainmap_id=:chainmap")
-							->param(':chainmap', $c['chainmap_id'])
-							->execute()
-							->as_array();
+				$members = DB::select("SELECT gm.memberType, gm.eveID FROM groupmembers gm
+													LEFT JOIN chainmaps_access a ON(gm.id=a.groupmember_id) WHERE chainmap_id=?",[$c->chainmap_id]);
 				$c['access'] = $members;
 			}
 

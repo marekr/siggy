@@ -1,6 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 use Carbon\Carbon;
+use Illuminate\Database\Capsule\Manager as DB;
 
 class Controller_Siggy extends FrontController {
 
@@ -74,13 +75,9 @@ class Controller_Siggy extends FrontController {
 		$view->chainMap = $chainMapHTML;
 
 		//load header tools
-        $themes = DB::query(Database::SELECT, "SELECT theme_id, theme_name FROM themes
-                                                WHERE visibility='all' OR (group_id=:group AND visibility='group')
-                                                ORDER BY theme_id ASC")
-								->param(':group', Auth::$session->group->id)
-								->execute()
-								->as_array();
-
+        $themes = DB::select("SELECT theme_id, theme_name FROM themes
+                                                WHERE visibility='all' OR (group_id=? AND visibility='group')
+												ORDER BY theme_id ASC", [Auth::$session->group->id]);
         $view->themes = $themes;
         $view->settings = $this->template->settings;
 	}
@@ -104,24 +101,25 @@ class Controller_Siggy extends FrontController {
 			$language = $settingsData['language'];
 			$activity = !empty($settingsData['default_activity']) ? $settingsData['default_activity'] : null;
 
-			$themes = DB::query(Database::SELECT, "SELECT theme_id, theme_name FROM themes
-													WHERE theme_id = :themeID AND (visibility='all' OR (group_id=:group AND visibility='group'))")
-									->param(':themeID', $themeID)
-									->param(':group', Auth::$session->group->id)
-									->execute()
-									->as_array();
+			$themes = DB::select("SELECT theme_id, theme_name FROM themes
+													WHERE theme_id = :themeID AND (visibility='all' OR (group_id=:group AND visibility='group'))",
+													[
+														'themeID' => $themeID,
+														'group' => Auth::$session->group->id
+													]);
 
-			if( count( $themes ) > 0 )
+			if( $themes != null )
 			{
-				DB::query(Database::INSERT, 'REPLACE INTO character_settings (`char_id`, `theme_id`,`combine_scan_intel`,`zoom`,`language`, `default_activity`)
-				VALUES(:charID, :themeID, :combineScanIntel, :zoom,:language, :defaultActivity)')
-							->param(':charID', $charID )
-							->param(':themeID', $themeID)
-							->param(':zoom', $zoom)
-							->param(':language', $language)
-							->param(':combineScanIntel', $combineScanIntel)
-							->param(':defaultActivity', $activity)
-							->execute();
+				DB::insert('REPLACE INTO character_settings (`char_id`, `theme_id`,`combine_scan_intel`,`zoom`,`language`, `default_activity`)
+							VALUES(:charID, :themeID, :combineScanIntel, :zoom,:language, :defaultActivity)',
+							[
+									'charID'=> $charID,
+									'themeID', $themeID,
+									'zoom'=> $zoom,
+									'language'=> $language,
+									'combineScanIntel'=> $combineScanIntel,
+									'defaultActivity'=> $activity
+							]);
 			}
 		}
 
@@ -145,26 +143,26 @@ class Controller_Siggy extends FrontController {
 
 	private function findSystemIDByName( $id )
 	{
-		$systemData = DB::query(Database::SELECT, "SELECT ss.id,ss.name
-													FROM solarsystems ss
-													WHERE ss.name=:name")
-									->param(':name', $id)
-									->execute()
-									->current();
+		$systemData = DB::select("SELECT ss.id,ss.name
+									FROM solarsystems ss
+									WHERE ss.name=:name",
+									[
+										'name' => $id
+									]);
 
-		if( !$systemData['id'] )
+		if( $systemData == null )
 		{
 			return 0;
 		}
 		else
 		{
-			return $systemData['id'];
+			return $systemData->id;
 		}
 	}
 
 	private function getSystemData( $id )
 	{
-		$systemData = DB::query(Database::SELECT, "SELECT ss.*,se.effectTitle, r.regionName, c.constellationName,
+		$systemData = DB::selectOne("SELECT ss.*,se.effectTitle, r.regionName, c.constellationName,
 													COALESCE(sa.displayName,'') as displayName,
 													COALESCE(sa.inUse,0) as inUse,
 													COALESCE(sa.activity,0) as activity
@@ -173,25 +171,22 @@ class Controller_Siggy extends FrontController {
 													INNER JOIN regions r ON ss.region = r.regionID
 													INNER JOIN constellations c ON ss.constellation = c.constellationID
 													LEFT OUTER JOIN activesystems sa ON (ss.id = sa.systemID  AND sa.groupID = :group AND sa.chainmap_id=:chainmap)
-													WHERE ss.id=:id")
-									->param(':id', $id)
-									->param(':group', Auth::$session->group->id)
-									->param(':chainmap', Auth::$session->accessData['active_chain_map'])
-									->execute()
-									->current();
+													WHERE ss.id=:id",
+													[
+														'id' => $id,
+														'group' => Auth::$session->group->id,
+														'chainmap' => Auth::$session->accessData['active_chain_map'] 
+													]);
 
-		if( !$systemData['id'] )
+		if( $systemData == null )
 		{
 			return FALSE;
 		}
 
-		$systemData['staticData'] = array();
+		$systemData->staticData = array();
 
-		$staticData = DB::query(Database::SELECT, "SELECT sm.static_id as id FROM staticmap sm
-													WHERE sm.system_id=:id")
-									->param(':id', $systemData['id'])
-									->execute()
-									->as_array();
+		$staticData = DB::select("SELECT sm.static_id as id FROM staticmap sm
+								 WHERE sm.system_id=?",[$systemData->id]);
 
 		if( count( $staticData ) > 0 )
 		{
@@ -200,21 +195,29 @@ class Controller_Siggy extends FrontController {
 
 		$end = miscUtils::getHourStamp();
 		$start = miscUtils::getHourStamp(-24);
-		$apiData = DB::query(Database::SELECT, "SELECT hourStamp, jumps, kills, npcKills FROM apihourlymapdata WHERE systemID=:system AND hourStamp >= :start AND hourStamp <= :end ORDER BY hourStamp asc LIMIT 0,24")
-									->param(':system', $systemData['id'])
-									->param(':start', $start)
-									->param(':end', $end)
-									->execute()
-									->as_array('hourStamp');
+		$apiData = DB::select("SELECT hourStamp, jumps, kills, npcKills 
+												FROM apihourlymapdata 
+												WHERE systemID=:system AND hourStamp >= :start AND hourStamp <= :end 
+												ORDER BY hourStamp asc LIMIT 0,24",[
+													'system' => $systemData->id,
+													'start' => $start,
+													'end' => $end
+												]);
 
-		$trackedJumps = DB::query(Database::SELECT, "SELECT hourStamp, jumps FROM jumpstracker WHERE systemID=:system AND groupID=:group AND hourStamp >= :start AND hourStamp <= :end ORDER BY hourStamp asc LIMIT 0,24")
-									->param(':system', $systemData['id'])
-									->param(':group', Auth::$session->group->id)
-									->param(':start', $start)
-									->param(':end', $end)
-									->execute()->as_array('hourStamp');
+		$trackedJumps = DB::select("SELECT hourStamp, jumps 
+													FROM jumpstracker 
+													WHERE systemID=:system AND groupID=:group AND hourStamp >= :start 
+													AND hourStamp <= :end 
+													ORDER BY hourStamp asc LIMIT 0,24",
+													[
+														'system' => $systemData->id,
+														'group' => Auth::$session->group->id,
+														'start' => $start,
+														'end' => $end
+													]);
+								//	->execute()->as_array('hourStamp');
 
-		$systemData['stats'] = array();
+		$systemData->stats = [];
 		for($i = 23; $i >= 0; $i--)
 		{
 			$hourStamp = miscUtils::getHourStamp($i*-1);
@@ -222,51 +225,49 @@ class Controller_Siggy extends FrontController {
 			$apiKills = ( isset($apiData[ $hourStamp ]) ? $apiData[ $hourStamp ]['kills'] : 0);
 			$apiNPC = ( isset($apiData[ $hourStamp ]) ? $apiData[ $hourStamp ]['npcKills'] : 0);
 			$siggyJumps = ( isset($trackedJumps[ $hourStamp ]) ? $trackedJumps[ $hourStamp ]['jumps'] : 0);
-			$systemData['stats'][] = array( $hourStamp*1000, $apiJumps, $apiKills, $apiNPC, $siggyJumps);
+			$systemData->stats[] = array( $hourStamp*1000, $apiJumps, $apiKills, $apiNPC, $siggyJumps);
 		}
 
-		$hubJumps = DB::query(Database::SELECT, "SELECT ss.id as system_id, pr.num_jumps,ss.name as destination_name FROM precomputedroutes pr
+		$hubJumps = DB::select("SELECT ss.id as system_id, pr.num_jumps,ss.name as destination_name 
+												FROM precomputedroutes pr
 												 INNER JOIN solarsystems ss ON ss.id = pr.destination_system
-												 WHERE pr.origin_system=:system AND pr.destination_system != :system
-												 ORDER BY pr.num_jumps ASC")
-									->param(':system', $systemData['id'])
-									->execute()
-									->as_array();
+												 WHERE pr.origin_system=? AND pr.destination_system != ?
+												 ORDER BY pr.num_jumps ASC", [$systemData->id,$systemData->id]);
 
-		$systemData['hubJumps'] = $hubJumps;
+		$systemData->hubJumps = $hubJumps;
 
-		$systemData['poses'] = $this->getPOSes( $systemData['id'] );
+		$systemData->poses = $this->getPOSes( $systemData->id );
 
-		$systemData['dscans'] = $this->getDScans( $systemData['id'] );
+		$systemData->dscans = $this->getDScans( $systemData->id );
 
 		return $systemData;
 	}
 
     private function getPOSes( $systemID )
     {
-		$poses = DB::query(Database::SELECT, "SELECT p.pos_id, p.pos_location_planet, p.pos_location_moon, p.pos_online, p.pos_type, p.pos_size,
+		$poses = DB::select("SELECT p.pos_id, p.pos_location_planet, p.pos_location_moon, p.pos_online, p.pos_type, p.pos_size,
 												p.pos_added_date, p.pos_owner, pt.pos_type_name, p.pos_notes
 												FROM pos_tracker p
 												INNER JOIN pos_types pt ON(pt.pos_type_id = p.pos_type)
 												WHERE p.group_id=:group_id AND p.pos_system_id=:system_id
-												ORDER BY p.pos_location_planet ASC, p.pos_location_moon ASC")
-										->param(':group_id', Auth::$session->group->id)
-										->param(':system_id', $systemID)
-										->execute()
-										->as_array();
+												ORDER BY p.pos_location_planet ASC, p.pos_location_moon ASC",
+												[
+													'group_id' => Auth::$session->group->id,
+													'system_id' => $systemID
+												]);
 
 		return $poses;
 	}
 
 	private function getDScans( $systemID )
 	{
-		$dscans = DB::query(Database::SELECT, "SELECT dscan_id, dscan_title, dscan_date
+		$dscans = DB::select("SELECT dscan_id, dscan_title, dscan_date
 												FROM dscan
-												WHERE group_id=:group_id AND system_id=:system_id")
-										->param(':group_id', Auth::$session->group->id)
-										->param(':system_id', $systemID)
-										->execute()
-										->as_array();
+												WHERE group_id=:group_id AND system_id=:system_id",
+												[
+													'group_id' => Auth::$session->group->id,
+													'system_id' => $systemID
+												]);
 
 		return $dscans;
 	}
@@ -294,28 +295,25 @@ class Controller_Siggy extends FrontController {
 			return;
 		}
 
-		$kspaceJump = DB::query(Database::SELECT, "SELECT `fromSolarSystemID`, `toSolarSystemID`
+		$kspaceJump = DB::selectOne("SELECT `fromSolarSystemID`, `toSolarSystemID`
 													FROM eve_mapsolarsystemjumps
-													WHERE (fromSolarSystemID=:sys1 AND toSolarSystemID=:sys2) OR
-														 (fromSolarSystemID=:sys2 AND toSolarSystemID=:sys1)")
-						->param(':sys1', $origin)
-						->param(':sys2', $dest)
-						->execute()
-						->current();
-
-		if( isset($kspaceJump['fromSolarSystemID']) )
+													WHERE (fromSolarSystemID=? AND toSolarSystemID=?) OR
+														 (fromSolarSystemID=? AND toSolarSystemID=?)",[$origin, $dest, $dest, $origin]);
+		if( $kspaceJump == null )
 		{
 			return;
 		}
 
 		$whHash = mapUtils::whHashByID($origin, $dest);
 
-		$connection = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE hash=:hash AND group_id=:group AND chainmap_id=:chainmap")
-						->param(':hash', $whHash)
-						->param(':group', Auth::$session->group->id)
-						->param(':chainmap', Auth::$session->accessData['active_chain_map'])
-						->execute()
-						->current();
+		$connection = DB::selectOne("SELECT `hash` 
+										FROM wormholes 
+										WHERE hash=:hash AND group_id=:group AND chainmap_id=:chainmap",
+										[
+											'hash', $whHash,
+											'group', Auth::$session->group->id,
+											'chainmap', Auth::$session->accessData['active_chain_map']
+										]);
 
 		if( !isset($connection['hash'] ) )
 		{
@@ -341,12 +339,11 @@ class Controller_Siggy extends FrontController {
 		else
 		{
 			//existing wh
-			DB::update('wormholes')
-				->set( array('last_jump' => time()) )
+			DB::table('wormholes')
 				->where('hash', '=', $whHash)
 				->where('group_id', '=', Auth::$session->group->id)
 				->where('chainmap_id', '=', Auth::$session->accessData['active_chain_map'])
-				->execute();
+				->update(['last_jump' => time()]);
 		}
 
 		//TODO fix me......this is a more involved one
@@ -398,19 +395,19 @@ class Controller_Siggy extends FrontController {
 				$posOnlineSQL = ' AND pos.pos_online=1';
 			}
 
-			$pos = DB::query(Database::SELECT, "SELECT pos.pos_id,
-														pos.pos_system_id as system_id,
-														ss.name as system_name
+			$pos = DB::select("SELECT pos.pos_id,
+											pos.pos_system_id as system_id,
+											ss.name as system_name
 											FROM pos_tracker pos
 											INNER JOIN solarsystems ss ON ss.id = pos.pos_system_id
 											WHERE pos.group_id=:group_id
 											AND pos.pos_system_id=:system_id
-											AND pos.pos_owner LIKE :resident" . $posOnlineSQL)
-									->param(':group_id', Auth::$session->group->id)
-									->param(':system_id', $system)
-									->param(':resident', $data->resident_name)
-									->execute()
-									->current();
+											AND pos.pos_owner LIKE :resident" . $posOnlineSQL,
+											[
+												'group_id', Auth::$session->group->id,
+												'system_id', $system,
+												'resident', $data->resident_name
+											]);
 
 			if( isset($pos['pos_id']) )
 			{
@@ -573,46 +570,43 @@ class Controller_Siggy extends FrontController {
 
 			$this->_update_process_map($update);
 
-            $activeSystemQuery = DB::query(Database::SELECT, 'SELECT lastUpdate FROM activesystems WHERE systemID=:id AND groupID=:group AND chainmap_id=:chainmap')
-												->param(':id', $selectedSystemID)
-												->param(':group',Auth::$session->group->id)
-												->param(':chainmap', Auth::$session->accessData['active_chain_map'])
-												->execute();
+            $activeSystem = DB::selectOne('SELECT lastUpdate FROM activesystems WHERE systemID=:id AND groupID=:group AND chainmap_id=:chainmap',
+												[
+													'id' => $selectedSystemID,
+													'group' => Auth::$session->group->id,
+													'chainmap' => Auth::$session->accessData['active_chain_map']
+												]);
 
-			$activeSystem = $activeSystemQuery->current();
-			$recordedLastUpdate = ($activeSystem['lastUpdate'] > 0) ? $activeSystem['lastUpdate']: time();
+			$recordedLastUpdate = ($activeSystem->lastUpdate > 0) ? $activeSystem->lastUpdate: time();
 
 			if( ($_POST['lastUpdate'] < $recordedLastUpdate) || ( $_POST['lastUpdate'] == 0 ) || $forceUpdate || $update['systemUpdate'] )
 			{
 				$additional = '';
 
-				$update['sigData'] = DB::query(Database::SELECT, "SELECT id, sig, type, siteID, description, 
+				$update['sigData'] = DB::select("SELECT id, sig, type, siteID, description, 
 																	created_at, creator, updated_at,lastUpdater,sigSize
 																	FROM systemsigs
-																	WHERE systemID=:id AND groupID=:group")
-								->param(':id', $selectedSystemID)
-								 ->param(':group', Auth::$session->group->id)
-								 ->execute()
-								 ->as_array('id');
+																	WHERE systemID=:id AND groupID=:group",
+								[
+									'id' => $selectedSystemID,
+									'group'=> Auth::$session->group->id
+								]);
 
 				 foreach($update['sigData'] as &$sig)
 				 {
-					$sig['id'] = (int)$sig['id'];
-					$sig['siteID'] = (int)$sig['siteID'];
+					$sig->id = (int)$sig->id;
+					$sig->siteID = (int)$sig->siteID;
 
-					 if($sig['type'] != 'wh')
+					 if($sig->type != 'wh')
 					 	continue;
 
- 					$whSigData = DB::query(Database::SELECT, "SELECT wormhole_hash,chainmap_id
+ 					$whSigData = DB::select("SELECT wormhole_hash,chainmap_id
  															FROM wormhole_signatures
- 															WHERE signature_id=:sig")
- 												->param(':sig', $sig['id'] )
- 												->execute()
- 												->as_array();
+															 WHERE signature_id=?", [$sig->id]);
 
 					foreach($whSigData as $wh)
 					{
-						$sig['chainmap_wormholes'][ $wh['chainmap_id'] ] = $wh['wormhole_hash'];
+						$sig->chainmap_wormholes[ $wh->chainmap_id ] = $wh->wormhole_hash;
 					}
 				 }
 				$update['sigUpdate'] = (int) 1;
@@ -687,21 +681,23 @@ class Controller_Siggy extends FrontController {
 							$hourStamp = miscUtils::getHourStamp();
 
 
-							DB::query(Database::INSERT, 'INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`)
+							DB::insert('INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`)
 															VALUES(:systemID, :groupID, :hourStamp, 1)
-															ON DUPLICATE KEY UPDATE jumps=jumps+1')
-												->param(':hourStamp', $hourStamp )
-												->param(':systemID', $record->current_system_id )
-												->param(':groupID', Auth::$session->group->id)
-												->execute();
+															ON DUPLICATE KEY UPDATE jumps=jumps+1',
+															[
+																'hourStamp' => $hourStamp,
+																'systemID' => $record->current_system_id,
+																'groupID' => Auth::$session->group->id
+															]);
 
-							DB::query(Database::INSERT, 'INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`)
+							DB::insert('INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`)
 															VALUES(:systemID, :groupID, :hourStamp, 1)
-															ON DUPLICATE KEY UPDATE jumps=jumps+1')
-												->param(':hourStamp', $hourStamp )
-												->param(':systemID', $record->previous_system_id )
-												->param(':groupID', Auth::$session->group->id)
-												->execute();
+															ON DUPLICATE KEY UPDATE jumps=jumps+1',
+															[
+																'hourStamp' => $hourStamp,
+																'systemID' => $record->previous_system_id,
+																'groupID' => Auth::$session->group->id
+															]);
 						}
 
 						$this->__wormholeJump($record->current_system_id, $record->previous_system_id);
@@ -725,22 +721,23 @@ class Controller_Siggy extends FrontController {
 						$broadcast = 1;
 					}
 
-					DB::query(Database::INSERT, 'INSERT INTO chartracker (`charID`, `currentSystemID`,`groupID`,`chainmap_id`,`lastBeep`, `broadcast`,`shipType`, `shipName`)
+					DB::insert('INSERT INTO chartracker (`charID`, `currentSystemID`,`groupID`,`chainmap_id`,`lastBeep`, `broadcast`,`shipType`, `shipName`)
 												VALUES(:charID, :systemID, :groupID, :chainmap, :lastBeep, :broadcast, :shipType, :shipName)
 												ON DUPLICATE KEY UPDATE lastBeep = :lastBeep,
 														currentSystemID = :systemID,
 														broadcast = :broadcast,
 														shipType = :shipType,
-														shipName = :shipName')
-							->param(':charID', $character['character_id'] )
-							->param(':broadcast', $broadcast )
-							->param(':systemID', (int)$currentLocation->system_id )
-							->param(':groupID', Auth::$session->group->id)
-							->param(':shipType', 0 )
-							->param(':shipName', '' )
-							->param(':chainmap', Auth::$session->accessData['active_chain_map'] )
-							->param(':lastBeep', time() )
-							->execute();
+														shipName = :shipName',
+										[
+											'charID' => $character['character_id'],
+											'broadcast' => $broadcast,
+											'systemID' => (int)$currentLocation->system_id,
+											'groupID' => Auth::$session->group->id,
+											'shipType' => 0,
+											'shipName' => '',
+											'chainmap' => Auth::$session->accessData['active_chain_map'],
+											'lastBeep' => time()
+										]);
 				}
 				
 				$charData->save(['location_processed_at' => Carbon::now()->toDateTimeString()]);
@@ -796,16 +793,16 @@ class Controller_Siggy extends FrontController {
 				if( is_array($this->mapData['systemIDs']) && count($this->mapData['systemIDs'])	 > 0 )
 				{
 					$activesData = array();
-					$activesData = DB::query(Database::SELECT, "SELECT c.name as charName, ct.currentSystemID, s.shipName FROM chartracker ct
+					$activesData = DB::select("SELECT c.name as charName, ct.currentSystemID, s.shipName FROM chartracker ct
 																LEFT JOIN ships s ON (ct.shipType=s.shipID)
 																LEFT JOIN characters c ON(c.id=ct.charID)
 																WHERE ct.groupID = :groupID AND ct.chainmap_id = :chainmap AND ct.broadcast=1 AND
-																	ct.currentSystemID IN(".implode(',',$this->mapData['systemIDs']).") AND ct.lastBeep >= :lastBeep")
-										->param(':lastBeep', time()-60)
-										->param(':groupID', Auth::$session->group->id)
-										->param(':chainmap', Auth::$session->accessData['active_chain_map'])
-										->execute()
-										->as_array();
+																	ct.currentSystemID IN(".implode(',',$this->mapData['systemIDs']).") AND ct.lastBeep >= :lastBeep",
+																[
+																	'lastBeep' => time()-60,
+																	'groupID' => Auth::$session->group->id,
+																	'chainmap' => Auth::$session->accessData['active_chain_map']
+																]);
 
 					if( is_array($activesData) && count($activesData) > 0 )
 					{

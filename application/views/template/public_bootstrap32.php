@@ -54,9 +54,8 @@
 					<?php if( count(Auth::$user->perms) > 0 ): ?>
 				<li <?php echo ($selectedTab == 'admin' ? 'class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>manage">Admin</a></li>
 					<?php endif; ?>
-				
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Logged in as <?php echo $user['username']; ?><b class="caret"></b></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Logged in as <?php echo $user->username; ?><b class="caret"></b></a>
 					<ul class="dropdown-menu" role="menu">
 						<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/overview">Account</a></li>
 						<li class="divider"></li>

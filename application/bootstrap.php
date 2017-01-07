@@ -1,5 +1,8 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+require APPPATH . 'vendor/autoload.php';
+use Illuminate\Database\Capsule\Manager as DB;
+
 /**
  * Fixup $_SERVER headers
  * Need to strtoupper and replace dashes with udnerscores for eve headers
@@ -175,17 +178,33 @@ Kohana::modules(array(
 	 'restful_api' => MODPATH.'restful-api',        // Object Relationship Mapping
 	));
 
+$dbName = '';
 if( Kohana::$environment == Kohana::PRODUCTION)
 {
-	Database::$default = 'production';
+	$dbName = 'production';
 	Kohana_Exception::$error_view = 'errors/general';
 }
 else
 {
-	Database::$default = 'default';
+	$dbName = 'default';
 }
+Database::$default = $dbName;
 
-require APPPATH . 'vendor/autoload.php';
+$dbConfig = Kohana::$config->load('database')->$dbName;
+$db = new DB;
+$db->addConnection([
+	'driver' => 'mysql',
+	'host' => $dbConfig['connection']['hostname'],
+	'database' => $dbConfig['connection']['database'],
+	'username' => $dbConfig['connection']['username'],
+	'password' => $dbConfig['connection']['password'],
+	'charset' => 'utf8',
+	'collation' => 'utf8_unicode_ci',
+]);
+$db->bootEloquent();
+$db->setAsGlobal();
+
+
 
 /**
  * Set the routes. Each route must have a minimum of a name, a URI and a set of

@@ -5,7 +5,7 @@
 			<label>Theme
 				<select name="theme_id" class="siggy-input">
 				<?php foreach($themes as $theme): ?>
-					 <option value="<?php echo $theme['theme_id']; ?>" <?php echo( $theme['theme_id'] == $settings['theme_id'] ? 'selected="selected"' : '' ); ?>> <?php echo $theme['theme_name']; ?></option>
+					 <option value="<?php echo $theme->theme_id; ?>" <?php echo( $theme->theme_id == $settings['theme_id'] ? 'selected="selected"' : '' ); ?>> <?php echo $theme->theme_name; ?></option>
 				<?php endforeach; ?>
 				</select>
 			</label>

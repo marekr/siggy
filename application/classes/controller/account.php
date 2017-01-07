@@ -65,7 +65,7 @@ class Controller_Account extends FrontController {
 		}
 
 		$this->template->loggedIn = Auth::loggedIn();
-		$this->template->user = Auth::$user->data;
+		$this->template->user = Auth::$user;
 
 		parent::after();
 	}
@@ -143,7 +143,7 @@ class Controller_Account extends FrontController {
 
 					$userID = Auth::characterOwnerHashTied( $result['CharacterOwnerHash'] );
 
-					if( $userID == Auth::$user->data['id'] )
+					if( $userID == Auth::$user->id )
 					{
 						Message::add('info', __('The character\'s connection has been updated successfully.'));
 						Auth::$user->updateSSOCharacter($result['CharacterID'],
@@ -225,7 +225,7 @@ class Controller_Account extends FrontController {
 		$this->template->title = "Account overview";
 
 		$view = View::factory('account/overview');
-		$view->user = Auth::$user->data;
+		$view->user = Auth::$user;
 
 		$this->template->content = $view;
 	}
@@ -322,7 +322,7 @@ class Controller_Account extends FrontController {
 		$errors = array();
 		if ($this->request->method() == "POST")
 		{
-			if( empty( $_POST['current_password'] ) || (Auth::hash($_POST['current_password']) != Auth::$user->data['password'])  )
+			if( empty( $_POST['current_password'] ) || (Auth::hash($_POST['current_password']) != Auth::$user->password)  )
 			{
 				$errors['current_password'] = 'This is not current password.';
 			}
@@ -524,7 +524,7 @@ class Controller_Account extends FrontController {
 		}
 
 
-		$charID =  Auth::$user->data['char_id'];
+		$charID =  Auth::$user->char_id;
 		$ssoChars = Auth::$user->getSSOCharacters();
 		if( !count($ssoChars) )
 		{
@@ -539,10 +539,10 @@ class Controller_Account extends FrontController {
 
 		foreach($ssoChars as $ssoChar)
 		{
-			if( $ssoChar['valid'] != 1 )
+			if( $ssoChar->valid != 1 )
 				continue;
 			
-			$char = Character::find($ssoChar['character_id']);
+			$char = Character::find($ssoChar->character_id);
 
 			if($char != null && $char->corporation() != null)
 			{
@@ -565,9 +565,9 @@ class Controller_Account extends FrontController {
 			$charID = intval($_POST['charID']);
 			if( $charID && isset( $selectableChars[ $charID ] ) )
 			{
-				Auth::$user->data['corp_id'] = $selectableChars[ $charID ]->corporation_id;
-				Auth::$user->data['char_name'] = $selectableChars[ $charID ]->name;
-				Auth::$user->data['char_id'] = $charID;
+				Auth::$user->corp_id = $selectableChars[ $charID ]->corporation_id;
+				Auth::$user->char_name = $selectableChars[ $charID ]->name;
+				Auth::$user->char_id = $charID;
 
 				Auth::$user->save();
 
@@ -590,14 +590,14 @@ class Controller_Account extends FrontController {
 			return;
 		}
 
-		$charID =  Auth::$user->data['char_id'];
+		$charID =  Auth::$user->char_id;
 		$ssoChars = Auth::$user->getSSOCharacters();
 
 		
 		$charData = [];
 		foreach($ssoChars as $ssoChar)
 		{
-			$char = Character::find($ssoChar['character_id']);
+			$char = Character::find($ssoChar->character_id);
 			$charData[ $char->id ] = $char;
 		}
 

@@ -28,7 +28,6 @@ class Auth {
 
 	public static function initialize()
 	{
-		self::$user = new User();
 		self::$session = new UserSession();
 	}
 
@@ -92,12 +91,11 @@ class Auth {
 		return hash_hmac("sha256", $str, self::$hashKey);
 	}
 
-	public static function autoLogin($id, $passHash)
+	public static function autoLogin(int $id, string $passHash)
 	{
-		$tmp = new User();
-		$tmp->loadByID($id);
+		$tmp = User::find($id);
 
-		if( $tmp->data['password'] == $passHash )
+		if( $tmp->password == $passHash )
 		{
 			Auth::$user = $tmp;
 			return TRUE;
@@ -110,7 +108,7 @@ class Auth {
 
 	public static function loggedIn()
 	{
-		return (self::$user->userLoaded());
+		return (self::$user != null);
 	}
 
 	public static function characterOwnerHashTied($hash)
@@ -160,10 +158,9 @@ class Auth {
 	 */
 	public static function forceLogin($id, $rememberMe = FALSE)
 	{
-		$tmp = new User();
-		$tmp->loadByID($id);
+		$tmp = User::find($id);
 
-		if( !isset($tmp->data['id']) )
+		if( $tmp == null )
 		{
 			return self::LOGIN_INVALID;
 		}
@@ -176,8 +173,8 @@ class Auth {
 
 		self::$user = $tmp;
 
-		Cookie::set('userID', self::$user->data['id'], $lifetime);
-		Cookie::set('passHash', self::$user->data['password'], $lifetime);
+		Cookie::set('userID', self::$user->id, $lifetime);
+		Cookie::set('passHash', self::$user->password, $lifetime);
 
 		self::$session->reloadUserSession();
 
@@ -186,15 +183,13 @@ class Auth {
 
 	public static function processLogin($username, $password, $rememberMe = FALSE)
 	{
-		$tmp = new User();
-		$tmp->loadByUsername($username);
-
-		if( !isset($tmp->data['id']) )
+		$tmp = User::findByUsername($username);
+		if( $tmp == null )
 		{
 			return self::LOGIN_INVALID;
 		}
 
-		if( self::hash($password) === $tmp->data['password'] )
+		if( self::hash($password) === $tmp->password )
 		{
 			//success!
 			self::$user = $tmp;
@@ -205,8 +200,8 @@ class Auth {
 				$lifetime = 60*60*24*365;	//1 year
 			}
 
-			Cookie::set('userID', self::$user->data['id'], $lifetime);
-			Cookie::set('passHash', self::$user->data['password'], $lifetime);
+			Cookie::set('userID', self::$user->id, $lifetime);
+			Cookie::set('passHash', self::$user->password, $lifetime);
 
 			self::$session->reloadUserSession();
 
