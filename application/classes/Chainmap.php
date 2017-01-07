@@ -54,17 +54,12 @@ class Chainmap {
 
 	public static function create(array $props): Chainmap
 	{
-		if(!isset($props['created_at']))
-		{
-			$props['created_at'] = Carbon::now()->toDateTimeString();
-		}
-
 		$result = DB::insert('chainmaps', array_keys($props) )
 				->values(array_values($props))
 				->execute();
 
 		$props['chainmap_id'] = $result[0];
-		return new Group($props);
+		return new Chainmap($props);
 	}
 
 	public function delete()

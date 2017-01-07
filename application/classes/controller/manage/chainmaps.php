@@ -58,13 +58,14 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
 		$group = Auth::$user->group();
 
-		$data =		['chainmap_name' => '',
-						'chainmap_homesystems' => '',
-						'chainmap_skip_purge_home_sigs' => 1
-					];
+		$data = new stdClass;
+		$data->chainmap_name = '';
+		$data->chainmap_homesystems = '';
+		$data->chainmap_skip_purge_home_sigs = 1;
+
 		$view = View::factory('manage/chainmaps/add_edit_form');
 		$view->bind('errors', $errors);
-		$view->bind('data', (object)$data);
+		$view->bind('chainmap', $data);
 
 		$view->set('mode', 'add');
 
