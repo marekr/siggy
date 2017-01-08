@@ -60,7 +60,7 @@ class Auth {
 			}
 			else if( self::$session->group->password_required )	//group password only?
 			{
-				$authPassword = self::$user->getSavedPassword( self::$session->group->id );
+				$authPassword = self::$user->getSavedGroupPassword( self::$session->group->id );
 
 				if( $authPassword === self::$session->group->password )
 				{

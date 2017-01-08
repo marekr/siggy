@@ -11,6 +11,10 @@ class User extends Model {
 
 	public $activeChainMap = 0;
 
+	protected $fillable = [
+
+	];
+
 	public function group()
 	{
 		return $this->hasOne('Group','id','groupID');
@@ -28,34 +32,21 @@ class User extends Model {
 		$this->recacheSavedPasswords();
 	}
 
-	public function getSavedPassword( $groupID )
+	public function groupPasswords()
 	{
-		$cache = Cache::instance(CACHE_METHOD);
-
-		$saved_passwords = $cache->get('user-'.$this->id.'-group-passwords');
-		if( $saved_passwords == null )
-		{
-			$saved_passwords = $this->recacheSavedPasswords();
-		}
-
-		return isset( $saved_passwords[ $groupID ] ) ? $saved_passwords[ $groupID ] : '';
+		return $this->hasMany('UserGroupPassword');
 	}
 
-	public function recacheSavedPasswords()
+	public function getSavedGroupPassword( $groupID )
 	{
-		$saved_passwords = array();
+		$entry = $this->groupPasswords()->where('group_id',$groupID)->first();
 
-		$cache = Cache::instance(CACHE_METHOD);
-		$passes = DB::select("SELECT * FROM user_group_passwords WHERE user_id=?", [$this->id]);
-
-		foreach($passes as $p)
+		if($entry != null)
 		{
-			$saved_passwords[ $p->group_id ] = $p->group_password;
+			return $entry->group_password;
 		}
 
-		$cache->set('user-'.$this->id.'-group-passwords', $saved_passwords);
-
-		return $saved_passwords;
+		return '';
 	}
 
 	public function validateCorpChar()
@@ -86,20 +77,15 @@ class User extends Model {
 		return TRUE;
 	}
 
-/*
-	public static function create(array $data)
+	protected static function boot()
 	{
-		$insert = $data;
-
-		$insert['password'] = Auth::hash($insert['password']);
-		$insert['active'] = TRUE;
-
-		$userID = DB::insert('users', array_keys($insert) )->values(array_values($insert))->execute();
-
-		return TRUE;
+		parent::boot();
+		
+		static::creating( function ($model) {
+			$model->password = Auth::hash($model->password);
+			$model->active = TRUE;
+		});
 	}
-*/
-
 
 	public function getActiveSSOCharacter()
 	{
@@ -163,13 +149,9 @@ class User extends Model {
 		return self::whereRaw('LOWER(username) = ?', [$username])->first();
 	}
 
-	public function loadBy($identifier, $key)
+	public static function findByEmail(string $email)
 	{
-		throw new Exception('test');
-		$perms = DB::select('SELECT * FROM users_group_acl WHERE user_id = ?', [$this->id]);
-
-		$this->perms = $perms;
-
+		return self::whereRaw('LOWER(email) = ?', [$username])->first();
 	}
 
 	public function perms()

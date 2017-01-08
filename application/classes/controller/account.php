@@ -371,14 +371,12 @@ class Controller_Account extends FrontController {
 
 			if( !count( $errors ) )
 			{
-				$user = new User();
-				$user->loadByEmail($_POST['reset_email']);
+				$user = User::findByEmail($_POST['reset_email']);
 
-
-				if ( isset( $user->data['id'] ) )
+				if ( isset( $user->id ) )
 				{
 					// send an email with the account reset token
-					$user->data['reset_token'] = Auth::generatePassword(32);
+					$user->reset_token = Auth::generatePassword(32);
 					$user->save();
 
 					$message = "You have requested a password reset for your siggy account. To confirm the password reset, please the follow the proceeding url:\n\n"
@@ -397,10 +395,10 @@ class Controller_Account extends FrontController {
 
 
 					$body =  __($message, array(
-						':reset_token_link' => URL::site('account/completePasswordReset?reset_token='.$user->data['reset_token'].'&reset_email='.$_POST['reset_email'], TRUE),
+						':reset_token_link' => URL::site('account/completePasswordReset?reset_token='.$user->reset_token.'&reset_email='.$_POST['reset_email'], TRUE),
 						':reset_link' => URL::site('account/completePasswordReset', TRUE),
-						':reset_token' => $user->data['reset_token'],
-						':username' => $user->data['username']
+						':reset_token' => $user->reset_token,
+						':username' => $user->username
 					));
 
 					$message_swift = Swift_Message::newInstance($subject, $body)
@@ -457,19 +455,18 @@ class Controller_Account extends FrontController {
 			}
 			else
 			{
-				$user = new User();
-				$user->loadByEmail($_REQUEST['reset_email']);
+				$user = User::findByEmail($_POST['reset_email']);
 
-				if( $user->data['reset_token'] != $_REQUEST['reset_token'] )
+				if( $user->reset_token != $_REQUEST['reset_token'] )
 				{
 					$errors['reset_token'] = 'The reset token you have entered is invalid';
 					$view = $this->template->content = View::factory('account/completePasswordReset');
 					$view->errors = $errors;
 				}
-				else if ( isset($user->data['id']) && ($user->data['reset_token'] == $_REQUEST['reset_token']) )
+				else if ( isset($user->id) && ($user->reset_token == $_REQUEST['reset_token']) )
 				{
 					$password = Auth::generatePassword();
-					$user->data['reset_token'] = '';
+					$user->reset_token = '';
 					$user->updatePassword($password);
 
 					$message = "You have completed the password reset process. Please use the following randomly generated password to login upon which you may change it to anything you desire\n\n"
