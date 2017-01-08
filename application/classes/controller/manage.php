@@ -73,7 +73,7 @@ class Controller_Manage extends Controller
 
 		if( isset( $this->secure_actions[ $action ] ) )
 		{
-			$perms = Auth::$user->perms()[ Auth::$user->groupID ];
+			$perms = Auth::$user->perms()[ Auth::$user->groupID ]->toArray();
 			foreach( $perms as $k => $v )
 			{
 				if( $v == 1 )

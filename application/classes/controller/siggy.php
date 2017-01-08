@@ -114,7 +114,7 @@ class Controller_Siggy extends FrontController {
 							VALUES(:charID, :themeID, :combineScanIntel, :zoom,:language, :defaultActivity)',
 							[
 									'charID'=> $charID,
-									'themeID', $themeID,
+									'themeID'=> $themeID,
 									'zoom'=> $zoom,
 									'language'=> $language,
 									'combineScanIntel'=> $combineScanIntel,
