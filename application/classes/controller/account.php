@@ -270,8 +270,7 @@ class Controller_Account extends FrontController {
 					$userData = array('username' => $_POST['username'],
 									 'password' => $_POST['password'],
 									 'email' => $_POST['email'],
-									 'active' => 1,
-									 'created' => time()
+									 'active' => 1
 									 );
 
 					if( User::create( $userData ) )

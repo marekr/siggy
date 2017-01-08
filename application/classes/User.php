@@ -7,12 +7,19 @@ use Illuminate\Database\Eloquent\Collection;
 
 class User extends Model {
 	public $perms = null;
-	public $timestamps = false;
+	public $timestamps = true;
 
 	public $activeChainMap = 0;
 
 	protected $fillable = [
+		'username',
+		'password',
+		'email',
+		'active'
+	];
 
+	protected $hidden = [
+		'password'
 	];
 
 	public function group()
@@ -81,7 +88,8 @@ class User extends Model {
 	{
 		parent::boot();
 		
-		static::creating( function ($model) {
+		static::creating(function ($model)
+		{
 			$model->password = Auth::hash($model->password);
 			$model->active = TRUE;
 		});

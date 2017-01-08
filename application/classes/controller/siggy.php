@@ -863,7 +863,7 @@ class Controller_Siggy extends FrontController {
 			$update = array();
 
 			$system_data = $this->getSystemData($id);
-			$log_message = sprintf('%s edited system %s; ', Auth::$session->character_name, $system_data['name'] );
+			$log_message = sprintf('%s edited system %s; ', Auth::$session->character_name, $system_data->name );
 
 			if( isset($_POST['label']) )
 			{

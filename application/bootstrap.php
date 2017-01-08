@@ -201,6 +201,9 @@ $db->addConnection([
 	'charset' => 'utf8',
 	'collation' => 'utf8_unicode_ci',
 ]);
+use Illuminate\Events\Dispatcher;
+use Illuminate\Container\Container;
+$db->setEventDispatcher(new Dispatcher(new Container));
 $db->bootEloquent();
 $db->setAsGlobal();
 
