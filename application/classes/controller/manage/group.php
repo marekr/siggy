@@ -115,7 +115,7 @@ class Controller_Manage_Group extends Controller_Manage
 			}
 
 
-			$group = Auth::$user->group();
+			$group = Auth::$user->group;
 			$view->set('group', $group );
 			$view->bind('data', $data);
 			$view->bind('errors', $errors);
@@ -153,8 +153,8 @@ class Controller_Manage_Group extends Controller_Manage
 						DB::insert('chainmaps_access', array_keys($insert) )->values(array_values($insert))->execute();
 					}
 
-					Auth::$user->group()->save([]);
-					Auth::$user->group()->recacheMembers();
+					Auth::$user->group->save();
+					Auth::$user->group->recacheMembers();
 
 					Message::add('success', 'Group member added');
 					HTTP::redirect('manage/group/members');
@@ -168,7 +168,7 @@ class Controller_Manage_Group extends Controller_Manage
 					}
 
 					$view = View::factory('manage/group/addMemberSimpleSelected');
-					$group = Auth::$user->group();
+					$group = Auth::$user->group;
 
 					//see if member exists?
 					$member = GroupMember::findByGroupAndType(Auth::$user->groupID, $_POST['memberType'], (int)$_POST['eveID']);
@@ -258,8 +258,8 @@ class Controller_Manage_Group extends Controller_Manage
 
 			$member->save($save);
 
-			Auth::$user->group()->save([]);
-			Auth::$user->group()->recacheMembers();
+			Auth::$user->group->save([]);
+			Auth::$user->group->recacheMembers();
 
 			HTTP::redirect('manage/group/members');
 			return;
@@ -269,7 +269,7 @@ class Controller_Manage_Group extends Controller_Manage
 
 		$view->set('user', Auth::$user);
 
-		$group = Auth::$user->group();
+		$group = Auth::$user->group;
 		$view->set('group', $group );
 
 		$this->template->content = $view;
@@ -293,8 +293,8 @@ class Controller_Manage_Group extends Controller_Manage
 		if ($this->request->method() == HTTP_Request::POST)
 		{
 			//trigger last_update value to change
-			Auth::$user->group()->save([]);
-			Auth::$user->group()->recacheMembers();
+			Auth::$user->group->save([]);
+			Auth::$user->group->recacheMembers();
 
 			HTTP::redirect('manage/group/members');
 		}

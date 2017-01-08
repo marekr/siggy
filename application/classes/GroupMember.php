@@ -7,12 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class GroupMember extends Model {
 	public $table = 'groupmembers';
+	public $timestamps = false;
 
 	const TypeCorp = 'corp';
 	const TypeChar = 'char';
 
 	public $corporation = null;
 	public $character = null;
+
+	protected $fillable = [
+		'eveID',
+		'accessName',
+		'groupID',
+		'memberType'
+	];
 
 	public function corporation()
 	{
