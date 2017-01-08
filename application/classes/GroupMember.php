@@ -2,59 +2,17 @@
 
 use Carbon\Carbon;
 use Pheal\Pheal;
+use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Database\Eloquent\Model;
 
-class GroupMember {
+class GroupMember extends Model {
+	public $table = 'groupmembers';
+
 	const TypeCorp = 'corp';
 	const TypeChar = 'char';
 
-	public $id;
-	public $eveID;
-	public $memberType;
-	public $groupID;
-	public $accessName;
-
 	public $corporation = null;
 	public $character = null;
-	public $group = null;
-
-	public function __construct(array $props)
-	{
-		foreach ($props as $key => $value) 
-		{
-    		$this->$key = $value;
-		}
-	}
-	
-	public function save(array $props)
-	{
-		foreach ($props as $key => $value) 
-		{
-    		$this->$key = $value;
-		}
-
-		DB::update('groupmembers')
-			->set( $props )
-			->where('id', '=',  $this->id)
-			->execute();
-	}
-
-	public function delete()
-	{
-		DB::query(Database::DELETE, 'DELETE FROM groupmembers
-										WHERE id=:id')
-						->param(':id', $this->id)
-						->execute();
-	}
-
-	public static function create(array $props) : GroupMember
-	{
-		$result = DB::insert('groupmembers', array_keys($props) )
-				->values(array_values($props))
-				->execute();
-
-		$props['id'] = $result[0];
-		return GroupMember::find($props['id']);
-	}
 
 	public function corporation()
 	{
@@ -68,85 +26,29 @@ class GroupMember {
 	
 	public function group()
 	{
-		if( $this->group == null || $this->group->id != $this->groupID )
-		{
-			$this->group = Group::find($this->groupID);
-		}
-
-		return $this->group;
-	}
-
-	public static function find(int $id)
-	{
-		$data = DB::query(Database::SELECT, 'SELECT * FROM groupmembers WHERE id=:id')
-												->param(':id', $id)
-												->execute()
-												->current();
-
-		if($data != null)
-		{
-			return new GroupMember($data);
-		}
-
-		return null;
+		return $this->hasOne('Group', 'group_id');
 	}
 
 	public static function findByType(string $type, int $id): array
 	{
-		$data = DB::query(Database::SELECT, 'SELECT * FROM groupmembers WHERE eveID=:id AND memberType=:type')
-												->param(':id', $id)
-												->param(':type', $type)
-												->execute()
-												->as_array();
-
-		$results = [];
-		if($data != null)
-		{
-			foreach($data as $item)
-			{
-				$results[] = new GroupMember($item);
-			}
-		}
-
-		return $results;
+		return self::where('eveID', $id)
+				->where('memberType', $type)
+				->get()
+				->all();
 	}
 
 	public static function findByGroupAndType(int $groupId, string $type, int $id)
 	{
-		$data = DB::query(Database::SELECT, 'SELECT * FROM groupmembers 
-													WHERE eveID=:id AND 
-														memberType=:type AND 
-														groupID = :groupId')
-												->param(':id', $id)
-												->param(':type', $type)
-												->param(':groupId', $groupId)
-												->execute()
-												->current();
-
-		if($data != null)
-		{
-			return new GroupMember($data);
-		}
-
-		return null;
+		return self::where('eveID', $id)
+			->where('memberType', $type)
+			->where('groupID',$groupId)
+			->first();
 	}
 
 	public static function findByGroup(int $groupId): array
 	{
-		$data = DB::query(Database::SELECT, 'SELECT * FROM groupmembers WHERE groupID=:id')
-												->param(':id', $groupId)
-												->execute()
-												->as_array();
-
-		$results = [];
-		if($data != null)
-		{
-			foreach($data as $item)
-			{
-				$results[] = new GroupMember($item);
-			}
-		}
-
-		return $results;
+		return self::where('groupID', $groupId)
+					->get()
+					->all();
 	}
 }

@@ -76,7 +76,7 @@ class Controller_Pages extends FrontController {
 		}
 
 		$this->template->loggedIn = Auth::loggedIn();
-		$this->template->user = Auth::$user->data;
+		$this->template->user = Auth::$user;
 	}
 
 	public function action_error()
@@ -90,7 +90,7 @@ class Controller_Pages extends FrontController {
 		$this->template->layoutMode = 'blank';
 
 		$this->template->loggedIn = Auth::loggedIn();
-		$this->template->user = Auth::$user->data;
+		$this->template->user = Auth::$user;
 
 		$id = intval($this->request->param('id'));
 
@@ -124,7 +124,7 @@ class Controller_Pages extends FrontController {
 
 						if( $group != null )
 						{
-							$insert = ['user_id' => Auth::$user->data['id'], 
+							$insert = ['user_id' => Auth::$user->id, 
 										'group_id' => $group->id, 
 										'can_manage_access' => 1, 
 										'can_view_financial' => 1, 
@@ -136,10 +136,10 @@ class Controller_Pages extends FrontController {
 									->values( array_values($insert) )
 									->execute();
 
-							Auth::$user->data['groupID'] = $group->id;
+							Auth::$user->groupID = $group->id;
 							Auth::$user->save();
 
-							Auth::$user->loadByID( Auth::$user->data['id'] );
+							Auth::$user->loadByID( Auth::$user->id );
 							Auth::$session->reloadUserSession();
 
 							HTTP::redirect('pages/createGroup/3');

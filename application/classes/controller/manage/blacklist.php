@@ -43,7 +43,7 @@ class Controller_Manage_Blacklist extends Controller_Manage
 		
 		$view = $this->template->content = View::factory('manage/blacklist/list');
 
-		$view->chars = Auth::$user->group()->blacklistCharacters();
+		$view->chars = Auth::$user->group->blacklistCharacters();
 	}
 
 	public function action_remove()
@@ -95,7 +95,7 @@ class Controller_Manage_Blacklist extends Controller_Manage
                 $save = [
                             'reason' => $_POST['reason'],
                             'character_id' => $charSearchResults->id,
-                            'group_id' => Auth::$user->data['groupID']
+                            'group_id' => Auth::$user->groupID
 				];
 
 				GroupBlacklistCharacter::create($save);

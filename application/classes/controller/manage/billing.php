@@ -39,24 +39,24 @@ class Controller_Manage_Billing extends Controller_Manage
 
 	public function action_overview()
 	{
-		$user = Auth::$user->data;
+		$user = Auth::$user;
 		
-		$numUsers = Auth::$user->group()->getCharacterUsageCount();
+		$numUsers = Auth::$user->group->getCharacterUsageCount();
 		
 		
 		$payments = array();
 		$payments = DB::query(Database::SELECT, "SELECT * FROM billing_payments WHERE groupID=:group ORDER BY paymentID DESC LIMIT 0,10")
-										->param(':group', Auth::$user->data['groupID'])->execute()->as_array();
+										->param(':group', Auth::$user->groupID)->execute()->as_array();
 		
 		$charges = array();
 		$charges = DB::query(Database::SELECT, "SELECT * FROM billing_charges WHERE groupID=:group ORDER BY chargeID DESC LIMIT 0,10")
-										->param(':group', Auth::$user->data['groupID'])->execute()->as_array();
+										->param(':group', Auth::$user->groupID)->execute()->as_array();
 	  
 		$view = View::factory('manage/billing/overview');
 		$view->bind('payments', $payments);
 		$view->bind('charges', $charges);
 		
-		$group = Auth::$user->group();
+		$group = Auth::$user->group;
 		$view->set('group', $group );
 		
 		$view->set('numUsers', $numUsers);

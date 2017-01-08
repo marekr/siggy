@@ -570,6 +570,7 @@ class Controller_Account extends FrontController {
 				Auth::$user->char_id = $charID;
 
 				Auth::$user->save();
+				Auth::$session->reloadUserSession();
 
 				HTTP::redirect('/');
 			}

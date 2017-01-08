@@ -58,7 +58,6 @@ class Controller_Access extends FrontController {
 	public function action_groups()
 	{
 		$groups = Auth::$session->accessibleGroups();
-
 		if ($this->request->method() == "POST")
 		{
 			$this->validateCSRF();
@@ -66,8 +65,9 @@ class Controller_Access extends FrontController {
 			$selectedGroupId = intval($_POST['group_id']);
 			if( $selectedGroupId && isset( $groups[ $selectedGroupId ] ) )
 			{
-				Auth::$user->data['groupID'] = $selectedGroupId;
+				Auth::$user->groupID = $selectedGroupId;
 				Auth::$user->save();
+				Auth::$session->reloadUserSession();
 
 				HTTP::redirect('/');
 			}

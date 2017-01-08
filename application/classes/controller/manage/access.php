@@ -56,7 +56,7 @@ class Controller_Manage_Access extends Controller_Manage
 		}
 		else
 		{
-			Auth::$user->data['groupID'] = intval($_POST['group']);
+			Auth::$user->groupID = intval($_POST['group']);
 			Auth::$user->save();
 		}
       
@@ -74,7 +74,7 @@ class Controller_Manage_Access extends Controller_Manage
 							"SELECT u.username,ua.* FROM users u
 							JOIN users_group_acl ua ON(u.id = ua.user_id)
                             WHERE ua.group_id = :groupID"
-							)->param(":groupID", Auth::$user->data['groupID'])->execute()->as_array();
+							)->param(":groupID", Auth::$user->groupID)->execute()->as_array();
 		
 		$view->users = $users;
 	}
@@ -87,7 +87,7 @@ class Controller_Manage_Access extends Controller_Manage
 							"SELECT COUNT(ua.user_id) as total FROM users u
 							JOIN users_group_acl ua ON(u.id = ua.user_id)
                             WHERE ua.group_id = :groupID"
-							)->param(":groupID", Auth::$user->data['groupID'])->execute()->current();
+							)->param(":groupID", Auth::$user->groupID)->execute()->current();
                            
                             
         if( $count['total'] <= 1 )
@@ -98,7 +98,7 @@ class Controller_Manage_Access extends Controller_Manage
         
         $id = $this->request->param('id');
         
-        DB::delete('users_group_acl')->where('user_id', '=', $id)->where('group_id','=', Auth::$user->data['groupID'])->execute();
+        DB::delete('users_group_acl')->where('user_id', '=', $id)->where('group_id','=', Auth::$user->groupID)->execute();
         Message::add('success', 'User access removed succesfully');
         HTTP::redirect('manage/access/configure');
     }
@@ -134,7 +134,7 @@ class Controller_Manage_Access extends Controller_Manage
                             'can_view_financial' => isset( $_POST['can_view_financial'] ) ? intval( $_POST['can_view_financial'] ) : 0,
                             'can_manage_access' => isset( $_POST['can_manage_access'] ) ? intval( $_POST['can_manage_access'] ) : 0,
                             'user_id' => $userID,
-                            'group_id' => Auth::$user->data['groupID'],
+                            'group_id' => Auth::$user->groupID,
 							'created_at' => Carbon::now()->toDateTimeString()
                         );
                 
@@ -164,7 +164,7 @@ class Controller_Manage_Access extends Controller_Manage
 							"SELECT u.username,ua.* FROM users u
 							JOIN users_group_acl ua ON(u.id = ua.user_id)
                             WHERE ua.user_id = :id AND ua.group_id = :groupID"
-							)->param(":id", $id)->param(":groupID", Auth::$user->data['groupID'])->execute()->current();
+							)->param(":id", $id)->param(":groupID", Auth::$user->groupID)->execute()->current();
                             
         if( !count($data) )
         {
@@ -183,7 +183,7 @@ class Controller_Manage_Access extends Controller_Manage
 						'updated_at' => Carbon::now()->toDateTimeString()
                     );
 			
-            DB::update('users_group_acl')->set( $update )->where( 'user_id', '=', $id )->where('group_id','=',Auth::$user->data['groupID'])->execute();
+            DB::update('users_group_acl')->set( $update )->where( 'user_id', '=', $id )->where('group_id','=',Auth::$user->groupID)->execute();
             
             
             Message::add('success', 'User access edited succesfully');

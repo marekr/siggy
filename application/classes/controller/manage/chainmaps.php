@@ -42,9 +42,9 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
 		$view = $this->template->content = View::factory('manage/chainmaps/list');
 
-		$view->set('user', Auth::$user->data);
+		$view->set('user', Auth::$user);
 
-		$group = Auth::$user->group();
+		$group = Auth::$user->group;
 		$chainmaps = $group->chainMaps();
 
 		$view->set('chainmaps', $chainmaps );
@@ -73,7 +73,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		{
 			$new = [
 				'chainmap_name' => $_POST['chainmap_name'],
-				'group_id' => Auth::$user->data['groupID'],
+				'group_id' => Auth::$user->groupID,
 				'chainmap_type' => 'fixed',
 				'chainmap_skip_purge_home_sigs' => intval($_POST['chainmap_skip_purge_home_sigs']),
 			];
@@ -135,7 +135,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		$id = $this->request->param('id');
 		list($chainmap_id, $groupMemberID) = explode('-', $id);
 
-		$cm = Chainmap::find($chainmap_id, Auth::$user->data['groupID']);
+		$cm = Chainmap::find($chainmap_id, Auth::$user->groupID);
 		if( $cm == null )
 		{
 			Message::add('error', __('Error: You do not have permission for that chainmap.'));
@@ -143,7 +143,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		}
 
 		$member = GroupMember::find($groupMemberID);
-		if( $member->groupID != Auth::$user->data['groupID'] )
+		if( $member->groupID != Auth::$user->groupID )
 		{
 			Message::add('error', __('Error: The group member does not exist.'));
 			HTTP::redirect('manage/group/members');
@@ -156,7 +156,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 			DB::query(Database::DELETE, 'DELETE FROM chainmaps_access
 											WHERE group_id=:group_id AND chainmap_id=:chainmap
 											AND groupmember_id=:member_id')
-							->param(':group_id', Auth::$user->data['groupID'])
+							->param(':group_id', Auth::$user->groupID)
 							->param(':chainmap', $chainmap_id)
 							->param(':member_id', $groupMemberID)
 							->execute();
@@ -194,7 +194,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
 		$this->template->title = __('Edit Chain Map');
 
-		$chainmap = Chainmap::find($id, Auth::$user->data['groupID']);
+		$chainmap = Chainmap::find($id, Auth::$user->groupID);
 		if( $chainmap == null )
 		{
 			Message::add('error', __('Error: You do not have permission to edit that chainmap.'));
@@ -241,7 +241,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
 		$this->template->title = __('Remove Chain Map');
 
-		$chainmap = Chainmap::find($id, Auth::$user->data['groupID']);
+		$chainmap = Chainmap::find($id, Auth::$user->groupID);
 		if( $chainmap == null )
 		{
 			Message::add('error', __('Error: You do not have permission to remove that chainmap.'));
@@ -266,7 +266,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				$groupmembers = DB::query(Database::SELECT, 'SELECT *
 									FROM groupmembers
 									WHERE groupID=:group')
-					->param(':group', Auth::$user->data['groupID'])
+					->param(':group', Auth::$user->groupID)
 					->execute()
 					->as_array();
 				if( count($groupmembers) > 0 )

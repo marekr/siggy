@@ -59,7 +59,7 @@
 			</li>
 			<li class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-					<i class="fa fa-user fa-fw"></i> <?php echo Auth::$user->data['username']; ?> <i class="fa fa-caret-down"></i>
+					<i class="fa fa-user fa-fw"></i> <?php echo Auth::$user->username; ?> <i class="fa fa-caret-down"></i>
 				</a>
 				<ul class="dropdown-menu dropdown-user">
 					<li>
@@ -67,7 +67,7 @@
 						<form action='<?php echo URL::base(TRUE, TRUE);?>manage/admin/changeGroup' method='post' style="padding: 6px;">
 							<select name='group' class="form-control input-sm " onchange='submit();'>
 							<?php
-								$selected = Auth::$user->data['id'];
+								$selected = Auth::$user->id;
 								foreach( $avaliableGroups as $m ): ?>
 								<option value="<?php echo $m['id']; ?>" <?php echo ( ($selected == $m['id']) ? "selected='seleced'" : ''); ?>><?php echo $m['name']; ?></option>
 							<?php endforeach; ?>
@@ -90,7 +90,7 @@
 					<li>
 						<?php echo Html::anchor('manage/dashboard', __('<i class="fa fa-sitemap fa-fw"></i>Dashboard')); ?>
 					</li>
-					<?php if( Auth::$user->data['admin'] || $perms['can_manage_group_members'] || $perms['can_manage_access'] ): ?>
+					<?php if( Auth::$user->admin || $perms->can_manage_group_members || $perms->can_manage_access ): ?>
                     <li class="active <?php echo (Request::initial()->controller() == "Group"?" active" : "") ?>">
                         <a href="#"><i class="fa fa-chain fa-fw"></i> Chainmaps<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
@@ -103,7 +103,7 @@
 					<li class="active <?php echo (Request::initial()->controller() == "Group"?" active" : "") ?>">
 						<a href="#"><i class="fa fa-key fa-fw"></i> Access<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
-							<?php if( Auth::$user->data['admin'] || $perms['can_manage_group_members'] ): ?>
+							<?php if( Auth::$user->admin || $perms->can_manage_group_members ): ?>
 							<li>
 								<?php echo Html::anchor('manage/group/members', __('Group Members')); ?>
 							</li>
@@ -111,7 +111,7 @@
 								<?php echo Html::anchor('manage/blacklist/list', __('Character Blacklist')); ?>
 							</li>
 							<?php endif; ?>
-							<?php if( Auth::$user->data['admin'] || $perms['can_manage_access'] ): ?>
+							<?php if( Auth::$user->admin || $perms->can_manage_access ): ?>
 							<li>
 								<?php echo Html::anchor('manage/access/configure', __('Admin Access')); ?>
 							</li>
@@ -120,7 +120,7 @@
 						<!-- /.nav-second-level -->
 					</li>
 					<?php endif; ?>
-					<?php if( Auth::$user->data['admin'] || $perms['can_manage_settings'] ): ?>
+					<?php if( Auth::$user->admin || $perms->can_manage_settings ): ?>
 					<li class="active <?php echo (Request::initial()->controller() == "Settings"?" active" : "") ?>">
 						<a href="#"><i class="fa fa-wrench fa-fw"></i>Settings<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
@@ -137,7 +137,7 @@
 						<!-- /.nav-second-level -->
 					</li>
 					<?php endif; ?>
-					<?php if( Auth::$user->data['admin'] || $perms['can_view_logs'] ): ?>
+					<?php if( Auth::$user->admin || $perms->can_view_logs ): ?>
 					<li class="active <?php echo (Request::initial()->controller() == "Logs"?" active" : "") ?>">
 						<a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Activity<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
@@ -151,7 +151,7 @@
 						<!-- /.nav-second-level -->
 					</li>
 					<?php endif; ?>
-					<?php if( Auth::$user->data['admin'] || $perms['can_view_financial'] ): ?>
+					<?php if( Auth::$user->admin || $perms->can_view_financial ): ?>
 					<li class="active <?php echo (Request::initial()->controller() == "Billing"?" active" : "") ?>">
 						<a href="#"><i class="fa fa-university fa-fw"></i>Financial<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">

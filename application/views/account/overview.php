@@ -2,5 +2,5 @@
 
 <dl class="dl-horizontal">
   <dt>Email Address</dt>
-  <dd><?php echo $user['email']; ?></dd>
+  <dd><?php echo $user->email; ?></dd>
 </dl>

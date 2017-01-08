@@ -246,6 +246,7 @@ class UserSession {
 		$this->accessData = $accessData;
 	}
 
+
 	public function accessibleGroups()
 	{
 		if($this->accessibleGroups == null)
@@ -289,12 +290,12 @@ class UserSession {
 		$accessibleChainmaps = [];
 		foreach($chainmaps as $id => $c)
 		{
-			foreach($c['access'] as $p)
+			foreach($c->access as $p)
 			{
-				if( ($p['memberType'] == 'corp' && $p['eveID'] == $this->corporation_id)
-						|| ($p['memberType'] == 'char' && $p['eveID'] == $this->character_id) )
+				if( ($p->memberType == 'corp' && $p->eveID == $this->corporation_id)
+						|| ($p->memberType == 'char' && $p->eveID == $this->character_id) )
 				{
-					$accessibleChainmaps[$c['chainmap_id']] = $c;
+					$accessibleChainmaps[$c->chainmap_id] = $c;
 				}
 			}
 		}
@@ -306,12 +307,12 @@ class UserSession {
 		//to make usage "neat" for now, we first see if we have access to a default chain map
 		foreach($chainmaps as $id => $c)
 		{
-			foreach($c['access'] as $p)
+			foreach($c->access as $p)
 			{
-				if( $c['chainmap_type'] == 'default' && ( ($p['memberType'] == 'corp' && $p['eveID'] == $this->corporation_id)
-														|| ($p['memberType'] == 'char' && $p['eveID'] == $this->character_id) ) )
+				if( $c->chainmap_type == 'default' && ( ($p->memberType == 'corp' && $p->eveID == $this->corporation_id)
+														|| ($p->memberType == 'char' && $p->eveID == $this->character_id) ) )
 				{
-					return $c['chainmap_id'];
+					return $c->chainmap_id;
 				}
 			}
 		}
@@ -319,12 +320,12 @@ class UserSession {
 		//otherwise grab the first one we do have access to
 		foreach($chainmaps as $id => $c)
 		{
-			foreach($c['access'] as $p)
+			foreach($c->access as $p)
 			{
-				if( ($p['memberType'] == 'corp' && $p['eveID'] == $this->corporation_id)
-						|| ($p['memberType'] == 'char' && $p['eveID'] == $this->character_id) )
+				if( ($p->memberType == 'corp' && $p->eveID == $this->corporation_id)
+						|| ($p->memberType == 'char' && $p->eveID == $this->character_id) )
 				{
-					return $c['chainmap_id'];
+					return $c->chainmap_id;
 				}
 			}
 		}

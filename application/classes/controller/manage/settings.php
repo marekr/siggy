@@ -23,7 +23,7 @@ class Controller_Manage_Settings extends Controller_Manage
 
 	public function action_index() 
 	{
-		if( Auth::$user->isGroupAdmin() || Auth::$user->data['admin'] ) 
+		if( Auth::$user->isGroupAdmin() || Auth::$user->admin ) 
 		{
 			HTTP::redirect('manage/logs/activity');
 		} 
@@ -37,7 +37,7 @@ class Controller_Manage_Settings extends Controller_Manage
 	{
 		$this->template->title = __('Chain Map settings');
 
-		$group = Auth::$user->group();
+		$group = Auth::$user->group;
 
 		$errors = array();
 		$view = $this->template->content = View::factory('manage/settings/chain_map');
@@ -58,7 +58,8 @@ class Controller_Manage_Settings extends Controller_Manage
 				'chainmap_max_characters_shown' => intval($_POST['chainmap_max_characters_shown']),
 			];
 
-			$group->save($save);
+			$group->fill($save);
+			$group->save();
 			
 			Message::add('success', __('Chain map settings saved.'));
 			
@@ -75,7 +76,7 @@ class Controller_Manage_Settings extends Controller_Manage
 	{
 		$this->template->title = __('Chain Map settings');
 
-		$group = Auth::$user->group();
+		$group = Auth::$user->group;
 
 		$errors = array();
 		$view = $this->template->content = View::factory('manage/settings/statistics');
@@ -94,7 +95,8 @@ class Controller_Manage_Settings extends Controller_Manage
 				'stats_pos_update_points' => $this->__get_point_multiplier($_POST['stats_pos_update_points'])
 			];
 				
-			$group->save($save);
+			$group->fill($save);
+			$group->save();
 				
 			Message::add('success', __('Chain map settings saved.'));
 			
@@ -128,7 +130,7 @@ class Controller_Manage_Settings extends Controller_Manage
 	{
 		$this->template->title = __('General settings');
 
-		$group = Auth::$user->group();
+		$group = Auth::$user->group;
 
 		$errors = array();
 		$view = $this->template->content = View::factory('manage/settings/general');
@@ -156,8 +158,8 @@ class Controller_Manage_Settings extends Controller_Manage
 					Message::add( 'error', __('Error: The password was not saved because it did not match between the two fields.') );
 				}
 			}
-			
-			$group->save($save);
+			$group->fill($save);
+			$group->save();
 				
 			Message::add('success', __('Settings saved.'));;
 			HTTP::redirect('manage/settings/general');

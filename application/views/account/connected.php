@@ -21,14 +21,14 @@
 		</tr>
 		<?php foreach( $characters as $character ): ?>
 		<tr>
-			<td><?php echo $character_data[$character['character_id']]->id; ?></td>
-			<td><?php echo $character_data[$character['character_id']]->name; ?></td>
+			<td><?php echo $character_data[$character->character_id]->id; ?></td>
+			<td><?php echo $character_data[$character->character_id]->name; ?></td>
 			<td>characterLocationRead, characterNavigationWrite</td>
-			<td><?php echo $character['valid'] ? 'Ok' : 'Invalid' ?></td>
+			<td><?php echo $character->valid ? 'Ok' : 'Invalid' ?></td>
 			<td>
 				<form action="<?php echo URL::base(TRUE, TRUE);?>account/disconnect" method="post">
 					<input type="hidden" name="_token" value="<?php echo Auth::$session->csrf_token;?>" />
-					<input type="hidden" name="character_id" value="<?php echo $character_data[$character['character_id']]->id; ?>" />
+					<input type="hidden" name="character_id" value="<?php echo $character_data[$character->character_id]->id; ?>" />
 					<button class='btn btn-danger btn-xs' type="submit">Disconnect</button>
 				</form>
 			</td>

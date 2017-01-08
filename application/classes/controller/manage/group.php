@@ -31,7 +31,7 @@ class Controller_Manage_Group extends Controller_Manage
 	*/
 	public function action_index()
 	{
-		if( Auth::$user->isGroupAdmin() || Auth::$user->data['admin'] )
+		if( Auth::$user->isGroupAdmin() || Auth::$user->admin )
 		{
 			HTTP::redirect('manage/group/members');
 		}
@@ -55,12 +55,12 @@ class Controller_Manage_Group extends Controller_Manage
 
 		$view = $this->template->content = View::factory('manage/group/members');
 
-		$view->set('user', Auth::$user->data );
+		$view->set('user', Auth::$user );
 
 		$group = Auth::$user->group;
 
 		$chainmaps = DB::query(Database::SELECT, "SELECT * FROM chainmaps WHERE group_id=:group")
-						->param(':group', Auth::$user->data['groupID'])
+						->param(':group', Auth::$user->groupID)
 						->execute()
 						->as_array('chainmap_id');
 
@@ -138,7 +138,7 @@ class Controller_Manage_Group extends Controller_Manage
 						$data = [
 							'eveID' => $_POST['eveID'],
 							'accessName' => $_POST['accessName'],
-							'groupID' => Auth::$user->data['groupID'],
+							'groupID' => Auth::$user->groupID,
 							'memberType' => $_POST['memberType'],
 						];						
 
@@ -147,7 +147,7 @@ class Controller_Manage_Group extends Controller_Manage
 
 					if( isset( $_POST['chainmap_id'] ) && intval($_POST['chainmap_id']) > 0)
 					{
-						$insert['group_id'] = Auth::$user->data['groupID'];
+						$insert['group_id'] = Auth::$user->groupID;
 						$insert['chainmap_id'] = intval($_POST['chainmap_id']);
 						$insert['groupmember_id'] = $member->id;
 						DB::insert('chainmaps_access', array_keys($insert) )->values(array_values($insert))->execute();
@@ -183,7 +183,7 @@ class Controller_Manage_Group extends Controller_Manage
 																		WHERE group_id=:group AND groupmember_id=:member
 																	)
 																	")
-										->param(':group', Auth::$user->data['groupID'])
+										->param(':group', Auth::$user->groupID)
 										->param(':member', $member->id)
 										->execute()
 										->as_array();
@@ -192,7 +192,7 @@ class Controller_Manage_Group extends Controller_Manage
 					{
 						$chainmaps = DB::query(Database::SELECT, "SELECT * FROM chainmaps
 																	WHERE group_id=:group")
-										->param(':group', Auth::$user->data['groupID'])
+										->param(':group', Auth::$user->groupID)
 										->execute()
 										->as_array();
 					}
@@ -233,7 +233,7 @@ class Controller_Manage_Group extends Controller_Manage
 		$this->template->title = __('Group management');
 
 		$member = GroupMember::find($id);
-		if( $member->groupID != Auth::$user->data['groupID'] )
+		if( $member->groupID != Auth::$user->groupID )
 		{
 			Message::add('error', __('Error: You do not have permission to edit that group member.'));
 			HTTP::redirect('manage/group/members');
@@ -252,7 +252,7 @@ class Controller_Manage_Group extends Controller_Manage
 			$save = [
 				'eveID' => $_POST['eveID'],
 				'accessName' => $_POST['accessName'],
-				'groupID' => Auth::$user->data['groupID'],
+				'groupID' => Auth::$user->groupID,
 				'memberType' => $_POST['memberType']
 			];
 
@@ -267,7 +267,7 @@ class Controller_Manage_Group extends Controller_Manage
 
 		$view->set('data', $member->as_array() );
 
-		$view->set('user', Auth::$user->data);
+		$view->set('user', Auth::$user);
 
 		$group = Auth::$user->group();
 		$view->set('group', $group );
@@ -282,7 +282,7 @@ class Controller_Manage_Group extends Controller_Manage
 		$this->template->title = __('Group management');
 
 		$member = GroupMember::find($id);
-		if( $member->groupID != Auth::$user->data['groupID'] )
+		if( $member->groupID != Auth::$user->groupID )
 		{
 			Message::add('error', __('Error: You do not have permission to remove that group member.'));
 			HTTP::redirect('manage/group/members');

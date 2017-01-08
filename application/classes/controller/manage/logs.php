@@ -37,7 +37,7 @@ class Controller_Manage_Logs extends Controller_Manage
 	*/
 	public function action_index() 
 	{
-		if( Auth::$user->isGroupAdmin() || Auth::$user->data['admin'] ) 
+		if( Auth::$user->isGroupAdmin() || Auth::$user->admin ) 
 		{
 			HTTP::redirect('manage/logs/activity');
 		} 
@@ -50,10 +50,11 @@ class Controller_Manage_Logs extends Controller_Manage
 	public function action_sessions()
 	{
 		$sessions = [];
-		$sessions = DB::query(Database::SELECT, "SELECT ss.*,cm.chainmap_name FROM sessions ss
+		$sessions = DB::query(Database::SELECT, "SELECT ss.*,cm.chainmap_name,c.name as character_name FROM sessions ss
 												LEFT JOIN chainmaps cm ON(cm.chainmap_id = ss.chainmap_id)
+												LEFT JOIN characters c ON(c.id=ss.character_id)
 												WHERE ss.group_id=:group ORDER BY ss.updated_at DESC")
-							  ->param(':group', Auth::$user->data['groupID'])
+							  ->param(':group', Auth::$user->groupID)
 							  ->execute()
 							  ->as_array();
 
@@ -119,7 +120,7 @@ class Controller_Manage_Logs extends Controller_Manage
 
 
 		$logsTotal = DB::query(Database::SELECT, "SELECT COUNT(*) as total FROM logs WHERE groupID=:group " . $extraSQL . " ORDER BY logID DESC")
-					  ->param(':group', Auth::$user->data['groupID'])->execute()->current();
+					  ->param(':group', Auth::$user->groupID)->execute()->current();
 
 		$logsTotal = $logsTotal['total'];
 
@@ -134,7 +135,7 @@ class Controller_Manage_Logs extends Controller_Manage
 		  
 		$logs = array();
 		$logs = DB::query(Database::SELECT, "SELECT * FROM logs WHERE groupID=:group " . $extraSQL . " ORDER BY logID DESC LIMIT ".$offset.",20")
-					  ->param(':group', Auth::$user->data['groupID'])->execute()->as_array();
+					  ->param(':group', Auth::$user->groupID)->execute()->as_array();
 
 		$view = View::factory('manage/logs/activity');
 		$view->bind('logs', $logs);

@@ -5,76 +5,20 @@ use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Eloquent\Model;
 
 class User extends Model {
-	public $perms = array();
-	public $group = null;
+	public $perms = null;
 
-	public $groupID = 0;
 	public $activeChainMap = 0;
-
-	public function userLoaded()
-	{
-		return (isset($this->data->id) && $this->data->id > 0);
-	}
 
 	public function group()
 	{
-		if($this->group == null || $this->groupID != $this->group->id)
-		{
-			$this->group = Group::find($this->groupID);
-		}
-
-		return $this->group;
+		return $this->hasOne('Group','id','groupID');
 	}
-
-/*
-	public function save()
-	{
-		if( !$this->userLoaded() )
-		{
-			return;
-		}
-
-		$userArray = array(	'id' => $this->data->id,
-							'email' => $this->data->email,
-							'password' => $this->data->password,
-							'username' => $this->data->username,
-							'groupID' => $this->data->groupID,
-							'logins' => $this->data->logins,
-							'reset_token' => $this->data->reset_token,
-							'created' => $this->data->created,
-							'active' => $this->data->active,
-							'last_login' => $this->data->last_login,
-							'admin' => $this->data->admin,
-							'ip_address' => $this->data->ip_address,
-							'char_id' => $this->data->char_id,
-							'char_name' => $this->data->char_name,
-							'corp_id' => $this->data->corp_id,
-							'selected_apikey_id' => $this->data->selected_apikey_id,
-							'provider' => $this->data->provider
-						 );
-
-		DB::table('users')
-			->where('id', '=',  $this->data->id)
-			->update( $userArray );
-
-		//are we the current user?
-		if( isset(Auth::$user->data->id) && $this->data->id == Auth::$user->data->id )
-		{
-			Auth::$session->reloadUserSession();
-		}
-		else
-		{
-			//we are editing someone that isnt the active session
-			//purge sessions?
-		}
-	}
-*/
 
 	public function savePassword( $groupID, $pass )
 	{
 		$passes = DB::insert("REPLACE INTO user_group_passwords (user_id, group_id, group_password) VALUES(:user, :group, :pass)",
 								[
-									'user' => $this->data->id,
+									'user' => $this->id,
 									'group' => $groupID,
 									'pass' => $pass
 								]);
@@ -86,7 +30,7 @@ class User extends Model {
 	{
 		$cache = Cache::instance(CACHE_METHOD);
 
-		$saved_passwords = $cache->get('user-'.$this->data->id.'-group-passwords');
+		$saved_passwords = $cache->get('user-'.$this->id.'-group-passwords');
 		if( $saved_passwords == null )
 		{
 			$saved_passwords = $this->recacheSavedPasswords();
@@ -100,43 +44,38 @@ class User extends Model {
 		$saved_passwords = array();
 
 		$cache = Cache::instance(CACHE_METHOD);
-		$passes = DB::select("SELECT * FROM user_group_passwords WHERE user_id=?", [$this->data->id]);
+		$passes = DB::select("SELECT * FROM user_group_passwords WHERE user_id=?", [$this->id]);
 
 		foreach($passes as $p)
 		{
-			$saved_passwords[ $p['group_id'] ] = $p['group_password'];
+			$saved_passwords[ $p->group_id ] = $p->group_password;
 		}
 
-		$cache->set('user-'.$this->data->id.'-group-passwords', $saved_passwords);
+		$cache->set('user-'.$this->id.'-group-passwords', $saved_passwords);
 
 		return $saved_passwords;
 	}
 
 	public function validateCorpChar()
 	{
-		if( !self::userLoaded() )
+		if( $this->findSSOCharacter( $this->char_id ) == null )
 		{
 			return FALSE;
 		}
 
-		if( $this->findSSOCharacter( $this->data->char_id ) == null )
-		{
-			return FALSE;
-		}
-
-		$character = Character::find( $this->data->char_id );
+		$character = Character::find( $this->char_id );
 		if( $character == null )
 		{
 			return FALSE;
 		}
 
 		/* update the corp id */
-		if( $character->corporation_id != $this->data->corp_id )
+		if( $character->corporation_id != $this->corp_id )
 		{
-			$this->data->corp_id = $character->corporation_id;
+			$this->corp_id = $character->corporation_id;
 			$this->save();
 
-			if( $this->data->id == Auth::$user->data->id )
+			if( $this->id == Auth::$user->id )
 			{
 				Auth::$session->reloadUserSession();
 			}
@@ -162,7 +101,7 @@ class User extends Model {
 
 	public function getActiveSSOCharacter()
 	{
-		return $this->findSSOCharacter($this->data->char_id);
+		return $this->findSSOCharacter($this->char_id);
 	}
 
 	public function getSSOCharacters()
@@ -175,7 +114,7 @@ class User extends Model {
 
 	public function findSSOCharacter(int $characterId)
 	{
-		$char = DB::selectOne("SELECT * FROM user_ssocharacter WHERE user_id=:userid AND character_id=:char_id",[$characterId, $this->data->id]);
+		$char = DB::selectOne("SELECT * FROM user_ssocharacter WHERE user_id=? AND character_id=?",[$this->id,$characterId]);
 
 		return $char;
 	}
@@ -183,7 +122,7 @@ class User extends Model {
 	public function removeSSOCharacter(int $characterId)
 	{
 		DB::table('user_ssocharacter')
-			->where('user_id', '=',  $this->data->id)
+			->where('user_id', '=',  $this->id)
 			->where('character_id', '=',  $characterId)
 			->delete();
 
@@ -201,7 +140,7 @@ class User extends Model {
 		];
 
 		DB::table('user_ssocharacter')
-			->where('user_id', '=',  $this->data->id)
+			->where('user_id', '=',  $this->id)
 			->where('character_id', '=',  $characterId)
 			->update( $data );
 		
@@ -211,7 +150,7 @@ class User extends Model {
 	public function addSSOCharacter($hash, $characterId, $token, $expiration, $refreshToken)
 	{
 		$insert = [
-			'user_id' => $this->data->id,
+			'user_id' => $this->id,
 			'character_owner_hash' => $hash,
 			'character_id' => $characterId,
 			'access_token' => $token,
@@ -226,44 +165,46 @@ class User extends Model {
 		return TRUE;
 	}
 
-	public function loadByEmail($email)
-	{
-		$this->loadBy('email', $email);
-	}
-
-	public function loadByID($id)
-	{
-		$this->loadBy('id', $id);
-	}
-
 	public static function findByUsername(string $username)
 	{
-		return self::whereRaw('LOWER(username) = ?', [$username])->firstOrFail();
+		return self::whereRaw('LOWER(username) = ?', [$username])->first();
 	}
 
 	public function loadBy($identifier, $key)
 	{
 		throw new Exception('test');
-		$perms = DB::select('SELECT * FROM users_group_acl WHERE user_id = ?', [$this->data->id]);
+		$perms = DB::select('SELECT * FROM users_group_acl WHERE user_id = ?', [$this->id]);
 
 		$this->perms = $perms;
 
 	}
 
+	public function perms()
+	{
+		if($this->perms == null)
+		{
+			$perms = DB::select('SELECT * FROM users_group_acl WHERE user_id = ?', [$this->id]);
+
+			$this->perms = $perms;
+		}
+
+		return $this->perms;
+	}
+
 	public function updatePassword($newPass)
 	{
-		$this->data->password = Auth::hash($newPass);
+		$this->password = Auth::hash($newPass);
 		$this->save();
 	}
 
 	public function isAdmin()
 	{
-		return ( (isset($this->data->admin) && $this->data->admin ) ? TRUE : FALSE);
+		return ( (isset($this->admin) && $this->admin ) ? TRUE : FALSE);
 	}
 
 	public function isGroupAdmin()
 	{
-		if( isset( $this->perms[ $this->data->groupID ] ) )
+		if( isset( $this->perms[ $this->groupID ] ) )
 		{
 			return TRUE;
 		}

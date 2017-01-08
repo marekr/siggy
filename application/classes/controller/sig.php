@@ -47,7 +47,7 @@ class Controller_Sig extends FrontController {
 
 			$insert['creator'] = Auth::$session->character_name;
 
-			$id = DB::insert('systemsigs', array_keys($insert) )->values(array_values($insert))->execute();
+			$id = DB::table('systemsigs')->insert($insert);
 
 			$this->chainmap->update_system($insert['systemID'], array('lastUpdate' => time(),
 																'lastActive' => time() )
@@ -126,13 +126,11 @@ class Controller_Sig extends FrontController {
 					$sigList[] = Database::instance()->escape($sig['sig']);
 				}
 
-				DB::query(Database::DELETE, "DELETE FROM systemsigs
-													WHERE groupID=:groupID
-													AND systemID=:id
-													AND sig NOT IN(".implode($sigList,',').")")
-								->param(':groupID', Auth::$session->group->id)
-								->param(':id', $systemID)
-								->execute();
+				DB::table('systemsigs')
+					->where('groupID', Auth::$session->group->id)
+					->where('systemID', $systemID)
+					->whereNotIn('sig',$sigList)
+					->delete();
 			}
 
 
@@ -141,18 +139,16 @@ class Controller_Sig extends FrontController {
 				$doingUpdate = FALSE;
 				foreach( $sigs as $sig )
 				{
-					$sigData = DB::query(Database::SELECT, "SELECT id,sig, type, siteID, description, created_at
+					$sigData = DB::selectOne("SELECT id,sig, type, siteID, description, created_at
 															FROM systemsigs
 															WHERE systemID=:id
 																AND groupID=:group
-																 AND sig=:sig")
-												->param(':id', $systemID)
-												->param(':group',Auth::$session->group->id)
-												->param(':sig', $sig['sig'] )
-												->execute()
-												->current();
-
-					if( isset($sigData['id']) )
+																 AND sig=:sig", [
+																	'id' => $systemID,
+																	'group' => Auth::$session->group->id,
+																	'sig' => $sig['sig']
+																 ]);
+					if( $sigData != null )
 					{
 						if(  $sig['type'] != 'none' || $sig['siteID'] != 0 )
 						{
@@ -164,7 +160,7 @@ class Controller_Sig extends FrontController {
 											'lastUpdater' => Auth::$session->character_name
 											);
 
-							DB::update('systemsigs')->set( $update )->where('id', '=', $sigData['id'])->execute();
+							DB::table('systemsigs')->where('id', '=', $sigData['id'])->update($update);
 						}
 					}
 					else
@@ -180,7 +176,7 @@ class Controller_Sig extends FrontController {
 						$insert['sigSize'] = "";	//need to return this value for JS to fail gracefully
 						$insert['creator'] = Auth::$session->character_name;
 
-						$id = DB::insert('systemsigs', array_keys($insert) )->values(array_values($insert))->execute();
+						$id = DB::table('systemsigs')->insert($insert);
 
 						$insert['id'] = $id[0];
 
@@ -229,11 +225,9 @@ class Controller_Sig extends FrontController {
 
 			$id = intval($sigData['id']);
 
-			DB::update('systemsigs')
-				->set( $update )
-				->where('groupID', '=', Auth::$session->group->id)
-				->where('id', '=', $id)
-				->execute();
+			$sig = Signature::findWithGroup(Auth::$session->group->id,$id);
+			$sig->fill($update);
+			$sig->save();
 
 			$this->chainmap->update_system($sigData['systemID'], array('lastUpdate' => time(), 'lastActive' => time() ) );
 
@@ -241,19 +235,20 @@ class Controller_Sig extends FrontController {
 			{
 				if($sigData['chainmap_wormhole']['hash'] == 'none')
 				{
-					DB::query(Database::DELETE, 'DELETE FROM wormhole_signatures WHERE `chainmap_id`=:chainMapID AND `signature_id` = :id')
-								->param(':chainMapID', $sigData['chainmap_wormhole']['chainmap_id'])
-								->param(':id', $id)
-								->execute();
+					DB::table('wormhole_signatures')
+						->where('chainmap_id',  $sigData['chainmap_wormhole']['chainmap_id'])
+						->where('signature_id', $id)
+						->delete();
 				}
 				else
 				{
-					DB::query(Database::INSERT, 'REPLACE INTO wormhole_signatures (`wormhole_hash`, `chainmap_id`,`signature_id`)
-						VALUES(:hash, :chainMapID, :id)')
-								->param(':hash', $sigData['chainmap_wormhole']['hash'] )
-								->param(':chainMapID', $sigData['chainmap_wormhole']['chainmap_id'])
-								->param(':id', $id)
-								->execute();
+					DB::insert('REPLACE INTO wormhole_signatures (`wormhole_hash`, `chainmap_id`,`signature_id`)
+								VALUES(:hash, :chainMapID, :id)',
+								[
+									'hash' => $sigData['chainmap_wormhole']['hash'],
+									'chainMapID' => $sigData['chainmap_wormhole']['chainmap_id'],
+									'id' => $id
+								]);
 				}
 			}
 
@@ -287,23 +282,13 @@ class Controller_Sig extends FrontController {
 					continue;
 
 				//permission check
-				$sigData = DB::query(Database::SELECT, "SELECT id
-														FROM systemsigs
-														WHERE id=:id
-															AND groupID=:group")
-											->param(':group',Auth::$session->group->id)
-											->param(':id', $sig['id'] )
-											->execute()
-											->current();
+				$sigEntry = Signature::findWithGroup(Auth::$session->group->id, $sig['id']);
 
-				if( !isset($sigData['id']) )
+				if( $sigEntry == null )
 					continue;
 
-				DB::update('systemsigs')
-					->set( ['siteID' => $sig['site_id']] )
-					->where('groupID', '=', Auth::$session->group->id)
-					->where('id', '=', $sig['id'])
-					->execute();
+				$sigEntry->siteID = $sig['site_id'];
+				$sigEntry->save();
 
 				try {
 					$chainmap->add_system_to_map($request['system_id'], $toSysID, 0, 0, $sig['site_id']);
@@ -312,12 +297,13 @@ class Controller_Sig extends FrontController {
 				}
 
 				$whHash = mapUtils::whHashByID($request['system_id'], $toSysID);
-				DB::query(Database::INSERT, 'REPLACE INTO wormhole_signatures (`wormhole_hash`, `chainmap_id`,`signature_id`)
-					VALUES(:hash, :chainMapID, :id)')
-							->param(':hash', $whHash )
-							->param(':chainMapID', $chainmapID)
-							->param(':id', $sig['id'])
-							->execute();
+				DB::insert('REPLACE INTO wormhole_signatures (`wormhole_hash`, `chainmap_id`,`signature_id`)
+							VALUES(:hash, :chainMapID, :id)',
+							[
+								'hash' => $whHash,
+								'chainMapID' => $chainmapID,
+								'id' => $sig['id']
+							]);
 
 				$this->chainmap->update_system($toSysID, array('lastUpdate' => time() ));
 			}
@@ -340,28 +326,25 @@ class Controller_Sig extends FrontController {
 		if( isset($_POST['id']) )
 		{
 			$id = intval($_POST['id']);
-			$sigData = DB::query(Database::SELECT, 'SELECT *,ss.name as systemName FROM	 systemsigs s
+			$sigData = DB::selectOne('SELECT *,ss.name as systemName FROM	 systemsigs s
 													INNER JOIN solarsystems ss ON ss.id = s.systemID
-													WHERE s.id=:id AND s.groupID=:groupID')
-									->param(':groupID', Auth::$session->group->id)
-									->param(':id', $id)
-									->execute()
-									->current();
+													WHERE s.id=:id AND s.groupID=:groupID',
+													[
+														'groupID' => Auth::$session->group->id,
+														'id' => $id
+													]);
 
-			DB::delete('systemsigs')
+			DB::table('systemsigs')
 				->where('groupID', '=', Auth::$session->group->id)
 				->where('id', '=', $id)
-				->execute();
+				->delete();
 
 			$this->chainmap->update_system($_POST['systemID'], array('lastUpdate' => time() ));
 
 			// delete linked wormholes
-			$whlinks = DB::query(Database::SELECT, "SELECT s.*
-												FROM wormhole_signatures s
-												WHERE s.signature_id=:id")
-									->param(':id', $id)
-									->execute()
-									->as_array();
+			$whlinks = DB::select("SELECT s.*
+									FROM wormhole_signatures s
+									WHERE s.signature_id=?",[$id]);
 			$wormholeHashes = [];
 			foreach($whlinks as $link)
 			{
@@ -389,13 +372,13 @@ class Controller_Sig extends FrontController {
 		$this->response->headers('Content-Type','application/json');
 		$this->response->headers('Cache-Control','no-cache, must-revalidate');
 
-		$data = DB::query(Database::SELECT, "SELECT ss.name as system_name, ss.id,
+		$data = DB::select("SELECT ss.name as system_name, ss.id,
 													r.regionName as region_name,
 													r.regionID as region_id,
 													c.constellationID as constellation_id,
 													c.constellationName as constellation_name,
 													(SELECT created_at FROM systemsigs
-													WHERE systemID = ss.id AND groupID=:groupID
+													WHERE systemID = ss.id AND groupID=?
 													ORDER BY created_at DESC
 													LIMIT 1)
 													as last_scan
@@ -404,12 +387,13 @@ class Controller_Sig extends FrontController {
 												INNER JOIN constellations c ON(c.constellationID=ss.constellation)
 												WHERE ss.id IN (
 													SELECT s.systemID FROM	 systemsigs s
-													WHERE s.sig !='POS' AND s.groupID=:groupID
+													WHERE s.sig !='POS' AND s.groupID=?
 													GROUP BY s.systemID
-												)")
-								->param(':groupID', Auth::$session->group->id)
-								->execute()
-								->as_array();
+												)",
+												[
+													Auth::$session->group->id,
+													Auth::$session->group->id
+												]);
 
 		$this->response->body(json_encode($data));
 	}

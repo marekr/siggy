@@ -11,13 +11,32 @@ class Group extends Model {
      *
      * @var bool
      */
-    public $timestamps = true;
+    public $timestamps = false;
 
-	public $id;
-	public $name;
-	public $isk_balance;
-	public $created_at;
-	public $updated_at;
+	protected $fillable = [
+							'name',
+							'ticker',
+							'password_required',
+							'show_sig_size_col',
+							'default_activity',
+							'password',
+							'stats_enabled',
+							'record_jumps',
+							'stats_sig_add_points',
+							'stats_sig_update_points',
+							'stats_wh_map_points',
+							'stats_pos_add_points',
+							'stats_pos_update_points',
+							'jump_log_enabled',
+							'jump_log_record_names',
+							'jump_log_record_time',
+							'jump_log_display_ship_type',
+							'always_broadcast',
+							'chain_map_show_actives_ships',
+							'allow_map_height_expand',
+							'chainmap_always_show_class',
+							'chainmap_max_characters_shown',
+							];
 
 	public $groupMembers = null;
 	public $chainMaps = null;
@@ -94,19 +113,13 @@ class Group extends Model {
 
 	public static function findAllByGroupMembership(string $type, int $eveID): array
 	{
-		$data = DB::selectOne(Database::SELECT, 'SELECT g.* 
-												FROM groups g
-												JOIN groupmembers gm ON(g.id = gm.groupID)
-												WHERE gm.eveID=? AND gm.memberType=?',[$eveID, $type]);
-
-		$results = [];
-		if($data != null)
-		{
-			foreach($data as $item)
-			{
-				$results[$item['id']] = new Group($item);
-			}
-		}
+		$results = self::join('groupmembers', 'groups.id', '=', 'groupmembers.groupID')
+			->where('groupmembers.eveID', $eveID)
+			->where('groupmembers.memberType', $type)
+			->select('groups.*')
+			->get()
+			->keyBy('id')
+			->all();
 
 		return $results;
 	}
@@ -145,9 +158,10 @@ class Group extends Model {
 
 			foreach($chainmaps as &$c)
 			{
-				$members = DB::select("SELECT gm.memberType, gm.eveID FROM groupmembers gm
-													LEFT JOIN chainmaps_access a ON(gm.id=a.groupmember_id) WHERE chainmap_id=?",[$c->chainmap_id]);
-				$c['access'] = $members;
+				$members = DB::select("SELECT gm.memberType, gm.eveID 
+											FROM groupmembers gm
+									LEFT JOIN chainmaps_access a ON(gm.id=a.groupmember_id) WHERE chainmap_id=?",[$c->chainmap_id]);
+				$c->access = $members;
 			}
 
 			$this->chainMaps = $chainmaps;
@@ -164,26 +178,20 @@ class Group extends Model {
 						 'entryTime' => time()
 						);
 
-		DB::insert('logs', array_keys($insert) )->values(array_values($insert))->execute();
+		DB::table('logs')->insert($insert);
 	}
 
 	public function getCharacterUsageCount(): int
 	{
-		$num_corps = DB::query(Database::SELECT, "SELECT SUM(DISTINCT c.member_count) as total FROM groupmembers gm
+		$num_corps = DB::selectOne("SELECT SUM(DISTINCT c.member_count) as total FROM groupmembers gm
 										LEFT JOIN corporations c ON(gm.eveID = c.id)
-										WHERE gm.groupID=:group AND gm.memberType='corp'")
-										->param(':group', $this->id)
-										->execute()
-										->current();
+										WHERE gm.groupID=:group AND gm.memberType='corp'",[$this->id]);
 
-		$num_corps = $num_corps['total'];
+		$num_corps = $num_corps->total;
 
-		$num_chars = DB::query(Database::SELECT, "SELECT COUNT(DISTINCT eveID) as total FROM groupmembers
-										WHERE groupID=:group AND memberType ='char' ")
-										->param(':group', $this->id)
-										->execute()
-										->current();
-		$num_chars = $num_chars['total'];
+		$num_chars = DB::selectOne("SELECT COUNT(DISTINCT eveID) as total FROM groupmembers
+										WHERE groupID=:group AND memberType ='char' ",[$this->id]);
+		$num_chars = $num_chars->total;
 
 		return ($num_corps + $num_chars);
 	}
@@ -202,15 +210,16 @@ class Group extends Model {
 
 		$duplicate_update_string = $stat .'='. $stat .'+1';
 
-		DB::query(Database::INSERT, 'INSERT INTO stats (`charID`,`charName`,`groupID`,`chainmap_id`,`dayStamp`,`'.$stat.'`)
+		DB::insert('INSERT INTO stats (`charID`,`charName`,`groupID`,`chainmap_id`,`dayStamp`,`'.$stat.'`)
 												VALUES(:charID, :charName, :groupID, :chainmap, :dayStamp, 1)
-												ON DUPLICATE KEY UPDATE '.$duplicate_update_string)
-							->param(':charID',  Auth::$session->character_id )
-							->param(':charName', Auth::$session->character_name )
-							->param(':groupID', $this->id )
-							->param(':chainmap', $acccessData['active_chain_map'] )
-							->param(':dayStamp', miscUtils::getDayStamp() )
-							->execute();
+												ON DUPLICATE KEY UPDATE '.$duplicate_update_string,
+							[
+								'charID' => Auth::$session->character_id,
+								'charName' => Auth::$session->character_name,
+								'groupID' => $this->id ,
+								'chainmap' => $acccessData['active_chain_map'] ,
+								'dayStamp' => miscUtils::getDayStamp()
+							]);
 	}
 
 

@@ -128,7 +128,7 @@ class Controller_Dscan extends FrontController {
 		$this->template->title = "siggy: dscan";
 		$this->template->selectedTab = 'home';
 		$this->template->loggedIn = Auth::loggedIn();
-		$this->template->user = Auth::$user->data;
+		$this->template->user = Auth::$user;
 		$this->template->layoutMode = 'blank';
 
 		$view = View::factory('dscan/view');

@@ -61,7 +61,7 @@ class Controller_Manage_Admin extends Controller_Manage
 		}
 		else
 		{
-			Auth::$user->data['groupID'] = intval($_POST['group']);
+			Auth::$user->groupID = intval($_POST['group']);
 			Auth::$user->save();
 		}
 		

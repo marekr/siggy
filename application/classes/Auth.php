@@ -38,7 +38,6 @@ class Auth {
 			self::$authStatus = AuthStatus::GUEST;
 			return self::$authStatus;
 		}
-		
 
 		if( !self::$user->validateCorpChar() )
 		{

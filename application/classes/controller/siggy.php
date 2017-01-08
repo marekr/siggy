@@ -583,14 +583,7 @@ class Controller_Siggy extends FrontController {
 			{
 				$additional = '';
 
-				$update['sigData'] = DB::select("SELECT id, sig, type, siteID, description, 
-																	created_at, creator, updated_at,lastUpdater,sigSize
-																	FROM systemsigs
-																	WHERE systemID=:id AND groupID=:group",
-								[
-									'id' => $selectedSystemID,
-									'group'=> Auth::$session->group->id
-								]);
+				$update['sigData'] = Signature::findByGroupSystem(Auth::$session->group->id,$selectedSystemID);
 
 				 foreach($update['sigData'] as &$sig)
 				 {
@@ -647,15 +640,15 @@ class Controller_Siggy extends FrontController {
 		$ssoCharacters = Auth::$user->getSSOCharacters();
 		foreach($ssoCharacters as $character)
 		{
-			if( $character['character_id'] != Auth::$session->character_id 
-				&& !$character['always_track_location'] )
+			if( $character->character_id != Auth::$session->character_id 
+				&& !$character->always_track_location )
 			{
 				continue;
 			}
 
-			$charData = Character::find($character['character_id']);
+			$charData = Character::find($character->character_id);
 
-			$currentLocation = CharacterLocation::findWithinCutoff($character['character_id']);
+			$currentLocation = CharacterLocation::findWithinCutoff($character->character_id);
 
 
 			if($charData->canAccessMap(Auth::$session->group->id,Auth::$session->accessData['active_chain_map']))
@@ -670,7 +663,7 @@ class Controller_Siggy extends FrontController {
 					$locationThreshold = Carbon::parse($locationThreshold);
 				}
 
-				$history = CharacterLocationHistory::findNewerThan($character['character_id'], $locationThreshold);
+				$history = CharacterLocationHistory::findNewerThan($character->character_id, $locationThreshold);
 
 				foreach($history as $record)
 				{
@@ -707,7 +700,7 @@ class Controller_Siggy extends FrontController {
 			
 				if( $currentLocation != null )
 				{
-					if( $character['character_id'] == Auth::$session->character_id )
+					if( $character->character_id == Auth::$session->character_id )
 					{
 						$update['location']['id'] = (int)$currentLocation->system_id;
 					}
@@ -729,7 +722,7 @@ class Controller_Siggy extends FrontController {
 														shipType = :shipType,
 														shipName = :shipName',
 										[
-											'charID' => $character['character_id'],
+											'charID' => $character->character_id,
 											'broadcast' => $broadcast,
 											'systemID' => (int)$currentLocation->system_id,
 											'groupID' => Auth::$session->group->id,
@@ -752,8 +745,8 @@ class Controller_Siggy extends FrontController {
 			$chainmaps = array();
 			foreach( Auth::$session->accessibleChainMaps() as $c )
 			{
-				$chainmaps[ $c['chainmap_id'] ] = ['id' => (int)$c['chainmap_id'],
-														'name' => $c['chainmap_name']];
+				$chainmaps[ $c->chainmap_id ] = ['id' => (int)$c->chainmap_id,
+														'name' => $c->chainmap_name];
 			}
 
 			$update['chainmaps'] = $chainmaps;

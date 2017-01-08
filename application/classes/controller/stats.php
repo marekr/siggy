@@ -98,7 +98,7 @@ class Controller_Stats extends FrontController {
 		$this->template->title = "siggy: stats";
 		$this->template->selectedTab = 'stats';
 		$this->template->loggedIn = Auth::loggedIn();
-		$this->template->user = Auth::$user->data;
+		$this->template->user = Auth::$user;
 		$this->template->layoutMode = 'blank';
 	}
 

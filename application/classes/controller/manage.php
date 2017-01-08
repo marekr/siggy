@@ -48,7 +48,7 @@ class Controller_Manage extends Controller
 		if( !Auth::$user->isAdmin() )
 		{
 			$baseSQL .= " JOIN users_group_acl a ON (g.id = a.group_ID)
-							WHERE a.user_id = ".intval( Auth::$user->data['id'] );
+							WHERE a.user_id = ".intval( Auth::$user->id );
 		}
 
 		$baseSQL .= " ORDER BY g.name ASC";
@@ -61,19 +61,19 @@ class Controller_Manage extends Controller
 
 	protected function hasAccess( $action )
 	{
-		if( Auth::$user->data['admin'] )
+		if( Auth::$user->admin )
 		{
 			return TRUE;
 		}
 
-		if( !isset( Auth::$user->perms[ Auth::$user->data['groupID'] ] ) )
+		if( !isset( Auth::$user->perms()[ Auth::$user->groupID ] ) )
 		{
 			return FALSE;
 		}
 
 		if( isset( $this->secure_actions[ $action ] ) )
 		{
-			$perms = Auth::$user->perms[ Auth::$user->data['groupID'] ];
+			$perms = Auth::$user->perms()[ Auth::$user->groupID ];
 			foreach( $perms as $k => $v )
 			{
 				if( $v == 1 )
@@ -99,18 +99,17 @@ class Controller_Manage extends Controller
 		// Execute parent::before first
 		parent::before();
 
-
 		if( !Auth::loggedIn() )
 		{
 			$this->login_required();
 		}
 
-		$groupID = Auth::$user->data['groupID'];
-		$groups = array_keys(Auth::$user->perms);
+		$groupID = Auth::$user->groupID;
+		$groups = array_keys(Auth::$user->perms());
 
 		if( count($groups) > 0 && !in_array($groupID, $groups) )
 		{
-			Auth::$user->data['groupID'] = $groups[0];
+			Auth::$user->groupID = $groups[0];
 			Auth::$user->save();
 		}
 
@@ -131,7 +130,7 @@ class Controller_Manage extends Controller
 			// only load the template if the template has not been set..
 			$this->template = View::factory($this->template);
 
-			$this->template->perms = isset(Auth::$user->perms[ Auth::$user->data['groupID'] ]) ? Auth::$user->perms[ Auth::$user->data['groupID'] ] : array();
+			$this->template->perms = isset(Auth::$user->perms()[ Auth::$user->groupID ]) ? Auth::$user->perms()[ Auth::$user->groupID ] : array();
 			// Initialize empty values
 			// Page title
 			$this->template->title   = '';

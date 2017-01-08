@@ -18,7 +18,7 @@ class Controller_Announcements extends FrontController {
 		$this->template->title = "siggy: announcements";
 		$this->template->selectedTab = "announcements";
 		$this->template->loggedIn = Auth::loggedIn();
-		$this->template->user = Auth::$user->data;
+		$this->template->user = Auth::$user;
 		$this->template->layoutMode = 'blank';
 
 		$resultCount = DB::query(Database::SELECT, "SELECT COUNT(*) as total
