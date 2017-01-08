@@ -46,22 +46,13 @@ class Group extends Model {
 	//todo, implement
 	public $cache_time = 1;
 
-	/*
-	public function save(array $props)
+	public function save(array $options = [])
 	{
-		//todo, remove this compatibility hack
-		$props['last_update'] = time();
+		$this->last_update = time();
 
-		foreach ($props as $key => $value) 
-		{
-    		$this->$key = $value;
-		}
+		parent::save($options);
+	}
 
-		DB::table('groups')
-			->where('id', '=',  $this->id)
-			->update( $props );
-	}*/
-	
 	private static function hashGroupPassword(string $password, string $salt): string
 	{
 		return sha1($password . $salt);

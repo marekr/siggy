@@ -83,7 +83,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 			$chainmap = Chainmap::create($new);
 			$chainmap->rebuild_map_data_cache();
 
-			Auth::$user->group->save([]);
+			Auth::$user->group->save();
 			Auth::$user->group->recacheChainmaps();
 
 			HTTP::redirect('manage/chainmaps/list');
@@ -177,7 +177,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 			}
 
 			//trigger last_update value to change
-			Auth::$user->group->save([]);
+			Auth::$user->group->save();
 			Auth::$user->group->recacheChainmaps();
 
 			HTTP::redirect('manage/group/members');
@@ -223,7 +223,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 			$chainmap->save($update);
 
 			$chainmap->rebuild_map_data_cache();
-			Auth::$user->group->save([]);
+			Auth::$user->group->save();
 			Auth::$user->group->recacheChainmaps();
 
 			HTTP::redirect('manage/chainmaps/list');
@@ -292,7 +292,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 					}
 				}
 				
-				Auth::$user->group->save([]);
+				Auth::$user->group->save();
 				Auth::$user->group->recacheChainmaps();
 				$chainmap->delete();
 

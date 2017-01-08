@@ -256,9 +256,10 @@ class Controller_Manage_Group extends Controller_Manage
 				'memberType' => $_POST['memberType']
 			];
 
-			$member->save($save);
+			$member->fill($save);
+			$member->save();
 
-			Auth::$user->group->save([]);
+			Auth::$user->group->save();
 			Auth::$user->group->recacheMembers();
 
 			HTTP::redirect('manage/group/members');
@@ -293,7 +294,7 @@ class Controller_Manage_Group extends Controller_Manage
 		if ($this->request->method() == HTTP_Request::POST)
 		{
 			//trigger last_update value to change
-			Auth::$user->group->save([]);
+			Auth::$user->group->save();
 			Auth::$user->group->recacheMembers();
 
 			HTTP::redirect('manage/group/members');
