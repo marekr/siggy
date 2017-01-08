@@ -637,7 +637,7 @@ class Controller_Siggy extends FrontController {
 
 		$update = ['location' => [ 'id' => 0] ];
 
-		$ssoCharacters = Auth::$user->getSSOCharacters();
+		$ssoCharacters = Auth::$user->ssoCharacters;
 		foreach($ssoCharacters as $character)
 		{
 			if( $character->character_id != Auth::$session->character_id 

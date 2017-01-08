@@ -106,45 +106,37 @@ class User extends Model {
 		return $this->findSSOCharacter($this->char_id);
 	}
 
-	public function getSSOCharacters()
-	{
-		$characters = DB::select("SELECT * FROM user_ssocharacter WHERE user_id=?",
-								[$this->id]);
-
-		return $characters;
-	}
-
 	public function findSSOCharacter(int $characterId)
 	{
-		$char = DB::selectOne("SELECT * FROM user_ssocharacter WHERE user_id=? AND character_id=?",[$this->id,$characterId]);
+		$char = $this->ssoCharacters()->where('character_id', $characterId)->first();
 
 		return $char;
 	}
 
+	public function ssoCharacters()
+	{
+		return $this->hasMany('UserSSOCharacter');
+	}
+
 	public function removeSSOCharacter(int $characterId)
 	{
-		DB::table('user_ssocharacter')
-			->where('user_id', '=',  $this->id)
-			->where('character_id', '=',  $characterId)
-			->delete();
+		$this->ssoCharacters()->where('character_id', $characterId)->delete();
 
 		return TRUE;
 	}
 
 	public function updateSSOCharacter(int $characterId, $token, $refreshToken, $expiration)
 	{
+		$char = $this->ssoCharacters()->where('character_id', $characterId)->first();
 		$data = [
 			'access_token' => $token,
 			'access_token_expiration' => $expiration,
 			'refresh_token' => $refreshToken,
-			'valid' => 1,
-			'updated_at' => Carbon::now()->toDateTimeString(),
+			'valid' => 1
 		];
 
-		DB::table('user_ssocharacter')
-			->where('user_id', '=',  $this->id)
-			->where('character_id', '=',  $characterId)
-			->update( $data );
+		$char->fill($data);
+		$char->save();
 		
 		return TRUE;
 	}
@@ -158,11 +150,10 @@ class User extends Model {
 			'access_token' => $token,
 			'access_token_expiration' => $expiration,
 			'refresh_token' => $refreshToken,
-			'valid' => 1,
-			'created_at' => Carbon::now()->toDateTimeString(),
+			'valid' => 1
 		];
 
-		DB::table('user_ssocharacter')->insert($insert);
+		$this->ssoCharacters()->create($insert);
 
 		return TRUE;
 	}

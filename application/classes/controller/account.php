@@ -525,7 +525,7 @@ class Controller_Account extends FrontController {
 
 
 		$charID =  Auth::$user->char_id;
-		$ssoChars = Auth::$user->getSSOCharacters();
+		$ssoChars = Auth::$user->ssoCharacters;
 		if( !count($ssoChars) )
 		{
 			HTTP::redirect('/account/connected');
@@ -592,7 +592,7 @@ class Controller_Account extends FrontController {
 		}
 
 		$charID =  Auth::$user->char_id;
-		$ssoChars = Auth::$user->getSSOCharacters();
+		$ssoChars = Auth::$user->ssoCharacters;
 
 		
 		$charData = [];
