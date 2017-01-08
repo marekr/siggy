@@ -75,11 +75,10 @@ class Controller_Siggy extends FrontController {
 		$view->chainMap = $chainMapHTML;
 
 		//load header tools
-        $themes = DB::select("SELECT theme_id, theme_name FROM themes
-                                                WHERE visibility='all' OR (group_id=? AND visibility='group')
-												ORDER BY theme_id ASC", [Auth::$session->group->id]);
-        $view->themes = $themes;
-        $view->settings = $this->template->settings;
+		$themes = Theme::allByGroup(Auth::$session->group->id);
+		
+		$view->themes = $themes;
+		$view->settings = $this->template->settings;
 	}
 
     public function action_save_character_settings()
@@ -101,14 +100,9 @@ class Controller_Siggy extends FrontController {
 			$language = $settingsData['language'];
 			$activity = !empty($settingsData['default_activity']) ? $settingsData['default_activity'] : null;
 
-			$themes = DB::select("SELECT theme_id, theme_name FROM themes
-													WHERE theme_id = :themeID AND (visibility='all' OR (group_id=:group AND visibility='group'))",
-													[
-														'themeID' => $themeID,
-														'group' => Auth::$session->group->id
-													]);
+			$theme = Theme::findByGroup(Auth::$session->group->id, $themeID);
 
-			if( $themes != null )
+			if( $theme != null )
 			{
 				DB::insert('REPLACE INTO character_settings (`char_id`, `theme_id`,`combine_scan_intel`,`zoom`,`language`, `default_activity`)
 							VALUES(:charID, :themeID, :combineScanIntel, :zoom,:language, :defaultActivity)',
