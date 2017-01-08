@@ -48,8 +48,8 @@ class Controller_Manage_Access extends Controller_Manage
 		
 		$group = intval($_POST['group']);
 		
-		if( !Auth::$user->isAdmin()  && !isset( Auth::$user->perms[ $group ] ) &&
-			!( Auth::$user->perms[ $group ]['canManage'] == 1)
+		if( !Auth::$user->isAdmin()  && !isset( Auth::$user->perms()[ $group ] ) &&
+			!( Auth::$user->perms()[ $group ]['canManage'] == 1)
 		) 
 		{
 			HTTP::redirect('manage/access/denied');

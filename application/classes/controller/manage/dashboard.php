@@ -35,7 +35,7 @@ class Controller_Manage_Dashboard extends Controller_Manage
 
 		$view->bind('news', $news);
 		
-		$view->perms = isset(Auth::$user->perms[ Auth::$user->groupID ]) ? Auth::$user->perms[ Auth::$user->groupID ] : [];
+		$view->perms = isset(Auth::$user->perms()[ Auth::$user->groupID ]) ? Auth::$user->perms()[ Auth::$user->groupID ] : [];
 		
 		$members = DB::query(Database::SELECT, "SELECT COUNT(*) as total FROM groupmembers gm 
 												WHERE gm.groupID=:group")

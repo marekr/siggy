@@ -51,7 +51,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<?php if( $loggedIn ): ?>
 
-					<?php if( count(Auth::$user->perms) > 0 ): ?>
+					<?php if( count(Auth::$user->perms()) > 0 ): ?>
 				<li <?php echo ($selectedTab == 'admin' ? 'class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>manage">Admin</a></li>
 					<?php endif; ?>
 				<li class="dropdown">

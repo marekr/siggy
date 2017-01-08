@@ -139,7 +139,6 @@ class Controller_Pages extends FrontController {
 							Auth::$user->groupID = $group->id;
 							Auth::$user->save();
 
-							Auth::$user->loadByID( Auth::$user->id );
 							Auth::$session->reloadUserSession();
 
 							HTTP::redirect('pages/createGroup/3');

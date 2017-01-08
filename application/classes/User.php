@@ -3,9 +3,11 @@
 use Carbon\Carbon;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 
 class User extends Model {
 	public $perms = null;
+	public $timestamps = false;
 
 	public $activeChainMap = 0;
 
@@ -183,7 +185,7 @@ class User extends Model {
 	{
 		if($this->perms == null)
 		{
-			$perms = DB::select('SELECT * FROM users_group_acl WHERE user_id = ?', [$this->id]);
+			$perms = UserGroupPermission::findByUser($this->id);
 
 			$this->perms = $perms;
 		}

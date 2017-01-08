@@ -46,6 +46,15 @@ class Group extends Model {
 	//todo, implement
 	public $cache_time = 1;
 
+	protected static function boot()
+	{
+		parent::boot();
+		
+		static::creating( function ($model) {
+			$model->setCreatedAt($model->freshTimestamp());
+		});
+	}
+
 	public function save(array $options = [])
 	{
 		$this->last_update = time();

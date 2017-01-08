@@ -86,7 +86,7 @@
 						<li><a id="global-notes-button"><span class="glyphicon glyphicon-folder-close"></span> Notes</a></li>
 						<li><a target="_blank" href="<?php echo URL::base(TRUE, TRUE); ?>stats"><span class="glyphicon glyphicon-list"></span> Stats</a></li>
 						<li id="settings-button"><a><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
-						<?php if( count(Auth::$user->perms) > 0 ): ?>
+						<?php if( count(Auth::$user->perms()) > 0 ): ?>
 						<li><a href="<?php echo URL::base(TRUE, TRUE);?>manage"><span class="glyphicon glyphicon-home"></span> Admin</a></li>
 						<?php endif; ?>
 					</ul>
