@@ -225,6 +225,12 @@ class Controller_Sig extends FrontController {
 			$id = intval($sigData['id']);
 
 			$sig = Signature::findWithGroup(Auth::$session->group->id,$id);
+			if($sig == null)
+			{
+				$this->response->body(json_encode('0'));
+				return;
+			}
+
 			$sig->fill($update);
 			$sig->save();
 
@@ -279,7 +285,7 @@ class Controller_Sig extends FrontController {
 				$toSysID = $chainmap->find_system_by_name($sig['wh_destination']);
 				if( !$toSysID )
 					continue;
-
+				
 				//permission check
 				$sigEntry = Signature::findWithGroup(Auth::$session->group->id, $sig['id']);
 
@@ -347,7 +353,7 @@ class Controller_Sig extends FrontController {
 			$wormholeHashes = [];
 			foreach($whlinks as $link)
 			{
-				$wormholeHashes[] = $link['wormhole_hash'];
+				$wormholeHashes[] = $link->wormhole_hash;
 			}
 			$wormholeHashes = array_unique($wormholeHashes);
 

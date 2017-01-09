@@ -13,6 +13,13 @@ class Signature extends Model
 	public $character = null;
 	public $chainmap_wormholes = [];
 
+	protected $appends = ['chainmap_wormholes'];
+
+	public function getchainmapWormholesAttribute()
+	{
+		return $this->chainmap_wormholes;
+	}
+
 	public static function findByGroupSystem(int $groupId, int $system): array
 	{
 		return self::where('systemID',$system)
