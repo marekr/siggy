@@ -47,7 +47,7 @@ class Controller_Sig extends FrontController {
 
 			$insert['creator'] = Auth::$session->character_name;
 
-			$id = DB::table('systemsigs')->insert($insert);
+			$id = DB::table('systemsigs')->insertGetId($insert);
 
 			$this->chainmap->update_system($insert['systemID'], array('lastUpdate' => time(),
 																'lastActive' => time() )
@@ -57,8 +57,8 @@ class Controller_Sig extends FrontController {
 
 			$this->notifierCheck($insert);
 
-			$insert['id'] = $id[0];
-			$this->response->body(json_encode(array($id[0] => $insert )));
+			$insert['id'] = $id;
+			$this->response->body(json_encode(array($id => $insert )));
 		}
 	}
 
@@ -155,12 +155,12 @@ class Controller_Sig extends FrontController {
 							$doingUpdate = TRUE;
 							$update = array(
 											'updated_at' => Carbon::now()->toDateTimeString(),
-											'siteID' => ( $sig['siteID'] != 0 ) ? $sig['siteID'] : $sigData['siteID'],
+											'siteID' => ( $sig['siteID'] != 0 ) ? $sig['siteID'] : $sigData->siteID,
 											'type' => $sig['type'],
 											'lastUpdater' => Auth::$session->character_name
 											);
 
-							DB::table('systemsigs')->where('id', '=', $sigData['id'])->update($update);
+							DB::table('systemsigs')->where('id', '=', $sigData->id)->update($update);
 						}
 					}
 					else
@@ -354,10 +354,10 @@ class Controller_Sig extends FrontController {
 
 			groupUtils::deleteLinkedSigWormholes(Auth::$session->group->id, $wormholeHashes);
 
-			$message = Auth::$session->character_name.' deleted sig "'.$sigData['sig'].'" from system '.$sigData['systemName'];;
-			if( $sigData['type'] != 'none' )
+			$message = Auth::$session->character_name.' deleted sig "'.$sigData->sig.'" from system '.$sigData->systemName;
+			if( $sigData->type != 'none' )
 			{
-				$message .= '" which was of type '.strtoupper($sigData['type']);
+				$message .= '" which was of type '.strtoupper($sigData->type);
 			}
 
 			Auth::$session->group->logAction('delsig', $message);
