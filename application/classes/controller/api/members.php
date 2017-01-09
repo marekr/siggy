@@ -22,12 +22,12 @@ class Controller_Api_Members extends Controller_Api
 				$chainmaps = array();
 				foreach( $group->chainMaps() as $chainmap )
 				{
-					foreach( $chainmap['access'] as $access )
+					foreach( $chainmap->access as $access )
 					{
-						if( $access['eveID'] == $memberEntry['eve_id']
-						&& $access['memberType'] == $memberEntry['type'])
+						if( $access->eveID == $memberEntry['eve_id']
+						&& $access->memberType == $memberEntry['type'])
 						{
-							$chainmaps[] = (int)$chainmap['chainmap_id'];
+							$chainmaps[] = (int)$chainmap->chainmap_id;
 						}
 					}
 				}

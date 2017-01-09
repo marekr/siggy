@@ -15,10 +15,10 @@ class Controller_Api_Chainmaps extends Controller_Api
 			{
 				foreach($group->chainMaps() as $c)
 				{
-					$hs = explode(",", $c['chainmap_homesystems']);
+					$hs = explode(",", $c->chainmap_homesystems);
 					$output[] = [
-									'id' => (int)$c['chainmap_id'],
-									'name' => $c['chainmap_name'],
+									'id' => (int)$c->chainmap_id,
+									'name' => $c->chainmap_name,
 									'hs' => $hs
 								];
 				}
