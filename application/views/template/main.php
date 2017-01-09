@@ -78,7 +78,7 @@
 					<!--     <li><a class="activity-menu-option" data-activity="astrolabe"><span class="glyphicon glyphicon-map-marker"></span> Astrolabe</a></li> -->
 						<li><a class="activity-menu-option" data-activity="scannedsystems" style="display:none"><span class="glyphicon glyphicon-list"></span> Scanned Systems</a></li>
 						<li><a class="activity-menu-option" data-activity="thera"><span class="glyphicon glyphicon-magnet"></span> Thera</a></li>
-						<li><a class="activity-menu-option" data-activity="homestead"><span class="glyphicon glyphicon-globe"></span> Homestead</a></li>
+					<!--  	<li><a class="activity-menu-option" data-activity="homestead"><span class="glyphicon glyphicon-globe"></span> Homestead</a></li>-->
 						<li><a class="activity-menu-option" data-activity="notifications"><span class="glyphicon glyphicon-bell"></span> Notifications</a></li>
 						<li><a class="activity-menu-option" data-activity="search"><span class="glyphicon glyphicon-search"></span> Search</a></li>
 						<li role="separator" class="divider"></li>
