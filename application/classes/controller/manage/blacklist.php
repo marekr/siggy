@@ -49,9 +49,14 @@ class Controller_Manage_Blacklist extends Controller_Manage
 	public function action_remove()
 	{
 		$id = $this->request->param('id');
-		GroupBlacklistCharacter::destroy(Auth::$user->groupID, $id);
-				
-		Message::add('success', 'Blacklisted character removed succesfully');
+		$entry = GroupBlackListCharacter::findByGroupAndChar(Auth::$user->groupID, $id);
+
+		if($entry != null)
+		{
+			$entry->delete();
+			Message::add('success', 'Blacklisted character removed succesfully');
+		}
+
 		HTTP::redirect('manage/blacklist/list');
 	}
 
