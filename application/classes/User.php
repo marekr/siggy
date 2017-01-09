@@ -154,12 +154,12 @@ class User extends Model {
 
 	public static function findByUsername(string $username)
 	{
-		return self::whereRaw('LOWER(username) = ?', [$username])->first();
+		return self::whereRaw('LOWER(username) = ?', [strtolower($username)])->first();
 	}
 
 	public static function findByEmail(string $email)
 	{
-		return self::whereRaw('LOWER(email) = ?', [$username])->first();
+		return self::whereRaw('LOWER(email) = ?', [strtolower($email)])->first();
 	}
 
 	public function perms()
