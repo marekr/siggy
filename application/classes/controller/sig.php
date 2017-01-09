@@ -338,6 +338,11 @@ class Controller_Sig extends FrontController {
 														'groupID' => Auth::$session->group->id,
 														'id' => $id
 													]);
+			if($sigData == null)
+			{
+				$this->response->body(json_encode('0'));
+				return;
+			}
 
 			DB::table('systemsigs')
 				->where('groupID', '=', Auth::$session->group->id)
