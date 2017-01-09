@@ -454,7 +454,7 @@ class Controller_Account extends FrontController {
 			}
 			else
 			{
-				$user = User::findByEmail($_POST['reset_email']);
+				$user = User::findByEmail($_REQUEST['reset_email']);
 
 				if( $user->reset_token != $_REQUEST['reset_token'] )
 				{
