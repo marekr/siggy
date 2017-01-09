@@ -304,12 +304,12 @@ class Controller_Siggy extends FrontController {
 										FROM wormholes 
 										WHERE hash=:hash AND group_id=:group AND chainmap_id=:chainmap",
 										[
-											'hash', $whHash,
-											'group', Auth::$session->group->id,
-											'chainmap', Auth::$session->accessData['active_chain_map']
+											'hash' => $whHash,
+											'group' => Auth::$session->group->id,
+											'chainmap' => Auth::$session->accessData['active_chain_map']
 										]);
 
-		if( !isset($connection['hash'] ) )
+		if( $connection == null )
 		{
 			$notifierSystems = array();
 			if( !$this->chainmap->system_is_mapped($origin) )
@@ -801,16 +801,16 @@ class Controller_Siggy extends FrontController {
 						$actives = [];
 						foreach( $activesData as $act )
 						{
-							if( strlen( $act['charName']) > 15 )
+							if( strlen( $act->charName) > 15 )
 							{
-								$act['charName'] = substr($act['charName'], 0,12).'...';
+								$act->charName = substr($act->charName, 0,12).'...';
 							}
 
-							if( $act['shipName'] == NULL )
+							if( $act->shipName == NULL )
 							{
-								$act['shipName'] = "";
+								$act->shipName = "";
 							}
-							$actives[ $act['currentSystemID'] ][] = array('name' => $act['charName'], 'ship' => $act['shipName']);
+							$actives[ $act->currentSystemID ][] = array('name' => $act->charName, 'ship' => $act->shipName);
 						}
 
 						$update['chainMap']['actives'] = $actives;
