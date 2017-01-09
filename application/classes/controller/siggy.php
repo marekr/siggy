@@ -293,7 +293,7 @@ class Controller_Siggy extends FrontController {
 													FROM eve_mapsolarsystemjumps
 													WHERE (fromSolarSystemID=? AND toSolarSystemID=?) OR
 														 (fromSolarSystemID=? AND toSolarSystemID=?)",[$origin, $dest, $dest, $origin]);
-		if( $kspaceJump == null )
+		if( $kspaceJump != null )
 		{
 			return;
 		}
@@ -403,12 +403,12 @@ class Controller_Siggy extends FrontController {
 												'resident', $data->resident_name
 											]);
 
-			if( isset($pos['pos_id']) )
+			if( $pos != null )
 			{
 				$this->createSystemResidentNotification(
 														$notifier,
-														$pos['system_id'],
-														$pos['system_name'],
+														$pos->system_id,
+														$pos->system_name,
 														$data->resident_name,
 														Auth::$session->character_name,
 														Auth::$session->character_id,
