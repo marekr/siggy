@@ -713,8 +713,8 @@ class Controller_Siggy extends FrontController {
 												ON DUPLICATE KEY UPDATE lastBeep = :lastBeep2,
 														currentSystemID = :systemID2,
 														broadcast = :broadcast2,
-														shipType2 = :shipType,
-														shipName2 = :shipName',
+														shipType = :shipType2,
+														shipName = :shipName2',
 										[
 											'charID' => $character->character_id,
 											'broadcast' => $broadcast,
