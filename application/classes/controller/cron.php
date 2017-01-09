@@ -182,10 +182,9 @@ class Controller_Cron extends Controller
 
 	public function action_billingCharges()
 	{
-		$groups = DB::select()->from('groups')->where('billable','=',1)->execute()->as_array();
-		foreach($groups as $g)
+		$groups = Group::where('billable',1)->get();
+		foreach($groups as $group)
 		{
-			$group = Group::find($g['id']);
 			$numUsers = $group->getCharacterUsageCount();
 			if( $numUsers == 0 )
 			{

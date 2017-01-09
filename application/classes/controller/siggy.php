@@ -570,8 +570,8 @@ class Controller_Siggy extends FrontController {
 													'group' => Auth::$session->group->id,
 													'chainmap' => Auth::$session->accessData['active_chain_map']
 												]);
-
-			$recordedLastUpdate = ($activeSystem->lastUpdate > 0) ? $activeSystem->lastUpdate: time();
+								
+			$recordedLastUpdate = ($activeSystem != null) ? $activeSystem->lastUpdate: time();
 
 			if( ($_POST['lastUpdate'] < $recordedLastUpdate) || ( $_POST['lastUpdate'] == 0 ) || $forceUpdate || $update['systemUpdate'] )
 			{
