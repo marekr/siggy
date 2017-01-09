@@ -114,16 +114,15 @@ class Controller_Sig extends FrontController {
 
 			$systemID = intval($_POST['systemID']);
 
-			$addedSigs = array();
-
+			$addedSigs = [];
 
 			$deleteNonExisting = isset($_POST['delete_nonexistent_sigs']) ? (int)$_POST['delete_nonexistent_sigs'] : 0;
 			if( $deleteNonExisting )
 			{
-				$sigList = array();
+				$sigList = [];
 				foreach( $sigs as $sig )
 				{
-					$sigList[] = Database::instance()->escape($sig['sig']);
+					$sigList[] = $sig['sig'];
 				}
 
 				DB::table('systemsigs')
