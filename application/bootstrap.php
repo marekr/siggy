@@ -190,17 +190,30 @@ else
 }
 Database::$default = $dbName;
 
+
 $dbConfig = Kohana::$config->load('database')->$dbName;
 $db = new DB;
-$db->addConnection([
+
+$connConfig = [
 	'driver' => 'mysql',
 	'host' => $dbConfig['connection']['hostname'],
 	'database' => $dbConfig['connection']['database'],
 	'username' => $dbConfig['connection']['username'],
 	'password' => $dbConfig['connection']['password'],
 	'charset' => 'utf8',
-	'collation' => 'utf8_unicode_ci',
-]);
+	'collation' => 'utf8_unicode_ci'
+];
+
+if( Kohana::$environment == Kohana::PRODUCTION)
+{
+	$connConfig['options']   = [
+			PDO::ATTR_PERSISTENT => true,
+	];
+}
+
+$db->addConnection($connConfig);
+
+
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
 $db->setEventDispatcher(new Dispatcher(new Container));
