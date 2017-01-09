@@ -710,11 +710,11 @@ class Controller_Siggy extends FrontController {
 
 					DB::insert('INSERT INTO chartracker (`charID`, `currentSystemID`,`groupID`,`chainmap_id`,`lastBeep`, `broadcast`,`shipType`, `shipName`)
 												VALUES(:charID, :systemID, :groupID, :chainmap, :lastBeep, :broadcast, :shipType, :shipName)
-												ON DUPLICATE KEY UPDATE lastBeep = :lastBeep,
-														currentSystemID = :systemID,
-														broadcast = :broadcast,
-														shipType = :shipType,
-														shipName = :shipName',
+												ON DUPLICATE KEY UPDATE lastBeep = :lastBeep2,
+														currentSystemID = :systemID2,
+														broadcast = :broadcast2,
+														shipType2 = :shipType,
+														shipName2 = :shipName',
 										[
 											'charID' => $character->character_id,
 											'broadcast' => $broadcast,
@@ -723,7 +723,12 @@ class Controller_Siggy extends FrontController {
 											'shipType' => 0,
 											'shipName' => '',
 											'chainmap' => Auth::$session->accessData['active_chain_map'],
-											'lastBeep' => time()
+											'lastBeep' => time(),
+											'lastBeep2' => time(),
+											'systemID2' => (int)$currentLocation->system_id,
+											'broadcast2' => $broadcast,
+											'shipType2' => 0,
+											'shipName2' => ''
 										]);
 				}
 				
