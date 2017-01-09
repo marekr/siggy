@@ -1,66 +1,28 @@
 <?php
 
 use Carbon\Carbon;
-use Pheal\Pheal;
+use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Database\Eloquent\Model;
+use Mpociot\HasCompositeKey\HasCompositeKey;
 
-class CharacterGroup {
-	public $character_id;
-	public $group_id;
+class CharacterGroup extends Model {
+    use HasCompositeKey;
 
-	public $group = null;
-	public $character = null;
-
-	public function __construct($props = [])
-	{
-		foreach ($props as $key => $value) 
-		{
-    		$this->$key = $value;
-		}
-	}
-	
-	public function save($props)
-	{
-		foreach ($props as $key => $value) 
-		{
-			$this->$key = $value;
-		}
-
-		DB::update('character_group')
-			->set( $props )
-			->where('character_id', '=',  $this->character_id)
-			->where('group_id', '=',  $this->group_id)
-			->execute();
-	}
+	public $timestamps = false;
+	public $table = 'character_group';
+	public $dates = ['last_group_access_at'];
+	protected $primaryKey = ['character_id','group_id'];
 
 	public function updateGroupAccess()
 	{
-		$this->save(['last_group_access_at' => Carbon::now()->toDateTimeString()]);
-	}
-
-	public static function create($props)
-	{
-		$result = DB::insert('character_group', array_keys($props) )
-				->values(array_values($props))
-				->execute();
-
-		$props['id'] = $result[0];
-		return new CharacterGroup($props);
+		$this->last_group_access_at = Carbon::now()->toDateTimeString();
+		$this->save();
 	}
 
 	public static function find(int $character, int $group)
 	{
-		$data = DB::query(Database::SELECT, 'SELECT * FROM character_group 
-												WHERE character_id=:id AND group_id=:group_id')
-												->param(':id', $character)
-												->param(':group_id', $group)
-												->execute()
-												->current();
-
-		if($data != null)
-		{
-			return new CharacterGroup($data);
-		}
-
-		return null;
+		return self::where('character_id', $character)
+					->where('group_id', $group)
+					->first();
 	}
 }
