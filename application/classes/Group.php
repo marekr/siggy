@@ -153,8 +153,11 @@ class Group extends Model {
 	{
 		if($this->chainMaps == null)
 		{
-			$chainmaps = DB::select("SELECT * FROM chainmaps WHERE group_id = ?",[$this->id]);
-					//			->as_array('chainmap_id');
+			$chainmaps = DB::table('chainmaps')
+							->where('group_id', $this->id)
+							->get()
+							->keyBy('chainmap_id')
+							->all();
 
 			foreach($chainmaps as &$c)
 			{

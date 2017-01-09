@@ -554,7 +554,6 @@ class Controller_Chainmap extends FrontController {
 	public function action_switch()
 	{
 		$desired_chainmap = intval($_POST['chainmap_id']);
-
 		$selected_id = 0;
 		$default_id = 0;
 		foreach(Auth::$session->accessibleChainMaps() as $c)

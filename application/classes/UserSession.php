@@ -344,10 +344,10 @@ class UserSession {
 
 		if( isset($chainmaps[ $desired_id ]) )
 		{
-			foreach($chainmaps[ $desired_id ]['access'] as $p)
+			foreach($chainmaps[ $desired_id ]->access as $p)
 			{
-				if( ($p['memberType'] == 'corp' && $p['eveID'] == $this->corporation_id)
-						|| ($p['memberType'] == 'char' && $p['eveID'] == $this->character_id) )
+				if( ($p->memberType == 'corp' && $p->eveID == $this->corporation_id)
+						|| ($p->memberType == 'char' && $p->eveID == $this->character_id) )
 				{
 					return $desired_id;
 				}
