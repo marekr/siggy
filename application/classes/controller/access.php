@@ -8,13 +8,19 @@ class Controller_Access extends FrontController {
 
 	public function action_group_password()
 	{
+		if(Auth::$session->group == null)
+		{
+			//kick them off where hopefully the frontpagecontroller pushes them to the right spot
+			HTTP::redirect('/');
+		}
+
 		$view = View::factory('access/groupPassword');
 		$view->groupData = Auth::$session->accessData;
 		$view->trusted = $this->trusted;
 		$view->wrongPass = false;
 		$this->template->siggyMode = false;
 
-		$groupID = intval(Auth::$session->group->id);
+		$groupID = Auth::$session->group->id;
 
 		if( isset($_POST['group_password']) )
 		{
@@ -39,6 +45,12 @@ class Controller_Access extends FrontController {
 
 	public function action_blacklisted()
 	{
+		if(Auth::$session->group == null)
+		{
+			//kick them off where hopefully the frontpagecontroller pushes them to the right spot
+			HTTP::redirect('/');
+		}
+
 		$view = View::factory('access/blacklisted');
 
 		$view->groupName = Auth::$session->group->name;
