@@ -398,9 +398,9 @@ class Controller_Siggy extends FrontController {
 											AND pos.pos_system_id=:system_id
 											AND pos.pos_owner LIKE :resident" . $posOnlineSQL,
 											[
-												'group_id', Auth::$session->group->id,
-												'system_id', $system,
-												'resident', $data->resident_name
+												'group_id' => Auth::$session->group->id,
+												'system_id' => $system,
+												'resident' => $data->resident_name
 											]);
 
 			if( $pos != null )
