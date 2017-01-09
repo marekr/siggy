@@ -184,7 +184,7 @@ class Controller_Siggy extends FrontController {
 
 		if( count( $staticData ) > 0 )
 		{
-			$systemData['staticData'] = $staticData;
+			$systemData->staticData = $staticData;
 		}
 
 		$end = miscUtils::getHourStamp();
