@@ -559,9 +559,9 @@ class Controller_Chainmap extends FrontController {
 		$default_id = 0;
 		foreach(Auth::$session->accessibleChainMaps() as $c)
 		{
-			if( $c['chainmap_id'] == $desired_chainmap )
+			if( $c->chainmap_id == $desired_chainmap )
 			{
-				$selected_id = $c['chainmap_id'];
+				$selected_id = $c->chainmap_id;
 			}
 		}
 

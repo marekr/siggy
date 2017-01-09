@@ -35,8 +35,6 @@ class User extends Model {
 									'group' => $groupID,
 									'pass' => $pass
 								]);
-
-		$this->recacheSavedPasswords();
 	}
 
 	public function groupPasswords()
