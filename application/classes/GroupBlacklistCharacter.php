@@ -1,44 +1,26 @@
 <?php
 
 use Carbon\Carbon;
+use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Database\Eloquent\Model;
 
-class GroupBlacklistCharacter
+class GroupBlacklistCharacter extends Model
 {
-	public $id;
-	public $character_id;
-	public $group_id;
-	public $reason;
-	public $created;
+	public $timestamps = true;
+	public $dates = ['created_at'];
+	public $table = 'group_character_blacklist';
 
+	protected $fill = [
+		'group_id',
+		'character_id',
+		'reason'
+	];
+	
 	public $character = null;
 
-	public function __construct($props)
+	public function setUpdatedAt($value)
 	{
-		foreach ($props as $key => $value) 
-		{
-			$this->$key = $value;
-		}
-	}
-
-	public function save(array $props)
-	{
-		foreach ($props as $key => $value) 
-		{
-			$this->$key = $value;
-		}
-
-		DB::update('group_character_blacklist')
-			->set( $props )
-			->where('id', '=',  $this->id)
-			->execute();
-	}
-
-	public static function destroy(int $groupID, int $id)
-	{
-		DB::delete('group_character_blacklist')
-			->where('id', '=', $id)
-			->where('group_id','=', $groupID)
-			->execute();
+		//disable timestamp
 	}
 
 	public function character()
@@ -51,52 +33,17 @@ class GroupBlacklistCharacter
 		return $this->character;
 	}
 
-	public static function create(array $props): GroupBlacklistCharacter
-	{
-		$props['created_at'] = Carbon::now()->toDateTimeString();
-
-		$result = DB::insert('group_character_blacklist', array_keys($props) )
-				->values(array_values($props))
-				->execute();
-
-		$props['id'] = $result[0];
-		return new GroupBlacklistCharacter($props);
-	}
-
 	public static function findByGroup(int $groupId): array
 	{
-		$data = DB::query(Database::SELECT, 'SELECT * FROM group_character_blacklist WHERE group_id=:id')
-												->param(':id', $groupId)
-												->execute()
-												->as_array();
-
-		$results = [];
-		if($data != null)
-		{
-			foreach($data as $item)
-			{
-				$results[] = new GroupBlacklistCharacter($item);
-			}
-		}
-
-		return $results;
+		return self::where('group_id', $groupId)
+			->get()
+			->all();
 	}
-	
+
 	public static function findByGroupAndChar(int $groupId, int $charId)
 	{
-		$data = DB::query(Database::SELECT, 'SELECT * FROM group_character_blacklist 
-												WHERE character_id =:charID 
-													AND group_id = :groupId')
-												->param(':groupId', $groupId)
-												->param(":charID", $charId)
-												->execute()
-												->as_array();
-
-		if($data != null)
-		{
-			return new GroupBlacklistCharacter($data);
-		}
-
-		return null;
+		return self::where('group_id', $groupId)
+			->where('character_id', $charId)
+			->first();
 	}
 }
