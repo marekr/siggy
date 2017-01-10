@@ -101,14 +101,7 @@ class Group extends Model {
 
 	public static function findByPaymentCode(string $code)
 	{
-		$data = DB::selectOne(Database::SELECT, 'SELECT * FROM groups WHERE payment_code=?',[$code]);
-
-		if($data != null)
-		{
-			return new Group($data);
-		}
-
-		return null;
+		return self::where('payment_code', $code)->first();
 	}
 
 	public static function findAllByGroupMembership(string $type, int $eveID): array
@@ -228,20 +221,16 @@ class Group extends Model {
 
 	public function applyISKCharge(float $amount)
 	{
-		DB::update('groups')
-			->set( array( 'isk_balance' => DB::expr('isk_balance - :amount') ) )
-			->param(':amount', $amount)
+		DB::table('groups')
 			->where('id', '=',  $this->id)
-			->execute();
+			->update( ['isk_balance' => DB::raw('isk_balance - '.$amount)] );
 	}
 
 	public function applyISKPayment(float $amount)
 	{
-		DB::update('groups')
-			->set( array( 'isk_balance' => DB::expr('isk_balance + :amount'), 'billable' => 1 ) )
-			->param(':amount', $amount)
+		DB::table('groups')
 			->where('id', '=',  $this->id)
-			->execute();
+			->update( [ 'isk_balance' => DB::raw('isk_balance + '.$amount), 'billable' => 1 ] );
 	}
 
 

@@ -210,7 +210,10 @@ class Controller_Sig extends FrontController {
 		if( !empty($sigData) && isset($sigData['id']) )
 		{
 			$update['sig'] = strtoupper($sigData['sig']);
-			$update['description'] = htmlspecialchars($sigData['desc']);
+			if(isset($sigData['desc']))
+			{
+				$update['description'] = htmlspecialchars($sigData['desc']);
+			}
 			$update['updated_at'] = Carbon::now()->toDateTimeString();
 			$update['siteID'] = isset($sigData['siteID']) ? intval($sigData['siteID']) : 0;
 			$update['type'] = $sigData['type'];

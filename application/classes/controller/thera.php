@@ -45,9 +45,9 @@ class Controller_Thera extends FrontController {
 			{
 				foreach($exits as &$exit)
 				{
-					if( isset($exit['system']['id']) && $exit['system']['id'] < 31000000 )
+					if( isset($exit['system']->id) && $exit['system']->id < 31000000 )
 					{
-						$path = $pather->shortest($targetID, $exit['system']['id']);
+						$path = $pather->shortest($targetID, $exit['system']->id);
 						$exit['jumps'] = $path['distance'];
 					}
 				}
@@ -160,11 +160,11 @@ class Controller_Thera extends FrontController {
 
 			foreach( $exits as $exit )
 			{
-				if( isset($exit['system']['id']) )
+				if( isset($exit['system']->id) )
 				{
 					try
 					{
-						$chainmap->add_system_to_map(31000005, $exit['system']['id']);
+						$chainmap->add_system_to_map(31000005, $exit['system']->id);
 					}
 					catch (Exception $e)
 					{

@@ -189,7 +189,7 @@ class Controller_Manage_Group extends Controller_Manage
 					}
 					else
 					{
-						$chainmaps = Chainmap::where('group', Auth::$user->group->id)->get()->all();
+						$chainmaps = Chainmap::where('group_id', Auth::$user->group->id)->get()->all();
 					}
 
 					if( $chainmaps == null)

@@ -564,7 +564,7 @@ class Chainmap extends Model {
 
 		if($tmp != null)
 		{
-			return $tmp->id;
+			return $tmp->systemID;
 		}
 
 

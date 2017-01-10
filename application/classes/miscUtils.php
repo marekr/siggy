@@ -197,9 +197,10 @@ final class miscUtils {
 	static function storeDBCacheItem( $key, $value )
 	{
 		DB::insert("INSERT INTO cache_store (`cacheKey`,`cacheValue`) 
-			VALUES (:key, :value)  ON DUPLICATE KEY UPDATE cacheValue=:value",[
+			VALUES (:key, :value)  ON DUPLICATE KEY UPDATE cacheValue=:value2",[
 			'key' => $key,
-			'value' => $value
+			'value' => $value,
+			'value2' => $value
 		]);
 	}
 

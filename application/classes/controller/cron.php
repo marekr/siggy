@@ -50,7 +50,7 @@ class Controller_Cron extends Controller
 						preg_match('/^siggy-([a-zA-Z0-9]{14,})/', $entryCode, $matches);
 						if( count($matches) > 0 && isset($matches[1]) )
 						{
-							$res = DB::selectOne(Database::SELECT, 'SELECT eveRefID FROM billing_payments WHERE eveRefID=?',[$trans['refID']]);
+							$res = DB::selectOne('SELECT eveRefID FROM billing_payments WHERE eveRefID=?',[$trans['refID']]);
 
 							if( $res == null )
 							{

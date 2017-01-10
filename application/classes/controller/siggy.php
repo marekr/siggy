@@ -693,7 +693,14 @@ class Controller_Siggy extends FrontController {
 															]);
 						}
 
-						$this->__wormholeJump($record->current_system_id, $record->previous_system_id);
+						try
+						{
+						
+							$this->__wormholeJump($record->current_system_id, $record->previous_system_id);
+						}
+						catch(Exception $e)
+						{
+						}
 					}
 				}
 
@@ -738,7 +745,8 @@ class Controller_Siggy extends FrontController {
 										]);
 				}
 				
-				$charData->save(['location_processed_at' => Carbon::now()->toDateTimeString()]);
+				$charData->location_processed_at = Carbon::now()->toDateTimeString();
+				$charData->save();
 			}
 		}
 
