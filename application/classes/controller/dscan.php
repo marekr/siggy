@@ -48,7 +48,7 @@ class Controller_Dscan extends FrontController {
 			if( !isset($this->dscan_item_cache[ $entry[1] ] ) )
 			{
 				$itemData = DB::selectOne('SELECT typeID FROM invtypes
-										WHERE typeName LIKE ?', $entry[1]);
+										WHERE typeName LIKE ?', [$entry[1]]);
 
 				if( isset($itemData->typeID) )
 				{
@@ -81,8 +81,7 @@ class Controller_Dscan extends FrontController {
 				'dscan_added_by' => Auth::$session->character_name
 			);
 
-			$dscanID = DB::insert('dscan', array_keys($data) )
-						->values(array_values($data))->execute();
+			$dscanID = DB::table('dscan')->insert($data);
 			//print_r($this->output_array);
 			foreach( $this->output_array as $rec )
 			{
@@ -90,8 +89,7 @@ class Controller_Dscan extends FrontController {
 								 'type_id' => $rec['type_id'],
 								'record_name' => htmlentities($rec['name']),
 								'item_distance' => $rec['item_distance'] );
-				$posID = DB::insert('dscan_records', array_keys($insert) )
-						->values(array_values($insert))->execute();
+				$posID = DB::table('dscan_records')->insert($insert);
 			}
 		}
 
