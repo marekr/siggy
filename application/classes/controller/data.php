@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Capsule\Manager as DB;
+
 class Controller_Data extends FrontController {
 
 	public function before()
@@ -18,11 +20,9 @@ class Controller_Data extends FrontController {
 		$this->response->headers('Content-Type','application/json');
 		$this->response->headers('Cache-Control','no-cache, must-revalidate');
 
-        $systems = DB::query(Database::SELECT, "SELECT ss.id, ss.name, r.regionName as region_name, ss.sec, ss.sysClass as class
+        $systems = DB::select("SELECT ss.id, ss.name, r.regionName as region_name, ss.sec, ss.sysClass as class
 													FROM solarsystems ss
-													LEFT JOIN regions r ON(ss.region = r.regionID)")
-								->execute()
-								->as_array();
+													LEFT JOIN regions r ON(ss.region = r.regionID)");
 
 		$this->response->body(json_encode($systems,JSON_NUMERIC_CHECK));
 	}
@@ -36,58 +36,42 @@ class Controller_Data extends FrontController {
 
 		$output = array();
 
-        $wormholeTypes = DB::query(Database::SELECT, "SELECT * FROM statics")
-								->execute()
-								->as_array();
+        $wormholeTypes = DB::select("SELECT * FROM statics");
 
 		$types = array();
 		foreach($wormholeTypes as &$row)
 		{
-			$row['dest_class'] = (int)$row['dest_class'];
-			$row['id'] = (int)$row['id'];
-			$row['mass'] = (float)$row['mass'];
-			$row['jump_mass'] = (int)$row['jump_mass'];
-			$row['regen'] = (int)$row['regen'];
-			$row['sig_size'] = (float)$row['sig_size'];
-			$row['lifetime'] = (float)$row['lifetime'];
-
-			$type[ $row['id'] ] = $row;
+			$type[ $row->id ] = $row;
 		}
 
 		$output['wormhole_types'] = $type;
 
-        $whStaticMap = DB::query(Database::SELECT, "SELECT * FROM wormhole_class_map
-                                                ORDER BY position ASC")
-								->execute()
-								->as_array();
+        $whStaticMap = DB::select("SELECT * FROM wormhole_class_map
+                                                ORDER BY position ASC");
 
 		$outWormholes = array();
 		foreach($whStaticMap as $entry)
 		{
-			$outWormholes[ $entry['system_class'] ][] = array('static_id' => (int)$entry['static_id'], 'position' => (int)$entry['position']);
+			$outWormholes[ $entry->system_class ][] = array('static_id' => (int)$entry->static_id, 'position' => (int)$entry->position);
 		}
 
 		$output['wormholes'] = $outWormholes;
 
 
-		$siteTypes = DB::query(Database::SELECT, "SELECT * FROM sites")
-								->execute()
-								->as_array();
+		$siteTypes = DB::select("SELECT * FROM sites");
 
 		foreach($siteTypes as $site)
 		{
-			$output['sites'][$site['id']] = array('id' => (int)$site['id'], 'name' => $site['name'], 'type' => $site['type'], 'description' => $site['description']);
+			$output['sites'][$site->id] = array('id' => (int)$site->id, 'name' => $site->name, 'type' => $site->type, 'description' => $site->description);
 		}
 
 
-        $extra = DB::query(Database::SELECT, "SELECT s.id, scm.system_class, s.name, s.type FROM site_class_map scm
-													LEFT JOIN sites s ON(s.id=scm.site_id)")
-								->execute()
-								->as_array();
+        $extra = DB::select("SELECT s.id, scm.system_class, s.name, s.type FROM site_class_map scm
+													LEFT JOIN sites s ON(s.id=scm.site_id)");
 
 		foreach($extra as $site)
 		{
-			$output['maps'][ $site['type'] ][ $site['system_class'] ][] = $site['id'];
+			$output['maps'][ $site->type ][ $site->system_class ][] = $site->id;
 		}
 
 		$this->response->body(json_encode($output));

@@ -105,27 +105,27 @@ class FrontController extends Controller {
 
 	protected function loadSettings()
 	{
-		$default_settings = ['theme_id' => 0,'combine_scan_intel' => 0, 'zoom' => '1.0', 'language' => 'en', 'default_activity' => '' ];
-
 		if( Auth::$session->character_id != 0)
 		{
-				$settings = DB::query(Database::SELECT, "SELECT * FROM character_settings
-								WHERE char_id=:charID")
-							->param(':charID', Auth::$session->character_id)
-							->execute()
-							->current();
+				$settings = CharacterSetting::find(Auth::$session->character_id);
 
-				if( isset($settings['char_id']) )
+				if( $settings != null )
 				{
-					if( $settings['language'] != 'en' )
+					if( $settings->language != 'en' )
 					{
-						i18n::lang($settings['language']);
+						i18n::lang($settings->language);
 					}
 
 					return $settings;
 				}
 		}
 
+		$default_settings = new stdClass;
+		$default_settings->theme_id = 0;
+		$default_settings->combine_scan_intel = 0;
+		$default_settings->zoom = 1;
+		$default_settings->language = 'en';
+		$default_settings->default_activity = '';
 		return $default_settings;
 	}
 

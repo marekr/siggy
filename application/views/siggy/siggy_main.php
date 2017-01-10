@@ -397,11 +397,11 @@
 				defaultActivity:  '<?php echo $group->default_activity; ?>',
 				sessionID: '<?php echo Auth::$session->id; ?>',
 				charsettings: {
-					themeID: <?php echo $settings['theme_id']; ?>,
-					combineScanIntel: <?php echo $settings['combine_scan_intel']; ?>,
-					zoom: <?php echo $settings['zoom']; ?>,
-					language: '<?php echo $settings['language']; ?>',
-					defaultActivity: '<?php echo $settings['default_activity']; ?>'
+					themeID: <?php echo $settings->theme_id; ?>,
+					combineScanIntel: <?php echo $settings->combine_scan_intel; ?>,
+					zoom: 1,
+					language: '<?php echo $settings->language; ?>',
+					defaultActivity: '<?php echo $settings->default_activity; ?>'
 				},
 				sigtable: {
 					showSigSizeCol: <?php echo ( $group->show_sig_size_col ? 'true' : 'false' ); ?>

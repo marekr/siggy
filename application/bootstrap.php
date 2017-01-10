@@ -174,7 +174,7 @@ Kohana::$config->attach(new Config_File);
  */
 Kohana::modules(array(
 	 'cache'      => MODPATH.'cache',      // Caching with multiple backends
-	 'database'   => MODPATH.'database',   // Database access
+	// 'database'   => MODPATH.'database',   // Database access
 	 'restful_api' => MODPATH.'restful-api',        // Object Relationship Mapping
 	));
 
@@ -188,7 +188,7 @@ else
 {
 	$dbName = 'default';
 }
-Database::$default = $dbName;
+//Database::$default = $dbName;
 
 
 $dbConfig = Kohana::$config->load('database')->$dbName;

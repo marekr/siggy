@@ -1,60 +1,60 @@
 <?php
 
+use Illuminate\Database\Capsule\Manager as DB;
+
 class Notification {
 
-	public static function latest($cutoff, $groupID, $charID = 0, $offset = 0, $limit = 5 )
+	public static function latest($cutoff, int $groupID, int $charID = 0, int $offset = 0, int $limit = 5 )
 	{
-		$data = DB::query(Database::SELECT, "SELECT id, data, type, created_at FROM notifications
-											WHERE (( group_id=:group AND
+		$data = DB::select("SELECT id, data, type, created_at FROM notifications
+											WHERE (( group_id=:group1 AND
 												character_id=0 )
 											OR
-											( group_id=:group AND
+											( group_id=:group2 AND
 										 	character_id=:char )
 											OR
 											( group_id=0 AND
 										 	character_id= 0 ) )
 											AND created_at > :cutoff
 											ORDER BY created_at DESC
-											LIMIT :offset, :limit")
-						->param(':cutoff', $cutoff)
-						->param(':group', $groupID)
-						->param(':char', $charID)
-						->param(':limit', $limit)
-						->param(':offset', $offset)
-						->execute()
-						->as_array();
+											LIMIT :offset, :limit",[
+												'cutoff' => $cutoff,
+												'group1' => $groupID,
+												'group2' => $groupID,
+												'char' => $charID,
+												'limit' => $limit,
+												'offset' => $offset
+											]);
 						
 		foreach($data as &$d)
 		{
-			$d['id'] = (int)$d['id'];
-			$d['created_at'] = (int)$d['created_at'];
-			$d['data'] = json_decode($d['data']);
+			$d->data = json_decode($d->data);
 		}
 		return $data;
 	}
 
-	public static function total($cutoff, $groupID, $charID = 0)
+	public static function total($cutoff, int $groupID, int $charID = 0)
 	{
-		$data = DB::query(Database::SELECT, "SELECT COUNT(*) as sum FROM notifications
-											WHERE (( group_id=:group AND
+		$data = DB::selectOne("SELECT COUNT(*) as sum FROM notifications
+											WHERE (( group_id=:group1 AND
 												character_id=0 )
 											OR
-											( group_id=:group AND
+											( group_id=:group2 AND
 										 	character_id=:char )
 											OR
 											( group_id=0 AND
 										 	character_id= 0 ))
-											AND created_at > :cutoff")
-						->param(':cutoff', $cutoff)
-						->param(':group', $groupID)
-						->param(':char', $charID)
-						->execute()
-						->current();
+											AND created_at > :cutoff",[
+												'cutoff' => $cutoff,
+												'group1' => $groupID,
+												'group2' => $groupID,
+												'char' => $charID
+											]);
 		$total = 0;
 
-		if( isset($data['sum']))
+		if( $data != null )
 		{
-			$total = $data['sum'];
+			$total = $data->sum;
 		}
 		return $total;
 	}
@@ -83,8 +83,6 @@ class Notification {
 							'created_at' => time()
 							);
 
-		$dscanID = DB::insert('notifications', array_keys($notification) )
-							->values(array_values($notification) )
-							->execute();
+		$dscanID = DB::table('notifications')->insert($notification);
 	}
 }
