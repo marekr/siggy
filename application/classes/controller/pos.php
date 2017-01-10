@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Capsule\Manager as DB;
+
 class Controller_Pos extends FrontController {
 	public function action_add()
 	{
@@ -40,7 +42,7 @@ class Controller_Pos extends FrontController {
 		}
 
 
-		$posID = DB::insert('pos_tracker', array_keys($data) )->values(array_values($data))->execute();
+		$posID = DB::table('pos_tracker')->insert($data);
 
 		Auth::$session->group->incrementStat('pos_adds', Auth::$session->accessData);
 	}
@@ -49,15 +51,14 @@ class Controller_Pos extends FrontController {
 	{
 		$id = $_POST['pos_id'];
 
-		$pos = DB::query(Database::SELECT, "SELECT pos.pos_id,pos.pos_system_id,ss.name as system_name
+		$pos = DB::selectOne("SELECT pos.pos_id,pos.pos_system_id,ss.name as system_name
 										FROM pos_tracker pos
 										INNER JOIN solarsystems ss ON ss.id = pos.pos_system_id
-										WHERE pos.pos_id=:pos_id AND pos.group_id=:group_id")
-								->param(':group_id', Auth::$session->group->id)
-								->param(':pos_id', $id)
-								->execute()->current();
-
-		if( !isset($pos['pos_id']) )
+										WHERE pos.pos_id=:pos_id AND pos.group_id=:group_id",[
+											'group_id' => Auth::$session->group->id,
+											'pos_id' => $id
+										]);
+		if( $pos == null )
 		{
 			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid POS ID'));
 			exit();
@@ -85,11 +86,11 @@ class Controller_Pos extends FrontController {
 		}
 
 
-		DB::update('pos_tracker')->set( $data )->where('pos_id', '=', $pos['pos_id'])->execute();
+		DB::table('pos_tracker')->where('pos_id', '=', $pos->pos_id)->update( $data );
 
 		Auth::$session->group->incrementStat('pos_updates', Auth::$session->accessData);
 
-		$log_message = sprintf("%s edit POS in system %s", Auth::$session->character_name, $pos['system_name']);
+		$log_message = sprintf("%s edit POS in system %s", Auth::$session->character_name, $pos->system_name);
 		Auth::$session->group->logAction('editpos', $log_message);
 	}
 
@@ -97,15 +98,14 @@ class Controller_Pos extends FrontController {
 	{
 		$id = $_POST['pos_id'];
 
-		$pos = DB::query(Database::SELECT, "SELECT pos.pos_id,pos.pos_system_id,ss.name as system_name
+		$pos = DB::selectOne("SELECT pos.pos_id,pos.pos_system_id,ss.name as system_name
 										FROM pos_tracker pos
 										INNER JOIN solarsystems ss ON ss.id = pos.pos_system_id
-										WHERE pos.pos_id=:pos_id AND pos.group_id=:group_id")
-								->param(':group_id', Auth::$session->group->id)
-								->param(':pos_id', $id)
-								->execute()->current();
-
-		if( !isset($pos['pos_id']) )
+										WHERE pos.pos_id=:pos_id AND pos.group_id=:group_id",[
+											'group_id' => Auth::$session->group->id,
+											'pos_id' => $id
+										]);
+		if( $pos == null )
 		{
 			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid POS ID'));
 			exit();
@@ -113,7 +113,7 @@ class Controller_Pos extends FrontController {
 
 		DB::delete('pos_tracker')->where('pos_id', '=', $id)->execute();
 
-		$log_message = sprintf("%s deleted POS from system %s", Auth::$session->character_name, $pos['system_name']);
+		$log_message = sprintf("%s deleted POS from system %s", Auth::$session->character_name, $pos->system_name);
 		Auth::$session->group->logAction('delpos', $log_message);
 	}
 }

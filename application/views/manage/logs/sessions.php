@@ -33,13 +33,13 @@
 			</thead>
 			<?php foreach($sess['data'] as $d): ?>
 			<tr>
-				<td><?php echo $d['user_id']; ?></td>
-				<td><?php echo $d['chainmap_name']; ?></td>
-				<td><?php echo $d['created_at']; ?></td>
+				<td><?php echo $d->user_id; ?></td>
+				<td><?php echo $d->chainmap_name; ?></td>
+				<td><?php echo $d->created_at; ?></td>
 				<td>
-				<?php echo $d['ip_address']; ?>
+				<?php echo $d->ip_address; ?>
 				</td>
-				<td><?php $d['updated_at']; ?></td>
+				<td><?php $d->updated_at; ?></td>
 			</tr>
 			<?php endforeach; ?>
         </table>

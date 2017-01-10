@@ -41,9 +41,9 @@ You <strong>must</strong> enter the following text as the reason:
 	<tbody>
 		<?php foreach( $charges as $c ): ?>
 		<tr>
-			<td><?php echo miscUtils::getDateTimeString($c['date']); ?></td>
-			<td>-<?php echo number_format($c['amount']); ?></td>
-			<td><?php echo $c['message']; ?></td>
+			<td><?php echo miscUtils::getDateTimeString($c->date); ?></td>
+			<td>-<?php echo number_format($c->amount); ?></td>
+			<td><?php echo $c->message; ?></td>
 		</tr>
 		<?php endforeach ?>
 	</tbody>
@@ -62,10 +62,10 @@ You <strong>must</strong> enter the following text as the reason:
 	<tbody>
 		<?php foreach( $payments as $p ): ?>
 		<tr>
-			<td><?php echo miscUtils::getDateTimeString($p['paymentProcessedTime']); ?></td>
-			<td><?php echo miscUtils::getDateTimeString($p['paymentTime']); ?></td>
-			<td><?php echo number_format($p['paymentAmount']); ?></td>
-			<td><?php echo $p['payeeName']; ?></td>
+			<td><?php echo miscUtils::getDateTimeString($p->paymentProcessedTime); ?></td>
+			<td><?php echo miscUtils::getDateTimeString($p->paymentTime); ?></td>
+			<td><?php echo number_format($p->paymentAmount); ?></td>
+			<td><?php echo $p->payeeName; ?></td>
 		</tr>
 		<?php endforeach ?>
 	</tbody>

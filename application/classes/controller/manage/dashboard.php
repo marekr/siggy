@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Capsule\Manager as DB;
+
 require_once APPPATH.'classes/mapUtils.php';
 require_once APPPATH.'classes/miscUtils.php';
 
@@ -30,20 +32,16 @@ class Controller_Manage_Dashboard extends Controller_Manage
 		$view = View::factory('manage/dashboard/index');
 
 
-		$news = DB::query(Database::SELECT, "SELECT * FROM announcements WHERE visibility = 'manage' OR visibility = 'all' ORDER BY datePublished DESC LIMIT 0,3")
-									->execute()->as_array();
+		$news = DB::select("SELECT * FROM announcements WHERE visibility = 'manage' OR visibility = 'all' ORDER BY datePublished DESC LIMIT 0,3");
 
 		$view->bind('news', $news);
 		
 		$view->perms = isset(Auth::$user->perms()[ Auth::$user->groupID ]) ? Auth::$user->perms()[ Auth::$user->groupID ] : [];
 		
-		$members = DB::query(Database::SELECT, "SELECT COUNT(*) as total FROM groupmembers gm 
-												WHERE gm.groupID=:group")
-						->param(':group', Auth::$user->group->id)
-						->execute()
-						->current();
+		$members = DB::selectOne("SELECT COUNT(*) as total FROM groupmembers gm 
+												WHERE gm.groupID=?",[Auth::$user->group->id]);
 							
-		$view->set('member_count', $members['total'] );
+		$view->set('member_count', $members->total );
 		$view->set('group', Auth::$user->group );
 
 		$this->template->content = $view;

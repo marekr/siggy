@@ -26,9 +26,9 @@
 
 <?php foreach($news as $n): ?>
 <div class="well">
-	<p class="pull-right"><small> <?php echo date("Y-m-d g:m", $n['datePublished']); ?></small></p>
-	<h4><?php echo $n['title']; ?></h4>
-	<p><?php echo $n['content']; ?></p>
+	<p class="pull-right"><small> <?php echo date("Y-m-d g:m", $n->datePublished); ?></small></p>
+	<h4><?php echo $n->title; ?></h4>
+	<p><?php echo $n->content; ?></p>
 </div>
 <?php endforeach; ?>
 

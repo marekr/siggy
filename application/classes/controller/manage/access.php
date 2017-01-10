@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Database\Capsule\Manager as DB;
 use Carbon\Carbon;
 
 class Controller_Manage_Access extends Controller_Manage
@@ -70,11 +71,9 @@ class Controller_Manage_Access extends Controller_Manage
 		$view = $this->template->content = View::factory('manage/access/configure');
 		
 		
-		$users = DB::query(Database::SELECT, 
-							"SELECT u.username,ua.* FROM users u
+		$users = DB::select("SELECT u.username,ua.* FROM users u
 							JOIN users_group_acl ua ON(u.id = ua.user_id)
-                            WHERE ua.group_id = :groupID"
-							)->param(":groupID", Auth::$user->groupID)->execute()->as_array();
+                            WHERE ua.group_id = :groupID",['groupID' => Auth::$user->groupID]);
 		
 		$view->users = $users;
 	}
@@ -83,14 +82,12 @@ class Controller_Manage_Access extends Controller_Manage
     {
         $id = $this->request->param('id');
         
-        $count = DB::query(Database::SELECT, 
-							"SELECT COUNT(ua.user_id) as total FROM users u
+        $count = DB::selectOne("SELECT COUNT(ua.user_id) as total FROM users u
 							JOIN users_group_acl ua ON(u.id = ua.user_id)
-                            WHERE ua.group_id = :groupID"
-							)->param(":groupID", Auth::$user->groupID)->execute()->current();
+                            WHERE ua.group_id = :groupID",['groupID' => Auth::$user->groupID]);
                            
                             
-        if( $count['total'] <= 1 )
+        if( $count->total <= 1 )
         {
             Message::add('error', 'You cannot remove the last user with management access. Another user must be added first.');
 			HTTP::redirect('manage/access/configure');
@@ -98,7 +95,10 @@ class Controller_Manage_Access extends Controller_Manage
         
         $id = $this->request->param('id');
         
-        DB::delete('users_group_acl')->where('user_id', '=', $id)->where('group_id','=', Auth::$user->groupID)->execute();
+        DB::table('users_group_acl')
+			->where('user_id', '=', $id)
+			->where('group_id','=', Auth::$user->groupID)
+			->delete();
         Message::add('success', 'User access removed succesfully');
         HTTP::redirect('manage/access/configure');
     }
@@ -139,7 +139,7 @@ class Controller_Manage_Access extends Controller_Manage
                         );
                 
                 
-                DB::insert('users_group_acl', array_keys($save) )->values(array_values($save))->execute();
+                DB::table('users_group_acl')->insert($save);
                 
                 Message::add('success', 'User access added succesfully');
                 HTTP::redirect('manage/access/configure');
@@ -160,13 +160,15 @@ class Controller_Manage_Access extends Controller_Manage
         
         $id = $this->request->param('id');
         
-        $data = DB::query(Database::SELECT, 
-							"SELECT u.username,ua.* FROM users u
-							JOIN users_group_acl ua ON(u.id = ua.user_id)
-                            WHERE ua.user_id = :id AND ua.group_id = :groupID"
-							)->param(":id", $id)->param(":groupID", Auth::$user->groupID)->execute()->current();
+        $data = DB::selectOne("SELECT u.username,ua.* FROM users u
+								JOIN users_group_acl ua ON(u.id = ua.user_id)
+								WHERE ua.user_id = :id AND ua.group_id = :groupID",
+								[
+									'id' => $id,
+									'groupID' => Auth::$user->group->id
+								]);
                             
-        if( !count($data) )
+        if( $data == null )
         {
             Message::add('error', 'Invalid user selected.');
 			HTTP::redirect('manage/access/configure');
@@ -183,7 +185,7 @@ class Controller_Manage_Access extends Controller_Manage
 						'updated_at' => Carbon::now()->toDateTimeString()
                     );
 			
-            DB::update('users_group_acl')->set( $update )->where( 'user_id', '=', $id )->where('group_id','=',Auth::$user->groupID)->execute();
+            DB::table('users_group_acl')->where( 'user_id', '=', $id )->where('group_id','=',Auth::$user->groupID)->update( $update );
             
             
             Message::add('success', 'User access edited succesfully');
@@ -194,7 +196,7 @@ class Controller_Manage_Access extends Controller_Manage
             $view = $this->template->content = View::factory('manage/access/accessform');
             $view->mode = 'edit';
             $view->id = $id;
-            $view->bind('data', $data);
+			$view->data = json_decode(json_encode($data), true);
             $view->errors = array();
         }
     }

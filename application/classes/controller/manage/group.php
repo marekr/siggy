@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Capsule\Manager as DB;
+
 require_once APPPATH.'classes/mapUtils.php';
 require_once APPPATH.'classes/miscUtils.php';
 
@@ -59,26 +61,23 @@ class Controller_Manage_Group extends Controller_Manage
 
 		$group = Auth::$user->group;
 
-		$chainmaps = DB::query(Database::SELECT, "SELECT * FROM chainmaps WHERE group_id=:group")
-						->param(':group', Auth::$user->groupID)
-						->execute()
-						->as_array('chainmap_id');
+		$chainmaps = Chainmap::where('group_id', Auth::$user->group->id)
+						->get()
+						->keyBy('chainmap_id')
+						->all();
 
 
 		foreach($chainmaps as $c)
 		{
 			$html = View::factory('manage/group/members_table');
 
-			$members = DB::query(Database::SELECT, "SELECT gm.* FROM groupmembers gm
+			$members = DB::select("SELECT gm.* FROM groupmembers gm
 													LEFT JOIN chainmaps_access a ON(gm.id=a.groupmember_id)
-													WHERE chainmap_id=:chainmap")
-							->param(':chainmap', $c['chainmap_id'])
-							->execute()
-							->as_array();
+													WHERE chainmap_id=?",[$c->chainmap_id]);
 			$html->set('members', $members);
-			$html->set('chainmap_id', $c['chainmap_id']);
+			$html->set('chainmap_id', $c->chainmap_id);
 
-			$membersHTML[ $c['chainmap_id'] ] = $html;
+			$membersHTML[ $c->chainmap_id ] = $html;
 		}
 
 		$view->set('group', $group );
@@ -150,7 +149,7 @@ class Controller_Manage_Group extends Controller_Manage
 						$insert['group_id'] = Auth::$user->groupID;
 						$insert['chainmap_id'] = intval($_POST['chainmap_id']);
 						$insert['groupmember_id'] = $member->id;
-						DB::insert('chainmaps_access', array_keys($insert) )->values(array_values($insert))->execute();
+						DB::table('chainmaps_access')->insert($insert);
 					}
 
 					Auth::$user->group->save();
@@ -176,28 +175,24 @@ class Controller_Manage_Group extends Controller_Manage
 					$chainmaps = array();
 					if( $member != null )
 					{
-						$chainmaps = DB::query(Database::SELECT, "SELECT * FROM chainmaps
-																	WHERE group_id=:group AND
+						$chainmaps = DB::select("SELECT * FROM chainmaps
+																	WHERE group_id=:group1 AND
 																	chainmap_id NOT IN(
 																		SELECT chainmap_id FROM chainmaps_access
-																		WHERE group_id=:group AND groupmember_id=:member
+																		WHERE group_id=:group2 AND groupmember_id=:member
 																	)
-																	")
-										->param(':group', Auth::$user->groupID)
-										->param(':member', $member->id)
-										->execute()
-										->as_array();
+																	",[
+																		'group1' => Auth::$user->group->id,
+																		'group2' => Auth::$user->group->id,
+																		'member' => $member->id
+																	]);
 					}
 					else
 					{
-						$chainmaps = DB::query(Database::SELECT, "SELECT * FROM chainmaps
-																	WHERE group_id=:group")
-										->param(':group', Auth::$user->groupID)
-										->execute()
-										->as_array();
+						$chainmaps = Chainmap::where('group', Auth::$user->group->id)->get()->all();
 					}
 
-					if( !count($chainmaps) )
+					if( $chainmaps == null)
 					{
 						Message::add('error', __('This member already has access to all chain maps possible'));
 						HTTP::redirect('manage/group/addMember');

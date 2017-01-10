@@ -14,9 +14,9 @@
 	<tbody>
 	<?php foreach($users as $user): ?>
 		<tr>
-			<td><?php echo $user['username']; ?></td>
-			<td><?php echo Html::anchor('manage/access/edit/'.$user['user_id'], __('<i class="icon-pencil"></i>&nbsp;Edit'), array('class' => 'btn btn-xs btn-default')); ?>
-			<?php echo Html::anchor('manage/access/remove/'.$user['user_id'], __('<i class="icon-trash"></i>&nbsp;Remove'), array('class' => 'btn btn-xs btn-danger')); ?>
+			<td><?php echo $user->username; ?></td>
+			<td><?php echo Html::anchor('manage/access/edit/'.$user->user_id, __('<i class="icon-pencil"></i>&nbsp;Edit'), array('class' => 'btn btn-xs btn-default')); ?>
+			<?php echo Html::anchor('manage/access/remove/'.$user->user_id, __('<i class="icon-trash"></i>&nbsp;Remove'), array('class' => 'btn btn-xs btn-danger')); ?>
 			</td>
 		</tr>
 		<?php endforeach; ?>

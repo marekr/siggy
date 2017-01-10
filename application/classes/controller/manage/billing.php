@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Capsule\Manager as DB;
+
 require_once APPPATH.'classes/mapUtils.php';
 require_once APPPATH.'classes/miscUtils.php';
 
@@ -45,12 +47,10 @@ class Controller_Manage_Billing extends Controller_Manage
 		
 		
 		$payments = array();
-		$payments = DB::query(Database::SELECT, "SELECT * FROM billing_payments WHERE groupID=:group ORDER BY paymentID DESC LIMIT 0,10")
-										->param(':group', Auth::$user->groupID)->execute()->as_array();
+		$payments = DB::select("SELECT * FROM billing_payments WHERE groupID=:group ORDER BY paymentID DESC LIMIT 0,10",['group' => Auth::$user->group->id]);
 		
 		$charges = array();
-		$charges = DB::query(Database::SELECT, "SELECT * FROM billing_charges WHERE groupID=:group ORDER BY chargeID DESC LIMIT 0,10")
-										->param(':group', Auth::$user->groupID)->execute()->as_array();
+		$charges = DB::select("SELECT * FROM billing_charges WHERE groupID=:group ORDER BY chargeID DESC LIMIT 0,10",['group' => Auth::$user->group->id]);
 	  
 		$view = View::factory('manage/billing/overview');
 		$view->bind('payments', $payments);

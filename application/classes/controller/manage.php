@@ -1,5 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+use Illuminate\Database\Capsule\Manager as DB;
+
 
 require_once APPPATH.'classes/auth.php';
 
@@ -54,7 +56,7 @@ class Controller_Manage extends Controller
 		$baseSQL .= " ORDER BY g.name ASC";
 
 
-		$groups = DB::query(Database::SELECT, $baseSQL)->execute()->as_array();
+		$groups = DB::select($baseSQL);
 
 		return $groups;
 	}

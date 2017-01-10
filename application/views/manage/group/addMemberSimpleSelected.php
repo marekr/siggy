@@ -2,7 +2,7 @@
 $select = array();
 foreach($chainmaps as $c )
 {
-	$select[$c['chainmap_id']] = $c['chainmap_name'];
+	$select[$c->chainmap_id] = $c->chainmap_name;
 }
 
 $type = array('corp' => 'Corp', 'char' => 'Character');

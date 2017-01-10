@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Capsule\Manager as DB;
+
 require_once APPPATH.'classes/mapUtils.php';
 require_once APPPATH.'classes/miscUtils.php';
 require_once APPPATH.'classes/ZebraPagination2.php';
@@ -50,13 +52,10 @@ class Controller_Manage_Logs extends Controller_Manage
 	public function action_sessions()
 	{
 		$sessions = [];
-		$sessions = DB::query(Database::SELECT, "SELECT ss.*,cm.chainmap_name,c.name as character_name FROM sessions ss
+		$sessions = DB::select("SELECT ss.*,cm.chainmap_name,c.name as character_name FROM sessions ss
 												LEFT JOIN chainmaps cm ON(cm.chainmap_id = ss.chainmap_id)
 												LEFT JOIN characters c ON(c.id=ss.character_id)
-												WHERE ss.group_id=:group ORDER BY ss.updated_at DESC")
-							  ->param(':group', Auth::$user->groupID)
-							  ->execute()
-							  ->as_array();
+												WHERE ss.group_id=? ORDER BY ss.updated_at DESC",[Auth::$user->group->id]);
 
 		$view = View::factory('manage/logs/sessions');
 		
@@ -64,12 +63,12 @@ class Controller_Manage_Logs extends Controller_Manage
 		$sessData = [];
 		foreach( $sessions as $sess )
 		{
-			$charID = $sess['character_id'];
+			$charID = $sess->character_id;
 			if( !isset($sessData[ $charID ] ) )
 			{
 				$sessData[ $charID ]['charID'] = $charID;
-				$sessData[ $charID ]['charName'] = $sess['character_name'];
-				$sessData[ $charID ]['lastBeep'] = $sess['updated_at'];
+				$sessData[ $charID ]['charName'] = $sess->character_name;
+				$sessData[ $charID ]['lastBeep'] = $sess->updated_at;
 			}
 			
 			$sessData[ $charID ]['data'][] = $sess;
@@ -115,14 +114,13 @@ class Controller_Manage_Logs extends Controller_Manage
 
 		if( isset($_GET['search']) )
 		{
-			$extraSQL .= " AND message LIKE ". Database::instance()->quote("%".$_GET['search']."%");
+			$extraSQL .= " AND message LIKE ". DB::connection()->getPdo()->quote("%".$_GET['search']."%");
 		}
 
 
-		$logsTotal = DB::query(Database::SELECT, "SELECT COUNT(*) as total FROM logs WHERE groupID=:group " . $extraSQL . " ORDER BY logID DESC")
-					  ->param(':group', Auth::$user->groupID)->execute()->current();
+		$logsTotal = DB::selectOne("SELECT COUNT(*) as total FROM logs WHERE groupID=? " . $extraSQL . " ORDER BY logID DESC",[Auth::$user->group->id]);
 
-		$logsTotal = $logsTotal['total'];
+		$logsTotal = $logsTotal->total;
 
 		$pagination = new ZebraPagination2();
 		$pagination->records($logsTotal);
@@ -133,9 +131,8 @@ class Controller_Manage_Logs extends Controller_Manage
 			
 		$offset = $pagination->next_page_offset();		
 		  
-		$logs = array();
-		$logs = DB::query(Database::SELECT, "SELECT * FROM logs WHERE groupID=:group " . $extraSQL . " ORDER BY logID DESC LIMIT ".$offset.",20")
-					  ->param(':group', Auth::$user->groupID)->execute()->as_array();
+		$logs = [];
+		$logs = DB::select("SELECT * FROM logs WHERE groupID=? " . $extraSQL . " ORDER BY logID DESC LIMIT ".$offset.",20",[Auth::$user->group->id]);
 
 		$view = View::factory('manage/logs/activity');
 		$view->bind('logs', $logs);
