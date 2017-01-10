@@ -1,73 +1,27 @@
 <?php
 
 use Carbon\Carbon;
+use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
-class Chainmap {
+class Chainmap extends Model {
 
-	public $id = 0;
-	public $data = [];
-	private $group_id = 0;
-
-	public function __construct(array $props)
+	public $timestamps = false;
+	protected $primaryKey = 'chainmap_id';
+	
+	public function getIdAttribute()
 	{
-		foreach ($props as $key => $value) 
-		{
-			$this->$key = $value;
-		}
-
-		$this->id = $props['chainmap_id'];
-		$this->data = $props;
+		return $this->chainmap_id;
 	}
 
 	public static function find(int $chainmapId, int $groupId)
 	{		
-		$data = DB::query(Database::SELECT, "SELECT * FROM chainmaps
-											  WHERE chainmap_id=:chainmap_id AND group_id=:group")
-						->param(':chainmap_id', $chainmapId)
-						->param(':group', $groupId)
-						->execute()
-						->current();
+		$map = self::where('chainmap_id',$chainmapId)
+				->where('group_id', $groupId)
+				->first();
 
-		if($data != null)
-		{
-			return new Chainmap($data);
-		}
-
-		return null;
-	}
-
-	public function save(array $props)
-	{
-		foreach ($props as $key => $value) 
-		{
-    		$this->$key = $value;
-		}
-
-		DB::update('chainmaps')
-			->set( $props )
-			->where('chainmap_id', '=',  $this->id)
-			->execute();
-
-		//keep in sync, just in case
-		$this->id = $this->chainmap_id;
-	}
-
-	public static function create(array $props): Chainmap
-	{
-		$result = DB::insert('chainmaps', array_keys($props) )
-				->values(array_values($props))
-				->execute();
-
-		$props['chainmap_id'] = $result[0];
-		return new Chainmap($props);
-	}
-
-	public function delete()
-	{
-		DB::query(Database::DELETE, 'DELETE FROM chainmaps
-										WHERE chainmap_id=:id')
-						->param(':id', $this->id)
-						->execute();
+		return $map;
 	}
 
 	public function get_map_cache()
@@ -76,6 +30,9 @@ class Chainmap {
 
 		$cache_name = 'map_data_cache-'.$this->id;
 
+			$map_data = $this->rebuild_map_data_cache();
+
+			return $map_data;
 		if( $map_data = $cache->get( $cache_name, FALSE ) )
 		{
 			return $map_data;
@@ -94,7 +51,7 @@ class Chainmap {
 
 		$data = array();
 
-		$wormholes = DB::query(Database::SELECT, "SELECT w.`hash`,
+		$wormholes = DB::select("SELECT w.`hash`,
 														w.to_system_id,
 														w.from_system_id,
 			 											w.eol,
@@ -111,96 +68,79 @@ class Chainmap {
 			 										FROM wormholes AS w
 													LEFT JOIN statics AS s ON(s.id=w.wh_type_id)
 													WHERE group_id=:group
-													AND chainmap_id=:chainmap")
-								 ->param(':group', $this->group_id)
-								 ->param(':chainmap', $this->id)
-								 ->execute()
-								 ->as_array('hash');
+													AND chainmap_id=:chainmap",[
+														'group' => $this->group_id,
+														'chainmap' => $this->id
+													]);
 
-
+		$wormholes = new Collection($wormholes);
+		$wormholes = $wormholes->keyBy('hash')->all();
 		$systemsToPoll = array();
 		$wormholeHashes = array();
 		foreach( $wormholes as $k => $wormhole )
 		{
 			/* Include all the group tracked jumps from all chainmaps since this is important not to trap oneself out */
-			$jumpTotal  = DB::query(Database::SELECT, "SELECT COALESCE(SUM(s.mass),0) as total
+			$jumpTotal  = DB::selectOne("SELECT COALESCE(SUM(s.mass),0) as total
 														FROM wormholetracker wt
 														LEFT JOIN ships as s ON s.shipID = wt.shipTypeID
-														WHERE wt.group_id = :groupID AND wt.wormhole_hash = :hash")
-											->param(':groupID', $this->group_id)
-											->param(':hash', $wormhole['hash'])
-											->execute()
-											->current();
+														WHERE wt.group_id = :groupID AND wt.wormhole_hash = :hash",
+														[
+															'groupID' => $this->group_id,
+															'hash' => $wormhole->hash
+														]);
 
-			$wormholes[$k]['total_tracked_mass'] = $jumpTotal['total'];
+			$wormholes[$k]->total_tracked_mass = $jumpTotal->total;
 
-			$systemsToPoll[] = $wormhole['to_system_id'];
-			$systemsToPoll[] = $wormhole['from_system_id'];
-			$wormholeHashes[] = $wormhole['hash'];
+			$systemsToPoll[] = $wormhole->to_system_id;
+			$systemsToPoll[] = $wormhole->from_system_id;
+			$wormholeHashes[] = $wormhole->hash;
 		}
 		$data['wormholes'] = $wormholes;
 
 		/* Stargates */
-		$stargates = DB::query(Database::SELECT, "SELECT s.`hash`,
-													s.to_system_id,
-													s.from_system_id,
-													s.created_at,
-													s.updated_at
-			 										FROM chainmap_stargates AS s
-													WHERE s.group_id=:group
-													AND s.chainmap_id=:chainmap")
-								 ->param(':group', $this->group_id)
-								 ->param(':chainmap', $this->id)
-								 ->execute()
-								 ->as_array('hash');
+		$stargates = DB::table('chainmap_stargates')
+						->where('group_id', $this->group_id)
+						->where('chainmap_id', $this->id)
+						->get()
+						->keyBy('hash')
+						->all();
+
 		$data['stargates'] = $stargates;
 
 		foreach( $stargates as $stargate )
 		{
-			$systemsToPoll[] = $stargate['to_system_id'];
-			$systemsToPoll[] = $stargate['from_system_id'];
+			$systemsToPoll[] = $stargate->to_system_id;
+			$systemsToPoll[] = $stargate->from_system_id;
 		}
 
 		/* Jump bridges */
-		$jumpbridges = DB::query(Database::SELECT, "SELECT s.`hash`,
-													s.to_system_id,
-													s.from_system_id,
-													s.created_at,
-													s.updated_at
-			 										FROM chainmap_jumpbridges AS s
-													WHERE s.group_id=:group
-													AND s.chainmap_id=:chainmap")
-								 ->param(':group', $this->group_id)
-								 ->param(':chainmap', $this->id)
-								 ->execute()
-								 ->as_array('hash');
+		$jumpbridges = DB::table('chainmap_jumpbridges')
+						->where('group_id', $this->group_id)
+						->where('chainmap_id', $this->id)
+						->get()
+						->keyBy('hash')
+						->all();
 		$data['jumpbridges'] = $jumpbridges;
 
 		foreach( $jumpbridges as $jumpbridge )
 		{
-			$systemsToPoll[] = $jumpbridge['to_system_id'];
-			$systemsToPoll[] = $jumpbridge['from_system_id'];
+			$systemsToPoll[] = $jumpbridge->to_system_id;
+			$systemsToPoll[] = $jumpbridge->from_system_id;
 		}
 
 		/* Cynos */
-		$cynos = DB::query(Database::SELECT, "SELECT s.`hash`,
-													s.to_system_id,
-													s.from_system_id,
-													s.created_at,
-													s.updated_at
-			 										FROM chainmap_cynos AS s
-													WHERE s.group_id=:group
-													AND s.chainmap_id=:chainmap")
-								 ->param(':group', $this->group_id)
-								 ->param(':chainmap', $this->id)
-								 ->execute()
-								 ->as_array('hash');
+		$cynos = DB::table('chainmap_cynos')
+						->where('group_id', $this->group_id)
+						->where('chainmap_id', $this->id)
+						->get()
+						->keyBy('hash')
+						->all();
 		$data['cynos'] = $cynos;
 
 		foreach( $cynos as $cyno )
 		{
-			$systemsToPoll[] = $cyno['to_system_id'];
-			$systemsToPoll[] = $cyno['from_system_id'];
+			$systemsToPoll[] = $cyno->to_system_id;
+			$systemsToPoll[] = $cyno->from_system_id;
 		}
 
 		/* Systems */
@@ -222,7 +162,7 @@ class Chainmap {
 
 			$killCutoff = time()-(3600*1);	//minus 2 hours
 
-			$chainMapSystems = DB::query(Database::SELECT, "SELECT ss.name,
+			$chainMapSystems = DB::select("SELECT ss.name,
 															ss.id as systemID,
 															COALESCE(sa.displayName,'') as displayName,
 															COALESCE(sa.x,0) as x,
@@ -234,27 +174,29 @@ class Chainmap {
 															ss.sysClass,
 															ss.effect,
 															r.regionName as region_name,
-															(SELECT SUM(kills) FROM apihourlymapdata WHERE systemID=ss.id AND hourStamp >= :kill_cutoff) as kills_in_last_2_hours,
-															(SELECT SUM(npcKills) FROM apihourlymapdata WHERE systemID=ss.id AND hourStamp >= :kill_cutoff) as npcs_kills_in_last_2_hours
+															(SELECT SUM(kills) FROM apihourlymapdata WHERE systemID=ss.id AND hourStamp >= :kill_cutoff1) as kills_in_last_2_hours,
+															(SELECT SUM(npcKills) FROM apihourlymapdata WHERE systemID=ss.id AND hourStamp >= :kill_cutoff2) as npcs_kills_in_last_2_hours
 															FROM solarsystems ss
 															LEFT OUTER JOIN activesystems sa ON (ss.id = sa.systemID AND sa.groupID=:group AND sa.chainmap_id=:chainmap)
 															INNER JOIN regions r ON(r.regionID=ss.region)
-															WHERE ss.id IN(".$systemsToPoll.")  ORDER BY ss.id ASC")
-											->param(':group', $this->group_id)
-											->param(':chainmap', $this->id)
-											->param(':kill_cutoff', $killCutoff)
-											->execute()
-											->as_array('systemID');
+															WHERE ss.id IN(".$systemsToPoll.")  ORDER BY ss.id ASC",[
+																'group' => $this->group_id,
+																'chainmap' => $this->id,
+																'kill_cutoff1' =>$killCutoff,
+																'kill_cutoff2' =>$killCutoff,
+															]);
+			$chainMapSystems = new Collection($chainMapSystems);
+			$chainMapSystems = $chainMapSystems->keyBy('systemID')->all();
 
 			foreach( $chainMapSystems as &$sys )
 			{
-				if( in_array( $sys['systemID'], $additionalSystems ) )
+				if( in_array( $sys->systemID, $additionalSystems ) )
 				{
-						$sys['special'] = 1;
+						$sys->special = 1;
 				}
 				else
 				{
-						$sys['special'] = 0;
+						$sys->special = 0;
 				}
 			}
 			$data['systems'] = $chainMapSystems;
@@ -281,9 +223,9 @@ class Chainmap {
 	public function get_home_systems()
 	{
 		$homeSystems = array();
-		if( $this->data['chainmap_homesystems_ids'] != '' )
+		if( $this->chainmap_homesystems_ids != '' )
 		{
-			$homeSystems = explode(',', $this->data['chainmap_homesystems_ids']);
+			$homeSystems = explode(',', $this->chainmap_homesystems_ids);
 		}
 
 		return $homeSystems;
@@ -291,34 +233,41 @@ class Chainmap {
 
 	public function get_connected_system($system)
 	{
-		return DB::query(Database::SELECT, "SELECT x,y FROM activesystems
-														WHERE groupID=:group AND
-														chainmap_id=:chain AND
-														systemID IN (SELECT
-																		CASE WHEN w.to_system_id=:sys
-																			THEN w.from_system_id
-																			ELSE w.to_system_id
-																		END AS `connected_system`
-																		FROM wormholes w
-																		WHERE (w.to_system_id=:sys OR w.from_system_id=:sys)
-																		AND w.group_id=:group AND w.chainmap_id=:chain)")
-						->param(':sys', intval($system))
-						->param(':group', $this->group_id)
-						->param(':chain', $this->id)
-						->execute()
-						->as_array();
+		return DB::select("SELECT x,y FROM activesystems
+							WHERE groupID=:group1 AND
+							chainmap_id=:chain1 AND
+							systemID IN (SELECT
+											CASE WHEN w.to_system_id=:sys1
+												THEN w.from_system_id
+												ELSE w.to_system_id
+											END AS `connected_system`
+											FROM wormholes w
+											WHERE (w.to_system_id=:sys2 OR w.from_system_id=:sys3)
+											AND w.group_id=:group2 AND w.chainmap_id=:chain2)",[
+												'sys1' => intval($system),
+												'sys2' => intval($system),
+												'sys3' => intval($system),
+												'group1' => $this->group_id,
+												'group2' => $this->group_id,
+												'chain1' => $this->id,
+												'chain2' => $this->id
+											]);
 	}
 
 	public function system_is_mapped( $system )
 	{
-		$exists = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE (from_system_id=:system OR to_system_id=:system) AND group_id=:group AND chainmap_id=:chainmap")
-					->param(':system', $system)
-					->param(':group', Auth::$session->group->id)
-					->param(':chainmap', Auth::$session->accessData['active_chain_map'])
-					->execute()
-					->current();
+		$exists = DB::select("SELECT `hash` 
+							FROM wormholes 
+							WHERE (from_system_id=:system1 OR to_system_id=:system2) 
+								AND group_id=:group AND chainmap_id=:chainmap",
+							[
+								'system1' => $system,
+								'system2' => $system,
+								'group' => Auth::$session->group->id,
+								'chainmap' => Auth::$session->accessData['active_chain_map']
+							]);
 
-		if( isset($exists['hash'])  )
+		if( isset($exists->hash)  )
 		{
 			return true;
 		}
@@ -328,11 +277,13 @@ class Chainmap {
 
 	public function delete_all_system_connections( $system )
 	{
-		DB::query(Database::DELETE, 'DELETE FROM wormholes WHERE (to_system_id = :system OR from_system_id = :system) AND group_id=:groupID AND chainmap_id=:chainmap')
-			->param(':groupID', Auth::$session->group->id)
-			->param(':chainmap', Auth::$session->accessData['active_chain_map'])
-			->param(':system', $system)
-			->execute();
+		DB::delete('DELETE FROM wormholes WHERE (to_system_id = :system1 OR from_system_id = :system2) AND group_id=:groupID AND chainmap_id=:chainmap',
+		[
+			'groupID' => Auth::$session->group->id,
+			'chainmap' => Auth::$session->accessData['active_chain_map'],
+			'system1' => $system,
+			'system2' => $system
+		]);
 	}
 
 	public function add_system_to_map($sys1, $sys2, $eol=0, $mass=0, $wh_type_id = 0)
@@ -355,7 +306,7 @@ class Chainmap {
 							'created_at' => Carbon::now()->toDateTimeString()
 							);
 
-			DB::insert('wormholes', array_keys($insert) )->values(array_values($insert))->execute();
+			DB::table('wormholes')->insert($insert);
 		}
 		catch( Exception $e )
 		{
@@ -424,7 +375,7 @@ class Chainmap {
 							'created_at' => Carbon::now()->toDateTimeString()
 							);
 
-			DB::insert('chainmap_stargates', array_keys($insert) )->values(array_values($insert))->execute();
+			DB::table('chainmap_stargates')->insert($insert);
 		}
 		catch( Exception $e )
 		{
@@ -451,7 +402,7 @@ class Chainmap {
 							'created_at' => Carbon::now()->toDateTimeString()
 							);
 
-			DB::insert('chainmap_jumpbridges', array_keys($insert) )->values(array_values($insert))->execute();
+			DB::table('chainmap_jumpbridges')->insert($insert);
 		}
 		catch( Exception $e )
 		{
@@ -478,7 +429,7 @@ class Chainmap {
 							'created_at' => Carbon::now()->toDateTimeString()
 							);
 
-			DB::insert('chainmap_cynos', array_keys($insert) )->values(array_values($insert))->execute();
+			DB::table('chainmap_cynos')->insert($insert);
 		}
 		catch( Exception $e )
 		{
@@ -493,17 +444,9 @@ class Chainmap {
 	private function _placeSystem($originSys, $originSystems, $systemToBePlaced)
 	{
 		$sysPos = NULL;
-		$sysData = DB::query(Database::SELECT, "SELECT * FROM activesystems
-														WHERE groupID=:group AND
-														chainmap_id=:chainmap AND
-														systemID=:sys")
-								->param(':sys', $originSys)
-								->param(':group', $this->group_id)
-								->param(':chainmap', $this->id)
-								->execute()
-								->current();
+		$sysData = ActiveSystem::find($this->group_id,$this->id,$originSys);
 
-		$spots = mapUtils::generatePossibleSystemLocations($sysData['x'], $sysData['y']);
+		$spots = mapUtils::generatePossibleSystemLocations($sysData->x, $sysData->y);
 
 		foreach($spots as $spot)
 		{
@@ -538,43 +481,27 @@ class Chainmap {
 
 	public function update_system($system_id, $data)
 	{
-		if( !(count($data) > 0) )
-		{
-			return;
-		}
-
-		$extraIns = '';
-		$extraInsVal = '';
-		$extraUp = array();
-
+		$params = [
+						'systemID' => $system_id,
+						'groupID' => $this->group_id,
+						'chainmap_id' => $this->id
+					];
+		
 		foreach($data as $k => $v)
 		{
-			$extraIns .= ',`'.$k.'`';
-			$extraInsVal .= ',:'.$k;
-			$extraUp[] = $k.'=:'.$k;
+			if(!isset($params[$k]))
+			{
+				$params[$k] = $v;
+			}
 		}
 
-		$extraUp = implode(',', $extraUp);
-
-		$q = DB::query(Database::INSERT, 'INSERT INTO activesystems (`systemID`, `groupID`, `chainmap_id`'.$extraIns.')
-										  VALUES(:system_id, :group_id, :chainmap'.$extraInsVal.')
-										  ON DUPLICATE KEY UPDATE '.$extraUp)
-							->param(':system_id', $system_id )
-							->param(':group_id', $this->group_id )
-							->param(':chainmap', $this->id );
-
-		foreach($data as $k => $v)
-		{
-			$q->param(':'.$k, $v);
-		}
-
-		$q->execute();
+		ActiveSystem::insertOnDuplicateKey($params);
 	}
 
 
 	public function reset_systems($system_ids)
 	{
-		if( !is_array($system_ids) || !count($system_ids)	)
+		if( !is_array($system_ids) || !count($system_ids) )
 		{
 			return;
 		}
@@ -591,14 +518,18 @@ class Chainmap {
 		{
 			if( !in_array($sys_id, $home_systems) )
 			{
-				$check = DB::query(Database::SELECT, 'SELECT * FROM	 wormholes WHERE group_id=:groupID AND chainmap_id=:chain_map AND (to_system_id=:id OR from_system_id=:id)')
-								->param(':groupID', $this->group_id)
-								->param(':chain_map', $this->id)
-								->param(':id', $sys_id)
-								->execute()
-								->current();
+				$check = DB::selectOne('SELECT * FROM	 wormholes 
+													WHERE group_id=:groupID 
+														AND chainmap_id=:chain_map 
+														AND (to_system_id=:tosys OR from_system_id=:fromsys)',
+														[
+															'groupID' => $this->group_id,
+															'chain_map' => $this->id,
+															'tosys' => $sys_id,
+															'fromsys' => $sys_id,
+														]);
 
-				if( !$check['hash'] )
+				if( $check == null )
 				{
 					$this->update_system($sys_id, array('displayName' => '', 'inUse' => 0, 'activity' => 0 ) );
 				}
@@ -608,30 +539,37 @@ class Chainmap {
 
 	public function find_system_by_name($name)
 	{
-		$systemID = 0;
 		if( empty($name) )
 		{
 			return 0;
 		}
 
-		$systemID = DB::query(Database::SELECT, "SELECT systemID,displayName FROM activesystems WHERE groupID=:groupID AND chainmap_id=:chainmap AND displayName LIKE :name")
-													->param(':name', $name )
-													->param(':groupID', $this->group_id)
-													->param(':chainmap', $this->id)
-													->execute()
-													->get('systemID', 0);
+		$tmp = DB::selectOne("SELECT systemID,displayName 
+										FROM activesystems 
+										WHERE groupID=:groupID 
+											AND chainmap_id=:chainmap 
+											AND displayName LIKE :name",[ 
+													'name' => $name,
+													'groupID' => $this->group_id,
+													'chainmap' => $this->id
+											]);
 
-		$name = strtolower($name);
-		if( $systemID == 0 )
+		if($tmp != null)
 		{
-			$systemID = DB::query(Database::SELECT, 'SELECT id,name FROM solarsystems WHERE LOWER(name) = :name')
-																->param(':name', $name )
-																->execute()
-																->get('id', 0);
-
+			return $tmp->id;
 		}
 
-		return $systemID;
+
+		$name = strtolower($name);
+
+		$tmp = DB::selectOne('SELECT id,name FROM solarsystems WHERE LOWER(name) = ?',[$name]);
+		if($tmp != null)
+		{
+			$systemID = $tmp->id;
+			return $systemID;
+		}
+
+		return 0;
 	}
 
 	private function _hash_array_to_string($arr)
@@ -649,41 +587,46 @@ class Chainmap {
 
 		$wormholeHashes = $this->_hash_array_to_string($wormholeHashes);
 
-		$wormholes = DB::query(Database::SELECT, 'SELECT w.*, sto.name as to_name, sfrom.name as from_name
+		$wormholes = DB::select('SELECT w.*, sto.name as to_name, sfrom.name as from_name
 													FROM wormholes w
 													INNER JOIN solarsystems sto ON sto.id = w.to_system_id
 													INNER JOIN solarsystems sfrom ON sfrom.id = w.from_system_id
-													WHERE w.hash IN('.$wormholeHashes.') AND w.group_id=:groupID AND w.chainmap_id=:chainmap')
-						->param(':groupID', $this->group_id)
-						->param(':chainmap', $this->id)
-						->execute();
+													WHERE w.hash IN('.$wormholeHashes.') AND w.group_id=:groupID AND w.chainmap_id=:chainmap',
+													[
+														'groupID' => $this->group_id,
+														'chainmap' => $this->id
+													]);
 
 		$sigs = [];
 		$systemIDs = [];
 		foreach( $wormholes as $wh )
 		{
-			$systemIDs[] = $wh['to_system_id'];
-			$systemIDs[] = $wh['from_system_id'];
+			$systemIDs[] = $wh->to_system_id;
+			$systemIDs[] = $wh->from_system_id;
 
-			$log_message .= $wh['to_name'] . ' to ' . $wh['from_name'] . ', ';
+			$log_message .= $wh->to_name . ' to ' . $wh->from_name . ', ';
 		}
 
 		$systemIDs = array_unique( $systemIDs );
 		$sigs = array_unique( $sigs );
 		$sigs = implode(',', $sigs);
 
-		DB::query(Database::DELETE, 'DELETE FROM wormholes WHERE hash IN('.$wormholeHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
-						->param(':groupID', $this->group_id)
-						->param(':chainmap', $this->id)
-						->execute();
+		DB::delete('DELETE FROM wormholes
+					 WHERE hash IN('.$wormholeHashes.') AND group_id=:groupID AND chainmap_id=:chainmap',
+							[
+								'groupID' => $this->group_id,
+								'chainmap' => $this->id
+							]);
 
 
-		DB::query(Database::DELETE, 'DELETE FROM wormholetracker WHERE wormhole_hash IN('.$wormholeHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
-						->param(':groupID', $this->group_id)
-						->param(':chainmap', $this->id)
-						->execute();
+		DB::delete('DELETE FROM wormholetracker 
+						WHERE wormhole_hash IN('.$wormholeHashes.') AND group_id=:groupID AND chainmap_id=:chainmap',
+							[
+								'groupID' => $this->group_id,
+								'chainmap' => $this->id
+							]);
 
-		$log_message .= ' from the chainmap "'. $this->data['chainmap_name'].'"';
+		$log_message .= ' from the chainmap "'. $this->chainmap_name.'"';
 
 		$group = Group::find($this->group_id);
 		$group->logAction('delwhs', $log_message );

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5fcfa69892bf2c32b2ae121bcc3948e4",
-    "content-hash": "29107f82df6ea33bc1280ffd25f1ff09",
+    "hash": "7d2713a1d447f0e16ecfc66ff5cefe6b",
+    "content-hash": "b82dffa11a6293adda481f15c3fde171",
     "packages": [
         {
             "name": "3rdpartyeve/phealng",
@@ -990,6 +990,51 @@
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
             "time": "2016-06-29 05:41:56"
+        },
+        {
+            "name": "yadakhov/insert-on-duplicate-key",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yadakhov/insert-on-duplicate-key.git",
+                "reference": "dacaefc908ea46720b3e6ac0973f0c513317f898"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yadakhov/insert-on-duplicate-key/zipball/dacaefc908ea46720b3e6ac0973f0c513317f898",
+                "reference": "dacaefc908ea46720b3e6ac0973f0c513317f898",
+                "shasum": ""
+            },
+            "require-dev": {
+                "illuminate/database": "^5.1",
+                "phpunit/dbunit": "^2.0",
+                "phpunit/phpunit": "~5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Yadakhov\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Yada Khov",
+                    "email": "yada.khov@gmail.com",
+                    "homepage": "https://github.com/yadakhov"
+                }
+            ],
+            "description": "A trait for MySQL INSERT ON DUPLICATE KEY UDPATE.",
+            "homepage": "https://github.com/yadakhov/insert-on-duplicate-key",
+            "keywords": [
+                "database",
+                "eloquent",
+                "mysql"
+            ],
+            "time": "2017-01-01 01:05:15"
         }
     ],
     "packages-dev": [],
