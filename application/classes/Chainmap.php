@@ -446,6 +446,14 @@ class Chainmap extends Model {
 		$sysPos = NULL;
 		$sysData = ActiveSystem::find($this->group_id,$this->id,$originSys);
 
+		if($sysData == null)
+		{
+			//TODO FIXME
+			$sysData = new stdClass();
+			$sysData->x = 0;
+			$sysData->y = 0;
+		}
+
 		$spots = mapUtils::generatePossibleSystemLocations($sysData->x, $sysData->y);
 
 		foreach($spots as $spot)
