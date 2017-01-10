@@ -220,10 +220,6 @@ $db->setEventDispatcher(new Dispatcher(new Container));
 $db->bootEloquent();
 $db->setAsGlobal();
 
-DB::listen(function($sql) {
-	$debug = var_export($sql, true);
-	file_put_contents('text.txt', $debug, FILE_APPEND );
-});
 
 /**
  * Set the routes. Each route must have a minimum of a name, a URI and a set of
