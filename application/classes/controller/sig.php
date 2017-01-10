@@ -175,11 +175,9 @@ class Controller_Sig extends FrontController {
 						$insert['sigSize'] = "";	//need to return this value for JS to fail gracefully
 						$insert['creator'] = Auth::$session->character_name;
 
-						$id = DB::table('systemsigs')->insert($insert);
+						$insert['id'] = DB::table('systemsigs')->insertGetId($insert);
 
-						$insert['id'] = $id[0];
-
-						$addedSigs[ $id[0] ] = $insert;
+						$addedSigs[ $insert['id'] ] = $insert;
 
 						if( $insert['type'] != 'none' )
 						{
