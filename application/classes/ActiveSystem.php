@@ -34,7 +34,7 @@ class ActiveSystem extends Model {
 	{
 		return self::where('systemID', $systemId)
 					->where('groupID', $group)
-					->where('chainmapID', $chainmapId)
+					->where('chainmap_id', $chainmapId)
 					->first();
 	}
 }
