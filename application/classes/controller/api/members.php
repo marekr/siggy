@@ -24,8 +24,8 @@ class Controller_Api_Members extends Controller_Api
 				{
 					foreach( $chainmap->access as $access )
 					{
-						if( $access->eveID == $memberEntry['eve_id']
-						&& $access->memberType == $memberEntry['type'])
+						if( $access->eveID == $memberEntry->eve_id
+						&& $access->memberType == $memberEntry->type)
 						{
 							$chainmaps[] = (int)$chainmap->chainmap_id;
 						}

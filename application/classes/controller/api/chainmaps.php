@@ -42,15 +42,15 @@ class Controller_Api_Chainmaps extends Controller_Api
 				foreach($data['wormholes'] as $w)
 				{
 					$output['wormholes'][] = [
-												'hash' => $w['hash'],
-												'to_system_id' => (int)$w['to_system_id'],
-												'from_system_id' => (int)$w['from_system_id'],
-												'eol' => (int)$w['eol'],
-												'mass' => (int)$w['mass'],
-												'frigate_sized' => (bool)$w['frigate_sized'],
-												'created_at' => $w['created_at'],
-												'updated_at' => $w['updated_at'],
-												'total_tracked_mass' => (int)$w['total_tracked_mass'],
+												'hash' => $w->hash,
+												'to_system_id' => (int)$w->to_system_id,
+												'from_system_id' => (int)$w->from_system_id,
+												'eol' => (int)$w->eol,
+												'mass' => (int)$w->mass,
+												'frigate_sized' => (bool)$w->frigate_sized,
+												'created_at' => $w->created_at,
+												'updated_at' => $w->updated_at,
+												'total_tracked_mass' => (int)$w->total_tracked_mass,
 											];
 				}
 			}

@@ -2,9 +2,9 @@
 
 class System {
 
-	public static function get($id, $groupI, $mode = 'advanced')
+	public static function get($id, $groupID, $mode = 'advanced')
 	{
-		$systemData = DB::query(Database::SELECT, "SELECT
+		$systemData = DB::select(Database::SELECT, "SELECT
 			ss.id,
 			ss.name,
 			ss.belts,

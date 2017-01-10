@@ -1,5 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+use Illuminate\Database\Capsule\Manager as DB;
+
 class RestUser extends Kohana_RestUser {
 
 	/**
@@ -56,11 +58,11 @@ class RestUser extends Kohana_RestUser {
 	 */
 	protected function _find()
 	{
-		$api = DB::query(Database::SELECT, 'SELECT * FROM siggyapikeys WHERE keyID = :keyID')->param(':keyID', $this->_api_key )->execute()->current();
+		$api = DB::selectOne('SELECT * FROM siggyapikeys WHERE keyID = ?',[$this->_api_key]);
 
 
-		$this->_id = $api['groupID'];
-		$this->_secret_key = $api['keyCode'];
+		$this->_id = $api->groupID;
+		$this->_secret_key = $api->keyCode;
 		/*
 		switch ($this->_api_key)
 		{
