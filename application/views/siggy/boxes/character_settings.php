@@ -5,13 +5,13 @@
 			<label>Theme
 				<select name="theme_id" class="siggy-input">
 				<?php foreach($themes as $theme): ?>
-					 <option value="<?php echo $theme->theme_id; ?>" <?php echo( $theme->theme_id == $settings['theme_id'] ? 'selected="selected"' : '' ); ?>> <?php echo $theme->theme_name; ?></option>
+					 <option value="<?php echo $theme->theme_id; ?>" <?php echo( $theme->theme_id == $settings->theme_id ? 'selected="selected"' : '' ); ?>> <?php echo $theme->theme_name; ?></option>
 				<?php endforeach; ?>
 				</select>
 			</label>
 			<br />
 			<br />
-			<label>Combine Scan &amp; Intel tabs? <input type="checkbox" name="combine_scan_intel" value="1" <?php echo( $settings['combine_scan_intel'] ? 'checked="checked"' : '' ); ?>/></label>
+			<label>Combine Scan &amp; Intel tabs? <input type="checkbox" name="combine_scan_intel" value="1" <?php echo( $settings->combine_scan_intel ? 'checked="checked"' : '' ); ?>/></label>
             <br />
 			<br />
 			<label>

@@ -13,6 +13,12 @@ class CharacterGroup extends Model {
 	public $dates = ['last_group_access_at'];
 	protected $primaryKey = ['character_id','group_id'];
 
+	protected $fillable = [
+		'character_id',
+		'group_id',
+		'last_group_access_at'
+	];
+
 	public function updateGroupAccess()
 	{
 		$this->last_group_access_at = Carbon::now()->toDateTimeString();
