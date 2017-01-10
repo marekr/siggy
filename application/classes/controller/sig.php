@@ -66,9 +66,9 @@ class Controller_Sig extends FrontController {
 	{
 		foreach( Notifier::all(Auth::$session->group->id, Auth::$session->character_id) as $notifier )
 		{
-			if( $notifier['type'] == NotificationTypes::SiteFound )
+			if( $notifier->type == NotificationTypes::SiteFound )
 			{
-				$data = $notifier['data'];
+				$data = $notifier->data;
 				if( $sigData['siteID'] == $data->site_id )
 				{
 					$eventData = array(
@@ -81,12 +81,12 @@ class Controller_Sig extends FrontController {
 										);
 
 					$charID = 0;
-					if( $notifier['scope'] == 'personal' )
+					if( $notifier->scope == 'personal' )
 					{
 						$charID = Auth::$session->character_id;
 					}
 
-					Notification::create(Auth::$session->group->id, $charID, $notifier['type'], $eventData);
+					Notification::create(Auth::$session->group->id, $charID, $notifier->type, $eventData);
 				}
 			}
 		}

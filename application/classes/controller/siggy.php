@@ -367,11 +367,11 @@ class Controller_Siggy extends FrontController {
 	{
 		foreach( Notifier::all(Auth::$session->group->id, Auth::$session->character_id) as $notifier )
 		{
-			if( $notifier['type'] == NotificationTypes::SystemMappedByName )
+			if( $notifier->type == NotificationTypes::SystemMappedByName )
 			{
 				$this->wormholeMappedNotificationHandler($notifier, $systems);
 			}
-			else if( $notifier['type'] == NotificationTypes::SystemMapppedWithResident )
+			else if( $notifier->type == NotificationTypes::SystemMapppedWithResident )
 			{
 				$this->systemMappedResidentHandler($notifier, $systems);
 			}
@@ -380,7 +380,7 @@ class Controller_Siggy extends FrontController {
 
 	private function systemMappedResidentHandler($notifier, $systems)
 	{
-		$data = $notifier['data'];
+		$data = $notifier->data;
 		foreach($systems as $k => $system)
 		{
 			$posOnlineSQL = '';
@@ -420,7 +420,7 @@ class Controller_Siggy extends FrontController {
 	private function wormholeMappedNotificationHandler($notifier, $systems)
 	{
 		$pather = new Pathfinder();
-		$data = $notifier['data'];
+		$data = $notifier->data;
 		if( in_array($data->system_id, $systems) )
 		{
 			$this->createSystemMappedNotification(
@@ -487,12 +487,12 @@ class Controller_Siggy extends FrontController {
 							);
 
 		$charID = 0;
-		if( $notifier['scope'] == 'personal' )
+		if( $notifier->scope == 'personal' )
 		{
 			$charID = $characterID;
 		}
 
-		Notification::create(Auth::$session->group->id, $charID, $notifier['type'], $eventData);
+		Notification::create(Auth::$session->group->id, $charID, $notifier->type, $eventData);
 	}
 
 	public function createSystemResidentNotification($notifier,
@@ -511,12 +511,12 @@ class Controller_Siggy extends FrontController {
 								);
 
 			$charID = 0;
-			if( $notifier['scope'] == 'personal' )
+			if( $notifier->scope == 'personal' )
 			{
 				$charID = $characterID;
 			}
 
-			Notification::create(Auth::$session->group->id, $charID, $notifier['type'], $eventData);
+			Notification::create(Auth::$session->group->id, $charID, $notifier->type, $eventData);
 		}
 
 
