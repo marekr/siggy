@@ -111,7 +111,7 @@ class Controller_Pos extends FrontController {
 			exit();
 		}
 
-		DB::delete('pos_tracker')->where('pos_id', '=', $id)->execute();
+		DB::table('pos_tracker')->where('pos_id', '=', $id)->delete();
 
 		$log_message = sprintf("%s deleted POS from system %s", Auth::$session->character_name, $pos->system_name);
 		Auth::$session->group->logAction('delpos', $log_message);
