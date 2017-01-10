@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Capsule\Manager as DB;
+
 class Controller_Pages extends FrontController {
 	private $auth;
 	private $user;
@@ -132,9 +134,7 @@ class Controller_Pages extends FrontController {
 										'can_manage_group_members' => 1, 
 										'can_view_logs' => 1 
 										];
-							DB::insert('users_group_acl', array_keys($insert) )
-									->values( array_values($insert) )
-									->execute();
+							DB::table('users_group_acl')->insert($insert);
 
 							Auth::$user->groupID = $group->id;
 							Auth::$user->save();

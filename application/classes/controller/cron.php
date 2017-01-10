@@ -21,6 +21,7 @@ class eveAPIWalletJournalTypes
 
 use Pheal\Pheal;
 use Carbon\Carbon;
+use Illuminate\Database\Capsule\Manager as DB;
 
 class Controller_Cron extends Controller
 {
@@ -49,16 +50,15 @@ class Controller_Cron extends Controller
 						preg_match('/^siggy-([a-zA-Z0-9]{14,})/', $entryCode, $matches);
 						if( count($matches) > 0 && isset($matches[1]) )
 						{
-							$res = DB::query(Database::SELECT, 'SELECT eveRefID FROM billing_payments WHERE eveRefID=:refID')->param(':refID', $trans['refID'])->execute()->current();
+							$res = DB::selectOne(Database::SELECT, 'SELECT eveRefID FROM billing_payments WHERE eveRefID=?',[$trans['refID']]);
 
-							if( !isset($res['eveRefID']) )
+							if( $res == null )
 							{
 								$paymentCode = strtolower($matches[1]);	//get 14 char "account code"
 								$group = Group::findByPaymentCode($paymentCode);
 
 								if( $group != null )
 								{
-
 									$insert = array( 'groupID' => $group->id,
 													 'eveRefID' => $trans['refID'],
 													 'paymentTime' => strtotime($trans['date']),
@@ -70,7 +70,7 @@ class Controller_Cron extends Controller
 													 'argID' => $trans['argID1'],
 													 'argName' => $trans['argName1']
 													);
-									DB::insert( 'billing_payments', array_keys($insert) )->values( array_values($insert) )->execute();
+									DB::table( 'billing_payments')->insert($insert);
 
 									$group->applyISKPayment((float)$trans['amount']);
 								}
@@ -85,7 +85,7 @@ class Controller_Cron extends Controller
 								//processed already!
 								//do nothing
 								print_r($entryCode);
-								print_r($res);
+								print_r($res->eveRefID);
 								print "Payment already processed";
 								print "<br />";
 								print "<br />";
@@ -142,9 +142,7 @@ class Controller_Cron extends Controller
 		//15 day cutoff
 		$cutoff = time()-60*60*24*15;
 
-		$query = DB::query(Database::DELETE, "DELETE FROM notifications WHERE created_at <= :cutoff")
-			->param(':cutoff',$cutoff)
-			->execute();
+		$query = DB::delete(Database::DELETE, "DELETE FROM notifications WHERE created_at <= ?",[$cutoff]);
 
 		print "done";
 	}
@@ -202,7 +200,7 @@ class Controller_Cron extends Controller
 								'memberCount' => $numUsers,
 								'message' => $message
 							);
-			$result = DB::insert('billing_charges', array_keys($insert) )->values( array_values($insert) )->execute();
+			$result = DB::table('billing_charges')->insert($insert);
 
 			$group->applyISKCharge( $cost );
 		}
@@ -225,15 +223,12 @@ class Controller_Cron extends Controller
 			}
 		}
 
-
 		$corpsToUpdate = array();
-		$corpsToUpdate = DB::query(Database::SELECT, "SELECT * FROM groupmembers WHERE memberType='corp' AND SUBSTR(id,LENGTH(id),1) = :select")
-							->param(':select', $select)
-							->execute()->as_array();
+		$corpsToUpdate = DB::select(Database::SELECT, "SELECT * FROM groupmembers WHERE memberType='corp' AND SUBSTR(id,LENGTH(id),1) = ?",[$select]);
 
 		foreach($corpsToUpdate as $gm)
 		{
-			$corp = Corporation::find((int)$gm['eveID']);
+			$corp = Corporation::find((int)$gm->eveID);
 
 			//incase this fails...
 			if($corp != null)
@@ -251,24 +246,22 @@ class Controller_Cron extends Controller
 		$cutoff = Carbon::now()->subDays(26)->toDateTimeString();
 		$whCutoff = Carbon::now()->subDays(2)->toDateTimeString();
 
-		$groups = DB::query(Database::SELECT, "SELECT id,skip_purge_home_sigs FROM groups")->execute()->as_array();
+		$groups = DB::select("SELECT id,skip_purge_home_sigs FROM groups");
 		foreach( $groups as $group )
 		{
 			$ignoreSys = '';
-			$chains = DB::query(Database::SELECT, "SELECT chainmap_homesystems_ids FROM chainmaps
-													WHERE group_id = :groupID AND
-													chainmap_skip_purge_home_sigs=1")
-							->param(':groupID', $group['id'])
-							->execute()
-							->as_array();
-			if( count($chains) > 0 )
+			$chains = DB::select("SELECT chainmap_homesystems_ids FROM chainmaps
+													WHERE group_id = ? AND
+													chainmap_skip_purge_home_sigs=1",[$group->id]);
+
+			if( $chains != null )
 			{
 				$ignoreSys = array();
 				foreach( $chains as $c )
 				{
-					if( !empty($c['chainmap_homesystems_ids']) )
+					if( !empty($c->chainmap_homesystems_ids) )
 					{
-						$ignoreSys[] = $c['chainmap_homesystems_ids'];
+						$ignoreSys[] = $c->chainmap_homesystems_ids;
 					}
 				}
 
@@ -282,14 +275,15 @@ class Controller_Cron extends Controller
 			}
 
 			
-			$query = DB::query(Database::DELETE, "DELETE FROM systemsigs WHERE sig != 'POS' AND
-																		groupID=:groupID AND
-																		{$ignoreSysExtra}
-																		( created_at <= :cutoff OR (type = 'wh' AND created_at <= :whcutoff))")
-				->param(':cutoff',$cutoff)
-				->param(':groupID', $group['id'])
-				->param(':whcutoff', $whCutoff)
-				->execute();
+			$query = DB::delete("DELETE FROM systemsigs 
+								WHERE sig != 'POS' AND
+									groupID=:groupID AND
+									{$ignoreSysExtra}
+									( created_at <= :cutoff OR (type = 'wh' AND created_at <= :whcutoff))",[
+										'cutoff' => $cutoff,
+										'groupID' => $group->id,
+										'whcutoff' => $whCutoff
+									]);
 		}
 	}
 
@@ -301,7 +295,7 @@ class Controller_Cron extends Controller
 		$cutoff = time()-60*60*24;
 
 		//DB::update('activesystems')->set(array('displayName' => '', 'activity' => 0, 'lastActive' => 0, 'inUse' => 0))->where('lastActive', '<=', $cutoff)->where('lastActive', '!=', 0)->execute();
-		DB::delete('wormholes')->where('last_jump', '<=', $cutoff)->execute();
+		DB::table('wormholes')->where('last_jump', '<=', $cutoff)->delete();
 
 		print 'done!';
 	}
@@ -310,16 +304,16 @@ class Controller_Cron extends Controller
 	{
 		$cutoff = time()-(3600*24*2);
 
-		DB::delete('apihourlymapdata')->where('hourStamp', '<=', $cutoff)->execute();
-		DB::delete('jumpstracker')->where('hourStamp', '<=', $cutoff)->execute();
+		DB::table('apihourlymapdata')->where('hourStamp', '<=', $cutoff)->delete();
+		DB::table('jumpstracker')->where('hourStamp', '<=', $cutoff)->delete();
 
-		$systems = DB::select('id')->from('solarsystems')->order_by('id', 'ASC')->execute()->as_array('id');
+		$systems = DB::table('solarsystems')->orderBy('id');
 		foreach($systems as &$system)
 		{
-			$system['jumps'] = 0;
-			$system['kills'] = 0;
-			$system['npcKills'] = 0;
-			$system['podKills'] = 0;
+			$system->jumps = 0;
+			$system->kills = 0;
+			$system->npcKills = 0;
+			$system->podKills = 0;
 		}
 
 		PhealHelper::configure();
@@ -331,7 +325,7 @@ class Controller_Cron extends Controller
 		{
 			if( isset( $systems[ $ss->solarSystemID ] ) )
 			{
-				$systems[ $ss->solarSystemID ]['jumps'] = $ss->shipJumps;
+				$systems[ $ss->solarSystemID ]->jumps = $ss->shipJumps;
 			}
 		}
 
@@ -340,9 +334,9 @@ class Controller_Cron extends Controller
 		{
 			if( isset( $systems[ $ss->solarSystemID ] ) )
 			{
-				$systems[ $ss->solarSystemID ]['kills'] = $ss->shipKills;
-				$systems[ $ss->solarSystemID ]['npcKills'] = $ss->factionKills;
-				$systems[ $ss->solarSystemID ]['podKills'] = $ss->podKills;
+				$systems[ $ss->solarSystemID ]->kills = $ss->shipKills;
+				$systems[ $ss->solarSystemID ]->npcKills = $ss->factionKills;
+				$systems[ $ss->solarSystemID ]->podKills = $ss->podKills;
 			}
 		}
 
@@ -353,8 +347,15 @@ class Controller_Cron extends Controller
 
 		foreach($systems as $system)
 		{
-			DB::query(Database::INSERT, 'INSERT INTO apihourlymapdata (`systemID`,`hourStamp`, `jumps`, `kills`, `npcKills`, `podKills`) VALUES(:systemID, :hourStamp, :jumps, :kills, :npcKills, :podKills) ON DUPLICATE KEY UPDATE systemID=systemID')
-														->param(':systemID', $system['id'] )->param(':hourStamp', $time )->param(':jumps', $system['jumps'] )->param(':kills', $system['kills'] )->param(':npcKills', $system['npcKills'] )->param(':podKills', $system['podKills'] )->execute();
+			DB::insert('INSERT INTO apihourlymapdata (`systemID`,`hourStamp`, `jumps`, `kills`, `npcKills`, `podKills`) 
+				VALUES(:systemID, :hourStamp, :jumps, :kills, :npcKills, :podKills) ON DUPLICATE KEY UPDATE systemID=systemID',[
+					'systemID' => $system->id,
+					'hourStamp' => $time,
+					'jumps' => $system->jumps,
+					'kills' => $system->kills,
+					'npcKills' => $system->npcKills,
+					'podKills' => $system->podKills
+				]);
 
 		}
 
