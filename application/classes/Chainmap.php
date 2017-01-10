@@ -453,7 +453,7 @@ class Chainmap extends Model {
 			$intersect = false;
 			foreach($originSystems as $sys)
 			{
-				if( mapUtils::doBoxesIntersect(mapUtils::coordsToBB($spot['x'],$spot['y']), mapUtils::coordsToBB($sys['x'],$sys['y'])) )
+				if( mapUtils::doBoxesIntersect(mapUtils::coordsToBB($spot['x'],$spot['y']), mapUtils::coordsToBB($sys->x,$sys->y)) )
 				{
 					$intersect = true;
 				}
