@@ -189,7 +189,7 @@ final class miscUtils {
 
 	static function getDBCacheItem( $key )
 	{
-		$cache = DB::selectOne("SELECT * FROM cache_store WHERE cacheKey = ?", $key);
+		$cache = DB::selectOne("SELECT * FROM cache_store WHERE cacheKey = ?", [$key]);
 
 		return ($cache != null ? $cache->cacheValue : '');
 	}
