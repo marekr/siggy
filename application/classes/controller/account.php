@@ -540,7 +540,7 @@ class Controller_Account extends FrontController {
 			
 			$char = Character::find($ssoChar->character_id);
 
-			if($char != null && $char->corporation() != null)
+			if($char != null && $char->corporation != null)
 			{
 				$gmChars = GroupMember::findByType(GroupMember::TypeChar, $char->id);
 				$gmCorps = GroupMember::findByType(GroupMember::TypeCorp, $char->corporation_id);

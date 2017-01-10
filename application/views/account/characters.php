@@ -23,11 +23,11 @@
 					<input type='hidden' name='charID' value='<?php echo $char->id; ?>' />
 
 					<input type='image' src='https://image.eveonline.com/Character/<?php echo $char->id; ?>_64.jpg' name='select' width='64' height='64' alt='<?php echo $char->name; ?>' />
-					<input type='image' src='https://image.eveonline.com/Corporation/<?php echo $char->corporation_id; ?>_64.png' name='select' width='64' height='64' alt='<?php echo $char->corporation()->name; ?>' />
+					<input type='image' src='https://image.eveonline.com/Corporation/<?php echo $char->corporation_id; ?>_64.png' name='select' width='64' height='64' alt='<?php echo $char->corporation->name; ?>' />
 					<div class='details'>
 						<b><?php echo $char->name; ?></b>
 						<br />
-						<?php echo $char->corporation()->name; ?>
+						<?php echo $char->corporation->name; ?>
 					</div>
 				</form>
 			</li>
@@ -45,11 +45,11 @@
 			<?php foreach($unselectableChars as $char): ?>
 			<li class='disabled'>
 					<img src='https://image.eveonline.com/Character/<?php echo $char->id; ?>_64.jpg' name='select' width='64' height='64' alt='<?php echo $char->name; ?>' />
-					<img src='https://image.eveonline.com/Corporation/<?php echo $char->corporation_id; ?>_64.png' name='select' width='64' height='64' alt='<?php echo $char->corporation()->name; ?>' />
+					<img src='https://image.eveonline.com/Corporation/<?php echo $char->corporation_id; ?>_64.png' name='select' width='64' height='64' alt='<?php echo $char->corporation->name; ?>' />
 					<div class='details'>
 						<b><?php echo $char->name; ?></b>
 						<br />
-						<?php echo $char->corporation()->name; ?>
+						<?php echo $char->corporation->name; ?>
 					</div>
 				</form>
 			</li>

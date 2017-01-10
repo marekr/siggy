@@ -1,52 +1,23 @@
 <?php
 
-use Pheal\Pheal;
 use Carbon\Carbon;
+use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Database\Eloquent\Model;
+use Pheal\Pheal;
 
-class Corporation {
+class Corporation extends Model {
 
-	public $id;
-	public $name;
-	public $ticker;
-	public $description;
-	public $member_count;
-	public $created_at;
-	public $updated_at;
+	public $timestamps = true;
+	public $incrementing = false;
 
-	public function __construct(array $props)
-	{
-		foreach ($props as $key => $value) 
-		{
-    		$this->$key = $value;
-		}
-	}
-	
-	public function save(array $props)
-	{
-		foreach ($props as $key => $value) 
-		{
-    		$this->$key = $value;
-		}
-
-		DB::update('corporations')
-			->set( $props )
-			->where('id', '=',  $this->id)
-			->execute();
-	}
-
-	public static function create(array $props): Corporation
-	{
-		DB::insert('corporations', array_keys($props) )
-				->values(array_values($props))
-				->execute();
-
-		if(!isset($props['id']))
-		{
-			$props['id'] = $result[0];
-		}
-
-		return new Corporation($props);
-	}
+	protected $fillable = [
+		'id',
+		'name',
+		'ticker',
+		'description',
+		'member_count',
+		'updated_at',
+	];
 
 	public function syncWithApi()
 	{
@@ -58,33 +29,28 @@ class Corporation {
 		$update = [ 'member_count' => $rawData['member_count'],
 					'description' => $rawData['description'],
 					'ticker' => $rawData['ticker'],
-					'name' => $rawData['name'],
-					'updated_at' => Carbon::now()->toDateTimeString()
+					'name' => $rawData['name']
 				];
 
-		$this->save($update);
+		$this->fill($update);
+		$this->save();
 
 		return TRUE;
 	}
 
 	public static function find(int $id)
 	{
-		$corp = DB::query(Database::SELECT, 'SELECT * FROM corporations WHERE id=:id')
-												->param(':id', $id)
-												->execute()
-												->current();
+		$corp = self::where('id', $id)->first();
 
-		
 		if($corp != null)
 		{
-			$res = new Corporation($corp);
-			if( $corp['updated_at'] == null ||
-				Carbon::parse($corp['updated_at'])->addMinutes(60) < Carbon::now() )
+			if( $corp->updated_at == null ||
+				$corp->updated_at->addMinutes(60) < Carbon::now() )
 			{
-				$res->syncWithApi();
+				$corp->syncWithApi();
 			}
 
-			return $res;
+			return $corp;
 		}
 		else
 		{
@@ -98,7 +64,6 @@ class Corporation {
 						'member_count' => $rawData['member_count'],
 						'description' => $rawData['description'],
 						'ticker' => $rawData['ticker'],
-						'created_at' => Carbon::now()->toDateTimeString(),
 						'updated_at' => Carbon::now()->toDateTimeString()
 					];
 

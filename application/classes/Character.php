@@ -1,53 +1,37 @@
 <?php
 
 use Carbon\Carbon;
+use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Database\Eloquent\Model;
 use Pheal\Pheal;
 
-class Character {
+class Character extends Model {
 	
-	public $id;
-	public $corporation_id;
-	public $created_at;
-	public $updated_at;
-	public $name;
-	public $location_processed_at;
+	public $timestamps = true;
+	public $incrementing = false;
 
-	public $corporation = null;
-
-	public function __construct(array $props)
-	{
-		foreach ($props as $key => $value) 
-		{
-			$this->$key = $value;
-		}
-	}
+	protected $fillable = [
+		'id',
+		'corporation_id',
+		'name',
+		'location_processed_at'
+	];
 	
-	public function save(array $props)
-	{
-		foreach ($props as $key => $value) 
-		{
-			$this->$key = $value;
-		}
-
-		DB::update('characters')
-			->set( $props )
-			->where('id', '=',  $this->id)
-			->execute();
-	}
+	public $dates = ['location_processed_at'];
 
 	public function canAccessMap(int $groupId, int $chainmap): bool
 	{
-		$access = DB::query(Database::SELECT, 'SELECT * FROM groupmembers gm 
+		$access = DB::selectOne('SELECT * FROM groupmembers gm 
 														JOIN chainmaps_access ca ON(gm.id=ca.groupmember_id)
 														WHERE gm.groupID=:groupID AND ca.chainmap_id = :chainmap
 														AND ((gm.memberType="corp" AND gm.eveID=:corpID) 
-														OR (gm.memberType="char" AND gm.eveID=:charID))')
-												->param(':groupID', $groupId)
-												->param(':chainmap', $chainmap)
-												->param(':corpID', $this->corporation_id)
-												->param(':charID', $this->id)
-												->execute()
-												->current();
+														OR (gm.memberType="char" AND gm.eveID=:charID))',
+														[
+															'groupID' => $groupId,
+															'chainmap' => $chainmap,
+															'corpID' => $this->corporation_id,
+															'charID' => $this->id,
+														]);
 
 		if($access != null)
 		{
@@ -57,43 +41,22 @@ class Character {
 		return false;
 	}
 
-	public static function create(array $props): Character
-	{
-		$result = DB::insert('characters', array_keys($props) )
-				->values(array_values($props))
-				->execute();
-
-		if(!isset($props['id']))
-		{
-			$props['id'] = $result[0];
-		}
-
-		return new Character($props);
-	}
-
 	public function corporation()
 	{
-		if( $this->corporation == null || $this->corporation->id != $this->corporation_id )
-		{
-			$this->corporation = Corporation::find($this->corporation_id);
-		}
-
-		return $this->corporation;
+		return $this->belongsTo('Corporation');
 	}
 
 	public static function find(int $id, bool $avoidAPIFetch = false)
 	{
-		$char = DB::query(Database::SELECT, 'SELECT * FROM characters WHERE id=:id')
-												->param(':id', $id)
-												->execute()
-												->current();
+		$char = self::where('id', $id)->first();
+
 		if($char != null)
 		{
-			if( ($char['updated_at'] != null &&
-				Carbon::parse($char['updated_at'])->addMinutes(60) > Carbon::now()) ||
+			if( ($char->updated_at != null &&
+				$char->updated_at->addMinutes(60) > Carbon::now()) ||
 				$avoidAPIFetch )
 			{
-				return new Character($char);
+				return $char;
 			}
 			else 
 			{
@@ -102,15 +65,14 @@ class Character {
 				if( $rawData == null )
 					return null;
 
-				$res = new Character($char);
-				
 				$update = [ 'name' => $rawData['character_name'],
-							'corporation_id' => $rawData['corporation_id'],
-							'updated_at' => Carbon::now()->toDateTimeString()
+							'corporation_id' => $rawData['corporation_id']
 						];
-				$res->save($update);
 
-				return $res;
+				$char->fill($update);
+				$char->save();
+
+				return $char;
 			}
 		}
 		else 
@@ -123,7 +85,6 @@ class Character {
 			$insert = [ 'id' => $id,
 						'name' => $rawData['character_name'],
 						'corporation_id' => $rawData['corporation_id'],
-						'created_at' => Carbon::now()->toDateTimeString(),
 						'updated_at' => Carbon::now()->toDateTimeString()
 					];
 
