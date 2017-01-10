@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Capsule\Manager as DB;
+
 final class MapUtils {
 
 	static function generatePossibleSystemLocations($x, $y)
@@ -78,16 +80,16 @@ final class MapUtils {
 		}
 	}
 
-	static function findSystemByEVEName($name)
+	static function findSystemByEVEName(string $name): int
 	{
-		$systemID = 0;
+		$system = DB::selectOne('SELECT id,name FROM solarsystems WHERE LOWER(name) = ?',[strtolower($name)]);
 
-		$systemID = DB::query(Database::SELECT, 'SELECT id,name FROM solarsystems WHERE LOWER(name) = :name')
-															->param(':name', $name )
-															->execute()
-															->get('id', 0);
+		if($system != null)
+		{
+			return $system->id;
+		}
 
-		return $systemID;
+		return 0;
 	}
 
 	static function findSystemByName($name, $group_id, $chain_map_id = 0)

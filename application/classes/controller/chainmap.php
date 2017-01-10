@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Illuminate\Database\Capsule\Manager as DB;
 
 class Controller_Chainmap extends FrontController {
 	/*
@@ -49,7 +50,7 @@ class Controller_Chainmap extends FrontController {
 		}
 		else if (!empty($target))
 		{
-			$targetID = mapUtils::findSystemByName($target, Auth::$session->group->id, $this->chainmap->id );
+			$targetID = $this->chainmap->find_system_by_name($target);
 		}
 
 		if( $targetID == 0 || $targetID >= 31000000 )
@@ -58,32 +59,35 @@ class Controller_Chainmap extends FrontController {
 			exit();
 		}
 
-		$systems = DB::query(Database::SELECT, "( SELECT DISTINCT w.to_system_id as sys_id,ss.name
+		$systems = DB::select("( SELECT DISTINCT w.to_system_id as sys_id,ss.name
 												FROM wormholes w
 												LEFT JOIN solarsystems ss ON (ss.id = w.to_system_id)
-												WHERE w.to_system_id < 31000000 AND w.group_id=:group AND w.chainmap_id=:chainmap)
+												WHERE w.to_system_id < 31000000 AND w.group_id=:group1 AND w.chainmap_id=:chainmap1)
 												UNION DISTINCT
 											( SELECT DISTINCT w.from_system_id as sys_id, ss.name
 											FROM wormholes w
 											LEFT JOIN solarsystems ss ON (ss.id = w.from_system_id)
-											WHERE w.from_system_id < 31000000 AND w.group_id=:group AND w.chainmap_id=:chainmap)")
-						->param(':group', Auth::$session->group->id)
-						->param(':chainmap', $this->chainmap->id)
-						->execute()->as_array();
+											WHERE w.from_system_id < 31000000 AND w.group_id=:group2 AND w.chainmap_id=:chainmap2)",
+											[
+												'group1' => Auth::$session->group->id,
+												'group2' => Auth::$session->group->id,
+												'chainmap1' => $this->chainmap->id,
+												'chainmap2' => $this->chainmap->id,
+											]);
 
 		$pather = new Pathfinder();
 		$result = array();
 		foreach($systems as $system)
 		{
-			$path = $pather->shortest($targetID, $system['sys_id']);
+			$path = $pather->shortest($targetID, $system->sys_id);
 			$path = $path['distance'];
 
-			$result[] = array('system_id' => $system['sys_id'], 'system_name' => $system['name'], 'number_jumps' => $path );
+			$result[] = array('system_id' => $system->sys_id, 'system_name' => $system->name, 'number_jumps' => $path );
 		}
 
 		usort($result, array('Controller_Chainmap','sortResults'));
-		echo json_encode(array('result' => $result));
-		exit();
+
+		$this->response->body(json_encode(['result' => $result]));
 	}
 
 	private static function sortResults($a, $b)
@@ -164,30 +168,31 @@ class Controller_Chainmap extends FrontController {
 
 			$cynoHashes = $this->_hash_array_to_string($cynoHashes);
 
-			$stargates = DB::query(Database::SELECT, 'SELECT s.*, sto.name as to_name, sfrom.name as from_name
+			$stargates = DB::select('SELECT s.*, sto.name as to_name, sfrom.name as from_name
 														FROM chainmap_cynos s
 														INNER JOIN solarsystems sto ON sto.id = s.to_system_id
 														INNER JOIN solarsystems sfrom ON sfrom.id = s.from_system_id
-														WHERE s.hash IN('.$cynoHashes.') AND s.group_id=:groupID AND s.chainmap_id=:chainmap')
-							->param(':groupID', Auth::$session->group->id)
-							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
-							->execute();
+														WHERE s.hash IN('.$cynoHashes.') AND s.group_id=:groupID AND s.chainmap_id=:chainmap',[
+															'groupID' => Auth::$session->group->id,
+															'chainmap' => Auth::$session->accessData['active_chain_map']
+														]);
 
 			foreach( $stargates as $sg )
 			{
-				$systemIDs[] = $sg['to_system_id'];
-				$systemIDs[] = $sg['from_system_id'];
+				$systemIDs[] = $sg->to_system_id;
+				$systemIDs[] = $sg->from_system_id;
 
-				$log_message .= $sg['to_name'] . ' to ' . $sg['from_name'] . ', ';
+				$log_message .= $sg->to_name . ' to ' . $sg->from_name . ', ';
 			}
 			$systemIDs = array_unique( $systemIDs );
 
-			DB::query(Database::DELETE, 'DELETE FROM chainmap_cynos WHERE hash IN('.$cynoHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
-							->param(':groupID', Auth::$session->group->id)
-							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
-							->execute();
+			DB::delete('DELETE FROM chainmap_cynos WHERE hash IN('.$cynoHashes.') AND group_id=:groupID AND chainmap_id=:chainmap',
+						[
+							'groupID' => Auth::$session->group->id,
+							'chainmap' => Auth::$session->accessData['active_chain_map']
+						]);
 
-			$log_message .= ' from the chainmap "'. $this->chainmap->data['chainmap_name'].'"';
+			$log_message .= ' from the chainmap "'. $this->chainmap->chainmap_name.'"';
 			
 			Auth::$session->group->logAction('delwhs', $log_message );
 		}
@@ -198,30 +203,31 @@ class Controller_Chainmap extends FrontController {
 
 			$jumpbridgeHashes = $this->_hash_array_to_string($jumpbridgeHashes);
 
-			$stargates = DB::query(Database::SELECT, 'SELECT s.*, sto.name as to_name, sfrom.name as from_name
+			$stargates = DB::select('SELECT s.*, sto.name as to_name, sfrom.name as from_name
 														FROM chainmap_jumpbridges s
 														INNER JOIN solarsystems sto ON sto.id = s.to_system_id
 														INNER JOIN solarsystems sfrom ON sfrom.id = s.from_system_id
-														WHERE s.hash IN('.$jumpbridgeHashes.') AND s.group_id=:groupID AND s.chainmap_id=:chainmap')
-							->param(':groupID', Auth::$session->group->id)
-							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
-							->execute();
+														WHERE s.hash IN('.$jumpbridgeHashes.') AND s.group_id=:groupID AND s.chainmap_id=:chainmap',[
+															'groupID' => Auth::$session->group->id,
+															'chainmap' => Auth::$session->accessData['active_chain_map']
+														]);
 
 			foreach( $stargates as $sg )
 			{
-				$systemIDs[] = $sg['to_system_id'];
-				$systemIDs[] = $sg['from_system_id'];
+				$systemIDs[] = $sg->to_system_id;
+				$systemIDs[] = $sg->from_system_id;
 
-				$log_message .= $sg['to_name'] . ' to ' . $sg['from_name'] . ', ';
+				$log_message .= $sg->to_name . ' to ' . $sg->from_name . ', ';
 			}
 			$systemIDs = array_unique( $systemIDs );
 
-			DB::query(Database::DELETE, 'DELETE FROM chainmap_jumpbridges WHERE hash IN('.$jumpbridgeHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
-							->param(':groupID', Auth::$session->group->id)
-							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
-							->execute();
+			DB::delete('DELETE FROM chainmap_jumpbridges WHERE hash IN('.$jumpbridgeHashes.') AND group_id=:groupID AND chainmap_id=:chainmap',
+						[
+							'groupID' => Auth::$session->group->id,
+							'chainmap' => Auth::$session->accessData['active_chain_map']
+						]);
 
-			$log_message .= ' from the chainmap "'. $this->chainmap->data['chainmap_name'].'"';
+			$log_message .= ' from the chainmap "'. $this->chainmap->chainmap_name.'"';
 			Auth::$session->group->logAction('delwhs', $log_message );
 		}
 
@@ -231,30 +237,31 @@ class Controller_Chainmap extends FrontController {
 
 			$stargateHashes = $this->_hash_array_to_string($stargateHashes);
 
-			$stargates = DB::query(Database::SELECT, 'SELECT s.*, sto.name as to_name, sfrom.name as from_name
+			$stargates = DB::select('SELECT s.*, sto.name as to_name, sfrom.name as from_name
 														FROM chainmap_stargates s
 														INNER JOIN solarsystems sto ON sto.id = s.to_system_id
 														INNER JOIN solarsystems sfrom ON sfrom.id = s.from_system_id
-														WHERE s.hash IN('.$stargateHashes.') AND s.group_id=:groupID AND s.chainmap_id=:chainmap')
-							->param(':groupID', Auth::$session->group->id)
-							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
-							->execute();
+														WHERE s.hash IN('.$stargateHashes.') AND s.group_id=:groupID AND s.chainmap_id=:chainmap',[
+															'groupID' => Auth::$session->group->id,
+															'chainmap' => Auth::$session->accessData['active_chain_map']
+														]);
 
 			foreach( $stargates as $sg )
 			{
-				$systemIDs[] = $sg['to_system_id'];
-				$systemIDs[] = $sg['from_system_id'];
+				$systemIDs[] = $sg->to_system_id;
+				$systemIDs[] = $sg->from_system_id;
 
-				$log_message .= $sg['to_name'] . ' to ' . $sg['from_name'] . ', ';
+				$log_message .= $sg->to_name . ' to ' . $sg->from_name . ', ';
 			}
 			$systemIDs = array_unique( $systemIDs );
 
-			DB::query(Database::DELETE, 'DELETE FROM chainmap_stargates WHERE hash IN('.$stargateHashes.') AND group_id=:groupID AND chainmap_id=:chainmap')
-							->param(':groupID', Auth::$session->group->id)
-							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
-							->execute();
+			DB::delete('DELETE FROM chainmap_stargates WHERE hash IN('.$stargateHashes.') AND group_id=:groupID AND chainmap_id=:chainmap',
+						[
+							'groupID' => Auth::$session->group->id,
+							'chainmap' => Auth::$session->accessData['active_chain_map']
+						]);
 
-			$log_message .= ' from the chainmap "'. $this->chainmap->data['chainmap_name'].'"';
+			$log_message .= ' from the chainmap "'. $this->chainmap->chainmap_name.'"';
 			Auth::$session->group->logAction('delwhs', $log_message );
 		}
 
@@ -273,8 +280,8 @@ class Controller_Chainmap extends FrontController {
 			//update system to make sigs we deleted disappear
 			foreach($systemIDs as $id)
 			{
-				$this->chainmap->update_system( $id, array('lastUpdate' => time(),
-														   'lastActive' => time() )
+				$this->chainmap->update_system( $id, ['lastUpdate' => time(),
+													'lastActive' => time()]
 											);
 			}
 
@@ -308,14 +315,14 @@ class Controller_Chainmap extends FrontController {
 			exit();
 		}
 
-		$wormhole = DB::query(Database::SELECT, 'SELECT * FROM	wormholes WHERE hash=:hash AND group_id=:groupID AND chainmap_id=:chainmap')
-							->param(':hash',$hash)
-							->param(':groupID', Auth::$session->group->id)
-							->param(':chainmap', Auth::$session->accessData['active_chain_map'])
-							->execute()
-							->current();
+		$wormhole = DB::selectOne('SELECT * FROM wormholes WHERE hash=:hash AND group_id=:groupID AND chainmap_id=:chainmap',
+											[
+												'hash' => $hash,
+												'groupID' => Auth::$session->group->id,
+												'chainmap' => Auth::$session->accessData['active_chain_map']
+											]);
 
-		if( !$wormhole['hash'] )
+		if( $wormhole == null )
 		{
 			echo json_encode(array('error' => 1, 'error_message' => 'Wormhole does not exist.'));
 			exit();
@@ -325,11 +332,11 @@ class Controller_Chainmap extends FrontController {
 		{
 			$update['eol'] = intval($_POST['eol']);
 
-			if( !$wormhole['eol'] && $update['eol'] )
+			if( !$wormhole->eol && $update['eol'] )
 			{
 				$update['eol_date_set'] = time();
 			}
-			elseif( $wormhole['eol'] && !$update['eol'] )
+			elseif( $wormhole->eol && !$update['eol'] )
 			{
 				$update['eol_date_set'] = 0;
 			}
@@ -354,27 +361,22 @@ class Controller_Chainmap extends FrontController {
 
 		if( !empty($update) )
 		{
-			DB::update('wormholes')
-					->set( $update )
+			DB::table('wormholes')
 					->where('hash', '=', $hash)
 					->where('group_id', '=', Auth::$session->group->id)
 					->where('chainmap_id', '=', Auth::$session->accessData['active_chain_map'])
-					->execute();
+					->update( $update );
 
 			$this->chainmap->rebuild_map_data_cache();
 		}
 	}
 
-	private function lookupWHTypeByName($name)
+	private function lookupWHTypeByName(string $name): int
 	{
-		$static = DB::query(Database::SELECT, "SELECT `id` FROM statics WHERE LOWER(name)=:name")
-							->param(':name', strtolower($name))
-							->execute()
-
-							->current();
-		if( isset($static['id']) )
+		$static = DB::selectOne( "SELECT `id` FROM statics WHERE LOWER(name)=?",[strtolower($name)]);
+		if( $static != null )
 		{
-			return $static['id'];
+			return $static->id;
 		}
 		return 0;
 	}
@@ -384,7 +386,7 @@ class Controller_Chainmap extends FrontController {
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
 		header('content-type: application/json');
-		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+		header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
 
 		if(	 !$this->siggyAccessGranted() )
 		{
@@ -488,13 +490,12 @@ class Controller_Chainmap extends FrontController {
 
 			$whHash = mapUtils::whHashByID($fromSysID , $toSysID);
 
-			$connection = DB::query(Database::SELECT, "SELECT `hash` FROM wormholes WHERE hash=:hash AND group_id=:group AND chainmap_id=:chainmap")
-								->param(':hash', $whHash)
-								->param(':group', Auth::$session->group->id)
-								->param(':chainmap', Auth::$session->accessData['active_chain_map'])
-								->execute()->current();
-
-			if( isset($connection['hash']) )
+			$connection = DB::selectOne("SELECT `hash` FROM wormholes WHERE hash=:hash AND group_id=:group AND chainmap_id=:chainmap",[
+								'hash' => $whHash,
+								'group' => Auth::$session->group->id,
+								'chainmap' => Auth::$session->accessData['active_chain_map']
+								]);
+			if( $connection != null )
 			{
 				$errors[] = "Wormhole already exists";
 			}
@@ -597,36 +598,37 @@ class Controller_Chainmap extends FrontController {
 
 		foreach($data['wormholes'] as $c)
 		{
-			$c['type'] = 'wormhole';
+			$c->type = 'wormhole';
 			$output['connections'][] = $c;
 		}
 
 		foreach($data['cynos'] as $c)
 		{
-			$c['type'] = 'cyno';
+			$c->type = 'cyno';
 			$output['connections'][] = $c;
 		}
 
 		foreach($data['stargates'] as $c)
 		{
-			$c['type'] = 'stargate';
+			$c->type = 'stargate';
 			$output['connections'][] = $c;
 		}
 
 		foreach($data['jumpbridges'] as $c)
 		{
-			$c['type'] = 'jumpbridge';
+			$c->type = 'jumpbridge';
 			$output['connections'][] = $c;
 		}
 
-		print (json_encode($output));
-		die();
+		$this->response->body(json_encode($output));
 	}
 
 	public function action_autocomplete_wh()
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
+		header('content-type: application/json');
+		header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
 
 		$q = '';
 		if ( isset($_GET['q']) )
@@ -640,33 +642,32 @@ class Controller_Chainmap extends FrontController {
 		}
 
 		$output = array();
-		$customsystems = DB::select( array('solarsystems.id', 'id'),
-									array('solarsystems.name', 'name'),
-									array('activesystems.displayName', 'displayName'),
-									array('regions.regionName', 'regionName'),
-									array('solarsystems.sysClass', 'class')
-									)
-										->from('activesystems')
-										->join('solarsystems', 'LEFT')
-										->on('activesystems.systemID', '=', 'solarsystems.id')
-										->join('regions', 'LEFT')
-										->on('solarsystems.region', '=', 'regions.regionID')
-										->where('displayName','like',$q.'%')
-										->where('groupID', '=', Auth::$session->group->id)
-										->where('chainmap_id', '=', Auth::$session->accessData['active_chain_map'])
-										->execute()
-										->as_array();
+		$customsystems = DB::select('SELECT solarsystems.id, 
+											solarsystems.name,
+											activesystems.displayName as display_name,
+											regions.regionName as region_name,
+											solarsystems.sysClass as class
+										FROM activesystems
+										LEFT JOIN solarsystems ON(activesystems.systemID=solarsystems.id)
+										LEFT JOIN regions ON(solarsystems.region=regions.regionID)
+										WHERE displayName like :query
+										AND groupID=:group
+										AND chainmap_id=:chainmap',
+										[
+											'query' => $q.'%',
+											'group' => Auth::$session->group->id,
+											'chainmap' => Auth::$session->accessData['active_chain_map']
+										]);
 
 		foreach($customsystems as $system)
 		{
-			$output[] = array('id' => (int)$system['id'],
-								'name' =>$system['name'],
-								'display_name' => $system['displayName'],
-								'region_name' => $system['regionName'] );
+			$output[] = array('id' => (int)$system->id,
+								'name' => $system->name,
+								'display_name' => $system->display_name,
+								'region_name' => $system->region_name );
 		}
 
-		print (json_encode($output));
-		die();
+		$this->response->body(json_encode($output));
 	}
 
 	public function action_jump_log()
