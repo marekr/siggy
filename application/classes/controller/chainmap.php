@@ -141,7 +141,7 @@ class Controller_Chainmap extends FrontController {
 	{
 		foreach( $arr as $k => $v )
 		{
-			$arr[$k] = Database::instance()->escape($v);
+			$arr[$k] = DB::connection()->getPdo()->quote($v);
 		}
 		return implode(',', $arr);
 	}
