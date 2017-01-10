@@ -642,6 +642,12 @@ class Controller_Siggy extends FrontController {
 
 			$charData = Character::find($character->character_id);
 
+			if($charData == null)
+			{
+				//TODO FIXME/HANDLE ME BETTER
+				continue;
+			}
+
 			$currentLocation = CharacterLocation::findWithinCutoff($character->character_id);
 
 

@@ -120,7 +120,7 @@ class Auth {
 												'hash' => $hash
 											]);
 
-		if( $user != null );
+		if( $user != null )
 		{
 			return $user->id;
 		}
