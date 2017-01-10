@@ -1,6 +1,7 @@
 <?php
 
 use \Michelf\Markdown;
+use Illuminate\Database\Capsule\Manager as DB;
 
 class Controller_Announcements extends FrontController {
 	private $auth;
@@ -21,15 +22,13 @@ class Controller_Announcements extends FrontController {
 		$this->template->user = Auth::$user;
 		$this->template->layoutMode = 'blank';
 
-		$resultCount = DB::query(Database::SELECT, "SELECT COUNT(*) as total
+		$resultCount = DB::selectOne("SELECT COUNT(*) as total
 									FROM announcements
-									WHERE datePublished != 0 and visibility = 'all'")
-						->execute()
-						->current();
+									WHERE datePublished != 0 and visibility = 'all'");
 
 
 		$pagination = new ZebraPagination2();
-		$pagination->records($resultCount['total']);
+		$pagination->records($resultCount->total);
 		$pagination->records_per_page(5);
 
 		$paginationHTML = $pagination->render(true);
@@ -37,13 +36,11 @@ class Controller_Announcements extends FrontController {
 
 		$view = View::factory('announcements/index');
 
-		$results = DB::query(Database::SELECT, "SELECT *
+		$results = DB::select("SELECT *
 									FROM announcements
 									WHERE datePublished != 0 and visibility = 'all'
 									ORDER BY datePublished DESC
-									LIMIT ".$offset.",5")
-								->execute()
-								->as_array();
+									LIMIT ".$offset.",5");
 
 
 		$view->pagination = $paginationHTML;
@@ -58,13 +55,10 @@ class Controller_Announcements extends FrontController {
 
 		$id = (int)$_GET['id'];
 
-		$result = DB::query(Database::SELECT, "SELECT *
+		$result = DB::selectOne("SELECT *
 									FROM announcements
 									WHERE datePublished != 0 and visibility = 'all'
-									AND id = :id")
-								->param(':id', $id)
-								->execute()
-								->current();
+									AND id = ?",[$id]);
 
 		print json_encode($result);
 		die();

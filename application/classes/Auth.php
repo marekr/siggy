@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Capsule\Manager as DB;
+
 class AuthStatus {
 	const NOACCESS = 0;
 	const GROUP_SELECT_REQUIRED = 1;
@@ -112,16 +114,15 @@ class Auth {
 
 	public static function characterOwnerHashTied($hash)
 	{
-		$user = DB::query(Database::SELECT, 'SELECT u.id FROM users u
+		$user = DB::selectOne('SELECT u.id FROM users u
 											JOIN user_ssocharacter sc ON(sc.user_id=u.id)
-											WHERE sc.character_owner_hash=:hash')
-									->param(':hash', $hash)
-									->execute()
-									->current();
+											WHERE sc.character_owner_hash=:hash',[
+												'hash' => $hash
+											]);
 
-		if( isset($user['id']) && $user['id'] > 0)
+		if( $user != null );
 		{
-			return $user['id'];
+			return $user->id;
 		}
 
 		return FALSE;
@@ -129,11 +130,11 @@ class Auth {
 
 	public static function usernameExists($username)
 	{
-		$user = DB::query(Database::SELECT, 'SELECT id FROM users WHERE LOWER(username)=:username')->param(':username', strtolower($username))->execute()->current();
+		$user = DB::selectOne('SELECT id FROM users WHERE LOWER(username)=?',[strtolower($username)]);
 
-		if( isset($user['id']) && $user['id'] > 0)
+		if( $user != null )
 		{
-			return $user['id'];
+			return $user->id;
 		}
 
 		return FALSE;
@@ -142,11 +143,11 @@ class Auth {
 
 	public static function emailExists($email)
 	{
-		$user = DB::query(Database::SELECT, 'SELECT id FROM users WHERE LOWER(email)=:email')->param(':email', strtolower($email))->execute()->current();
+		$user = DB::selectOne('SELECT id FROM users WHERE LOWER(email)=?',[strtolower($email)]);
 
-		if( isset($user['id']) && $user['id'] > 0)
+		if( $user != null )
 		{
-			return TRUE;
+			return $user->id;
 		}
 
 		return FALSE;
