@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Capsule\Manager as DB;
+
 class Pathfinder {
 
 	public $jumps = array();
@@ -13,17 +15,19 @@ class Pathfinder {
 
 		if( !($this->jumps = $cache->get( $cacheName, FALSE ) ) )
 		{
-			$data = DB::select()->from('eve_mapsolarsystemjumps')->order_by('fromSolarSystemID', 'ASC')->execute()->as_array();
+			$data = DB::table('eve_mapsolarsystemjumps')
+					->orderBy('fromSolarSystemID', 'ASC')
+					->get()
+					->all();
 
-			$this->jumps = array();
+			$this->jumps = [];
 			foreach($data as $j)
 			{
-				if( !isset($this->jumps[$j['fromSolarSystemID']]) )
+				if( !isset($this->jumps[$j->fromSolarSystemID]) )
 				{
-					$this->jumps[$j['fromSolarSystemID']] = array();
+					$this->jumps[$j->fromSolarSystemID] = [];
 				}
-				$this->jumps[$j['fromSolarSystemID']][] = $j['toSolarSystemID'];
-
+				$this->jumps[$j->fromSolarSystemID][] = $j->toSolarSystemID;
 			}
 
 			$cache->set($cacheName, $this->jumps);
