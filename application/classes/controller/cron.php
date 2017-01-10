@@ -307,7 +307,7 @@ class Controller_Cron extends Controller
 		DB::table('apihourlymapdata')->where('hourStamp', '<=', $cutoff)->delete();
 		DB::table('jumpstracker')->where('hourStamp', '<=', $cutoff)->delete();
 
-		$systems = DB::table('solarsystems')->orderBy('id');
+		$systems = DB::table('solarsystems')->orderBy('id')->get()->all();
 		foreach($systems as &$system)
 		{
 			$system->jumps = 0;

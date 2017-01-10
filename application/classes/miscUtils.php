@@ -109,7 +109,7 @@ final class miscUtils {
 
 	static function siteIDLookupByName( $name, $type )
 	{
-		$sites = DB::select("SELECT * FROM sites WHERE type = ?", $type);
+		$sites = DB::select("SELECT * FROM sites WHERE type = ?", [$type]);
 
 		foreach( $sites as $site )
 		{
