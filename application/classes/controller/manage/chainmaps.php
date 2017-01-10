@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Capsule\Manager as DB;
+
 require_once APPPATH.'classes/mapUtils.php';
 require_once APPPATH.'classes/miscUtils.php';
 
@@ -143,7 +145,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		}
 
 		$member = GroupMember::find($groupMemberID);
-		if( $member->groupID != Auth::$user->groupID )
+		if( $member == null || $member->groupID != Auth::$user->group->id )
 		{
 			Message::add('error', __('Error: The group member does not exist.'));
 			HTTP::redirect('manage/group/members');
@@ -153,25 +155,22 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		$view->set('id', $id);
 		if ($this->request->method() == HTTP_Request::POST)
 		{
-			DB::query(Database::DELETE, 'DELETE FROM chainmaps_access
+			DB::delete('DELETE FROM chainmaps_access
 											WHERE group_id=:group_id AND chainmap_id=:chainmap
-											AND groupmember_id=:member_id')
-							->param(':group_id', Auth::$user->groupID)
-							->param(':chainmap', $chainmap_id)
-							->param(':member_id', $groupMemberID)
-							->execute();
+											AND groupmember_id=:member_id',[
+												'group_id' => Auth::$user->group->id,
+												'chainmap' => $chainmap_id,
+												'member_id' => $groupMemberID
+											]);
 
 
-			$count = DB::query(Database::SELECT, 'SELECT COUNT(*) as total
+			$count = DB::selectOne('SELECT COUNT(*) as total
 											FROM chainmaps_access
-											WHERE groupmember_id=:member_id')
-							->param(':member_id', $groupMemberID)
-							->execute()
-							->current();
+											WHERE groupmember_id=?',[ $groupMemberID]);
 
 			$eveID = $member->eveID;
 			$memberType = $member->memberType;
-			if( !isset($count['total']) || $count['total'] == 0)
+			if( $count->total == 0)
 			{
 				$member->delete();
 			}
@@ -260,34 +259,22 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		{
 			try
 			{
-				DB::delete('chainmaps_access')->where('chainmap_id', '=', $chainmap->chainmap_id)->execute();
-				DB::delete('activesystems')->where('chainmap_id', '=', $chainmap->chainmap_id)->execute();
+				DB::table('chainmaps_access')->where('chainmap_id', '=', $chainmap->chainmap_id)->delete();
+				DB::table('activesystems')->where('chainmap_id', '=', $chainmap->chainmap_id)->delete();
 				
-				$groupmembers = DB::query(Database::SELECT, 'SELECT *
-									FROM groupmembers
-									WHERE groupID=:group')
-					->param(':group', Auth::$user->groupID)
-					->execute()
-					->as_array();
+				$groupmembers = GroupMember::findByGroup(Auth::$user->group->id);
 				if( count($groupmembers) > 0 )
 				{
 					foreach($groupmembers as $member)
 					{
-						$count = DB::query(Database::SELECT, 'SELECT COUNT(*) as total
+						$count = DB::selectOne('SELECT COUNT(*) as total
 										FROM chainmaps_access
-										WHERE groupmember_id=:member_id')
-						->param(':member_id', $member['id'])
-						->execute()
-						->current();
+										WHERE groupmember_id=?',[$member->id]);
 						
 						
-						if( !isset($count['total']) || $count['total'] == 0)
+						if( $count->total == 0)
 						{
-							DB::query(Database::DELETE, 'DELETE FROM groupmembers
-															WHERE id=:member_id')
-											->param(':member_id', $member['id'])
-											->execute();
-
+							DB::delete('DELETE FROM groupmembers WHERE id=?',[$member->id]);
 						}
 					}
 				}
@@ -296,7 +283,6 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				Auth::$user->group->recacheChainmaps();
 				$chainmap->delete();
 
-				//$this->__recacheCorpMembers();
 				HTTP::redirect('manage/chainmaps/list');
 			}
 			catch (Exception $e)

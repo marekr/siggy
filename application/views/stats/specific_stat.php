@@ -11,10 +11,10 @@
 			<tr>
 				<td><?php echo (++$rank_offset); ?></td>
 				<td class="center">
-					<b><a href='javascript:CCPEVE.showInfo(1377, <?php echo $result['charID']; ?>)'><?php echo $result['charName']; ?></a></b><br />
-					<img src='http://image.eveonline.com/Character/<?php echo $result['charID'];?>_32.jpg' />
+					<b><a href='javascript:CCPEVE.showInfo(1377, <?php echo $result->charID; ?>)'><?php echo $result->charName; ?></a></b><br />
+					<img src='http://image.eveonline.com/Character/<?php echo $result->charID;?>_32.jpg' />
 				</td>
-				<td><?php echo $result['value']; ?></td>
+				<td><?php echo $result->value; ?></td>
 			</tr>
 			<?php endforeach; ?>
 		</table>

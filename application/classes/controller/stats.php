@@ -1,5 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+use Illuminate\Database\Capsule\Manager as DB;
+
 require_once APPPATH.'classes/mapUtils.php';
 require_once APPPATH.'classes/miscUtils.php';
 require_once APPPATH.'classes/ZebraPagination2.php';
@@ -40,7 +42,7 @@ class Controller_Stats extends FrontController {
 
 		$number_per_page = 25;
 
-		$resultCount = DB::query(Database::SELECT, "SELECT COUNT(*) as total
+		$resultCount = DB::selectOne("SELECT COUNT(*) as total
 											FROM
 											(
 												SELECT charID, (sum(wormholes) + sum(adds) + sum(updates) + sum(pos_adds)+sum(pos_updates)) as score
@@ -49,21 +51,20 @@ class Controller_Stats extends FrontController {
 												GROUP BY charID
 												HAVING score > 0
 												ORDER BY score DESC
-											) u")
-								->param(':group', Auth::$session->group->id)
-								->param(':start', $dateRange['start'])
-								->param(':end', $dateRange['end'])
-								->execute()
-								->current();
+											) u",[
+												'group' => Auth::$session->group->id,
+												'start' => $dateRange['start'],
+												'end' => $dateRange['end']
+											]);
 
 		$pagination = new ZebraPagination2();
-		$pagination->records($resultCount['total']);
+		$pagination->records($resultCount->total);
 		$pagination->records_per_page($number_per_page);
 
 		$paginationHTML = $pagination->render(true);
 		$offset = $pagination->next_page_offset();
 
-		$results = DB::query(Database::SELECT, "SELECT charID, charName, ({$wormhole}*sum(wormholes) + {$sig_add}*sum(adds) + {$sig_update}*sum(updates) + {$pos_add}*sum(pos_adds)+{$pos_update}*sum(pos_updates)) as score,
+		$results = DB::select("SELECT charID, charName, ({$wormhole}*sum(wormholes) + {$sig_add}*sum(adds) + {$sig_update}*sum(updates) + {$pos_add}*sum(pos_adds)+{$pos_update}*sum(pos_updates)) as score,
 											sum(wormholes) as wormholes,
 											sum(adds) as adds,
 											sum(updates) as updates,
@@ -75,12 +76,11 @@ class Controller_Stats extends FrontController {
 											HAVING score > 0
 											ORDER BY score DESC
 											LIMIT ".$offset.",".$number_per_page."
-											")
-								->param(':group', Auth::$session->group->id)
-								->param(':start', $dateRange['start'])
-								->param(':end', $dateRange['end'])
-								->execute()
-								->as_array();
+											",[
+												'group' => Auth::$session->group->id,
+												'start' => $dateRange['start'],
+												'end' => $dateRange['end']
+											]);
 
 		$view->results = $results;
 		$view->rank_offset = $offset;
@@ -151,37 +151,35 @@ class Controller_Stats extends FrontController {
 		$dateRange = $datep->getTimestamps();
 
 
-		$resultCount = DB::query(Database::SELECT, "SELECT COUNT(*) as total
+		$resultCount = DB::selectOne("SELECT COUNT(*) as total
 											FROM
 											(
 													SELECT charID, charName, sum(".$convertedKey.") as value FROM stats
 													WHERE groupID=:group AND dayStamp >= :start AND dayStamp < :end AND ".$convertedKey." != 0
 													GROUP BY charID
 													ORDER BY value DESC
-											) u")
-								->param(':group', Auth::$session->group->id)
-								->param(':start', $dateRange['start'])
-								->param(':end', $dateRange['end'])
-								->execute()
-								->current();
+											) u",[
+												'group' => Auth::$session->group->id,
+												'start' => $dateRange['start'],
+												'end' => $dateRange['end']
+											]);
 
 		$pagination = new ZebraPagination2();
-		$pagination->records($resultCount['total']);
+		$pagination->records($resultCount->total);
 		$pagination->records_per_page(50);
 
 		$paginationHTML = $pagination->render(true);
 		$offset = $pagination->next_page_offset();
 
-		$results = DB::query(Database::SELECT, "SELECT charID, charName, sum(".$convertedKey.") as value FROM stats
+		$results = DB::select("SELECT charID, charName, sum(".$convertedKey.") as value FROM stats
 													WHERE groupID=:group AND dayStamp >= :start AND dayStamp < :end AND ".$convertedKey." != 0
 													GROUP BY charID
 													ORDER BY value DESC
-													LIMIT ".$offset.",50")
-										->param(':group', Auth::$session->group->id)
-										->param(':start', $dateRange['start'])
-										->param(':end', $dateRange['end'])
-										->execute()
-										->as_array();
+													LIMIT ".$offset.",50",[
+												'group' => Auth::$session->group->id,
+												'start' => $dateRange['start'],
+												'end' => $dateRange['end']
+											]);
 
 		$view->results = $results;
 		$view->rank_offset = $offset;
@@ -267,24 +265,23 @@ class Controller_Stats extends FrontController {
 			throw new Exception("Invalid stat key");
 		}
 
-		$groupTop10 = DB::query(Database::SELECT, "SELECT charID, charName, sum(".$key.") as value FROM stats
+		$groupTop10 = DB::select( "SELECT charID, charName, sum(".$key.") as value FROM stats
 													WHERE groupID=:group AND dayStamp >= :start AND dayStamp < :end AND ".$key." != 0
 													GROUP BY charID
-													ORDER BY value DESC LIMIT 0,10")
-										->param(':group', Auth::$session->group->id)
-										->param(':start', $start)
-										->param(':end', $end)
-										->execute()
-										->as_array();
+													ORDER BY value DESC LIMIT 0,10",[
+												'group' => Auth::$session->group->id,
+												'start' => $start,
+												'end' => $end
+											]);
 
 		$max = 0;
 		if( count($groupTop10 ) > 0 )
 		{
 			foreach( $groupTop10 as &$p )
 			{
-				if( $max < $p['value'] )
+				if( $max < $p->value )
 				{
-					$max = $p['value'];
+					$max = $p->value;
 				}
 			}
 		}

@@ -16,15 +16,15 @@
 			<tr>
 				<td><?php echo (++$rank_offset); ?></td>
 				<td class="center">
-					<b><a href='javascript:CCPEVE.showInfo(1377, <?php echo $result['charID']; ?>)'><?php echo $result['charName']; ?></a></b><br />
-					<img src='http://image.eveonline.com/Character/<?php echo $result['charID'];?>_32.jpg' />
+					<b><a href='javascript:CCPEVE.showInfo(1377, <?php echo $result->charID; ?>)'><?php echo $result->charName; ?></a></b><br />
+					<img src='http://image.eveonline.com/Character/<?php echo $result->charID;?>_32.jpg' />
 				</td>
-				<td><?php echo $result['adds']; ?></td>
-				<td><?php echo $result['updates']; ?></td>
-				<td><?php echo $result['wormholes']; ?></td>
-				<td><?php echo $result['pos_adds']; ?></td>
-				<td><?php echo $result['pos_updates']; ?></td>
-				<td><?php echo $result['score']; ?></td>
+				<td><?php echo $result->adds; ?></td>
+				<td><?php echo $result->updates; ?></td>
+				<td><?php echo $result->wormholes; ?></td>
+				<td><?php echo $result->pos_adds; ?></td>
+				<td><?php echo $result->pos_updates; ?></td>
+				<td><?php echo $result->score; ?></td>
 			</tr>
 			<?php endforeach; ?>
 		</table>
