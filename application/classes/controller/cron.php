@@ -134,7 +134,7 @@ class Controller_Cron extends Controller
 		//30 minute cutoff
 		$cutoff = Carbon::now()->subMinutes(30)->toDateTimeString();
 
-		DB::delete('sessions')->where('updated_at', '<=', $cutoff)->execute();
+		DB::table('sessions')->where('updated_at', '<=', $cutoff)->delete();
 	}
 
 	public function action_purgeNotifications()
@@ -142,7 +142,7 @@ class Controller_Cron extends Controller
 		//15 day cutoff
 		$cutoff = time()-60*60*24*15;
 
-		$query = DB::delete(Database::DELETE, "DELETE FROM notifications WHERE created_at <= ?",[$cutoff]);
+		$query = DB::delete("DELETE FROM notifications WHERE created_at <= ?",[$cutoff]);
 
 		print "done";
 	}
