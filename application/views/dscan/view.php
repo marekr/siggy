@@ -19,10 +19,10 @@
 <h2>Directional Scan Result</h2>
 <p>
 	<a style="float:right" class="btn" href="<?php echo URL::base(); ?>">&lt; Back to scanning</a>
-	<strong>Title:</strong><?php echo $dscan['dscan_title']; ?><br />
-	<strong>System:</strong> <?php echo $dscan['system_name']; ?> <br />
-	<strong>Date:</strong> <?php echo date("Y-m-d H:i:s", $dscan['dscan_date']); ?><br />
-	<strong>Submitter:</strong> <?php echo $dscan['dscan_added_by']; ?>
+	<strong>Title:</strong><?php echo $dscan->dscan_title; ?><br />
+	<strong>System:</strong> <?php echo $dscan->system_name; ?> <br />
+	<strong>Date:</strong> <?php echo date("Y-m-d H:i:s", $dscan->dscan_date); ?><br />
+	<strong>Submitter:</strong> <?php echo $dscan->dscan_added_by; ?>
 </p>
 <div class="dscan-col span6">
 	<h3>All</h3>

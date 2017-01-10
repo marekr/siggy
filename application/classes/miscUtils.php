@@ -2,6 +2,7 @@
 
 use Pheal\Pheal;
 use Carbon\Carbon;
+use Illuminate\Database\Capsule\Manager as DB;
 
 final class miscUtils {
 
@@ -108,15 +109,13 @@ final class miscUtils {
 
 	static function siteIDLookupByName( $name, $type )
 	{
-		$sites = DB::query(Database::SELECT, "SELECT * FROM sites WHERE type = :type")
-											->param(':type', $type)
-					  ->execute()->as_array();
+		$sites = DB::select("SELECT * FROM sites WHERE type = ?", $type);
 
 		foreach( $sites as $site )
 		{
-			if( __($site['name']) == $name )
+			if( __($site->name) == $name )
 			{
-				return $site['id'];
+				return $site->id;
 			}
 		}
 
@@ -190,42 +189,42 @@ final class miscUtils {
 
 	static function getDBCacheItem( $key )
 	{
-		$cache = DB::query(Database::SELECT, "SELECT * FROM cache_store WHERE cacheKey = :key")
-											->param(':key', $key)
-					  ->execute()->current();
+		$cache = DB::selectOne("SELECT * FROM cache_store WHERE cacheKey = ?", $key);
 
-		return $cache['cacheValue'];
+		return ($cache != null ? $cache->cacheValue : '');
 	}
 
 	static function storeDBCacheItem( $key, $value )
 	{
-		DB::query(null, "INSERT INTO cache_store (`cacheKey`,`cacheValue`) VALUES (:key, :value)  ON DUPLICATE KEY UPDATE cacheValue=:value")
-			->param(':key', $key )
-			->param(':value', $value )
-			->execute();
+		DB::insert("INSERT INTO cache_store (`cacheKey`,`cacheValue`) 
+			VALUES (:key, :value)  ON DUPLICATE KEY UPDATE cacheValue=:value",[
+			'key' => $key,
+			'value' => $value
+		]);
 	}
 
 	static function findSystemByName($name)
 	{
-		$systemID = DB::query(Database::SELECT, 'SELECT id,name FROM solarsystems WHERE LOWER(name) = :name')
-															->param(':name', $name )
-															->execute()
-															->get('id', 0);
+		$system = DB::selectOne('SELECT id,name FROM solarsystems WHERE LOWER(name) = ?',[strtolower($name)]);
+		
+		if($system != null)
+		{
+			return $system->id;
+		}
 
-
-		return $systemID;
+		return 0;
 	}
 
 	static function systemNameByID($id)
 	{
-		$name = DB::query(Database::SELECT, 'SELECT id,name
-												FROM solarsystems WHERE id = :id')
-															->param(':id', $id )
-															->execute()
-															->get('name', '');
+		$system = DB::selectOne('SELECT id,name FROM solarsystems WHERE id = ?',[$id]);
 
+		if($system != null)
+		{
+			return $system->name;
+		}
 
-		return $name;
+		return '';
 	}
 
 	static function getDayStamp()

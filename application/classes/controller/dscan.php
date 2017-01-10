@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Capsule\Manager as DB;
+
 class Controller_Dscan extends FrontController {
 	/*
 		Key value array
@@ -45,14 +47,12 @@ class Controller_Dscan extends FrontController {
 			/* check the cache first, else query */
 			if( !isset($this->dscan_item_cache[ $entry[1] ] ) )
 			{
-				$itemData = DB::query(Database::SELECT, 'SELECT typeID FROM invtypes
-										WHERE typeName LIKE :name')
-									->param(':name', $entry[1])
-									->execute()->current();
+				$itemData = DB::selectOne('SELECT typeID FROM invtypes
+										WHERE typeName LIKE ?', $entry[1]);
 
-				if( isset($itemData['typeID']) )
+				if( isset($itemData->typeID) )
 				{
-					$typeID = $this->dscan_item_cache[ $entry[1] ] = $itemData['typeID'];
+					$typeID = $this->dscan_item_cache[ $entry[1] ] = $itemData->typeID;
 				}
 			}
 			else
@@ -135,48 +135,47 @@ class Controller_Dscan extends FrontController {
 
 		$id = $this->request->param('id');
 
-		$dscan = DB::query(Database::SELECT, "SELECT d.dscan_id, d.dscan_title, d.dscan_date,dscan_added_by,ss.name as system_name
+		$dscan = DB::selectOne("SELECT d.dscan_id, d.dscan_title, d.dscan_date,dscan_added_by,ss.name as system_name
 										FROM dscan d
 										LEFT JOIN solarsystems ss ON (ss.id=d.system_id)
-										WHERE d.dscan_id=:dscan_id AND d.group_id=:group_id")
-								->param(':group_id', Auth::$session->group->id)
-								->param(':dscan_id', $id)
-								->execute()->current();
+										WHERE d.dscan_id=:dscan_id AND d.group_id=:group_id",[
+											'group_id' => Auth::$session->group->id,
+											'dscan_id' => $id
+										]);
 
-		if( !isset($dscan['dscan_id']) )
+		if( $dscan == null )
 		{
 			HTTP::redirect('/');
 		}
-		$this->template->title = "siggy: dscan " . $dscan['dscan_title'];
+		$this->template->title = "siggy: dscan " . $dscan->dscan_title;
 
-		$recs = DB::query(Database::SELECT, "SELECT r.record_name, i.typeName,g.groupID, g.groupName, r.item_distance
+		$recs = DB::select("SELECT r.record_name, i.typeName,g.groupID, g.groupName, r.item_distance
 										FROM dscan_records r
 										LEFT JOIN invtypes i ON(i.typeID = r.type_id)
 										LEFT JOIN invgroups g ON(g.groupID = i.groupID)
 										WHERE r.dscan_id=:dscan_id
-										ORDER BY g.groupName ASC,i.typeName ASC")
-								->param(':group_id', Auth::$session->group->id)
-								->param(':dscan_id', $id)
-								->execute()->as_array();
+										ORDER BY g.groupName ASC,i.typeName ASC",[
+											'dscan_id' => $id
+										]);
 
 		$dscan_data = array();
 		$ongrid_data = array();
 		foreach($recs as $record)
 		{
-			$dscan_data[ $record['groupID'] ]['group_name'] = $record['groupName'];
-			$dscan_data[ $record['groupID'] ]['records'][] = array('record_name' => $record['record_name'],
-																	'type_name' => $record['typeName']);
+			$dscan_data[ $record->groupID ]['group_name'] = $record->groupName;
+			$dscan_data[ $record->groupID ]['records'][] = array('record_name' => $record->record_name,
+																	'type_name' => $record->typeName);
 
 			$matches = array();
 
-			if(preg_match("/^([-+]?[0-9]*\.?[0-9]+) (m|km)$/", $record['item_distance'], $matches))
+			if(preg_match("/^([-+]?[0-9]*\.?[0-9]+) (m|km)$/", $record->item_distance, $matches))
 			{
 				if($matches[2] == 'm' || ($matches[2] == 'km' && $matches[1] <= 600))
 				{
-					$ongrid_data[ $record['groupID'] ]['group_name'] = $record['groupName'];
-					$ongrid_data[ $record['groupID'] ]['records'][] = array('record_name' => $record['record_name'],
-																		'type_name' => $record['typeName'],
-																		'distance' => $record['item_distance']);
+					$ongrid_data[ $record->groupID ]['group_name'] = $record->groupName;
+					$ongrid_data[ $record->groupID ]['records'][] = array('record_name' => $record->record_name,
+																		'type_name' => $record->typeName,
+																		'distance' => $record->item_distance);
 				}
 			}
 		}
@@ -200,25 +199,21 @@ class Controller_Dscan extends FrontController {
 
 	public function action_remove()
 	{
-
 		$id = $_POST['dscan_id'];
-		$dscan = DB::query(Database::SELECT, "SELECT dscan_id, dscan_title, dscan_date
+		$dscan = DB::selectOne("SELECT dscan_id, dscan_title, dscan_date
 										FROM dscan
-										WHERE dscan_id=:dscan_id AND group_id=:group_id")
-								->param(':group_id', Auth::$session->group->id)
-								->param(':dscan_id', $id)
-								->execute()->current();
+										WHERE dscan_id=:dscan_id AND group_id=:group_id",[
+											'group_id' => Auth::$session->group->id,
+											'dscan_id' => $id
+										]);
 
-		if( !isset($dscan['dscan_id']) )
+		if( $dscan == null )
 		{
 			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid dscan'));
 			exit();
 		}
 
-
-		DB::delete('dscan')->where('dscan_id', '=', $id)->execute();
-		DB::delete('dscan_records')->where('dscan_id', '=', $id)->execute();
-
-
+		DB::table('dscan')->where('dscan_id', '=', $id)->delete();
+		DB::table('dscan_records')->where('dscan_id', '=', $id)->delete();
 	}
 }
