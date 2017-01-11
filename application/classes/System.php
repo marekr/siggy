@@ -1,6 +1,34 @@
 <?php
 
-class System {
+use Carbon\Carbon;
+use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Database\Eloquent\Model;
+
+class System extends Model {
+	public $table = 'solarsystems';
+	public $timestamps = false;
+	public $incrementing = false;
+
+	protected $fillable =  [
+			'id',
+			'name',
+			'belts',
+			'planets',
+			'moons',
+			'sysClass',
+			'truesec',
+			'sec',
+			'effect',
+			'radius',
+			'region',
+			'constellation'
+		];
+
+	public static function findByName(string $name): ?System
+	{
+		return self::where('name',$name)->first();
+	}
+
 
 	public static function get($id, $groupID, $mode = 'advanced')
 	{

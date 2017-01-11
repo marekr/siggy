@@ -20,7 +20,10 @@ class Controller_Siggy extends FrontController {
 		$ssname = $this->request->param('ssname', '');
 
 		// set default
-		$view->systemData = array('id' => 30000142, 'name' => 'Jita');
+		$sysData = new stdClass();
+		$sysData->id = 30000142;
+		$sysData->name = 'Jita';
+		$view->systemData = $sysData;
 
 		// did we have an url requested system?
 		$requested = false;
@@ -30,10 +33,10 @@ class Controller_Siggy extends FrontController {
 
 			$ssname = preg_replace("/[^a-zA-Z0-9]/", "", $ssname);
 
-			$ssid = $this->findSystemIDByName($ssname);
-			if( $ssid )
+			$system = System::findByName($ssname);
+			if( $system != null )
 			{
-				$sysData = $this->getSystemData($ssid);
+				$sysData = $this->getSystemData($system->id);
 			}
 
 			if( !empty($sysData) )
@@ -52,7 +55,9 @@ class Controller_Siggy extends FrontController {
 
 				if( count($homeSystems) > 0 )
 				{
-					$view->systemData = array('id' => $homeSystems[0], 'name' => '');
+					$sysData->id = $homeSystems[0];
+					$sysData->name = '';
+					$view->systemData = $sysData;
 				}
 			}
 			$view->initialSystem = true;
