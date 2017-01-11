@@ -30,9 +30,6 @@ class Chainmap extends Model {
 
 		$cache_name = 'map_data_cache-'.$this->id;
 
-			$map_data = $this->rebuild_map_data_cache();
-
-			return $map_data;
 		if( $map_data = $cache->get( $cache_name, FALSE ) )
 		{
 			return $map_data;
