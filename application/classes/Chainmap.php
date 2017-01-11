@@ -9,6 +9,15 @@ class Chainmap extends Model {
 
 	public $timestamps = false;
 	protected $primaryKey = 'chainmap_id';
+
+	protected $fillable = [
+		'chainmap_name',
+		'chainmap_password',
+		'chainmap_homesystems',
+		'chainmap_homesystems_ids',
+		'chainmap_skip_purge_home_sigs',
+		'chainmap_type'
+	];
 	
 	public function getIdAttribute()
 	{
