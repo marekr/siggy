@@ -153,6 +153,7 @@ class Controller_Manage_Group extends Controller_Manage
 					}
 
 					Auth::$user->group->save();
+					Auth::$user->group->recacheChainmaps();
 					Auth::$user->group->recacheMembers();
 
 					Message::add('success', 'Group member added');

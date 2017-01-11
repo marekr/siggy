@@ -146,21 +146,18 @@ class Group extends Model {
 	{
 		if($this->chainMaps == null)
 		{
-			$chainmaps = DB::table('chainmaps')
-							->where('group_id', $this->id)
-							->get()
-							->keyBy('chainmap_id')
-							->all();
+			$cache = Cache::instance( CACHE_METHOD );
 
-			foreach($chainmaps as &$c)
+			$cache_name = 'group-chainmaps-'.$this->id;
+
+			if( $data = $cache->get( $cache_name, FALSE ) )
 			{
-				$members = DB::select("SELECT gm.memberType, gm.eveID 
-											FROM groupmembers gm
-									LEFT JOIN chainmaps_access a ON(gm.id=a.groupmember_id) WHERE chainmap_id=?",[$c->chainmap_id]);
-				$c->access = $members;
+				$this->chainMaps = $data;
 			}
-
-			$this->chainMaps = $chainmaps;
+			else
+			{
+				$this->chainMaps = $this->recacheChainmaps();
+			}
 		}
 
 		return $this->chainMaps;
@@ -241,6 +238,25 @@ class Group extends Model {
 
 	public function recacheChainmaps()
 	{
-		//placeholder in case we want to implement
+		$chainmaps = DB::table('chainmaps')
+						->where('group_id', $this->id)
+						->get()
+						->keyBy('chainmap_id')
+						->all();
+
+		foreach($chainmaps as &$c)
+		{
+			$members = DB::select("SELECT gm.memberType, gm.eveID 
+										FROM groupmembers gm
+								LEFT JOIN chainmaps_access a ON(gm.id=a.groupmember_id) WHERE chainmap_id=?",[$c->chainmap_id]);
+			$c->access = $members;
+		}
+
+		$cache = Cache::instance( CACHE_METHOD );
+		$cache_name = 'group-chainmaps-'.$this->id;
+
+		$cache->set($cache_name, $chainmaps, 1800);
+
+		return $chainmaps;
 	}
 }
