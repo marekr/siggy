@@ -640,7 +640,7 @@ class Controller_Siggy extends FrontController {
 				continue;
 			}
 
-			$charData = Character::find($character->character_id);
+			$charData = $character->character;
 
 			if($charData == null)
 			{

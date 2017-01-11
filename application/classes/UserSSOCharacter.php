@@ -17,4 +17,9 @@ class UserSSOCharacter extends Model {
 			'refresh_token',
 			'valid'
 		];
+
+	public function character()
+	{
+		return $this->belongsTo('Character');
+	}
 }
