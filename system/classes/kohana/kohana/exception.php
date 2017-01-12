@@ -162,11 +162,11 @@ class Kohana_Kohana_Exception extends Exception {
 	 */
 	public static function text($e)
 	{
-        if ( !$e instanceof Exception AND !$e instanceof Throwable )
+        if ( ! $e instanceof Exception AND ! $e instanceof Throwable )
             throw InvalidArgumentException;
 
 		return sprintf('%s [ %s ]: %s ~ %s [ %d ]',
-			(new \ReflectionClass($e))->getShortName(), $e->getCode(), strip_tags($e->getMessage()), Debug::path($e->getFile()), $e->getLine());
+			get_class($e), $e->getCode(), strip_tags($e->getMessage()), Debug::path($e->getFile()), $e->getLine());
 	}
 
 	/**
@@ -178,13 +178,13 @@ class Kohana_Kohana_Exception extends Exception {
 	 */
 	public static function response($e)
 	{
-        if ( !$e instanceof Exception AND !$e instanceof Throwable )
+        if ( ! $e instanceof Exception AND ! $e instanceof Throwable )
             throw InvalidArgumentException;
 
 		try
 		{
 			// Get the exception information
-			$class   = (new \ReflectionClass($e))->getShortName();
+			$class   = get_class($e);
 			$code    = $e->getCode();
 			$message = $e->getMessage();
 			$file    = $e->getFile();
@@ -223,6 +223,16 @@ class Kohana_Kohana_Exception extends Exception {
 							$frame['type'] = '??';
 						}
 
+						// Xdebug returns the words 'dynamic' and 'static' instead of using '->' and '::' symbols
+						if ('dynamic' === $frame['type'])
+						{
+							$frame['type'] = '->';
+						}
+						elseif ('static' === $frame['type'])
+						{
+							$frame['type'] = '::';
+						}
+
 						// XDebug also has a different name for the parameters array
 						if (isset($frame['params']) AND ! isset($frame['args']))
 						{
@@ -244,7 +254,13 @@ class Kohana_Kohana_Exception extends Exception {
 			 * The error view ends up several GB in size, taking
 			 * serveral minutes to render.
 			 */
-			if (defined('PHPUnit_MAIN_METHOD'))
+			if (
+				defined('PHPUnit_MAIN_METHOD')
+				OR
+				defined('PHPUNIT_COMPOSER_INSTALL')
+				OR
+				defined('__PHPUNIT_PHAR__')
+			)
 			{
 				$trace = array_slice($trace, 0, 2);
 			}
