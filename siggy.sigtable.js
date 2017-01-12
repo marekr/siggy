@@ -317,6 +317,12 @@ siggy2.SigTable.prototype.massAddHandler = function(systemID, data)
 
 		$.extend($this.sigData, newSig);
 		$('#sig-table').trigger('update');
+
+		//trigger the table to update...hackishly
+		if(data.delete_nonexistent_sigs)
+		{
+			$(document).trigger('siggy.updateRequested', true );
+		}
 	}, 'json');
 }
 
@@ -428,7 +434,7 @@ siggy2.SigTable.prototype.convertSiteID = function (whClass, type, siteID)
 	else
 		return _(siggy2.StaticData.getSiteNameByID(siteID));
 }
-var testing = 0;
+
 siggy2.SigTable.prototype.updateSigs = function (sigData, flashSigs)
 {
 	for (var i in this.sigData)
@@ -762,7 +768,6 @@ siggy2.SigTable.prototype.generateMappedWormholeSelect = function( sigData )
 		selected = sigData.chainmap_wormholes[cid];
 	}
 
-	console.log(sigData);
 	var siteEle = $("#sig-" + sigData.id + " td.desc select[name=site]");
 	var wormholeType = parseInt(siteEle.val());
 
@@ -969,7 +974,6 @@ siggy2.SigTable.prototype.editSig = function (id)
 	controlEle.append($('<i>').addClass('icon icon-pencil icon-large')
 							.click(function (e)
 									{
-										console.log('hi');
 										$this.editSigForm(id)
 									})
 								);

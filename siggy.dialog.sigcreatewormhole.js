@@ -14,8 +14,6 @@ siggy2.Dialog.SigCreateWormhole = function(core, systemID, sigs)
 	{
 		var formData = $(this).serializeObject();
 
-		console.log(formData);
-
 		var list = [];
 		for(var i in formData.sig_id)
 		{
