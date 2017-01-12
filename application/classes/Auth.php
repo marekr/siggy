@@ -96,6 +96,11 @@ class Auth {
 	{
 		$tmp = User::find($id);
 
+		if($tmp == null)
+		{
+			return FALSE;
+		}
+
 		if( $tmp->password == $passHash )
 		{
 			Auth::$user = $tmp;
