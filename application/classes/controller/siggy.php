@@ -865,7 +865,8 @@ class Controller_Siggy extends FrontController {
 
 		$notes = htmlspecialchars($_POST['notes']);
 
-		Auth::$session->group->save(['notes' => $notes]);
+		Auth::$session->group->notes = $notes;
+		Auth::$session->group->save();
 
 		$this->response->body(json_encode(time()));
 	}

@@ -16,7 +16,8 @@ class Chainmap extends Model {
 		'chainmap_homesystems',
 		'chainmap_homesystems_ids',
 		'chainmap_skip_purge_home_sigs',
-		'chainmap_type'
+		'chainmap_type',
+		'group_id'
 	];
 	
 	public function getIdAttribute()
