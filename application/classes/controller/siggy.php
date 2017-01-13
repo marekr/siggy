@@ -25,6 +25,8 @@ class Controller_Siggy extends FrontController {
 		$sysData->name = 'Jita';
 		$view->systemData = $sysData;
 
+		ScribeCommandBus::UnfreezeCharacter(Auth::$session->character_id);
+
 		// did we have an url requested system?
 		$requested = false;
 		if( !empty($ssname) )
