@@ -441,8 +441,8 @@ siggy2.Map.prototype.populateExitData = function(data)
             item.html("<span class='faux-link'>"+data.result[i].system_name + "</span> - " + data.result[i].number_jumps + " jumps");
             $('#exit-finder-list').append(item);
 
-            item.data("sysID", data.result[i].system_id);
-            item.data("sysName",data.result[i].system_name);
+            item.data("system-id", data.result[i].system_id);
+            item.data("system-name",data.result[i].system_name);
             item.addClass('basic-system-context');
         }
     }
