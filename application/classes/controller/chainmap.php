@@ -27,8 +27,8 @@ class Controller_Chainmap extends FrontController {
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
-		header('content-type: application/json');
-		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1\
+		$this->response->headers('Content-Type','application/json');
+		$this->response->headers('Cache-Control','no-cache, must-revalidate');
 
 
 		if(	 !$this->siggyAccessGranted() )
@@ -580,8 +580,8 @@ class Controller_Chainmap extends FrontController {
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
-		header('content-type: application/json');
-		header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
+		$this->response->headers('Content-Type','application/json');
+		$this->response->headers('Cache-Control','no-cache, must-revalidate');
 
 		if(	 !$this->siggyAccessGranted() )
 		{
@@ -627,8 +627,8 @@ class Controller_Chainmap extends FrontController {
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
-		header('content-type: application/json');
-		header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
+		$this->response->headers('Content-Type','application/json');
+		$this->response->headers('Cache-Control','no-cache, must-revalidate');
 
 		$q = '';
 		if ( isset($_GET['q']) )
@@ -674,8 +674,8 @@ class Controller_Chainmap extends FrontController {
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
-		header('content-type: application/json');
-		header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
+		$this->response->headers('Content-Type','application/json');
+		$this->response->headers('Cache-Control','no-cache, must-revalidate');
 
 		if(	!$this->siggyAccessGranted() )
 		{
