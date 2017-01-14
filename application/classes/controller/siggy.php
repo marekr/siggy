@@ -372,7 +372,7 @@ class Controller_Siggy extends FrontController {
 
 	private function doSystemMappedNotifications($systems)
 	{
-		foreach( Notifier::all(Auth::$session->group->id, Auth::$session->character_id) as $notifier )
+		foreach( Notifier::allByGroupCharacter(Auth::$session->group->id, Auth::$session->character_id) as $notifier )
 		{
 			if( $notifier->type == NotificationTypes::SystemMappedByName )
 			{
@@ -499,7 +499,7 @@ class Controller_Siggy extends FrontController {
 			$charID = $characterID;
 		}
 
-		Notification::create(Auth::$session->group->id, $charID, $notifier->type, $eventData);
+		Notification::createFancy(Auth::$session->group->id, $charID, $notifier->type, $eventData);
 	}
 
 	public function createSystemResidentNotification($notifier,
@@ -523,7 +523,7 @@ class Controller_Siggy extends FrontController {
 				$charID = $characterID;
 			}
 
-			Notification::create(Auth::$session->group->id, $charID, $notifier->type, $eventData);
+			Notification::createFancy(Auth::$session->group->id, $charID, $notifier->type, $eventData);
 		}
 
 

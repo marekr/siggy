@@ -60,7 +60,7 @@ class Controller_Sig extends FrontController {
 
 	private function notifierCheck(Signature $sigData)
 	{
-		foreach( Notifier::all(Auth::$session->group->id, Auth::$session->character_id) as $notifier )
+		foreach( Notifier::allByGroupCharacter(Auth::$session->group->id, Auth::$session->character_id) as $notifier )
 		{
 			if( $notifier->type == NotificationTypes::SiteFound )
 			{
@@ -82,7 +82,7 @@ class Controller_Sig extends FrontController {
 						$charID = Auth::$session->character_id;
 					}
 
-					Notification::create(Auth::$session->group->id, $charID, $notifier->type, $eventData);
+					Notification::createFancy(Auth::$session->group->id, $charID, $notifier->type, $eventData);
 				}
 			}
 		}

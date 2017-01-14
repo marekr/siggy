@@ -1,10 +1,21 @@
 <?php
 
 use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Database\Eloquent\Model;
 
-class Notifier {
+class Notifier extends Model  {
+	public $timestamps = false;
 
-	public static function all(int $groupID, int $characterID)
+	protected $fillable = [
+		'type',
+		'data',
+		'group_id',
+		'scope',
+		'character_id',
+		'created_at'
+	];
+
+	public static function allByGroupCharacter(int $groupID, int $characterID)
 	{
 		$data = DB::select("SELECT * FROM notifiers
 											WHERE (( group_id=:group1 AND
@@ -27,7 +38,7 @@ class Notifier {
 		return $data;
 	}
 
-	public static function create($type, $scope, int $groupID, int $characterID, $data)
+	public static function createFancy(string $type, string $scope, int $groupID, int $characterID, array $data)
 	{
 		$keys = array();
 		$keys = NotificationTypes::getDataKeys($type);
@@ -49,19 +60,19 @@ class Notifier {
 			}
 		}
 
-		$notifier = array(
-							'type' => $type,
-							'data' => json_encode($data),
-							'group_id' => $groupID,
-							'scope' => $scope,
-							'character_id' => $characterID,
-							'created_at' => time()
-							);
+		$notifier = [
+			'type' => $type,
+			'data' => json_encode($data),
+			'group_id' => $groupID,
+			'scope' => $scope,
+			'character_id' => $characterID,
+			'created_at' => time()
+		];
 
-		DB::table('notifiers')->insert($notifier);
+		return self::create($notifier);
 	}
 
-	public static function update($id, $scope, $data)
+	public static function updateFancy(int $id, string $scope, array $data)
 	{
 		$keys = array();
 		$keys = NotificationTypes::getDataKeys($type);
@@ -94,7 +105,7 @@ class Notifier {
 				->update( $notifier );
 	}
 
-	public static function delete(int $id, int $groupID, int $charID)
+	public static function deleteByIdGroupCharacter(int $id, int $groupID, int $charID)
 	{
 		DB::delete("DELETE FROM notifiers WHERE id=:id AND ((scope='group' AND group_id=:groupID) OR
 															(scope='personal' AND character_id=:charID))",

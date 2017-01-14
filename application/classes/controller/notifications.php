@@ -16,7 +16,7 @@ class Controller_Notifications extends FrontController {
 
 	public function action_notifiers()
 	{
-		$data = Notifier::all(Auth::$session->group->id, Auth::$session->character_id);
+		$data = Notifier::allByGroupCharacter(Auth::$session->group->id, Auth::$session->character_id);
 
 		echo json_encode($data);
 		exit();
@@ -74,7 +74,7 @@ class Controller_Notifications extends FrontController {
 			$data['include_offline'] = (isset($data['include_offline']) && $data['include_offline']) ? true : false;
 		}
 
-		$notifier = Notifier::create($type, $scope, Auth::$session->group->id, Auth::$session->character_id, $data);
+		$notifier = Notifier::createFancy($type, $scope, Auth::$session->group->id, Auth::$session->character_id, $data);
 	}
 
 	public function action_notifiers_edit()
@@ -93,6 +93,6 @@ class Controller_Notifications extends FrontController {
 			exit();
 		}
 
-		Notifier::delete( $id, Auth::$session->group->id, Auth::$session->character_id );
+		Notifier::deleteByIdGroupCharacter( $id, Auth::$session->group->id, Auth::$session->character_id );
 	}
 }

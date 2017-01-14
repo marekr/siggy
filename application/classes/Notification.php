@@ -1,8 +1,18 @@
 <?php
 
 use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Database\Eloquent\Model;
 
-class Notification {
+class Notification extends Model {
+	public $timestamps = false;
+
+	protected $fillable = [
+		'type',
+		'data',
+		'group_id',
+		'character_id',
+		'created_at'
+	];
 
 	public static function latest($cutoff, int $groupID, int $charID = 0, int $offset = 0, int $limit = 5 )
 	{
@@ -33,7 +43,7 @@ class Notification {
 		return $data;
 	}
 
-	public static function total($cutoff, int $groupID, int $charID = 0)
+	public static function total($cutoff, int $groupID, int $charID = 0): int
 	{
 		$data = DB::selectOne("SELECT COUNT(*) as sum FROM notifications
 											WHERE (( group_id=:group1 AND
@@ -59,7 +69,7 @@ class Notification {
 		return $total;
 	}
 
-	public static function lastReadTimestamp( $groupID, $charID )
+	public static function lastReadTimestamp( $groupID, $charID ): int
 	{
 		$characterGroup = CharacterGroup::find($charID, $groupID);
 
@@ -73,7 +83,7 @@ class Notification {
 		}
 	}
 
-	public static function create($groupID, $characterID, $type, $data)
+	public static function createFancy(int $groupID, int $characterID, string $type, array $data)
 	{
 		$notification = array(
 							'type' => $type,
@@ -82,7 +92,7 @@ class Notification {
 							'character_id' => $characterID,
 							'created_at' => time()
 							);
-
-		$dscanID = DB::table('notifications')->insert($notification);
+							
+		return self::create($notification);
 	}
 }
