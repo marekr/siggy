@@ -246,12 +246,12 @@ class Controller_Siggy extends FrontController {
 
     private function getPOSes( $systemID )
     {
-		$poses = DB::select("SELECT p.pos_id, p.pos_location_planet, p.pos_location_moon, p.pos_online, p.pos_type, p.pos_size,
-												p.pos_added_date, p.pos_owner, pt.pos_type_name, p.pos_notes
-												FROM pos_tracker p
-												INNER JOIN pos_types pt ON(pt.pos_type_id = p.pos_type)
-												WHERE p.group_id=:group_id AND p.pos_system_id=:system_id
-												ORDER BY p.pos_location_planet ASC, p.pos_location_moon ASC",
+		$poses = DB::select("SELECT p.id, p.location_planet, p.location_moon, p.online, p.pos_type_id, p.size,
+												p.added_date, p.owner, pt.pos_type_name, p.notes
+												FROM poses p
+												INNER JOIN pos_types pt ON(pt.pos_type_id = p.pos_type_id)
+												WHERE p.group_id=:group_id AND p.system_id=:system_id
+												ORDER BY p.location_planet ASC, p.location_moon ASC",
 												[
 													'group_id' => Auth::$session->group->id,
 													'system_id' => $systemID
@@ -390,32 +390,23 @@ class Controller_Siggy extends FrontController {
 		$data = $notifier->data;
 		foreach($systems as $k => $system)
 		{
-			$posOnlineSQL = '';
+			$q = POS::with('system')->where('group_id',Auth::$session->group->id)
+				->where('system_id', $system)
+				->where('owner','LIKE',$data->resident_name);
+
 			if( !$data->include_offline )
 			{
-				$posOnlineSQL = ' AND pos.pos_online=1';
+				$q = $q->where('online',1);
 			}
 
-			$pos = DB::select("SELECT pos.pos_id,
-											pos.pos_system_id as system_id,
-											ss.name as system_name
-											FROM pos_tracker pos
-											INNER JOIN solarsystems ss ON ss.id = pos.pos_system_id
-											WHERE pos.group_id=:group_id
-											AND pos.pos_system_id=:system_id
-											AND pos.pos_owner LIKE :resident" . $posOnlineSQL,
-											[
-												'group_id' => Auth::$session->group->id,
-												'system_id' => $system,
-												'resident' => $data->resident_name
-											]);
+			$pos = $q->first();
 
 			if( $pos != null )
 			{
 				$this->createSystemResidentNotification(
 														$notifier,
-														$pos->system_id,
-														$pos->system_name,
+														$pos->system->id,
+														$pos->system->name,
 														$data->resident_name,
 														Auth::$session->character_name,
 														Auth::$session->character_id,
@@ -928,6 +919,6 @@ class Controller_Siggy extends FrontController {
 			$this->chainmap->rebuild_map_data_cache();
 		}
 
-		$this->response->body('');
+		$this->response->body(json_encode([]));
 	}
 }

@@ -4,15 +4,15 @@
 		<table class="siggy-table">
 			<tr>
 				<td class="title">System</td>
-				<td class="content">{{ data.system_name }}</td>
+				<td class="content">{{ data.system.name }}</td>
 				<td class="title">Owner</td>
-				<td class="content">{{ data.pos_owner }}</td>
+				<td class="content">{{ data.owner }}</td>
 			</tr>
 			<tr>
 				<td class="title">POS Planet</td>
-				<td class="content">{{ data.pos_location_planet }}</td>
+				<td class="content">{{ data.location_planet }}</td>
 				<td class="title">POS Moon</td>
-				<td class="content">{{ data.pos_location_moon }}</td>
+				<td class="content">{{ data.location_moon }}</td>
 			</tr>
 			<tr>
 				<td class="title">Date Added</td>

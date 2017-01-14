@@ -21,23 +21,11 @@ class Controller_Search extends FrontController {
 		$results = array();
 
 		$query = "%".$this->request->query('query')."%";
-
-		$poses = DB::select("SELECT p.pos_id, p.pos_system_id as system_id,
-													s.name as system_name, p.pos_owner,
-													p.pos_added_date as created,
-													p.pos_location_planet,
-													p.pos_location_moon,
-													p.pos_online,
-													p.pos_type,
-													p.pos_size,
-													p.pos_notes
-												FROM pos_tracker p
-												INNER JOIN  solarsystems s ON(p.pos_system_id=s.id)
-												WHERE p.group_id = :groupID AND p.pos_owner LIKE :query
-												",[
-													'groupID' => Auth::$session->group->id,
-													'query' => $query
-												]);
+		$poses = POS::with('system')
+			->where('group_id',Auth::$session->group->id)
+			->where('owner', 'LIKE', $query)
+			->get()
+			->all();
 
 		foreach($poses as $pos)
 		{

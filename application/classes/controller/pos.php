@@ -7,8 +7,8 @@ class Controller_Pos extends FrontController {
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
-		header('content-type: application/json');
-		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1\
+		$this->response->headers('Content-Type','application/json');
+		$this->response->headers('Cache-Control','no-cache, must-revalidate');
 
 
 		if(	 !$this->siggyAccessGranted() )
@@ -17,103 +17,108 @@ class Controller_Pos extends FrontController {
 			exit();
 		}
 
-		$data = array(
-			'pos_location_planet' => htmlspecialchars($_POST['pos_location_planet']),
-			'pos_location_moon' => htmlspecialchars($_POST['pos_location_moon']),
-			'pos_owner' => $_POST['pos_owner'],
-			'pos_type' => isset($_POST['pos_type']) ? intval($_POST['pos_type']) : 1,
-			'pos_online' => intval($_POST['pos_online']),
-			'pos_size' => $_POST['pos_size'],
-			'pos_notes' => htmlspecialchars($_POST['pos_notes']),
+		$data = [
+			'location_planet' => htmlspecialchars($_POST['pos_location_planet']),
+			'location_moon' => htmlspecialchars($_POST['pos_location_moon']),
+			'owner' => $_POST['pos_owner'],
+			'pos_type_id' => isset($_POST['pos_type']) ? intval($_POST['pos_type']) : 1,
+			'online' => intval($_POST['pos_online']),
+			'size' => $_POST['pos_size'],
+			'notes' => htmlspecialchars($_POST['pos_notes']),
 			'group_id' => Auth::$session->group->id,
-			'pos_added_date' => time(),
-			'pos_system_id' => intval($_POST['pos_system_id'])
-		);
+			'added_date' => time(),
+			'system_id' => intval($_POST['pos_system_id'])
+		];
 
-		if( empty($data['pos_location_planet'] ) || empty($data['pos_location_moon'] ) )
+		if( empty($data['location_planet'] ) || empty($data['location_moon'] ) )
 		{
 			echo json_encode(array('error' => 1, 'errorMsg' => 'Missing POS Location'));
 			exit();
 		}
 
-		if( !in_array( $data['pos_size'], array('small','medium','large') ) )
+		if( !in_array( $data['size'], ['small','medium','large'] ) )
 		{
-			$data['pos_size'] = 'small';
+			$data['size'] = 'small';
 		}
 
-
-		$posID = DB::table('pos_tracker')->insert($data);
+		POS::create($data);
 
 		Auth::$session->group->incrementStat('pos_adds', Auth::$session->accessData);
+
+		$this->response->body(json_encode([]));
 	}
 
 	public function action_edit()
 	{
+		$this->profiler = NULL;
+		$this->auto_render = FALSE;
+		$this->response->headers('Content-Type','application/json');
+		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+
 		$id = $_POST['pos_id'];
 
-		$pos = DB::selectOne("SELECT pos.pos_id,pos.pos_system_id,ss.name as system_name
-										FROM pos_tracker pos
-										INNER JOIN solarsystems ss ON ss.id = pos.pos_system_id
-										WHERE pos.pos_id=:pos_id AND pos.group_id=:group_id",[
-											'group_id' => Auth::$session->group->id,
-											'pos_id' => $id
-										]);
+		$pos = POS::findWithSystemByGroup(Auth::$session->group->id, $id);
+
 		if( $pos == null )
 		{
-			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid POS ID'));
-			exit();
+			$this->response->body(json_encode(['error' => 1, 'errorMsg' => 'Invalid POS ID']));
+			return;
 		}
 
 		$data = array(
-			'pos_location_planet' => htmlspecialchars($_POST['pos_location_planet']),
-			'pos_location_moon' => htmlspecialchars($_POST['pos_location_moon']),
-			'pos_owner' => $_POST['pos_owner'],
-			'pos_type' => isset($_POST['pos_type']) ? intval($_POST['pos_type']) : 1,
-			'pos_online' => intval($_POST['pos_online']),
-			'pos_size' => $_POST['pos_size'],
-			'pos_notes' => htmlspecialchars($_POST['pos_notes'])
+			'location_planet' => htmlspecialchars($_POST['pos_location_planet']),
+			'location_moon' => htmlspecialchars($_POST['pos_location_moon']),
+			'owner' => $_POST['pos_owner'],
+			'pos_type_id' => isset($_POST['pos_type']) ? intval($_POST['pos_type']) : 1,
+			'online' => intval($_POST['pos_online']),
+			'size' => $_POST['pos_size'],
+			'notes' => htmlspecialchars($_POST['pos_notes'])
 		);
 
-		if( empty($data['pos_location_planet'] ) || empty($data['pos_location_moon'] ) )
+		if( empty($data['location_planet'] ) || empty($data['location_moon'] ) )
 		{
-			echo json_encode(array('error' => 1, 'errorMsg' => 'Missing POS Location'));
-			exit();
+			$this->response->body(json_encode(['error' => 1, 'errorMsg' => 'Missing POS Location']));
+			return;
 		}
 
-		if( !in_array( $data['pos_size'], array('small','medium','large') ) )
+		if( !in_array( $data['size'], ['small','medium','large'] ) )
 		{
-			$data['pos_size'] = 'small';
+			$data['size'] = 'small';
 		}
 
-
-		DB::table('pos_tracker')->where('pos_id', '=', $pos->pos_id)->update( $data );
+		$pos->fill($data);
+		$pos->save();
 
 		Auth::$session->group->incrementStat('pos_updates', Auth::$session->accessData);
 
-		$log_message = sprintf("%s edit POS in system %s", Auth::$session->character_name, $pos->system_name);
+		$log_message = sprintf("%s edit POS in system %s", Auth::$session->character_name, $pos->system->name);
 		Auth::$session->group->logAction('editpos', $log_message);
+
+		$this->response->body(json_encode([]));
 	}
 
 	public function action_remove()
 	{
+		$this->profiler = NULL;
+		$this->auto_render = FALSE;
+		$this->response->headers('Content-Type','application/json');
+		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+
 		$id = $_POST['pos_id'];
 
-		$pos = DB::selectOne("SELECT pos.pos_id,pos.pos_system_id,ss.name as system_name
-										FROM pos_tracker pos
-										INNER JOIN solarsystems ss ON ss.id = pos.pos_system_id
-										WHERE pos.pos_id=:pos_id AND pos.group_id=:group_id",[
-											'group_id' => Auth::$session->group->id,
-											'pos_id' => $id
-										]);
+		$pos = POS::findWithSystemByGroup(Auth::$session->group->id, $id);
+
 		if( $pos == null )
 		{
-			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid POS ID'));
-			exit();
+			$this->response->body(json_encode(['error' => 1, 'errorMsg' => 'Invalid POS ID']));
+			return;
 		}
 
-		DB::table('pos_tracker')->where('pos_id', '=', $id)->delete();
+		$pos->delete();
 
-		$log_message = sprintf("%s deleted POS from system %s", Auth::$session->character_name, $pos->system_name);
+		$log_message = sprintf("%s deleted POS from system %s", Auth::$session->character_name, $pos->system->name);
 		Auth::$session->group->logAction('delpos', $log_message);
+		
+		$this->response->body(json_encode([]));
 	}
 }
