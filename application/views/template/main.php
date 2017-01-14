@@ -30,6 +30,7 @@
 		<script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/jquery/jquery.placeholder.js'></script>
 		<script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/jquery/jquery.hotkeys.js'></script>
 		<script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/jquery/jquery.simplePagination.js'></script>
+		<script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/jquery/jquery.idle.js'></script>
 		<script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/dropdown.js'></script>
 		<script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/tab.js'></script>
 		<script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/misc.js'></script>
