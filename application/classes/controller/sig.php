@@ -241,20 +241,21 @@ class Controller_Sig extends FrontController {
 			{
 				if($sigData['chainmap_wormhole']['hash'] == 'none')
 				{
-					DB::table('wormhole_signatures')
-						->where('chainmap_id',  $sigData['chainmap_wormhole']['chainmap_id'])
-						->where('signature_id', $id)
-						->delete();
+					$whConn = WormholeSignature::findByChainMapSig($sigData['chainmap_wormhole']['chainmap_id'], $id);
+					if($whConn != null)
+					{
+						$whConn->delete();
+					}
 				}
 				else
 				{
-					DB::insert('REPLACE INTO wormhole_signatures (`wormhole_hash`, `chainmap_id`,`signature_id`)
-								VALUES(:hash, :chainMapID, :id)',
-								[
-									'hash' => $sigData['chainmap_wormhole']['hash'],
-									'chainMapID' => $sigData['chainmap_wormhole']['chainmap_id'],
-									'id' => $id
-								]);
+					$replace = [
+									'wormhole_hash' => $sigData['chainmap_wormhole']['hash'],
+									'chainmap_id' => $sigData['chainmap_wormhole']['chainmap_id'],
+									'signature_id' => $id
+								];
+
+					WormholeSignature::replace($replace);
 				}
 			}
 
@@ -303,13 +304,12 @@ class Controller_Sig extends FrontController {
 				}
 
 				$whHash = mapUtils::whHashByID($request['system_id'], $toSysID);
-				DB::insert('REPLACE INTO wormhole_signatures (`wormhole_hash`, `chainmap_id`,`signature_id`)
-							VALUES(:hash, :chainMapID, :id)',
-							[
-								'hash' => $whHash,
-								'chainMapID' => $chainmapID,
-								'id' => $sig['id']
-							]);
+				$replace = [
+								'wormhole_hash' => $whHash,
+								'chainmap_id' => $chainmapID,
+								'signature_id' => $sig['id']
+							];
+				WormholeSignature::replace($replace);
 
 				$this->chainmap->update_system($toSysID, array('lastUpdate' => time() ));
 			}
@@ -345,17 +345,12 @@ class Controller_Sig extends FrontController {
 				return;
 			}
 
-			DB::table('systemsigs')
-				->where('groupID', '=', Auth::$session->group->id)
-				->where('id', '=', $id)
-				->delete();
+			Signature::findWithGroup(Auth::$session->group->id, $id)->delete();
 
 			$this->chainmap->update_system($_POST['systemID'], array('lastUpdate' => time() ));
 
 			// delete linked wormholes
-			$whlinks = DB::select("SELECT s.*
-									FROM wormhole_signatures s
-									WHERE s.signature_id=?",[$id]);
+			$whlinks = WormholeSignature::findAllBySig($id);
 			$wormholeHashes = [];
 			foreach($whlinks as $link)
 			{

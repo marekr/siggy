@@ -594,10 +594,7 @@ class Controller_Siggy extends FrontController {
 					 if($sig->type != 'wh')
 					 	continue;
 
- 					$whSigData = DB::select("SELECT wormhole_hash,chainmap_id
- 															FROM wormhole_signatures
-															 WHERE signature_id=?", [$sig->id]);
-					
+					$whSigData = WormholeSignature::findAllBySig($sig->id);
 					foreach($whSigData as $wh)
 					{
 						$sig->chainmap_wormholes[ $wh->chainmap_id ] = $wh->wormhole_hash;
