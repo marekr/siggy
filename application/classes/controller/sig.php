@@ -32,22 +32,19 @@ class Controller_Sig extends FrontController {
 
 		if( !empty($sigData) && isset($sigData['systemID']) )
 		{
-			$insert['systemID'] = intval($sigData['systemID']);
-			$insert['sig'] = strtoupper($sigData['sig']);
-			$insert['description'] = htmlspecialchars($sigData['desc']);
-			$insert['created_at'] = Carbon::now()->toDateTimeString();
-			$insert['siteID'] = intval($sigData['siteID']);
-			$insert['type'] = $sigData['type'];
-			$insert['groupID'] = Auth::$session->group->id;
+			$insert = [
+				'systemID' => intval($sigData['systemID']),
+				'sig' => strtoupper($sigData['sig']),
+				'description' => htmlspecialchars($sigData['desc']),
+				'created_at' => Carbon::now()->toDateTimeString(),
+				'siteID' => intval($sigData['siteID']),
+				'type' => $sigData['type'],
+				'groupID' => Auth::$session->group->id,
+				'creator' => Auth::$session->character_name,
+				'sigSize' => ( isset($sigData['sigSize']) && is_numeric( $sigData['sigSize'] ) ? $sigData['sigSize'] : '' )
+			];
 
-			if( Auth::$session->group->show_sig_size_col )
-			{
-				$insert['sigSize'] = ( is_numeric( $sigData['sigSize'] ) ? $sigData['sigSize'] : '' );
-			}
-
-			$insert['creator'] = Auth::$session->character_name;
-
-			$id = DB::table('systemsigs')->insertGetId($insert);
+			$sig = Signature::create($insert);
 
 			$this->chainmap->update_system($insert['systemID'], array('lastUpdate' => time(),
 																'lastActive' => time() )
@@ -55,29 +52,28 @@ class Controller_Sig extends FrontController {
 
 			Auth::$session->group->incrementStat('adds', Auth::$session->accessData);
 
-			$this->notifierCheck($insert);
+			$this->notifierCheck($sig);
 
-			$insert['id'] = $id;
-			$this->response->body(json_encode(array($id => $insert )));
+			$this->response->body(json_encode([$sig->id => $sig]));
 		}
 	}
 
-	private function notifierCheck($sigData)
+	private function notifierCheck(Signature $sigData)
 	{
 		foreach( Notifier::all(Auth::$session->group->id, Auth::$session->character_id) as $notifier )
 		{
 			if( $notifier->type == NotificationTypes::SiteFound )
 			{
 				$data = $notifier->data;
-				if( $sigData['siteID'] == $data->site_id )
+				if( $sigData->siteID == $data->site_id )
 				{
 					$eventData = array(
-										'system_id' => $sigData['systemID'],
-										'system_name' => miscUtils::systemNameByID($sigData['systemID']),
-										'site_id' => $sigData['siteID'],
+										'system_id' => $sigData->systemID,
+										'system_name' => miscUtils::systemNameByID($sigData->systemID),
+										'site_id' => $sigData->siteID,
 										'discoverer_name' => Auth::$session->character_name,
 										'discoverer_id' => Auth::$session->character_id,
-										'signature' => $sigData['sig']
+										'signature' => $sigData->sig
 										);
 
 					$charID = 0;
@@ -138,46 +134,39 @@ class Controller_Sig extends FrontController {
 				$doingUpdate = FALSE;
 				foreach( $sigs as $sig )
 				{
-					$sigData = DB::selectOne("SELECT id,sig, type, siteID, description, created_at
-															FROM systemsigs
-															WHERE systemID=:id
-																AND groupID=:group
-																 AND sig=:sig", [
-																	'id' => $systemID,
-																	'group' => Auth::$session->group->id,
-																	'sig' => $sig['sig']
-																 ]);
+					$sigData = Signature::findByGroupSystemSig(Auth::$session->group->id, $systemID, $sig['sig']);
 					if( $sigData != null )
 					{
 						if(  $sig['type'] != 'none' || $sig['siteID'] != 0 )
 						{
 							$doingUpdate = TRUE;
-							$update = array(
-											'updated_at' => Carbon::now()->toDateTimeString(),
-											'siteID' => ( $sig['siteID'] != 0 ) ? $sig['siteID'] : $sigData->siteID,
-											'type' => $sig['type'],
-											'lastUpdater' => Auth::$session->character_name
-											);
-
-							DB::table('systemsigs')->where('id', '=', $sigData->id)->update($update);
+							$update = [
+										'updated_at' => Carbon::now()->toDateTimeString(),
+										'siteID' => ( $sig['siteID'] != 0 ) ? $sig['siteID'] : $sigData->siteID,
+										'type' => $sig['type'],
+										'lastUpdater' => Auth::$session->character_name
+									];
+							$sigData->fill($update);
+							$sigData->save();
 						}
 					}
 					else
 					{
-						$insert = array();
-						$insert['systemID'] = intval($systemID);
-						$insert['sig'] = strtoupper($sig['sig']);
-						$insert['description'] = "";
-						$insert['created_at'] = Carbon::now()->toDateTimeString();
-						$insert['siteID'] = intval($sig['siteID']);
-						$insert['type'] = $sig['type'];
-						$insert['groupID'] = Auth::$session->group->id;
-						$insert['sigSize'] = "";	//need to return this value for JS to fail gracefully
-						$insert['creator'] = Auth::$session->character_name;
+						$insert = [
+								'systemID' => intval($systemID),
+								'sig' => strtoupper($sig['sig']),
+								'description' => "",
+								'created_at' => Carbon::now()->toDateTimeString(),
+								'siteID' => intval($sig['siteID']),
+								'type' => $sig['type'],
+								'groupID' => Auth::$session->group->id,
+								'sigSize' => "",	//need to return this value for JS to fail gracefully
+								'creator' => Auth::$session->character_name
+							];
 
-						$insert['id'] = DB::table('systemsigs')->insertGetId($insert);
+						$sig = Signature::create($insert);
 
-						$addedSigs[ $insert['id'] ] = $insert;
+						$addedSigs[ $sig->id ] = $sig;
 
 						if( $insert['type'] != 'none' )
 						{
@@ -225,7 +214,7 @@ class Controller_Sig extends FrontController {
 
 			$id = intval($sigData['id']);
 
-			$sig = Signature::findWithGroup(Auth::$session->group->id,$id);
+			$sig = Signature::findByGroup(Auth::$session->group->id,$id);
 			if($sig == null)
 			{
 				$this->response->body(json_encode('0'));
@@ -289,7 +278,7 @@ class Controller_Sig extends FrontController {
 					continue;
 				
 				//permission check
-				$sigEntry = Signature::findWithGroup(Auth::$session->group->id, $sig['id']);
+				$sigEntry = Signature::findByGroup(Auth::$session->group->id, $sig['id']);
 
 				if( $sigEntry == null )
 					continue;
@@ -332,20 +321,15 @@ class Controller_Sig extends FrontController {
 		if( isset($_POST['id']) )
 		{
 			$id = intval($_POST['id']);
-			$sigData = DB::selectOne('SELECT *,ss.name as systemName FROM	 systemsigs s
-													INNER JOIN solarsystems ss ON ss.id = s.systemID
-													WHERE s.id=:id AND s.groupID=:groupID',
-													[
-														'groupID' => Auth::$session->group->id,
-														'id' => $id
-													]);
+
+			$sigData = Signature::findByGroupWithSystem(Auth::$session->group->id, $id);
 			if($sigData == null)
 			{
 				$this->response->body(json_encode('0'));
 				return;
 			}
 
-			Signature::findWithGroup(Auth::$session->group->id, $id)->delete();
+			$sigData->delete();
 
 			$this->chainmap->update_system($_POST['systemID'], array('lastUpdate' => time() ));
 
@@ -360,7 +344,8 @@ class Controller_Sig extends FrontController {
 
 			groupUtils::deleteLinkedSigWormholes(Auth::$session->group->id, $wormholeHashes);
 
-			$message = Auth::$session->character_name.' deleted sig "'.$sigData->sig.'" from system '.$sigData->systemName;
+			$message = sprintf('%s deleted sig "%s" from system "%s"', Auth::$session->character_name, $sigData->sig, $sigData->system->name);
+
 			if( $sigData->type != 'none' )
 			{
 				$message .= '" which was of type '.strtoupper($sigData->type);
