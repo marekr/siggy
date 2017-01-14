@@ -41,11 +41,15 @@ class Controller_Pages extends FrontController {
 
 		if( $page == 'getting-siggy' )
 		{
-		$this->template->title = 'siggy: getting siggy';
+			$this->template->title = 'siggy: getting siggy';
 			$this->template->content = View::factory('pages/gettingSiggy');
 		}
 		else if( $page == 'create-group' || $page == 'createGroup' )
 		{
+			if(!Auth::loggedIn())
+			{
+				HTTP::redirect('/account/login');
+			}
 			$this->template->selectedTab = 'createGroup';
 			$this->template->content = View::factory('pages/createGroupIntro');
 		}
@@ -93,6 +97,11 @@ class Controller_Pages extends FrontController {
 
 		$this->template->loggedIn = Auth::loggedIn();
 		$this->template->user = Auth::$user;
+
+		if(!Auth::loggedIn())
+		{
+			HTTP::redirect('/account/login');
+		}
 
 		$id = intval($this->request->param('id'));
 
