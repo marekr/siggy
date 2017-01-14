@@ -74,17 +74,17 @@ intelposes.prototype.updatePOSList = function( data )
 	{
 		for(var i in data)
 		{
-			var pos_id = data[i].pos_id;
+			var pos_id = data[i].id;
 
 			var row = $("<tr>").attr('id', 'pos-'+pos_id);
 
-			row.append($("<td>").addClass($this.getPOSStatusClass(data[i].pos_online)).text( $this.getPOSStatus(data[i].pos_online) ) );
-			row.append($("<td>").text( data[i].pos_location_planet + " - " + data[i].pos_location_moon ) );
-			row.append($("<td>").text( data[i].pos_owner ) );
+			row.append($("<td>").addClass($this.getPOSStatusClass(data[i].online)).text( $this.getPOSStatus(data[i].online) ) );
+			row.append($("<td>").text( data[i].location_planet + " - " + data[i].location_moon ) );
+			row.append($("<td>").text( data[i].owner ) );
 			row.append($("<td>").text( data[i].pos_type_name ) );
-			row.append($("<td>").text( ucfirst(data[i].pos_size) ) );
-			row.append($("<td>").text( siggy2.Helpers.displayTimeStamp(data[i].pos_added_date)));
-			row.append($("<td>").text( data[i].pos_notes ) );
+			row.append($("<td>").text( ucfirst(data[i].size) ) );
+			row.append($("<td>").text( siggy2.Helpers.displayTimeStamp(data[i].added_date)));
+			row.append($("<td>").text( data[i].notes ) );
 
 			(function(pos_id){
 				var edit = $("<a>").addClass("btn btn-default btn-xs").text("Edit").click( function() {
@@ -106,9 +106,9 @@ intelposes.prototype.updatePOSList = function( data )
 
 			body.append(row);
 
-			if( parseInt(data[i].pos_online) == 1 )
+			if( parseInt(data[i].online) == 1 )
 			{
-				owner_names.push(data[i].pos_owner);
+				owner_names.push(data[i].owner);
 				online++;
 			}
 			else
@@ -159,25 +159,25 @@ intelposes.prototype.setupPOSForm = function(mode, posID)
 	else
 	{
 		data = {
-					pos_location_planet: '',
-					pos_location_moon: '',
-					pos_owner: '',
-					pos_type: 1,
-					pos_size: 'large',
-					pos_online: 1,
-					pos_notes: '',
-					pos_system_id: 0
+					location_planet: '',
+					location_moon: '',
+					owner: '',
+					pos_type_id: 1,
+					size: 'large',
+					online: 1,
+					notes: '',
+					system_id: 0
 				};
 		action = $this.settings.baseUrl + 'pos/add';
 	}
 
-	planet.val( data.pos_location_planet );
-	moon.val( data.pos_location_moon );
-	owner.val( data.pos_owner );
-	type.val( data.pos_type );
+	planet.val( data.location_planet );
+	moon.val( data.location_moon );
+	owner.val( data.owner );
+	type.val( data.pos_type_id );
 	size.val( data.pos_size );
-	status.val( data.pos_online );
-	notes.val( data.pos_notes );
+	status.val( data.online );
+	notes.val( data.notes );
 
 	$("#pos-form button[name=submit]").off('click');
 	$("#pos-form button[name=submit]").click( function() {
