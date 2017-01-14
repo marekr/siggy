@@ -15,6 +15,7 @@ $( function()
 	});
 });
 
+
 var siggy2 = siggy2 || {};
 
 /**
@@ -22,6 +23,7 @@ var siggy2 = siggy2 || {};
 */
 siggy2.Core = function( options )
 {
+	this.inactive = false;
 	this.fatalError = false;
 	this.ajaxErrors = 0;
 	this.groupCacheTime = 0;
@@ -156,7 +158,7 @@ siggy2.Core.prototype.updateNow = function()
 
 siggy2.Core.prototype.initialize = function ()
 {
-	var that = this;
+	var $this = this;
 	this.setupFatalErrorHandler();
 
 	$(document).ajaxStart( function() {
@@ -166,6 +168,18 @@ siggy2.Core.prototype.initialize = function ()
 	$(document).ajaxStop( function() {
 		$(this).hide();
 	} );
+
+
+	$(document).idle({
+		onIdle: function(){
+			if(!$this.inactive)
+			{
+				$this.inactive = true;
+				$this.displayFatalError("siggy session timed out due to one hour of inactivity");
+			}
+		},
+		idle: 1000*(60*60),	// 60 minutes
+	})
 
 	siggy2.StaticData.load(this.settings.baseUrl);
 	siggy2.Helpers.setupSystemTypeAhead('.system-typeahead');
@@ -199,6 +213,11 @@ siggy2.Core.prototype.initialize = function ()
 
 siggy2.Core.prototype.update = function()
 {
+	if(this.inactive)
+	{
+		return;
+	}
+
 	var $this = this;
 	var request = {
 		last_location_id: $this.location.id,

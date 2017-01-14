@@ -208,6 +208,11 @@ siggy2.Activity.siggy.prototype.stop = function()
 
 siggy2.Activity.siggy.prototype.update = function()
 {
+	if(this.core.inactive)
+	{
+		return;
+	}
+
 	if( !this.freezeSystem && this.core.settings.igb )
 	{
 		this.systemID = this.core.location.id;
