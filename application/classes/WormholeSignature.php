@@ -4,12 +4,15 @@ use Carbon\Carbon;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Eloquent\Model;
 use Yadakhov\InsertOnDuplicateKey;
+use Mpociot\HasCompositeKey\HasCompositeKey;
 
 class WormholeSignature extends Model {
 	use InsertOnDuplicateKey;
+    use HasCompositeKey;
 	
 	public $table = 'wormhole_signatures';
 	public $timestamps = false;
+	protected $primaryKey = ['signature_id','chainmap_id','wormhole_hash'];
 
 	protected $fillable =  [
 			'signature_id',
