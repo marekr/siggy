@@ -218,8 +218,8 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 			];
 
 			list($update['chainmap_homesystems_ids'], $update['chainmap_homesystems']) = $this->__process_home_system_input($_POST['chainmap_homesystems']);
-
-			$chainmap->save($update);
+			$chainmap->fill($update);
+			$chainmap->save();
 
 			$chainmap->rebuild_map_data_cache();
 			Auth::$user->group->save();
