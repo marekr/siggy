@@ -77,7 +77,7 @@ class Corporation extends Model {
 	{
 		$details = null;
 
-		$api_instance = new eddbc\esi\CorporationApi();
+		$api_instance = new ESI\Api\CorporationApi();
 		$datasource = "tranquility"; // string | The server name you would like data from
 
 		try {
@@ -100,7 +100,7 @@ class Corporation extends Model {
 	{
 		$results = [];
 
-		$api_instance = new eddbc\esi\SearchApi();
+		$api_instance = new ESI\Api\SearchApi();
 
 		$categories = ['corporation'];
 		

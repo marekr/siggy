@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f1f101eea7ca2122a255e9189148e7e5",
-    "content-hash": "d11f4ccc7d45c1e5e106cdf647318375",
+    "hash": "f9b88402cc003a4cb0244cc447d460a8",
+    "content-hash": "b82dffa11a6293adda481f15c3fde171",
     "packages": [
         {
             "name": "3rdpartyeve/phealng",
@@ -126,64 +126,6 @@
                 "string"
             ],
             "time": "2015-11-06 14:35:42"
-        },
-        {
-            "name": "eddbc/esi-php",
-            "version": "0.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/eddbc/esi-php.git",
-                "reference": "afdca86514eed827386805dd1f699984fac7b46c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/eddbc/esi-php/zipball/afdca86514eed827386805dd1f699984fac7b46c",
-                "reference": "afdca86514eed827386805dd1f699984fac7b46c",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "ext-json": "*",
-                "ext-mbstring": "*",
-                "php": ">=5.4"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.8",
-                "satooshi/php-coveralls": "~1.0",
-                "squizlabs/php_codesniffer": "~2.6"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "eddbc\\esi\\": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache v2"
-            ],
-            "authors": [
-                {
-                    "name": "Swagger and contributors",
-                    "homepage": "https://github.com/swagger-api/swagger-codegen"
-                },
-                {
-                    "name": "Edd Reynolds",
-                    "homepage": "http://nog8s.space"
-                }
-            ],
-            "description": "A PHP library for the ESI (EVE Swagger Interface) API of EVE Online",
-            "homepage": "http://swagger.io",
-            "keywords": [
-                "EVE Online",
-                "api",
-                "esi",
-                "eve",
-                "php",
-                "sdk",
-                "swagger"
-            ],
-            "time": "2017-01-11 16:00:06"
         },
         {
             "name": "guzzlehttp/guzzle",

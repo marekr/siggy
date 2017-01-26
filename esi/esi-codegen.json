@@ -1,0 +1,7 @@
+{
+	"packagePath": "ESI",
+	"variableNamingConvention": "camelCase",
+	"invokerPackage": "ESI",
+	"apiPackage": "ESI\\Api",
+	"modelPackage": "ESI\\Model"
+}

@@ -96,7 +96,7 @@ class Character extends Model {
 	public static function getAPICharacterAffiliation(int $id): ?array
 	{
 		$details = [];
-		$api_instance = new eddbc\esi\CharacterApi();
+		$api_instance = new ESI\Api\CharacterApi();
 		$datasource = "tranquility"; // string | The server name you would like data from
 
 		try {
@@ -116,7 +116,7 @@ class Character extends Model {
 	{
 		$results = [];
 
-		$api_instance = new eddbc\esi\SearchApi();
+		$api_instance = new ESI\Api\SearchApi();
 
 		$categories = ['character'];
 		
