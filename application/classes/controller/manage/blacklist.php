@@ -49,7 +49,7 @@ class Controller_Manage_Blacklist extends Controller_Manage
 	public function action_remove()
 	{
 		$id = $this->request->param('id');
-		$entry = GroupBlackListCharacter::findByGroupAndChar(Auth::$user->groupID, $id);
+		$entry = GroupBlackListCharacter::findByGroup(Auth::$user->groupID, $id);
 
 		if($entry != null)
 		{
@@ -76,7 +76,7 @@ class Controller_Manage_Blacklist extends Controller_Manage
 			else
 			{
 			
-				$charSearchResults = miscUtils::searchEVEEntityByName( $_POST['character_name'], 'char' );
+				$charSearchResults = Character::searchEVEAPI( $_POST['character_name'], true );
 				if( $charSearchResults == null )
 				{
 					$errors['character_name'] = "EVE character not found";

@@ -3,7 +3,6 @@
 use Carbon\Carbon;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Eloquent\Model;
-use Pheal\Pheal;
 
 class Character extends Model {
 	
@@ -46,7 +45,7 @@ class Character extends Model {
 		return $this->belongsTo('Corporation');
 	}
 
-	public static function find(int $id, bool $avoidAPIFetch = false)
+	public static function find(int $id, bool $avoidAPIFetch = false): ?Character
 	{
 		$char = self::where('id', $id)->first();
 
@@ -94,31 +93,54 @@ class Character extends Model {
 		}
 	}
 
-	public static function getAPICharacterAffiliation(int $id)
+	public static function getAPICharacterAffiliation(int $id): ?array
 	{
-		//recheck
-		PhealHelper::configure();
-		$pheal = new Pheal( null, null, 'eve' );
+		$details = [];
+		$api_instance = new eddbc\esi\CharacterApi();
+		$datasource = "tranquility"; // string | The server name you would like data from
 
 		try {
-			$results = $pheal->eveScope->CharacterAffiliation(array('ids' => $id));
-			if (array_key_exists(0, $results->characters)) {
-				$charData = $results->characters[0];
-				if (count($charData) > 0) {
-					if ($id == $charData['characterID']) {
-						return [
-							'corporation_id' => $charData['corporationID'],
-							'corporation_name' => $charData['corporationName'],
-							'character_name' => $charData['characterName']
-						];
-					}
-				}
-			}
-		}
-		catch(Exception $e) {
+			$result = $api_instance->getCharactersCharacterId($id, $datasource);
+			$details = [
+				'corporation_id' => $result['corporation_id'],
+				'character_name' => $result['name']
+			];
+		} catch (Exception $e) {
 			return null;
 		}
 
-		return null;
+		return $details;
+	}
+	
+	static function searchEVEAPI(string $name, bool $strict = false): ?array
+	{
+		$results = [];
+
+		$api_instance = new eddbc\esi\SearchApi();
+
+		$categories = ['character'];
+		
+		$language = "en-us"; // string | Search locale
+		$datasource = "tranquility"; // string | The server name you would like data from
+
+		try {
+			$result = $api_instance->getSearch($name, $categories, $language, $strict, $datasource);
+			
+			if(isset($result['character']))
+			{
+				foreach($result['character'] as $id)
+				{
+					$char = Character::find($id);
+					if($char != null)
+					{
+						$results[$id] = $char;
+					}
+				}
+			}
+		} catch (Exception $e) {
+			return null;
+		}
+
+		return $results;
 	}
 }

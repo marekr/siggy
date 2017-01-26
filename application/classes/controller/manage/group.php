@@ -2,10 +2,6 @@
 
 use Illuminate\Database\Capsule\Manager as DB;
 
-require_once APPPATH.'classes/mapUtils.php';
-require_once APPPATH.'classes/miscUtils.php';
-
-
 class Controller_Manage_Group extends Controller_Manage
 {
    /*
@@ -108,7 +104,16 @@ class Controller_Manage_Group extends Controller_Manage
 
 				if( !count($errors) )
 				{
-					$results = miscUtils::searchEVEEntityByName( $_POST['searchName'], $_POST['memberType'] );
+					if($_POST['memberType'] == 'char')
+					{
+						$results = Character::searchEVEAPI($_POST['searchName']);
+					}
+
+					if($_POST['memberType'] == 'corp')
+					{
+						$results = Corporation::searchEVEAPI($_POST['searchName']);
+					}
+
 					$view->bind('memberType', $_POST['memberType'] );
 				}
 			}

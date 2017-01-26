@@ -10,7 +10,7 @@ class GroupBlacklistCharacter extends Model
 	public $dates = ['created_at'];
 	public $table = 'group_character_blacklist';
 
-	protected $fill = [
+	protected $fillable = [
 		'group_id',
 		'character_id',
 		'reason'
@@ -33,17 +33,24 @@ class GroupBlacklistCharacter extends Model
 		return $this->character;
 	}
 
-	public static function findByGroup(int $groupId): array
+	public static function findAllByGroup(int $groupId): ?array
 	{
 		return self::where('group_id', $groupId)
 			->get()
 			->all();
 	}
 
-	public static function findByGroupAndChar(int $groupId, int $charId)
+	public static function findByGroup(int $groupId, int $id): ?GroupBlacklistCharacter
 	{
 		return self::where('group_id', $groupId)
-			->where('character_id', $charId)
+			->where('id', $id)
+			->first();
+	}
+	
+	public static function findByGroupAndChar(int $groupId, int $characterId): ?GroupBlacklistCharacter
+	{
+		return self::where('group_id', $groupId)
+			->where('character_id', $characterId)
 			->first();
 	}
 }

@@ -1,7 +1,6 @@
 <?php
 
 use Carbon\Carbon;
-use Pheal\Pheal;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Eloquent\Model;
 

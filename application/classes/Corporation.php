@@ -3,7 +3,6 @@
 use Carbon\Carbon;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Eloquent\Model;
-use Pheal\Pheal;
 
 class Corporation extends Model {
 
@@ -22,12 +21,12 @@ class Corporation extends Model {
 	public function syncWithApi()
 	{
 		$rawData = self::getAPICorpDetails($this->id);
-
 		if( $rawData == null )
 			return FALSE;
 
 		$update = [ 'member_count' => $rawData['member_count'],
-					'description' => $rawData['description'],
+				//todo, fix me once ESI adds it back :/
+				//	'description' => $rawData['description'],
 					'ticker' => $rawData['ticker'],
 					'name' => $rawData['name']
 				];
@@ -38,10 +37,9 @@ class Corporation extends Model {
 		return TRUE;
 	}
 
-	public static function find(int $id)
+	public static function find(int $id): ?Corporation
 	{
 		$corp = self::where('id', $id)->first();
-
 		if($corp != null)
 		{
 			if( $corp->updated_at == null ||
@@ -62,7 +60,8 @@ class Corporation extends Model {
 			$insert = [ 'id' => $id,
 						'name' => $rawData['name'],
 						'member_count' => $rawData['member_count'],
-						'description' => $rawData['description'],
+						//todo, fix me once ESI adds it back :/
+						//'description' => $rawData['description'],
 						'ticker' => $rawData['ticker'],
 						'updated_at' => Carbon::now()->toDateTimeString()
 					];
@@ -74,29 +73,58 @@ class Corporation extends Model {
 	}
 
 	
-	static function getAPICorpDetails( int $id )
+	static function getAPICorpDetails( int $id ): ?array
 	{
 		$details = null;
 
-		PhealHelper::configure();
-		$pheal = new Pheal(null,null,'corp');
+		$api_instance = new eddbc\esi\CorporationApi();
+		$datasource = "tranquility"; // string | The server name you would like data from
 
 		try {
-			$result = $pheal->CorporationSheet(array('corporationID' => $id))->toArray();
-			//print 'found corp, storing locally!';
-			$result = $result['result'];
-
-			$details = ['member_count' => (int)$result['memberCount'],
-				'name' => $result['corporationName'],
-				'description' => mb_convert_encoding($result['description'], "ASCII"),
+			$result = $api_instance->getCorporationsCorporationId($id, $datasource);
+			
+			$details = ['member_count' => (int)$result['member_count'],
+				'name' => $result['corporation_name'],
 				'ticker' => $result['ticker'],
-				'alliance_id' => (int)$result['allianceID']
+				'alliance_id' => (int)$result['alliance_id'],
+				//todo, add back description
 			];
-		}
-		catch(Exception $e) {
+		} catch (Exception $e) {
 			return null;
 		}
 
 		return $details;
+	}
+	
+	static function searchEVEAPI( string $name ): ?array
+	{
+		$results = [];
+
+		$api_instance = new eddbc\esi\SearchApi();
+
+		$categories = ['corporation'];
+		
+		$language = "en-us"; // string | Search locale
+		$strict = false; // bool | Whether the search should be a strict match
+		$datasource = "tranquility"; // string | The server name you would like data from
+
+		try {
+			$result = $api_instance->getSearch($name, $categories, $language, $strict, $datasource);
+			if(isset($result['corporation']))
+			{
+				foreach($result['corporation'] as $id)
+				{
+					$corp = Corporation::find($id);
+					if($corp != null)
+					{
+						$results[$id] = $corp;
+					}
+				}
+			}
+		} catch (Exception $e) {
+			return null;
+		}
+
+		return $results;
 	}
 }

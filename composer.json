@@ -11,7 +11,8 @@
 		"illuminate/database": "^5.3",
 		"illuminate/events": "^5.3",
 		"mpociot/laravel-composite-key": "^1.0",
-		"yadakhov/insert-on-duplicate-key": "^1.0"
+		"yadakhov/insert-on-duplicate-key": "^1.0",
+		"eddbc/esi-php": "^0.1.1"
     },
 	"autoload": {
 		"psr-4": {

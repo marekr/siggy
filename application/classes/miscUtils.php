@@ -134,50 +134,6 @@ final class miscUtils {
 		}
 	}
 
-	static function searchEVEEntityByName( $names, $type = 'corp' )
-	{
-		$results = [];
-
-		PhealHelper::configure();
-		$pheal = new Pheal(null,null,'eve');
-
-		$result = $pheal->CharacterID( array( 'names' => $names ) )->toArray();
-		$potentialCorps = $result['result']['characters'];
-
-		if( $type == 'corp' )
-		{
-			$pheal->scope = 'corp';
-		}
-		else
-		{
-			$pheal->scope = 'eve';
-		}
-
-		foreach( $potentialCorps as $corp )
-		{
-			$id = (int)$corp['characterID'];
-
-			if( $type == 'corp' )
-			{
-				$corp = Corporation::find($id);
-				if($corp != null)
-				{
-					$results[$id] = $corp;
-				}
-			}
-			else
-			{
-				$char = Character::find($id);
-				if($char != null)
-				{
-					$results[$id] = $char;
-				}
-			}
-		}
-
-		return $results;
-	}
-
 	static function hash_array_to_string($arr)
 	{
 		foreach( $arr as $k => $v )

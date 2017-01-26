@@ -1,7 +1,6 @@
 <?php
 
 use Carbon\Carbon;
-use Pheal\Pheal;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Eloquent\Model;
 
@@ -136,7 +135,7 @@ class Group extends Model {
 	{
 		if($this->blacklistCharacters == null)
 		{
-			$this->blacklistCharacters = GroupBlacklistCharacter::findByGroup($this->id);
+			$this->blacklistCharacters = GroupBlacklistCharacter::findAllByGroup($this->id);
 		}
 
 		return $this->blacklistCharacters;
