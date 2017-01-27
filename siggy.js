@@ -178,7 +178,7 @@ siggy2.Core.prototype.initialize = function ()
 				$this.displayFatalError("siggy session timed out due to one hour of inactivity");
 			}
 		},
-		idle: 1000*(60*60),	// 60 minutes
+		idle: 1000*(60*60)*2,	// 60 minutes
 	})
 
 	siggy2.StaticData.load(this.settings.baseUrl);
