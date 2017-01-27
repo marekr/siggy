@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**categoryId** | **int** | category_id integer | 
+**category_id** | **int** | category_id integer | 
 **groups** | **int[]** | groups array | 
 **name** | **string** | name string | 
 **published** | **bool** | published boolean | 

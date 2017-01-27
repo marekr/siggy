@@ -67,7 +67,7 @@ class SovereigntycampaignsParticipants implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'allianceId' => 'int',
+        'alliance_id' => 'int',
         'score' => 'float'
     );
 
@@ -81,7 +81,7 @@ class SovereigntycampaignsParticipants implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'allianceId' => 'alliance_id',
+        'alliance_id' => 'alliance_id',
         'score' => 'score'
     );
 
@@ -95,7 +95,7 @@ class SovereigntycampaignsParticipants implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'allianceId' => 'setAllianceId',
+        'alliance_id' => 'setAllianceId',
         'score' => 'setScore'
     );
 
@@ -109,7 +109,7 @@ class SovereigntycampaignsParticipants implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'allianceId' => 'getAllianceId',
+        'alliance_id' => 'getAllianceId',
         'score' => 'getScore'
     );
 
@@ -134,7 +134,7 @@ class SovereigntycampaignsParticipants implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['allianceId'] = isset($data['allianceId']) ? $data['allianceId'] : null;
+        $this->container['alliance_id'] = isset($data['alliance_id']) ? $data['alliance_id'] : null;
         $this->container['score'] = isset($data['score']) ? $data['score'] : null;
     }
 
@@ -146,8 +146,8 @@ class SovereigntycampaignsParticipants implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['allianceId'] === null) {
-            $invalid_properties[] = "'allianceId' can't be null";
+        if ($this->container['alliance_id'] === null) {
+            $invalid_properties[] = "'alliance_id' can't be null";
         }
         if ($this->container['score'] === null) {
             $invalid_properties[] = "'score' can't be null";
@@ -163,7 +163,7 @@ class SovereigntycampaignsParticipants implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['allianceId'] === null) {
+        if ($this->container['alliance_id'] === null) {
             return false;
         }
         if ($this->container['score'] === null) {
@@ -174,22 +174,22 @@ class SovereigntycampaignsParticipants implements ArrayAccess
 
 
     /**
-     * Gets allianceId
+     * Gets alliance_id
      * @return int
      */
     public function getAllianceId()
     {
-        return $this->container['allianceId'];
+        return $this->container['alliance_id'];
     }
 
     /**
-     * Sets allianceId
-     * @param int $allianceId alliance_id integer
+     * Sets alliance_id
+     * @param int $alliance_id alliance_id integer
      * @return $this
      */
-    public function setAllianceId($allianceId)
+    public function setAllianceId($alliance_id)
     {
-        $this->container['allianceId'] = $allianceId;
+        $this->container['alliance_id'] = $alliance_id;
 
         return $this;
     }

@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 
 # **getCharactersCharacterIdSearch**
-> \ESI\Model\GetCharactersCharacterIdSearchOk getCharactersCharacterIdSearch($characterId, $search, $categories, $language, $strict, $datasource)
+> \ESI\Model\GetCharactersCharacterIdSearchOk getCharactersCharacterIdSearch($character_id, $search, $categories, $language, $strict, $datasource)
 
 Search on a string
 
@@ -24,7 +24,7 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\SearchApi();
-$characterId = 56; // int | An EVE character ID
+$character_id = 56; // int | An EVE character ID
 $search = "search_example"; // string | The string to search on
 $categories = array("categories_example"); // string[] | Type of entities to search for
 $language = "en-us"; // string | Search locale
@@ -32,7 +32,7 @@ $strict = false; // bool | Whether the search should be a strict match
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getCharactersCharacterIdSearch($characterId, $search, $categories, $language, $strict, $datasource);
+    $result = $api_instance->getCharactersCharacterIdSearch($character_id, $search, $categories, $language, $strict, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling SearchApi->getCharactersCharacterIdSearch: ', $e->getMessage(), PHP_EOL;
@@ -44,7 +44,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **characterId** | **int**| An EVE character ID |
+ **character_id** | **int**| An EVE character ID |
  **search** | **string**| The string to search on |
  **categories** | [**string[]**](../Model/string.md)| Type of entities to search for |
  **language** | **string**| Search locale | [optional] [default to en-us]

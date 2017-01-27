@@ -67,16 +67,16 @@ class GetCharactersCharacterIdOk implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'allianceId' => 'int',
-        'ancestryId' => 'int',
+        'alliance_id' => 'int',
+        'ancestry_id' => 'int',
         'birthday' => '\DateTime',
-        'bloodlineId' => 'int',
-        'corporationId' => 'int',
+        'bloodline_id' => 'int',
+        'corporation_id' => 'int',
         'description' => 'string',
         'gender' => 'string',
         'name' => 'string',
-        'raceId' => 'int',
-        'securityStatus' => 'float'
+        'race_id' => 'int',
+        'security_status' => 'float'
     );
 
     public static function swaggerTypes()
@@ -89,16 +89,16 @@ class GetCharactersCharacterIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'allianceId' => 'alliance_id',
-        'ancestryId' => 'ancestry_id',
+        'alliance_id' => 'alliance_id',
+        'ancestry_id' => 'ancestry_id',
         'birthday' => 'birthday',
-        'bloodlineId' => 'bloodline_id',
-        'corporationId' => 'corporation_id',
+        'bloodline_id' => 'bloodline_id',
+        'corporation_id' => 'corporation_id',
         'description' => 'description',
         'gender' => 'gender',
         'name' => 'name',
-        'raceId' => 'race_id',
-        'securityStatus' => 'security_status'
+        'race_id' => 'race_id',
+        'security_status' => 'security_status'
     );
 
     public static function attributeMap()
@@ -111,16 +111,16 @@ class GetCharactersCharacterIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'allianceId' => 'setAllianceId',
-        'ancestryId' => 'setAncestryId',
+        'alliance_id' => 'setAllianceId',
+        'ancestry_id' => 'setAncestryId',
         'birthday' => 'setBirthday',
-        'bloodlineId' => 'setBloodlineId',
-        'corporationId' => 'setCorporationId',
+        'bloodline_id' => 'setBloodlineId',
+        'corporation_id' => 'setCorporationId',
         'description' => 'setDescription',
         'gender' => 'setGender',
         'name' => 'setName',
-        'raceId' => 'setRaceId',
-        'securityStatus' => 'setSecurityStatus'
+        'race_id' => 'setRaceId',
+        'security_status' => 'setSecurityStatus'
     );
 
     public static function setters()
@@ -133,16 +133,16 @@ class GetCharactersCharacterIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'allianceId' => 'getAllianceId',
-        'ancestryId' => 'getAncestryId',
+        'alliance_id' => 'getAllianceId',
+        'ancestry_id' => 'getAncestryId',
         'birthday' => 'getBirthday',
-        'bloodlineId' => 'getBloodlineId',
-        'corporationId' => 'getCorporationId',
+        'bloodline_id' => 'getBloodlineId',
+        'corporation_id' => 'getCorporationId',
         'description' => 'getDescription',
         'gender' => 'getGender',
         'name' => 'getName',
-        'raceId' => 'getRaceId',
-        'securityStatus' => 'getSecurityStatus'
+        'race_id' => 'getRaceId',
+        'security_status' => 'getSecurityStatus'
     );
 
     public static function getters()
@@ -180,16 +180,16 @@ class GetCharactersCharacterIdOk implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['allianceId'] = isset($data['allianceId']) ? $data['allianceId'] : null;
-        $this->container['ancestryId'] = isset($data['ancestryId']) ? $data['ancestryId'] : null;
+        $this->container['alliance_id'] = isset($data['alliance_id']) ? $data['alliance_id'] : null;
+        $this->container['ancestry_id'] = isset($data['ancestry_id']) ? $data['ancestry_id'] : null;
         $this->container['birthday'] = isset($data['birthday']) ? $data['birthday'] : null;
-        $this->container['bloodlineId'] = isset($data['bloodlineId']) ? $data['bloodlineId'] : null;
-        $this->container['corporationId'] = isset($data['corporationId']) ? $data['corporationId'] : null;
+        $this->container['bloodline_id'] = isset($data['bloodline_id']) ? $data['bloodline_id'] : null;
+        $this->container['corporation_id'] = isset($data['corporation_id']) ? $data['corporation_id'] : null;
         $this->container['description'] = isset($data['description']) ? $data['description'] : null;
         $this->container['gender'] = isset($data['gender']) ? $data['gender'] : null;
         $this->container['name'] = isset($data['name']) ? $data['name'] : null;
-        $this->container['raceId'] = isset($data['raceId']) ? $data['raceId'] : null;
-        $this->container['securityStatus'] = isset($data['securityStatus']) ? $data['securityStatus'] : null;
+        $this->container['race_id'] = isset($data['race_id']) ? $data['race_id'] : null;
+        $this->container['security_status'] = isset($data['security_status']) ? $data['security_status'] : null;
     }
 
     /**
@@ -203,11 +203,11 @@ class GetCharactersCharacterIdOk implements ArrayAccess
         if ($this->container['birthday'] === null) {
             $invalid_properties[] = "'birthday' can't be null";
         }
-        if ($this->container['bloodlineId'] === null) {
-            $invalid_properties[] = "'bloodlineId' can't be null";
+        if ($this->container['bloodline_id'] === null) {
+            $invalid_properties[] = "'bloodline_id' can't be null";
         }
-        if ($this->container['corporationId'] === null) {
-            $invalid_properties[] = "'corporationId' can't be null";
+        if ($this->container['corporation_id'] === null) {
+            $invalid_properties[] = "'corporation_id' can't be null";
         }
         if ($this->container['gender'] === null) {
             $invalid_properties[] = "'gender' can't be null";
@@ -220,15 +220,15 @@ class GetCharactersCharacterIdOk implements ArrayAccess
         if ($this->container['name'] === null) {
             $invalid_properties[] = "'name' can't be null";
         }
-        if ($this->container['raceId'] === null) {
-            $invalid_properties[] = "'raceId' can't be null";
+        if ($this->container['race_id'] === null) {
+            $invalid_properties[] = "'race_id' can't be null";
         }
-        if (!is_null($this->container['securityStatus']) && ($this->container['securityStatus'] > 10.0)) {
-            $invalid_properties[] = "invalid value for 'securityStatus', must be smaller than or equal to 10.0.";
+        if (!is_null($this->container['security_status']) && ($this->container['security_status'] > 10.0)) {
+            $invalid_properties[] = "invalid value for 'security_status', must be smaller than or equal to 10.0.";
         }
 
-        if (!is_null($this->container['securityStatus']) && ($this->container['securityStatus'] < -10.0)) {
-            $invalid_properties[] = "invalid value for 'securityStatus', must be bigger than or equal to -10.0.";
+        if (!is_null($this->container['security_status']) && ($this->container['security_status'] < -10.0)) {
+            $invalid_properties[] = "invalid value for 'security_status', must be bigger than or equal to -10.0.";
         }
 
         return $invalid_properties;
@@ -245,10 +245,10 @@ class GetCharactersCharacterIdOk implements ArrayAccess
         if ($this->container['birthday'] === null) {
             return false;
         }
-        if ($this->container['bloodlineId'] === null) {
+        if ($this->container['bloodline_id'] === null) {
             return false;
         }
-        if ($this->container['corporationId'] === null) {
+        if ($this->container['corporation_id'] === null) {
             return false;
         }
         if ($this->container['gender'] === null) {
@@ -261,13 +261,13 @@ class GetCharactersCharacterIdOk implements ArrayAccess
         if ($this->container['name'] === null) {
             return false;
         }
-        if ($this->container['raceId'] === null) {
+        if ($this->container['race_id'] === null) {
             return false;
         }
-        if ($this->container['securityStatus'] > 10.0) {
+        if ($this->container['security_status'] > 10.0) {
             return false;
         }
-        if ($this->container['securityStatus'] < -10.0) {
+        if ($this->container['security_status'] < -10.0) {
             return false;
         }
         return true;
@@ -275,43 +275,43 @@ class GetCharactersCharacterIdOk implements ArrayAccess
 
 
     /**
-     * Gets allianceId
+     * Gets alliance_id
      * @return int
      */
     public function getAllianceId()
     {
-        return $this->container['allianceId'];
+        return $this->container['alliance_id'];
     }
 
     /**
-     * Sets allianceId
-     * @param int $allianceId The character's alliance ID
+     * Sets alliance_id
+     * @param int $alliance_id The character's alliance ID
      * @return $this
      */
-    public function setAllianceId($allianceId)
+    public function setAllianceId($alliance_id)
     {
-        $this->container['allianceId'] = $allianceId;
+        $this->container['alliance_id'] = $alliance_id;
 
         return $this;
     }
 
     /**
-     * Gets ancestryId
+     * Gets ancestry_id
      * @return int
      */
     public function getAncestryId()
     {
-        return $this->container['ancestryId'];
+        return $this->container['ancestry_id'];
     }
 
     /**
-     * Sets ancestryId
-     * @param int $ancestryId ancestry_id integer
+     * Sets ancestry_id
+     * @param int $ancestry_id ancestry_id integer
      * @return $this
      */
-    public function setAncestryId($ancestryId)
+    public function setAncestryId($ancestry_id)
     {
-        $this->container['ancestryId'] = $ancestryId;
+        $this->container['ancestry_id'] = $ancestry_id;
 
         return $this;
     }
@@ -338,43 +338,43 @@ class GetCharactersCharacterIdOk implements ArrayAccess
     }
 
     /**
-     * Gets bloodlineId
+     * Gets bloodline_id
      * @return int
      */
     public function getBloodlineId()
     {
-        return $this->container['bloodlineId'];
+        return $this->container['bloodline_id'];
     }
 
     /**
-     * Sets bloodlineId
-     * @param int $bloodlineId bloodline_id integer
+     * Sets bloodline_id
+     * @param int $bloodline_id bloodline_id integer
      * @return $this
      */
-    public function setBloodlineId($bloodlineId)
+    public function setBloodlineId($bloodline_id)
     {
-        $this->container['bloodlineId'] = $bloodlineId;
+        $this->container['bloodline_id'] = $bloodline_id;
 
         return $this;
     }
 
     /**
-     * Gets corporationId
+     * Gets corporation_id
      * @return int
      */
     public function getCorporationId()
     {
-        return $this->container['corporationId'];
+        return $this->container['corporation_id'];
     }
 
     /**
-     * Sets corporationId
-     * @param int $corporationId The character's corporation ID
+     * Sets corporation_id
+     * @param int $corporation_id The character's corporation ID
      * @return $this
      */
-    public function setCorporationId($corporationId)
+    public function setCorporationId($corporation_id)
     {
-        $this->container['corporationId'] = $corporationId;
+        $this->container['corporation_id'] = $corporation_id;
 
         return $this;
     }
@@ -447,50 +447,50 @@ class GetCharactersCharacterIdOk implements ArrayAccess
     }
 
     /**
-     * Gets raceId
+     * Gets race_id
      * @return int
      */
     public function getRaceId()
     {
-        return $this->container['raceId'];
+        return $this->container['race_id'];
     }
 
     /**
-     * Sets raceId
-     * @param int $raceId race_id integer
+     * Sets race_id
+     * @param int $race_id race_id integer
      * @return $this
      */
-    public function setRaceId($raceId)
+    public function setRaceId($race_id)
     {
-        $this->container['raceId'] = $raceId;
+        $this->container['race_id'] = $race_id;
 
         return $this;
     }
 
     /**
-     * Gets securityStatus
+     * Gets security_status
      * @return float
      */
     public function getSecurityStatus()
     {
-        return $this->container['securityStatus'];
+        return $this->container['security_status'];
     }
 
     /**
-     * Sets securityStatus
-     * @param float $securityStatus security_status number
+     * Sets security_status
+     * @param float $security_status security_status number
      * @return $this
      */
-    public function setSecurityStatus($securityStatus)
+    public function setSecurityStatus($security_status)
     {
 
-        if ($securityStatus > 10.0) {
-            throw new \InvalidArgumentException('invalid value for $securityStatus when calling GetCharactersCharacterIdOk., must be smaller than or equal to 10.0.');
+        if ($security_status > 10.0) {
+            throw new \InvalidArgumentException('invalid value for $security_status when calling GetCharactersCharacterIdOk., must be smaller than or equal to 10.0.');
         }
-        if ($securityStatus < -10.0) {
-            throw new \InvalidArgumentException('invalid value for $securityStatus when calling GetCharactersCharacterIdOk., must be bigger than or equal to -10.0.');
+        if ($security_status < -10.0) {
+            throw new \InvalidArgumentException('invalid value for $security_status when calling GetCharactersCharacterIdOk., must be bigger than or equal to -10.0.');
         }
-        $this->container['securityStatus'] = $securityStatus;
+        $this->container['security_status'] = $security_status;
 
         return $this;
     }

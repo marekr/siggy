@@ -107,15 +107,15 @@ class FleetsApi
      *
      * Kick fleet member
      *
-     * @param int $fleetId ID for a fleet (required)
-     * @param int $memberId The character ID of a member in this fleet (required)
+     * @param int $fleet_id ID for a fleet (required)
+     * @param int $member_id The character ID of a member in this fleet (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return void
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function deleteFleetsFleetIdMembersMemberId($fleetId, $memberId, $datasource = null)
+    public function deleteFleetsFleetIdMembersMemberId($fleet_id, $member_id, $datasource = null)
     {
-        list($response) = $this->deleteFleetsFleetIdMembersMemberIdWithHttpInfo($fleetId, $memberId, $datasource);
+        list($response) = $this->deleteFleetsFleetIdMembersMemberIdWithHttpInfo($fleet_id, $member_id, $datasource);
         return $response;
     }
 
@@ -124,21 +124,21 @@ class FleetsApi
      *
      * Kick fleet member
      *
-     * @param int $fleetId ID for a fleet (required)
-     * @param int $memberId The character ID of a member in this fleet (required)
+     * @param int $fleet_id ID for a fleet (required)
+     * @param int $member_id The character ID of a member in this fleet (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of null, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function deleteFleetsFleetIdMembersMemberIdWithHttpInfo($fleetId, $memberId, $datasource = null)
+    public function deleteFleetsFleetIdMembersMemberIdWithHttpInfo($fleet_id, $member_id, $datasource = null)
     {
-        // verify the required parameter 'fleetId' is set
-        if ($fleetId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $fleetId when calling deleteFleetsFleetIdMembersMemberId');
+        // verify the required parameter 'fleet_id' is set
+        if ($fleet_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $fleet_id when calling deleteFleetsFleetIdMembersMemberId');
         }
-        // verify the required parameter 'memberId' is set
-        if ($memberId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $memberId when calling deleteFleetsFleetIdMembersMemberId');
+        // verify the required parameter 'member_id' is set
+        if ($member_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $member_id when calling deleteFleetsFleetIdMembersMemberId');
         }
         // parse inputs
         $resourcePath = "/fleets/{fleet_id}/members/{member_id}/";
@@ -157,18 +157,18 @@ class FleetsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($fleetId !== null) {
+        if ($fleet_id !== null) {
             $resourcePath = str_replace(
                 "{" . "fleet_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($fleetId),
+                $this->apiClient->getSerializer()->toPathValue($fleet_id),
                 $resourcePath
             );
         }
         // path params
-        if ($memberId !== null) {
+        if ($member_id !== null) {
             $resourcePath = str_replace(
                 "{" . "member_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($memberId),
+                $this->apiClient->getSerializer()->toPathValue($member_id),
                 $resourcePath
             );
         }
@@ -224,15 +224,15 @@ class FleetsApi
      *
      * Delete fleet squad
      *
-     * @param int $fleetId ID for a fleet (required)
-     * @param int $squadId The squad to delete (required)
+     * @param int $fleet_id ID for a fleet (required)
+     * @param int $squad_id The squad to delete (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return void
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function deleteFleetsFleetIdSquadsSquadId($fleetId, $squadId, $datasource = null)
+    public function deleteFleetsFleetIdSquadsSquadId($fleet_id, $squad_id, $datasource = null)
     {
-        list($response) = $this->deleteFleetsFleetIdSquadsSquadIdWithHttpInfo($fleetId, $squadId, $datasource);
+        list($response) = $this->deleteFleetsFleetIdSquadsSquadIdWithHttpInfo($fleet_id, $squad_id, $datasource);
         return $response;
     }
 
@@ -241,21 +241,21 @@ class FleetsApi
      *
      * Delete fleet squad
      *
-     * @param int $fleetId ID for a fleet (required)
-     * @param int $squadId The squad to delete (required)
+     * @param int $fleet_id ID for a fleet (required)
+     * @param int $squad_id The squad to delete (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of null, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function deleteFleetsFleetIdSquadsSquadIdWithHttpInfo($fleetId, $squadId, $datasource = null)
+    public function deleteFleetsFleetIdSquadsSquadIdWithHttpInfo($fleet_id, $squad_id, $datasource = null)
     {
-        // verify the required parameter 'fleetId' is set
-        if ($fleetId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $fleetId when calling deleteFleetsFleetIdSquadsSquadId');
+        // verify the required parameter 'fleet_id' is set
+        if ($fleet_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $fleet_id when calling deleteFleetsFleetIdSquadsSquadId');
         }
-        // verify the required parameter 'squadId' is set
-        if ($squadId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $squadId when calling deleteFleetsFleetIdSquadsSquadId');
+        // verify the required parameter 'squad_id' is set
+        if ($squad_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $squad_id when calling deleteFleetsFleetIdSquadsSquadId');
         }
         // parse inputs
         $resourcePath = "/fleets/{fleet_id}/squads/{squad_id}/";
@@ -274,18 +274,18 @@ class FleetsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($fleetId !== null) {
+        if ($fleet_id !== null) {
             $resourcePath = str_replace(
                 "{" . "fleet_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($fleetId),
+                $this->apiClient->getSerializer()->toPathValue($fleet_id),
                 $resourcePath
             );
         }
         // path params
-        if ($squadId !== null) {
+        if ($squad_id !== null) {
             $resourcePath = str_replace(
                 "{" . "squad_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($squadId),
+                $this->apiClient->getSerializer()->toPathValue($squad_id),
                 $resourcePath
             );
         }
@@ -341,15 +341,15 @@ class FleetsApi
      *
      * Delete fleet wing
      *
-     * @param int $fleetId ID for a fleet (required)
-     * @param int $wingId The wing to delete (required)
+     * @param int $fleet_id ID for a fleet (required)
+     * @param int $wing_id The wing to delete (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return void
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function deleteFleetsFleetIdWingsWingId($fleetId, $wingId, $datasource = null)
+    public function deleteFleetsFleetIdWingsWingId($fleet_id, $wing_id, $datasource = null)
     {
-        list($response) = $this->deleteFleetsFleetIdWingsWingIdWithHttpInfo($fleetId, $wingId, $datasource);
+        list($response) = $this->deleteFleetsFleetIdWingsWingIdWithHttpInfo($fleet_id, $wing_id, $datasource);
         return $response;
     }
 
@@ -358,21 +358,21 @@ class FleetsApi
      *
      * Delete fleet wing
      *
-     * @param int $fleetId ID for a fleet (required)
-     * @param int $wingId The wing to delete (required)
+     * @param int $fleet_id ID for a fleet (required)
+     * @param int $wing_id The wing to delete (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of null, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function deleteFleetsFleetIdWingsWingIdWithHttpInfo($fleetId, $wingId, $datasource = null)
+    public function deleteFleetsFleetIdWingsWingIdWithHttpInfo($fleet_id, $wing_id, $datasource = null)
     {
-        // verify the required parameter 'fleetId' is set
-        if ($fleetId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $fleetId when calling deleteFleetsFleetIdWingsWingId');
+        // verify the required parameter 'fleet_id' is set
+        if ($fleet_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $fleet_id when calling deleteFleetsFleetIdWingsWingId');
         }
-        // verify the required parameter 'wingId' is set
-        if ($wingId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $wingId when calling deleteFleetsFleetIdWingsWingId');
+        // verify the required parameter 'wing_id' is set
+        if ($wing_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $wing_id when calling deleteFleetsFleetIdWingsWingId');
         }
         // parse inputs
         $resourcePath = "/fleets/{fleet_id}/wings/{wing_id}/";
@@ -391,18 +391,18 @@ class FleetsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($fleetId !== null) {
+        if ($fleet_id !== null) {
             $resourcePath = str_replace(
                 "{" . "fleet_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($fleetId),
+                $this->apiClient->getSerializer()->toPathValue($fleet_id),
                 $resourcePath
             );
         }
         // path params
-        if ($wingId !== null) {
+        if ($wing_id !== null) {
             $resourcePath = str_replace(
                 "{" . "wing_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($wingId),
+                $this->apiClient->getSerializer()->toPathValue($wing_id),
                 $resourcePath
             );
         }
@@ -458,14 +458,14 @@ class FleetsApi
      *
      * Get fleet information
      *
-     * @param int $fleetId ID for a fleet (required)
+     * @param int $fleet_id ID for a fleet (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetFleetsFleetIdOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getFleetsFleetId($fleetId, $datasource = null)
+    public function getFleetsFleetId($fleet_id, $datasource = null)
     {
-        list($response) = $this->getFleetsFleetIdWithHttpInfo($fleetId, $datasource);
+        list($response) = $this->getFleetsFleetIdWithHttpInfo($fleet_id, $datasource);
         return $response;
     }
 
@@ -474,16 +474,16 @@ class FleetsApi
      *
      * Get fleet information
      *
-     * @param int $fleetId ID for a fleet (required)
+     * @param int $fleet_id ID for a fleet (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetFleetsFleetIdOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getFleetsFleetIdWithHttpInfo($fleetId, $datasource = null)
+    public function getFleetsFleetIdWithHttpInfo($fleet_id, $datasource = null)
     {
-        // verify the required parameter 'fleetId' is set
-        if ($fleetId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $fleetId when calling getFleetsFleetId');
+        // verify the required parameter 'fleet_id' is set
+        if ($fleet_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $fleet_id when calling getFleetsFleetId');
         }
         // parse inputs
         $resourcePath = "/fleets/{fleet_id}/";
@@ -502,10 +502,10 @@ class FleetsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($fleetId !== null) {
+        if ($fleet_id !== null) {
             $resourcePath = str_replace(
                 "{" . "fleet_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($fleetId),
+                $this->apiClient->getSerializer()->toPathValue($fleet_id),
                 $resourcePath
             );
         }
@@ -565,15 +565,15 @@ class FleetsApi
      *
      * Get fleet members
      *
-     * @param int $fleetId ID for a fleet (required)
+     * @param int $fleet_id ID for a fleet (required)
      * @param string $language Language to use in the response (optional, default to en-us)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetFleetsFleetIdMembers200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getFleetsFleetIdMembers($fleetId, $language = null, $datasource = null)
+    public function getFleetsFleetIdMembers($fleet_id, $language = null, $datasource = null)
     {
-        list($response) = $this->getFleetsFleetIdMembersWithHttpInfo($fleetId, $language, $datasource);
+        list($response) = $this->getFleetsFleetIdMembersWithHttpInfo($fleet_id, $language, $datasource);
         return $response;
     }
 
@@ -582,17 +582,17 @@ class FleetsApi
      *
      * Get fleet members
      *
-     * @param int $fleetId ID for a fleet (required)
+     * @param int $fleet_id ID for a fleet (required)
      * @param string $language Language to use in the response (optional, default to en-us)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetFleetsFleetIdMembers200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getFleetsFleetIdMembersWithHttpInfo($fleetId, $language = null, $datasource = null)
+    public function getFleetsFleetIdMembersWithHttpInfo($fleet_id, $language = null, $datasource = null)
     {
-        // verify the required parameter 'fleetId' is set
-        if ($fleetId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $fleetId when calling getFleetsFleetIdMembers');
+        // verify the required parameter 'fleet_id' is set
+        if ($fleet_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $fleet_id when calling getFleetsFleetIdMembers');
         }
         // parse inputs
         $resourcePath = "/fleets/{fleet_id}/members/";
@@ -615,10 +615,10 @@ class FleetsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($fleetId !== null) {
+        if ($fleet_id !== null) {
             $resourcePath = str_replace(
                 "{" . "fleet_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($fleetId),
+                $this->apiClient->getSerializer()->toPathValue($fleet_id),
                 $resourcePath
             );
         }
@@ -678,15 +678,15 @@ class FleetsApi
      *
      * Get fleet wings
      *
-     * @param int $fleetId ID for a fleet (required)
+     * @param int $fleet_id ID for a fleet (required)
      * @param string $language Language to use in the response (optional, default to en-us)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetFleetsFleetIdWings200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getFleetsFleetIdWings($fleetId, $language = null, $datasource = null)
+    public function getFleetsFleetIdWings($fleet_id, $language = null, $datasource = null)
     {
-        list($response) = $this->getFleetsFleetIdWingsWithHttpInfo($fleetId, $language, $datasource);
+        list($response) = $this->getFleetsFleetIdWingsWithHttpInfo($fleet_id, $language, $datasource);
         return $response;
     }
 
@@ -695,17 +695,17 @@ class FleetsApi
      *
      * Get fleet wings
      *
-     * @param int $fleetId ID for a fleet (required)
+     * @param int $fleet_id ID for a fleet (required)
      * @param string $language Language to use in the response (optional, default to en-us)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetFleetsFleetIdWings200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getFleetsFleetIdWingsWithHttpInfo($fleetId, $language = null, $datasource = null)
+    public function getFleetsFleetIdWingsWithHttpInfo($fleet_id, $language = null, $datasource = null)
     {
-        // verify the required parameter 'fleetId' is set
-        if ($fleetId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $fleetId when calling getFleetsFleetIdWings');
+        // verify the required parameter 'fleet_id' is set
+        if ($fleet_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $fleet_id when calling getFleetsFleetIdWings');
         }
         // parse inputs
         $resourcePath = "/fleets/{fleet_id}/wings/";
@@ -728,10 +728,10 @@ class FleetsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($fleetId !== null) {
+        if ($fleet_id !== null) {
             $resourcePath = str_replace(
                 "{" . "fleet_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($fleetId),
+                $this->apiClient->getSerializer()->toPathValue($fleet_id),
                 $resourcePath
             );
         }
@@ -791,15 +791,15 @@ class FleetsApi
      *
      * Create fleet invitation
      *
-     * @param int $fleetId ID for a fleet (required)
+     * @param int $fleet_id ID for a fleet (required)
      * @param \ESI\Model\PostFleetsFleetIdMembersInvitation $invitation Details of the invitation (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return void
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postFleetsFleetIdMembers($fleetId, $invitation, $datasource = null)
+    public function postFleetsFleetIdMembers($fleet_id, $invitation, $datasource = null)
     {
-        list($response) = $this->postFleetsFleetIdMembersWithHttpInfo($fleetId, $invitation, $datasource);
+        list($response) = $this->postFleetsFleetIdMembersWithHttpInfo($fleet_id, $invitation, $datasource);
         return $response;
     }
 
@@ -808,17 +808,17 @@ class FleetsApi
      *
      * Create fleet invitation
      *
-     * @param int $fleetId ID for a fleet (required)
+     * @param int $fleet_id ID for a fleet (required)
      * @param \ESI\Model\PostFleetsFleetIdMembersInvitation $invitation Details of the invitation (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of null, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postFleetsFleetIdMembersWithHttpInfo($fleetId, $invitation, $datasource = null)
+    public function postFleetsFleetIdMembersWithHttpInfo($fleet_id, $invitation, $datasource = null)
     {
-        // verify the required parameter 'fleetId' is set
-        if ($fleetId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $fleetId when calling postFleetsFleetIdMembers');
+        // verify the required parameter 'fleet_id' is set
+        if ($fleet_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $fleet_id when calling postFleetsFleetIdMembers');
         }
         // verify the required parameter 'invitation' is set
         if ($invitation === null) {
@@ -841,10 +841,10 @@ class FleetsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($fleetId !== null) {
+        if ($fleet_id !== null) {
             $resourcePath = str_replace(
                 "{" . "fleet_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($fleetId),
+                $this->apiClient->getSerializer()->toPathValue($fleet_id),
                 $resourcePath
             );
         }
@@ -909,14 +909,14 @@ class FleetsApi
      *
      * Create fleet wing
      *
-     * @param int $fleetId ID for a fleet (required)
+     * @param int $fleet_id ID for a fleet (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\PostFleetsFleetIdWingsCreated
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postFleetsFleetIdWings($fleetId, $datasource = null)
+    public function postFleetsFleetIdWings($fleet_id, $datasource = null)
     {
-        list($response) = $this->postFleetsFleetIdWingsWithHttpInfo($fleetId, $datasource);
+        list($response) = $this->postFleetsFleetIdWingsWithHttpInfo($fleet_id, $datasource);
         return $response;
     }
 
@@ -925,16 +925,16 @@ class FleetsApi
      *
      * Create fleet wing
      *
-     * @param int $fleetId ID for a fleet (required)
+     * @param int $fleet_id ID for a fleet (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\PostFleetsFleetIdWingsCreated, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postFleetsFleetIdWingsWithHttpInfo($fleetId, $datasource = null)
+    public function postFleetsFleetIdWingsWithHttpInfo($fleet_id, $datasource = null)
     {
-        // verify the required parameter 'fleetId' is set
-        if ($fleetId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $fleetId when calling postFleetsFleetIdWings');
+        // verify the required parameter 'fleet_id' is set
+        if ($fleet_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $fleet_id when calling postFleetsFleetIdWings');
         }
         // parse inputs
         $resourcePath = "/fleets/{fleet_id}/wings/";
@@ -953,10 +953,10 @@ class FleetsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($fleetId !== null) {
+        if ($fleet_id !== null) {
             $resourcePath = str_replace(
                 "{" . "fleet_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($fleetId),
+                $this->apiClient->getSerializer()->toPathValue($fleet_id),
                 $resourcePath
             );
         }
@@ -1016,15 +1016,15 @@ class FleetsApi
      *
      * Create fleet squad
      *
-     * @param int $fleetId ID for a fleet (required)
-     * @param int $wingId The wing_id to create squad in (required)
+     * @param int $fleet_id ID for a fleet (required)
+     * @param int $wing_id The wing_id to create squad in (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\PostFleetsFleetIdWingsWingIdSquadsCreated
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postFleetsFleetIdWingsWingIdSquads($fleetId, $wingId, $datasource = null)
+    public function postFleetsFleetIdWingsWingIdSquads($fleet_id, $wing_id, $datasource = null)
     {
-        list($response) = $this->postFleetsFleetIdWingsWingIdSquadsWithHttpInfo($fleetId, $wingId, $datasource);
+        list($response) = $this->postFleetsFleetIdWingsWingIdSquadsWithHttpInfo($fleet_id, $wing_id, $datasource);
         return $response;
     }
 
@@ -1033,21 +1033,21 @@ class FleetsApi
      *
      * Create fleet squad
      *
-     * @param int $fleetId ID for a fleet (required)
-     * @param int $wingId The wing_id to create squad in (required)
+     * @param int $fleet_id ID for a fleet (required)
+     * @param int $wing_id The wing_id to create squad in (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\PostFleetsFleetIdWingsWingIdSquadsCreated, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postFleetsFleetIdWingsWingIdSquadsWithHttpInfo($fleetId, $wingId, $datasource = null)
+    public function postFleetsFleetIdWingsWingIdSquadsWithHttpInfo($fleet_id, $wing_id, $datasource = null)
     {
-        // verify the required parameter 'fleetId' is set
-        if ($fleetId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $fleetId when calling postFleetsFleetIdWingsWingIdSquads');
+        // verify the required parameter 'fleet_id' is set
+        if ($fleet_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $fleet_id when calling postFleetsFleetIdWingsWingIdSquads');
         }
-        // verify the required parameter 'wingId' is set
-        if ($wingId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $wingId when calling postFleetsFleetIdWingsWingIdSquads');
+        // verify the required parameter 'wing_id' is set
+        if ($wing_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $wing_id when calling postFleetsFleetIdWingsWingIdSquads');
         }
         // parse inputs
         $resourcePath = "/fleets/{fleet_id}/wings/{wing_id}/squads/";
@@ -1066,18 +1066,18 @@ class FleetsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($fleetId !== null) {
+        if ($fleet_id !== null) {
             $resourcePath = str_replace(
                 "{" . "fleet_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($fleetId),
+                $this->apiClient->getSerializer()->toPathValue($fleet_id),
                 $resourcePath
             );
         }
         // path params
-        if ($wingId !== null) {
+        if ($wing_id !== null) {
             $resourcePath = str_replace(
                 "{" . "wing_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($wingId),
+                $this->apiClient->getSerializer()->toPathValue($wing_id),
                 $resourcePath
             );
         }
@@ -1137,15 +1137,15 @@ class FleetsApi
      *
      * Update fleet
      *
-     * @param int $fleetId ID for a fleet (required)
-     * @param \ESI\Model\PutFleetsFleetIdNewSettings $newSettings What to update for this fleet (required)
+     * @param int $fleet_id ID for a fleet (required)
+     * @param \ESI\Model\PutFleetsFleetIdNewSettings $new_settings What to update for this fleet (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return void
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function putFleetsFleetId($fleetId, $newSettings, $datasource = null)
+    public function putFleetsFleetId($fleet_id, $new_settings, $datasource = null)
     {
-        list($response) = $this->putFleetsFleetIdWithHttpInfo($fleetId, $newSettings, $datasource);
+        list($response) = $this->putFleetsFleetIdWithHttpInfo($fleet_id, $new_settings, $datasource);
         return $response;
     }
 
@@ -1154,21 +1154,21 @@ class FleetsApi
      *
      * Update fleet
      *
-     * @param int $fleetId ID for a fleet (required)
-     * @param \ESI\Model\PutFleetsFleetIdNewSettings $newSettings What to update for this fleet (required)
+     * @param int $fleet_id ID for a fleet (required)
+     * @param \ESI\Model\PutFleetsFleetIdNewSettings $new_settings What to update for this fleet (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of null, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function putFleetsFleetIdWithHttpInfo($fleetId, $newSettings, $datasource = null)
+    public function putFleetsFleetIdWithHttpInfo($fleet_id, $new_settings, $datasource = null)
     {
-        // verify the required parameter 'fleetId' is set
-        if ($fleetId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $fleetId when calling putFleetsFleetId');
+        // verify the required parameter 'fleet_id' is set
+        if ($fleet_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $fleet_id when calling putFleetsFleetId');
         }
-        // verify the required parameter 'newSettings' is set
-        if ($newSettings === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $newSettings when calling putFleetsFleetId');
+        // verify the required parameter 'new_settings' is set
+        if ($new_settings === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $new_settings when calling putFleetsFleetId');
         }
         // parse inputs
         $resourcePath = "/fleets/{fleet_id}/";
@@ -1187,10 +1187,10 @@ class FleetsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($fleetId !== null) {
+        if ($fleet_id !== null) {
             $resourcePath = str_replace(
                 "{" . "fleet_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($fleetId),
+                $this->apiClient->getSerializer()->toPathValue($fleet_id),
                 $resourcePath
             );
         }
@@ -1199,8 +1199,8 @@ class FleetsApi
 
         // body params
         $_tempBody = null;
-        if (isset($newSettings)) {
-            $_tempBody = $newSettings;
+        if (isset($new_settings)) {
+            $_tempBody = $new_settings;
         }
 
         // for model (json/xml)
@@ -1255,16 +1255,16 @@ class FleetsApi
      *
      * Move fleet member
      *
-     * @param int $fleetId ID for a fleet (required)
-     * @param int $memberId The character ID of a member in this fleet (required)
+     * @param int $fleet_id ID for a fleet (required)
+     * @param int $member_id The character ID of a member in this fleet (required)
      * @param \ESI\Model\PutFleetsFleetIdMembersMemberIdMovement $movement Details of the invitation (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return void
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function putFleetsFleetIdMembersMemberId($fleetId, $memberId, $movement, $datasource = null)
+    public function putFleetsFleetIdMembersMemberId($fleet_id, $member_id, $movement, $datasource = null)
     {
-        list($response) = $this->putFleetsFleetIdMembersMemberIdWithHttpInfo($fleetId, $memberId, $movement, $datasource);
+        list($response) = $this->putFleetsFleetIdMembersMemberIdWithHttpInfo($fleet_id, $member_id, $movement, $datasource);
         return $response;
     }
 
@@ -1273,22 +1273,22 @@ class FleetsApi
      *
      * Move fleet member
      *
-     * @param int $fleetId ID for a fleet (required)
-     * @param int $memberId The character ID of a member in this fleet (required)
+     * @param int $fleet_id ID for a fleet (required)
+     * @param int $member_id The character ID of a member in this fleet (required)
      * @param \ESI\Model\PutFleetsFleetIdMembersMemberIdMovement $movement Details of the invitation (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of null, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function putFleetsFleetIdMembersMemberIdWithHttpInfo($fleetId, $memberId, $movement, $datasource = null)
+    public function putFleetsFleetIdMembersMemberIdWithHttpInfo($fleet_id, $member_id, $movement, $datasource = null)
     {
-        // verify the required parameter 'fleetId' is set
-        if ($fleetId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $fleetId when calling putFleetsFleetIdMembersMemberId');
+        // verify the required parameter 'fleet_id' is set
+        if ($fleet_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $fleet_id when calling putFleetsFleetIdMembersMemberId');
         }
-        // verify the required parameter 'memberId' is set
-        if ($memberId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $memberId when calling putFleetsFleetIdMembersMemberId');
+        // verify the required parameter 'member_id' is set
+        if ($member_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $member_id when calling putFleetsFleetIdMembersMemberId');
         }
         // verify the required parameter 'movement' is set
         if ($movement === null) {
@@ -1311,18 +1311,18 @@ class FleetsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($fleetId !== null) {
+        if ($fleet_id !== null) {
             $resourcePath = str_replace(
                 "{" . "fleet_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($fleetId),
+                $this->apiClient->getSerializer()->toPathValue($fleet_id),
                 $resourcePath
             );
         }
         // path params
-        if ($memberId !== null) {
+        if ($member_id !== null) {
             $resourcePath = str_replace(
                 "{" . "member_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($memberId),
+                $this->apiClient->getSerializer()->toPathValue($member_id),
                 $resourcePath
             );
         }
@@ -1387,16 +1387,16 @@ class FleetsApi
      *
      * Rename fleet squad
      *
-     * @param int $fleetId ID for a fleet (required)
-     * @param int $squadId The squad to rename (required)
+     * @param int $fleet_id ID for a fleet (required)
+     * @param int $squad_id The squad to rename (required)
      * @param \ESI\Model\PutFleetsFleetIdSquadsSquadIdNaming $naming New name of the squad (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return void
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function putFleetsFleetIdSquadsSquadId($fleetId, $squadId, $naming, $datasource = null)
+    public function putFleetsFleetIdSquadsSquadId($fleet_id, $squad_id, $naming, $datasource = null)
     {
-        list($response) = $this->putFleetsFleetIdSquadsSquadIdWithHttpInfo($fleetId, $squadId, $naming, $datasource);
+        list($response) = $this->putFleetsFleetIdSquadsSquadIdWithHttpInfo($fleet_id, $squad_id, $naming, $datasource);
         return $response;
     }
 
@@ -1405,22 +1405,22 @@ class FleetsApi
      *
      * Rename fleet squad
      *
-     * @param int $fleetId ID for a fleet (required)
-     * @param int $squadId The squad to rename (required)
+     * @param int $fleet_id ID for a fleet (required)
+     * @param int $squad_id The squad to rename (required)
      * @param \ESI\Model\PutFleetsFleetIdSquadsSquadIdNaming $naming New name of the squad (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of null, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function putFleetsFleetIdSquadsSquadIdWithHttpInfo($fleetId, $squadId, $naming, $datasource = null)
+    public function putFleetsFleetIdSquadsSquadIdWithHttpInfo($fleet_id, $squad_id, $naming, $datasource = null)
     {
-        // verify the required parameter 'fleetId' is set
-        if ($fleetId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $fleetId when calling putFleetsFleetIdSquadsSquadId');
+        // verify the required parameter 'fleet_id' is set
+        if ($fleet_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $fleet_id when calling putFleetsFleetIdSquadsSquadId');
         }
-        // verify the required parameter 'squadId' is set
-        if ($squadId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $squadId when calling putFleetsFleetIdSquadsSquadId');
+        // verify the required parameter 'squad_id' is set
+        if ($squad_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $squad_id when calling putFleetsFleetIdSquadsSquadId');
         }
         // verify the required parameter 'naming' is set
         if ($naming === null) {
@@ -1443,18 +1443,18 @@ class FleetsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($fleetId !== null) {
+        if ($fleet_id !== null) {
             $resourcePath = str_replace(
                 "{" . "fleet_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($fleetId),
+                $this->apiClient->getSerializer()->toPathValue($fleet_id),
                 $resourcePath
             );
         }
         // path params
-        if ($squadId !== null) {
+        if ($squad_id !== null) {
             $resourcePath = str_replace(
                 "{" . "squad_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($squadId),
+                $this->apiClient->getSerializer()->toPathValue($squad_id),
                 $resourcePath
             );
         }
@@ -1515,16 +1515,16 @@ class FleetsApi
      *
      * Rename fleet wing
      *
-     * @param int $fleetId ID for a fleet (required)
-     * @param int $wingId The wing to rename (required)
+     * @param int $fleet_id ID for a fleet (required)
+     * @param int $wing_id The wing to rename (required)
      * @param \ESI\Model\PutFleetsFleetIdWingsWingIdNaming $naming New name of the wing (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return void
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function putFleetsFleetIdWingsWingId($fleetId, $wingId, $naming, $datasource = null)
+    public function putFleetsFleetIdWingsWingId($fleet_id, $wing_id, $naming, $datasource = null)
     {
-        list($response) = $this->putFleetsFleetIdWingsWingIdWithHttpInfo($fleetId, $wingId, $naming, $datasource);
+        list($response) = $this->putFleetsFleetIdWingsWingIdWithHttpInfo($fleet_id, $wing_id, $naming, $datasource);
         return $response;
     }
 
@@ -1533,22 +1533,22 @@ class FleetsApi
      *
      * Rename fleet wing
      *
-     * @param int $fleetId ID for a fleet (required)
-     * @param int $wingId The wing to rename (required)
+     * @param int $fleet_id ID for a fleet (required)
+     * @param int $wing_id The wing to rename (required)
      * @param \ESI\Model\PutFleetsFleetIdWingsWingIdNaming $naming New name of the wing (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of null, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function putFleetsFleetIdWingsWingIdWithHttpInfo($fleetId, $wingId, $naming, $datasource = null)
+    public function putFleetsFleetIdWingsWingIdWithHttpInfo($fleet_id, $wing_id, $naming, $datasource = null)
     {
-        // verify the required parameter 'fleetId' is set
-        if ($fleetId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $fleetId when calling putFleetsFleetIdWingsWingId');
+        // verify the required parameter 'fleet_id' is set
+        if ($fleet_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $fleet_id when calling putFleetsFleetIdWingsWingId');
         }
-        // verify the required parameter 'wingId' is set
-        if ($wingId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $wingId when calling putFleetsFleetIdWingsWingId');
+        // verify the required parameter 'wing_id' is set
+        if ($wing_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $wing_id when calling putFleetsFleetIdWingsWingId');
         }
         // verify the required parameter 'naming' is set
         if ($naming === null) {
@@ -1571,18 +1571,18 @@ class FleetsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($fleetId !== null) {
+        if ($fleet_id !== null) {
             $resourcePath = str_replace(
                 "{" . "fleet_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($fleetId),
+                $this->apiClient->getSerializer()->toPathValue($fleet_id),
                 $resourcePath
             );
         }
         // path params
-        if ($wingId !== null) {
+        if ($wing_id !== null) {
             $resourcePath = str_replace(
                 "{" . "wing_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($wingId),
+                $this->apiClient->getSerializer()->toPathValue($wing_id),
                 $resourcePath
             );
         }

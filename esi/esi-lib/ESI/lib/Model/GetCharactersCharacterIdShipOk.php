@@ -67,9 +67,9 @@ class GetCharactersCharacterIdShipOk implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'shipItemId' => 'int',
-        'shipName' => 'string',
-        'shipTypeId' => 'int'
+        'ship_item_id' => 'int',
+        'ship_name' => 'string',
+        'ship_type_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -82,9 +82,9 @@ class GetCharactersCharacterIdShipOk implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'shipItemId' => 'ship_item_id',
-        'shipName' => 'ship_name',
-        'shipTypeId' => 'ship_type_id'
+        'ship_item_id' => 'ship_item_id',
+        'ship_name' => 'ship_name',
+        'ship_type_id' => 'ship_type_id'
     );
 
     public static function attributeMap()
@@ -97,9 +97,9 @@ class GetCharactersCharacterIdShipOk implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'shipItemId' => 'setShipItemId',
-        'shipName' => 'setShipName',
-        'shipTypeId' => 'setShipTypeId'
+        'ship_item_id' => 'setShipItemId',
+        'ship_name' => 'setShipName',
+        'ship_type_id' => 'setShipTypeId'
     );
 
     public static function setters()
@@ -112,9 +112,9 @@ class GetCharactersCharacterIdShipOk implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'shipItemId' => 'getShipItemId',
-        'shipName' => 'getShipName',
-        'shipTypeId' => 'getShipTypeId'
+        'ship_item_id' => 'getShipItemId',
+        'ship_name' => 'getShipName',
+        'ship_type_id' => 'getShipTypeId'
     );
 
     public static function getters()
@@ -138,9 +138,9 @@ class GetCharactersCharacterIdShipOk implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['shipItemId'] = isset($data['shipItemId']) ? $data['shipItemId'] : null;
-        $this->container['shipName'] = isset($data['shipName']) ? $data['shipName'] : null;
-        $this->container['shipTypeId'] = isset($data['shipTypeId']) ? $data['shipTypeId'] : null;
+        $this->container['ship_item_id'] = isset($data['ship_item_id']) ? $data['ship_item_id'] : null;
+        $this->container['ship_name'] = isset($data['ship_name']) ? $data['ship_name'] : null;
+        $this->container['ship_type_id'] = isset($data['ship_type_id']) ? $data['ship_type_id'] : null;
     }
 
     /**
@@ -151,14 +151,14 @@ class GetCharactersCharacterIdShipOk implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['shipItemId'] === null) {
-            $invalid_properties[] = "'shipItemId' can't be null";
+        if ($this->container['ship_item_id'] === null) {
+            $invalid_properties[] = "'ship_item_id' can't be null";
         }
-        if ($this->container['shipName'] === null) {
-            $invalid_properties[] = "'shipName' can't be null";
+        if ($this->container['ship_name'] === null) {
+            $invalid_properties[] = "'ship_name' can't be null";
         }
-        if ($this->container['shipTypeId'] === null) {
-            $invalid_properties[] = "'shipTypeId' can't be null";
+        if ($this->container['ship_type_id'] === null) {
+            $invalid_properties[] = "'ship_type_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -171,13 +171,13 @@ class GetCharactersCharacterIdShipOk implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['shipItemId'] === null) {
+        if ($this->container['ship_item_id'] === null) {
             return false;
         }
-        if ($this->container['shipName'] === null) {
+        if ($this->container['ship_name'] === null) {
             return false;
         }
-        if ($this->container['shipTypeId'] === null) {
+        if ($this->container['ship_type_id'] === null) {
             return false;
         }
         return true;
@@ -185,64 +185,64 @@ class GetCharactersCharacterIdShipOk implements ArrayAccess
 
 
     /**
-     * Gets shipItemId
+     * Gets ship_item_id
      * @return int
      */
     public function getShipItemId()
     {
-        return $this->container['shipItemId'];
+        return $this->container['ship_item_id'];
     }
 
     /**
-     * Sets shipItemId
-     * @param int $shipItemId Item id's are unique to a ship and persist until it is repackaged. This value can be used to track repeated uses of a ship, or detect when a pilot changes into a different instance of the same ship type.
+     * Sets ship_item_id
+     * @param int $ship_item_id Item id's are unique to a ship and persist until it is repackaged. This value can be used to track repeated uses of a ship, or detect when a pilot changes into a different instance of the same ship type.
      * @return $this
      */
-    public function setShipItemId($shipItemId)
+    public function setShipItemId($ship_item_id)
     {
-        $this->container['shipItemId'] = $shipItemId;
+        $this->container['ship_item_id'] = $ship_item_id;
 
         return $this;
     }
 
     /**
-     * Gets shipName
+     * Gets ship_name
      * @return string
      */
     public function getShipName()
     {
-        return $this->container['shipName'];
+        return $this->container['ship_name'];
     }
 
     /**
-     * Sets shipName
-     * @param string $shipName ship_name string
+     * Sets ship_name
+     * @param string $ship_name ship_name string
      * @return $this
      */
-    public function setShipName($shipName)
+    public function setShipName($ship_name)
     {
-        $this->container['shipName'] = $shipName;
+        $this->container['ship_name'] = $ship_name;
 
         return $this;
     }
 
     /**
-     * Gets shipTypeId
+     * Gets ship_type_id
      * @return int
      */
     public function getShipTypeId()
     {
-        return $this->container['shipTypeId'];
+        return $this->container['ship_type_id'];
     }
 
     /**
-     * Sets shipTypeId
-     * @param int $shipTypeId ship_type_id integer
+     * Sets ship_type_id
+     * @param int $ship_type_id ship_type_id integer
      * @return $this
      */
-    public function setShipTypeId($shipTypeId)
+    public function setShipTypeId($ship_type_id)
     {
-        $this->container['shipTypeId'] = $shipTypeId;
+        $this->container['ship_type_id'] = $ship_type_id;
 
         return $this;
     }

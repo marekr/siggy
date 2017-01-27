@@ -67,11 +67,11 @@ class GetCharactersCharacterIdContacts200Ok implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'contactId' => 'int',
-        'contactType' => 'string',
-        'isBlocked' => 'bool',
-        'isWatched' => 'bool',
-        'labelId' => 'int',
+        'contact_id' => 'int',
+        'contact_type' => 'string',
+        'is_blocked' => 'bool',
+        'is_watched' => 'bool',
+        'label_id' => 'int',
         'standing' => 'float'
     );
 
@@ -85,11 +85,11 @@ class GetCharactersCharacterIdContacts200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'contactId' => 'contact_id',
-        'contactType' => 'contact_type',
-        'isBlocked' => 'is_blocked',
-        'isWatched' => 'is_watched',
-        'labelId' => 'label_id',
+        'contact_id' => 'contact_id',
+        'contact_type' => 'contact_type',
+        'is_blocked' => 'is_blocked',
+        'is_watched' => 'is_watched',
+        'label_id' => 'label_id',
         'standing' => 'standing'
     );
 
@@ -103,11 +103,11 @@ class GetCharactersCharacterIdContacts200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'contactId' => 'setContactId',
-        'contactType' => 'setContactType',
-        'isBlocked' => 'setIsBlocked',
-        'isWatched' => 'setIsWatched',
-        'labelId' => 'setLabelId',
+        'contact_id' => 'setContactId',
+        'contact_type' => 'setContactType',
+        'is_blocked' => 'setIsBlocked',
+        'is_watched' => 'setIsWatched',
+        'label_id' => 'setLabelId',
         'standing' => 'setStanding'
     );
 
@@ -121,11 +121,11 @@ class GetCharactersCharacterIdContacts200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'contactId' => 'getContactId',
-        'contactType' => 'getContactType',
-        'isBlocked' => 'getIsBlocked',
-        'isWatched' => 'getIsWatched',
-        'labelId' => 'getLabelId',
+        'contact_id' => 'getContactId',
+        'contact_type' => 'getContactType',
+        'is_blocked' => 'getIsBlocked',
+        'is_watched' => 'getIsWatched',
+        'label_id' => 'getLabelId',
         'standing' => 'getStanding'
     );
 
@@ -168,11 +168,11 @@ class GetCharactersCharacterIdContacts200Ok implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['contactId'] = isset($data['contactId']) ? $data['contactId'] : null;
-        $this->container['contactType'] = isset($data['contactType']) ? $data['contactType'] : null;
-        $this->container['isBlocked'] = isset($data['isBlocked']) ? $data['isBlocked'] : null;
-        $this->container['isWatched'] = isset($data['isWatched']) ? $data['isWatched'] : null;
-        $this->container['labelId'] = isset($data['labelId']) ? $data['labelId'] : null;
+        $this->container['contact_id'] = isset($data['contact_id']) ? $data['contact_id'] : null;
+        $this->container['contact_type'] = isset($data['contact_type']) ? $data['contact_type'] : null;
+        $this->container['is_blocked'] = isset($data['is_blocked']) ? $data['is_blocked'] : null;
+        $this->container['is_watched'] = isset($data['is_watched']) ? $data['is_watched'] : null;
+        $this->container['label_id'] = isset($data['label_id']) ? $data['label_id'] : null;
         $this->container['standing'] = isset($data['standing']) ? $data['standing'] : null;
     }
 
@@ -184,15 +184,15 @@ class GetCharactersCharacterIdContacts200Ok implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['contactId'] === null) {
-            $invalid_properties[] = "'contactId' can't be null";
+        if ($this->container['contact_id'] === null) {
+            $invalid_properties[] = "'contact_id' can't be null";
         }
-        if ($this->container['contactType'] === null) {
-            $invalid_properties[] = "'contactType' can't be null";
+        if ($this->container['contact_type'] === null) {
+            $invalid_properties[] = "'contact_type' can't be null";
         }
         $allowed_values = array("character", "corporation", "alliance", "faction");
-        if (!in_array($this->container['contactType'], $allowed_values)) {
-            $invalid_properties[] = "invalid value for 'contactType', must be one of #{allowed_values}.";
+        if (!in_array($this->container['contact_type'], $allowed_values)) {
+            $invalid_properties[] = "invalid value for 'contact_type', must be one of #{allowed_values}.";
         }
 
         if ($this->container['standing'] === null) {
@@ -209,14 +209,14 @@ class GetCharactersCharacterIdContacts200Ok implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['contactId'] === null) {
+        if ($this->container['contact_id'] === null) {
             return false;
         }
-        if ($this->container['contactType'] === null) {
+        if ($this->container['contact_type'] === null) {
             return false;
         }
         $allowed_values = array("character", "corporation", "alliance", "faction");
-        if (!in_array($this->container['contactType'], $allowed_values)) {
+        if (!in_array($this->container['contact_type'], $allowed_values)) {
             return false;
         }
         if ($this->container['standing'] === null) {
@@ -227,110 +227,110 @@ class GetCharactersCharacterIdContacts200Ok implements ArrayAccess
 
 
     /**
-     * Gets contactId
+     * Gets contact_id
      * @return int
      */
     public function getContactId()
     {
-        return $this->container['contactId'];
+        return $this->container['contact_id'];
     }
 
     /**
-     * Sets contactId
-     * @param int $contactId contact_id integer
+     * Sets contact_id
+     * @param int $contact_id contact_id integer
      * @return $this
      */
-    public function setContactId($contactId)
+    public function setContactId($contact_id)
     {
-        $this->container['contactId'] = $contactId;
+        $this->container['contact_id'] = $contact_id;
 
         return $this;
     }
 
     /**
-     * Gets contactType
+     * Gets contact_type
      * @return string
      */
     public function getContactType()
     {
-        return $this->container['contactType'];
+        return $this->container['contact_type'];
     }
 
     /**
-     * Sets contactType
-     * @param string $contactType contact_type string
+     * Sets contact_type
+     * @param string $contact_type contact_type string
      * @return $this
      */
-    public function setContactType($contactType)
+    public function setContactType($contact_type)
     {
         $allowed_values = array('character', 'corporation', 'alliance', 'faction');
-        if (!in_array($contactType, $allowed_values)) {
-            throw new \InvalidArgumentException("Invalid value for 'contactType', must be one of 'character', 'corporation', 'alliance', 'faction'");
+        if (!in_array($contact_type, $allowed_values)) {
+            throw new \InvalidArgumentException("Invalid value for 'contact_type', must be one of 'character', 'corporation', 'alliance', 'faction'");
         }
-        $this->container['contactType'] = $contactType;
+        $this->container['contact_type'] = $contact_type;
 
         return $this;
     }
 
     /**
-     * Gets isBlocked
+     * Gets is_blocked
      * @return bool
      */
     public function getIsBlocked()
     {
-        return $this->container['isBlocked'];
+        return $this->container['is_blocked'];
     }
 
     /**
-     * Sets isBlocked
-     * @param bool $isBlocked Whether this contact is in the blocked list. Note a missing value denotes unknown, not true or false
+     * Sets is_blocked
+     * @param bool $is_blocked Whether this contact is in the blocked list. Note a missing value denotes unknown, not true or false
      * @return $this
      */
-    public function setIsBlocked($isBlocked)
+    public function setIsBlocked($is_blocked)
     {
-        $this->container['isBlocked'] = $isBlocked;
+        $this->container['is_blocked'] = $is_blocked;
 
         return $this;
     }
 
     /**
-     * Gets isWatched
+     * Gets is_watched
      * @return bool
      */
     public function getIsWatched()
     {
-        return $this->container['isWatched'];
+        return $this->container['is_watched'];
     }
 
     /**
-     * Sets isWatched
-     * @param bool $isWatched Whether this contact is being watched
+     * Sets is_watched
+     * @param bool $is_watched Whether this contact is being watched
      * @return $this
      */
-    public function setIsWatched($isWatched)
+    public function setIsWatched($is_watched)
     {
-        $this->container['isWatched'] = $isWatched;
+        $this->container['is_watched'] = $is_watched;
 
         return $this;
     }
 
     /**
-     * Gets labelId
+     * Gets label_id
      * @return int
      */
     public function getLabelId()
     {
-        return $this->container['labelId'];
+        return $this->container['label_id'];
     }
 
     /**
-     * Sets labelId
-     * @param int $labelId Custom label of the contact
+     * Sets label_id
+     * @param int $label_id Custom label of the contact
      * @return $this
      */
-    public function setLabelId($labelId)
+    public function setLabelId($label_id)
     {
-        $this->container['labelId'] = $labelId;
+        $this->container['label_id'] = $label_id;
 
         return $this;
     }

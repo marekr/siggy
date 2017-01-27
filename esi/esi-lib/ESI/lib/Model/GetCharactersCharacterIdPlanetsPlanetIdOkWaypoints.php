@@ -68,7 +68,7 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkWaypoints implements ArrayAccess
       */
     protected static $swaggerTypes = array(
         'order' => 'int',
-        'pinId' => 'int'
+        'pin_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -82,7 +82,7 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkWaypoints implements ArrayAccess
      */
     protected static $attributeMap = array(
         'order' => 'order',
-        'pinId' => 'pin_id'
+        'pin_id' => 'pin_id'
     );
 
     public static function attributeMap()
@@ -96,7 +96,7 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkWaypoints implements ArrayAccess
      */
     protected static $setters = array(
         'order' => 'setOrder',
-        'pinId' => 'setPinId'
+        'pin_id' => 'setPinId'
     );
 
     public static function setters()
@@ -110,7 +110,7 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkWaypoints implements ArrayAccess
      */
     protected static $getters = array(
         'order' => 'getOrder',
-        'pinId' => 'getPinId'
+        'pin_id' => 'getPinId'
     );
 
     public static function getters()
@@ -135,7 +135,7 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkWaypoints implements ArrayAccess
     public function __construct(array $data = null)
     {
         $this->container['order'] = isset($data['order']) ? $data['order'] : null;
-        $this->container['pinId'] = isset($data['pinId']) ? $data['pinId'] : null;
+        $this->container['pin_id'] = isset($data['pin_id']) ? $data['pin_id'] : null;
     }
 
     /**
@@ -157,8 +157,8 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkWaypoints implements ArrayAccess
             $invalid_properties[] = "invalid value for 'order', must be bigger than or equal to 1.0.";
         }
 
-        if ($this->container['pinId'] === null) {
-            $invalid_properties[] = "'pinId' can't be null";
+        if ($this->container['pin_id'] === null) {
+            $invalid_properties[] = "'pin_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -180,7 +180,7 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkWaypoints implements ArrayAccess
         if ($this->container['order'] < 1.0) {
             return false;
         }
-        if ($this->container['pinId'] === null) {
+        if ($this->container['pin_id'] === null) {
             return false;
         }
         return true;
@@ -216,22 +216,22 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkWaypoints implements ArrayAccess
     }
 
     /**
-     * Gets pinId
+     * Gets pin_id
      * @return int
      */
     public function getPinId()
     {
-        return $this->container['pinId'];
+        return $this->container['pin_id'];
     }
 
     /**
-     * Sets pinId
-     * @param int $pinId pin_id integer
+     * Sets pin_id
+     * @param int $pin_id pin_id integer
      * @return $this
      */
-    public function setPinId($pinId)
+    public function setPinId($pin_id)
     {
-        $this->container['pinId'] = $pinId;
+        $this->container['pin_id'] = $pin_id;
 
         return $this;
     }

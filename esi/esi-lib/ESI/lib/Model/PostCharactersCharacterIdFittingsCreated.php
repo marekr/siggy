@@ -67,7 +67,7 @@ class PostCharactersCharacterIdFittingsCreated implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'fittingId' => 'int'
+        'fitting_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -80,7 +80,7 @@ class PostCharactersCharacterIdFittingsCreated implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'fittingId' => 'fitting_id'
+        'fitting_id' => 'fitting_id'
     );
 
     public static function attributeMap()
@@ -93,7 +93,7 @@ class PostCharactersCharacterIdFittingsCreated implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'fittingId' => 'setFittingId'
+        'fitting_id' => 'setFittingId'
     );
 
     public static function setters()
@@ -106,7 +106,7 @@ class PostCharactersCharacterIdFittingsCreated implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'fittingId' => 'getFittingId'
+        'fitting_id' => 'getFittingId'
     );
 
     public static function getters()
@@ -130,7 +130,7 @@ class PostCharactersCharacterIdFittingsCreated implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['fittingId'] = isset($data['fittingId']) ? $data['fittingId'] : null;
+        $this->container['fitting_id'] = isset($data['fitting_id']) ? $data['fitting_id'] : null;
     }
 
     /**
@@ -141,8 +141,8 @@ class PostCharactersCharacterIdFittingsCreated implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['fittingId'] === null) {
-            $invalid_properties[] = "'fittingId' can't be null";
+        if ($this->container['fitting_id'] === null) {
+            $invalid_properties[] = "'fitting_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -155,7 +155,7 @@ class PostCharactersCharacterIdFittingsCreated implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['fittingId'] === null) {
+        if ($this->container['fitting_id'] === null) {
             return false;
         }
         return true;
@@ -163,22 +163,22 @@ class PostCharactersCharacterIdFittingsCreated implements ArrayAccess
 
 
     /**
-     * Gets fittingId
+     * Gets fitting_id
      * @return int
      */
     public function getFittingId()
     {
-        return $this->container['fittingId'];
+        return $this->container['fitting_id'];
     }
 
     /**
-     * Sets fittingId
-     * @param int $fittingId fitting_id integer
+     * Sets fitting_id
+     * @param int $fitting_id fitting_id integer
      * @return $this
      */
-    public function setFittingId($fittingId)
+    public function setFittingId($fitting_id)
     {
-        $this->container['fittingId'] = $fittingId;
+        $this->container['fitting_id'] = $fitting_id;
 
         return $this;
     }

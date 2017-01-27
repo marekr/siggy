@@ -67,13 +67,13 @@ class GetSovereigntyStructures200Ok implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'allianceId' => 'int',
-        'solarSystemId' => 'int',
-        'structureId' => 'int',
-        'structureTypeId' => 'int',
-        'vulnerabilityOccupancyLevel' => 'float',
-        'vulnerableEndTime' => '\DateTime',
-        'vulnerableStartTime' => '\DateTime'
+        'alliance_id' => 'int',
+        'solar_system_id' => 'int',
+        'structure_id' => 'int',
+        'structure_type_id' => 'int',
+        'vulnerability_occupancy_level' => 'float',
+        'vulnerable_end_time' => '\DateTime',
+        'vulnerable_start_time' => '\DateTime'
     );
 
     public static function swaggerTypes()
@@ -86,13 +86,13 @@ class GetSovereigntyStructures200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'allianceId' => 'alliance_id',
-        'solarSystemId' => 'solar_system_id',
-        'structureId' => 'structure_id',
-        'structureTypeId' => 'structure_type_id',
-        'vulnerabilityOccupancyLevel' => 'vulnerability_occupancy_level',
-        'vulnerableEndTime' => 'vulnerable_end_time',
-        'vulnerableStartTime' => 'vulnerable_start_time'
+        'alliance_id' => 'alliance_id',
+        'solar_system_id' => 'solar_system_id',
+        'structure_id' => 'structure_id',
+        'structure_type_id' => 'structure_type_id',
+        'vulnerability_occupancy_level' => 'vulnerability_occupancy_level',
+        'vulnerable_end_time' => 'vulnerable_end_time',
+        'vulnerable_start_time' => 'vulnerable_start_time'
     );
 
     public static function attributeMap()
@@ -105,13 +105,13 @@ class GetSovereigntyStructures200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'allianceId' => 'setAllianceId',
-        'solarSystemId' => 'setSolarSystemId',
-        'structureId' => 'setStructureId',
-        'structureTypeId' => 'setStructureTypeId',
-        'vulnerabilityOccupancyLevel' => 'setVulnerabilityOccupancyLevel',
-        'vulnerableEndTime' => 'setVulnerableEndTime',
-        'vulnerableStartTime' => 'setVulnerableStartTime'
+        'alliance_id' => 'setAllianceId',
+        'solar_system_id' => 'setSolarSystemId',
+        'structure_id' => 'setStructureId',
+        'structure_type_id' => 'setStructureTypeId',
+        'vulnerability_occupancy_level' => 'setVulnerabilityOccupancyLevel',
+        'vulnerable_end_time' => 'setVulnerableEndTime',
+        'vulnerable_start_time' => 'setVulnerableStartTime'
     );
 
     public static function setters()
@@ -124,13 +124,13 @@ class GetSovereigntyStructures200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'allianceId' => 'getAllianceId',
-        'solarSystemId' => 'getSolarSystemId',
-        'structureId' => 'getStructureId',
-        'structureTypeId' => 'getStructureTypeId',
-        'vulnerabilityOccupancyLevel' => 'getVulnerabilityOccupancyLevel',
-        'vulnerableEndTime' => 'getVulnerableEndTime',
-        'vulnerableStartTime' => 'getVulnerableStartTime'
+        'alliance_id' => 'getAllianceId',
+        'solar_system_id' => 'getSolarSystemId',
+        'structure_id' => 'getStructureId',
+        'structure_type_id' => 'getStructureTypeId',
+        'vulnerability_occupancy_level' => 'getVulnerabilityOccupancyLevel',
+        'vulnerable_end_time' => 'getVulnerableEndTime',
+        'vulnerable_start_time' => 'getVulnerableStartTime'
     );
 
     public static function getters()
@@ -154,13 +154,13 @@ class GetSovereigntyStructures200Ok implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['allianceId'] = isset($data['allianceId']) ? $data['allianceId'] : null;
-        $this->container['solarSystemId'] = isset($data['solarSystemId']) ? $data['solarSystemId'] : null;
-        $this->container['structureId'] = isset($data['structureId']) ? $data['structureId'] : null;
-        $this->container['structureTypeId'] = isset($data['structureTypeId']) ? $data['structureTypeId'] : null;
-        $this->container['vulnerabilityOccupancyLevel'] = isset($data['vulnerabilityOccupancyLevel']) ? $data['vulnerabilityOccupancyLevel'] : null;
-        $this->container['vulnerableEndTime'] = isset($data['vulnerableEndTime']) ? $data['vulnerableEndTime'] : null;
-        $this->container['vulnerableStartTime'] = isset($data['vulnerableStartTime']) ? $data['vulnerableStartTime'] : null;
+        $this->container['alliance_id'] = isset($data['alliance_id']) ? $data['alliance_id'] : null;
+        $this->container['solar_system_id'] = isset($data['solar_system_id']) ? $data['solar_system_id'] : null;
+        $this->container['structure_id'] = isset($data['structure_id']) ? $data['structure_id'] : null;
+        $this->container['structure_type_id'] = isset($data['structure_type_id']) ? $data['structure_type_id'] : null;
+        $this->container['vulnerability_occupancy_level'] = isset($data['vulnerability_occupancy_level']) ? $data['vulnerability_occupancy_level'] : null;
+        $this->container['vulnerable_end_time'] = isset($data['vulnerable_end_time']) ? $data['vulnerable_end_time'] : null;
+        $this->container['vulnerable_start_time'] = isset($data['vulnerable_start_time']) ? $data['vulnerable_start_time'] : null;
     }
 
     /**
@@ -171,17 +171,17 @@ class GetSovereigntyStructures200Ok implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['allianceId'] === null) {
-            $invalid_properties[] = "'allianceId' can't be null";
+        if ($this->container['alliance_id'] === null) {
+            $invalid_properties[] = "'alliance_id' can't be null";
         }
-        if ($this->container['solarSystemId'] === null) {
-            $invalid_properties[] = "'solarSystemId' can't be null";
+        if ($this->container['solar_system_id'] === null) {
+            $invalid_properties[] = "'solar_system_id' can't be null";
         }
-        if ($this->container['structureId'] === null) {
-            $invalid_properties[] = "'structureId' can't be null";
+        if ($this->container['structure_id'] === null) {
+            $invalid_properties[] = "'structure_id' can't be null";
         }
-        if ($this->container['structureTypeId'] === null) {
-            $invalid_properties[] = "'structureTypeId' can't be null";
+        if ($this->container['structure_type_id'] === null) {
+            $invalid_properties[] = "'structure_type_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -194,16 +194,16 @@ class GetSovereigntyStructures200Ok implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['allianceId'] === null) {
+        if ($this->container['alliance_id'] === null) {
             return false;
         }
-        if ($this->container['solarSystemId'] === null) {
+        if ($this->container['solar_system_id'] === null) {
             return false;
         }
-        if ($this->container['structureId'] === null) {
+        if ($this->container['structure_id'] === null) {
             return false;
         }
-        if ($this->container['structureTypeId'] === null) {
+        if ($this->container['structure_type_id'] === null) {
             return false;
         }
         return true;
@@ -211,148 +211,148 @@ class GetSovereigntyStructures200Ok implements ArrayAccess
 
 
     /**
-     * Gets allianceId
+     * Gets alliance_id
      * @return int
      */
     public function getAllianceId()
     {
-        return $this->container['allianceId'];
+        return $this->container['alliance_id'];
     }
 
     /**
-     * Sets allianceId
-     * @param int $allianceId The alliance that owns the structure.
+     * Sets alliance_id
+     * @param int $alliance_id The alliance that owns the structure.
      * @return $this
      */
-    public function setAllianceId($allianceId)
+    public function setAllianceId($alliance_id)
     {
-        $this->container['allianceId'] = $allianceId;
+        $this->container['alliance_id'] = $alliance_id;
 
         return $this;
     }
 
     /**
-     * Gets solarSystemId
+     * Gets solar_system_id
      * @return int
      */
     public function getSolarSystemId()
     {
-        return $this->container['solarSystemId'];
+        return $this->container['solar_system_id'];
     }
 
     /**
-     * Sets solarSystemId
-     * @param int $solarSystemId Solar system in which the structure is located.
+     * Sets solar_system_id
+     * @param int $solar_system_id Solar system in which the structure is located.
      * @return $this
      */
-    public function setSolarSystemId($solarSystemId)
+    public function setSolarSystemId($solar_system_id)
     {
-        $this->container['solarSystemId'] = $solarSystemId;
+        $this->container['solar_system_id'] = $solar_system_id;
 
         return $this;
     }
 
     /**
-     * Gets structureId
+     * Gets structure_id
      * @return int
      */
     public function getStructureId()
     {
-        return $this->container['structureId'];
+        return $this->container['structure_id'];
     }
 
     /**
-     * Sets structureId
-     * @param int $structureId Unique item ID for this structure.
+     * Sets structure_id
+     * @param int $structure_id Unique item ID for this structure.
      * @return $this
      */
-    public function setStructureId($structureId)
+    public function setStructureId($structure_id)
     {
-        $this->container['structureId'] = $structureId;
+        $this->container['structure_id'] = $structure_id;
 
         return $this;
     }
 
     /**
-     * Gets structureTypeId
+     * Gets structure_type_id
      * @return int
      */
     public function getStructureTypeId()
     {
-        return $this->container['structureTypeId'];
+        return $this->container['structure_type_id'];
     }
 
     /**
-     * Sets structureTypeId
-     * @param int $structureTypeId A reference to the type of structure this is.
+     * Sets structure_type_id
+     * @param int $structure_type_id A reference to the type of structure this is.
      * @return $this
      */
-    public function setStructureTypeId($structureTypeId)
+    public function setStructureTypeId($structure_type_id)
     {
-        $this->container['structureTypeId'] = $structureTypeId;
+        $this->container['structure_type_id'] = $structure_type_id;
 
         return $this;
     }
 
     /**
-     * Gets vulnerabilityOccupancyLevel
+     * Gets vulnerability_occupancy_level
      * @return float
      */
     public function getVulnerabilityOccupancyLevel()
     {
-        return $this->container['vulnerabilityOccupancyLevel'];
+        return $this->container['vulnerability_occupancy_level'];
     }
 
     /**
-     * Sets vulnerabilityOccupancyLevel
-     * @param float $vulnerabilityOccupancyLevel The occupancy level for the next or current vulnerability window. This takes into account all development indexes and capital system bonuses. Also known as Activity Defense Multiplier from in the client. It increases the time that attackers must spend using their entosis links on the structure.
+     * Sets vulnerability_occupancy_level
+     * @param float $vulnerability_occupancy_level The occupancy level for the next or current vulnerability window. This takes into account all development indexes and capital system bonuses. Also known as Activity Defense Multiplier from in the client. It increases the time that attackers must spend using their entosis links on the structure.
      * @return $this
      */
-    public function setVulnerabilityOccupancyLevel($vulnerabilityOccupancyLevel)
+    public function setVulnerabilityOccupancyLevel($vulnerability_occupancy_level)
     {
-        $this->container['vulnerabilityOccupancyLevel'] = $vulnerabilityOccupancyLevel;
+        $this->container['vulnerability_occupancy_level'] = $vulnerability_occupancy_level;
 
         return $this;
     }
 
     /**
-     * Gets vulnerableEndTime
+     * Gets vulnerable_end_time
      * @return \DateTime
      */
     public function getVulnerableEndTime()
     {
-        return $this->container['vulnerableEndTime'];
+        return $this->container['vulnerable_end_time'];
     }
 
     /**
-     * Sets vulnerableEndTime
-     * @param \DateTime $vulnerableEndTime The time at which the next or current vulnerability window ends. At the end of a vulnerability window the next window is recalculated and locked in along with the vulnerabilityOccupancyLevel. If the structure is not in 100% entosis control of the defender, it will go in to 'overtime' and stay vulnerable for as long as that situation persists. Only once the defenders have 100% entosis control and has the vulnerableEndTime passed does the vulnerability interval expire and a new one is calculated.
+     * Sets vulnerable_end_time
+     * @param \DateTime $vulnerable_end_time The time at which the next or current vulnerability window ends. At the end of a vulnerability window the next window is recalculated and locked in along with the vulnerabilityOccupancyLevel. If the structure is not in 100% entosis control of the defender, it will go in to 'overtime' and stay vulnerable for as long as that situation persists. Only once the defenders have 100% entosis control and has the vulnerableEndTime passed does the vulnerability interval expire and a new one is calculated.
      * @return $this
      */
-    public function setVulnerableEndTime($vulnerableEndTime)
+    public function setVulnerableEndTime($vulnerable_end_time)
     {
-        $this->container['vulnerableEndTime'] = $vulnerableEndTime;
+        $this->container['vulnerable_end_time'] = $vulnerable_end_time;
 
         return $this;
     }
 
     /**
-     * Gets vulnerableStartTime
+     * Gets vulnerable_start_time
      * @return \DateTime
      */
     public function getVulnerableStartTime()
     {
-        return $this->container['vulnerableStartTime'];
+        return $this->container['vulnerable_start_time'];
     }
 
     /**
-     * Sets vulnerableStartTime
-     * @param \DateTime $vulnerableStartTime The next time at which the structure will become vulnerable. Or the start time of the current window if current time is between this and vulnerableEndTime.
+     * Sets vulnerable_start_time
+     * @param \DateTime $vulnerable_start_time The next time at which the structure will become vulnerable. Or the start time of the current window if current time is between this and vulnerableEndTime.
      * @return $this
      */
-    public function setVulnerableStartTime($vulnerableStartTime)
+    public function setVulnerableStartTime($vulnerable_start_time)
     {
-        $this->container['vulnerableStartTime'] = $vulnerableStartTime;
+        $this->container['vulnerable_start_time'] = $vulnerable_start_time;
 
         return $this;
     }

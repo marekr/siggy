@@ -67,9 +67,9 @@ class GetCharactersCharacterIdCalendar200Ok implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'eventDate' => '\DateTime',
-        'eventId' => 'int',
-        'eventResponse' => 'string',
+        'event_date' => '\DateTime',
+        'event_id' => 'int',
+        'event_response' => 'string',
         'importance' => 'int',
         'title' => 'string'
     );
@@ -84,9 +84,9 @@ class GetCharactersCharacterIdCalendar200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'eventDate' => 'event_date',
-        'eventId' => 'event_id',
-        'eventResponse' => 'event_response',
+        'event_date' => 'event_date',
+        'event_id' => 'event_id',
+        'event_response' => 'event_response',
         'importance' => 'importance',
         'title' => 'title'
     );
@@ -101,9 +101,9 @@ class GetCharactersCharacterIdCalendar200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'eventDate' => 'setEventDate',
-        'eventId' => 'setEventId',
-        'eventResponse' => 'setEventResponse',
+        'event_date' => 'setEventDate',
+        'event_id' => 'setEventId',
+        'event_response' => 'setEventResponse',
         'importance' => 'setImportance',
         'title' => 'setTitle'
     );
@@ -118,9 +118,9 @@ class GetCharactersCharacterIdCalendar200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'eventDate' => 'getEventDate',
-        'eventId' => 'getEventId',
-        'eventResponse' => 'getEventResponse',
+        'event_date' => 'getEventDate',
+        'event_id' => 'getEventId',
+        'event_response' => 'getEventResponse',
         'importance' => 'getImportance',
         'title' => 'getTitle'
     );
@@ -164,9 +164,9 @@ class GetCharactersCharacterIdCalendar200Ok implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['eventDate'] = isset($data['eventDate']) ? $data['eventDate'] : null;
-        $this->container['eventId'] = isset($data['eventId']) ? $data['eventId'] : null;
-        $this->container['eventResponse'] = isset($data['eventResponse']) ? $data['eventResponse'] : null;
+        $this->container['event_date'] = isset($data['event_date']) ? $data['event_date'] : null;
+        $this->container['event_id'] = isset($data['event_id']) ? $data['event_id'] : null;
+        $this->container['event_response'] = isset($data['event_response']) ? $data['event_response'] : null;
         $this->container['importance'] = isset($data['importance']) ? $data['importance'] : null;
         $this->container['title'] = isset($data['title']) ? $data['title'] : null;
     }
@@ -180,8 +180,8 @@ class GetCharactersCharacterIdCalendar200Ok implements ArrayAccess
     {
         $invalid_properties = array();
         $allowed_values = array("declined", "not_responded", "accepted", "tentative");
-        if (!in_array($this->container['eventResponse'], $allowed_values)) {
-            $invalid_properties[] = "invalid value for 'eventResponse', must be one of #{allowed_values}.";
+        if (!in_array($this->container['event_response'], $allowed_values)) {
+            $invalid_properties[] = "invalid value for 'event_response', must be one of #{allowed_values}.";
         }
 
         return $invalid_properties;
@@ -196,7 +196,7 @@ class GetCharactersCharacterIdCalendar200Ok implements ArrayAccess
     public function valid()
     {
         $allowed_values = array("declined", "not_responded", "accepted", "tentative");
-        if (!in_array($this->container['eventResponse'], $allowed_values)) {
+        if (!in_array($this->container['event_response'], $allowed_values)) {
             return false;
         }
         return true;
@@ -204,68 +204,68 @@ class GetCharactersCharacterIdCalendar200Ok implements ArrayAccess
 
 
     /**
-     * Gets eventDate
+     * Gets event_date
      * @return \DateTime
      */
     public function getEventDate()
     {
-        return $this->container['eventDate'];
+        return $this->container['event_date'];
     }
 
     /**
-     * Sets eventDate
-     * @param \DateTime $eventDate event_date string
+     * Sets event_date
+     * @param \DateTime $event_date event_date string
      * @return $this
      */
-    public function setEventDate($eventDate)
+    public function setEventDate($event_date)
     {
-        $this->container['eventDate'] = $eventDate;
+        $this->container['event_date'] = $event_date;
 
         return $this;
     }
 
     /**
-     * Gets eventId
+     * Gets event_id
      * @return int
      */
     public function getEventId()
     {
-        return $this->container['eventId'];
+        return $this->container['event_id'];
     }
 
     /**
-     * Sets eventId
-     * @param int $eventId event_id integer
+     * Sets event_id
+     * @param int $event_id event_id integer
      * @return $this
      */
-    public function setEventId($eventId)
+    public function setEventId($event_id)
     {
-        $this->container['eventId'] = $eventId;
+        $this->container['event_id'] = $event_id;
 
         return $this;
     }
 
     /**
-     * Gets eventResponse
+     * Gets event_response
      * @return string
      */
     public function getEventResponse()
     {
-        return $this->container['eventResponse'];
+        return $this->container['event_response'];
     }
 
     /**
-     * Sets eventResponse
-     * @param string $eventResponse event_response string
+     * Sets event_response
+     * @param string $event_response event_response string
      * @return $this
      */
-    public function setEventResponse($eventResponse)
+    public function setEventResponse($event_response)
     {
         $allowed_values = array('declined', 'not_responded', 'accepted', 'tentative');
-        if (!in_array($eventResponse, $allowed_values)) {
-            throw new \InvalidArgumentException("Invalid value for 'eventResponse', must be one of 'declined', 'not_responded', 'accepted', 'tentative'");
+        if (!in_array($event_response, $allowed_values)) {
+            throw new \InvalidArgumentException("Invalid value for 'event_response', must be one of 'declined', 'not_responded', 'accepted', 'tentative'");
         }
-        $this->container['eventResponse'] = $eventResponse;
+        $this->container['event_response'] = $event_response;
 
         return $this;
     }

@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 **description** | **string** | description string | 
 **items** | [**\ESI\Model\CharacterscharacterIdfittingsItems1[]**](CharacterscharacterIdfittingsItems1.md) | items array | 
 **name** | **string** | name string | 
-**shipTypeId** | **int** | ship_type_id integer | 
+**ship_type_id** | **int** | ship_type_id integer | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

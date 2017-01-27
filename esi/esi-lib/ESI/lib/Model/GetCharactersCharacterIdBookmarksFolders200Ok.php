@@ -67,9 +67,9 @@ class GetCharactersCharacterIdBookmarksFolders200Ok implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'folderId' => 'int',
+        'folder_id' => 'int',
         'name' => 'string',
-        'ownerId' => 'int'
+        'owner_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -82,9 +82,9 @@ class GetCharactersCharacterIdBookmarksFolders200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'folderId' => 'folder_id',
+        'folder_id' => 'folder_id',
         'name' => 'name',
-        'ownerId' => 'owner_id'
+        'owner_id' => 'owner_id'
     );
 
     public static function attributeMap()
@@ -97,9 +97,9 @@ class GetCharactersCharacterIdBookmarksFolders200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'folderId' => 'setFolderId',
+        'folder_id' => 'setFolderId',
         'name' => 'setName',
-        'ownerId' => 'setOwnerId'
+        'owner_id' => 'setOwnerId'
     );
 
     public static function setters()
@@ -112,9 +112,9 @@ class GetCharactersCharacterIdBookmarksFolders200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'folderId' => 'getFolderId',
+        'folder_id' => 'getFolderId',
         'name' => 'getName',
-        'ownerId' => 'getOwnerId'
+        'owner_id' => 'getOwnerId'
     );
 
     public static function getters()
@@ -138,9 +138,9 @@ class GetCharactersCharacterIdBookmarksFolders200Ok implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['folderId'] = isset($data['folderId']) ? $data['folderId'] : null;
+        $this->container['folder_id'] = isset($data['folder_id']) ? $data['folder_id'] : null;
         $this->container['name'] = isset($data['name']) ? $data['name'] : null;
-        $this->container['ownerId'] = isset($data['ownerId']) ? $data['ownerId'] : null;
+        $this->container['owner_id'] = isset($data['owner_id']) ? $data['owner_id'] : null;
     }
 
     /**
@@ -167,22 +167,22 @@ class GetCharactersCharacterIdBookmarksFolders200Ok implements ArrayAccess
 
 
     /**
-     * Gets folderId
+     * Gets folder_id
      * @return int
      */
     public function getFolderId()
     {
-        return $this->container['folderId'];
+        return $this->container['folder_id'];
     }
 
     /**
-     * Sets folderId
-     * @param int $folderId folder_id integer
+     * Sets folder_id
+     * @param int $folder_id folder_id integer
      * @return $this
      */
-    public function setFolderId($folderId)
+    public function setFolderId($folder_id)
     {
-        $this->container['folderId'] = $folderId;
+        $this->container['folder_id'] = $folder_id;
 
         return $this;
     }
@@ -209,22 +209,22 @@ class GetCharactersCharacterIdBookmarksFolders200Ok implements ArrayAccess
     }
 
     /**
-     * Gets ownerId
+     * Gets owner_id
      * @return int
      */
     public function getOwnerId()
     {
-        return $this->container['ownerId'];
+        return $this->container['owner_id'];
     }
 
     /**
-     * Sets ownerId
-     * @param int $ownerId owner_id integer
+     * Sets owner_id
+     * @param int $owner_id owner_id integer
      * @return $this
      */
-    public function setOwnerId($ownerId)
+    public function setOwnerId($owner_id)
     {
-        $this->container['ownerId'] = $ownerId;
+        $this->container['owner_id'] = $owner_id;
 
         return $this;
     }

@@ -67,7 +67,7 @@ class GetUniverseSystemsSystemIdOk implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'solarSystemName' => 'string'
+        'solar_system_name' => 'string'
     );
 
     public static function swaggerTypes()
@@ -80,7 +80,7 @@ class GetUniverseSystemsSystemIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'solarSystemName' => 'solar_system_name'
+        'solar_system_name' => 'solar_system_name'
     );
 
     public static function attributeMap()
@@ -93,7 +93,7 @@ class GetUniverseSystemsSystemIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'solarSystemName' => 'setSolarSystemName'
+        'solar_system_name' => 'setSolarSystemName'
     );
 
     public static function setters()
@@ -106,7 +106,7 @@ class GetUniverseSystemsSystemIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'solarSystemName' => 'getSolarSystemName'
+        'solar_system_name' => 'getSolarSystemName'
     );
 
     public static function getters()
@@ -130,7 +130,7 @@ class GetUniverseSystemsSystemIdOk implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['solarSystemName'] = isset($data['solarSystemName']) ? $data['solarSystemName'] : null;
+        $this->container['solar_system_name'] = isset($data['solar_system_name']) ? $data['solar_system_name'] : null;
     }
 
     /**
@@ -157,22 +157,22 @@ class GetUniverseSystemsSystemIdOk implements ArrayAccess
 
 
     /**
-     * Gets solarSystemName
+     * Gets solar_system_name
      * @return string
      */
     public function getSolarSystemName()
     {
-        return $this->container['solarSystemName'];
+        return $this->container['solar_system_name'];
     }
 
     /**
-     * Sets solarSystemName
-     * @param string $solarSystemName the full name of the system
+     * Sets solar_system_name
+     * @param string $solar_system_name the full name of the system
      * @return $this
      */
-    public function setSolarSystemName($solarSystemName)
+    public function setSolarSystemName($solar_system_name)
     {
-        $this->container['solarSystemName'] = $solarSystemName;
+        $this->container['solar_system_name'] = $solar_system_name;
 
         return $this;
     }

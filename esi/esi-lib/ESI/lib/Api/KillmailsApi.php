@@ -107,16 +107,16 @@ class KillmailsApi
      *
      * List kills and losses
      *
-     * @param int $characterId An EVE character ID (required)
-     * @param int $maxCount How many killmails to return at maximum (optional, default to 50)
-     * @param int $maxKillId Only return killmails with ID smaller than this. (optional)
+     * @param int $character_id An EVE character ID (required)
+     * @param int $max_count How many killmails to return at maximum (optional, default to 50)
+     * @param int $max_kill_id Only return killmails with ID smaller than this. (optional)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdKillmailsRecent200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdKillmailsRecent($characterId, $maxCount = null, $maxKillId = null, $datasource = null)
+    public function getCharactersCharacterIdKillmailsRecent($character_id, $max_count = null, $max_kill_id = null, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdKillmailsRecentWithHttpInfo($characterId, $maxCount, $maxKillId, $datasource);
+        list($response) = $this->getCharactersCharacterIdKillmailsRecentWithHttpInfo($character_id, $max_count, $max_kill_id, $datasource);
         return $response;
     }
 
@@ -125,21 +125,21 @@ class KillmailsApi
      *
      * List kills and losses
      *
-     * @param int $characterId An EVE character ID (required)
-     * @param int $maxCount How many killmails to return at maximum (optional, default to 50)
-     * @param int $maxKillId Only return killmails with ID smaller than this. (optional)
+     * @param int $character_id An EVE character ID (required)
+     * @param int $max_count How many killmails to return at maximum (optional, default to 50)
+     * @param int $max_kill_id Only return killmails with ID smaller than this. (optional)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdKillmailsRecent200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdKillmailsRecentWithHttpInfo($characterId, $maxCount = null, $maxKillId = null, $datasource = null)
+    public function getCharactersCharacterIdKillmailsRecentWithHttpInfo($character_id, $max_count = null, $max_kill_id = null, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdKillmailsRecent');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdKillmailsRecent');
         }
-        if (!is_null($maxCount) && ($maxCount > 5000.0)) {
-            throw new \InvalidArgumentException('invalid value for "$maxCount" when calling KillmailsApi.getCharactersCharacterIdKillmailsRecent, must be smaller than or equal to 5000.0.');
+        if (!is_null($max_count) && ($max_count > 5000.0)) {
+            throw new \InvalidArgumentException('invalid value for "$max_count" when calling KillmailsApi.getCharactersCharacterIdKillmailsRecent, must be smaller than or equal to 5000.0.');
         }
 
         // parse inputs
@@ -155,22 +155,22 @@ class KillmailsApi
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array());
 
         // query params
-        if ($maxCount !== null) {
-            $queryParams['max_count'] = $this->apiClient->getSerializer()->toQueryValue($maxCount);
+        if ($max_count !== null) {
+            $queryParams['max_count'] = $this->apiClient->getSerializer()->toQueryValue($max_count);
         }
         // query params
-        if ($maxKillId !== null) {
-            $queryParams['max_kill_id'] = $this->apiClient->getSerializer()->toQueryValue($maxKillId);
+        if ($max_kill_id !== null) {
+            $queryParams['max_kill_id'] = $this->apiClient->getSerializer()->toQueryValue($max_kill_id);
         }
         // query params
         if ($datasource !== null) {
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
@@ -226,15 +226,15 @@ class KillmailsApi
      *
      * Get a single killmail
      *
-     * @param int $killmailId The killmail ID to be queried (required)
-     * @param string $killmailHash The killmail hash for verification (required)
+     * @param int $killmail_id The killmail ID to be queried (required)
+     * @param string $killmail_hash The killmail hash for verification (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetKillmailsKillmailIdKillmailHashOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getKillmailsKillmailIdKillmailHash($killmailId, $killmailHash, $datasource = null)
+    public function getKillmailsKillmailIdKillmailHash($killmail_id, $killmail_hash, $datasource = null)
     {
-        list($response) = $this->getKillmailsKillmailIdKillmailHashWithHttpInfo($killmailId, $killmailHash, $datasource);
+        list($response) = $this->getKillmailsKillmailIdKillmailHashWithHttpInfo($killmail_id, $killmail_hash, $datasource);
         return $response;
     }
 
@@ -243,21 +243,21 @@ class KillmailsApi
      *
      * Get a single killmail
      *
-     * @param int $killmailId The killmail ID to be queried (required)
-     * @param string $killmailHash The killmail hash for verification (required)
+     * @param int $killmail_id The killmail ID to be queried (required)
+     * @param string $killmail_hash The killmail hash for verification (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetKillmailsKillmailIdKillmailHashOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getKillmailsKillmailIdKillmailHashWithHttpInfo($killmailId, $killmailHash, $datasource = null)
+    public function getKillmailsKillmailIdKillmailHashWithHttpInfo($killmail_id, $killmail_hash, $datasource = null)
     {
-        // verify the required parameter 'killmailId' is set
-        if ($killmailId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $killmailId when calling getKillmailsKillmailIdKillmailHash');
+        // verify the required parameter 'killmail_id' is set
+        if ($killmail_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $killmail_id when calling getKillmailsKillmailIdKillmailHash');
         }
-        // verify the required parameter 'killmailHash' is set
-        if ($killmailHash === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $killmailHash when calling getKillmailsKillmailIdKillmailHash');
+        // verify the required parameter 'killmail_hash' is set
+        if ($killmail_hash === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $killmail_hash when calling getKillmailsKillmailIdKillmailHash');
         }
         // parse inputs
         $resourcePath = "/killmails/{killmail_id}/{killmail_hash}/";
@@ -276,18 +276,18 @@ class KillmailsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($killmailId !== null) {
+        if ($killmail_id !== null) {
             $resourcePath = str_replace(
                 "{" . "killmail_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($killmailId),
+                $this->apiClient->getSerializer()->toPathValue($killmail_id),
                 $resourcePath
             );
         }
         // path params
-        if ($killmailHash !== null) {
+        if ($killmail_hash !== null) {
             $resourcePath = str_replace(
                 "{" . "killmail_hash" . "}",
-                $this->apiClient->getSerializer()->toPathValue($killmailHash),
+                $this->apiClient->getSerializer()->toPathValue($killmail_hash),
                 $resourcePath
             );
         }

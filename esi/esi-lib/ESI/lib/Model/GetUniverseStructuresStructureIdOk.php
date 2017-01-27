@@ -69,8 +69,8 @@ class GetUniverseStructuresStructureIdOk implements ArrayAccess
     protected static $swaggerTypes = array(
         'name' => 'string',
         'position' => '\ESI\Model\GetUniverseStructuresStructureIdOkPosition',
-        'solarSystemId' => 'int',
-        'typeId' => 'int'
+        'solar_system_id' => 'int',
+        'type_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -85,8 +85,8 @@ class GetUniverseStructuresStructureIdOk implements ArrayAccess
     protected static $attributeMap = array(
         'name' => 'name',
         'position' => 'position',
-        'solarSystemId' => 'solar_system_id',
-        'typeId' => 'type_id'
+        'solar_system_id' => 'solar_system_id',
+        'type_id' => 'type_id'
     );
 
     public static function attributeMap()
@@ -101,8 +101,8 @@ class GetUniverseStructuresStructureIdOk implements ArrayAccess
     protected static $setters = array(
         'name' => 'setName',
         'position' => 'setPosition',
-        'solarSystemId' => 'setSolarSystemId',
-        'typeId' => 'setTypeId'
+        'solar_system_id' => 'setSolarSystemId',
+        'type_id' => 'setTypeId'
     );
 
     public static function setters()
@@ -117,8 +117,8 @@ class GetUniverseStructuresStructureIdOk implements ArrayAccess
     protected static $getters = array(
         'name' => 'getName',
         'position' => 'getPosition',
-        'solarSystemId' => 'getSolarSystemId',
-        'typeId' => 'getTypeId'
+        'solar_system_id' => 'getSolarSystemId',
+        'type_id' => 'getTypeId'
     );
 
     public static function getters()
@@ -144,8 +144,8 @@ class GetUniverseStructuresStructureIdOk implements ArrayAccess
     {
         $this->container['name'] = isset($data['name']) ? $data['name'] : null;
         $this->container['position'] = isset($data['position']) ? $data['position'] : null;
-        $this->container['solarSystemId'] = isset($data['solarSystemId']) ? $data['solarSystemId'] : null;
-        $this->container['typeId'] = isset($data['typeId']) ? $data['typeId'] : null;
+        $this->container['solar_system_id'] = isset($data['solar_system_id']) ? $data['solar_system_id'] : null;
+        $this->container['type_id'] = isset($data['type_id']) ? $data['type_id'] : null;
     }
 
     /**
@@ -159,8 +159,8 @@ class GetUniverseStructuresStructureIdOk implements ArrayAccess
         if ($this->container['name'] === null) {
             $invalid_properties[] = "'name' can't be null";
         }
-        if ($this->container['solarSystemId'] === null) {
-            $invalid_properties[] = "'solarSystemId' can't be null";
+        if ($this->container['solar_system_id'] === null) {
+            $invalid_properties[] = "'solar_system_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -176,7 +176,7 @@ class GetUniverseStructuresStructureIdOk implements ArrayAccess
         if ($this->container['name'] === null) {
             return false;
         }
-        if ($this->container['solarSystemId'] === null) {
+        if ($this->container['solar_system_id'] === null) {
             return false;
         }
         return true;
@@ -226,43 +226,43 @@ class GetUniverseStructuresStructureIdOk implements ArrayAccess
     }
 
     /**
-     * Gets solarSystemId
+     * Gets solar_system_id
      * @return int
      */
     public function getSolarSystemId()
     {
-        return $this->container['solarSystemId'];
+        return $this->container['solar_system_id'];
     }
 
     /**
-     * Sets solarSystemId
-     * @param int $solarSystemId solar_system_id integer
+     * Sets solar_system_id
+     * @param int $solar_system_id solar_system_id integer
      * @return $this
      */
-    public function setSolarSystemId($solarSystemId)
+    public function setSolarSystemId($solar_system_id)
     {
-        $this->container['solarSystemId'] = $solarSystemId;
+        $this->container['solar_system_id'] = $solar_system_id;
 
         return $this;
     }
 
     /**
-     * Gets typeId
+     * Gets type_id
      * @return int
      */
     public function getTypeId()
     {
-        return $this->container['typeId'];
+        return $this->container['type_id'];
     }
 
     /**
-     * Sets typeId
-     * @param int $typeId type_id integer
+     * Sets type_id
+     * @param int $type_id type_id integer
      * @return $this
      */
-    public function setTypeId($typeId)
+    public function setTypeId($type_id)
     {
-        $this->container['typeId'] = $typeId;
+        $this->container['type_id'] = $type_id;
 
         return $this;
     }

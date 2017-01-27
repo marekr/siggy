@@ -68,12 +68,12 @@ class GetKillmailsKillmailIdKillmailHashOk implements ArrayAccess
       */
     protected static $swaggerTypes = array(
         'attackers' => '\ESI\Model\GetKillmailsKillmailIdKillmailHashOkAttackers[]',
-        'killmailId' => 'int',
-        'killmailTime' => '\DateTime',
-        'moonId' => 'int',
-        'solarSystemId' => 'int',
+        'killmail_id' => 'int',
+        'killmail_time' => '\DateTime',
+        'moon_id' => 'int',
+        'solar_system_id' => 'int',
         'victim' => '\ESI\Model\GetKillmailsKillmailIdKillmailHashOkVictim',
-        'warId' => 'int'
+        'war_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -87,12 +87,12 @@ class GetKillmailsKillmailIdKillmailHashOk implements ArrayAccess
      */
     protected static $attributeMap = array(
         'attackers' => 'attackers',
-        'killmailId' => 'killmail_id',
-        'killmailTime' => 'killmail_time',
-        'moonId' => 'moon_id',
-        'solarSystemId' => 'solar_system_id',
+        'killmail_id' => 'killmail_id',
+        'killmail_time' => 'killmail_time',
+        'moon_id' => 'moon_id',
+        'solar_system_id' => 'solar_system_id',
         'victim' => 'victim',
-        'warId' => 'war_id'
+        'war_id' => 'war_id'
     );
 
     public static function attributeMap()
@@ -106,12 +106,12 @@ class GetKillmailsKillmailIdKillmailHashOk implements ArrayAccess
      */
     protected static $setters = array(
         'attackers' => 'setAttackers',
-        'killmailId' => 'setKillmailId',
-        'killmailTime' => 'setKillmailTime',
-        'moonId' => 'setMoonId',
-        'solarSystemId' => 'setSolarSystemId',
+        'killmail_id' => 'setKillmailId',
+        'killmail_time' => 'setKillmailTime',
+        'moon_id' => 'setMoonId',
+        'solar_system_id' => 'setSolarSystemId',
         'victim' => 'setVictim',
-        'warId' => 'setWarId'
+        'war_id' => 'setWarId'
     );
 
     public static function setters()
@@ -125,12 +125,12 @@ class GetKillmailsKillmailIdKillmailHashOk implements ArrayAccess
      */
     protected static $getters = array(
         'attackers' => 'getAttackers',
-        'killmailId' => 'getKillmailId',
-        'killmailTime' => 'getKillmailTime',
-        'moonId' => 'getMoonId',
-        'solarSystemId' => 'getSolarSystemId',
+        'killmail_id' => 'getKillmailId',
+        'killmail_time' => 'getKillmailTime',
+        'moon_id' => 'getMoonId',
+        'solar_system_id' => 'getSolarSystemId',
         'victim' => 'getVictim',
-        'warId' => 'getWarId'
+        'war_id' => 'getWarId'
     );
 
     public static function getters()
@@ -155,12 +155,12 @@ class GetKillmailsKillmailIdKillmailHashOk implements ArrayAccess
     public function __construct(array $data = null)
     {
         $this->container['attackers'] = isset($data['attackers']) ? $data['attackers'] : null;
-        $this->container['killmailId'] = isset($data['killmailId']) ? $data['killmailId'] : null;
-        $this->container['killmailTime'] = isset($data['killmailTime']) ? $data['killmailTime'] : null;
-        $this->container['moonId'] = isset($data['moonId']) ? $data['moonId'] : null;
-        $this->container['solarSystemId'] = isset($data['solarSystemId']) ? $data['solarSystemId'] : null;
+        $this->container['killmail_id'] = isset($data['killmail_id']) ? $data['killmail_id'] : null;
+        $this->container['killmail_time'] = isset($data['killmail_time']) ? $data['killmail_time'] : null;
+        $this->container['moon_id'] = isset($data['moon_id']) ? $data['moon_id'] : null;
+        $this->container['solar_system_id'] = isset($data['solar_system_id']) ? $data['solar_system_id'] : null;
         $this->container['victim'] = isset($data['victim']) ? $data['victim'] : null;
-        $this->container['warId'] = isset($data['warId']) ? $data['warId'] : null;
+        $this->container['war_id'] = isset($data['war_id']) ? $data['war_id'] : null;
     }
 
     /**
@@ -174,14 +174,14 @@ class GetKillmailsKillmailIdKillmailHashOk implements ArrayAccess
         if ($this->container['attackers'] === null) {
             $invalid_properties[] = "'attackers' can't be null";
         }
-        if ($this->container['killmailId'] === null) {
-            $invalid_properties[] = "'killmailId' can't be null";
+        if ($this->container['killmail_id'] === null) {
+            $invalid_properties[] = "'killmail_id' can't be null";
         }
-        if ($this->container['killmailTime'] === null) {
-            $invalid_properties[] = "'killmailTime' can't be null";
+        if ($this->container['killmail_time'] === null) {
+            $invalid_properties[] = "'killmail_time' can't be null";
         }
-        if ($this->container['solarSystemId'] === null) {
-            $invalid_properties[] = "'solarSystemId' can't be null";
+        if ($this->container['solar_system_id'] === null) {
+            $invalid_properties[] = "'solar_system_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -197,13 +197,13 @@ class GetKillmailsKillmailIdKillmailHashOk implements ArrayAccess
         if ($this->container['attackers'] === null) {
             return false;
         }
-        if ($this->container['killmailId'] === null) {
+        if ($this->container['killmail_id'] === null) {
             return false;
         }
-        if ($this->container['killmailTime'] === null) {
+        if ($this->container['killmail_time'] === null) {
             return false;
         }
-        if ($this->container['solarSystemId'] === null) {
+        if ($this->container['solar_system_id'] === null) {
             return false;
         }
         return true;
@@ -232,85 +232,85 @@ class GetKillmailsKillmailIdKillmailHashOk implements ArrayAccess
     }
 
     /**
-     * Gets killmailId
+     * Gets killmail_id
      * @return int
      */
     public function getKillmailId()
     {
-        return $this->container['killmailId'];
+        return $this->container['killmail_id'];
     }
 
     /**
-     * Sets killmailId
-     * @param int $killmailId ID of the killmail
+     * Sets killmail_id
+     * @param int $killmail_id ID of the killmail
      * @return $this
      */
-    public function setKillmailId($killmailId)
+    public function setKillmailId($killmail_id)
     {
-        $this->container['killmailId'] = $killmailId;
+        $this->container['killmail_id'] = $killmail_id;
 
         return $this;
     }
 
     /**
-     * Gets killmailTime
+     * Gets killmail_time
      * @return \DateTime
      */
     public function getKillmailTime()
     {
-        return $this->container['killmailTime'];
+        return $this->container['killmail_time'];
     }
 
     /**
-     * Sets killmailTime
-     * @param \DateTime $killmailTime Time that the victim was killed and the killmail generated
+     * Sets killmail_time
+     * @param \DateTime $killmail_time Time that the victim was killed and the killmail generated
      * @return $this
      */
-    public function setKillmailTime($killmailTime)
+    public function setKillmailTime($killmail_time)
     {
-        $this->container['killmailTime'] = $killmailTime;
+        $this->container['killmail_time'] = $killmail_time;
 
         return $this;
     }
 
     /**
-     * Gets moonId
+     * Gets moon_id
      * @return int
      */
     public function getMoonId()
     {
-        return $this->container['moonId'];
+        return $this->container['moon_id'];
     }
 
     /**
-     * Sets moonId
-     * @param int $moonId Moon if the kill took place at one
+     * Sets moon_id
+     * @param int $moon_id Moon if the kill took place at one
      * @return $this
      */
-    public function setMoonId($moonId)
+    public function setMoonId($moon_id)
     {
-        $this->container['moonId'] = $moonId;
+        $this->container['moon_id'] = $moon_id;
 
         return $this;
     }
 
     /**
-     * Gets solarSystemId
+     * Gets solar_system_id
      * @return int
      */
     public function getSolarSystemId()
     {
-        return $this->container['solarSystemId'];
+        return $this->container['solar_system_id'];
     }
 
     /**
-     * Sets solarSystemId
-     * @param int $solarSystemId Solar system that the kill took place in
+     * Sets solar_system_id
+     * @param int $solar_system_id Solar system that the kill took place in
      * @return $this
      */
-    public function setSolarSystemId($solarSystemId)
+    public function setSolarSystemId($solar_system_id)
     {
-        $this->container['solarSystemId'] = $solarSystemId;
+        $this->container['solar_system_id'] = $solar_system_id;
 
         return $this;
     }
@@ -337,22 +337,22 @@ class GetKillmailsKillmailIdKillmailHashOk implements ArrayAccess
     }
 
     /**
-     * Gets warId
+     * Gets war_id
      * @return int
      */
     public function getWarId()
     {
-        return $this->container['warId'];
+        return $this->container['war_id'];
     }
 
     /**
-     * Sets warId
-     * @param int $warId War if the killmail is generated in relation to an official war
+     * Sets war_id
+     * @param int $war_id War if the killmail is generated in relation to an official war
      * @return $this
      */
-    public function setWarId($warId)
+    public function setWarId($war_id)
     {
-        $this->container['warId'] = $warId;
+        $this->container['war_id'] = $war_id;
 
         return $this;
     }

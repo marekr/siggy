@@ -107,14 +107,14 @@ class CharacterApi
      *
      * Get character's public information
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterId($characterId, $datasource = null)
+    public function getCharactersCharacterId($character_id, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdWithHttpInfo($characterId, $datasource);
+        list($response) = $this->getCharactersCharacterIdWithHttpInfo($character_id, $datasource);
         return $response;
     }
 
@@ -123,16 +123,16 @@ class CharacterApi
      *
      * Get character's public information
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdWithHttpInfo($characterId, $datasource = null)
+    public function getCharactersCharacterIdWithHttpInfo($character_id, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterId');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterId');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/";
@@ -151,10 +151,10 @@ class CharacterApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
@@ -206,14 +206,14 @@ class CharacterApi
      *
      * Get corporation history
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdCorporationhistory200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdCorporationhistory($characterId, $datasource = null)
+    public function getCharactersCharacterIdCorporationhistory($character_id, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdCorporationhistoryWithHttpInfo($characterId, $datasource);
+        list($response) = $this->getCharactersCharacterIdCorporationhistoryWithHttpInfo($character_id, $datasource);
         return $response;
     }
 
@@ -222,16 +222,16 @@ class CharacterApi
      *
      * Get corporation history
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdCorporationhistory200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdCorporationhistoryWithHttpInfo($characterId, $datasource = null)
+    public function getCharactersCharacterIdCorporationhistoryWithHttpInfo($character_id, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdCorporationhistory');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdCorporationhistory');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/corporationhistory/";
@@ -250,10 +250,10 @@ class CharacterApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
@@ -301,14 +301,14 @@ class CharacterApi
      *
      * Get character portraits
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdPortraitOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdPortrait($characterId, $datasource = null)
+    public function getCharactersCharacterIdPortrait($character_id, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdPortraitWithHttpInfo($characterId, $datasource);
+        list($response) = $this->getCharactersCharacterIdPortraitWithHttpInfo($character_id, $datasource);
         return $response;
     }
 
@@ -317,16 +317,16 @@ class CharacterApi
      *
      * Get character portraits
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdPortraitOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdPortraitWithHttpInfo($characterId, $datasource = null)
+    public function getCharactersCharacterIdPortraitWithHttpInfo($character_id, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdPortrait');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdPortrait');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/portrait/";
@@ -345,10 +345,10 @@ class CharacterApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
@@ -400,14 +400,14 @@ class CharacterApi
      *
      * Get character names
      *
-     * @param int[] $characterIds A comma separated list of character IDs (required)
+     * @param int[] $character_ids A comma separated list of character IDs (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersNames200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersNames($characterIds, $datasource = null)
+    public function getCharactersNames($character_ids, $datasource = null)
     {
-        list($response) = $this->getCharactersNamesWithHttpInfo($characterIds, $datasource);
+        list($response) = $this->getCharactersNamesWithHttpInfo($character_ids, $datasource);
         return $response;
     }
 
@@ -416,16 +416,16 @@ class CharacterApi
      *
      * Get character names
      *
-     * @param int[] $characterIds A comma separated list of character IDs (required)
+     * @param int[] $character_ids A comma separated list of character IDs (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersNames200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersNamesWithHttpInfo($characterIds, $datasource = null)
+    public function getCharactersNamesWithHttpInfo($character_ids, $datasource = null)
     {
-        // verify the required parameter 'characterIds' is set
-        if ($characterIds === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterIds when calling getCharactersNames');
+        // verify the required parameter 'character_ids' is set
+        if ($character_ids === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_ids when calling getCharactersNames');
         }
 
         // parse inputs
@@ -441,11 +441,11 @@ class CharacterApi
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array());
 
         // query params
-        if (is_array($characterIds)) {
-            $characterIds = $this->apiClient->getSerializer()->serializeCollection($characterIds, 'csv', true);
+        if (is_array($character_ids)) {
+            $character_ids = $this->apiClient->getSerializer()->serializeCollection($character_ids, 'csv', true);
         }
-        if ($characterIds !== null) {
-            $queryParams['character_ids'] = $this->apiClient->getSerializer()->toQueryValue($characterIds);
+        if ($character_ids !== null) {
+            $queryParams['character_ids'] = $this->apiClient->getSerializer()->toQueryValue($character_ids);
         }
         // query params
         if ($datasource !== null) {
@@ -495,15 +495,15 @@ class CharacterApi
      *
      * Calculate a CSPA charge cost
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param \ESI\Model\PostCharactersCharacterIdCspaCharacters $characters The target characters to calculate the charge for (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\PostCharactersCharacterIdCspaCreated
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postCharactersCharacterIdCspa($characterId, $characters, $datasource = null)
+    public function postCharactersCharacterIdCspa($character_id, $characters, $datasource = null)
     {
-        list($response) = $this->postCharactersCharacterIdCspaWithHttpInfo($characterId, $characters, $datasource);
+        list($response) = $this->postCharactersCharacterIdCspaWithHttpInfo($character_id, $characters, $datasource);
         return $response;
     }
 
@@ -512,17 +512,17 @@ class CharacterApi
      *
      * Calculate a CSPA charge cost
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param \ESI\Model\PostCharactersCharacterIdCspaCharacters $characters The target characters to calculate the charge for (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\PostCharactersCharacterIdCspaCreated, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postCharactersCharacterIdCspaWithHttpInfo($characterId, $characters, $datasource = null)
+    public function postCharactersCharacterIdCspaWithHttpInfo($character_id, $characters, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling postCharactersCharacterIdCspa');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling postCharactersCharacterIdCspa');
         }
         // verify the required parameter 'characters' is set
         if ($characters === null) {
@@ -545,10 +545,10 @@ class CharacterApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }

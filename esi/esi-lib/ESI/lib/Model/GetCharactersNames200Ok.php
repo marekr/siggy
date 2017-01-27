@@ -67,8 +67,8 @@ class GetCharactersNames200Ok implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'characterId' => 'int',
-        'characterName' => 'string'
+        'character_id' => 'int',
+        'character_name' => 'string'
     );
 
     public static function swaggerTypes()
@@ -81,8 +81,8 @@ class GetCharactersNames200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'characterId' => 'character_id',
-        'characterName' => 'character_name'
+        'character_id' => 'character_id',
+        'character_name' => 'character_name'
     );
 
     public static function attributeMap()
@@ -95,8 +95,8 @@ class GetCharactersNames200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'characterId' => 'setCharacterId',
-        'characterName' => 'setCharacterName'
+        'character_id' => 'setCharacterId',
+        'character_name' => 'setCharacterName'
     );
 
     public static function setters()
@@ -109,8 +109,8 @@ class GetCharactersNames200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'characterId' => 'getCharacterId',
-        'characterName' => 'getCharacterName'
+        'character_id' => 'getCharacterId',
+        'character_name' => 'getCharacterName'
     );
 
     public static function getters()
@@ -134,8 +134,8 @@ class GetCharactersNames200Ok implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['characterId'] = isset($data['characterId']) ? $data['characterId'] : null;
-        $this->container['characterName'] = isset($data['characterName']) ? $data['characterName'] : null;
+        $this->container['character_id'] = isset($data['character_id']) ? $data['character_id'] : null;
+        $this->container['character_name'] = isset($data['character_name']) ? $data['character_name'] : null;
     }
 
     /**
@@ -146,11 +146,11 @@ class GetCharactersNames200Ok implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['characterId'] === null) {
-            $invalid_properties[] = "'characterId' can't be null";
+        if ($this->container['character_id'] === null) {
+            $invalid_properties[] = "'character_id' can't be null";
         }
-        if ($this->container['characterName'] === null) {
-            $invalid_properties[] = "'characterName' can't be null";
+        if ($this->container['character_name'] === null) {
+            $invalid_properties[] = "'character_name' can't be null";
         }
         return $invalid_properties;
     }
@@ -163,10 +163,10 @@ class GetCharactersNames200Ok implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['characterId'] === null) {
+        if ($this->container['character_id'] === null) {
             return false;
         }
-        if ($this->container['characterName'] === null) {
+        if ($this->container['character_name'] === null) {
             return false;
         }
         return true;
@@ -174,43 +174,43 @@ class GetCharactersNames200Ok implements ArrayAccess
 
 
     /**
-     * Gets characterId
+     * Gets character_id
      * @return int
      */
     public function getCharacterId()
     {
-        return $this->container['characterId'];
+        return $this->container['character_id'];
     }
 
     /**
-     * Sets characterId
-     * @param int $characterId character_id integer
+     * Sets character_id
+     * @param int $character_id character_id integer
      * @return $this
      */
-    public function setCharacterId($characterId)
+    public function setCharacterId($character_id)
     {
-        $this->container['characterId'] = $characterId;
+        $this->container['character_id'] = $character_id;
 
         return $this;
     }
 
     /**
-     * Gets characterName
+     * Gets character_name
      * @return string
      */
     public function getCharacterName()
     {
-        return $this->container['characterName'];
+        return $this->container['character_name'];
     }
 
     /**
-     * Sets characterName
-     * @param string $characterName character_name string
+     * Sets character_name
+     * @param string $character_name character_name string
      * @return $this
      */
-    public function setCharacterName($characterName)
+    public function setCharacterName($character_name)
     {
-        $this->container['characterName'] = $characterName;
+        $this->container['character_name'] = $character_name;
 
         return $this;
     }

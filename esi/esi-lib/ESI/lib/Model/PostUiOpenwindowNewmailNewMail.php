@@ -70,8 +70,8 @@ class PostUiOpenwindowNewmailNewMail implements ArrayAccess
         'body' => 'string',
         'recipients' => 'int[]',
         'subject' => 'string',
-        'toCorpOrAllianceId' => 'int',
-        'toMailingListId' => 'int'
+        'to_corp_or_alliance_id' => 'int',
+        'to_mailing_list_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -87,8 +87,8 @@ class PostUiOpenwindowNewmailNewMail implements ArrayAccess
         'body' => 'body',
         'recipients' => 'recipients',
         'subject' => 'subject',
-        'toCorpOrAllianceId' => 'to_corp_or_alliance_id',
-        'toMailingListId' => 'to_mailing_list_id'
+        'to_corp_or_alliance_id' => 'to_corp_or_alliance_id',
+        'to_mailing_list_id' => 'to_mailing_list_id'
     );
 
     public static function attributeMap()
@@ -104,8 +104,8 @@ class PostUiOpenwindowNewmailNewMail implements ArrayAccess
         'body' => 'setBody',
         'recipients' => 'setRecipients',
         'subject' => 'setSubject',
-        'toCorpOrAllianceId' => 'setToCorpOrAllianceId',
-        'toMailingListId' => 'setToMailingListId'
+        'to_corp_or_alliance_id' => 'setToCorpOrAllianceId',
+        'to_mailing_list_id' => 'setToMailingListId'
     );
 
     public static function setters()
@@ -121,8 +121,8 @@ class PostUiOpenwindowNewmailNewMail implements ArrayAccess
         'body' => 'getBody',
         'recipients' => 'getRecipients',
         'subject' => 'getSubject',
-        'toCorpOrAllianceId' => 'getToCorpOrAllianceId',
-        'toMailingListId' => 'getToMailingListId'
+        'to_corp_or_alliance_id' => 'getToCorpOrAllianceId',
+        'to_mailing_list_id' => 'getToMailingListId'
     );
 
     public static function getters()
@@ -149,8 +149,8 @@ class PostUiOpenwindowNewmailNewMail implements ArrayAccess
         $this->container['body'] = isset($data['body']) ? $data['body'] : null;
         $this->container['recipients'] = isset($data['recipients']) ? $data['recipients'] : null;
         $this->container['subject'] = isset($data['subject']) ? $data['subject'] : null;
-        $this->container['toCorpOrAllianceId'] = isset($data['toCorpOrAllianceId']) ? $data['toCorpOrAllianceId'] : null;
-        $this->container['toMailingListId'] = isset($data['toMailingListId']) ? $data['toMailingListId'] : null;
+        $this->container['to_corp_or_alliance_id'] = isset($data['to_corp_or_alliance_id']) ? $data['to_corp_or_alliance_id'] : null;
+        $this->container['to_mailing_list_id'] = isset($data['to_mailing_list_id']) ? $data['to_mailing_list_id'] : null;
     }
 
     /**
@@ -278,43 +278,43 @@ class PostUiOpenwindowNewmailNewMail implements ArrayAccess
     }
 
     /**
-     * Gets toCorpOrAllianceId
+     * Gets to_corp_or_alliance_id
      * @return int
      */
     public function getToCorpOrAllianceId()
     {
-        return $this->container['toCorpOrAllianceId'];
+        return $this->container['to_corp_or_alliance_id'];
     }
 
     /**
-     * Sets toCorpOrAllianceId
-     * @param int $toCorpOrAllianceId to_corp_or_alliance_id integer
+     * Sets to_corp_or_alliance_id
+     * @param int $to_corp_or_alliance_id to_corp_or_alliance_id integer
      * @return $this
      */
-    public function setToCorpOrAllianceId($toCorpOrAllianceId)
+    public function setToCorpOrAllianceId($to_corp_or_alliance_id)
     {
-        $this->container['toCorpOrAllianceId'] = $toCorpOrAllianceId;
+        $this->container['to_corp_or_alliance_id'] = $to_corp_or_alliance_id;
 
         return $this;
     }
 
     /**
-     * Gets toMailingListId
+     * Gets to_mailing_list_id
      * @return int
      */
     public function getToMailingListId()
     {
-        return $this->container['toMailingListId'];
+        return $this->container['to_mailing_list_id'];
     }
 
     /**
-     * Sets toMailingListId
-     * @param int $toMailingListId Corporations, alliances and mailing lists are all types of mailing groups. You may only send to one mailing group, at a time, so you may fill out either this field or the to_corp_or_alliance_ids field
+     * Sets to_mailing_list_id
+     * @param int $to_mailing_list_id Corporations, alliances and mailing lists are all types of mailing groups. You may only send to one mailing group, at a time, so you may fill out either this field or the to_corp_or_alliance_ids field
      * @return $this
      */
-    public function setToMailingListId($toMailingListId)
+    public function setToMailingListId($to_mailing_list_id)
     {
-        $this->container['toMailingListId'] = $toMailingListId;
+        $this->container['to_mailing_list_id'] = $to_mailing_list_id;
 
         return $this;
     }

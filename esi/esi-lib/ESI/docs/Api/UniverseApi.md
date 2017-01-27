@@ -64,7 +64,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getUniverseCategoriesCategoryId**
-> \ESI\Model\GetUniverseCategoriesCategoryIdOk getUniverseCategoriesCategoryId($categoryId, $language, $datasource)
+> \ESI\Model\GetUniverseCategoriesCategoryIdOk getUniverseCategoriesCategoryId($category_id, $language, $datasource)
 
 Get item category information
 
@@ -76,12 +76,12 @@ Get information of an item category  ---  Alternate route: `/v1/universe/categor
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new ESI\Api\UniverseApi();
-$categoryId = 56; // int | An Eve item category ID
+$category_id = 56; // int | An Eve item category ID
 $language = "en-us"; // string | Language to use in the response
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getUniverseCategoriesCategoryId($categoryId, $language, $datasource);
+    $result = $api_instance->getUniverseCategoriesCategoryId($category_id, $language, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling UniverseApi->getUniverseCategoriesCategoryId: ', $e->getMessage(), PHP_EOL;
@@ -93,7 +93,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **categoryId** | **int**| An Eve item category ID |
+ **category_id** | **int**| An Eve item category ID |
  **language** | **string**| Language to use in the response | [optional] [default to en-us]
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
@@ -160,7 +160,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getUniverseGroupsGroupId**
-> \ESI\Model\GetUniverseGroupsGroupIdOk getUniverseGroupsGroupId($groupId, $language, $datasource)
+> \ESI\Model\GetUniverseGroupsGroupIdOk getUniverseGroupsGroupId($group_id, $language, $datasource)
 
 Get item group information
 
@@ -172,12 +172,12 @@ Get information on an item group  ---  Alternate route: `/v1/universe/groups/{gr
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new ESI\Api\UniverseApi();
-$groupId = 56; // int | An Eve item group ID
+$group_id = 56; // int | An Eve item group ID
 $language = "en-us"; // string | Language to use in the response
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getUniverseGroupsGroupId($groupId, $language, $datasource);
+    $result = $api_instance->getUniverseGroupsGroupId($group_id, $language, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling UniverseApi->getUniverseGroupsGroupId: ', $e->getMessage(), PHP_EOL;
@@ -189,7 +189,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **groupId** | **int**| An Eve item group ID |
+ **group_id** | **int**| An Eve item group ID |
  **language** | **string**| Language to use in the response | [optional] [default to en-us]
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
@@ -256,7 +256,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getUniverseStationsStationId**
-> \ESI\Model\GetUniverseStationsStationIdOk getUniverseStationsStationId($stationId, $datasource)
+> \ESI\Model\GetUniverseStationsStationIdOk getUniverseStationsStationId($station_id, $datasource)
 
 Get station information
 
@@ -268,11 +268,11 @@ Public information on stations  ---  Alternate route: `/v1/universe/stations/{st
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new ESI\Api\UniverseApi();
-$stationId = 56; // int | An Eve station ID
+$station_id = 56; // int | An Eve station ID
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getUniverseStationsStationId($stationId, $datasource);
+    $result = $api_instance->getUniverseStationsStationId($station_id, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling UniverseApi->getUniverseStationsStationId: ', $e->getMessage(), PHP_EOL;
@@ -284,7 +284,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **stationId** | **int**| An Eve station ID |
+ **station_id** | **int**| An Eve station ID |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -348,7 +348,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getUniverseStructuresStructureId**
-> \ESI\Model\GetUniverseStructuresStructureIdOk getUniverseStructuresStructureId($structureId, $datasource)
+> \ESI\Model\GetUniverseStructuresStructureIdOk getUniverseStructuresStructureId($structure_id, $datasource)
 
 Get structure information
 
@@ -363,11 +363,11 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\UniverseApi();
-$structureId = 789; // int | An Eve structure ID
+$structure_id = 789; // int | An Eve structure ID
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getUniverseStructuresStructureId($structureId, $datasource);
+    $result = $api_instance->getUniverseStructuresStructureId($structure_id, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling UniverseApi->getUniverseStructuresStructureId: ', $e->getMessage(), PHP_EOL;
@@ -379,7 +379,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **structureId** | **int**| An Eve structure ID |
+ **structure_id** | **int**| An Eve structure ID |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -398,7 +398,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getUniverseSystemsSystemId**
-> \ESI\Model\GetUniverseSystemsSystemIdOk getUniverseSystemsSystemId($systemId, $datasource)
+> \ESI\Model\GetUniverseSystemsSystemIdOk getUniverseSystemsSystemId($system_id, $datasource)
 
 Get solar system information
 
@@ -410,11 +410,11 @@ Information on solar systems  ---  Alternate route: `/v1/universe/systems/{syste
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new ESI\Api\UniverseApi();
-$systemId = 56; // int | An Eve solar system ID
+$system_id = 56; // int | An Eve solar system ID
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getUniverseSystemsSystemId($systemId, $datasource);
+    $result = $api_instance->getUniverseSystemsSystemId($system_id, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling UniverseApi->getUniverseSystemsSystemId: ', $e->getMessage(), PHP_EOL;
@@ -426,7 +426,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **systemId** | **int**| An Eve solar system ID |
+ **system_id** | **int**| An Eve solar system ID |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -492,7 +492,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getUniverseTypesTypeId**
-> \ESI\Model\GetUniverseTypesTypeIdOk getUniverseTypesTypeId($typeId, $language, $datasource)
+> \ESI\Model\GetUniverseTypesTypeIdOk getUniverseTypesTypeId($type_id, $language, $datasource)
 
 Get type information
 
@@ -504,12 +504,12 @@ Get information on a type  ---  Alternate route: `/v2/universe/types/{type_id}/`
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new ESI\Api\UniverseApi();
-$typeId = 56; // int | An Eve item type ID
+$type_id = 56; // int | An Eve item type ID
 $language = "en-us"; // string | Language to use in the response
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getUniverseTypesTypeId($typeId, $language, $datasource);
+    $result = $api_instance->getUniverseTypesTypeId($type_id, $language, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling UniverseApi->getUniverseTypesTypeId: ', $e->getMessage(), PHP_EOL;
@@ -521,7 +521,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **typeId** | **int**| An Eve item type ID |
+ **type_id** | **int**| An Eve item type ID |
  **language** | **string**| Language to use in the response | [optional] [default to en-us]
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 

@@ -67,10 +67,10 @@ class GetWarsWarIdOkDefender implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'allianceId' => 'int',
-        'corporationId' => 'int',
-        'iskDestroyed' => 'float',
-        'shipsKilled' => 'int'
+        'alliance_id' => 'int',
+        'corporation_id' => 'int',
+        'isk_destroyed' => 'float',
+        'ships_killed' => 'int'
     );
 
     public static function swaggerTypes()
@@ -83,10 +83,10 @@ class GetWarsWarIdOkDefender implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'allianceId' => 'alliance_id',
-        'corporationId' => 'corporation_id',
-        'iskDestroyed' => 'isk_destroyed',
-        'shipsKilled' => 'ships_killed'
+        'alliance_id' => 'alliance_id',
+        'corporation_id' => 'corporation_id',
+        'isk_destroyed' => 'isk_destroyed',
+        'ships_killed' => 'ships_killed'
     );
 
     public static function attributeMap()
@@ -99,10 +99,10 @@ class GetWarsWarIdOkDefender implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'allianceId' => 'setAllianceId',
-        'corporationId' => 'setCorporationId',
-        'iskDestroyed' => 'setIskDestroyed',
-        'shipsKilled' => 'setShipsKilled'
+        'alliance_id' => 'setAllianceId',
+        'corporation_id' => 'setCorporationId',
+        'isk_destroyed' => 'setIskDestroyed',
+        'ships_killed' => 'setShipsKilled'
     );
 
     public static function setters()
@@ -115,10 +115,10 @@ class GetWarsWarIdOkDefender implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'allianceId' => 'getAllianceId',
-        'corporationId' => 'getCorporationId',
-        'iskDestroyed' => 'getIskDestroyed',
-        'shipsKilled' => 'getShipsKilled'
+        'alliance_id' => 'getAllianceId',
+        'corporation_id' => 'getCorporationId',
+        'isk_destroyed' => 'getIskDestroyed',
+        'ships_killed' => 'getShipsKilled'
     );
 
     public static function getters()
@@ -142,10 +142,10 @@ class GetWarsWarIdOkDefender implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['allianceId'] = isset($data['allianceId']) ? $data['allianceId'] : null;
-        $this->container['corporationId'] = isset($data['corporationId']) ? $data['corporationId'] : null;
-        $this->container['iskDestroyed'] = isset($data['iskDestroyed']) ? $data['iskDestroyed'] : null;
-        $this->container['shipsKilled'] = isset($data['shipsKilled']) ? $data['shipsKilled'] : null;
+        $this->container['alliance_id'] = isset($data['alliance_id']) ? $data['alliance_id'] : null;
+        $this->container['corporation_id'] = isset($data['corporation_id']) ? $data['corporation_id'] : null;
+        $this->container['isk_destroyed'] = isset($data['isk_destroyed']) ? $data['isk_destroyed'] : null;
+        $this->container['ships_killed'] = isset($data['ships_killed']) ? $data['ships_killed'] : null;
     }
 
     /**
@@ -156,11 +156,11 @@ class GetWarsWarIdOkDefender implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['iskDestroyed'] === null) {
-            $invalid_properties[] = "'iskDestroyed' can't be null";
+        if ($this->container['isk_destroyed'] === null) {
+            $invalid_properties[] = "'isk_destroyed' can't be null";
         }
-        if ($this->container['shipsKilled'] === null) {
-            $invalid_properties[] = "'shipsKilled' can't be null";
+        if ($this->container['ships_killed'] === null) {
+            $invalid_properties[] = "'ships_killed' can't be null";
         }
         return $invalid_properties;
     }
@@ -173,10 +173,10 @@ class GetWarsWarIdOkDefender implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['iskDestroyed'] === null) {
+        if ($this->container['isk_destroyed'] === null) {
             return false;
         }
-        if ($this->container['shipsKilled'] === null) {
+        if ($this->container['ships_killed'] === null) {
             return false;
         }
         return true;
@@ -184,85 +184,85 @@ class GetWarsWarIdOkDefender implements ArrayAccess
 
 
     /**
-     * Gets allianceId
+     * Gets alliance_id
      * @return int
      */
     public function getAllianceId()
     {
-        return $this->container['allianceId'];
+        return $this->container['alliance_id'];
     }
 
     /**
-     * Sets allianceId
-     * @param int $allianceId Alliance ID if and only if the defender is an alliance
+     * Sets alliance_id
+     * @param int $alliance_id Alliance ID if and only if the defender is an alliance
      * @return $this
      */
-    public function setAllianceId($allianceId)
+    public function setAllianceId($alliance_id)
     {
-        $this->container['allianceId'] = $allianceId;
+        $this->container['alliance_id'] = $alliance_id;
 
         return $this;
     }
 
     /**
-     * Gets corporationId
+     * Gets corporation_id
      * @return int
      */
     public function getCorporationId()
     {
-        return $this->container['corporationId'];
+        return $this->container['corporation_id'];
     }
 
     /**
-     * Sets corporationId
-     * @param int $corporationId Corporation ID if and only if the defender is a corporation
+     * Sets corporation_id
+     * @param int $corporation_id Corporation ID if and only if the defender is a corporation
      * @return $this
      */
-    public function setCorporationId($corporationId)
+    public function setCorporationId($corporation_id)
     {
-        $this->container['corporationId'] = $corporationId;
+        $this->container['corporation_id'] = $corporation_id;
 
         return $this;
     }
 
     /**
-     * Gets iskDestroyed
+     * Gets isk_destroyed
      * @return float
      */
     public function getIskDestroyed()
     {
-        return $this->container['iskDestroyed'];
+        return $this->container['isk_destroyed'];
     }
 
     /**
-     * Sets iskDestroyed
-     * @param float $iskDestroyed ISK value of ships the defender has killed
+     * Sets isk_destroyed
+     * @param float $isk_destroyed ISK value of ships the defender has killed
      * @return $this
      */
-    public function setIskDestroyed($iskDestroyed)
+    public function setIskDestroyed($isk_destroyed)
     {
-        $this->container['iskDestroyed'] = $iskDestroyed;
+        $this->container['isk_destroyed'] = $isk_destroyed;
 
         return $this;
     }
 
     /**
-     * Gets shipsKilled
+     * Gets ships_killed
      * @return int
      */
     public function getShipsKilled()
     {
-        return $this->container['shipsKilled'];
+        return $this->container['ships_killed'];
     }
 
     /**
-     * Sets shipsKilled
-     * @param int $shipsKilled The number of ships the defender has killed
+     * Sets ships_killed
+     * @param int $ships_killed The number of ships the defender has killed
      * @return $this
      */
-    public function setShipsKilled($shipsKilled)
+    public function setShipsKilled($ships_killed)
     {
-        $this->container['shipsKilled'] = $shipsKilled;
+        $this->container['ships_killed'] = $ships_killed;
 
         return $this;
     }

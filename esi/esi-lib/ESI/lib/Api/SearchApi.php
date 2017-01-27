@@ -107,7 +107,7 @@ class SearchApi
      *
      * Search on a string
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $search The string to search on (required)
      * @param string[] $categories Type of entities to search for (required)
      * @param string $language Search locale (optional, default to en-us)
@@ -116,9 +116,9 @@ class SearchApi
      * @return \ESI\Model\GetCharactersCharacterIdSearchOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdSearch($characterId, $search, $categories, $language = null, $strict = null, $datasource = null)
+    public function getCharactersCharacterIdSearch($character_id, $search, $categories, $language = null, $strict = null, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdSearchWithHttpInfo($characterId, $search, $categories, $language, $strict, $datasource);
+        list($response) = $this->getCharactersCharacterIdSearchWithHttpInfo($character_id, $search, $categories, $language, $strict, $datasource);
         return $response;
     }
 
@@ -127,7 +127,7 @@ class SearchApi
      *
      * Search on a string
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $search The string to search on (required)
      * @param string[] $categories Type of entities to search for (required)
      * @param string $language Search locale (optional, default to en-us)
@@ -136,11 +136,11 @@ class SearchApi
      * @return Array of \ESI\Model\GetCharactersCharacterIdSearchOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdSearchWithHttpInfo($characterId, $search, $categories, $language = null, $strict = null, $datasource = null)
+    public function getCharactersCharacterIdSearchWithHttpInfo($character_id, $search, $categories, $language = null, $strict = null, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdSearch');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdSearch');
         }
         // verify the required parameter 'search' is set
         if ($search === null) {
@@ -191,10 +191,10 @@ class SearchApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }

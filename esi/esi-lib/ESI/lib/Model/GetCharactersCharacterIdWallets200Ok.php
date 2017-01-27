@@ -68,7 +68,7 @@ class GetCharactersCharacterIdWallets200Ok implements ArrayAccess
       */
     protected static $swaggerTypes = array(
         'balance' => 'int',
-        'walletId' => 'int'
+        'wallet_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -82,7 +82,7 @@ class GetCharactersCharacterIdWallets200Ok implements ArrayAccess
      */
     protected static $attributeMap = array(
         'balance' => 'balance',
-        'walletId' => 'wallet_id'
+        'wallet_id' => 'wallet_id'
     );
 
     public static function attributeMap()
@@ -96,7 +96,7 @@ class GetCharactersCharacterIdWallets200Ok implements ArrayAccess
      */
     protected static $setters = array(
         'balance' => 'setBalance',
-        'walletId' => 'setWalletId'
+        'wallet_id' => 'setWalletId'
     );
 
     public static function setters()
@@ -110,7 +110,7 @@ class GetCharactersCharacterIdWallets200Ok implements ArrayAccess
      */
     protected static $getters = array(
         'balance' => 'getBalance',
-        'walletId' => 'getWalletId'
+        'wallet_id' => 'getWalletId'
     );
 
     public static function getters()
@@ -135,7 +135,7 @@ class GetCharactersCharacterIdWallets200Ok implements ArrayAccess
     public function __construct(array $data = null)
     {
         $this->container['balance'] = isset($data['balance']) ? $data['balance'] : null;
-        $this->container['walletId'] = isset($data['walletId']) ? $data['walletId'] : null;
+        $this->container['wallet_id'] = isset($data['wallet_id']) ? $data['wallet_id'] : null;
     }
 
     /**
@@ -183,22 +183,22 @@ class GetCharactersCharacterIdWallets200Ok implements ArrayAccess
     }
 
     /**
-     * Gets walletId
+     * Gets wallet_id
      * @return int
      */
     public function getWalletId()
     {
-        return $this->container['walletId'];
+        return $this->container['wallet_id'];
     }
 
     /**
-     * Sets walletId
-     * @param int $walletId wallet_id integer
+     * Sets wallet_id
+     * @param int $wallet_id wallet_id integer
      * @return $this
      */
-    public function setWalletId($walletId)
+    public function setWalletId($wallet_id)
     {
-        $this->container['walletId'] = $walletId;
+        $this->container['wallet_id'] = $wallet_id;
 
         return $this;
     }

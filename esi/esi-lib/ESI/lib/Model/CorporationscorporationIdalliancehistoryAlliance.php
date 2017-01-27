@@ -67,8 +67,8 @@ class CorporationscorporationIdalliancehistoryAlliance implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'allianceId' => 'int',
-        'isDeleted' => 'bool'
+        'alliance_id' => 'int',
+        'is_deleted' => 'bool'
     );
 
     public static function swaggerTypes()
@@ -81,8 +81,8 @@ class CorporationscorporationIdalliancehistoryAlliance implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'allianceId' => 'alliance_id',
-        'isDeleted' => 'is_deleted'
+        'alliance_id' => 'alliance_id',
+        'is_deleted' => 'is_deleted'
     );
 
     public static function attributeMap()
@@ -95,8 +95,8 @@ class CorporationscorporationIdalliancehistoryAlliance implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'allianceId' => 'setAllianceId',
-        'isDeleted' => 'setIsDeleted'
+        'alliance_id' => 'setAllianceId',
+        'is_deleted' => 'setIsDeleted'
     );
 
     public static function setters()
@@ -109,8 +109,8 @@ class CorporationscorporationIdalliancehistoryAlliance implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'allianceId' => 'getAllianceId',
-        'isDeleted' => 'getIsDeleted'
+        'alliance_id' => 'getAllianceId',
+        'is_deleted' => 'getIsDeleted'
     );
 
     public static function getters()
@@ -134,8 +134,8 @@ class CorporationscorporationIdalliancehistoryAlliance implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['allianceId'] = isset($data['allianceId']) ? $data['allianceId'] : null;
-        $this->container['isDeleted'] = isset($data['isDeleted']) ? $data['isDeleted'] : null;
+        $this->container['alliance_id'] = isset($data['alliance_id']) ? $data['alliance_id'] : null;
+        $this->container['is_deleted'] = isset($data['is_deleted']) ? $data['is_deleted'] : null;
     }
 
     /**
@@ -146,11 +146,11 @@ class CorporationscorporationIdalliancehistoryAlliance implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['allianceId'] === null) {
-            $invalid_properties[] = "'allianceId' can't be null";
+        if ($this->container['alliance_id'] === null) {
+            $invalid_properties[] = "'alliance_id' can't be null";
         }
-        if ($this->container['isDeleted'] === null) {
-            $invalid_properties[] = "'isDeleted' can't be null";
+        if ($this->container['is_deleted'] === null) {
+            $invalid_properties[] = "'is_deleted' can't be null";
         }
         return $invalid_properties;
     }
@@ -163,10 +163,10 @@ class CorporationscorporationIdalliancehistoryAlliance implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['allianceId'] === null) {
+        if ($this->container['alliance_id'] === null) {
             return false;
         }
-        if ($this->container['isDeleted'] === null) {
+        if ($this->container['is_deleted'] === null) {
             return false;
         }
         return true;
@@ -174,43 +174,43 @@ class CorporationscorporationIdalliancehistoryAlliance implements ArrayAccess
 
 
     /**
-     * Gets allianceId
+     * Gets alliance_id
      * @return int
      */
     public function getAllianceId()
     {
-        return $this->container['allianceId'];
+        return $this->container['alliance_id'];
     }
 
     /**
-     * Sets allianceId
-     * @param int $allianceId alliance_id integer
+     * Sets alliance_id
+     * @param int $alliance_id alliance_id integer
      * @return $this
      */
-    public function setAllianceId($allianceId)
+    public function setAllianceId($alliance_id)
     {
-        $this->container['allianceId'] = $allianceId;
+        $this->container['alliance_id'] = $alliance_id;
 
         return $this;
     }
 
     /**
-     * Gets isDeleted
+     * Gets is_deleted
      * @return bool
      */
     public function getIsDeleted()
     {
-        return $this->container['isDeleted'];
+        return $this->container['is_deleted'];
     }
 
     /**
-     * Sets isDeleted
-     * @param bool $isDeleted True if the alliance has been deleted
+     * Sets is_deleted
+     * @param bool $is_deleted True if the alliance has been deleted
      * @return $this
      */
-    public function setIsDeleted($isDeleted)
+    public function setIsDeleted($is_deleted)
     {
-        $this->container['isDeleted'] = $isDeleted;
+        $this->container['is_deleted'] = $is_deleted;
 
         return $this;
     }

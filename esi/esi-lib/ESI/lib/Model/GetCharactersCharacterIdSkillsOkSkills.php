@@ -67,9 +67,9 @@ class GetCharactersCharacterIdSkillsOkSkills implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'currentSkillLevel' => 'int',
-        'skillId' => 'int',
-        'skillpointsInSkill' => 'int'
+        'current_skill_level' => 'int',
+        'skill_id' => 'int',
+        'skillpoints_in_skill' => 'int'
     );
 
     public static function swaggerTypes()
@@ -82,9 +82,9 @@ class GetCharactersCharacterIdSkillsOkSkills implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'currentSkillLevel' => 'current_skill_level',
-        'skillId' => 'skill_id',
-        'skillpointsInSkill' => 'skillpoints_in_skill'
+        'current_skill_level' => 'current_skill_level',
+        'skill_id' => 'skill_id',
+        'skillpoints_in_skill' => 'skillpoints_in_skill'
     );
 
     public static function attributeMap()
@@ -97,9 +97,9 @@ class GetCharactersCharacterIdSkillsOkSkills implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'currentSkillLevel' => 'setCurrentSkillLevel',
-        'skillId' => 'setSkillId',
-        'skillpointsInSkill' => 'setSkillpointsInSkill'
+        'current_skill_level' => 'setCurrentSkillLevel',
+        'skill_id' => 'setSkillId',
+        'skillpoints_in_skill' => 'setSkillpointsInSkill'
     );
 
     public static function setters()
@@ -112,9 +112,9 @@ class GetCharactersCharacterIdSkillsOkSkills implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'currentSkillLevel' => 'getCurrentSkillLevel',
-        'skillId' => 'getSkillId',
-        'skillpointsInSkill' => 'getSkillpointsInSkill'
+        'current_skill_level' => 'getCurrentSkillLevel',
+        'skill_id' => 'getSkillId',
+        'skillpoints_in_skill' => 'getSkillpointsInSkill'
     );
 
     public static function getters()
@@ -138,9 +138,9 @@ class GetCharactersCharacterIdSkillsOkSkills implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['currentSkillLevel'] = isset($data['currentSkillLevel']) ? $data['currentSkillLevel'] : null;
-        $this->container['skillId'] = isset($data['skillId']) ? $data['skillId'] : null;
-        $this->container['skillpointsInSkill'] = isset($data['skillpointsInSkill']) ? $data['skillpointsInSkill'] : null;
+        $this->container['current_skill_level'] = isset($data['current_skill_level']) ? $data['current_skill_level'] : null;
+        $this->container['skill_id'] = isset($data['skill_id']) ? $data['skill_id'] : null;
+        $this->container['skillpoints_in_skill'] = isset($data['skillpoints_in_skill']) ? $data['skillpoints_in_skill'] : null;
     }
 
     /**
@@ -167,64 +167,64 @@ class GetCharactersCharacterIdSkillsOkSkills implements ArrayAccess
 
 
     /**
-     * Gets currentSkillLevel
+     * Gets current_skill_level
      * @return int
      */
     public function getCurrentSkillLevel()
     {
-        return $this->container['currentSkillLevel'];
+        return $this->container['current_skill_level'];
     }
 
     /**
-     * Sets currentSkillLevel
-     * @param int $currentSkillLevel current_skill_level integer
+     * Sets current_skill_level
+     * @param int $current_skill_level current_skill_level integer
      * @return $this
      */
-    public function setCurrentSkillLevel($currentSkillLevel)
+    public function setCurrentSkillLevel($current_skill_level)
     {
-        $this->container['currentSkillLevel'] = $currentSkillLevel;
+        $this->container['current_skill_level'] = $current_skill_level;
 
         return $this;
     }
 
     /**
-     * Gets skillId
+     * Gets skill_id
      * @return int
      */
     public function getSkillId()
     {
-        return $this->container['skillId'];
+        return $this->container['skill_id'];
     }
 
     /**
-     * Sets skillId
-     * @param int $skillId skill_id integer
+     * Sets skill_id
+     * @param int $skill_id skill_id integer
      * @return $this
      */
-    public function setSkillId($skillId)
+    public function setSkillId($skill_id)
     {
-        $this->container['skillId'] = $skillId;
+        $this->container['skill_id'] = $skill_id;
 
         return $this;
     }
 
     /**
-     * Gets skillpointsInSkill
+     * Gets skillpoints_in_skill
      * @return int
      */
     public function getSkillpointsInSkill()
     {
-        return $this->container['skillpointsInSkill'];
+        return $this->container['skillpoints_in_skill'];
     }
 
     /**
-     * Sets skillpointsInSkill
-     * @param int $skillpointsInSkill skillpoints_in_skill integer
+     * Sets skillpoints_in_skill
+     * @param int $skillpoints_in_skill skillpoints_in_skill integer
      * @return $this
      */
-    public function setSkillpointsInSkill($skillpointsInSkill)
+    public function setSkillpointsInSkill($skillpoints_in_skill)
     {
-        $this->container['skillpointsInSkill'] = $skillpointsInSkill;
+        $this->container['skillpoints_in_skill'] = $skillpoints_in_skill;
 
         return $this;
     }

@@ -67,8 +67,8 @@ class GetUniverseTypesTypeIdOkDogmaEffects implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'effectId' => 'int',
-        'isDefault' => 'bool'
+        'effect_id' => 'int',
+        'is_default' => 'bool'
     );
 
     public static function swaggerTypes()
@@ -81,8 +81,8 @@ class GetUniverseTypesTypeIdOkDogmaEffects implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'effectId' => 'effect_id',
-        'isDefault' => 'is_default'
+        'effect_id' => 'effect_id',
+        'is_default' => 'is_default'
     );
 
     public static function attributeMap()
@@ -95,8 +95,8 @@ class GetUniverseTypesTypeIdOkDogmaEffects implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'effectId' => 'setEffectId',
-        'isDefault' => 'setIsDefault'
+        'effect_id' => 'setEffectId',
+        'is_default' => 'setIsDefault'
     );
 
     public static function setters()
@@ -109,8 +109,8 @@ class GetUniverseTypesTypeIdOkDogmaEffects implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'effectId' => 'getEffectId',
-        'isDefault' => 'getIsDefault'
+        'effect_id' => 'getEffectId',
+        'is_default' => 'getIsDefault'
     );
 
     public static function getters()
@@ -134,8 +134,8 @@ class GetUniverseTypesTypeIdOkDogmaEffects implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['effectId'] = isset($data['effectId']) ? $data['effectId'] : null;
-        $this->container['isDefault'] = isset($data['isDefault']) ? $data['isDefault'] : null;
+        $this->container['effect_id'] = isset($data['effect_id']) ? $data['effect_id'] : null;
+        $this->container['is_default'] = isset($data['is_default']) ? $data['is_default'] : null;
     }
 
     /**
@@ -146,11 +146,11 @@ class GetUniverseTypesTypeIdOkDogmaEffects implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['effectId'] === null) {
-            $invalid_properties[] = "'effectId' can't be null";
+        if ($this->container['effect_id'] === null) {
+            $invalid_properties[] = "'effect_id' can't be null";
         }
-        if ($this->container['isDefault'] === null) {
-            $invalid_properties[] = "'isDefault' can't be null";
+        if ($this->container['is_default'] === null) {
+            $invalid_properties[] = "'is_default' can't be null";
         }
         return $invalid_properties;
     }
@@ -163,10 +163,10 @@ class GetUniverseTypesTypeIdOkDogmaEffects implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['effectId'] === null) {
+        if ($this->container['effect_id'] === null) {
             return false;
         }
-        if ($this->container['isDefault'] === null) {
+        if ($this->container['is_default'] === null) {
             return false;
         }
         return true;
@@ -174,43 +174,43 @@ class GetUniverseTypesTypeIdOkDogmaEffects implements ArrayAccess
 
 
     /**
-     * Gets effectId
+     * Gets effect_id
      * @return int
      */
     public function getEffectId()
     {
-        return $this->container['effectId'];
+        return $this->container['effect_id'];
     }
 
     /**
-     * Sets effectId
-     * @param int $effectId effect_id integer
+     * Sets effect_id
+     * @param int $effect_id effect_id integer
      * @return $this
      */
-    public function setEffectId($effectId)
+    public function setEffectId($effect_id)
     {
-        $this->container['effectId'] = $effectId;
+        $this->container['effect_id'] = $effect_id;
 
         return $this;
     }
 
     /**
-     * Gets isDefault
+     * Gets is_default
      * @return bool
      */
     public function getIsDefault()
     {
-        return $this->container['isDefault'];
+        return $this->container['is_default'];
     }
 
     /**
-     * Sets isDefault
-     * @param bool $isDefault is_default boolean
+     * Sets is_default
+     * @param bool $is_default is_default boolean
      * @return $this
      */
-    public function setIsDefault($isDefault)
+    public function setIsDefault($is_default)
     {
-        $this->container['isDefault'] = $isDefault;
+        $this->container['is_default'] = $is_default;
 
         return $this;
     }

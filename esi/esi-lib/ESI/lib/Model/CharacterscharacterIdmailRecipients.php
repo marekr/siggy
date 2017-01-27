@@ -67,8 +67,8 @@ class CharacterscharacterIdmailRecipients implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'recipientId' => 'int',
-        'recipientType' => 'string'
+        'recipient_id' => 'int',
+        'recipient_type' => 'string'
     );
 
     public static function swaggerTypes()
@@ -81,8 +81,8 @@ class CharacterscharacterIdmailRecipients implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'recipientId' => 'recipient_id',
-        'recipientType' => 'recipient_type'
+        'recipient_id' => 'recipient_id',
+        'recipient_type' => 'recipient_type'
     );
 
     public static function attributeMap()
@@ -95,8 +95,8 @@ class CharacterscharacterIdmailRecipients implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'recipientId' => 'setRecipientId',
-        'recipientType' => 'setRecipientType'
+        'recipient_id' => 'setRecipientId',
+        'recipient_type' => 'setRecipientType'
     );
 
     public static function setters()
@@ -109,8 +109,8 @@ class CharacterscharacterIdmailRecipients implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'recipientId' => 'getRecipientId',
-        'recipientType' => 'getRecipientType'
+        'recipient_id' => 'getRecipientId',
+        'recipient_type' => 'getRecipientType'
     );
 
     public static function getters()
@@ -152,8 +152,8 @@ class CharacterscharacterIdmailRecipients implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['recipientId'] = isset($data['recipientId']) ? $data['recipientId'] : null;
-        $this->container['recipientType'] = isset($data['recipientType']) ? $data['recipientType'] : null;
+        $this->container['recipient_id'] = isset($data['recipient_id']) ? $data['recipient_id'] : null;
+        $this->container['recipient_type'] = isset($data['recipient_type']) ? $data['recipient_type'] : null;
     }
 
     /**
@@ -164,15 +164,15 @@ class CharacterscharacterIdmailRecipients implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['recipientId'] === null) {
-            $invalid_properties[] = "'recipientId' can't be null";
+        if ($this->container['recipient_id'] === null) {
+            $invalid_properties[] = "'recipient_id' can't be null";
         }
-        if ($this->container['recipientType'] === null) {
-            $invalid_properties[] = "'recipientType' can't be null";
+        if ($this->container['recipient_type'] === null) {
+            $invalid_properties[] = "'recipient_type' can't be null";
         }
         $allowed_values = array("alliance", "character", "corporation", "mailing_list");
-        if (!in_array($this->container['recipientType'], $allowed_values)) {
-            $invalid_properties[] = "invalid value for 'recipientType', must be one of #{allowed_values}.";
+        if (!in_array($this->container['recipient_type'], $allowed_values)) {
+            $invalid_properties[] = "invalid value for 'recipient_type', must be one of #{allowed_values}.";
         }
 
         return $invalid_properties;
@@ -186,14 +186,14 @@ class CharacterscharacterIdmailRecipients implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['recipientId'] === null) {
+        if ($this->container['recipient_id'] === null) {
             return false;
         }
-        if ($this->container['recipientType'] === null) {
+        if ($this->container['recipient_type'] === null) {
             return false;
         }
         $allowed_values = array("alliance", "character", "corporation", "mailing_list");
-        if (!in_array($this->container['recipientType'], $allowed_values)) {
+        if (!in_array($this->container['recipient_type'], $allowed_values)) {
             return false;
         }
         return true;
@@ -201,47 +201,47 @@ class CharacterscharacterIdmailRecipients implements ArrayAccess
 
 
     /**
-     * Gets recipientId
+     * Gets recipient_id
      * @return int
      */
     public function getRecipientId()
     {
-        return $this->container['recipientId'];
+        return $this->container['recipient_id'];
     }
 
     /**
-     * Sets recipientId
-     * @param int $recipientId recipient_id integer
+     * Sets recipient_id
+     * @param int $recipient_id recipient_id integer
      * @return $this
      */
-    public function setRecipientId($recipientId)
+    public function setRecipientId($recipient_id)
     {
-        $this->container['recipientId'] = $recipientId;
+        $this->container['recipient_id'] = $recipient_id;
 
         return $this;
     }
 
     /**
-     * Gets recipientType
+     * Gets recipient_type
      * @return string
      */
     public function getRecipientType()
     {
-        return $this->container['recipientType'];
+        return $this->container['recipient_type'];
     }
 
     /**
-     * Sets recipientType
-     * @param string $recipientType recipient_type string
+     * Sets recipient_type
+     * @param string $recipient_type recipient_type string
      * @return $this
      */
-    public function setRecipientType($recipientType)
+    public function setRecipientType($recipient_type)
     {
         $allowed_values = array('alliance', 'character', 'corporation', 'mailing_list');
-        if (!in_array($recipientType, $allowed_values)) {
-            throw new \InvalidArgumentException("Invalid value for 'recipientType', must be one of 'alliance', 'character', 'corporation', 'mailing_list'");
+        if (!in_array($recipient_type, $allowed_values)) {
+            throw new \InvalidArgumentException("Invalid value for 'recipient_type', must be one of 'alliance', 'character', 'corporation', 'mailing_list'");
         }
-        $this->container['recipientType'] = $recipientType;
+        $this->container['recipient_type'] = $recipient_type;
 
         return $this;
     }

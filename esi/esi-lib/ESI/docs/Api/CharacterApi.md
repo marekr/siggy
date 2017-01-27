@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 
 # **getCharactersCharacterId**
-> \ESI\Model\GetCharactersCharacterIdOk getCharactersCharacterId($characterId, $datasource)
+> \ESI\Model\GetCharactersCharacterIdOk getCharactersCharacterId($character_id, $datasource)
 
 Get character's public information
 
@@ -24,11 +24,11 @@ Public information about a character  ---  Alternate route: `/v4/characters/{cha
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new ESI\Api\CharacterApi();
-$characterId = 56; // int | An EVE character ID
+$character_id = 56; // int | An EVE character ID
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getCharactersCharacterId($characterId, $datasource);
+    $result = $api_instance->getCharactersCharacterId($character_id, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling CharacterApi->getCharactersCharacterId: ', $e->getMessage(), PHP_EOL;
@@ -40,7 +40,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **characterId** | **int**| An EVE character ID |
+ **character_id** | **int**| An EVE character ID |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -59,7 +59,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getCharactersCharacterIdCorporationhistory**
-> \ESI\Model\GetCharactersCharacterIdCorporationhistory200Ok[] getCharactersCharacterIdCorporationhistory($characterId, $datasource)
+> \ESI\Model\GetCharactersCharacterIdCorporationhistory200Ok[] getCharactersCharacterIdCorporationhistory($character_id, $datasource)
 
 Get corporation history
 
@@ -71,11 +71,11 @@ Get a list of all the corporations a character has been a member of  ---  Altern
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new ESI\Api\CharacterApi();
-$characterId = 56; // int | An EVE character ID
+$character_id = 56; // int | An EVE character ID
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getCharactersCharacterIdCorporationhistory($characterId, $datasource);
+    $result = $api_instance->getCharactersCharacterIdCorporationhistory($character_id, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling CharacterApi->getCharactersCharacterIdCorporationhistory: ', $e->getMessage(), PHP_EOL;
@@ -87,7 +87,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **characterId** | **int**| An EVE character ID |
+ **character_id** | **int**| An EVE character ID |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -106,7 +106,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getCharactersCharacterIdPortrait**
-> \ESI\Model\GetCharactersCharacterIdPortraitOk getCharactersCharacterIdPortrait($characterId, $datasource)
+> \ESI\Model\GetCharactersCharacterIdPortraitOk getCharactersCharacterIdPortrait($character_id, $datasource)
 
 Get character portraits
 
@@ -118,11 +118,11 @@ Get portrait urls for a character  ---  Alternate route: `/v2/characters/{charac
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new ESI\Api\CharacterApi();
-$characterId = 56; // int | An EVE character ID
+$character_id = 56; // int | An EVE character ID
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getCharactersCharacterIdPortrait($characterId, $datasource);
+    $result = $api_instance->getCharactersCharacterIdPortrait($character_id, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling CharacterApi->getCharactersCharacterIdPortrait: ', $e->getMessage(), PHP_EOL;
@@ -134,7 +134,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **characterId** | **int**| An EVE character ID |
+ **character_id** | **int**| An EVE character ID |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -153,7 +153,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getCharactersNames**
-> \ESI\Model\GetCharactersNames200Ok[] getCharactersNames($characterIds, $datasource)
+> \ESI\Model\GetCharactersNames200Ok[] getCharactersNames($character_ids, $datasource)
 
 Get character names
 
@@ -165,11 +165,11 @@ Resolve a set of character IDs to character names  ---  Alternate route: `/v1/ch
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new ESI\Api\CharacterApi();
-$characterIds = array(56); // int[] | A comma separated list of character IDs
+$character_ids = array(56); // int[] | A comma separated list of character IDs
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getCharactersNames($characterIds, $datasource);
+    $result = $api_instance->getCharactersNames($character_ids, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling CharacterApi->getCharactersNames: ', $e->getMessage(), PHP_EOL;
@@ -181,7 +181,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **characterIds** | [**int[]**](../Model/int.md)| A comma separated list of character IDs |
+ **character_ids** | [**int[]**](../Model/int.md)| A comma separated list of character IDs |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -200,7 +200,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **postCharactersCharacterIdCspa**
-> \ESI\Model\PostCharactersCharacterIdCspaCreated postCharactersCharacterIdCspa($characterId, $characters, $datasource)
+> \ESI\Model\PostCharactersCharacterIdCspaCreated postCharactersCharacterIdCspa($character_id, $characters, $datasource)
 
 Calculate a CSPA charge cost
 
@@ -215,12 +215,12 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\CharacterApi();
-$characterId = 56; // int | An EVE character ID
+$character_id = 56; // int | An EVE character ID
 $characters = new \ESI\Model\PostCharactersCharacterIdCspaCharacters(); // \ESI\Model\PostCharactersCharacterIdCspaCharacters | The target characters to calculate the charge for
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->postCharactersCharacterIdCspa($characterId, $characters, $datasource);
+    $result = $api_instance->postCharactersCharacterIdCspa($character_id, $characters, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling CharacterApi->postCharactersCharacterIdCspa: ', $e->getMessage(), PHP_EOL;
@@ -232,7 +232,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **characterId** | **int**| An EVE character ID |
+ **character_id** | **int**| An EVE character ID |
  **characters** | [**\ESI\Model\PostCharactersCharacterIdCspaCharacters**](../Model/\ESI\Model\PostCharactersCharacterIdCspaCharacters.md)| The target characters to calculate the charge for |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 

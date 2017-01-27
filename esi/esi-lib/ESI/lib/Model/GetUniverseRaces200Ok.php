@@ -67,10 +67,10 @@ class GetUniverseRaces200Ok implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'allianceId' => 'int',
+        'alliance_id' => 'int',
         'description' => 'string',
         'name' => 'string',
-        'raceId' => 'int'
+        'race_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -83,10 +83,10 @@ class GetUniverseRaces200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'allianceId' => 'alliance_id',
+        'alliance_id' => 'alliance_id',
         'description' => 'description',
         'name' => 'name',
-        'raceId' => 'race_id'
+        'race_id' => 'race_id'
     );
 
     public static function attributeMap()
@@ -99,10 +99,10 @@ class GetUniverseRaces200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'allianceId' => 'setAllianceId',
+        'alliance_id' => 'setAllianceId',
         'description' => 'setDescription',
         'name' => 'setName',
-        'raceId' => 'setRaceId'
+        'race_id' => 'setRaceId'
     );
 
     public static function setters()
@@ -115,10 +115,10 @@ class GetUniverseRaces200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'allianceId' => 'getAllianceId',
+        'alliance_id' => 'getAllianceId',
         'description' => 'getDescription',
         'name' => 'getName',
-        'raceId' => 'getRaceId'
+        'race_id' => 'getRaceId'
     );
 
     public static function getters()
@@ -142,10 +142,10 @@ class GetUniverseRaces200Ok implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['allianceId'] = isset($data['allianceId']) ? $data['allianceId'] : null;
+        $this->container['alliance_id'] = isset($data['alliance_id']) ? $data['alliance_id'] : null;
         $this->container['description'] = isset($data['description']) ? $data['description'] : null;
         $this->container['name'] = isset($data['name']) ? $data['name'] : null;
-        $this->container['raceId'] = isset($data['raceId']) ? $data['raceId'] : null;
+        $this->container['race_id'] = isset($data['race_id']) ? $data['race_id'] : null;
     }
 
     /**
@@ -156,8 +156,8 @@ class GetUniverseRaces200Ok implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['allianceId'] === null) {
-            $invalid_properties[] = "'allianceId' can't be null";
+        if ($this->container['alliance_id'] === null) {
+            $invalid_properties[] = "'alliance_id' can't be null";
         }
         if ($this->container['description'] === null) {
             $invalid_properties[] = "'description' can't be null";
@@ -165,8 +165,8 @@ class GetUniverseRaces200Ok implements ArrayAccess
         if ($this->container['name'] === null) {
             $invalid_properties[] = "'name' can't be null";
         }
-        if ($this->container['raceId'] === null) {
-            $invalid_properties[] = "'raceId' can't be null";
+        if ($this->container['race_id'] === null) {
+            $invalid_properties[] = "'race_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -179,7 +179,7 @@ class GetUniverseRaces200Ok implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['allianceId'] === null) {
+        if ($this->container['alliance_id'] === null) {
             return false;
         }
         if ($this->container['description'] === null) {
@@ -188,7 +188,7 @@ class GetUniverseRaces200Ok implements ArrayAccess
         if ($this->container['name'] === null) {
             return false;
         }
-        if ($this->container['raceId'] === null) {
+        if ($this->container['race_id'] === null) {
             return false;
         }
         return true;
@@ -196,22 +196,22 @@ class GetUniverseRaces200Ok implements ArrayAccess
 
 
     /**
-     * Gets allianceId
+     * Gets alliance_id
      * @return int
      */
     public function getAllianceId()
     {
-        return $this->container['allianceId'];
+        return $this->container['alliance_id'];
     }
 
     /**
-     * Sets allianceId
-     * @param int $allianceId The alliance generally associated with this race
+     * Sets alliance_id
+     * @param int $alliance_id The alliance generally associated with this race
      * @return $this
      */
-    public function setAllianceId($allianceId)
+    public function setAllianceId($alliance_id)
     {
-        $this->container['allianceId'] = $allianceId;
+        $this->container['alliance_id'] = $alliance_id;
 
         return $this;
     }
@@ -259,22 +259,22 @@ class GetUniverseRaces200Ok implements ArrayAccess
     }
 
     /**
-     * Gets raceId
+     * Gets race_id
      * @return int
      */
     public function getRaceId()
     {
-        return $this->container['raceId'];
+        return $this->container['race_id'];
     }
 
     /**
-     * Sets raceId
-     * @param int $raceId race_id integer
+     * Sets race_id
+     * @param int $race_id race_id integer
      * @return $this
      */
-    public function setRaceId($raceId)
+    public function setRaceId($race_id)
     {
-        $this->container['raceId'] = $raceId;
+        $this->container['race_id'] = $race_id;
 
         return $this;
     }

@@ -107,14 +107,14 @@ class WarsApi
      *
      * List wars
      *
-     * @param int $maxWarId Only return wars with ID smaller than this. (optional)
+     * @param int $max_war_id Only return wars with ID smaller than this. (optional)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return int[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getWars($maxWarId = null, $datasource = null)
+    public function getWars($max_war_id = null, $datasource = null)
     {
-        list($response) = $this->getWarsWithHttpInfo($maxWarId, $datasource);
+        list($response) = $this->getWarsWithHttpInfo($max_war_id, $datasource);
         return $response;
     }
 
@@ -123,12 +123,12 @@ class WarsApi
      *
      * List wars
      *
-     * @param int $maxWarId Only return wars with ID smaller than this. (optional)
+     * @param int $max_war_id Only return wars with ID smaller than this. (optional)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of int[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getWarsWithHttpInfo($maxWarId = null, $datasource = null)
+    public function getWarsWithHttpInfo($max_war_id = null, $datasource = null)
     {
         // parse inputs
         $resourcePath = "/wars/";
@@ -143,8 +143,8 @@ class WarsApi
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array());
 
         // query params
-        if ($maxWarId !== null) {
-            $queryParams['max_war_id'] = $this->apiClient->getSerializer()->toQueryValue($maxWarId);
+        if ($max_war_id !== null) {
+            $queryParams['max_war_id'] = $this->apiClient->getSerializer()->toQueryValue($max_war_id);
         }
         // query params
         if ($datasource !== null) {
@@ -194,14 +194,14 @@ class WarsApi
      *
      * Get war information
      *
-     * @param int $warId ID for a war (required)
+     * @param int $war_id ID for a war (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetWarsWarIdOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getWarsWarId($warId, $datasource = null)
+    public function getWarsWarId($war_id, $datasource = null)
     {
-        list($response) = $this->getWarsWarIdWithHttpInfo($warId, $datasource);
+        list($response) = $this->getWarsWarIdWithHttpInfo($war_id, $datasource);
         return $response;
     }
 
@@ -210,16 +210,16 @@ class WarsApi
      *
      * Get war information
      *
-     * @param int $warId ID for a war (required)
+     * @param int $war_id ID for a war (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetWarsWarIdOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getWarsWarIdWithHttpInfo($warId, $datasource = null)
+    public function getWarsWarIdWithHttpInfo($war_id, $datasource = null)
     {
-        // verify the required parameter 'warId' is set
-        if ($warId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $warId when calling getWarsWarId');
+        // verify the required parameter 'war_id' is set
+        if ($war_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $war_id when calling getWarsWarId');
         }
         // parse inputs
         $resourcePath = "/wars/{war_id}/";
@@ -238,10 +238,10 @@ class WarsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($warId !== null) {
+        if ($war_id !== null) {
             $resourcePath = str_replace(
                 "{" . "war_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($warId),
+                $this->apiClient->getSerializer()->toPathValue($war_id),
                 $resourcePath
             );
         }
@@ -293,15 +293,15 @@ class WarsApi
      *
      * List kills for a war
      *
-     * @param int $warId A valid war ID (required)
+     * @param int $war_id A valid war ID (required)
      * @param int $page Which page to query, starting at 1, 2000 killmails per page. (optional, default to 1)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetWarsWarIdKillmails200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getWarsWarIdKillmails($warId, $page = null, $datasource = null)
+    public function getWarsWarIdKillmails($war_id, $page = null, $datasource = null)
     {
-        list($response) = $this->getWarsWarIdKillmailsWithHttpInfo($warId, $page, $datasource);
+        list($response) = $this->getWarsWarIdKillmailsWithHttpInfo($war_id, $page, $datasource);
         return $response;
     }
 
@@ -310,17 +310,17 @@ class WarsApi
      *
      * List kills for a war
      *
-     * @param int $warId A valid war ID (required)
+     * @param int $war_id A valid war ID (required)
      * @param int $page Which page to query, starting at 1, 2000 killmails per page. (optional, default to 1)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetWarsWarIdKillmails200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getWarsWarIdKillmailsWithHttpInfo($warId, $page = null, $datasource = null)
+    public function getWarsWarIdKillmailsWithHttpInfo($war_id, $page = null, $datasource = null)
     {
-        // verify the required parameter 'warId' is set
-        if ($warId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $warId when calling getWarsWarIdKillmails');
+        // verify the required parameter 'war_id' is set
+        if ($war_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $war_id when calling getWarsWarIdKillmails');
         }
         // parse inputs
         $resourcePath = "/wars/{war_id}/killmails/";
@@ -343,10 +343,10 @@ class WarsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($warId !== null) {
+        if ($war_id !== null) {
             $resourcePath = str_replace(
                 "{" . "war_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($warId),
+                $this->apiClient->getSerializer()->toPathValue($war_id),
                 $resourcePath
             );
         }

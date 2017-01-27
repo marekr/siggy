@@ -20,7 +20,7 @@ Method | HTTP request | Description
 
 
 # **deleteFleetsFleetIdMembersMemberId**
-> deleteFleetsFleetIdMembersMemberId($fleetId, $memberId, $datasource)
+> deleteFleetsFleetIdMembersMemberId($fleet_id, $member_id, $datasource)
 
 Kick fleet member
 
@@ -35,12 +35,12 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\FleetsApi();
-$fleetId = 789; // int | ID for a fleet
-$memberId = 56; // int | The character ID of a member in this fleet
+$fleet_id = 789; // int | ID for a fleet
+$member_id = 56; // int | The character ID of a member in this fleet
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $api_instance->deleteFleetsFleetIdMembersMemberId($fleetId, $memberId, $datasource);
+    $api_instance->deleteFleetsFleetIdMembersMemberId($fleet_id, $member_id, $datasource);
 } catch (Exception $e) {
     echo 'Exception when calling FleetsApi->deleteFleetsFleetIdMembersMemberId: ', $e->getMessage(), PHP_EOL;
 }
@@ -51,8 +51,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **fleetId** | **int**| ID for a fleet |
- **memberId** | **int**| The character ID of a member in this fleet |
+ **fleet_id** | **int**| ID for a fleet |
+ **member_id** | **int**| The character ID of a member in this fleet |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -71,7 +71,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **deleteFleetsFleetIdSquadsSquadId**
-> deleteFleetsFleetIdSquadsSquadId($fleetId, $squadId, $datasource)
+> deleteFleetsFleetIdSquadsSquadId($fleet_id, $squad_id, $datasource)
 
 Delete fleet squad
 
@@ -86,12 +86,12 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\FleetsApi();
-$fleetId = 789; // int | ID for a fleet
-$squadId = 789; // int | The squad to delete
+$fleet_id = 789; // int | ID for a fleet
+$squad_id = 789; // int | The squad to delete
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $api_instance->deleteFleetsFleetIdSquadsSquadId($fleetId, $squadId, $datasource);
+    $api_instance->deleteFleetsFleetIdSquadsSquadId($fleet_id, $squad_id, $datasource);
 } catch (Exception $e) {
     echo 'Exception when calling FleetsApi->deleteFleetsFleetIdSquadsSquadId: ', $e->getMessage(), PHP_EOL;
 }
@@ -102,8 +102,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **fleetId** | **int**| ID for a fleet |
- **squadId** | **int**| The squad to delete |
+ **fleet_id** | **int**| ID for a fleet |
+ **squad_id** | **int**| The squad to delete |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -122,7 +122,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **deleteFleetsFleetIdWingsWingId**
-> deleteFleetsFleetIdWingsWingId($fleetId, $wingId, $datasource)
+> deleteFleetsFleetIdWingsWingId($fleet_id, $wing_id, $datasource)
 
 Delete fleet wing
 
@@ -137,12 +137,12 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\FleetsApi();
-$fleetId = 789; // int | ID for a fleet
-$wingId = 789; // int | The wing to delete
+$fleet_id = 789; // int | ID for a fleet
+$wing_id = 789; // int | The wing to delete
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $api_instance->deleteFleetsFleetIdWingsWingId($fleetId, $wingId, $datasource);
+    $api_instance->deleteFleetsFleetIdWingsWingId($fleet_id, $wing_id, $datasource);
 } catch (Exception $e) {
     echo 'Exception when calling FleetsApi->deleteFleetsFleetIdWingsWingId: ', $e->getMessage(), PHP_EOL;
 }
@@ -153,8 +153,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **fleetId** | **int**| ID for a fleet |
- **wingId** | **int**| The wing to delete |
+ **fleet_id** | **int**| ID for a fleet |
+ **wing_id** | **int**| The wing to delete |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -173,7 +173,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getFleetsFleetId**
-> \ESI\Model\GetFleetsFleetIdOk getFleetsFleetId($fleetId, $datasource)
+> \ESI\Model\GetFleetsFleetIdOk getFleetsFleetId($fleet_id, $datasource)
 
 Get fleet information
 
@@ -188,11 +188,11 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\FleetsApi();
-$fleetId = 789; // int | ID for a fleet
+$fleet_id = 789; // int | ID for a fleet
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getFleetsFleetId($fleetId, $datasource);
+    $result = $api_instance->getFleetsFleetId($fleet_id, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling FleetsApi->getFleetsFleetId: ', $e->getMessage(), PHP_EOL;
@@ -204,7 +204,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **fleetId** | **int**| ID for a fleet |
+ **fleet_id** | **int**| ID for a fleet |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -223,7 +223,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getFleetsFleetIdMembers**
-> \ESI\Model\GetFleetsFleetIdMembers200Ok[] getFleetsFleetIdMembers($fleetId, $language, $datasource)
+> \ESI\Model\GetFleetsFleetIdMembers200Ok[] getFleetsFleetIdMembers($fleet_id, $language, $datasource)
 
 Get fleet members
 
@@ -238,12 +238,12 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\FleetsApi();
-$fleetId = 789; // int | ID for a fleet
+$fleet_id = 789; // int | ID for a fleet
 $language = "en-us"; // string | Language to use in the response
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getFleetsFleetIdMembers($fleetId, $language, $datasource);
+    $result = $api_instance->getFleetsFleetIdMembers($fleet_id, $language, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling FleetsApi->getFleetsFleetIdMembers: ', $e->getMessage(), PHP_EOL;
@@ -255,7 +255,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **fleetId** | **int**| ID for a fleet |
+ **fleet_id** | **int**| ID for a fleet |
  **language** | **string**| Language to use in the response | [optional] [default to en-us]
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
@@ -275,7 +275,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getFleetsFleetIdWings**
-> \ESI\Model\GetFleetsFleetIdWings200Ok[] getFleetsFleetIdWings($fleetId, $language, $datasource)
+> \ESI\Model\GetFleetsFleetIdWings200Ok[] getFleetsFleetIdWings($fleet_id, $language, $datasource)
 
 Get fleet wings
 
@@ -290,12 +290,12 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\FleetsApi();
-$fleetId = 789; // int | ID for a fleet
+$fleet_id = 789; // int | ID for a fleet
 $language = "en-us"; // string | Language to use in the response
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getFleetsFleetIdWings($fleetId, $language, $datasource);
+    $result = $api_instance->getFleetsFleetIdWings($fleet_id, $language, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling FleetsApi->getFleetsFleetIdWings: ', $e->getMessage(), PHP_EOL;
@@ -307,7 +307,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **fleetId** | **int**| ID for a fleet |
+ **fleet_id** | **int**| ID for a fleet |
  **language** | **string**| Language to use in the response | [optional] [default to en-us]
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
@@ -327,7 +327,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **postFleetsFleetIdMembers**
-> postFleetsFleetIdMembers($fleetId, $invitation, $datasource)
+> postFleetsFleetIdMembers($fleet_id, $invitation, $datasource)
 
 Create fleet invitation
 
@@ -342,12 +342,12 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\FleetsApi();
-$fleetId = 789; // int | ID for a fleet
+$fleet_id = 789; // int | ID for a fleet
 $invitation = new \ESI\Model\PostFleetsFleetIdMembersInvitation(); // \ESI\Model\PostFleetsFleetIdMembersInvitation | Details of the invitation
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $api_instance->postFleetsFleetIdMembers($fleetId, $invitation, $datasource);
+    $api_instance->postFleetsFleetIdMembers($fleet_id, $invitation, $datasource);
 } catch (Exception $e) {
     echo 'Exception when calling FleetsApi->postFleetsFleetIdMembers: ', $e->getMessage(), PHP_EOL;
 }
@@ -358,7 +358,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **fleetId** | **int**| ID for a fleet |
+ **fleet_id** | **int**| ID for a fleet |
  **invitation** | [**\ESI\Model\PostFleetsFleetIdMembersInvitation**](../Model/\ESI\Model\PostFleetsFleetIdMembersInvitation.md)| Details of the invitation |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
@@ -378,7 +378,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **postFleetsFleetIdWings**
-> \ESI\Model\PostFleetsFleetIdWingsCreated postFleetsFleetIdWings($fleetId, $datasource)
+> \ESI\Model\PostFleetsFleetIdWingsCreated postFleetsFleetIdWings($fleet_id, $datasource)
 
 Create fleet wing
 
@@ -393,11 +393,11 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\FleetsApi();
-$fleetId = 789; // int | ID for a fleet
+$fleet_id = 789; // int | ID for a fleet
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->postFleetsFleetIdWings($fleetId, $datasource);
+    $result = $api_instance->postFleetsFleetIdWings($fleet_id, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling FleetsApi->postFleetsFleetIdWings: ', $e->getMessage(), PHP_EOL;
@@ -409,7 +409,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **fleetId** | **int**| ID for a fleet |
+ **fleet_id** | **int**| ID for a fleet |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -428,7 +428,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **postFleetsFleetIdWingsWingIdSquads**
-> \ESI\Model\PostFleetsFleetIdWingsWingIdSquadsCreated postFleetsFleetIdWingsWingIdSquads($fleetId, $wingId, $datasource)
+> \ESI\Model\PostFleetsFleetIdWingsWingIdSquadsCreated postFleetsFleetIdWingsWingIdSquads($fleet_id, $wing_id, $datasource)
 
 Create fleet squad
 
@@ -443,12 +443,12 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\FleetsApi();
-$fleetId = 789; // int | ID for a fleet
-$wingId = 789; // int | The wing_id to create squad in
+$fleet_id = 789; // int | ID for a fleet
+$wing_id = 789; // int | The wing_id to create squad in
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->postFleetsFleetIdWingsWingIdSquads($fleetId, $wingId, $datasource);
+    $result = $api_instance->postFleetsFleetIdWingsWingIdSquads($fleet_id, $wing_id, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling FleetsApi->postFleetsFleetIdWingsWingIdSquads: ', $e->getMessage(), PHP_EOL;
@@ -460,8 +460,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **fleetId** | **int**| ID for a fleet |
- **wingId** | **int**| The wing_id to create squad in |
+ **fleet_id** | **int**| ID for a fleet |
+ **wing_id** | **int**| The wing_id to create squad in |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -480,7 +480,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **putFleetsFleetId**
-> putFleetsFleetId($fleetId, $newSettings, $datasource)
+> putFleetsFleetId($fleet_id, $new_settings, $datasource)
 
 Update fleet
 
@@ -495,12 +495,12 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\FleetsApi();
-$fleetId = 789; // int | ID for a fleet
-$newSettings = new \ESI\Model\PutFleetsFleetIdNewSettings(); // \ESI\Model\PutFleetsFleetIdNewSettings | What to update for this fleet
+$fleet_id = 789; // int | ID for a fleet
+$new_settings = new \ESI\Model\PutFleetsFleetIdNewSettings(); // \ESI\Model\PutFleetsFleetIdNewSettings | What to update for this fleet
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $api_instance->putFleetsFleetId($fleetId, $newSettings, $datasource);
+    $api_instance->putFleetsFleetId($fleet_id, $new_settings, $datasource);
 } catch (Exception $e) {
     echo 'Exception when calling FleetsApi->putFleetsFleetId: ', $e->getMessage(), PHP_EOL;
 }
@@ -511,8 +511,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **fleetId** | **int**| ID for a fleet |
- **newSettings** | [**\ESI\Model\PutFleetsFleetIdNewSettings**](../Model/\ESI\Model\PutFleetsFleetIdNewSettings.md)| What to update for this fleet |
+ **fleet_id** | **int**| ID for a fleet |
+ **new_settings** | [**\ESI\Model\PutFleetsFleetIdNewSettings**](../Model/\ESI\Model\PutFleetsFleetIdNewSettings.md)| What to update for this fleet |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -531,7 +531,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **putFleetsFleetIdMembersMemberId**
-> putFleetsFleetIdMembersMemberId($fleetId, $memberId, $movement, $datasource)
+> putFleetsFleetIdMembersMemberId($fleet_id, $member_id, $movement, $datasource)
 
 Move fleet member
 
@@ -546,13 +546,13 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\FleetsApi();
-$fleetId = 789; // int | ID for a fleet
-$memberId = 56; // int | The character ID of a member in this fleet
+$fleet_id = 789; // int | ID for a fleet
+$member_id = 56; // int | The character ID of a member in this fleet
 $movement = new \ESI\Model\PutFleetsFleetIdMembersMemberIdMovement(); // \ESI\Model\PutFleetsFleetIdMembersMemberIdMovement | Details of the invitation
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $api_instance->putFleetsFleetIdMembersMemberId($fleetId, $memberId, $movement, $datasource);
+    $api_instance->putFleetsFleetIdMembersMemberId($fleet_id, $member_id, $movement, $datasource);
 } catch (Exception $e) {
     echo 'Exception when calling FleetsApi->putFleetsFleetIdMembersMemberId: ', $e->getMessage(), PHP_EOL;
 }
@@ -563,8 +563,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **fleetId** | **int**| ID for a fleet |
- **memberId** | **int**| The character ID of a member in this fleet |
+ **fleet_id** | **int**| ID for a fleet |
+ **member_id** | **int**| The character ID of a member in this fleet |
  **movement** | [**\ESI\Model\PutFleetsFleetIdMembersMemberIdMovement**](../Model/\ESI\Model\PutFleetsFleetIdMembersMemberIdMovement.md)| Details of the invitation |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
@@ -584,7 +584,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **putFleetsFleetIdSquadsSquadId**
-> putFleetsFleetIdSquadsSquadId($fleetId, $squadId, $naming, $datasource)
+> putFleetsFleetIdSquadsSquadId($fleet_id, $squad_id, $naming, $datasource)
 
 Rename fleet squad
 
@@ -599,13 +599,13 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\FleetsApi();
-$fleetId = 789; // int | ID for a fleet
-$squadId = 789; // int | The squad to rename
+$fleet_id = 789; // int | ID for a fleet
+$squad_id = 789; // int | The squad to rename
 $naming = new \ESI\Model\PutFleetsFleetIdSquadsSquadIdNaming(); // \ESI\Model\PutFleetsFleetIdSquadsSquadIdNaming | New name of the squad
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $api_instance->putFleetsFleetIdSquadsSquadId($fleetId, $squadId, $naming, $datasource);
+    $api_instance->putFleetsFleetIdSquadsSquadId($fleet_id, $squad_id, $naming, $datasource);
 } catch (Exception $e) {
     echo 'Exception when calling FleetsApi->putFleetsFleetIdSquadsSquadId: ', $e->getMessage(), PHP_EOL;
 }
@@ -616,8 +616,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **fleetId** | **int**| ID for a fleet |
- **squadId** | **int**| The squad to rename |
+ **fleet_id** | **int**| ID for a fleet |
+ **squad_id** | **int**| The squad to rename |
  **naming** | [**\ESI\Model\PutFleetsFleetIdSquadsSquadIdNaming**](../Model/\ESI\Model\PutFleetsFleetIdSquadsSquadIdNaming.md)| New name of the squad |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
@@ -637,7 +637,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **putFleetsFleetIdWingsWingId**
-> putFleetsFleetIdWingsWingId($fleetId, $wingId, $naming, $datasource)
+> putFleetsFleetIdWingsWingId($fleet_id, $wing_id, $naming, $datasource)
 
 Rename fleet wing
 
@@ -652,13 +652,13 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\FleetsApi();
-$fleetId = 789; // int | ID for a fleet
-$wingId = 789; // int | The wing to rename
+$fleet_id = 789; // int | ID for a fleet
+$wing_id = 789; // int | The wing to rename
 $naming = new \ESI\Model\PutFleetsFleetIdWingsWingIdNaming(); // \ESI\Model\PutFleetsFleetIdWingsWingIdNaming | New name of the wing
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $api_instance->putFleetsFleetIdWingsWingId($fleetId, $wingId, $naming, $datasource);
+    $api_instance->putFleetsFleetIdWingsWingId($fleet_id, $wing_id, $naming, $datasource);
 } catch (Exception $e) {
     echo 'Exception when calling FleetsApi->putFleetsFleetIdWingsWingId: ', $e->getMessage(), PHP_EOL;
 }
@@ -669,8 +669,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **fleetId** | **int**| ID for a fleet |
- **wingId** | **int**| The wing to rename |
+ **fleet_id** | **int**| ID for a fleet |
+ **wing_id** | **int**| The wing to rename |
  **naming** | [**\ESI\Model\PutFleetsFleetIdWingsWingIdNaming**](../Model/\ESI\Model\PutFleetsFleetIdWingsWingIdNaming.md)| New name of the wing |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 

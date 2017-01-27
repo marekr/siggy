@@ -67,9 +67,9 @@ class GetMarketsPrices200Ok implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'adjustedPrice' => 'float',
-        'averagePrice' => 'float',
-        'typeId' => 'int'
+        'adjusted_price' => 'float',
+        'average_price' => 'float',
+        'type_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -82,9 +82,9 @@ class GetMarketsPrices200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'adjustedPrice' => 'adjusted_price',
-        'averagePrice' => 'average_price',
-        'typeId' => 'type_id'
+        'adjusted_price' => 'adjusted_price',
+        'average_price' => 'average_price',
+        'type_id' => 'type_id'
     );
 
     public static function attributeMap()
@@ -97,9 +97,9 @@ class GetMarketsPrices200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'adjustedPrice' => 'setAdjustedPrice',
-        'averagePrice' => 'setAveragePrice',
-        'typeId' => 'setTypeId'
+        'adjusted_price' => 'setAdjustedPrice',
+        'average_price' => 'setAveragePrice',
+        'type_id' => 'setTypeId'
     );
 
     public static function setters()
@@ -112,9 +112,9 @@ class GetMarketsPrices200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'adjustedPrice' => 'getAdjustedPrice',
-        'averagePrice' => 'getAveragePrice',
-        'typeId' => 'getTypeId'
+        'adjusted_price' => 'getAdjustedPrice',
+        'average_price' => 'getAveragePrice',
+        'type_id' => 'getTypeId'
     );
 
     public static function getters()
@@ -138,9 +138,9 @@ class GetMarketsPrices200Ok implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['adjustedPrice'] = isset($data['adjustedPrice']) ? $data['adjustedPrice'] : null;
-        $this->container['averagePrice'] = isset($data['averagePrice']) ? $data['averagePrice'] : null;
-        $this->container['typeId'] = isset($data['typeId']) ? $data['typeId'] : null;
+        $this->container['adjusted_price'] = isset($data['adjusted_price']) ? $data['adjusted_price'] : null;
+        $this->container['average_price'] = isset($data['average_price']) ? $data['average_price'] : null;
+        $this->container['type_id'] = isset($data['type_id']) ? $data['type_id'] : null;
     }
 
     /**
@@ -151,8 +151,8 @@ class GetMarketsPrices200Ok implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['typeId'] === null) {
-            $invalid_properties[] = "'typeId' can't be null";
+        if ($this->container['type_id'] === null) {
+            $invalid_properties[] = "'type_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -165,7 +165,7 @@ class GetMarketsPrices200Ok implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['typeId'] === null) {
+        if ($this->container['type_id'] === null) {
             return false;
         }
         return true;
@@ -173,64 +173,64 @@ class GetMarketsPrices200Ok implements ArrayAccess
 
 
     /**
-     * Gets adjustedPrice
+     * Gets adjusted_price
      * @return float
      */
     public function getAdjustedPrice()
     {
-        return $this->container['adjustedPrice'];
+        return $this->container['adjusted_price'];
     }
 
     /**
-     * Sets adjustedPrice
-     * @param float $adjustedPrice adjusted_price number
+     * Sets adjusted_price
+     * @param float $adjusted_price adjusted_price number
      * @return $this
      */
-    public function setAdjustedPrice($adjustedPrice)
+    public function setAdjustedPrice($adjusted_price)
     {
-        $this->container['adjustedPrice'] = $adjustedPrice;
+        $this->container['adjusted_price'] = $adjusted_price;
 
         return $this;
     }
 
     /**
-     * Gets averagePrice
+     * Gets average_price
      * @return float
      */
     public function getAveragePrice()
     {
-        return $this->container['averagePrice'];
+        return $this->container['average_price'];
     }
 
     /**
-     * Sets averagePrice
-     * @param float $averagePrice average_price number
+     * Sets average_price
+     * @param float $average_price average_price number
      * @return $this
      */
-    public function setAveragePrice($averagePrice)
+    public function setAveragePrice($average_price)
     {
-        $this->container['averagePrice'] = $averagePrice;
+        $this->container['average_price'] = $average_price;
 
         return $this;
     }
 
     /**
-     * Gets typeId
+     * Gets type_id
      * @return int
      */
     public function getTypeId()
     {
-        return $this->container['typeId'];
+        return $this->container['type_id'];
     }
 
     /**
-     * Sets typeId
-     * @param int $typeId type_id integer
+     * Sets type_id
+     * @param int $type_id type_id integer
      * @return $this
      */
-    public function setTypeId($typeId)
+    public function setTypeId($type_id)
     {
-        $this->container['typeId'] = $typeId;
+        $this->container['type_id'] = $type_id;
 
         return $this;
     }

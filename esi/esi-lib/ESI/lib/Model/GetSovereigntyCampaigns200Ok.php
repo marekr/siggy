@@ -67,16 +67,16 @@ class GetSovereigntyCampaigns200Ok implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'attackersScore' => 'float',
-        'campaignId' => 'int',
-        'constellationId' => 'int',
-        'defenderId' => 'int',
-        'defenderScore' => 'float',
-        'eventType' => 'string',
+        'attackers_score' => 'float',
+        'campaign_id' => 'int',
+        'constellation_id' => 'int',
+        'defender_id' => 'int',
+        'defender_score' => 'float',
+        'event_type' => 'string',
         'participants' => '\ESI\Model\SovereigntycampaignsParticipants[]',
-        'solarSystemId' => 'int',
-        'startTime' => '\DateTime',
-        'structureId' => 'int'
+        'solar_system_id' => 'int',
+        'start_time' => '\DateTime',
+        'structure_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -89,16 +89,16 @@ class GetSovereigntyCampaigns200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'attackersScore' => 'attackers_score',
-        'campaignId' => 'campaign_id',
-        'constellationId' => 'constellation_id',
-        'defenderId' => 'defender_id',
-        'defenderScore' => 'defender_score',
-        'eventType' => 'event_type',
+        'attackers_score' => 'attackers_score',
+        'campaign_id' => 'campaign_id',
+        'constellation_id' => 'constellation_id',
+        'defender_id' => 'defender_id',
+        'defender_score' => 'defender_score',
+        'event_type' => 'event_type',
         'participants' => 'participants',
-        'solarSystemId' => 'solar_system_id',
-        'startTime' => 'start_time',
-        'structureId' => 'structure_id'
+        'solar_system_id' => 'solar_system_id',
+        'start_time' => 'start_time',
+        'structure_id' => 'structure_id'
     );
 
     public static function attributeMap()
@@ -111,16 +111,16 @@ class GetSovereigntyCampaigns200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'attackersScore' => 'setAttackersScore',
-        'campaignId' => 'setCampaignId',
-        'constellationId' => 'setConstellationId',
-        'defenderId' => 'setDefenderId',
-        'defenderScore' => 'setDefenderScore',
-        'eventType' => 'setEventType',
+        'attackers_score' => 'setAttackersScore',
+        'campaign_id' => 'setCampaignId',
+        'constellation_id' => 'setConstellationId',
+        'defender_id' => 'setDefenderId',
+        'defender_score' => 'setDefenderScore',
+        'event_type' => 'setEventType',
         'participants' => 'setParticipants',
-        'solarSystemId' => 'setSolarSystemId',
-        'startTime' => 'setStartTime',
-        'structureId' => 'setStructureId'
+        'solar_system_id' => 'setSolarSystemId',
+        'start_time' => 'setStartTime',
+        'structure_id' => 'setStructureId'
     );
 
     public static function setters()
@@ -133,16 +133,16 @@ class GetSovereigntyCampaigns200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'attackersScore' => 'getAttackersScore',
-        'campaignId' => 'getCampaignId',
-        'constellationId' => 'getConstellationId',
-        'defenderId' => 'getDefenderId',
-        'defenderScore' => 'getDefenderScore',
-        'eventType' => 'getEventType',
+        'attackers_score' => 'getAttackersScore',
+        'campaign_id' => 'getCampaignId',
+        'constellation_id' => 'getConstellationId',
+        'defender_id' => 'getDefenderId',
+        'defender_score' => 'getDefenderScore',
+        'event_type' => 'getEventType',
         'participants' => 'getParticipants',
-        'solarSystemId' => 'getSolarSystemId',
-        'startTime' => 'getStartTime',
-        'structureId' => 'getStructureId'
+        'solar_system_id' => 'getSolarSystemId',
+        'start_time' => 'getStartTime',
+        'structure_id' => 'getStructureId'
     );
 
     public static function getters()
@@ -184,16 +184,16 @@ class GetSovereigntyCampaigns200Ok implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['attackersScore'] = isset($data['attackersScore']) ? $data['attackersScore'] : null;
-        $this->container['campaignId'] = isset($data['campaignId']) ? $data['campaignId'] : null;
-        $this->container['constellationId'] = isset($data['constellationId']) ? $data['constellationId'] : null;
-        $this->container['defenderId'] = isset($data['defenderId']) ? $data['defenderId'] : null;
-        $this->container['defenderScore'] = isset($data['defenderScore']) ? $data['defenderScore'] : null;
-        $this->container['eventType'] = isset($data['eventType']) ? $data['eventType'] : null;
+        $this->container['attackers_score'] = isset($data['attackers_score']) ? $data['attackers_score'] : null;
+        $this->container['campaign_id'] = isset($data['campaign_id']) ? $data['campaign_id'] : null;
+        $this->container['constellation_id'] = isset($data['constellation_id']) ? $data['constellation_id'] : null;
+        $this->container['defender_id'] = isset($data['defender_id']) ? $data['defender_id'] : null;
+        $this->container['defender_score'] = isset($data['defender_score']) ? $data['defender_score'] : null;
+        $this->container['event_type'] = isset($data['event_type']) ? $data['event_type'] : null;
         $this->container['participants'] = isset($data['participants']) ? $data['participants'] : null;
-        $this->container['solarSystemId'] = isset($data['solarSystemId']) ? $data['solarSystemId'] : null;
-        $this->container['startTime'] = isset($data['startTime']) ? $data['startTime'] : null;
-        $this->container['structureId'] = isset($data['structureId']) ? $data['structureId'] : null;
+        $this->container['solar_system_id'] = isset($data['solar_system_id']) ? $data['solar_system_id'] : null;
+        $this->container['start_time'] = isset($data['start_time']) ? $data['start_time'] : null;
+        $this->container['structure_id'] = isset($data['structure_id']) ? $data['structure_id'] : null;
     }
 
     /**
@@ -204,28 +204,28 @@ class GetSovereigntyCampaigns200Ok implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['campaignId'] === null) {
-            $invalid_properties[] = "'campaignId' can't be null";
+        if ($this->container['campaign_id'] === null) {
+            $invalid_properties[] = "'campaign_id' can't be null";
         }
-        if ($this->container['constellationId'] === null) {
-            $invalid_properties[] = "'constellationId' can't be null";
+        if ($this->container['constellation_id'] === null) {
+            $invalid_properties[] = "'constellation_id' can't be null";
         }
-        if ($this->container['eventType'] === null) {
-            $invalid_properties[] = "'eventType' can't be null";
+        if ($this->container['event_type'] === null) {
+            $invalid_properties[] = "'event_type' can't be null";
         }
         $allowed_values = array("tcu_defense", "ihub_defense", "station_defense", "station_freeport");
-        if (!in_array($this->container['eventType'], $allowed_values)) {
-            $invalid_properties[] = "invalid value for 'eventType', must be one of #{allowed_values}.";
+        if (!in_array($this->container['event_type'], $allowed_values)) {
+            $invalid_properties[] = "invalid value for 'event_type', must be one of #{allowed_values}.";
         }
 
-        if ($this->container['solarSystemId'] === null) {
-            $invalid_properties[] = "'solarSystemId' can't be null";
+        if ($this->container['solar_system_id'] === null) {
+            $invalid_properties[] = "'solar_system_id' can't be null";
         }
-        if ($this->container['startTime'] === null) {
-            $invalid_properties[] = "'startTime' can't be null";
+        if ($this->container['start_time'] === null) {
+            $invalid_properties[] = "'start_time' can't be null";
         }
-        if ($this->container['structureId'] === null) {
-            $invalid_properties[] = "'structureId' can't be null";
+        if ($this->container['structure_id'] === null) {
+            $invalid_properties[] = "'structure_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -238,26 +238,26 @@ class GetSovereigntyCampaigns200Ok implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['campaignId'] === null) {
+        if ($this->container['campaign_id'] === null) {
             return false;
         }
-        if ($this->container['constellationId'] === null) {
+        if ($this->container['constellation_id'] === null) {
             return false;
         }
-        if ($this->container['eventType'] === null) {
+        if ($this->container['event_type'] === null) {
             return false;
         }
         $allowed_values = array("tcu_defense", "ihub_defense", "station_defense", "station_freeport");
-        if (!in_array($this->container['eventType'], $allowed_values)) {
+        if (!in_array($this->container['event_type'], $allowed_values)) {
             return false;
         }
-        if ($this->container['solarSystemId'] === null) {
+        if ($this->container['solar_system_id'] === null) {
             return false;
         }
-        if ($this->container['startTime'] === null) {
+        if ($this->container['start_time'] === null) {
             return false;
         }
-        if ($this->container['structureId'] === null) {
+        if ($this->container['structure_id'] === null) {
             return false;
         }
         return true;
@@ -265,131 +265,131 @@ class GetSovereigntyCampaigns200Ok implements ArrayAccess
 
 
     /**
-     * Gets attackersScore
+     * Gets attackers_score
      * @return float
      */
     public function getAttackersScore()
     {
-        return $this->container['attackersScore'];
+        return $this->container['attackers_score'];
     }
 
     /**
-     * Sets attackersScore
-     * @param float $attackersScore Score for all attacking parties, only present in Defense Events.
+     * Sets attackers_score
+     * @param float $attackers_score Score for all attacking parties, only present in Defense Events.
      * @return $this
      */
-    public function setAttackersScore($attackersScore)
+    public function setAttackersScore($attackers_score)
     {
-        $this->container['attackersScore'] = $attackersScore;
+        $this->container['attackers_score'] = $attackers_score;
 
         return $this;
     }
 
     /**
-     * Gets campaignId
+     * Gets campaign_id
      * @return int
      */
     public function getCampaignId()
     {
-        return $this->container['campaignId'];
+        return $this->container['campaign_id'];
     }
 
     /**
-     * Sets campaignId
-     * @param int $campaignId Unique ID for this campaign.
+     * Sets campaign_id
+     * @param int $campaign_id Unique ID for this campaign.
      * @return $this
      */
-    public function setCampaignId($campaignId)
+    public function setCampaignId($campaign_id)
     {
-        $this->container['campaignId'] = $campaignId;
+        $this->container['campaign_id'] = $campaign_id;
 
         return $this;
     }
 
     /**
-     * Gets constellationId
+     * Gets constellation_id
      * @return int
      */
     public function getConstellationId()
     {
-        return $this->container['constellationId'];
+        return $this->container['constellation_id'];
     }
 
     /**
-     * Sets constellationId
-     * @param int $constellationId The constellation in which the campaign will take place.
+     * Sets constellation_id
+     * @param int $constellation_id The constellation in which the campaign will take place.
      * @return $this
      */
-    public function setConstellationId($constellationId)
+    public function setConstellationId($constellation_id)
     {
-        $this->container['constellationId'] = $constellationId;
+        $this->container['constellation_id'] = $constellation_id;
 
         return $this;
     }
 
     /**
-     * Gets defenderId
+     * Gets defender_id
      * @return int
      */
     public function getDefenderId()
     {
-        return $this->container['defenderId'];
+        return $this->container['defender_id'];
     }
 
     /**
-     * Sets defenderId
-     * @param int $defenderId Defending alliance, only present in Defense Events
+     * Sets defender_id
+     * @param int $defender_id Defending alliance, only present in Defense Events
      * @return $this
      */
-    public function setDefenderId($defenderId)
+    public function setDefenderId($defender_id)
     {
-        $this->container['defenderId'] = $defenderId;
+        $this->container['defender_id'] = $defender_id;
 
         return $this;
     }
 
     /**
-     * Gets defenderScore
+     * Gets defender_score
      * @return float
      */
     public function getDefenderScore()
     {
-        return $this->container['defenderScore'];
+        return $this->container['defender_score'];
     }
 
     /**
-     * Sets defenderScore
-     * @param float $defenderScore Score for the defending alliance, only present in Defense Events.
+     * Sets defender_score
+     * @param float $defender_score Score for the defending alliance, only present in Defense Events.
      * @return $this
      */
-    public function setDefenderScore($defenderScore)
+    public function setDefenderScore($defender_score)
     {
-        $this->container['defenderScore'] = $defenderScore;
+        $this->container['defender_score'] = $defender_score;
 
         return $this;
     }
 
     /**
-     * Gets eventType
+     * Gets event_type
      * @return string
      */
     public function getEventType()
     {
-        return $this->container['eventType'];
+        return $this->container['event_type'];
     }
 
     /**
-     * Sets eventType
-     * @param string $eventType Type of event this campaign is for. tcu_defense, ihub_defense and station_defense are referred to as \"Defense Events\", station_freeport as \"Freeport Events\".
+     * Sets event_type
+     * @param string $event_type Type of event this campaign is for. tcu_defense, ihub_defense and station_defense are referred to as \"Defense Events\", station_freeport as \"Freeport Events\".
      * @return $this
      */
-    public function setEventType($eventType)
+    public function setEventType($event_type)
     {
         $allowed_values = array('tcu_defense', 'ihub_defense', 'station_defense', 'station_freeport');
-        if (!in_array($eventType, $allowed_values)) {
-            throw new \InvalidArgumentException("Invalid value for 'eventType', must be one of 'tcu_defense', 'ihub_defense', 'station_defense', 'station_freeport'");
+        if (!in_array($event_type, $allowed_values)) {
+            throw new \InvalidArgumentException("Invalid value for 'event_type', must be one of 'tcu_defense', 'ihub_defense', 'station_defense', 'station_freeport'");
         }
-        $this->container['eventType'] = $eventType;
+        $this->container['event_type'] = $event_type;
 
         return $this;
     }
@@ -416,64 +416,64 @@ class GetSovereigntyCampaigns200Ok implements ArrayAccess
     }
 
     /**
-     * Gets solarSystemId
+     * Gets solar_system_id
      * @return int
      */
     public function getSolarSystemId()
     {
-        return $this->container['solarSystemId'];
+        return $this->container['solar_system_id'];
     }
 
     /**
-     * Sets solarSystemId
-     * @param int $solarSystemId The solar system the structure is located in.
+     * Sets solar_system_id
+     * @param int $solar_system_id The solar system the structure is located in.
      * @return $this
      */
-    public function setSolarSystemId($solarSystemId)
+    public function setSolarSystemId($solar_system_id)
     {
-        $this->container['solarSystemId'] = $solarSystemId;
+        $this->container['solar_system_id'] = $solar_system_id;
 
         return $this;
     }
 
     /**
-     * Gets startTime
+     * Gets start_time
      * @return \DateTime
      */
     public function getStartTime()
     {
-        return $this->container['startTime'];
+        return $this->container['start_time'];
     }
 
     /**
-     * Sets startTime
-     * @param \DateTime $startTime Time the event is scheduled to start.
+     * Sets start_time
+     * @param \DateTime $start_time Time the event is scheduled to start.
      * @return $this
      */
-    public function setStartTime($startTime)
+    public function setStartTime($start_time)
     {
-        $this->container['startTime'] = $startTime;
+        $this->container['start_time'] = $start_time;
 
         return $this;
     }
 
     /**
-     * Gets structureId
+     * Gets structure_id
      * @return int
      */
     public function getStructureId()
     {
-        return $this->container['structureId'];
+        return $this->container['structure_id'];
     }
 
     /**
-     * Sets structureId
-     * @param int $structureId The structure item ID that is related to this campaign.
+     * Sets structure_id
+     * @param int $structure_id The structure item ID that is related to this campaign.
      * @return $this
      */
-    public function setStructureId($structureId)
+    public function setStructureId($structure_id)
     {
-        $this->container['structureId'] = $structureId;
+        $this->container['structure_id'] = $structure_id;
 
         return $this;
     }

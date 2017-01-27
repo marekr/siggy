@@ -67,13 +67,13 @@ class GetCharactersCharacterIdPlanets200Ok implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'lastUpdate' => '\DateTime',
-        'numPins' => 'int',
-        'ownerId' => 'int',
-        'planetId' => 'int',
-        'planetType' => 'string',
-        'solarSystemId' => 'int',
-        'upgradeLevel' => 'int'
+        'last_update' => '\DateTime',
+        'num_pins' => 'int',
+        'owner_id' => 'int',
+        'planet_id' => 'int',
+        'planet_type' => 'string',
+        'solar_system_id' => 'int',
+        'upgrade_level' => 'int'
     );
 
     public static function swaggerTypes()
@@ -86,13 +86,13 @@ class GetCharactersCharacterIdPlanets200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'lastUpdate' => 'last_update',
-        'numPins' => 'num_pins',
-        'ownerId' => 'owner_id',
-        'planetId' => 'planet_id',
-        'planetType' => 'planet_type',
-        'solarSystemId' => 'solar_system_id',
-        'upgradeLevel' => 'upgrade_level'
+        'last_update' => 'last_update',
+        'num_pins' => 'num_pins',
+        'owner_id' => 'owner_id',
+        'planet_id' => 'planet_id',
+        'planet_type' => 'planet_type',
+        'solar_system_id' => 'solar_system_id',
+        'upgrade_level' => 'upgrade_level'
     );
 
     public static function attributeMap()
@@ -105,13 +105,13 @@ class GetCharactersCharacterIdPlanets200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'lastUpdate' => 'setLastUpdate',
-        'numPins' => 'setNumPins',
-        'ownerId' => 'setOwnerId',
-        'planetId' => 'setPlanetId',
-        'planetType' => 'setPlanetType',
-        'solarSystemId' => 'setSolarSystemId',
-        'upgradeLevel' => 'setUpgradeLevel'
+        'last_update' => 'setLastUpdate',
+        'num_pins' => 'setNumPins',
+        'owner_id' => 'setOwnerId',
+        'planet_id' => 'setPlanetId',
+        'planet_type' => 'setPlanetType',
+        'solar_system_id' => 'setSolarSystemId',
+        'upgrade_level' => 'setUpgradeLevel'
     );
 
     public static function setters()
@@ -124,13 +124,13 @@ class GetCharactersCharacterIdPlanets200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'lastUpdate' => 'getLastUpdate',
-        'numPins' => 'getNumPins',
-        'ownerId' => 'getOwnerId',
-        'planetId' => 'getPlanetId',
-        'planetType' => 'getPlanetType',
-        'solarSystemId' => 'getSolarSystemId',
-        'upgradeLevel' => 'getUpgradeLevel'
+        'last_update' => 'getLastUpdate',
+        'num_pins' => 'getNumPins',
+        'owner_id' => 'getOwnerId',
+        'planet_id' => 'getPlanetId',
+        'planet_type' => 'getPlanetType',
+        'solar_system_id' => 'getSolarSystemId',
+        'upgrade_level' => 'getUpgradeLevel'
     );
 
     public static function getters()
@@ -180,13 +180,13 @@ class GetCharactersCharacterIdPlanets200Ok implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['lastUpdate'] = isset($data['lastUpdate']) ? $data['lastUpdate'] : null;
-        $this->container['numPins'] = isset($data['numPins']) ? $data['numPins'] : null;
-        $this->container['ownerId'] = isset($data['ownerId']) ? $data['ownerId'] : null;
-        $this->container['planetId'] = isset($data['planetId']) ? $data['planetId'] : null;
-        $this->container['planetType'] = isset($data['planetType']) ? $data['planetType'] : null;
-        $this->container['solarSystemId'] = isset($data['solarSystemId']) ? $data['solarSystemId'] : null;
-        $this->container['upgradeLevel'] = isset($data['upgradeLevel']) ? $data['upgradeLevel'] : null;
+        $this->container['last_update'] = isset($data['last_update']) ? $data['last_update'] : null;
+        $this->container['num_pins'] = isset($data['num_pins']) ? $data['num_pins'] : null;
+        $this->container['owner_id'] = isset($data['owner_id']) ? $data['owner_id'] : null;
+        $this->container['planet_id'] = isset($data['planet_id']) ? $data['planet_id'] : null;
+        $this->container['planet_type'] = isset($data['planet_type']) ? $data['planet_type'] : null;
+        $this->container['solar_system_id'] = isset($data['solar_system_id']) ? $data['solar_system_id'] : null;
+        $this->container['upgrade_level'] = isset($data['upgrade_level']) ? $data['upgrade_level'] : null;
     }
 
     /**
@@ -197,42 +197,42 @@ class GetCharactersCharacterIdPlanets200Ok implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['lastUpdate'] === null) {
-            $invalid_properties[] = "'lastUpdate' can't be null";
+        if ($this->container['last_update'] === null) {
+            $invalid_properties[] = "'last_update' can't be null";
         }
-        if ($this->container['numPins'] === null) {
-            $invalid_properties[] = "'numPins' can't be null";
+        if ($this->container['num_pins'] === null) {
+            $invalid_properties[] = "'num_pins' can't be null";
         }
-        if (($this->container['numPins'] < 1.0)) {
-            $invalid_properties[] = "invalid value for 'numPins', must be bigger than or equal to 1.0.";
+        if (($this->container['num_pins'] < 1.0)) {
+            $invalid_properties[] = "invalid value for 'num_pins', must be bigger than or equal to 1.0.";
         }
 
-        if ($this->container['ownerId'] === null) {
-            $invalid_properties[] = "'ownerId' can't be null";
+        if ($this->container['owner_id'] === null) {
+            $invalid_properties[] = "'owner_id' can't be null";
         }
-        if ($this->container['planetId'] === null) {
-            $invalid_properties[] = "'planetId' can't be null";
+        if ($this->container['planet_id'] === null) {
+            $invalid_properties[] = "'planet_id' can't be null";
         }
-        if ($this->container['planetType'] === null) {
-            $invalid_properties[] = "'planetType' can't be null";
+        if ($this->container['planet_type'] === null) {
+            $invalid_properties[] = "'planet_type' can't be null";
         }
         $allowed_values = array("temperate", "barren", "oceanic", "ice", "gas", "lava", "storm", "plasma");
-        if (!in_array($this->container['planetType'], $allowed_values)) {
-            $invalid_properties[] = "invalid value for 'planetType', must be one of #{allowed_values}.";
+        if (!in_array($this->container['planet_type'], $allowed_values)) {
+            $invalid_properties[] = "invalid value for 'planet_type', must be one of #{allowed_values}.";
         }
 
-        if ($this->container['solarSystemId'] === null) {
-            $invalid_properties[] = "'solarSystemId' can't be null";
+        if ($this->container['solar_system_id'] === null) {
+            $invalid_properties[] = "'solar_system_id' can't be null";
         }
-        if ($this->container['upgradeLevel'] === null) {
-            $invalid_properties[] = "'upgradeLevel' can't be null";
+        if ($this->container['upgrade_level'] === null) {
+            $invalid_properties[] = "'upgrade_level' can't be null";
         }
-        if (($this->container['upgradeLevel'] > 5.0)) {
-            $invalid_properties[] = "invalid value for 'upgradeLevel', must be smaller than or equal to 5.0.";
+        if (($this->container['upgrade_level'] > 5.0)) {
+            $invalid_properties[] = "invalid value for 'upgrade_level', must be smaller than or equal to 5.0.";
         }
 
-        if (($this->container['upgradeLevel'] < 0.0)) {
-            $invalid_properties[] = "invalid value for 'upgradeLevel', must be bigger than or equal to 0.0.";
+        if (($this->container['upgrade_level'] < 0.0)) {
+            $invalid_properties[] = "invalid value for 'upgrade_level', must be bigger than or equal to 0.0.";
         }
 
         return $invalid_properties;
@@ -246,38 +246,38 @@ class GetCharactersCharacterIdPlanets200Ok implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['lastUpdate'] === null) {
+        if ($this->container['last_update'] === null) {
             return false;
         }
-        if ($this->container['numPins'] === null) {
+        if ($this->container['num_pins'] === null) {
             return false;
         }
-        if ($this->container['numPins'] < 1.0) {
+        if ($this->container['num_pins'] < 1.0) {
             return false;
         }
-        if ($this->container['ownerId'] === null) {
+        if ($this->container['owner_id'] === null) {
             return false;
         }
-        if ($this->container['planetId'] === null) {
+        if ($this->container['planet_id'] === null) {
             return false;
         }
-        if ($this->container['planetType'] === null) {
+        if ($this->container['planet_type'] === null) {
             return false;
         }
         $allowed_values = array("temperate", "barren", "oceanic", "ice", "gas", "lava", "storm", "plasma");
-        if (!in_array($this->container['planetType'], $allowed_values)) {
+        if (!in_array($this->container['planet_type'], $allowed_values)) {
             return false;
         }
-        if ($this->container['solarSystemId'] === null) {
+        if ($this->container['solar_system_id'] === null) {
             return false;
         }
-        if ($this->container['upgradeLevel'] === null) {
+        if ($this->container['upgrade_level'] === null) {
             return false;
         }
-        if ($this->container['upgradeLevel'] > 5.0) {
+        if ($this->container['upgrade_level'] > 5.0) {
             return false;
         }
-        if ($this->container['upgradeLevel'] < 0.0) {
+        if ($this->container['upgrade_level'] < 0.0) {
             return false;
         }
         return true;
@@ -285,163 +285,163 @@ class GetCharactersCharacterIdPlanets200Ok implements ArrayAccess
 
 
     /**
-     * Gets lastUpdate
+     * Gets last_update
      * @return \DateTime
      */
     public function getLastUpdate()
     {
-        return $this->container['lastUpdate'];
+        return $this->container['last_update'];
     }
 
     /**
-     * Sets lastUpdate
-     * @param \DateTime $lastUpdate last_update string
+     * Sets last_update
+     * @param \DateTime $last_update last_update string
      * @return $this
      */
-    public function setLastUpdate($lastUpdate)
+    public function setLastUpdate($last_update)
     {
-        $this->container['lastUpdate'] = $lastUpdate;
+        $this->container['last_update'] = $last_update;
 
         return $this;
     }
 
     /**
-     * Gets numPins
+     * Gets num_pins
      * @return int
      */
     public function getNumPins()
     {
-        return $this->container['numPins'];
+        return $this->container['num_pins'];
     }
 
     /**
-     * Sets numPins
-     * @param int $numPins num_pins integer
+     * Sets num_pins
+     * @param int $num_pins num_pins integer
      * @return $this
      */
-    public function setNumPins($numPins)
+    public function setNumPins($num_pins)
     {
 
-        if ($numPins < 1.0) {
-            throw new \InvalidArgumentException('invalid value for $numPins when calling GetCharactersCharacterIdPlanets200Ok., must be bigger than or equal to 1.0.');
+        if ($num_pins < 1.0) {
+            throw new \InvalidArgumentException('invalid value for $num_pins when calling GetCharactersCharacterIdPlanets200Ok., must be bigger than or equal to 1.0.');
         }
-        $this->container['numPins'] = $numPins;
+        $this->container['num_pins'] = $num_pins;
 
         return $this;
     }
 
     /**
-     * Gets ownerId
+     * Gets owner_id
      * @return int
      */
     public function getOwnerId()
     {
-        return $this->container['ownerId'];
+        return $this->container['owner_id'];
     }
 
     /**
-     * Sets ownerId
-     * @param int $ownerId owner_id integer
+     * Sets owner_id
+     * @param int $owner_id owner_id integer
      * @return $this
      */
-    public function setOwnerId($ownerId)
+    public function setOwnerId($owner_id)
     {
-        $this->container['ownerId'] = $ownerId;
+        $this->container['owner_id'] = $owner_id;
 
         return $this;
     }
 
     /**
-     * Gets planetId
+     * Gets planet_id
      * @return int
      */
     public function getPlanetId()
     {
-        return $this->container['planetId'];
+        return $this->container['planet_id'];
     }
 
     /**
-     * Sets planetId
-     * @param int $planetId planet_id integer
+     * Sets planet_id
+     * @param int $planet_id planet_id integer
      * @return $this
      */
-    public function setPlanetId($planetId)
+    public function setPlanetId($planet_id)
     {
-        $this->container['planetId'] = $planetId;
+        $this->container['planet_id'] = $planet_id;
 
         return $this;
     }
 
     /**
-     * Gets planetType
+     * Gets planet_type
      * @return string
      */
     public function getPlanetType()
     {
-        return $this->container['planetType'];
+        return $this->container['planet_type'];
     }
 
     /**
-     * Sets planetType
-     * @param string $planetType planet_type string
+     * Sets planet_type
+     * @param string $planet_type planet_type string
      * @return $this
      */
-    public function setPlanetType($planetType)
+    public function setPlanetType($planet_type)
     {
         $allowed_values = array('temperate', 'barren', 'oceanic', 'ice', 'gas', 'lava', 'storm', 'plasma');
-        if (!in_array($planetType, $allowed_values)) {
-            throw new \InvalidArgumentException("Invalid value for 'planetType', must be one of 'temperate', 'barren', 'oceanic', 'ice', 'gas', 'lava', 'storm', 'plasma'");
+        if (!in_array($planet_type, $allowed_values)) {
+            throw new \InvalidArgumentException("Invalid value for 'planet_type', must be one of 'temperate', 'barren', 'oceanic', 'ice', 'gas', 'lava', 'storm', 'plasma'");
         }
-        $this->container['planetType'] = $planetType;
+        $this->container['planet_type'] = $planet_type;
 
         return $this;
     }
 
     /**
-     * Gets solarSystemId
+     * Gets solar_system_id
      * @return int
      */
     public function getSolarSystemId()
     {
-        return $this->container['solarSystemId'];
+        return $this->container['solar_system_id'];
     }
 
     /**
-     * Sets solarSystemId
-     * @param int $solarSystemId solar_system_id integer
+     * Sets solar_system_id
+     * @param int $solar_system_id solar_system_id integer
      * @return $this
      */
-    public function setSolarSystemId($solarSystemId)
+    public function setSolarSystemId($solar_system_id)
     {
-        $this->container['solarSystemId'] = $solarSystemId;
+        $this->container['solar_system_id'] = $solar_system_id;
 
         return $this;
     }
 
     /**
-     * Gets upgradeLevel
+     * Gets upgrade_level
      * @return int
      */
     public function getUpgradeLevel()
     {
-        return $this->container['upgradeLevel'];
+        return $this->container['upgrade_level'];
     }
 
     /**
-     * Sets upgradeLevel
-     * @param int $upgradeLevel upgrade_level integer
+     * Sets upgrade_level
+     * @param int $upgrade_level upgrade_level integer
      * @return $this
      */
-    public function setUpgradeLevel($upgradeLevel)
+    public function setUpgradeLevel($upgrade_level)
     {
 
-        if ($upgradeLevel > 5.0) {
-            throw new \InvalidArgumentException('invalid value for $upgradeLevel when calling GetCharactersCharacterIdPlanets200Ok., must be smaller than or equal to 5.0.');
+        if ($upgrade_level > 5.0) {
+            throw new \InvalidArgumentException('invalid value for $upgrade_level when calling GetCharactersCharacterIdPlanets200Ok., must be smaller than or equal to 5.0.');
         }
-        if ($upgradeLevel < 0.0) {
-            throw new \InvalidArgumentException('invalid value for $upgradeLevel when calling GetCharactersCharacterIdPlanets200Ok., must be bigger than or equal to 0.0.');
+        if ($upgrade_level < 0.0) {
+            throw new \InvalidArgumentException('invalid value for $upgrade_level when calling GetCharactersCharacterIdPlanets200Ok., must be bigger than or equal to 0.0.');
         }
-        $this->container['upgradeLevel'] = $upgradeLevel;
+        $this->container['upgrade_level'] = $upgrade_level;
 
         return $this;
     }

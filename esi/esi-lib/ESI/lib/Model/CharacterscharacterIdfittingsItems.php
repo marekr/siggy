@@ -69,7 +69,7 @@ class CharacterscharacterIdfittingsItems implements ArrayAccess
     protected static $swaggerTypes = array(
         'flag' => 'int',
         'quantity' => 'int',
-        'typeId' => 'int'
+        'type_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -84,7 +84,7 @@ class CharacterscharacterIdfittingsItems implements ArrayAccess
     protected static $attributeMap = array(
         'flag' => 'flag',
         'quantity' => 'quantity',
-        'typeId' => 'type_id'
+        'type_id' => 'type_id'
     );
 
     public static function attributeMap()
@@ -99,7 +99,7 @@ class CharacterscharacterIdfittingsItems implements ArrayAccess
     protected static $setters = array(
         'flag' => 'setFlag',
         'quantity' => 'setQuantity',
-        'typeId' => 'setTypeId'
+        'type_id' => 'setTypeId'
     );
 
     public static function setters()
@@ -114,7 +114,7 @@ class CharacterscharacterIdfittingsItems implements ArrayAccess
     protected static $getters = array(
         'flag' => 'getFlag',
         'quantity' => 'getQuantity',
-        'typeId' => 'getTypeId'
+        'type_id' => 'getTypeId'
     );
 
     public static function getters()
@@ -140,7 +140,7 @@ class CharacterscharacterIdfittingsItems implements ArrayAccess
     {
         $this->container['flag'] = isset($data['flag']) ? $data['flag'] : null;
         $this->container['quantity'] = isset($data['quantity']) ? $data['quantity'] : null;
-        $this->container['typeId'] = isset($data['typeId']) ? $data['typeId'] : null;
+        $this->container['type_id'] = isset($data['type_id']) ? $data['type_id'] : null;
     }
 
     /**
@@ -157,8 +157,8 @@ class CharacterscharacterIdfittingsItems implements ArrayAccess
         if ($this->container['quantity'] === null) {
             $invalid_properties[] = "'quantity' can't be null";
         }
-        if ($this->container['typeId'] === null) {
-            $invalid_properties[] = "'typeId' can't be null";
+        if ($this->container['type_id'] === null) {
+            $invalid_properties[] = "'type_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -177,7 +177,7 @@ class CharacterscharacterIdfittingsItems implements ArrayAccess
         if ($this->container['quantity'] === null) {
             return false;
         }
-        if ($this->container['typeId'] === null) {
+        if ($this->container['type_id'] === null) {
             return false;
         }
         return true;
@@ -227,22 +227,22 @@ class CharacterscharacterIdfittingsItems implements ArrayAccess
     }
 
     /**
-     * Gets typeId
+     * Gets type_id
      * @return int
      */
     public function getTypeId()
     {
-        return $this->container['typeId'];
+        return $this->container['type_id'];
     }
 
     /**
-     * Sets typeId
-     * @param int $typeId type_id integer
+     * Sets type_id
+     * @param int $type_id type_id integer
      * @return $this
      */
-    public function setTypeId($typeId)
+    public function setTypeId($type_id)
     {
-        $this->container['typeId'] = $typeId;
+        $this->container['type_id'] = $type_id;
 
         return $this;
     }

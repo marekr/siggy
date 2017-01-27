@@ -67,8 +67,8 @@ class GetIndustrySystems200Ok implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'costIndices' => '\ESI\Model\IndustrysystemsCostIndices[]',
-        'solarSystemId' => 'int'
+        'cost_indices' => '\ESI\Model\IndustrysystemsCostIndices[]',
+        'solar_system_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -81,8 +81,8 @@ class GetIndustrySystems200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'costIndices' => 'cost_indices',
-        'solarSystemId' => 'solar_system_id'
+        'cost_indices' => 'cost_indices',
+        'solar_system_id' => 'solar_system_id'
     );
 
     public static function attributeMap()
@@ -95,8 +95,8 @@ class GetIndustrySystems200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'costIndices' => 'setCostIndices',
-        'solarSystemId' => 'setSolarSystemId'
+        'cost_indices' => 'setCostIndices',
+        'solar_system_id' => 'setSolarSystemId'
     );
 
     public static function setters()
@@ -109,8 +109,8 @@ class GetIndustrySystems200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'costIndices' => 'getCostIndices',
-        'solarSystemId' => 'getSolarSystemId'
+        'cost_indices' => 'getCostIndices',
+        'solar_system_id' => 'getSolarSystemId'
     );
 
     public static function getters()
@@ -134,8 +134,8 @@ class GetIndustrySystems200Ok implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['costIndices'] = isset($data['costIndices']) ? $data['costIndices'] : null;
-        $this->container['solarSystemId'] = isset($data['solarSystemId']) ? $data['solarSystemId'] : null;
+        $this->container['cost_indices'] = isset($data['cost_indices']) ? $data['cost_indices'] : null;
+        $this->container['solar_system_id'] = isset($data['solar_system_id']) ? $data['solar_system_id'] : null;
     }
 
     /**
@@ -146,11 +146,11 @@ class GetIndustrySystems200Ok implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['costIndices'] === null) {
-            $invalid_properties[] = "'costIndices' can't be null";
+        if ($this->container['cost_indices'] === null) {
+            $invalid_properties[] = "'cost_indices' can't be null";
         }
-        if ($this->container['solarSystemId'] === null) {
-            $invalid_properties[] = "'solarSystemId' can't be null";
+        if ($this->container['solar_system_id'] === null) {
+            $invalid_properties[] = "'solar_system_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -163,10 +163,10 @@ class GetIndustrySystems200Ok implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['costIndices'] === null) {
+        if ($this->container['cost_indices'] === null) {
             return false;
         }
-        if ($this->container['solarSystemId'] === null) {
+        if ($this->container['solar_system_id'] === null) {
             return false;
         }
         return true;
@@ -174,43 +174,43 @@ class GetIndustrySystems200Ok implements ArrayAccess
 
 
     /**
-     * Gets costIndices
+     * Gets cost_indices
      * @return \ESI\Model\IndustrysystemsCostIndices[]
      */
     public function getCostIndices()
     {
-        return $this->container['costIndices'];
+        return $this->container['cost_indices'];
     }
 
     /**
-     * Sets costIndices
-     * @param \ESI\Model\IndustrysystemsCostIndices[] $costIndices cost_indices array
+     * Sets cost_indices
+     * @param \ESI\Model\IndustrysystemsCostIndices[] $cost_indices cost_indices array
      * @return $this
      */
-    public function setCostIndices($costIndices)
+    public function setCostIndices($cost_indices)
     {
-        $this->container['costIndices'] = $costIndices;
+        $this->container['cost_indices'] = $cost_indices;
 
         return $this;
     }
 
     /**
-     * Gets solarSystemId
+     * Gets solar_system_id
      * @return int
      */
     public function getSolarSystemId()
     {
-        return $this->container['solarSystemId'];
+        return $this->container['solar_system_id'];
     }
 
     /**
-     * Sets solarSystemId
-     * @param int $solarSystemId solar_system_id integer
+     * Sets solar_system_id
+     * @param int $solar_system_id solar_system_id integer
      * @return $this
      */
-    public function setSolarSystemId($solarSystemId)
+    public function setSolarSystemId($solar_system_id)
     {
-        $this->container['solarSystemId'] = $solarSystemId;
+        $this->container['solar_system_id'] = $solar_system_id;
 
         return $this;
     }

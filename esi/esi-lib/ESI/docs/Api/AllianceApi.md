@@ -57,7 +57,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getAlliancesAllianceId**
-> \ESI\Model\GetAlliancesAllianceIdOk getAlliancesAllianceId($allianceId, $datasource)
+> \ESI\Model\GetAlliancesAllianceIdOk getAlliancesAllianceId($alliance_id, $datasource)
 
 Get alliance information
 
@@ -69,11 +69,11 @@ Public information about an alliance  ---  Alternate route: `/v1/alliances/{alli
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new ESI\Api\AllianceApi();
-$allianceId = 56; // int | An Eve alliance ID
+$alliance_id = 56; // int | An Eve alliance ID
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getAlliancesAllianceId($allianceId, $datasource);
+    $result = $api_instance->getAlliancesAllianceId($alliance_id, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling AllianceApi->getAlliancesAllianceId: ', $e->getMessage(), PHP_EOL;
@@ -85,7 +85,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **allianceId** | **int**| An Eve alliance ID |
+ **alliance_id** | **int**| An Eve alliance ID |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -104,7 +104,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getAlliancesAllianceIdCorporations**
-> int[] getAlliancesAllianceIdCorporations($allianceId, $datasource)
+> int[] getAlliancesAllianceIdCorporations($alliance_id, $datasource)
 
 List alliance's corporations
 
@@ -116,11 +116,11 @@ List all current member corporations of an alliance  ---  Alternate route: `/v1/
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new ESI\Api\AllianceApi();
-$allianceId = 56; // int | An EVE alliance ID
+$alliance_id = 56; // int | An EVE alliance ID
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getAlliancesAllianceIdCorporations($allianceId, $datasource);
+    $result = $api_instance->getAlliancesAllianceIdCorporations($alliance_id, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling AllianceApi->getAlliancesAllianceIdCorporations: ', $e->getMessage(), PHP_EOL;
@@ -132,7 +132,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **allianceId** | **int**| An EVE alliance ID |
+ **alliance_id** | **int**| An EVE alliance ID |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -151,7 +151,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getAlliancesAllianceIdIcons**
-> \ESI\Model\GetAlliancesAllianceIdIconsOk getAlliancesAllianceIdIcons($allianceId, $datasource)
+> \ESI\Model\GetAlliancesAllianceIdIconsOk getAlliancesAllianceIdIcons($alliance_id, $datasource)
 
 Get alliance icon
 
@@ -163,11 +163,11 @@ Get the icon urls for a alliance  ---  Alternate route: `/v1/alliances/{alliance
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new ESI\Api\AllianceApi();
-$allianceId = 56; // int | An EVE alliance ID
+$alliance_id = 56; // int | An EVE alliance ID
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getAlliancesAllianceIdIcons($allianceId, $datasource);
+    $result = $api_instance->getAlliancesAllianceIdIcons($alliance_id, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling AllianceApi->getAlliancesAllianceIdIcons: ', $e->getMessage(), PHP_EOL;
@@ -179,7 +179,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **allianceId** | **int**| An EVE alliance ID |
+ **alliance_id** | **int**| An EVE alliance ID |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -198,7 +198,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getAlliancesNames**
-> \ESI\Model\GetAlliancesNames200Ok[] getAlliancesNames($allianceIds, $datasource)
+> \ESI\Model\GetAlliancesNames200Ok[] getAlliancesNames($alliance_ids, $datasource)
 
 Get alliance names
 
@@ -210,11 +210,11 @@ Resolve a set of alliance IDs to alliance names  ---  Alternate route: `/v1/alli
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new ESI\Api\AllianceApi();
-$allianceIds = array(56); // int[] | A comma separated list of alliance IDs
+$alliance_ids = array(56); // int[] | A comma separated list of alliance IDs
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getAlliancesNames($allianceIds, $datasource);
+    $result = $api_instance->getAlliancesNames($alliance_ids, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling AllianceApi->getAlliancesNames: ', $e->getMessage(), PHP_EOL;
@@ -226,7 +226,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **allianceIds** | [**int[]**](../Model/int.md)| A comma separated list of alliance IDs |
+ **alliance_ids** | [**int[]**](../Model/int.md)| A comma separated list of alliance IDs |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type

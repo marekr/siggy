@@ -67,15 +67,15 @@ class GetCorporationsCorporationIdRoles200Ok implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'characterId' => 'int',
-        'grantableRoles' => 'string[]',
-        'grantableRolesAtBase' => 'string[]',
-        'grantableRolesAtHq' => 'string[]',
-        'grantableRolesAtOther' => 'string[]',
+        'character_id' => 'int',
+        'grantable_roles' => 'string[]',
+        'grantable_roles_at_base' => 'string[]',
+        'grantable_roles_at_hq' => 'string[]',
+        'grantable_roles_at_other' => 'string[]',
         'roles' => 'string[]',
-        'rolesAtBase' => 'string[]',
-        'rolesAtHq' => 'string[]',
-        'rolesAtOther' => 'string[]'
+        'roles_at_base' => 'string[]',
+        'roles_at_hq' => 'string[]',
+        'roles_at_other' => 'string[]'
     );
 
     public static function swaggerTypes()
@@ -88,15 +88,15 @@ class GetCorporationsCorporationIdRoles200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'characterId' => 'character_id',
-        'grantableRoles' => 'grantable_roles',
-        'grantableRolesAtBase' => 'grantable_roles_at_base',
-        'grantableRolesAtHq' => 'grantable_roles_at_hq',
-        'grantableRolesAtOther' => 'grantable_roles_at_other',
+        'character_id' => 'character_id',
+        'grantable_roles' => 'grantable_roles',
+        'grantable_roles_at_base' => 'grantable_roles_at_base',
+        'grantable_roles_at_hq' => 'grantable_roles_at_hq',
+        'grantable_roles_at_other' => 'grantable_roles_at_other',
         'roles' => 'roles',
-        'rolesAtBase' => 'roles_at_base',
-        'rolesAtHq' => 'roles_at_hq',
-        'rolesAtOther' => 'roles_at_other'
+        'roles_at_base' => 'roles_at_base',
+        'roles_at_hq' => 'roles_at_hq',
+        'roles_at_other' => 'roles_at_other'
     );
 
     public static function attributeMap()
@@ -109,15 +109,15 @@ class GetCorporationsCorporationIdRoles200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'characterId' => 'setCharacterId',
-        'grantableRoles' => 'setGrantableRoles',
-        'grantableRolesAtBase' => 'setGrantableRolesAtBase',
-        'grantableRolesAtHq' => 'setGrantableRolesAtHq',
-        'grantableRolesAtOther' => 'setGrantableRolesAtOther',
+        'character_id' => 'setCharacterId',
+        'grantable_roles' => 'setGrantableRoles',
+        'grantable_roles_at_base' => 'setGrantableRolesAtBase',
+        'grantable_roles_at_hq' => 'setGrantableRolesAtHq',
+        'grantable_roles_at_other' => 'setGrantableRolesAtOther',
         'roles' => 'setRoles',
-        'rolesAtBase' => 'setRolesAtBase',
-        'rolesAtHq' => 'setRolesAtHq',
-        'rolesAtOther' => 'setRolesAtOther'
+        'roles_at_base' => 'setRolesAtBase',
+        'roles_at_hq' => 'setRolesAtHq',
+        'roles_at_other' => 'setRolesAtOther'
     );
 
     public static function setters()
@@ -130,15 +130,15 @@ class GetCorporationsCorporationIdRoles200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'characterId' => 'getCharacterId',
-        'grantableRoles' => 'getGrantableRoles',
-        'grantableRolesAtBase' => 'getGrantableRolesAtBase',
-        'grantableRolesAtHq' => 'getGrantableRolesAtHq',
-        'grantableRolesAtOther' => 'getGrantableRolesAtOther',
+        'character_id' => 'getCharacterId',
+        'grantable_roles' => 'getGrantableRoles',
+        'grantable_roles_at_base' => 'getGrantableRolesAtBase',
+        'grantable_roles_at_hq' => 'getGrantableRolesAtHq',
+        'grantable_roles_at_other' => 'getGrantableRolesAtOther',
         'roles' => 'getRoles',
-        'rolesAtBase' => 'getRolesAtBase',
-        'rolesAtHq' => 'getRolesAtHq',
-        'rolesAtOther' => 'getRolesAtOther'
+        'roles_at_base' => 'getRolesAtBase',
+        'roles_at_hq' => 'getRolesAtHq',
+        'roles_at_other' => 'getRolesAtOther'
     );
 
     public static function getters()
@@ -1042,15 +1042,15 @@ class GetCorporationsCorporationIdRoles200Ok implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['characterId'] = isset($data['characterId']) ? $data['characterId'] : null;
-        $this->container['grantableRoles'] = isset($data['grantableRoles']) ? $data['grantableRoles'] : null;
-        $this->container['grantableRolesAtBase'] = isset($data['grantableRolesAtBase']) ? $data['grantableRolesAtBase'] : null;
-        $this->container['grantableRolesAtHq'] = isset($data['grantableRolesAtHq']) ? $data['grantableRolesAtHq'] : null;
-        $this->container['grantableRolesAtOther'] = isset($data['grantableRolesAtOther']) ? $data['grantableRolesAtOther'] : null;
+        $this->container['character_id'] = isset($data['character_id']) ? $data['character_id'] : null;
+        $this->container['grantable_roles'] = isset($data['grantable_roles']) ? $data['grantable_roles'] : null;
+        $this->container['grantable_roles_at_base'] = isset($data['grantable_roles_at_base']) ? $data['grantable_roles_at_base'] : null;
+        $this->container['grantable_roles_at_hq'] = isset($data['grantable_roles_at_hq']) ? $data['grantable_roles_at_hq'] : null;
+        $this->container['grantable_roles_at_other'] = isset($data['grantable_roles_at_other']) ? $data['grantable_roles_at_other'] : null;
         $this->container['roles'] = isset($data['roles']) ? $data['roles'] : null;
-        $this->container['rolesAtBase'] = isset($data['rolesAtBase']) ? $data['rolesAtBase'] : null;
-        $this->container['rolesAtHq'] = isset($data['rolesAtHq']) ? $data['rolesAtHq'] : null;
-        $this->container['rolesAtOther'] = isset($data['rolesAtOther']) ? $data['rolesAtOther'] : null;
+        $this->container['roles_at_base'] = isset($data['roles_at_base']) ? $data['roles_at_base'] : null;
+        $this->container['roles_at_hq'] = isset($data['roles_at_hq']) ? $data['roles_at_hq'] : null;
+        $this->container['roles_at_other'] = isset($data['roles_at_other']) ? $data['roles_at_other'] : null;
     }
 
     /**
@@ -1061,8 +1061,8 @@ class GetCorporationsCorporationIdRoles200Ok implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['characterId'] === null) {
-            $invalid_properties[] = "'characterId' can't be null";
+        if ($this->container['character_id'] === null) {
+            $invalid_properties[] = "'character_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -1075,7 +1075,7 @@ class GetCorporationsCorporationIdRoles200Ok implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['characterId'] === null) {
+        if ($this->container['character_id'] === null) {
             return false;
         }
         return true;
@@ -1083,122 +1083,122 @@ class GetCorporationsCorporationIdRoles200Ok implements ArrayAccess
 
 
     /**
-     * Gets characterId
+     * Gets character_id
      * @return int
      */
     public function getCharacterId()
     {
-        return $this->container['characterId'];
+        return $this->container['character_id'];
     }
 
     /**
-     * Sets characterId
-     * @param int $characterId character_id integer
+     * Sets character_id
+     * @param int $character_id character_id integer
      * @return $this
      */
-    public function setCharacterId($characterId)
+    public function setCharacterId($character_id)
     {
-        $this->container['characterId'] = $characterId;
+        $this->container['character_id'] = $character_id;
 
         return $this;
     }
 
     /**
-     * Gets grantableRoles
+     * Gets grantable_roles
      * @return string[]
      */
     public function getGrantableRoles()
     {
-        return $this->container['grantableRoles'];
+        return $this->container['grantable_roles'];
     }
 
     /**
-     * Sets grantableRoles
-     * @param string[] $grantableRoles grantable_roles array
+     * Sets grantable_roles
+     * @param string[] $grantable_roles grantable_roles array
      * @return $this
      */
-    public function setGrantableRoles($grantableRoles)
+    public function setGrantableRoles($grantable_roles)
     {
         $allowed_values = array('Director', 'Personnel_Manager', 'Accountant', 'Security_Officer', 'Factory_Manager', 'Station_Manager', 'Auditor', 'Hangar_Take_1', 'Hangar_Take_2', 'Hangar_Take_3', 'Hangar_Take_4', 'Hangar_Take_5', 'Hangar_Take_6', 'Hangar_Take_7', 'Hangar_Query_1', 'Hangar_Query_2', 'Hangar_Query_3', 'Hangar_Query_4', 'Hangar_Query_5', 'Hangar_Query_6', 'Hangar_Query_7', 'Account_Take_1', 'Account_Take_2', 'Account_Take_3', 'Account_Take_4', 'Account_Take_5', 'Account_Take_6', 'Account_Take_7', 'Diplomat', 'Config_Equipment', 'Container_Take_1', 'Container_Take_2', 'Container_Take_3', 'Container_Take_4', 'Container_Take_5', 'Container_Take_6', 'Container_Take_7', 'Rent_Office', 'Rent_Factory_Facility', 'Rent_Research_Facility', 'Junior_Accountant', 'Config_Starbase_Equipment', 'Trader', 'Communications_Officer', 'Contract_Manager', 'Starbase_Defense_Operator', 'Starbase_Fuel_Technician', 'Fitting_Manager', 'Terrestrial_Combat_Officer', 'Terrestrial_Logistics_Officer');
-        if (!in_array($grantableRoles, $allowed_values)) {
-            throw new \InvalidArgumentException("Invalid value for 'grantableRoles', must be one of 'Director', 'Personnel_Manager', 'Accountant', 'Security_Officer', 'Factory_Manager', 'Station_Manager', 'Auditor', 'Hangar_Take_1', 'Hangar_Take_2', 'Hangar_Take_3', 'Hangar_Take_4', 'Hangar_Take_5', 'Hangar_Take_6', 'Hangar_Take_7', 'Hangar_Query_1', 'Hangar_Query_2', 'Hangar_Query_3', 'Hangar_Query_4', 'Hangar_Query_5', 'Hangar_Query_6', 'Hangar_Query_7', 'Account_Take_1', 'Account_Take_2', 'Account_Take_3', 'Account_Take_4', 'Account_Take_5', 'Account_Take_6', 'Account_Take_7', 'Diplomat', 'Config_Equipment', 'Container_Take_1', 'Container_Take_2', 'Container_Take_3', 'Container_Take_4', 'Container_Take_5', 'Container_Take_6', 'Container_Take_7', 'Rent_Office', 'Rent_Factory_Facility', 'Rent_Research_Facility', 'Junior_Accountant', 'Config_Starbase_Equipment', 'Trader', 'Communications_Officer', 'Contract_Manager', 'Starbase_Defense_Operator', 'Starbase_Fuel_Technician', 'Fitting_Manager', 'Terrestrial_Combat_Officer', 'Terrestrial_Logistics_Officer'");
+        if (!in_array($grantable_roles, $allowed_values)) {
+            throw new \InvalidArgumentException("Invalid value for 'grantable_roles', must be one of 'Director', 'Personnel_Manager', 'Accountant', 'Security_Officer', 'Factory_Manager', 'Station_Manager', 'Auditor', 'Hangar_Take_1', 'Hangar_Take_2', 'Hangar_Take_3', 'Hangar_Take_4', 'Hangar_Take_5', 'Hangar_Take_6', 'Hangar_Take_7', 'Hangar_Query_1', 'Hangar_Query_2', 'Hangar_Query_3', 'Hangar_Query_4', 'Hangar_Query_5', 'Hangar_Query_6', 'Hangar_Query_7', 'Account_Take_1', 'Account_Take_2', 'Account_Take_3', 'Account_Take_4', 'Account_Take_5', 'Account_Take_6', 'Account_Take_7', 'Diplomat', 'Config_Equipment', 'Container_Take_1', 'Container_Take_2', 'Container_Take_3', 'Container_Take_4', 'Container_Take_5', 'Container_Take_6', 'Container_Take_7', 'Rent_Office', 'Rent_Factory_Facility', 'Rent_Research_Facility', 'Junior_Accountant', 'Config_Starbase_Equipment', 'Trader', 'Communications_Officer', 'Contract_Manager', 'Starbase_Defense_Operator', 'Starbase_Fuel_Technician', 'Fitting_Manager', 'Terrestrial_Combat_Officer', 'Terrestrial_Logistics_Officer'");
         }
-        $this->container['grantableRoles'] = $grantableRoles;
+        $this->container['grantable_roles'] = $grantable_roles;
 
         return $this;
     }
 
     /**
-     * Gets grantableRolesAtBase
+     * Gets grantable_roles_at_base
      * @return string[]
      */
     public function getGrantableRolesAtBase()
     {
-        return $this->container['grantableRolesAtBase'];
+        return $this->container['grantable_roles_at_base'];
     }
 
     /**
-     * Sets grantableRolesAtBase
-     * @param string[] $grantableRolesAtBase grantable_roles_at_base array
+     * Sets grantable_roles_at_base
+     * @param string[] $grantable_roles_at_base grantable_roles_at_base array
      * @return $this
      */
-    public function setGrantableRolesAtBase($grantableRolesAtBase)
+    public function setGrantableRolesAtBase($grantable_roles_at_base)
     {
         $allowed_values = array('Director', 'Personnel_Manager', 'Accountant', 'Security_Officer', 'Factory_Manager', 'Station_Manager', 'Auditor', 'Hangar_Take_1', 'Hangar_Take_2', 'Hangar_Take_3', 'Hangar_Take_4', 'Hangar_Take_5', 'Hangar_Take_6', 'Hangar_Take_7', 'Hangar_Query_1', 'Hangar_Query_2', 'Hangar_Query_3', 'Hangar_Query_4', 'Hangar_Query_5', 'Hangar_Query_6', 'Hangar_Query_7', 'Account_Take_1', 'Account_Take_2', 'Account_Take_3', 'Account_Take_4', 'Account_Take_5', 'Account_Take_6', 'Account_Take_7', 'Diplomat', 'Config_Equipment', 'Container_Take_1', 'Container_Take_2', 'Container_Take_3', 'Container_Take_4', 'Container_Take_5', 'Container_Take_6', 'Container_Take_7', 'Rent_Office', 'Rent_Factory_Facility', 'Rent_Research_Facility', 'Junior_Accountant', 'Config_Starbase_Equipment', 'Trader', 'Communications_Officer', 'Contract_Manager', 'Starbase_Defense_Operator', 'Starbase_Fuel_Technician', 'Fitting_Manager', 'Terrestrial_Combat_Officer', 'Terrestrial_Logistics_Officer');
-        if (!in_array($grantableRolesAtBase, $allowed_values)) {
-            throw new \InvalidArgumentException("Invalid value for 'grantableRolesAtBase', must be one of 'Director', 'Personnel_Manager', 'Accountant', 'Security_Officer', 'Factory_Manager', 'Station_Manager', 'Auditor', 'Hangar_Take_1', 'Hangar_Take_2', 'Hangar_Take_3', 'Hangar_Take_4', 'Hangar_Take_5', 'Hangar_Take_6', 'Hangar_Take_7', 'Hangar_Query_1', 'Hangar_Query_2', 'Hangar_Query_3', 'Hangar_Query_4', 'Hangar_Query_5', 'Hangar_Query_6', 'Hangar_Query_7', 'Account_Take_1', 'Account_Take_2', 'Account_Take_3', 'Account_Take_4', 'Account_Take_5', 'Account_Take_6', 'Account_Take_7', 'Diplomat', 'Config_Equipment', 'Container_Take_1', 'Container_Take_2', 'Container_Take_3', 'Container_Take_4', 'Container_Take_5', 'Container_Take_6', 'Container_Take_7', 'Rent_Office', 'Rent_Factory_Facility', 'Rent_Research_Facility', 'Junior_Accountant', 'Config_Starbase_Equipment', 'Trader', 'Communications_Officer', 'Contract_Manager', 'Starbase_Defense_Operator', 'Starbase_Fuel_Technician', 'Fitting_Manager', 'Terrestrial_Combat_Officer', 'Terrestrial_Logistics_Officer'");
+        if (!in_array($grantable_roles_at_base, $allowed_values)) {
+            throw new \InvalidArgumentException("Invalid value for 'grantable_roles_at_base', must be one of 'Director', 'Personnel_Manager', 'Accountant', 'Security_Officer', 'Factory_Manager', 'Station_Manager', 'Auditor', 'Hangar_Take_1', 'Hangar_Take_2', 'Hangar_Take_3', 'Hangar_Take_4', 'Hangar_Take_5', 'Hangar_Take_6', 'Hangar_Take_7', 'Hangar_Query_1', 'Hangar_Query_2', 'Hangar_Query_3', 'Hangar_Query_4', 'Hangar_Query_5', 'Hangar_Query_6', 'Hangar_Query_7', 'Account_Take_1', 'Account_Take_2', 'Account_Take_3', 'Account_Take_4', 'Account_Take_5', 'Account_Take_6', 'Account_Take_7', 'Diplomat', 'Config_Equipment', 'Container_Take_1', 'Container_Take_2', 'Container_Take_3', 'Container_Take_4', 'Container_Take_5', 'Container_Take_6', 'Container_Take_7', 'Rent_Office', 'Rent_Factory_Facility', 'Rent_Research_Facility', 'Junior_Accountant', 'Config_Starbase_Equipment', 'Trader', 'Communications_Officer', 'Contract_Manager', 'Starbase_Defense_Operator', 'Starbase_Fuel_Technician', 'Fitting_Manager', 'Terrestrial_Combat_Officer', 'Terrestrial_Logistics_Officer'");
         }
-        $this->container['grantableRolesAtBase'] = $grantableRolesAtBase;
+        $this->container['grantable_roles_at_base'] = $grantable_roles_at_base;
 
         return $this;
     }
 
     /**
-     * Gets grantableRolesAtHq
+     * Gets grantable_roles_at_hq
      * @return string[]
      */
     public function getGrantableRolesAtHq()
     {
-        return $this->container['grantableRolesAtHq'];
+        return $this->container['grantable_roles_at_hq'];
     }
 
     /**
-     * Sets grantableRolesAtHq
-     * @param string[] $grantableRolesAtHq grantable_roles_at_hq array
+     * Sets grantable_roles_at_hq
+     * @param string[] $grantable_roles_at_hq grantable_roles_at_hq array
      * @return $this
      */
-    public function setGrantableRolesAtHq($grantableRolesAtHq)
+    public function setGrantableRolesAtHq($grantable_roles_at_hq)
     {
         $allowed_values = array('Director', 'Personnel_Manager', 'Accountant', 'Security_Officer', 'Factory_Manager', 'Station_Manager', 'Auditor', 'Hangar_Take_1', 'Hangar_Take_2', 'Hangar_Take_3', 'Hangar_Take_4', 'Hangar_Take_5', 'Hangar_Take_6', 'Hangar_Take_7', 'Hangar_Query_1', 'Hangar_Query_2', 'Hangar_Query_3', 'Hangar_Query_4', 'Hangar_Query_5', 'Hangar_Query_6', 'Hangar_Query_7', 'Account_Take_1', 'Account_Take_2', 'Account_Take_3', 'Account_Take_4', 'Account_Take_5', 'Account_Take_6', 'Account_Take_7', 'Diplomat', 'Config_Equipment', 'Container_Take_1', 'Container_Take_2', 'Container_Take_3', 'Container_Take_4', 'Container_Take_5', 'Container_Take_6', 'Container_Take_7', 'Rent_Office', 'Rent_Factory_Facility', 'Rent_Research_Facility', 'Junior_Accountant', 'Config_Starbase_Equipment', 'Trader', 'Communications_Officer', 'Contract_Manager', 'Starbase_Defense_Operator', 'Starbase_Fuel_Technician', 'Fitting_Manager', 'Terrestrial_Combat_Officer', 'Terrestrial_Logistics_Officer');
-        if (!in_array($grantableRolesAtHq, $allowed_values)) {
-            throw new \InvalidArgumentException("Invalid value for 'grantableRolesAtHq', must be one of 'Director', 'Personnel_Manager', 'Accountant', 'Security_Officer', 'Factory_Manager', 'Station_Manager', 'Auditor', 'Hangar_Take_1', 'Hangar_Take_2', 'Hangar_Take_3', 'Hangar_Take_4', 'Hangar_Take_5', 'Hangar_Take_6', 'Hangar_Take_7', 'Hangar_Query_1', 'Hangar_Query_2', 'Hangar_Query_3', 'Hangar_Query_4', 'Hangar_Query_5', 'Hangar_Query_6', 'Hangar_Query_7', 'Account_Take_1', 'Account_Take_2', 'Account_Take_3', 'Account_Take_4', 'Account_Take_5', 'Account_Take_6', 'Account_Take_7', 'Diplomat', 'Config_Equipment', 'Container_Take_1', 'Container_Take_2', 'Container_Take_3', 'Container_Take_4', 'Container_Take_5', 'Container_Take_6', 'Container_Take_7', 'Rent_Office', 'Rent_Factory_Facility', 'Rent_Research_Facility', 'Junior_Accountant', 'Config_Starbase_Equipment', 'Trader', 'Communications_Officer', 'Contract_Manager', 'Starbase_Defense_Operator', 'Starbase_Fuel_Technician', 'Fitting_Manager', 'Terrestrial_Combat_Officer', 'Terrestrial_Logistics_Officer'");
+        if (!in_array($grantable_roles_at_hq, $allowed_values)) {
+            throw new \InvalidArgumentException("Invalid value for 'grantable_roles_at_hq', must be one of 'Director', 'Personnel_Manager', 'Accountant', 'Security_Officer', 'Factory_Manager', 'Station_Manager', 'Auditor', 'Hangar_Take_1', 'Hangar_Take_2', 'Hangar_Take_3', 'Hangar_Take_4', 'Hangar_Take_5', 'Hangar_Take_6', 'Hangar_Take_7', 'Hangar_Query_1', 'Hangar_Query_2', 'Hangar_Query_3', 'Hangar_Query_4', 'Hangar_Query_5', 'Hangar_Query_6', 'Hangar_Query_7', 'Account_Take_1', 'Account_Take_2', 'Account_Take_3', 'Account_Take_4', 'Account_Take_5', 'Account_Take_6', 'Account_Take_7', 'Diplomat', 'Config_Equipment', 'Container_Take_1', 'Container_Take_2', 'Container_Take_3', 'Container_Take_4', 'Container_Take_5', 'Container_Take_6', 'Container_Take_7', 'Rent_Office', 'Rent_Factory_Facility', 'Rent_Research_Facility', 'Junior_Accountant', 'Config_Starbase_Equipment', 'Trader', 'Communications_Officer', 'Contract_Manager', 'Starbase_Defense_Operator', 'Starbase_Fuel_Technician', 'Fitting_Manager', 'Terrestrial_Combat_Officer', 'Terrestrial_Logistics_Officer'");
         }
-        $this->container['grantableRolesAtHq'] = $grantableRolesAtHq;
+        $this->container['grantable_roles_at_hq'] = $grantable_roles_at_hq;
 
         return $this;
     }
 
     /**
-     * Gets grantableRolesAtOther
+     * Gets grantable_roles_at_other
      * @return string[]
      */
     public function getGrantableRolesAtOther()
     {
-        return $this->container['grantableRolesAtOther'];
+        return $this->container['grantable_roles_at_other'];
     }
 
     /**
-     * Sets grantableRolesAtOther
-     * @param string[] $grantableRolesAtOther grantable_roles_at_other array
+     * Sets grantable_roles_at_other
+     * @param string[] $grantable_roles_at_other grantable_roles_at_other array
      * @return $this
      */
-    public function setGrantableRolesAtOther($grantableRolesAtOther)
+    public function setGrantableRolesAtOther($grantable_roles_at_other)
     {
         $allowed_values = array('Director', 'Personnel_Manager', 'Accountant', 'Security_Officer', 'Factory_Manager', 'Station_Manager', 'Auditor', 'Hangar_Take_1', 'Hangar_Take_2', 'Hangar_Take_3', 'Hangar_Take_4', 'Hangar_Take_5', 'Hangar_Take_6', 'Hangar_Take_7', 'Hangar_Query_1', 'Hangar_Query_2', 'Hangar_Query_3', 'Hangar_Query_4', 'Hangar_Query_5', 'Hangar_Query_6', 'Hangar_Query_7', 'Account_Take_1', 'Account_Take_2', 'Account_Take_3', 'Account_Take_4', 'Account_Take_5', 'Account_Take_6', 'Account_Take_7', 'Diplomat', 'Config_Equipment', 'Container_Take_1', 'Container_Take_2', 'Container_Take_3', 'Container_Take_4', 'Container_Take_5', 'Container_Take_6', 'Container_Take_7', 'Rent_Office', 'Rent_Factory_Facility', 'Rent_Research_Facility', 'Junior_Accountant', 'Config_Starbase_Equipment', 'Trader', 'Communications_Officer', 'Contract_Manager', 'Starbase_Defense_Operator', 'Starbase_Fuel_Technician', 'Fitting_Manager', 'Terrestrial_Combat_Officer', 'Terrestrial_Logistics_Officer');
-        if (!in_array($grantableRolesAtOther, $allowed_values)) {
-            throw new \InvalidArgumentException("Invalid value for 'grantableRolesAtOther', must be one of 'Director', 'Personnel_Manager', 'Accountant', 'Security_Officer', 'Factory_Manager', 'Station_Manager', 'Auditor', 'Hangar_Take_1', 'Hangar_Take_2', 'Hangar_Take_3', 'Hangar_Take_4', 'Hangar_Take_5', 'Hangar_Take_6', 'Hangar_Take_7', 'Hangar_Query_1', 'Hangar_Query_2', 'Hangar_Query_3', 'Hangar_Query_4', 'Hangar_Query_5', 'Hangar_Query_6', 'Hangar_Query_7', 'Account_Take_1', 'Account_Take_2', 'Account_Take_3', 'Account_Take_4', 'Account_Take_5', 'Account_Take_6', 'Account_Take_7', 'Diplomat', 'Config_Equipment', 'Container_Take_1', 'Container_Take_2', 'Container_Take_3', 'Container_Take_4', 'Container_Take_5', 'Container_Take_6', 'Container_Take_7', 'Rent_Office', 'Rent_Factory_Facility', 'Rent_Research_Facility', 'Junior_Accountant', 'Config_Starbase_Equipment', 'Trader', 'Communications_Officer', 'Contract_Manager', 'Starbase_Defense_Operator', 'Starbase_Fuel_Technician', 'Fitting_Manager', 'Terrestrial_Combat_Officer', 'Terrestrial_Logistics_Officer'");
+        if (!in_array($grantable_roles_at_other, $allowed_values)) {
+            throw new \InvalidArgumentException("Invalid value for 'grantable_roles_at_other', must be one of 'Director', 'Personnel_Manager', 'Accountant', 'Security_Officer', 'Factory_Manager', 'Station_Manager', 'Auditor', 'Hangar_Take_1', 'Hangar_Take_2', 'Hangar_Take_3', 'Hangar_Take_4', 'Hangar_Take_5', 'Hangar_Take_6', 'Hangar_Take_7', 'Hangar_Query_1', 'Hangar_Query_2', 'Hangar_Query_3', 'Hangar_Query_4', 'Hangar_Query_5', 'Hangar_Query_6', 'Hangar_Query_7', 'Account_Take_1', 'Account_Take_2', 'Account_Take_3', 'Account_Take_4', 'Account_Take_5', 'Account_Take_6', 'Account_Take_7', 'Diplomat', 'Config_Equipment', 'Container_Take_1', 'Container_Take_2', 'Container_Take_3', 'Container_Take_4', 'Container_Take_5', 'Container_Take_6', 'Container_Take_7', 'Rent_Office', 'Rent_Factory_Facility', 'Rent_Research_Facility', 'Junior_Accountant', 'Config_Starbase_Equipment', 'Trader', 'Communications_Officer', 'Contract_Manager', 'Starbase_Defense_Operator', 'Starbase_Fuel_Technician', 'Fitting_Manager', 'Terrestrial_Combat_Officer', 'Terrestrial_Logistics_Officer'");
         }
-        $this->container['grantableRolesAtOther'] = $grantableRolesAtOther;
+        $this->container['grantable_roles_at_other'] = $grantable_roles_at_other;
 
         return $this;
     }
@@ -1229,76 +1229,76 @@ class GetCorporationsCorporationIdRoles200Ok implements ArrayAccess
     }
 
     /**
-     * Gets rolesAtBase
+     * Gets roles_at_base
      * @return string[]
      */
     public function getRolesAtBase()
     {
-        return $this->container['rolesAtBase'];
+        return $this->container['roles_at_base'];
     }
 
     /**
-     * Sets rolesAtBase
-     * @param string[] $rolesAtBase roles_at_base array
+     * Sets roles_at_base
+     * @param string[] $roles_at_base roles_at_base array
      * @return $this
      */
-    public function setRolesAtBase($rolesAtBase)
+    public function setRolesAtBase($roles_at_base)
     {
         $allowed_values = array('Director', 'Personnel_Manager', 'Accountant', 'Security_Officer', 'Factory_Manager', 'Station_Manager', 'Auditor', 'Hangar_Take_1', 'Hangar_Take_2', 'Hangar_Take_3', 'Hangar_Take_4', 'Hangar_Take_5', 'Hangar_Take_6', 'Hangar_Take_7', 'Hangar_Query_1', 'Hangar_Query_2', 'Hangar_Query_3', 'Hangar_Query_4', 'Hangar_Query_5', 'Hangar_Query_6', 'Hangar_Query_7', 'Account_Take_1', 'Account_Take_2', 'Account_Take_3', 'Account_Take_4', 'Account_Take_5', 'Account_Take_6', 'Account_Take_7', 'Diplomat', 'Config_Equipment', 'Container_Take_1', 'Container_Take_2', 'Container_Take_3', 'Container_Take_4', 'Container_Take_5', 'Container_Take_6', 'Container_Take_7', 'Rent_Office', 'Rent_Factory_Facility', 'Rent_Research_Facility', 'Junior_Accountant', 'Config_Starbase_Equipment', 'Trader', 'Communications_Officer', 'Contract_Manager', 'Starbase_Defense_Operator', 'Starbase_Fuel_Technician', 'Fitting_Manager', 'Terrestrial_Combat_Officer', 'Terrestrial_Logistics_Officer');
-        if (!in_array($rolesAtBase, $allowed_values)) {
-            throw new \InvalidArgumentException("Invalid value for 'rolesAtBase', must be one of 'Director', 'Personnel_Manager', 'Accountant', 'Security_Officer', 'Factory_Manager', 'Station_Manager', 'Auditor', 'Hangar_Take_1', 'Hangar_Take_2', 'Hangar_Take_3', 'Hangar_Take_4', 'Hangar_Take_5', 'Hangar_Take_6', 'Hangar_Take_7', 'Hangar_Query_1', 'Hangar_Query_2', 'Hangar_Query_3', 'Hangar_Query_4', 'Hangar_Query_5', 'Hangar_Query_6', 'Hangar_Query_7', 'Account_Take_1', 'Account_Take_2', 'Account_Take_3', 'Account_Take_4', 'Account_Take_5', 'Account_Take_6', 'Account_Take_7', 'Diplomat', 'Config_Equipment', 'Container_Take_1', 'Container_Take_2', 'Container_Take_3', 'Container_Take_4', 'Container_Take_5', 'Container_Take_6', 'Container_Take_7', 'Rent_Office', 'Rent_Factory_Facility', 'Rent_Research_Facility', 'Junior_Accountant', 'Config_Starbase_Equipment', 'Trader', 'Communications_Officer', 'Contract_Manager', 'Starbase_Defense_Operator', 'Starbase_Fuel_Technician', 'Fitting_Manager', 'Terrestrial_Combat_Officer', 'Terrestrial_Logistics_Officer'");
+        if (!in_array($roles_at_base, $allowed_values)) {
+            throw new \InvalidArgumentException("Invalid value for 'roles_at_base', must be one of 'Director', 'Personnel_Manager', 'Accountant', 'Security_Officer', 'Factory_Manager', 'Station_Manager', 'Auditor', 'Hangar_Take_1', 'Hangar_Take_2', 'Hangar_Take_3', 'Hangar_Take_4', 'Hangar_Take_5', 'Hangar_Take_6', 'Hangar_Take_7', 'Hangar_Query_1', 'Hangar_Query_2', 'Hangar_Query_3', 'Hangar_Query_4', 'Hangar_Query_5', 'Hangar_Query_6', 'Hangar_Query_7', 'Account_Take_1', 'Account_Take_2', 'Account_Take_3', 'Account_Take_4', 'Account_Take_5', 'Account_Take_6', 'Account_Take_7', 'Diplomat', 'Config_Equipment', 'Container_Take_1', 'Container_Take_2', 'Container_Take_3', 'Container_Take_4', 'Container_Take_5', 'Container_Take_6', 'Container_Take_7', 'Rent_Office', 'Rent_Factory_Facility', 'Rent_Research_Facility', 'Junior_Accountant', 'Config_Starbase_Equipment', 'Trader', 'Communications_Officer', 'Contract_Manager', 'Starbase_Defense_Operator', 'Starbase_Fuel_Technician', 'Fitting_Manager', 'Terrestrial_Combat_Officer', 'Terrestrial_Logistics_Officer'");
         }
-        $this->container['rolesAtBase'] = $rolesAtBase;
+        $this->container['roles_at_base'] = $roles_at_base;
 
         return $this;
     }
 
     /**
-     * Gets rolesAtHq
+     * Gets roles_at_hq
      * @return string[]
      */
     public function getRolesAtHq()
     {
-        return $this->container['rolesAtHq'];
+        return $this->container['roles_at_hq'];
     }
 
     /**
-     * Sets rolesAtHq
-     * @param string[] $rolesAtHq roles_at_hq array
+     * Sets roles_at_hq
+     * @param string[] $roles_at_hq roles_at_hq array
      * @return $this
      */
-    public function setRolesAtHq($rolesAtHq)
+    public function setRolesAtHq($roles_at_hq)
     {
         $allowed_values = array('Director', 'Personnel_Manager', 'Accountant', 'Security_Officer', 'Factory_Manager', 'Station_Manager', 'Auditor', 'Hangar_Take_1', 'Hangar_Take_2', 'Hangar_Take_3', 'Hangar_Take_4', 'Hangar_Take_5', 'Hangar_Take_6', 'Hangar_Take_7', 'Hangar_Query_1', 'Hangar_Query_2', 'Hangar_Query_3', 'Hangar_Query_4', 'Hangar_Query_5', 'Hangar_Query_6', 'Hangar_Query_7', 'Account_Take_1', 'Account_Take_2', 'Account_Take_3', 'Account_Take_4', 'Account_Take_5', 'Account_Take_6', 'Account_Take_7', 'Diplomat', 'Config_Equipment', 'Container_Take_1', 'Container_Take_2', 'Container_Take_3', 'Container_Take_4', 'Container_Take_5', 'Container_Take_6', 'Container_Take_7', 'Rent_Office', 'Rent_Factory_Facility', 'Rent_Research_Facility', 'Junior_Accountant', 'Config_Starbase_Equipment', 'Trader', 'Communications_Officer', 'Contract_Manager', 'Starbase_Defense_Operator', 'Starbase_Fuel_Technician', 'Fitting_Manager', 'Terrestrial_Combat_Officer', 'Terrestrial_Logistics_Officer');
-        if (!in_array($rolesAtHq, $allowed_values)) {
-            throw new \InvalidArgumentException("Invalid value for 'rolesAtHq', must be one of 'Director', 'Personnel_Manager', 'Accountant', 'Security_Officer', 'Factory_Manager', 'Station_Manager', 'Auditor', 'Hangar_Take_1', 'Hangar_Take_2', 'Hangar_Take_3', 'Hangar_Take_4', 'Hangar_Take_5', 'Hangar_Take_6', 'Hangar_Take_7', 'Hangar_Query_1', 'Hangar_Query_2', 'Hangar_Query_3', 'Hangar_Query_4', 'Hangar_Query_5', 'Hangar_Query_6', 'Hangar_Query_7', 'Account_Take_1', 'Account_Take_2', 'Account_Take_3', 'Account_Take_4', 'Account_Take_5', 'Account_Take_6', 'Account_Take_7', 'Diplomat', 'Config_Equipment', 'Container_Take_1', 'Container_Take_2', 'Container_Take_3', 'Container_Take_4', 'Container_Take_5', 'Container_Take_6', 'Container_Take_7', 'Rent_Office', 'Rent_Factory_Facility', 'Rent_Research_Facility', 'Junior_Accountant', 'Config_Starbase_Equipment', 'Trader', 'Communications_Officer', 'Contract_Manager', 'Starbase_Defense_Operator', 'Starbase_Fuel_Technician', 'Fitting_Manager', 'Terrestrial_Combat_Officer', 'Terrestrial_Logistics_Officer'");
+        if (!in_array($roles_at_hq, $allowed_values)) {
+            throw new \InvalidArgumentException("Invalid value for 'roles_at_hq', must be one of 'Director', 'Personnel_Manager', 'Accountant', 'Security_Officer', 'Factory_Manager', 'Station_Manager', 'Auditor', 'Hangar_Take_1', 'Hangar_Take_2', 'Hangar_Take_3', 'Hangar_Take_4', 'Hangar_Take_5', 'Hangar_Take_6', 'Hangar_Take_7', 'Hangar_Query_1', 'Hangar_Query_2', 'Hangar_Query_3', 'Hangar_Query_4', 'Hangar_Query_5', 'Hangar_Query_6', 'Hangar_Query_7', 'Account_Take_1', 'Account_Take_2', 'Account_Take_3', 'Account_Take_4', 'Account_Take_5', 'Account_Take_6', 'Account_Take_7', 'Diplomat', 'Config_Equipment', 'Container_Take_1', 'Container_Take_2', 'Container_Take_3', 'Container_Take_4', 'Container_Take_5', 'Container_Take_6', 'Container_Take_7', 'Rent_Office', 'Rent_Factory_Facility', 'Rent_Research_Facility', 'Junior_Accountant', 'Config_Starbase_Equipment', 'Trader', 'Communications_Officer', 'Contract_Manager', 'Starbase_Defense_Operator', 'Starbase_Fuel_Technician', 'Fitting_Manager', 'Terrestrial_Combat_Officer', 'Terrestrial_Logistics_Officer'");
         }
-        $this->container['rolesAtHq'] = $rolesAtHq;
+        $this->container['roles_at_hq'] = $roles_at_hq;
 
         return $this;
     }
 
     /**
-     * Gets rolesAtOther
+     * Gets roles_at_other
      * @return string[]
      */
     public function getRolesAtOther()
     {
-        return $this->container['rolesAtOther'];
+        return $this->container['roles_at_other'];
     }
 
     /**
-     * Sets rolesAtOther
-     * @param string[] $rolesAtOther roles_at_other array
+     * Sets roles_at_other
+     * @param string[] $roles_at_other roles_at_other array
      * @return $this
      */
-    public function setRolesAtOther($rolesAtOther)
+    public function setRolesAtOther($roles_at_other)
     {
         $allowed_values = array('Director', 'Personnel_Manager', 'Accountant', 'Security_Officer', 'Factory_Manager', 'Station_Manager', 'Auditor', 'Hangar_Take_1', 'Hangar_Take_2', 'Hangar_Take_3', 'Hangar_Take_4', 'Hangar_Take_5', 'Hangar_Take_6', 'Hangar_Take_7', 'Hangar_Query_1', 'Hangar_Query_2', 'Hangar_Query_3', 'Hangar_Query_4', 'Hangar_Query_5', 'Hangar_Query_6', 'Hangar_Query_7', 'Account_Take_1', 'Account_Take_2', 'Account_Take_3', 'Account_Take_4', 'Account_Take_5', 'Account_Take_6', 'Account_Take_7', 'Diplomat', 'Config_Equipment', 'Container_Take_1', 'Container_Take_2', 'Container_Take_3', 'Container_Take_4', 'Container_Take_5', 'Container_Take_6', 'Container_Take_7', 'Rent_Office', 'Rent_Factory_Facility', 'Rent_Research_Facility', 'Junior_Accountant', 'Config_Starbase_Equipment', 'Trader', 'Communications_Officer', 'Contract_Manager', 'Starbase_Defense_Operator', 'Starbase_Fuel_Technician', 'Fitting_Manager', 'Terrestrial_Combat_Officer', 'Terrestrial_Logistics_Officer');
-        if (!in_array($rolesAtOther, $allowed_values)) {
-            throw new \InvalidArgumentException("Invalid value for 'rolesAtOther', must be one of 'Director', 'Personnel_Manager', 'Accountant', 'Security_Officer', 'Factory_Manager', 'Station_Manager', 'Auditor', 'Hangar_Take_1', 'Hangar_Take_2', 'Hangar_Take_3', 'Hangar_Take_4', 'Hangar_Take_5', 'Hangar_Take_6', 'Hangar_Take_7', 'Hangar_Query_1', 'Hangar_Query_2', 'Hangar_Query_3', 'Hangar_Query_4', 'Hangar_Query_5', 'Hangar_Query_6', 'Hangar_Query_7', 'Account_Take_1', 'Account_Take_2', 'Account_Take_3', 'Account_Take_4', 'Account_Take_5', 'Account_Take_6', 'Account_Take_7', 'Diplomat', 'Config_Equipment', 'Container_Take_1', 'Container_Take_2', 'Container_Take_3', 'Container_Take_4', 'Container_Take_5', 'Container_Take_6', 'Container_Take_7', 'Rent_Office', 'Rent_Factory_Facility', 'Rent_Research_Facility', 'Junior_Accountant', 'Config_Starbase_Equipment', 'Trader', 'Communications_Officer', 'Contract_Manager', 'Starbase_Defense_Operator', 'Starbase_Fuel_Technician', 'Fitting_Manager', 'Terrestrial_Combat_Officer', 'Terrestrial_Logistics_Officer'");
+        if (!in_array($roles_at_other, $allowed_values)) {
+            throw new \InvalidArgumentException("Invalid value for 'roles_at_other', must be one of 'Director', 'Personnel_Manager', 'Accountant', 'Security_Officer', 'Factory_Manager', 'Station_Manager', 'Auditor', 'Hangar_Take_1', 'Hangar_Take_2', 'Hangar_Take_3', 'Hangar_Take_4', 'Hangar_Take_5', 'Hangar_Take_6', 'Hangar_Take_7', 'Hangar_Query_1', 'Hangar_Query_2', 'Hangar_Query_3', 'Hangar_Query_4', 'Hangar_Query_5', 'Hangar_Query_6', 'Hangar_Query_7', 'Account_Take_1', 'Account_Take_2', 'Account_Take_3', 'Account_Take_4', 'Account_Take_5', 'Account_Take_6', 'Account_Take_7', 'Diplomat', 'Config_Equipment', 'Container_Take_1', 'Container_Take_2', 'Container_Take_3', 'Container_Take_4', 'Container_Take_5', 'Container_Take_6', 'Container_Take_7', 'Rent_Office', 'Rent_Factory_Facility', 'Rent_Research_Facility', 'Junior_Accountant', 'Config_Starbase_Equipment', 'Trader', 'Communications_Officer', 'Contract_Manager', 'Starbase_Defense_Operator', 'Starbase_Fuel_Technician', 'Fitting_Manager', 'Terrestrial_Combat_Officer', 'Terrestrial_Logistics_Officer'");
         }
-        $this->container['rolesAtOther'] = $rolesAtOther;
+        $this->container['roles_at_other'] = $roles_at_other;
 
         return $this;
     }

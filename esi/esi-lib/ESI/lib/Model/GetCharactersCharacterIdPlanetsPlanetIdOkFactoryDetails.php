@@ -67,7 +67,7 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkFactoryDetails implements ArrayAc
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'schematicId' => 'int'
+        'schematic_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -80,7 +80,7 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkFactoryDetails implements ArrayAc
      * @var string[]
      */
     protected static $attributeMap = array(
-        'schematicId' => 'schematic_id'
+        'schematic_id' => 'schematic_id'
     );
 
     public static function attributeMap()
@@ -93,7 +93,7 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkFactoryDetails implements ArrayAc
      * @var string[]
      */
     protected static $setters = array(
-        'schematicId' => 'setSchematicId'
+        'schematic_id' => 'setSchematicId'
     );
 
     public static function setters()
@@ -106,7 +106,7 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkFactoryDetails implements ArrayAc
      * @var string[]
      */
     protected static $getters = array(
-        'schematicId' => 'getSchematicId'
+        'schematic_id' => 'getSchematicId'
     );
 
     public static function getters()
@@ -130,7 +130,7 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkFactoryDetails implements ArrayAc
      */
     public function __construct(array $data = null)
     {
-        $this->container['schematicId'] = isset($data['schematicId']) ? $data['schematicId'] : null;
+        $this->container['schematic_id'] = isset($data['schematic_id']) ? $data['schematic_id'] : null;
     }
 
     /**
@@ -141,8 +141,8 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkFactoryDetails implements ArrayAc
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['schematicId'] === null) {
-            $invalid_properties[] = "'schematicId' can't be null";
+        if ($this->container['schematic_id'] === null) {
+            $invalid_properties[] = "'schematic_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -155,7 +155,7 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkFactoryDetails implements ArrayAc
      */
     public function valid()
     {
-        if ($this->container['schematicId'] === null) {
+        if ($this->container['schematic_id'] === null) {
             return false;
         }
         return true;
@@ -163,22 +163,22 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkFactoryDetails implements ArrayAc
 
 
     /**
-     * Gets schematicId
+     * Gets schematic_id
      * @return int
      */
     public function getSchematicId()
     {
-        return $this->container['schematicId'];
+        return $this->container['schematic_id'];
     }
 
     /**
-     * Sets schematicId
-     * @param int $schematicId schematic_id integer
+     * Sets schematic_id
+     * @param int $schematic_id schematic_id integer
      * @return $this
      */
-    public function setSchematicId($schematicId)
+    public function setSchematicId($schematic_id)
     {
-        $this->container['schematicId'] = $schematicId;
+        $this->container['schematic_id'] = $schematic_id;
 
         return $this;
     }

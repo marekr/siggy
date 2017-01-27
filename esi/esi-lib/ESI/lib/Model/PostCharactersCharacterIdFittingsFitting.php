@@ -70,7 +70,7 @@ class PostCharactersCharacterIdFittingsFitting implements ArrayAccess
         'description' => 'string',
         'items' => '\ESI\Model\CharacterscharacterIdfittingsItems1[]',
         'name' => 'string',
-        'shipTypeId' => 'int'
+        'ship_type_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -86,7 +86,7 @@ class PostCharactersCharacterIdFittingsFitting implements ArrayAccess
         'description' => 'description',
         'items' => 'items',
         'name' => 'name',
-        'shipTypeId' => 'ship_type_id'
+        'ship_type_id' => 'ship_type_id'
     );
 
     public static function attributeMap()
@@ -102,7 +102,7 @@ class PostCharactersCharacterIdFittingsFitting implements ArrayAccess
         'description' => 'setDescription',
         'items' => 'setItems',
         'name' => 'setName',
-        'shipTypeId' => 'setShipTypeId'
+        'ship_type_id' => 'setShipTypeId'
     );
 
     public static function setters()
@@ -118,7 +118,7 @@ class PostCharactersCharacterIdFittingsFitting implements ArrayAccess
         'description' => 'getDescription',
         'items' => 'getItems',
         'name' => 'getName',
-        'shipTypeId' => 'getShipTypeId'
+        'ship_type_id' => 'getShipTypeId'
     );
 
     public static function getters()
@@ -145,7 +145,7 @@ class PostCharactersCharacterIdFittingsFitting implements ArrayAccess
         $this->container['description'] = isset($data['description']) ? $data['description'] : null;
         $this->container['items'] = isset($data['items']) ? $data['items'] : null;
         $this->container['name'] = isset($data['name']) ? $data['name'] : null;
-        $this->container['shipTypeId'] = isset($data['shipTypeId']) ? $data['shipTypeId'] : null;
+        $this->container['ship_type_id'] = isset($data['ship_type_id']) ? $data['ship_type_id'] : null;
     }
 
     /**
@@ -181,8 +181,8 @@ class PostCharactersCharacterIdFittingsFitting implements ArrayAccess
             $invalid_properties[] = "invalid value for 'name', the character length must be bigger than or equal to 1.";
         }
 
-        if ($this->container['shipTypeId'] === null) {
-            $invalid_properties[] = "'shipTypeId' can't be null";
+        if ($this->container['ship_type_id'] === null) {
+            $invalid_properties[] = "'ship_type_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -216,7 +216,7 @@ class PostCharactersCharacterIdFittingsFitting implements ArrayAccess
         if (strlen($this->container['name']) < 1) {
             return false;
         }
-        if ($this->container['shipTypeId'] === null) {
+        if ($this->container['ship_type_id'] === null) {
             return false;
         }
         return true;
@@ -299,22 +299,22 @@ class PostCharactersCharacterIdFittingsFitting implements ArrayAccess
     }
 
     /**
-     * Gets shipTypeId
+     * Gets ship_type_id
      * @return int
      */
     public function getShipTypeId()
     {
-        return $this->container['shipTypeId'];
+        return $this->container['ship_type_id'];
     }
 
     /**
-     * Sets shipTypeId
-     * @param int $shipTypeId ship_type_id integer
+     * Sets ship_type_id
+     * @param int $ship_type_id ship_type_id integer
      * @return $this
      */
-    public function setShipTypeId($shipTypeId)
+    public function setShipTypeId($ship_type_id)
     {
-        $this->container['shipTypeId'] = $shipTypeId;
+        $this->container['ship_type_id'] = $ship_type_id;
 
         return $this;
     }

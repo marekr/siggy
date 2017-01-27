@@ -56,7 +56,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getMarketsRegionIdHistory**
-> \ESI\Model\GetMarketsRegionIdHistory200Ok[] getMarketsRegionIdHistory($regionId, $typeId, $datasource)
+> \ESI\Model\GetMarketsRegionIdHistory200Ok[] getMarketsRegionIdHistory($region_id, $type_id, $datasource)
 
 List historical market statistics in a region
 
@@ -68,12 +68,12 @@ Return a list of historical market statistics for the specified type in a region
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new ESI\Api\MarketApi();
-$regionId = 56; // int | Return statistics in this region
-$typeId = 56; // int | Return statistics for this type
+$region_id = 56; // int | Return statistics in this region
+$type_id = 56; // int | Return statistics for this type
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getMarketsRegionIdHistory($regionId, $typeId, $datasource);
+    $result = $api_instance->getMarketsRegionIdHistory($region_id, $type_id, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling MarketApi->getMarketsRegionIdHistory: ', $e->getMessage(), PHP_EOL;
@@ -85,8 +85,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **regionId** | **int**| Return statistics in this region |
- **typeId** | **int**| Return statistics for this type |
+ **region_id** | **int**| Return statistics in this region |
+ **type_id** | **int**| Return statistics for this type |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -105,7 +105,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getMarketsRegionIdOrders**
-> \ESI\Model\GetMarketsRegionIdOrders200Ok[] getMarketsRegionIdOrders($regionId, $orderType, $typeId, $page, $datasource)
+> \ESI\Model\GetMarketsRegionIdOrders200Ok[] getMarketsRegionIdOrders($region_id, $order_type, $type_id, $page, $datasource)
 
 List orders in a region
 
@@ -117,14 +117,14 @@ Return a list of orders in a region  ---  Alternate route: `/v1/markets/{region_
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new ESI\Api\MarketApi();
-$regionId = 56; // int | Return orders in this region
-$orderType = "all"; // string | Filter buy/sell orders, return all orders by default. If you query without type_id, we always return both buy and sell orders.
-$typeId = 56; // int | Return orders only for this type
+$region_id = 56; // int | Return orders in this region
+$order_type = "all"; // string | Filter buy/sell orders, return all orders by default. If you query without type_id, we always return both buy and sell orders.
+$type_id = 56; // int | Return orders only for this type
 $page = 1; // int | Which page to query, only used for querying without type_id. Starting at 1
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getMarketsRegionIdOrders($regionId, $orderType, $typeId, $page, $datasource);
+    $result = $api_instance->getMarketsRegionIdOrders($region_id, $order_type, $type_id, $page, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling MarketApi->getMarketsRegionIdOrders: ', $e->getMessage(), PHP_EOL;
@@ -136,9 +136,9 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **regionId** | **int**| Return orders in this region |
- **orderType** | **string**| Filter buy/sell orders, return all orders by default. If you query without type_id, we always return both buy and sell orders. | [default to all]
- **typeId** | **int**| Return orders only for this type | [optional]
+ **region_id** | **int**| Return orders in this region |
+ **order_type** | **string**| Filter buy/sell orders, return all orders by default. If you query without type_id, we always return both buy and sell orders. | [default to all]
+ **type_id** | **int**| Return orders only for this type | [optional]
  **page** | **int**| Which page to query, only used for querying without type_id. Starting at 1 | [optional] [default to 1]
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
@@ -158,7 +158,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getMarketsStructuresStructureId**
-> \ESI\Model\GetMarketsStructuresStructureId200Ok[] getMarketsStructuresStructureId($structureId, $page, $datasource)
+> \ESI\Model\GetMarketsStructuresStructureId200Ok[] getMarketsStructuresStructureId($structure_id, $page, $datasource)
 
 List orders in a structure
 
@@ -173,12 +173,12 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\MarketApi();
-$structureId = 789; // int | Return orders in this structure
+$structure_id = 789; // int | Return orders in this structure
 $page = 1; // int | Which page to query, starting at 1
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getMarketsStructuresStructureId($structureId, $page, $datasource);
+    $result = $api_instance->getMarketsStructuresStructureId($structure_id, $page, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling MarketApi->getMarketsStructuresStructureId: ', $e->getMessage(), PHP_EOL;
@@ -190,7 +190,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **structureId** | **int**| Return orders in this structure |
+ **structure_id** | **int**| Return orders in this structure |
  **page** | **int**| Which page to query, starting at 1 | [optional] [default to 1]
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 

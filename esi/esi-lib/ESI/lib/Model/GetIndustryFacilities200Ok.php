@@ -67,12 +67,12 @@ class GetIndustryFacilities200Ok implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'facilityId' => 'int',
-        'ownerId' => 'int',
-        'regionId' => 'int',
-        'solarSystemId' => 'int',
+        'facility_id' => 'int',
+        'owner_id' => 'int',
+        'region_id' => 'int',
+        'solar_system_id' => 'int',
         'tax' => 'float',
-        'typeId' => 'int'
+        'type_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -85,12 +85,12 @@ class GetIndustryFacilities200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'facilityId' => 'facility_id',
-        'ownerId' => 'owner_id',
-        'regionId' => 'region_id',
-        'solarSystemId' => 'solar_system_id',
+        'facility_id' => 'facility_id',
+        'owner_id' => 'owner_id',
+        'region_id' => 'region_id',
+        'solar_system_id' => 'solar_system_id',
         'tax' => 'tax',
-        'typeId' => 'type_id'
+        'type_id' => 'type_id'
     );
 
     public static function attributeMap()
@@ -103,12 +103,12 @@ class GetIndustryFacilities200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'facilityId' => 'setFacilityId',
-        'ownerId' => 'setOwnerId',
-        'regionId' => 'setRegionId',
-        'solarSystemId' => 'setSolarSystemId',
+        'facility_id' => 'setFacilityId',
+        'owner_id' => 'setOwnerId',
+        'region_id' => 'setRegionId',
+        'solar_system_id' => 'setSolarSystemId',
         'tax' => 'setTax',
-        'typeId' => 'setTypeId'
+        'type_id' => 'setTypeId'
     );
 
     public static function setters()
@@ -121,12 +121,12 @@ class GetIndustryFacilities200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'facilityId' => 'getFacilityId',
-        'ownerId' => 'getOwnerId',
-        'regionId' => 'getRegionId',
-        'solarSystemId' => 'getSolarSystemId',
+        'facility_id' => 'getFacilityId',
+        'owner_id' => 'getOwnerId',
+        'region_id' => 'getRegionId',
+        'solar_system_id' => 'getSolarSystemId',
         'tax' => 'getTax',
-        'typeId' => 'getTypeId'
+        'type_id' => 'getTypeId'
     );
 
     public static function getters()
@@ -150,12 +150,12 @@ class GetIndustryFacilities200Ok implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['facilityId'] = isset($data['facilityId']) ? $data['facilityId'] : null;
-        $this->container['ownerId'] = isset($data['ownerId']) ? $data['ownerId'] : null;
-        $this->container['regionId'] = isset($data['regionId']) ? $data['regionId'] : null;
-        $this->container['solarSystemId'] = isset($data['solarSystemId']) ? $data['solarSystemId'] : null;
+        $this->container['facility_id'] = isset($data['facility_id']) ? $data['facility_id'] : null;
+        $this->container['owner_id'] = isset($data['owner_id']) ? $data['owner_id'] : null;
+        $this->container['region_id'] = isset($data['region_id']) ? $data['region_id'] : null;
+        $this->container['solar_system_id'] = isset($data['solar_system_id']) ? $data['solar_system_id'] : null;
         $this->container['tax'] = isset($data['tax']) ? $data['tax'] : null;
-        $this->container['typeId'] = isset($data['typeId']) ? $data['typeId'] : null;
+        $this->container['type_id'] = isset($data['type_id']) ? $data['type_id'] : null;
     }
 
     /**
@@ -166,20 +166,20 @@ class GetIndustryFacilities200Ok implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['facilityId'] === null) {
-            $invalid_properties[] = "'facilityId' can't be null";
+        if ($this->container['facility_id'] === null) {
+            $invalid_properties[] = "'facility_id' can't be null";
         }
-        if ($this->container['ownerId'] === null) {
-            $invalid_properties[] = "'ownerId' can't be null";
+        if ($this->container['owner_id'] === null) {
+            $invalid_properties[] = "'owner_id' can't be null";
         }
-        if ($this->container['regionId'] === null) {
-            $invalid_properties[] = "'regionId' can't be null";
+        if ($this->container['region_id'] === null) {
+            $invalid_properties[] = "'region_id' can't be null";
         }
-        if ($this->container['solarSystemId'] === null) {
-            $invalid_properties[] = "'solarSystemId' can't be null";
+        if ($this->container['solar_system_id'] === null) {
+            $invalid_properties[] = "'solar_system_id' can't be null";
         }
-        if ($this->container['typeId'] === null) {
-            $invalid_properties[] = "'typeId' can't be null";
+        if ($this->container['type_id'] === null) {
+            $invalid_properties[] = "'type_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -192,19 +192,19 @@ class GetIndustryFacilities200Ok implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['facilityId'] === null) {
+        if ($this->container['facility_id'] === null) {
             return false;
         }
-        if ($this->container['ownerId'] === null) {
+        if ($this->container['owner_id'] === null) {
             return false;
         }
-        if ($this->container['regionId'] === null) {
+        if ($this->container['region_id'] === null) {
             return false;
         }
-        if ($this->container['solarSystemId'] === null) {
+        if ($this->container['solar_system_id'] === null) {
             return false;
         }
-        if ($this->container['typeId'] === null) {
+        if ($this->container['type_id'] === null) {
             return false;
         }
         return true;
@@ -212,85 +212,85 @@ class GetIndustryFacilities200Ok implements ArrayAccess
 
 
     /**
-     * Gets facilityId
+     * Gets facility_id
      * @return int
      */
     public function getFacilityId()
     {
-        return $this->container['facilityId'];
+        return $this->container['facility_id'];
     }
 
     /**
-     * Sets facilityId
-     * @param int $facilityId ID of the facility
+     * Sets facility_id
+     * @param int $facility_id ID of the facility
      * @return $this
      */
-    public function setFacilityId($facilityId)
+    public function setFacilityId($facility_id)
     {
-        $this->container['facilityId'] = $facilityId;
+        $this->container['facility_id'] = $facility_id;
 
         return $this;
     }
 
     /**
-     * Gets ownerId
+     * Gets owner_id
      * @return int
      */
     public function getOwnerId()
     {
-        return $this->container['ownerId'];
+        return $this->container['owner_id'];
     }
 
     /**
-     * Sets ownerId
-     * @param int $ownerId Owner of the facility
+     * Sets owner_id
+     * @param int $owner_id Owner of the facility
      * @return $this
      */
-    public function setOwnerId($ownerId)
+    public function setOwnerId($owner_id)
     {
-        $this->container['ownerId'] = $ownerId;
+        $this->container['owner_id'] = $owner_id;
 
         return $this;
     }
 
     /**
-     * Gets regionId
+     * Gets region_id
      * @return int
      */
     public function getRegionId()
     {
-        return $this->container['regionId'];
+        return $this->container['region_id'];
     }
 
     /**
-     * Sets regionId
-     * @param int $regionId Region ID where the facility is
+     * Sets region_id
+     * @param int $region_id Region ID where the facility is
      * @return $this
      */
-    public function setRegionId($regionId)
+    public function setRegionId($region_id)
     {
-        $this->container['regionId'] = $regionId;
+        $this->container['region_id'] = $region_id;
 
         return $this;
     }
 
     /**
-     * Gets solarSystemId
+     * Gets solar_system_id
      * @return int
      */
     public function getSolarSystemId()
     {
-        return $this->container['solarSystemId'];
+        return $this->container['solar_system_id'];
     }
 
     /**
-     * Sets solarSystemId
-     * @param int $solarSystemId Solar system ID where the facility is
+     * Sets solar_system_id
+     * @param int $solar_system_id Solar system ID where the facility is
      * @return $this
      */
-    public function setSolarSystemId($solarSystemId)
+    public function setSolarSystemId($solar_system_id)
     {
-        $this->container['solarSystemId'] = $solarSystemId;
+        $this->container['solar_system_id'] = $solar_system_id;
 
         return $this;
     }
@@ -317,22 +317,22 @@ class GetIndustryFacilities200Ok implements ArrayAccess
     }
 
     /**
-     * Gets typeId
+     * Gets type_id
      * @return int
      */
     public function getTypeId()
     {
-        return $this->container['typeId'];
+        return $this->container['type_id'];
     }
 
     /**
-     * Sets typeId
-     * @param int $typeId Type ID of the facility
+     * Sets type_id
+     * @param int $type_id Type ID of the facility
      * @return $this
      */
-    public function setTypeId($typeId)
+    public function setTypeId($type_id)
     {
-        $this->container['typeId'] = $typeId;
+        $this->container['type_id'] = $type_id;
 
         return $this;
     }

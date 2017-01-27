@@ -107,15 +107,15 @@ class MailApi
      *
      * Delete a mail label
      *
-     * @param int $characterId An EVE character ID (required)
-     * @param int $labelId An EVE label id (required)
+     * @param int $character_id An EVE character ID (required)
+     * @param int $label_id An EVE label id (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return void
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function deleteCharactersCharacterIdMailLabelsLabelId($characterId, $labelId, $datasource = null)
+    public function deleteCharactersCharacterIdMailLabelsLabelId($character_id, $label_id, $datasource = null)
     {
-        list($response) = $this->deleteCharactersCharacterIdMailLabelsLabelIdWithHttpInfo($characterId, $labelId, $datasource);
+        list($response) = $this->deleteCharactersCharacterIdMailLabelsLabelIdWithHttpInfo($character_id, $label_id, $datasource);
         return $response;
     }
 
@@ -124,21 +124,21 @@ class MailApi
      *
      * Delete a mail label
      *
-     * @param int $characterId An EVE character ID (required)
-     * @param int $labelId An EVE label id (required)
+     * @param int $character_id An EVE character ID (required)
+     * @param int $label_id An EVE label id (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of null, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function deleteCharactersCharacterIdMailLabelsLabelIdWithHttpInfo($characterId, $labelId, $datasource = null)
+    public function deleteCharactersCharacterIdMailLabelsLabelIdWithHttpInfo($character_id, $label_id, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling deleteCharactersCharacterIdMailLabelsLabelId');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling deleteCharactersCharacterIdMailLabelsLabelId');
         }
-        // verify the required parameter 'labelId' is set
-        if ($labelId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $labelId when calling deleteCharactersCharacterIdMailLabelsLabelId');
+        // verify the required parameter 'label_id' is set
+        if ($label_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $label_id when calling deleteCharactersCharacterIdMailLabelsLabelId');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/mail/labels/{label_id}/";
@@ -157,18 +157,18 @@ class MailApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
         // path params
-        if ($labelId !== null) {
+        if ($label_id !== null) {
             $resourcePath = str_replace(
                 "{" . "label_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($labelId),
+                $this->apiClient->getSerializer()->toPathValue($label_id),
                 $resourcePath
             );
         }
@@ -224,15 +224,15 @@ class MailApi
      *
      * Delete a mail
      *
-     * @param int $characterId An EVE character ID (required)
-     * @param int $mailId An EVE mail ID (required)
+     * @param int $character_id An EVE character ID (required)
+     * @param int $mail_id An EVE mail ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return void
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function deleteCharactersCharacterIdMailMailId($characterId, $mailId, $datasource = null)
+    public function deleteCharactersCharacterIdMailMailId($character_id, $mail_id, $datasource = null)
     {
-        list($response) = $this->deleteCharactersCharacterIdMailMailIdWithHttpInfo($characterId, $mailId, $datasource);
+        list($response) = $this->deleteCharactersCharacterIdMailMailIdWithHttpInfo($character_id, $mail_id, $datasource);
         return $response;
     }
 
@@ -241,21 +241,21 @@ class MailApi
      *
      * Delete a mail
      *
-     * @param int $characterId An EVE character ID (required)
-     * @param int $mailId An EVE mail ID (required)
+     * @param int $character_id An EVE character ID (required)
+     * @param int $mail_id An EVE mail ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of null, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function deleteCharactersCharacterIdMailMailIdWithHttpInfo($characterId, $mailId, $datasource = null)
+    public function deleteCharactersCharacterIdMailMailIdWithHttpInfo($character_id, $mail_id, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling deleteCharactersCharacterIdMailMailId');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling deleteCharactersCharacterIdMailMailId');
         }
-        // verify the required parameter 'mailId' is set
-        if ($mailId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $mailId when calling deleteCharactersCharacterIdMailMailId');
+        // verify the required parameter 'mail_id' is set
+        if ($mail_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $mail_id when calling deleteCharactersCharacterIdMailMailId');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/mail/{mail_id}/";
@@ -274,18 +274,18 @@ class MailApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
         // path params
-        if ($mailId !== null) {
+        if ($mail_id !== null) {
             $resourcePath = str_replace(
                 "{" . "mail_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($mailId),
+                $this->apiClient->getSerializer()->toPathValue($mail_id),
                 $resourcePath
             );
         }
@@ -337,16 +337,16 @@ class MailApi
      *
      * Return mail headers
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param int[] $labels Fetch only mails that match one or more of the given labels (optional)
-     * @param int $lastMailId List only mail with an ID lower than the given ID, if present (optional)
+     * @param int $last_mail_id List only mail with an ID lower than the given ID, if present (optional)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdMail200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdMail($characterId, $labels = null, $lastMailId = null, $datasource = null)
+    public function getCharactersCharacterIdMail($character_id, $labels = null, $last_mail_id = null, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdMailWithHttpInfo($characterId, $labels, $lastMailId, $datasource);
+        list($response) = $this->getCharactersCharacterIdMailWithHttpInfo($character_id, $labels, $last_mail_id, $datasource);
         return $response;
     }
 
@@ -355,18 +355,18 @@ class MailApi
      *
      * Return mail headers
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param int[] $labels Fetch only mails that match one or more of the given labels (optional)
-     * @param int $lastMailId List only mail with an ID lower than the given ID, if present (optional)
+     * @param int $last_mail_id List only mail with an ID lower than the given ID, if present (optional)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdMail200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdMailWithHttpInfo($characterId, $labels = null, $lastMailId = null, $datasource = null)
+    public function getCharactersCharacterIdMailWithHttpInfo($character_id, $labels = null, $last_mail_id = null, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdMail');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdMail');
         }
 
         // parse inputs
@@ -389,18 +389,18 @@ class MailApi
             $queryParams['labels'] = $this->apiClient->getSerializer()->toQueryValue($labels);
         }
         // query params
-        if ($lastMailId !== null) {
-            $queryParams['last_mail_id'] = $this->apiClient->getSerializer()->toQueryValue($lastMailId);
+        if ($last_mail_id !== null) {
+            $queryParams['last_mail_id'] = $this->apiClient->getSerializer()->toQueryValue($last_mail_id);
         }
         // query params
         if ($datasource !== null) {
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
@@ -456,14 +456,14 @@ class MailApi
      *
      * Get mail labels and unread counts
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdMailLabelsOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdMailLabels($characterId, $datasource = null)
+    public function getCharactersCharacterIdMailLabels($character_id, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdMailLabelsWithHttpInfo($characterId, $datasource);
+        list($response) = $this->getCharactersCharacterIdMailLabelsWithHttpInfo($character_id, $datasource);
         return $response;
     }
 
@@ -472,16 +472,16 @@ class MailApi
      *
      * Get mail labels and unread counts
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdMailLabelsOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdMailLabelsWithHttpInfo($characterId, $datasource = null)
+    public function getCharactersCharacterIdMailLabelsWithHttpInfo($character_id, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdMailLabels');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdMailLabels');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/mail/labels/";
@@ -500,10 +500,10 @@ class MailApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
@@ -559,14 +559,14 @@ class MailApi
      *
      * Return mailing list subscriptions
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdMailLists200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdMailLists($characterId, $datasource = null)
+    public function getCharactersCharacterIdMailLists($character_id, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdMailListsWithHttpInfo($characterId, $datasource);
+        list($response) = $this->getCharactersCharacterIdMailListsWithHttpInfo($character_id, $datasource);
         return $response;
     }
 
@@ -575,16 +575,16 @@ class MailApi
      *
      * Return mailing list subscriptions
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdMailLists200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdMailListsWithHttpInfo($characterId, $datasource = null)
+    public function getCharactersCharacterIdMailListsWithHttpInfo($character_id, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdMailLists');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdMailLists');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/mail/lists/";
@@ -603,10 +603,10 @@ class MailApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
@@ -662,15 +662,15 @@ class MailApi
      *
      * Return a mail
      *
-     * @param int $characterId An EVE character ID (required)
-     * @param int $mailId An EVE mail ID (required)
+     * @param int $character_id An EVE character ID (required)
+     * @param int $mail_id An EVE mail ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdMailMailIdOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdMailMailId($characterId, $mailId, $datasource = null)
+    public function getCharactersCharacterIdMailMailId($character_id, $mail_id, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdMailMailIdWithHttpInfo($characterId, $mailId, $datasource);
+        list($response) = $this->getCharactersCharacterIdMailMailIdWithHttpInfo($character_id, $mail_id, $datasource);
         return $response;
     }
 
@@ -679,21 +679,21 @@ class MailApi
      *
      * Return a mail
      *
-     * @param int $characterId An EVE character ID (required)
-     * @param int $mailId An EVE mail ID (required)
+     * @param int $character_id An EVE character ID (required)
+     * @param int $mail_id An EVE mail ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdMailMailIdOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdMailMailIdWithHttpInfo($characterId, $mailId, $datasource = null)
+    public function getCharactersCharacterIdMailMailIdWithHttpInfo($character_id, $mail_id, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdMailMailId');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdMailMailId');
         }
-        // verify the required parameter 'mailId' is set
-        if ($mailId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $mailId when calling getCharactersCharacterIdMailMailId');
+        // verify the required parameter 'mail_id' is set
+        if ($mail_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $mail_id when calling getCharactersCharacterIdMailMailId');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/mail/{mail_id}/";
@@ -712,18 +712,18 @@ class MailApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
         // path params
-        if ($mailId !== null) {
+        if ($mail_id !== null) {
             $resourcePath = str_replace(
                 "{" . "mail_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($mailId),
+                $this->apiClient->getSerializer()->toPathValue($mail_id),
                 $resourcePath
             );
         }
@@ -783,15 +783,15 @@ class MailApi
      *
      * Send a new mail
      *
-     * @param int $characterId The sender&#39;s character ID (required)
+     * @param int $character_id The sender&#39;s character ID (required)
      * @param \ESI\Model\PostCharactersCharacterIdMailMail $mail The mail to send (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return int
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postCharactersCharacterIdMail($characterId, $mail, $datasource = null)
+    public function postCharactersCharacterIdMail($character_id, $mail, $datasource = null)
     {
-        list($response) = $this->postCharactersCharacterIdMailWithHttpInfo($characterId, $mail, $datasource);
+        list($response) = $this->postCharactersCharacterIdMailWithHttpInfo($character_id, $mail, $datasource);
         return $response;
     }
 
@@ -800,17 +800,17 @@ class MailApi
      *
      * Send a new mail
      *
-     * @param int $characterId The sender&#39;s character ID (required)
+     * @param int $character_id The sender&#39;s character ID (required)
      * @param \ESI\Model\PostCharactersCharacterIdMailMail $mail The mail to send (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of int, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postCharactersCharacterIdMailWithHttpInfo($characterId, $mail, $datasource = null)
+    public function postCharactersCharacterIdMailWithHttpInfo($character_id, $mail, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling postCharactersCharacterIdMail');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling postCharactersCharacterIdMail');
         }
         // verify the required parameter 'mail' is set
         if ($mail === null) {
@@ -833,10 +833,10 @@ class MailApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
@@ -901,15 +901,15 @@ class MailApi
      *
      * Create a mail label
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param \ESI\Model\PostCharactersCharacterIdMailLabelsLabel $label Label to create (optional)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return int
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postCharactersCharacterIdMailLabels($characterId, $label = null, $datasource = null)
+    public function postCharactersCharacterIdMailLabels($character_id, $label = null, $datasource = null)
     {
-        list($response) = $this->postCharactersCharacterIdMailLabelsWithHttpInfo($characterId, $label, $datasource);
+        list($response) = $this->postCharactersCharacterIdMailLabelsWithHttpInfo($character_id, $label, $datasource);
         return $response;
     }
 
@@ -918,17 +918,17 @@ class MailApi
      *
      * Create a mail label
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param \ESI\Model\PostCharactersCharacterIdMailLabelsLabel $label Label to create (optional)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of int, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postCharactersCharacterIdMailLabelsWithHttpInfo($characterId, $label = null, $datasource = null)
+    public function postCharactersCharacterIdMailLabelsWithHttpInfo($character_id, $label = null, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling postCharactersCharacterIdMailLabels');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling postCharactersCharacterIdMailLabels');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/mail/labels/";
@@ -947,10 +947,10 @@ class MailApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
@@ -1011,16 +1011,16 @@ class MailApi
      *
      * Update metadata about a mail
      *
-     * @param int $characterId An EVE character ID (required)
-     * @param int $mailId An EVE mail ID (required)
+     * @param int $character_id An EVE character ID (required)
+     * @param int $mail_id An EVE mail ID (required)
      * @param \ESI\Model\PutCharactersCharacterIdMailMailIdContents $contents Data used to update the mail (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return void
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function putCharactersCharacterIdMailMailId($characterId, $mailId, $contents, $datasource = null)
+    public function putCharactersCharacterIdMailMailId($character_id, $mail_id, $contents, $datasource = null)
     {
-        list($response) = $this->putCharactersCharacterIdMailMailIdWithHttpInfo($characterId, $mailId, $contents, $datasource);
+        list($response) = $this->putCharactersCharacterIdMailMailIdWithHttpInfo($character_id, $mail_id, $contents, $datasource);
         return $response;
     }
 
@@ -1029,22 +1029,22 @@ class MailApi
      *
      * Update metadata about a mail
      *
-     * @param int $characterId An EVE character ID (required)
-     * @param int $mailId An EVE mail ID (required)
+     * @param int $character_id An EVE character ID (required)
+     * @param int $mail_id An EVE mail ID (required)
      * @param \ESI\Model\PutCharactersCharacterIdMailMailIdContents $contents Data used to update the mail (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of null, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function putCharactersCharacterIdMailMailIdWithHttpInfo($characterId, $mailId, $contents, $datasource = null)
+    public function putCharactersCharacterIdMailMailIdWithHttpInfo($character_id, $mail_id, $contents, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling putCharactersCharacterIdMailMailId');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling putCharactersCharacterIdMailMailId');
         }
-        // verify the required parameter 'mailId' is set
-        if ($mailId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $mailId when calling putCharactersCharacterIdMailMailId');
+        // verify the required parameter 'mail_id' is set
+        if ($mail_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $mail_id when calling putCharactersCharacterIdMailMailId');
         }
         // verify the required parameter 'contents' is set
         if ($contents === null) {
@@ -1067,18 +1067,18 @@ class MailApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
         // path params
-        if ($mailId !== null) {
+        if ($mail_id !== null) {
             $resourcePath = str_replace(
                 "{" . "mail_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($mailId),
+                $this->apiClient->getSerializer()->toPathValue($mail_id),
                 $resourcePath
             );
         }

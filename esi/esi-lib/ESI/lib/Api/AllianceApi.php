@@ -188,14 +188,14 @@ class AllianceApi
      *
      * Get alliance information
      *
-     * @param int $allianceId An Eve alliance ID (required)
+     * @param int $alliance_id An Eve alliance ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetAlliancesAllianceIdOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getAlliancesAllianceId($allianceId, $datasource = null)
+    public function getAlliancesAllianceId($alliance_id, $datasource = null)
     {
-        list($response) = $this->getAlliancesAllianceIdWithHttpInfo($allianceId, $datasource);
+        list($response) = $this->getAlliancesAllianceIdWithHttpInfo($alliance_id, $datasource);
         return $response;
     }
 
@@ -204,16 +204,16 @@ class AllianceApi
      *
      * Get alliance information
      *
-     * @param int $allianceId An Eve alliance ID (required)
+     * @param int $alliance_id An Eve alliance ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetAlliancesAllianceIdOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getAlliancesAllianceIdWithHttpInfo($allianceId, $datasource = null)
+    public function getAlliancesAllianceIdWithHttpInfo($alliance_id, $datasource = null)
     {
-        // verify the required parameter 'allianceId' is set
-        if ($allianceId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $allianceId when calling getAlliancesAllianceId');
+        // verify the required parameter 'alliance_id' is set
+        if ($alliance_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $alliance_id when calling getAlliancesAllianceId');
         }
         // parse inputs
         $resourcePath = "/alliances/{alliance_id}/";
@@ -232,10 +232,10 @@ class AllianceApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($allianceId !== null) {
+        if ($alliance_id !== null) {
             $resourcePath = str_replace(
                 "{" . "alliance_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($allianceId),
+                $this->apiClient->getSerializer()->toPathValue($alliance_id),
                 $resourcePath
             );
         }
@@ -287,14 +287,14 @@ class AllianceApi
      *
      * List alliance's corporations
      *
-     * @param int $allianceId An EVE alliance ID (required)
+     * @param int $alliance_id An EVE alliance ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return int[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getAlliancesAllianceIdCorporations($allianceId, $datasource = null)
+    public function getAlliancesAllianceIdCorporations($alliance_id, $datasource = null)
     {
-        list($response) = $this->getAlliancesAllianceIdCorporationsWithHttpInfo($allianceId, $datasource);
+        list($response) = $this->getAlliancesAllianceIdCorporationsWithHttpInfo($alliance_id, $datasource);
         return $response;
     }
 
@@ -303,16 +303,16 @@ class AllianceApi
      *
      * List alliance's corporations
      *
-     * @param int $allianceId An EVE alliance ID (required)
+     * @param int $alliance_id An EVE alliance ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of int[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getAlliancesAllianceIdCorporationsWithHttpInfo($allianceId, $datasource = null)
+    public function getAlliancesAllianceIdCorporationsWithHttpInfo($alliance_id, $datasource = null)
     {
-        // verify the required parameter 'allianceId' is set
-        if ($allianceId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $allianceId when calling getAlliancesAllianceIdCorporations');
+        // verify the required parameter 'alliance_id' is set
+        if ($alliance_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $alliance_id when calling getAlliancesAllianceIdCorporations');
         }
         // parse inputs
         $resourcePath = "/alliances/{alliance_id}/corporations/";
@@ -331,10 +331,10 @@ class AllianceApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($allianceId !== null) {
+        if ($alliance_id !== null) {
             $resourcePath = str_replace(
                 "{" . "alliance_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($allianceId),
+                $this->apiClient->getSerializer()->toPathValue($alliance_id),
                 $resourcePath
             );
         }
@@ -382,14 +382,14 @@ class AllianceApi
      *
      * Get alliance icon
      *
-     * @param int $allianceId An EVE alliance ID (required)
+     * @param int $alliance_id An EVE alliance ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetAlliancesAllianceIdIconsOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getAlliancesAllianceIdIcons($allianceId, $datasource = null)
+    public function getAlliancesAllianceIdIcons($alliance_id, $datasource = null)
     {
-        list($response) = $this->getAlliancesAllianceIdIconsWithHttpInfo($allianceId, $datasource);
+        list($response) = $this->getAlliancesAllianceIdIconsWithHttpInfo($alliance_id, $datasource);
         return $response;
     }
 
@@ -398,16 +398,16 @@ class AllianceApi
      *
      * Get alliance icon
      *
-     * @param int $allianceId An EVE alliance ID (required)
+     * @param int $alliance_id An EVE alliance ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetAlliancesAllianceIdIconsOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getAlliancesAllianceIdIconsWithHttpInfo($allianceId, $datasource = null)
+    public function getAlliancesAllianceIdIconsWithHttpInfo($alliance_id, $datasource = null)
     {
-        // verify the required parameter 'allianceId' is set
-        if ($allianceId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $allianceId when calling getAlliancesAllianceIdIcons');
+        // verify the required parameter 'alliance_id' is set
+        if ($alliance_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $alliance_id when calling getAlliancesAllianceIdIcons');
         }
         // parse inputs
         $resourcePath = "/alliances/{alliance_id}/icons/";
@@ -426,10 +426,10 @@ class AllianceApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($allianceId !== null) {
+        if ($alliance_id !== null) {
             $resourcePath = str_replace(
                 "{" . "alliance_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($allianceId),
+                $this->apiClient->getSerializer()->toPathValue($alliance_id),
                 $resourcePath
             );
         }
@@ -481,14 +481,14 @@ class AllianceApi
      *
      * Get alliance names
      *
-     * @param int[] $allianceIds A comma separated list of alliance IDs (required)
+     * @param int[] $alliance_ids A comma separated list of alliance IDs (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetAlliancesNames200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getAlliancesNames($allianceIds, $datasource = null)
+    public function getAlliancesNames($alliance_ids, $datasource = null)
     {
-        list($response) = $this->getAlliancesNamesWithHttpInfo($allianceIds, $datasource);
+        list($response) = $this->getAlliancesNamesWithHttpInfo($alliance_ids, $datasource);
         return $response;
     }
 
@@ -497,16 +497,16 @@ class AllianceApi
      *
      * Get alliance names
      *
-     * @param int[] $allianceIds A comma separated list of alliance IDs (required)
+     * @param int[] $alliance_ids A comma separated list of alliance IDs (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetAlliancesNames200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getAlliancesNamesWithHttpInfo($allianceIds, $datasource = null)
+    public function getAlliancesNamesWithHttpInfo($alliance_ids, $datasource = null)
     {
-        // verify the required parameter 'allianceIds' is set
-        if ($allianceIds === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $allianceIds when calling getAlliancesNames');
+        // verify the required parameter 'alliance_ids' is set
+        if ($alliance_ids === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $alliance_ids when calling getAlliancesNames');
         }
 
         // parse inputs
@@ -522,11 +522,11 @@ class AllianceApi
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array());
 
         // query params
-        if (is_array($allianceIds)) {
-            $allianceIds = $this->apiClient->getSerializer()->serializeCollection($allianceIds, 'csv', true);
+        if (is_array($alliance_ids)) {
+            $alliance_ids = $this->apiClient->getSerializer()->serializeCollection($alliance_ids, 'csv', true);
         }
-        if ($allianceIds !== null) {
-            $queryParams['alliance_ids'] = $this->apiClient->getSerializer()->toQueryValue($allianceIds);
+        if ($alliance_ids !== null) {
+            $queryParams['alliance_ids'] = $this->apiClient->getSerializer()->toQueryValue($alliance_ids);
         }
         // query params
         if ($datasource !== null) {

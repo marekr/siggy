@@ -107,14 +107,14 @@ class BookmarksApi
      *
      * List bookmarks
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdBookmarks200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdBookmarks($characterId, $datasource = null)
+    public function getCharactersCharacterIdBookmarks($character_id, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdBookmarksWithHttpInfo($characterId, $datasource);
+        list($response) = $this->getCharactersCharacterIdBookmarksWithHttpInfo($character_id, $datasource);
         return $response;
     }
 
@@ -123,16 +123,16 @@ class BookmarksApi
      *
      * List bookmarks
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdBookmarks200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdBookmarksWithHttpInfo($characterId, $datasource = null)
+    public function getCharactersCharacterIdBookmarksWithHttpInfo($character_id, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdBookmarks');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdBookmarks');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/bookmarks/";
@@ -151,10 +151,10 @@ class BookmarksApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
@@ -210,14 +210,14 @@ class BookmarksApi
      *
      * List bookmark folders
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdBookmarksFolders200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdBookmarksFolders($characterId, $datasource = null)
+    public function getCharactersCharacterIdBookmarksFolders($character_id, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdBookmarksFoldersWithHttpInfo($characterId, $datasource);
+        list($response) = $this->getCharactersCharacterIdBookmarksFoldersWithHttpInfo($character_id, $datasource);
         return $response;
     }
 
@@ -226,16 +226,16 @@ class BookmarksApi
      *
      * List bookmark folders
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdBookmarksFolders200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdBookmarksFoldersWithHttpInfo($characterId, $datasource = null)
+    public function getCharactersCharacterIdBookmarksFoldersWithHttpInfo($character_id, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdBookmarksFolders');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdBookmarksFolders');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/bookmarks/folders/";
@@ -254,10 +254,10 @@ class BookmarksApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }

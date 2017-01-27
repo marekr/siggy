@@ -67,7 +67,7 @@ class GetUniverseCategoriesCategoryIdOk implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'categoryId' => 'int',
+        'category_id' => 'int',
         'groups' => 'int[]',
         'name' => 'string',
         'published' => 'bool'
@@ -83,7 +83,7 @@ class GetUniverseCategoriesCategoryIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'categoryId' => 'category_id',
+        'category_id' => 'category_id',
         'groups' => 'groups',
         'name' => 'name',
         'published' => 'published'
@@ -99,7 +99,7 @@ class GetUniverseCategoriesCategoryIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'categoryId' => 'setCategoryId',
+        'category_id' => 'setCategoryId',
         'groups' => 'setGroups',
         'name' => 'setName',
         'published' => 'setPublished'
@@ -115,7 +115,7 @@ class GetUniverseCategoriesCategoryIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'categoryId' => 'getCategoryId',
+        'category_id' => 'getCategoryId',
         'groups' => 'getGroups',
         'name' => 'getName',
         'published' => 'getPublished'
@@ -142,7 +142,7 @@ class GetUniverseCategoriesCategoryIdOk implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['categoryId'] = isset($data['categoryId']) ? $data['categoryId'] : null;
+        $this->container['category_id'] = isset($data['category_id']) ? $data['category_id'] : null;
         $this->container['groups'] = isset($data['groups']) ? $data['groups'] : null;
         $this->container['name'] = isset($data['name']) ? $data['name'] : null;
         $this->container['published'] = isset($data['published']) ? $data['published'] : null;
@@ -156,8 +156,8 @@ class GetUniverseCategoriesCategoryIdOk implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['categoryId'] === null) {
-            $invalid_properties[] = "'categoryId' can't be null";
+        if ($this->container['category_id'] === null) {
+            $invalid_properties[] = "'category_id' can't be null";
         }
         if ($this->container['groups'] === null) {
             $invalid_properties[] = "'groups' can't be null";
@@ -179,7 +179,7 @@ class GetUniverseCategoriesCategoryIdOk implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['categoryId'] === null) {
+        if ($this->container['category_id'] === null) {
             return false;
         }
         if ($this->container['groups'] === null) {
@@ -196,22 +196,22 @@ class GetUniverseCategoriesCategoryIdOk implements ArrayAccess
 
 
     /**
-     * Gets categoryId
+     * Gets category_id
      * @return int
      */
     public function getCategoryId()
     {
-        return $this->container['categoryId'];
+        return $this->container['category_id'];
     }
 
     /**
-     * Sets categoryId
-     * @param int $categoryId category_id integer
+     * Sets category_id
+     * @param int $category_id category_id integer
      * @return $this
      */
-    public function setCategoryId($categoryId)
+    public function setCategoryId($category_id)
     {
-        $this->container['categoryId'] = $categoryId;
+        $this->container['category_id'] = $category_id;
 
         return $this;
     }

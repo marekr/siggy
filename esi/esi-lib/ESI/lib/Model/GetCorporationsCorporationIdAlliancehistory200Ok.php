@@ -68,8 +68,8 @@ class GetCorporationsCorporationIdAlliancehistory200Ok implements ArrayAccess
       */
     protected static $swaggerTypes = array(
         'alliance' => '\ESI\Model\CorporationscorporationIdalliancehistoryAlliance',
-        'recordId' => 'int',
-        'startDate' => '\DateTime'
+        'record_id' => 'int',
+        'start_date' => '\DateTime'
     );
 
     public static function swaggerTypes()
@@ -83,8 +83,8 @@ class GetCorporationsCorporationIdAlliancehistory200Ok implements ArrayAccess
      */
     protected static $attributeMap = array(
         'alliance' => 'alliance',
-        'recordId' => 'record_id',
-        'startDate' => 'start_date'
+        'record_id' => 'record_id',
+        'start_date' => 'start_date'
     );
 
     public static function attributeMap()
@@ -98,8 +98,8 @@ class GetCorporationsCorporationIdAlliancehistory200Ok implements ArrayAccess
      */
     protected static $setters = array(
         'alliance' => 'setAlliance',
-        'recordId' => 'setRecordId',
-        'startDate' => 'setStartDate'
+        'record_id' => 'setRecordId',
+        'start_date' => 'setStartDate'
     );
 
     public static function setters()
@@ -113,8 +113,8 @@ class GetCorporationsCorporationIdAlliancehistory200Ok implements ArrayAccess
      */
     protected static $getters = array(
         'alliance' => 'getAlliance',
-        'recordId' => 'getRecordId',
-        'startDate' => 'getStartDate'
+        'record_id' => 'getRecordId',
+        'start_date' => 'getStartDate'
     );
 
     public static function getters()
@@ -139,8 +139,8 @@ class GetCorporationsCorporationIdAlliancehistory200Ok implements ArrayAccess
     public function __construct(array $data = null)
     {
         $this->container['alliance'] = isset($data['alliance']) ? $data['alliance'] : null;
-        $this->container['recordId'] = isset($data['recordId']) ? $data['recordId'] : null;
-        $this->container['startDate'] = isset($data['startDate']) ? $data['startDate'] : null;
+        $this->container['record_id'] = isset($data['record_id']) ? $data['record_id'] : null;
+        $this->container['start_date'] = isset($data['start_date']) ? $data['start_date'] : null;
     }
 
     /**
@@ -151,11 +151,11 @@ class GetCorporationsCorporationIdAlliancehistory200Ok implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['recordId'] === null) {
-            $invalid_properties[] = "'recordId' can't be null";
+        if ($this->container['record_id'] === null) {
+            $invalid_properties[] = "'record_id' can't be null";
         }
-        if ($this->container['startDate'] === null) {
-            $invalid_properties[] = "'startDate' can't be null";
+        if ($this->container['start_date'] === null) {
+            $invalid_properties[] = "'start_date' can't be null";
         }
         return $invalid_properties;
     }
@@ -168,10 +168,10 @@ class GetCorporationsCorporationIdAlliancehistory200Ok implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['recordId'] === null) {
+        if ($this->container['record_id'] === null) {
             return false;
         }
-        if ($this->container['startDate'] === null) {
+        if ($this->container['start_date'] === null) {
             return false;
         }
         return true;
@@ -200,43 +200,43 @@ class GetCorporationsCorporationIdAlliancehistory200Ok implements ArrayAccess
     }
 
     /**
-     * Gets recordId
+     * Gets record_id
      * @return int
      */
     public function getRecordId()
     {
-        return $this->container['recordId'];
+        return $this->container['record_id'];
     }
 
     /**
-     * Sets recordId
-     * @param int $recordId An incrementing ID that can be used to canonically establish order of records in cases where dates may be ambiguous
+     * Sets record_id
+     * @param int $record_id An incrementing ID that can be used to canonically establish order of records in cases where dates may be ambiguous
      * @return $this
      */
-    public function setRecordId($recordId)
+    public function setRecordId($record_id)
     {
-        $this->container['recordId'] = $recordId;
+        $this->container['record_id'] = $record_id;
 
         return $this;
     }
 
     /**
-     * Gets startDate
+     * Gets start_date
      * @return \DateTime
      */
     public function getStartDate()
     {
-        return $this->container['startDate'];
+        return $this->container['start_date'];
     }
 
     /**
-     * Sets startDate
-     * @param \DateTime $startDate start_date string
+     * Sets start_date
+     * @param \DateTime $start_date start_date string
      * @return $this
      */
-    public function setStartDate($startDate)
+    public function setStartDate($start_date)
     {
-        $this->container['startDate'] = $startDate;
+        $this->container['start_date'] = $start_date;
 
         return $this;
     }

@@ -107,15 +107,15 @@ class ContactsApi
      *
      * Delete contacts
      *
-     * @param int $characterId ID for a character (required)
-     * @param int[] $contactIds A list of contacts to edit (required)
+     * @param int $character_id ID for a character (required)
+     * @param int[] $contact_ids A list of contacts to edit (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return void
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function deleteCharactersCharacterIdContacts($characterId, $contactIds, $datasource = null)
+    public function deleteCharactersCharacterIdContacts($character_id, $contact_ids, $datasource = null)
     {
-        list($response) = $this->deleteCharactersCharacterIdContactsWithHttpInfo($characterId, $contactIds, $datasource);
+        list($response) = $this->deleteCharactersCharacterIdContactsWithHttpInfo($character_id, $contact_ids, $datasource);
         return $response;
     }
 
@@ -124,21 +124,21 @@ class ContactsApi
      *
      * Delete contacts
      *
-     * @param int $characterId ID for a character (required)
-     * @param int[] $contactIds A list of contacts to edit (required)
+     * @param int $character_id ID for a character (required)
+     * @param int[] $contact_ids A list of contacts to edit (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of null, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function deleteCharactersCharacterIdContactsWithHttpInfo($characterId, $contactIds, $datasource = null)
+    public function deleteCharactersCharacterIdContactsWithHttpInfo($character_id, $contact_ids, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling deleteCharactersCharacterIdContacts');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling deleteCharactersCharacterIdContacts');
         }
-        // verify the required parameter 'contactIds' is set
-        if ($contactIds === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $contactIds when calling deleteCharactersCharacterIdContacts');
+        // verify the required parameter 'contact_ids' is set
+        if ($contact_ids === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $contact_ids when calling deleteCharactersCharacterIdContacts');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/contacts/";
@@ -157,10 +157,10 @@ class ContactsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
@@ -169,8 +169,8 @@ class ContactsApi
 
         // body params
         $_tempBody = null;
-        if (isset($contactIds)) {
-            $_tempBody = $contactIds;
+        if (isset($contact_ids)) {
+            $_tempBody = $contact_ids;
         }
 
         // for model (json/xml)
@@ -217,15 +217,15 @@ class ContactsApi
      *
      * Get contacts
      *
-     * @param int $characterId ID for a character (required)
+     * @param int $character_id ID for a character (required)
      * @param int $page page integer (optional, default to 1)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdContacts200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdContacts($characterId, $page = null, $datasource = null)
+    public function getCharactersCharacterIdContacts($character_id, $page = null, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdContactsWithHttpInfo($characterId, $page, $datasource);
+        list($response) = $this->getCharactersCharacterIdContactsWithHttpInfo($character_id, $page, $datasource);
         return $response;
     }
 
@@ -234,17 +234,17 @@ class ContactsApi
      *
      * Get contacts
      *
-     * @param int $characterId ID for a character (required)
+     * @param int $character_id ID for a character (required)
      * @param int $page page integer (optional, default to 1)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdContacts200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdContactsWithHttpInfo($characterId, $page = null, $datasource = null)
+    public function getCharactersCharacterIdContactsWithHttpInfo($character_id, $page = null, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdContacts');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdContacts');
         }
         if (!is_null($page) && ($page < 1.0)) {
             throw new \InvalidArgumentException('invalid value for "$page" when calling ContactsApi.getCharactersCharacterIdContacts, must be bigger than or equal to 1.0.');
@@ -271,10 +271,10 @@ class ContactsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
@@ -330,14 +330,14 @@ class ContactsApi
      *
      * Get contact labels
      *
-     * @param int $characterId ID for a character (required)
+     * @param int $character_id ID for a character (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdContactsLabels200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdContactsLabels($characterId, $datasource = null)
+    public function getCharactersCharacterIdContactsLabels($character_id, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdContactsLabelsWithHttpInfo($characterId, $datasource);
+        list($response) = $this->getCharactersCharacterIdContactsLabelsWithHttpInfo($character_id, $datasource);
         return $response;
     }
 
@@ -346,16 +346,16 @@ class ContactsApi
      *
      * Get contact labels
      *
-     * @param int $characterId ID for a character (required)
+     * @param int $character_id ID for a character (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdContactsLabels200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdContactsLabelsWithHttpInfo($characterId, $datasource = null)
+    public function getCharactersCharacterIdContactsLabelsWithHttpInfo($character_id, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdContactsLabels');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdContactsLabels');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/contacts/labels/";
@@ -374,10 +374,10 @@ class ContactsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
@@ -433,18 +433,18 @@ class ContactsApi
      *
      * Add contacts
      *
-     * @param int $characterId ID for a character (required)
+     * @param int $character_id ID for a character (required)
      * @param float $standing Standing for the new contact (required)
-     * @param int[] $contactIds A list of contacts to add (required)
+     * @param int[] $contact_ids A list of contacts to add (required)
      * @param bool $watched Whether the new contact should be watched, note this is only effective on characters (optional, default to false)
-     * @param int $labelId Add a custom label to the new contact (optional, default to 0)
+     * @param int $label_id Add a custom label to the new contact (optional, default to 0)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return int[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postCharactersCharacterIdContacts($characterId, $standing, $contactIds, $watched = null, $labelId = null, $datasource = null)
+    public function postCharactersCharacterIdContacts($character_id, $standing, $contact_ids, $watched = null, $label_id = null, $datasource = null)
     {
-        list($response) = $this->postCharactersCharacterIdContactsWithHttpInfo($characterId, $standing, $contactIds, $watched, $labelId, $datasource);
+        list($response) = $this->postCharactersCharacterIdContactsWithHttpInfo($character_id, $standing, $contact_ids, $watched, $label_id, $datasource);
         return $response;
     }
 
@@ -453,20 +453,20 @@ class ContactsApi
      *
      * Add contacts
      *
-     * @param int $characterId ID for a character (required)
+     * @param int $character_id ID for a character (required)
      * @param float $standing Standing for the new contact (required)
-     * @param int[] $contactIds A list of contacts to add (required)
+     * @param int[] $contact_ids A list of contacts to add (required)
      * @param bool $watched Whether the new contact should be watched, note this is only effective on characters (optional, default to false)
-     * @param int $labelId Add a custom label to the new contact (optional, default to 0)
+     * @param int $label_id Add a custom label to the new contact (optional, default to 0)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of int[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postCharactersCharacterIdContactsWithHttpInfo($characterId, $standing, $contactIds, $watched = null, $labelId = null, $datasource = null)
+    public function postCharactersCharacterIdContactsWithHttpInfo($character_id, $standing, $contact_ids, $watched = null, $label_id = null, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling postCharactersCharacterIdContacts');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling postCharactersCharacterIdContacts');
         }
         // verify the required parameter 'standing' is set
         if ($standing === null) {
@@ -479,9 +479,9 @@ class ContactsApi
             throw new \InvalidArgumentException('invalid value for "$standing" when calling ContactsApi.postCharactersCharacterIdContacts, must be bigger than or equal to -10.0.');
         }
 
-        // verify the required parameter 'contactIds' is set
-        if ($contactIds === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $contactIds when calling postCharactersCharacterIdContacts');
+        // verify the required parameter 'contact_ids' is set
+        if ($contact_ids === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $contact_ids when calling postCharactersCharacterIdContacts');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/contacts/";
@@ -504,18 +504,18 @@ class ContactsApi
             $queryParams['watched'] = $this->apiClient->getSerializer()->toQueryValue($watched);
         }
         // query params
-        if ($labelId !== null) {
-            $queryParams['label_id'] = $this->apiClient->getSerializer()->toQueryValue($labelId);
+        if ($label_id !== null) {
+            $queryParams['label_id'] = $this->apiClient->getSerializer()->toQueryValue($label_id);
         }
         // query params
         if ($datasource !== null) {
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
@@ -524,8 +524,8 @@ class ContactsApi
 
         // body params
         $_tempBody = null;
-        if (isset($contactIds)) {
-            $_tempBody = $contactIds;
+        if (isset($contact_ids)) {
+            $_tempBody = $contact_ids;
         }
 
         // for model (json/xml)
@@ -576,18 +576,18 @@ class ContactsApi
      *
      * Edit contacts
      *
-     * @param int $characterId ID for a character (required)
+     * @param int $character_id ID for a character (required)
      * @param float $standing Standing for the contact (required)
-     * @param int[] $contactIds A list of contacts to edit (required)
+     * @param int[] $contact_ids A list of contacts to edit (required)
      * @param bool $watched Whether the contact should be watched, note this is only effective on characters (optional, default to false)
-     * @param int $labelId Add a custom label to the contact, use 0 for clearing label (optional, default to 0)
+     * @param int $label_id Add a custom label to the contact, use 0 for clearing label (optional, default to 0)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return void
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function putCharactersCharacterIdContacts($characterId, $standing, $contactIds, $watched = null, $labelId = null, $datasource = null)
+    public function putCharactersCharacterIdContacts($character_id, $standing, $contact_ids, $watched = null, $label_id = null, $datasource = null)
     {
-        list($response) = $this->putCharactersCharacterIdContactsWithHttpInfo($characterId, $standing, $contactIds, $watched, $labelId, $datasource);
+        list($response) = $this->putCharactersCharacterIdContactsWithHttpInfo($character_id, $standing, $contact_ids, $watched, $label_id, $datasource);
         return $response;
     }
 
@@ -596,20 +596,20 @@ class ContactsApi
      *
      * Edit contacts
      *
-     * @param int $characterId ID for a character (required)
+     * @param int $character_id ID for a character (required)
      * @param float $standing Standing for the contact (required)
-     * @param int[] $contactIds A list of contacts to edit (required)
+     * @param int[] $contact_ids A list of contacts to edit (required)
      * @param bool $watched Whether the contact should be watched, note this is only effective on characters (optional, default to false)
-     * @param int $labelId Add a custom label to the contact, use 0 for clearing label (optional, default to 0)
+     * @param int $label_id Add a custom label to the contact, use 0 for clearing label (optional, default to 0)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of null, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function putCharactersCharacterIdContactsWithHttpInfo($characterId, $standing, $contactIds, $watched = null, $labelId = null, $datasource = null)
+    public function putCharactersCharacterIdContactsWithHttpInfo($character_id, $standing, $contact_ids, $watched = null, $label_id = null, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling putCharactersCharacterIdContacts');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling putCharactersCharacterIdContacts');
         }
         // verify the required parameter 'standing' is set
         if ($standing === null) {
@@ -622,9 +622,9 @@ class ContactsApi
             throw new \InvalidArgumentException('invalid value for "$standing" when calling ContactsApi.putCharactersCharacterIdContacts, must be bigger than or equal to -10.0.');
         }
 
-        // verify the required parameter 'contactIds' is set
-        if ($contactIds === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $contactIds when calling putCharactersCharacterIdContacts');
+        // verify the required parameter 'contact_ids' is set
+        if ($contact_ids === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $contact_ids when calling putCharactersCharacterIdContacts');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/contacts/";
@@ -647,18 +647,18 @@ class ContactsApi
             $queryParams['watched'] = $this->apiClient->getSerializer()->toQueryValue($watched);
         }
         // query params
-        if ($labelId !== null) {
-            $queryParams['label_id'] = $this->apiClient->getSerializer()->toQueryValue($labelId);
+        if ($label_id !== null) {
+            $queryParams['label_id'] = $this->apiClient->getSerializer()->toQueryValue($label_id);
         }
         // query params
         if ($datasource !== null) {
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
@@ -667,8 +667,8 @@ class ContactsApi
 
         // body params
         $_tempBody = null;
-        if (isset($contactIds)) {
-            $_tempBody = $contactIds;
+        if (isset($contact_ids)) {
+            $_tempBody = $contact_ids;
         }
 
         // for model (json/xml)

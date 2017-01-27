@@ -67,7 +67,7 @@ class PostFleetsFleetIdWingsWingIdSquadsCreated implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'squadId' => 'int'
+        'squad_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -80,7 +80,7 @@ class PostFleetsFleetIdWingsWingIdSquadsCreated implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'squadId' => 'squad_id'
+        'squad_id' => 'squad_id'
     );
 
     public static function attributeMap()
@@ -93,7 +93,7 @@ class PostFleetsFleetIdWingsWingIdSquadsCreated implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'squadId' => 'setSquadId'
+        'squad_id' => 'setSquadId'
     );
 
     public static function setters()
@@ -106,7 +106,7 @@ class PostFleetsFleetIdWingsWingIdSquadsCreated implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'squadId' => 'getSquadId'
+        'squad_id' => 'getSquadId'
     );
 
     public static function getters()
@@ -130,7 +130,7 @@ class PostFleetsFleetIdWingsWingIdSquadsCreated implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['squadId'] = isset($data['squadId']) ? $data['squadId'] : null;
+        $this->container['squad_id'] = isset($data['squad_id']) ? $data['squad_id'] : null;
     }
 
     /**
@@ -141,8 +141,8 @@ class PostFleetsFleetIdWingsWingIdSquadsCreated implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['squadId'] === null) {
-            $invalid_properties[] = "'squadId' can't be null";
+        if ($this->container['squad_id'] === null) {
+            $invalid_properties[] = "'squad_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -155,7 +155,7 @@ class PostFleetsFleetIdWingsWingIdSquadsCreated implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['squadId'] === null) {
+        if ($this->container['squad_id'] === null) {
             return false;
         }
         return true;
@@ -163,22 +163,22 @@ class PostFleetsFleetIdWingsWingIdSquadsCreated implements ArrayAccess
 
 
     /**
-     * Gets squadId
+     * Gets squad_id
      * @return int
      */
     public function getSquadId()
     {
-        return $this->container['squadId'];
+        return $this->container['squad_id'];
     }
 
     /**
-     * Sets squadId
-     * @param int $squadId The squad_id of the newly created squad
+     * Sets squad_id
+     * @param int $squad_id The squad_id of the newly created squad
      * @return $this
      */
-    public function setSquadId($squadId)
+    public function setSquadId($squad_id)
     {
-        $this->container['squadId'] = $squadId;
+        $this->container['squad_id'] = $squad_id;
 
         return $this;
     }

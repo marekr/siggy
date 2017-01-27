@@ -4,7 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **labels** | [**\ESI\Model\GetCharactersCharacterIdMailLabelsOkLabels[]**](GetCharactersCharacterIdMailLabelsOkLabels.md) | labels array | [optional] 
-**totalUnreadCount** | **int** | total_unread_count integer | [optional] 
+**total_unread_count** | **int** | total_unread_count integer | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

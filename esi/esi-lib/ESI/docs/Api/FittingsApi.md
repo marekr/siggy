@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 
 # **deleteCharactersCharacterIdFittingsFittingId**
-> deleteCharactersCharacterIdFittingsFittingId($characterId, $fittingId, $datasource)
+> deleteCharactersCharacterIdFittingsFittingId($character_id, $fitting_id, $datasource)
 
 Delete fitting
 
@@ -25,12 +25,12 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\FittingsApi();
-$characterId = 56; // int | ID for a character
-$fittingId = 56; // int | ID for a fitting of this character
+$character_id = 56; // int | ID for a character
+$fitting_id = 56; // int | ID for a fitting of this character
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $api_instance->deleteCharactersCharacterIdFittingsFittingId($characterId, $fittingId, $datasource);
+    $api_instance->deleteCharactersCharacterIdFittingsFittingId($character_id, $fitting_id, $datasource);
 } catch (Exception $e) {
     echo 'Exception when calling FittingsApi->deleteCharactersCharacterIdFittingsFittingId: ', $e->getMessage(), PHP_EOL;
 }
@@ -41,8 +41,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **characterId** | **int**| ID for a character |
- **fittingId** | **int**| ID for a fitting of this character |
+ **character_id** | **int**| ID for a character |
+ **fitting_id** | **int**| ID for a fitting of this character |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -61,7 +61,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getCharactersCharacterIdFittings**
-> \ESI\Model\GetCharactersCharacterIdFittings200Ok[] getCharactersCharacterIdFittings($characterId, $datasource)
+> \ESI\Model\GetCharactersCharacterIdFittings200Ok[] getCharactersCharacterIdFittings($character_id, $datasource)
 
 Get fittings
 
@@ -76,11 +76,11 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\FittingsApi();
-$characterId = 56; // int | ID for a character
+$character_id = 56; // int | ID for a character
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getCharactersCharacterIdFittings($characterId, $datasource);
+    $result = $api_instance->getCharactersCharacterIdFittings($character_id, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling FittingsApi->getCharactersCharacterIdFittings: ', $e->getMessage(), PHP_EOL;
@@ -92,7 +92,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **characterId** | **int**| ID for a character |
+ **character_id** | **int**| ID for a character |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -111,7 +111,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **postCharactersCharacterIdFittings**
-> \ESI\Model\PostCharactersCharacterIdFittingsCreated postCharactersCharacterIdFittings($characterId, $fitting, $datasource)
+> \ESI\Model\PostCharactersCharacterIdFittingsCreated postCharactersCharacterIdFittings($character_id, $fitting, $datasource)
 
 Create fitting
 
@@ -126,12 +126,12 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\FittingsApi();
-$characterId = 56; // int | ID for a character
+$character_id = 56; // int | ID for a character
 $fitting = new \ESI\Model\PostCharactersCharacterIdFittingsFitting(); // \ESI\Model\PostCharactersCharacterIdFittingsFitting | Details about the new fitting
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->postCharactersCharacterIdFittings($characterId, $fitting, $datasource);
+    $result = $api_instance->postCharactersCharacterIdFittings($character_id, $fitting, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling FittingsApi->postCharactersCharacterIdFittings: ', $e->getMessage(), PHP_EOL;
@@ -143,7 +143,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **characterId** | **int**| ID for a character |
+ **character_id** | **int**| ID for a character |
  **fitting** | [**\ESI\Model\PostCharactersCharacterIdFittingsFitting**](../Model/\ESI\Model\PostCharactersCharacterIdFittingsFitting.md)| Details about the new fitting | [optional]
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 

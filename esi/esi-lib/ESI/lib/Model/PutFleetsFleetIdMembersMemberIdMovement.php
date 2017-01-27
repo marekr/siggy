@@ -68,8 +68,8 @@ class PutFleetsFleetIdMembersMemberIdMovement implements ArrayAccess
       */
     protected static $swaggerTypes = array(
         'role' => 'string',
-        'squadId' => 'int',
-        'wingId' => 'int'
+        'squad_id' => 'int',
+        'wing_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -83,8 +83,8 @@ class PutFleetsFleetIdMembersMemberIdMovement implements ArrayAccess
      */
     protected static $attributeMap = array(
         'role' => 'role',
-        'squadId' => 'squad_id',
-        'wingId' => 'wing_id'
+        'squad_id' => 'squad_id',
+        'wing_id' => 'wing_id'
     );
 
     public static function attributeMap()
@@ -98,8 +98,8 @@ class PutFleetsFleetIdMembersMemberIdMovement implements ArrayAccess
      */
     protected static $setters = array(
         'role' => 'setRole',
-        'squadId' => 'setSquadId',
-        'wingId' => 'setWingId'
+        'squad_id' => 'setSquadId',
+        'wing_id' => 'setWingId'
     );
 
     public static function setters()
@@ -113,8 +113,8 @@ class PutFleetsFleetIdMembersMemberIdMovement implements ArrayAccess
      */
     protected static $getters = array(
         'role' => 'getRole',
-        'squadId' => 'getSquadId',
-        'wingId' => 'getWingId'
+        'squad_id' => 'getSquadId',
+        'wing_id' => 'getWingId'
     );
 
     public static function getters()
@@ -157,8 +157,8 @@ class PutFleetsFleetIdMembersMemberIdMovement implements ArrayAccess
     public function __construct(array $data = null)
     {
         $this->container['role'] = isset($data['role']) ? $data['role'] : null;
-        $this->container['squadId'] = isset($data['squadId']) ? $data['squadId'] : null;
-        $this->container['wingId'] = isset($data['wingId']) ? $data['wingId'] : null;
+        $this->container['squad_id'] = isset($data['squad_id']) ? $data['squad_id'] : null;
+        $this->container['wing_id'] = isset($data['wing_id']) ? $data['wing_id'] : null;
     }
 
     /**
@@ -177,12 +177,12 @@ class PutFleetsFleetIdMembersMemberIdMovement implements ArrayAccess
             $invalid_properties[] = "invalid value for 'role', must be one of #{allowed_values}.";
         }
 
-        if (!is_null($this->container['squadId']) && ($this->container['squadId'] < 0.0)) {
-            $invalid_properties[] = "invalid value for 'squadId', must be bigger than or equal to 0.0.";
+        if (!is_null($this->container['squad_id']) && ($this->container['squad_id'] < 0.0)) {
+            $invalid_properties[] = "invalid value for 'squad_id', must be bigger than or equal to 0.0.";
         }
 
-        if (!is_null($this->container['wingId']) && ($this->container['wingId'] < 0.0)) {
-            $invalid_properties[] = "invalid value for 'wingId', must be bigger than or equal to 0.0.";
+        if (!is_null($this->container['wing_id']) && ($this->container['wing_id'] < 0.0)) {
+            $invalid_properties[] = "invalid value for 'wing_id', must be bigger than or equal to 0.0.";
         }
 
         return $invalid_properties;
@@ -203,10 +203,10 @@ class PutFleetsFleetIdMembersMemberIdMovement implements ArrayAccess
         if (!in_array($this->container['role'], $allowed_values)) {
             return false;
         }
-        if ($this->container['squadId'] < 0.0) {
+        if ($this->container['squad_id'] < 0.0) {
             return false;
         }
-        if ($this->container['wingId'] < 0.0) {
+        if ($this->container['wing_id'] < 0.0) {
             return false;
         }
         return true;
@@ -239,51 +239,51 @@ class PutFleetsFleetIdMembersMemberIdMovement implements ArrayAccess
     }
 
     /**
-     * Gets squadId
+     * Gets squad_id
      * @return int
      */
     public function getSquadId()
     {
-        return $this->container['squadId'];
+        return $this->container['squad_id'];
     }
 
     /**
-     * Sets squadId
-     * @param int $squadId squad_id integer
+     * Sets squad_id
+     * @param int $squad_id squad_id integer
      * @return $this
      */
-    public function setSquadId($squadId)
+    public function setSquadId($squad_id)
     {
 
-        if ($squadId < 0.0) {
-            throw new \InvalidArgumentException('invalid value for $squadId when calling PutFleetsFleetIdMembersMemberIdMovement., must be bigger than or equal to 0.0.');
+        if ($squad_id < 0.0) {
+            throw new \InvalidArgumentException('invalid value for $squad_id when calling PutFleetsFleetIdMembersMemberIdMovement., must be bigger than or equal to 0.0.');
         }
-        $this->container['squadId'] = $squadId;
+        $this->container['squad_id'] = $squad_id;
 
         return $this;
     }
 
     /**
-     * Gets wingId
+     * Gets wing_id
      * @return int
      */
     public function getWingId()
     {
-        return $this->container['wingId'];
+        return $this->container['wing_id'];
     }
 
     /**
-     * Sets wingId
-     * @param int $wingId wing_id integer
+     * Sets wing_id
+     * @param int $wing_id wing_id integer
      * @return $this
      */
-    public function setWingId($wingId)
+    public function setWingId($wing_id)
     {
 
-        if ($wingId < 0.0) {
-            throw new \InvalidArgumentException('invalid value for $wingId when calling PutFleetsFleetIdMembersMemberIdMovement., must be bigger than or equal to 0.0.');
+        if ($wing_id < 0.0) {
+            throw new \InvalidArgumentException('invalid value for $wing_id when calling PutFleetsFleetIdMembersMemberIdMovement., must be bigger than or equal to 0.0.');
         }
-        $this->container['wingId'] = $wingId;
+        $this->container['wing_id'] = $wing_id;
 
         return $this;
     }

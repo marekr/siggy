@@ -67,13 +67,13 @@ class GetCharactersCharacterIdBookmarks200Ok implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'bookmarkId' => 'int',
-        'createDate' => '\DateTime',
-        'creatorId' => 'int',
-        'folderId' => 'int',
+        'bookmark_id' => 'int',
+        'create_date' => '\DateTime',
+        'creator_id' => 'int',
+        'folder_id' => 'int',
         'memo' => 'string',
         'note' => 'string',
-        'ownerId' => 'int',
+        'owner_id' => 'int',
         'target' => '\ESI\Model\CharacterscharacterIdbookmarksTarget'
     );
 
@@ -87,13 +87,13 @@ class GetCharactersCharacterIdBookmarks200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'bookmarkId' => 'bookmark_id',
-        'createDate' => 'create_date',
-        'creatorId' => 'creator_id',
-        'folderId' => 'folder_id',
+        'bookmark_id' => 'bookmark_id',
+        'create_date' => 'create_date',
+        'creator_id' => 'creator_id',
+        'folder_id' => 'folder_id',
         'memo' => 'memo',
         'note' => 'note',
-        'ownerId' => 'owner_id',
+        'owner_id' => 'owner_id',
         'target' => 'target'
     );
 
@@ -107,13 +107,13 @@ class GetCharactersCharacterIdBookmarks200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'bookmarkId' => 'setBookmarkId',
-        'createDate' => 'setCreateDate',
-        'creatorId' => 'setCreatorId',
-        'folderId' => 'setFolderId',
+        'bookmark_id' => 'setBookmarkId',
+        'create_date' => 'setCreateDate',
+        'creator_id' => 'setCreatorId',
+        'folder_id' => 'setFolderId',
         'memo' => 'setMemo',
         'note' => 'setNote',
-        'ownerId' => 'setOwnerId',
+        'owner_id' => 'setOwnerId',
         'target' => 'setTarget'
     );
 
@@ -127,13 +127,13 @@ class GetCharactersCharacterIdBookmarks200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'bookmarkId' => 'getBookmarkId',
-        'createDate' => 'getCreateDate',
-        'creatorId' => 'getCreatorId',
-        'folderId' => 'getFolderId',
+        'bookmark_id' => 'getBookmarkId',
+        'create_date' => 'getCreateDate',
+        'creator_id' => 'getCreatorId',
+        'folder_id' => 'getFolderId',
         'memo' => 'getMemo',
         'note' => 'getNote',
-        'ownerId' => 'getOwnerId',
+        'owner_id' => 'getOwnerId',
         'target' => 'getTarget'
     );
 
@@ -158,13 +158,13 @@ class GetCharactersCharacterIdBookmarks200Ok implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['bookmarkId'] = isset($data['bookmarkId']) ? $data['bookmarkId'] : null;
-        $this->container['createDate'] = isset($data['createDate']) ? $data['createDate'] : null;
-        $this->container['creatorId'] = isset($data['creatorId']) ? $data['creatorId'] : null;
-        $this->container['folderId'] = isset($data['folderId']) ? $data['folderId'] : null;
+        $this->container['bookmark_id'] = isset($data['bookmark_id']) ? $data['bookmark_id'] : null;
+        $this->container['create_date'] = isset($data['create_date']) ? $data['create_date'] : null;
+        $this->container['creator_id'] = isset($data['creator_id']) ? $data['creator_id'] : null;
+        $this->container['folder_id'] = isset($data['folder_id']) ? $data['folder_id'] : null;
         $this->container['memo'] = isset($data['memo']) ? $data['memo'] : null;
         $this->container['note'] = isset($data['note']) ? $data['note'] : null;
-        $this->container['ownerId'] = isset($data['ownerId']) ? $data['ownerId'] : null;
+        $this->container['owner_id'] = isset($data['owner_id']) ? $data['owner_id'] : null;
         $this->container['target'] = isset($data['target']) ? $data['target'] : null;
     }
 
@@ -176,14 +176,14 @@ class GetCharactersCharacterIdBookmarks200Ok implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['bookmarkId'] === null) {
-            $invalid_properties[] = "'bookmarkId' can't be null";
+        if ($this->container['bookmark_id'] === null) {
+            $invalid_properties[] = "'bookmark_id' can't be null";
         }
-        if ($this->container['createDate'] === null) {
-            $invalid_properties[] = "'createDate' can't be null";
+        if ($this->container['create_date'] === null) {
+            $invalid_properties[] = "'create_date' can't be null";
         }
-        if ($this->container['creatorId'] === null) {
-            $invalid_properties[] = "'creatorId' can't be null";
+        if ($this->container['creator_id'] === null) {
+            $invalid_properties[] = "'creator_id' can't be null";
         }
         if ($this->container['memo'] === null) {
             $invalid_properties[] = "'memo' can't be null";
@@ -191,8 +191,8 @@ class GetCharactersCharacterIdBookmarks200Ok implements ArrayAccess
         if ($this->container['note'] === null) {
             $invalid_properties[] = "'note' can't be null";
         }
-        if ($this->container['ownerId'] === null) {
-            $invalid_properties[] = "'ownerId' can't be null";
+        if ($this->container['owner_id'] === null) {
+            $invalid_properties[] = "'owner_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -205,13 +205,13 @@ class GetCharactersCharacterIdBookmarks200Ok implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['bookmarkId'] === null) {
+        if ($this->container['bookmark_id'] === null) {
             return false;
         }
-        if ($this->container['createDate'] === null) {
+        if ($this->container['create_date'] === null) {
             return false;
         }
-        if ($this->container['creatorId'] === null) {
+        if ($this->container['creator_id'] === null) {
             return false;
         }
         if ($this->container['memo'] === null) {
@@ -220,7 +220,7 @@ class GetCharactersCharacterIdBookmarks200Ok implements ArrayAccess
         if ($this->container['note'] === null) {
             return false;
         }
-        if ($this->container['ownerId'] === null) {
+        if ($this->container['owner_id'] === null) {
             return false;
         }
         return true;
@@ -228,85 +228,85 @@ class GetCharactersCharacterIdBookmarks200Ok implements ArrayAccess
 
 
     /**
-     * Gets bookmarkId
+     * Gets bookmark_id
      * @return int
      */
     public function getBookmarkId()
     {
-        return $this->container['bookmarkId'];
+        return $this->container['bookmark_id'];
     }
 
     /**
-     * Sets bookmarkId
-     * @param int $bookmarkId bookmark_id integer
+     * Sets bookmark_id
+     * @param int $bookmark_id bookmark_id integer
      * @return $this
      */
-    public function setBookmarkId($bookmarkId)
+    public function setBookmarkId($bookmark_id)
     {
-        $this->container['bookmarkId'] = $bookmarkId;
+        $this->container['bookmark_id'] = $bookmark_id;
 
         return $this;
     }
 
     /**
-     * Gets createDate
+     * Gets create_date
      * @return \DateTime
      */
     public function getCreateDate()
     {
-        return $this->container['createDate'];
+        return $this->container['create_date'];
     }
 
     /**
-     * Sets createDate
-     * @param \DateTime $createDate create_date string
+     * Sets create_date
+     * @param \DateTime $create_date create_date string
      * @return $this
      */
-    public function setCreateDate($createDate)
+    public function setCreateDate($create_date)
     {
-        $this->container['createDate'] = $createDate;
+        $this->container['create_date'] = $create_date;
 
         return $this;
     }
 
     /**
-     * Gets creatorId
+     * Gets creator_id
      * @return int
      */
     public function getCreatorId()
     {
-        return $this->container['creatorId'];
+        return $this->container['creator_id'];
     }
 
     /**
-     * Sets creatorId
-     * @param int $creatorId creator_id integer
+     * Sets creator_id
+     * @param int $creator_id creator_id integer
      * @return $this
      */
-    public function setCreatorId($creatorId)
+    public function setCreatorId($creator_id)
     {
-        $this->container['creatorId'] = $creatorId;
+        $this->container['creator_id'] = $creator_id;
 
         return $this;
     }
 
     /**
-     * Gets folderId
+     * Gets folder_id
      * @return int
      */
     public function getFolderId()
     {
-        return $this->container['folderId'];
+        return $this->container['folder_id'];
     }
 
     /**
-     * Sets folderId
-     * @param int $folderId folder_id integer
+     * Sets folder_id
+     * @param int $folder_id folder_id integer
      * @return $this
      */
-    public function setFolderId($folderId)
+    public function setFolderId($folder_id)
     {
-        $this->container['folderId'] = $folderId;
+        $this->container['folder_id'] = $folder_id;
 
         return $this;
     }
@@ -354,22 +354,22 @@ class GetCharactersCharacterIdBookmarks200Ok implements ArrayAccess
     }
 
     /**
-     * Gets ownerId
+     * Gets owner_id
      * @return int
      */
     public function getOwnerId()
     {
-        return $this->container['ownerId'];
+        return $this->container['owner_id'];
     }
 
     /**
-     * Sets ownerId
-     * @param int $ownerId owner_id integer
+     * Sets owner_id
+     * @param int $owner_id owner_id integer
      * @return $this
      */
-    public function setOwnerId($ownerId)
+    public function setOwnerId($owner_id)
     {
-        $this->container['ownerId'] = $ownerId;
+        $this->container['owner_id'] = $owner_id;
 
         return $this;
     }

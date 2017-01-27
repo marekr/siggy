@@ -68,7 +68,7 @@ class GetInsurancePrices200Ok implements ArrayAccess
       */
     protected static $swaggerTypes = array(
         'levels' => '\ESI\Model\InsurancepricesLevels[]',
-        'typeId' => 'int'
+        'type_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -82,7 +82,7 @@ class GetInsurancePrices200Ok implements ArrayAccess
      */
     protected static $attributeMap = array(
         'levels' => 'levels',
-        'typeId' => 'type_id'
+        'type_id' => 'type_id'
     );
 
     public static function attributeMap()
@@ -96,7 +96,7 @@ class GetInsurancePrices200Ok implements ArrayAccess
      */
     protected static $setters = array(
         'levels' => 'setLevels',
-        'typeId' => 'setTypeId'
+        'type_id' => 'setTypeId'
     );
 
     public static function setters()
@@ -110,7 +110,7 @@ class GetInsurancePrices200Ok implements ArrayAccess
      */
     protected static $getters = array(
         'levels' => 'getLevels',
-        'typeId' => 'getTypeId'
+        'type_id' => 'getTypeId'
     );
 
     public static function getters()
@@ -135,7 +135,7 @@ class GetInsurancePrices200Ok implements ArrayAccess
     public function __construct(array $data = null)
     {
         $this->container['levels'] = isset($data['levels']) ? $data['levels'] : null;
-        $this->container['typeId'] = isset($data['typeId']) ? $data['typeId'] : null;
+        $this->container['type_id'] = isset($data['type_id']) ? $data['type_id'] : null;
     }
 
     /**
@@ -149,8 +149,8 @@ class GetInsurancePrices200Ok implements ArrayAccess
         if ($this->container['levels'] === null) {
             $invalid_properties[] = "'levels' can't be null";
         }
-        if ($this->container['typeId'] === null) {
-            $invalid_properties[] = "'typeId' can't be null";
+        if ($this->container['type_id'] === null) {
+            $invalid_properties[] = "'type_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -166,7 +166,7 @@ class GetInsurancePrices200Ok implements ArrayAccess
         if ($this->container['levels'] === null) {
             return false;
         }
-        if ($this->container['typeId'] === null) {
+        if ($this->container['type_id'] === null) {
             return false;
         }
         return true;
@@ -195,22 +195,22 @@ class GetInsurancePrices200Ok implements ArrayAccess
     }
 
     /**
-     * Gets typeId
+     * Gets type_id
      * @return int
      */
     public function getTypeId()
     {
-        return $this->container['typeId'];
+        return $this->container['type_id'];
     }
 
     /**
-     * Sets typeId
-     * @param int $typeId type_id integer
+     * Sets type_id
+     * @param int $type_id type_id integer
      * @return $this
      */
-    public function setTypeId($typeId)
+    public function setTypeId($type_id)
     {
-        $this->container['typeId'] = $typeId;
+        $this->container['type_id'] = $type_id;
 
         return $this;
     }

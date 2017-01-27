@@ -67,8 +67,8 @@ class CharacterscharacterIdbookmarksTargetItem implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'itemId' => 'int',
-        'typeId' => 'int'
+        'item_id' => 'int',
+        'type_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -81,8 +81,8 @@ class CharacterscharacterIdbookmarksTargetItem implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'itemId' => 'item_id',
-        'typeId' => 'type_id'
+        'item_id' => 'item_id',
+        'type_id' => 'type_id'
     );
 
     public static function attributeMap()
@@ -95,8 +95,8 @@ class CharacterscharacterIdbookmarksTargetItem implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'itemId' => 'setItemId',
-        'typeId' => 'setTypeId'
+        'item_id' => 'setItemId',
+        'type_id' => 'setTypeId'
     );
 
     public static function setters()
@@ -109,8 +109,8 @@ class CharacterscharacterIdbookmarksTargetItem implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'itemId' => 'getItemId',
-        'typeId' => 'getTypeId'
+        'item_id' => 'getItemId',
+        'type_id' => 'getTypeId'
     );
 
     public static function getters()
@@ -134,8 +134,8 @@ class CharacterscharacterIdbookmarksTargetItem implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['itemId'] = isset($data['itemId']) ? $data['itemId'] : null;
-        $this->container['typeId'] = isset($data['typeId']) ? $data['typeId'] : null;
+        $this->container['item_id'] = isset($data['item_id']) ? $data['item_id'] : null;
+        $this->container['type_id'] = isset($data['type_id']) ? $data['type_id'] : null;
     }
 
     /**
@@ -146,11 +146,11 @@ class CharacterscharacterIdbookmarksTargetItem implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['itemId'] === null) {
-            $invalid_properties[] = "'itemId' can't be null";
+        if ($this->container['item_id'] === null) {
+            $invalid_properties[] = "'item_id' can't be null";
         }
-        if ($this->container['typeId'] === null) {
-            $invalid_properties[] = "'typeId' can't be null";
+        if ($this->container['type_id'] === null) {
+            $invalid_properties[] = "'type_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -163,10 +163,10 @@ class CharacterscharacterIdbookmarksTargetItem implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['itemId'] === null) {
+        if ($this->container['item_id'] === null) {
             return false;
         }
-        if ($this->container['typeId'] === null) {
+        if ($this->container['type_id'] === null) {
             return false;
         }
         return true;
@@ -174,43 +174,43 @@ class CharacterscharacterIdbookmarksTargetItem implements ArrayAccess
 
 
     /**
-     * Gets itemId
+     * Gets item_id
      * @return int
      */
     public function getItemId()
     {
-        return $this->container['itemId'];
+        return $this->container['item_id'];
     }
 
     /**
-     * Sets itemId
-     * @param int $itemId item_id integer
+     * Sets item_id
+     * @param int $item_id item_id integer
      * @return $this
      */
-    public function setItemId($itemId)
+    public function setItemId($item_id)
     {
-        $this->container['itemId'] = $itemId;
+        $this->container['item_id'] = $item_id;
 
         return $this;
     }
 
     /**
-     * Gets typeId
+     * Gets type_id
      * @return int
      */
     public function getTypeId()
     {
-        return $this->container['typeId'];
+        return $this->container['type_id'];
     }
 
     /**
-     * Sets typeId
-     * @param int $typeId type_id integer
+     * Sets type_id
+     * @param int $type_id type_id integer
      * @return $this
      */
-    public function setTypeId($typeId)
+    public function setTypeId($type_id)
     {
-        $this->container['typeId'] = $typeId;
+        $this->container['type_id'] = $type_id;
 
         return $this;
     }

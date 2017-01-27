@@ -67,8 +67,8 @@ class GetCorporationsNames200Ok implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'corporationId' => 'int',
-        'corporationName' => 'string'
+        'corporation_id' => 'int',
+        'corporation_name' => 'string'
     );
 
     public static function swaggerTypes()
@@ -81,8 +81,8 @@ class GetCorporationsNames200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'corporationId' => 'corporation_id',
-        'corporationName' => 'corporation_name'
+        'corporation_id' => 'corporation_id',
+        'corporation_name' => 'corporation_name'
     );
 
     public static function attributeMap()
@@ -95,8 +95,8 @@ class GetCorporationsNames200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'corporationId' => 'setCorporationId',
-        'corporationName' => 'setCorporationName'
+        'corporation_id' => 'setCorporationId',
+        'corporation_name' => 'setCorporationName'
     );
 
     public static function setters()
@@ -109,8 +109,8 @@ class GetCorporationsNames200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'corporationId' => 'getCorporationId',
-        'corporationName' => 'getCorporationName'
+        'corporation_id' => 'getCorporationId',
+        'corporation_name' => 'getCorporationName'
     );
 
     public static function getters()
@@ -134,8 +134,8 @@ class GetCorporationsNames200Ok implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['corporationId'] = isset($data['corporationId']) ? $data['corporationId'] : null;
-        $this->container['corporationName'] = isset($data['corporationName']) ? $data['corporationName'] : null;
+        $this->container['corporation_id'] = isset($data['corporation_id']) ? $data['corporation_id'] : null;
+        $this->container['corporation_name'] = isset($data['corporation_name']) ? $data['corporation_name'] : null;
     }
 
     /**
@@ -146,11 +146,11 @@ class GetCorporationsNames200Ok implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['corporationId'] === null) {
-            $invalid_properties[] = "'corporationId' can't be null";
+        if ($this->container['corporation_id'] === null) {
+            $invalid_properties[] = "'corporation_id' can't be null";
         }
-        if ($this->container['corporationName'] === null) {
-            $invalid_properties[] = "'corporationName' can't be null";
+        if ($this->container['corporation_name'] === null) {
+            $invalid_properties[] = "'corporation_name' can't be null";
         }
         return $invalid_properties;
     }
@@ -163,10 +163,10 @@ class GetCorporationsNames200Ok implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['corporationId'] === null) {
+        if ($this->container['corporation_id'] === null) {
             return false;
         }
-        if ($this->container['corporationName'] === null) {
+        if ($this->container['corporation_name'] === null) {
             return false;
         }
         return true;
@@ -174,43 +174,43 @@ class GetCorporationsNames200Ok implements ArrayAccess
 
 
     /**
-     * Gets corporationId
+     * Gets corporation_id
      * @return int
      */
     public function getCorporationId()
     {
-        return $this->container['corporationId'];
+        return $this->container['corporation_id'];
     }
 
     /**
-     * Sets corporationId
-     * @param int $corporationId corporation_id integer
+     * Sets corporation_id
+     * @param int $corporation_id corporation_id integer
      * @return $this
      */
-    public function setCorporationId($corporationId)
+    public function setCorporationId($corporation_id)
     {
-        $this->container['corporationId'] = $corporationId;
+        $this->container['corporation_id'] = $corporation_id;
 
         return $this;
     }
 
     /**
-     * Gets corporationName
+     * Gets corporation_name
      * @return string
      */
     public function getCorporationName()
     {
-        return $this->container['corporationName'];
+        return $this->container['corporation_name'];
     }
 
     /**
-     * Sets corporationName
-     * @param string $corporationName corporation_name string
+     * Sets corporation_name
+     * @param string $corporation_name corporation_name string
      * @return $this
      */
-    public function setCorporationName($corporationName)
+    public function setCorporationName($corporation_name)
     {
-        $this->container['corporationName'] = $corporationName;
+        $this->container['corporation_name'] = $corporation_name;
 
         return $this;
     }

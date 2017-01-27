@@ -67,15 +67,15 @@ class GetKillmailsKillmailIdKillmailHashOkAttackers implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'allianceId' => 'int',
-        'characterId' => 'int',
-        'corporationId' => 'int',
-        'damageDone' => 'int',
-        'factionId' => 'int',
-        'finalBlow' => 'bool',
-        'securityStatus' => 'float',
-        'shipTypeId' => 'int',
-        'weaponTypeId' => 'int'
+        'alliance_id' => 'int',
+        'character_id' => 'int',
+        'corporation_id' => 'int',
+        'damage_done' => 'int',
+        'faction_id' => 'int',
+        'final_blow' => 'bool',
+        'security_status' => 'float',
+        'ship_type_id' => 'int',
+        'weapon_type_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -88,15 +88,15 @@ class GetKillmailsKillmailIdKillmailHashOkAttackers implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'allianceId' => 'alliance_id',
-        'characterId' => 'character_id',
-        'corporationId' => 'corporation_id',
-        'damageDone' => 'damage_done',
-        'factionId' => 'faction_id',
-        'finalBlow' => 'final_blow',
-        'securityStatus' => 'security_status',
-        'shipTypeId' => 'ship_type_id',
-        'weaponTypeId' => 'weapon_type_id'
+        'alliance_id' => 'alliance_id',
+        'character_id' => 'character_id',
+        'corporation_id' => 'corporation_id',
+        'damage_done' => 'damage_done',
+        'faction_id' => 'faction_id',
+        'final_blow' => 'final_blow',
+        'security_status' => 'security_status',
+        'ship_type_id' => 'ship_type_id',
+        'weapon_type_id' => 'weapon_type_id'
     );
 
     public static function attributeMap()
@@ -109,15 +109,15 @@ class GetKillmailsKillmailIdKillmailHashOkAttackers implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'allianceId' => 'setAllianceId',
-        'characterId' => 'setCharacterId',
-        'corporationId' => 'setCorporationId',
-        'damageDone' => 'setDamageDone',
-        'factionId' => 'setFactionId',
-        'finalBlow' => 'setFinalBlow',
-        'securityStatus' => 'setSecurityStatus',
-        'shipTypeId' => 'setShipTypeId',
-        'weaponTypeId' => 'setWeaponTypeId'
+        'alliance_id' => 'setAllianceId',
+        'character_id' => 'setCharacterId',
+        'corporation_id' => 'setCorporationId',
+        'damage_done' => 'setDamageDone',
+        'faction_id' => 'setFactionId',
+        'final_blow' => 'setFinalBlow',
+        'security_status' => 'setSecurityStatus',
+        'ship_type_id' => 'setShipTypeId',
+        'weapon_type_id' => 'setWeaponTypeId'
     );
 
     public static function setters()
@@ -130,15 +130,15 @@ class GetKillmailsKillmailIdKillmailHashOkAttackers implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'allianceId' => 'getAllianceId',
-        'characterId' => 'getCharacterId',
-        'corporationId' => 'getCorporationId',
-        'damageDone' => 'getDamageDone',
-        'factionId' => 'getFactionId',
-        'finalBlow' => 'getFinalBlow',
-        'securityStatus' => 'getSecurityStatus',
-        'shipTypeId' => 'getShipTypeId',
-        'weaponTypeId' => 'getWeaponTypeId'
+        'alliance_id' => 'getAllianceId',
+        'character_id' => 'getCharacterId',
+        'corporation_id' => 'getCorporationId',
+        'damage_done' => 'getDamageDone',
+        'faction_id' => 'getFactionId',
+        'final_blow' => 'getFinalBlow',
+        'security_status' => 'getSecurityStatus',
+        'ship_type_id' => 'getShipTypeId',
+        'weapon_type_id' => 'getWeaponTypeId'
     );
 
     public static function getters()
@@ -162,15 +162,15 @@ class GetKillmailsKillmailIdKillmailHashOkAttackers implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['allianceId'] = isset($data['allianceId']) ? $data['allianceId'] : null;
-        $this->container['characterId'] = isset($data['characterId']) ? $data['characterId'] : null;
-        $this->container['corporationId'] = isset($data['corporationId']) ? $data['corporationId'] : null;
-        $this->container['damageDone'] = isset($data['damageDone']) ? $data['damageDone'] : null;
-        $this->container['factionId'] = isset($data['factionId']) ? $data['factionId'] : null;
-        $this->container['finalBlow'] = isset($data['finalBlow']) ? $data['finalBlow'] : null;
-        $this->container['securityStatus'] = isset($data['securityStatus']) ? $data['securityStatus'] : null;
-        $this->container['shipTypeId'] = isset($data['shipTypeId']) ? $data['shipTypeId'] : null;
-        $this->container['weaponTypeId'] = isset($data['weaponTypeId']) ? $data['weaponTypeId'] : null;
+        $this->container['alliance_id'] = isset($data['alliance_id']) ? $data['alliance_id'] : null;
+        $this->container['character_id'] = isset($data['character_id']) ? $data['character_id'] : null;
+        $this->container['corporation_id'] = isset($data['corporation_id']) ? $data['corporation_id'] : null;
+        $this->container['damage_done'] = isset($data['damage_done']) ? $data['damage_done'] : null;
+        $this->container['faction_id'] = isset($data['faction_id']) ? $data['faction_id'] : null;
+        $this->container['final_blow'] = isset($data['final_blow']) ? $data['final_blow'] : null;
+        $this->container['security_status'] = isset($data['security_status']) ? $data['security_status'] : null;
+        $this->container['ship_type_id'] = isset($data['ship_type_id']) ? $data['ship_type_id'] : null;
+        $this->container['weapon_type_id'] = isset($data['weapon_type_id']) ? $data['weapon_type_id'] : null;
     }
 
     /**
@@ -181,14 +181,14 @@ class GetKillmailsKillmailIdKillmailHashOkAttackers implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['damageDone'] === null) {
-            $invalid_properties[] = "'damageDone' can't be null";
+        if ($this->container['damage_done'] === null) {
+            $invalid_properties[] = "'damage_done' can't be null";
         }
-        if ($this->container['finalBlow'] === null) {
-            $invalid_properties[] = "'finalBlow' can't be null";
+        if ($this->container['final_blow'] === null) {
+            $invalid_properties[] = "'final_blow' can't be null";
         }
-        if ($this->container['securityStatus'] === null) {
-            $invalid_properties[] = "'securityStatus' can't be null";
+        if ($this->container['security_status'] === null) {
+            $invalid_properties[] = "'security_status' can't be null";
         }
         return $invalid_properties;
     }
@@ -201,13 +201,13 @@ class GetKillmailsKillmailIdKillmailHashOkAttackers implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['damageDone'] === null) {
+        if ($this->container['damage_done'] === null) {
             return false;
         }
-        if ($this->container['finalBlow'] === null) {
+        if ($this->container['final_blow'] === null) {
             return false;
         }
-        if ($this->container['securityStatus'] === null) {
+        if ($this->container['security_status'] === null) {
             return false;
         }
         return true;
@@ -215,190 +215,190 @@ class GetKillmailsKillmailIdKillmailHashOkAttackers implements ArrayAccess
 
 
     /**
-     * Gets allianceId
+     * Gets alliance_id
      * @return int
      */
     public function getAllianceId()
     {
-        return $this->container['allianceId'];
+        return $this->container['alliance_id'];
     }
 
     /**
-     * Sets allianceId
-     * @param int $allianceId alliance_id integer
+     * Sets alliance_id
+     * @param int $alliance_id alliance_id integer
      * @return $this
      */
-    public function setAllianceId($allianceId)
+    public function setAllianceId($alliance_id)
     {
-        $this->container['allianceId'] = $allianceId;
+        $this->container['alliance_id'] = $alliance_id;
 
         return $this;
     }
 
     /**
-     * Gets characterId
+     * Gets character_id
      * @return int
      */
     public function getCharacterId()
     {
-        return $this->container['characterId'];
+        return $this->container['character_id'];
     }
 
     /**
-     * Sets characterId
-     * @param int $characterId character_id integer
+     * Sets character_id
+     * @param int $character_id character_id integer
      * @return $this
      */
-    public function setCharacterId($characterId)
+    public function setCharacterId($character_id)
     {
-        $this->container['characterId'] = $characterId;
+        $this->container['character_id'] = $character_id;
 
         return $this;
     }
 
     /**
-     * Gets corporationId
+     * Gets corporation_id
      * @return int
      */
     public function getCorporationId()
     {
-        return $this->container['corporationId'];
+        return $this->container['corporation_id'];
     }
 
     /**
-     * Sets corporationId
-     * @param int $corporationId corporation_id integer
+     * Sets corporation_id
+     * @param int $corporation_id corporation_id integer
      * @return $this
      */
-    public function setCorporationId($corporationId)
+    public function setCorporationId($corporation_id)
     {
-        $this->container['corporationId'] = $corporationId;
+        $this->container['corporation_id'] = $corporation_id;
 
         return $this;
     }
 
     /**
-     * Gets damageDone
+     * Gets damage_done
      * @return int
      */
     public function getDamageDone()
     {
-        return $this->container['damageDone'];
+        return $this->container['damage_done'];
     }
 
     /**
-     * Sets damageDone
-     * @param int $damageDone damage_done integer
+     * Sets damage_done
+     * @param int $damage_done damage_done integer
      * @return $this
      */
-    public function setDamageDone($damageDone)
+    public function setDamageDone($damage_done)
     {
-        $this->container['damageDone'] = $damageDone;
+        $this->container['damage_done'] = $damage_done;
 
         return $this;
     }
 
     /**
-     * Gets factionId
+     * Gets faction_id
      * @return int
      */
     public function getFactionId()
     {
-        return $this->container['factionId'];
+        return $this->container['faction_id'];
     }
 
     /**
-     * Sets factionId
-     * @param int $factionId faction_id integer
+     * Sets faction_id
+     * @param int $faction_id faction_id integer
      * @return $this
      */
-    public function setFactionId($factionId)
+    public function setFactionId($faction_id)
     {
-        $this->container['factionId'] = $factionId;
+        $this->container['faction_id'] = $faction_id;
 
         return $this;
     }
 
     /**
-     * Gets finalBlow
+     * Gets final_blow
      * @return bool
      */
     public function getFinalBlow()
     {
-        return $this->container['finalBlow'];
+        return $this->container['final_blow'];
     }
 
     /**
-     * Sets finalBlow
-     * @param bool $finalBlow Was the attacker the one to achieve the final blow
+     * Sets final_blow
+     * @param bool $final_blow Was the attacker the one to achieve the final blow
      * @return $this
      */
-    public function setFinalBlow($finalBlow)
+    public function setFinalBlow($final_blow)
     {
-        $this->container['finalBlow'] = $finalBlow;
+        $this->container['final_blow'] = $final_blow;
 
         return $this;
     }
 
     /**
-     * Gets securityStatus
+     * Gets security_status
      * @return float
      */
     public function getSecurityStatus()
     {
-        return $this->container['securityStatus'];
+        return $this->container['security_status'];
     }
 
     /**
-     * Sets securityStatus
-     * @param float $securityStatus Security status for the attacker
+     * Sets security_status
+     * @param float $security_status Security status for the attacker
      * @return $this
      */
-    public function setSecurityStatus($securityStatus)
+    public function setSecurityStatus($security_status)
     {
-        $this->container['securityStatus'] = $securityStatus;
+        $this->container['security_status'] = $security_status;
 
         return $this;
     }
 
     /**
-     * Gets shipTypeId
+     * Gets ship_type_id
      * @return int
      */
     public function getShipTypeId()
     {
-        return $this->container['shipTypeId'];
+        return $this->container['ship_type_id'];
     }
 
     /**
-     * Sets shipTypeId
-     * @param int $shipTypeId What ship was the attacker flying
+     * Sets ship_type_id
+     * @param int $ship_type_id What ship was the attacker flying
      * @return $this
      */
-    public function setShipTypeId($shipTypeId)
+    public function setShipTypeId($ship_type_id)
     {
-        $this->container['shipTypeId'] = $shipTypeId;
+        $this->container['ship_type_id'] = $ship_type_id;
 
         return $this;
     }
 
     /**
-     * Gets weaponTypeId
+     * Gets weapon_type_id
      * @return int
      */
     public function getWeaponTypeId()
     {
-        return $this->container['weaponTypeId'];
+        return $this->container['weapon_type_id'];
     }
 
     /**
-     * Sets weaponTypeId
-     * @param int $weaponTypeId What weapon was used by the attacker for the kill
+     * Sets weapon_type_id
+     * @param int $weapon_type_id What weapon was used by the attacker for the kill
      * @return $this
      */
-    public function setWeaponTypeId($weaponTypeId)
+    public function setWeaponTypeId($weapon_type_id)
     {
-        $this->container['weaponTypeId'] = $weaponTypeId;
+        $this->container['weapon_type_id'] = $weapon_type_id;
 
         return $this;
     }

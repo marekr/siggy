@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**approvedCost** | **int** | approved_cost integer | [optional] [default to 0]
+**approved_cost** | **int** | approved_cost integer | [optional] [default to 0]
 **body** | **string** | body string | 
 **recipients** | [**\ESI\Model\CharacterscharacterIdmailRecipients1[]**](CharacterscharacterIdmailRecipients1.md) | recipients array | 
 **subject** | **string** | subject string | 

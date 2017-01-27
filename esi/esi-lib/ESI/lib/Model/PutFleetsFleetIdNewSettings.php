@@ -67,7 +67,7 @@ class PutFleetsFleetIdNewSettings implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'isFreeMove' => 'bool',
+        'is_free_move' => 'bool',
         'motd' => 'string'
     );
 
@@ -81,7 +81,7 @@ class PutFleetsFleetIdNewSettings implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'isFreeMove' => 'is_free_move',
+        'is_free_move' => 'is_free_move',
         'motd' => 'motd'
     );
 
@@ -95,7 +95,7 @@ class PutFleetsFleetIdNewSettings implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'isFreeMove' => 'setIsFreeMove',
+        'is_free_move' => 'setIsFreeMove',
         'motd' => 'setMotd'
     );
 
@@ -109,7 +109,7 @@ class PutFleetsFleetIdNewSettings implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'isFreeMove' => 'getIsFreeMove',
+        'is_free_move' => 'getIsFreeMove',
         'motd' => 'getMotd'
     );
 
@@ -134,7 +134,7 @@ class PutFleetsFleetIdNewSettings implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['isFreeMove'] = isset($data['isFreeMove']) ? $data['isFreeMove'] : null;
+        $this->container['is_free_move'] = isset($data['is_free_move']) ? $data['is_free_move'] : null;
         $this->container['motd'] = isset($data['motd']) ? $data['motd'] : null;
     }
 
@@ -162,22 +162,22 @@ class PutFleetsFleetIdNewSettings implements ArrayAccess
 
 
     /**
-     * Gets isFreeMove
+     * Gets is_free_move
      * @return bool
      */
     public function getIsFreeMove()
     {
-        return $this->container['isFreeMove'];
+        return $this->container['is_free_move'];
     }
 
     /**
-     * Sets isFreeMove
-     * @param bool $isFreeMove Should free-move be enabled in the fleet
+     * Sets is_free_move
+     * @param bool $is_free_move Should free-move be enabled in the fleet
      * @return $this
      */
-    public function setIsFreeMove($isFreeMove)
+    public function setIsFreeMove($is_free_move)
     {
-        $this->container['isFreeMove'] = $isFreeMove;
+        $this->container['is_free_move'] = $is_free_move;
 
         return $this;
     }

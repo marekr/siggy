@@ -68,7 +68,7 @@ class IndustrysystemsCostIndices implements ArrayAccess
       */
     protected static $swaggerTypes = array(
         'activity' => 'string',
-        'costIndex' => 'float'
+        'cost_index' => 'float'
     );
 
     public static function swaggerTypes()
@@ -82,7 +82,7 @@ class IndustrysystemsCostIndices implements ArrayAccess
      */
     protected static $attributeMap = array(
         'activity' => 'activity',
-        'costIndex' => 'cost_index'
+        'cost_index' => 'cost_index'
     );
 
     public static function attributeMap()
@@ -96,7 +96,7 @@ class IndustrysystemsCostIndices implements ArrayAccess
      */
     protected static $setters = array(
         'activity' => 'setActivity',
-        'costIndex' => 'setCostIndex'
+        'cost_index' => 'setCostIndex'
     );
 
     public static function setters()
@@ -110,7 +110,7 @@ class IndustrysystemsCostIndices implements ArrayAccess
      */
     protected static $getters = array(
         'activity' => 'getActivity',
-        'costIndex' => 'getCostIndex'
+        'cost_index' => 'getCostIndex'
     );
 
     public static function getters()
@@ -163,7 +163,7 @@ class IndustrysystemsCostIndices implements ArrayAccess
     public function __construct(array $data = null)
     {
         $this->container['activity'] = isset($data['activity']) ? $data['activity'] : null;
-        $this->container['costIndex'] = isset($data['costIndex']) ? $data['costIndex'] : null;
+        $this->container['cost_index'] = isset($data['cost_index']) ? $data['cost_index'] : null;
     }
 
     /**
@@ -182,8 +182,8 @@ class IndustrysystemsCostIndices implements ArrayAccess
             $invalid_properties[] = "invalid value for 'activity', must be one of #{allowed_values}.";
         }
 
-        if ($this->container['costIndex'] === null) {
-            $invalid_properties[] = "'costIndex' can't be null";
+        if ($this->container['cost_index'] === null) {
+            $invalid_properties[] = "'cost_index' can't be null";
         }
         return $invalid_properties;
     }
@@ -203,7 +203,7 @@ class IndustrysystemsCostIndices implements ArrayAccess
         if (!in_array($this->container['activity'], $allowed_values)) {
             return false;
         }
-        if ($this->container['costIndex'] === null) {
+        if ($this->container['cost_index'] === null) {
             return false;
         }
         return true;
@@ -236,22 +236,22 @@ class IndustrysystemsCostIndices implements ArrayAccess
     }
 
     /**
-     * Gets costIndex
+     * Gets cost_index
      * @return float
      */
     public function getCostIndex()
     {
-        return $this->container['costIndex'];
+        return $this->container['cost_index'];
     }
 
     /**
-     * Sets costIndex
-     * @param float $costIndex cost_index number
+     * Sets cost_index
+     * @param float $cost_index cost_index number
      * @return $this
      */
-    public function setCostIndex($costIndex)
+    public function setCostIndex($cost_index)
     {
-        $this->container['costIndex'] = $costIndex;
+        $this->container['cost_index'] = $cost_index;
 
         return $this;
     }

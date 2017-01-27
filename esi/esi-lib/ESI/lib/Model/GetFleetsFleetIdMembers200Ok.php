@@ -67,16 +67,16 @@ class GetFleetsFleetIdMembers200Ok implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'characterId' => 'int',
-        'joinTime' => '\DateTime',
+        'character_id' => 'int',
+        'join_time' => '\DateTime',
         'role' => 'string',
-        'roleName' => 'string',
-        'shipTypeId' => 'int',
-        'solarSystemId' => 'int',
-        'squadId' => 'int',
-        'stationId' => 'int',
-        'takesFleetWarp' => 'bool',
-        'wingId' => 'int'
+        'role_name' => 'string',
+        'ship_type_id' => 'int',
+        'solar_system_id' => 'int',
+        'squad_id' => 'int',
+        'station_id' => 'int',
+        'takes_fleet_warp' => 'bool',
+        'wing_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -89,16 +89,16 @@ class GetFleetsFleetIdMembers200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'characterId' => 'character_id',
-        'joinTime' => 'join_time',
+        'character_id' => 'character_id',
+        'join_time' => 'join_time',
         'role' => 'role',
-        'roleName' => 'role_name',
-        'shipTypeId' => 'ship_type_id',
-        'solarSystemId' => 'solar_system_id',
-        'squadId' => 'squad_id',
-        'stationId' => 'station_id',
-        'takesFleetWarp' => 'takes_fleet_warp',
-        'wingId' => 'wing_id'
+        'role_name' => 'role_name',
+        'ship_type_id' => 'ship_type_id',
+        'solar_system_id' => 'solar_system_id',
+        'squad_id' => 'squad_id',
+        'station_id' => 'station_id',
+        'takes_fleet_warp' => 'takes_fleet_warp',
+        'wing_id' => 'wing_id'
     );
 
     public static function attributeMap()
@@ -111,16 +111,16 @@ class GetFleetsFleetIdMembers200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'characterId' => 'setCharacterId',
-        'joinTime' => 'setJoinTime',
+        'character_id' => 'setCharacterId',
+        'join_time' => 'setJoinTime',
         'role' => 'setRole',
-        'roleName' => 'setRoleName',
-        'shipTypeId' => 'setShipTypeId',
-        'solarSystemId' => 'setSolarSystemId',
-        'squadId' => 'setSquadId',
-        'stationId' => 'setStationId',
-        'takesFleetWarp' => 'setTakesFleetWarp',
-        'wingId' => 'setWingId'
+        'role_name' => 'setRoleName',
+        'ship_type_id' => 'setShipTypeId',
+        'solar_system_id' => 'setSolarSystemId',
+        'squad_id' => 'setSquadId',
+        'station_id' => 'setStationId',
+        'takes_fleet_warp' => 'setTakesFleetWarp',
+        'wing_id' => 'setWingId'
     );
 
     public static function setters()
@@ -133,16 +133,16 @@ class GetFleetsFleetIdMembers200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'characterId' => 'getCharacterId',
-        'joinTime' => 'getJoinTime',
+        'character_id' => 'getCharacterId',
+        'join_time' => 'getJoinTime',
         'role' => 'getRole',
-        'roleName' => 'getRoleName',
-        'shipTypeId' => 'getShipTypeId',
-        'solarSystemId' => 'getSolarSystemId',
-        'squadId' => 'getSquadId',
-        'stationId' => 'getStationId',
-        'takesFleetWarp' => 'getTakesFleetWarp',
-        'wingId' => 'getWingId'
+        'role_name' => 'getRoleName',
+        'ship_type_id' => 'getShipTypeId',
+        'solar_system_id' => 'getSolarSystemId',
+        'squad_id' => 'getSquadId',
+        'station_id' => 'getStationId',
+        'takes_fleet_warp' => 'getTakesFleetWarp',
+        'wing_id' => 'getWingId'
     );
 
     public static function getters()
@@ -184,16 +184,16 @@ class GetFleetsFleetIdMembers200Ok implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['characterId'] = isset($data['characterId']) ? $data['characterId'] : null;
-        $this->container['joinTime'] = isset($data['joinTime']) ? $data['joinTime'] : null;
+        $this->container['character_id'] = isset($data['character_id']) ? $data['character_id'] : null;
+        $this->container['join_time'] = isset($data['join_time']) ? $data['join_time'] : null;
         $this->container['role'] = isset($data['role']) ? $data['role'] : null;
-        $this->container['roleName'] = isset($data['roleName']) ? $data['roleName'] : null;
-        $this->container['shipTypeId'] = isset($data['shipTypeId']) ? $data['shipTypeId'] : null;
-        $this->container['solarSystemId'] = isset($data['solarSystemId']) ? $data['solarSystemId'] : null;
-        $this->container['squadId'] = isset($data['squadId']) ? $data['squadId'] : null;
-        $this->container['stationId'] = isset($data['stationId']) ? $data['stationId'] : null;
-        $this->container['takesFleetWarp'] = isset($data['takesFleetWarp']) ? $data['takesFleetWarp'] : null;
-        $this->container['wingId'] = isset($data['wingId']) ? $data['wingId'] : null;
+        $this->container['role_name'] = isset($data['role_name']) ? $data['role_name'] : null;
+        $this->container['ship_type_id'] = isset($data['ship_type_id']) ? $data['ship_type_id'] : null;
+        $this->container['solar_system_id'] = isset($data['solar_system_id']) ? $data['solar_system_id'] : null;
+        $this->container['squad_id'] = isset($data['squad_id']) ? $data['squad_id'] : null;
+        $this->container['station_id'] = isset($data['station_id']) ? $data['station_id'] : null;
+        $this->container['takes_fleet_warp'] = isset($data['takes_fleet_warp']) ? $data['takes_fleet_warp'] : null;
+        $this->container['wing_id'] = isset($data['wing_id']) ? $data['wing_id'] : null;
     }
 
     /**
@@ -204,11 +204,11 @@ class GetFleetsFleetIdMembers200Ok implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['characterId'] === null) {
-            $invalid_properties[] = "'characterId' can't be null";
+        if ($this->container['character_id'] === null) {
+            $invalid_properties[] = "'character_id' can't be null";
         }
-        if ($this->container['joinTime'] === null) {
-            $invalid_properties[] = "'joinTime' can't be null";
+        if ($this->container['join_time'] === null) {
+            $invalid_properties[] = "'join_time' can't be null";
         }
         if ($this->container['role'] === null) {
             $invalid_properties[] = "'role' can't be null";
@@ -218,23 +218,23 @@ class GetFleetsFleetIdMembers200Ok implements ArrayAccess
             $invalid_properties[] = "invalid value for 'role', must be one of #{allowed_values}.";
         }
 
-        if ($this->container['roleName'] === null) {
-            $invalid_properties[] = "'roleName' can't be null";
+        if ($this->container['role_name'] === null) {
+            $invalid_properties[] = "'role_name' can't be null";
         }
-        if ($this->container['shipTypeId'] === null) {
-            $invalid_properties[] = "'shipTypeId' can't be null";
+        if ($this->container['ship_type_id'] === null) {
+            $invalid_properties[] = "'ship_type_id' can't be null";
         }
-        if ($this->container['solarSystemId'] === null) {
-            $invalid_properties[] = "'solarSystemId' can't be null";
+        if ($this->container['solar_system_id'] === null) {
+            $invalid_properties[] = "'solar_system_id' can't be null";
         }
-        if ($this->container['squadId'] === null) {
-            $invalid_properties[] = "'squadId' can't be null";
+        if ($this->container['squad_id'] === null) {
+            $invalid_properties[] = "'squad_id' can't be null";
         }
-        if ($this->container['takesFleetWarp'] === null) {
-            $invalid_properties[] = "'takesFleetWarp' can't be null";
+        if ($this->container['takes_fleet_warp'] === null) {
+            $invalid_properties[] = "'takes_fleet_warp' can't be null";
         }
-        if ($this->container['wingId'] === null) {
-            $invalid_properties[] = "'wingId' can't be null";
+        if ($this->container['wing_id'] === null) {
+            $invalid_properties[] = "'wing_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -247,10 +247,10 @@ class GetFleetsFleetIdMembers200Ok implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['characterId'] === null) {
+        if ($this->container['character_id'] === null) {
             return false;
         }
-        if ($this->container['joinTime'] === null) {
+        if ($this->container['join_time'] === null) {
             return false;
         }
         if ($this->container['role'] === null) {
@@ -260,22 +260,22 @@ class GetFleetsFleetIdMembers200Ok implements ArrayAccess
         if (!in_array($this->container['role'], $allowed_values)) {
             return false;
         }
-        if ($this->container['roleName'] === null) {
+        if ($this->container['role_name'] === null) {
             return false;
         }
-        if ($this->container['shipTypeId'] === null) {
+        if ($this->container['ship_type_id'] === null) {
             return false;
         }
-        if ($this->container['solarSystemId'] === null) {
+        if ($this->container['solar_system_id'] === null) {
             return false;
         }
-        if ($this->container['squadId'] === null) {
+        if ($this->container['squad_id'] === null) {
             return false;
         }
-        if ($this->container['takesFleetWarp'] === null) {
+        if ($this->container['takes_fleet_warp'] === null) {
             return false;
         }
-        if ($this->container['wingId'] === null) {
+        if ($this->container['wing_id'] === null) {
             return false;
         }
         return true;
@@ -283,43 +283,43 @@ class GetFleetsFleetIdMembers200Ok implements ArrayAccess
 
 
     /**
-     * Gets characterId
+     * Gets character_id
      * @return int
      */
     public function getCharacterId()
     {
-        return $this->container['characterId'];
+        return $this->container['character_id'];
     }
 
     /**
-     * Sets characterId
-     * @param int $characterId character_id integer
+     * Sets character_id
+     * @param int $character_id character_id integer
      * @return $this
      */
-    public function setCharacterId($characterId)
+    public function setCharacterId($character_id)
     {
-        $this->container['characterId'] = $characterId;
+        $this->container['character_id'] = $character_id;
 
         return $this;
     }
 
     /**
-     * Gets joinTime
+     * Gets join_time
      * @return \DateTime
      */
     public function getJoinTime()
     {
-        return $this->container['joinTime'];
+        return $this->container['join_time'];
     }
 
     /**
-     * Sets joinTime
-     * @param \DateTime $joinTime join_time string
+     * Sets join_time
+     * @param \DateTime $join_time join_time string
      * @return $this
      */
-    public function setJoinTime($joinTime)
+    public function setJoinTime($join_time)
     {
-        $this->container['joinTime'] = $joinTime;
+        $this->container['join_time'] = $join_time;
 
         return $this;
     }
@@ -350,148 +350,148 @@ class GetFleetsFleetIdMembers200Ok implements ArrayAccess
     }
 
     /**
-     * Gets roleName
+     * Gets role_name
      * @return string
      */
     public function getRoleName()
     {
-        return $this->container['roleName'];
+        return $this->container['role_name'];
     }
 
     /**
-     * Sets roleName
-     * @param string $roleName Localized role names
+     * Sets role_name
+     * @param string $role_name Localized role names
      * @return $this
      */
-    public function setRoleName($roleName)
+    public function setRoleName($role_name)
     {
-        $this->container['roleName'] = $roleName;
+        $this->container['role_name'] = $role_name;
 
         return $this;
     }
 
     /**
-     * Gets shipTypeId
+     * Gets ship_type_id
      * @return int
      */
     public function getShipTypeId()
     {
-        return $this->container['shipTypeId'];
+        return $this->container['ship_type_id'];
     }
 
     /**
-     * Sets shipTypeId
-     * @param int $shipTypeId ship_type_id integer
+     * Sets ship_type_id
+     * @param int $ship_type_id ship_type_id integer
      * @return $this
      */
-    public function setShipTypeId($shipTypeId)
+    public function setShipTypeId($ship_type_id)
     {
-        $this->container['shipTypeId'] = $shipTypeId;
+        $this->container['ship_type_id'] = $ship_type_id;
 
         return $this;
     }
 
     /**
-     * Gets solarSystemId
+     * Gets solar_system_id
      * @return int
      */
     public function getSolarSystemId()
     {
-        return $this->container['solarSystemId'];
+        return $this->container['solar_system_id'];
     }
 
     /**
-     * Sets solarSystemId
-     * @param int $solarSystemId Solar system the member is located in
+     * Sets solar_system_id
+     * @param int $solar_system_id Solar system the member is located in
      * @return $this
      */
-    public function setSolarSystemId($solarSystemId)
+    public function setSolarSystemId($solar_system_id)
     {
-        $this->container['solarSystemId'] = $solarSystemId;
+        $this->container['solar_system_id'] = $solar_system_id;
 
         return $this;
     }
 
     /**
-     * Gets squadId
+     * Gets squad_id
      * @return int
      */
     public function getSquadId()
     {
-        return $this->container['squadId'];
+        return $this->container['squad_id'];
     }
 
     /**
-     * Sets squadId
-     * @param int $squadId ID of the squad the member is in. If not applicable, will be set to -1
+     * Sets squad_id
+     * @param int $squad_id ID of the squad the member is in. If not applicable, will be set to -1
      * @return $this
      */
-    public function setSquadId($squadId)
+    public function setSquadId($squad_id)
     {
-        $this->container['squadId'] = $squadId;
+        $this->container['squad_id'] = $squad_id;
 
         return $this;
     }
 
     /**
-     * Gets stationId
+     * Gets station_id
      * @return int
      */
     public function getStationId()
     {
-        return $this->container['stationId'];
+        return $this->container['station_id'];
     }
 
     /**
-     * Sets stationId
-     * @param int $stationId Station in which the member is docked in, if applicable
+     * Sets station_id
+     * @param int $station_id Station in which the member is docked in, if applicable
      * @return $this
      */
-    public function setStationId($stationId)
+    public function setStationId($station_id)
     {
-        $this->container['stationId'] = $stationId;
+        $this->container['station_id'] = $station_id;
 
         return $this;
     }
 
     /**
-     * Gets takesFleetWarp
+     * Gets takes_fleet_warp
      * @return bool
      */
     public function getTakesFleetWarp()
     {
-        return $this->container['takesFleetWarp'];
+        return $this->container['takes_fleet_warp'];
     }
 
     /**
-     * Sets takesFleetWarp
-     * @param bool $takesFleetWarp Whether the member take fleet warps
+     * Sets takes_fleet_warp
+     * @param bool $takes_fleet_warp Whether the member take fleet warps
      * @return $this
      */
-    public function setTakesFleetWarp($takesFleetWarp)
+    public function setTakesFleetWarp($takes_fleet_warp)
     {
-        $this->container['takesFleetWarp'] = $takesFleetWarp;
+        $this->container['takes_fleet_warp'] = $takes_fleet_warp;
 
         return $this;
     }
 
     /**
-     * Gets wingId
+     * Gets wing_id
      * @return int
      */
     public function getWingId()
     {
-        return $this->container['wingId'];
+        return $this->container['wing_id'];
     }
 
     /**
-     * Sets wingId
-     * @param int $wingId ID of the wing the member is in. If not applicable, will be set to -1
+     * Sets wing_id
+     * @param int $wing_id ID of the wing the member is in. If not applicable, will be set to -1
      * @return $this
      */
-    public function setWingId($wingId)
+    public function setWingId($wing_id)
     {
-        $this->container['wingId'] = $wingId;
+        $this->container['wing_id'] = $wing_id;
 
         return $this;
     }

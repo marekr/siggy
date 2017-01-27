@@ -67,7 +67,7 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetailsHeads implements 
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'headId' => 'int',
+        'head_id' => 'int',
         'latitude' => 'float',
         'longitude' => 'float'
     );
@@ -82,7 +82,7 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetailsHeads implements 
      * @var string[]
      */
     protected static $attributeMap = array(
-        'headId' => 'head_id',
+        'head_id' => 'head_id',
         'latitude' => 'latitude',
         'longitude' => 'longitude'
     );
@@ -97,7 +97,7 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetailsHeads implements 
      * @var string[]
      */
     protected static $setters = array(
-        'headId' => 'setHeadId',
+        'head_id' => 'setHeadId',
         'latitude' => 'setLatitude',
         'longitude' => 'setLongitude'
     );
@@ -112,7 +112,7 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetailsHeads implements 
      * @var string[]
      */
     protected static $getters = array(
-        'headId' => 'getHeadId',
+        'head_id' => 'getHeadId',
         'latitude' => 'getLatitude',
         'longitude' => 'getLongitude'
     );
@@ -138,7 +138,7 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetailsHeads implements 
      */
     public function __construct(array $data = null)
     {
-        $this->container['headId'] = isset($data['headId']) ? $data['headId'] : null;
+        $this->container['head_id'] = isset($data['head_id']) ? $data['head_id'] : null;
         $this->container['latitude'] = isset($data['latitude']) ? $data['latitude'] : null;
         $this->container['longitude'] = isset($data['longitude']) ? $data['longitude'] : null;
     }
@@ -151,15 +151,15 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetailsHeads implements 
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['headId'] === null) {
-            $invalid_properties[] = "'headId' can't be null";
+        if ($this->container['head_id'] === null) {
+            $invalid_properties[] = "'head_id' can't be null";
         }
-        if (($this->container['headId'] > 9.0)) {
-            $invalid_properties[] = "invalid value for 'headId', must be smaller than or equal to 9.0.";
+        if (($this->container['head_id'] > 9.0)) {
+            $invalid_properties[] = "invalid value for 'head_id', must be smaller than or equal to 9.0.";
         }
 
-        if (($this->container['headId'] < 0.0)) {
-            $invalid_properties[] = "invalid value for 'headId', must be bigger than or equal to 0.0.";
+        if (($this->container['head_id'] < 0.0)) {
+            $invalid_properties[] = "invalid value for 'head_id', must be bigger than or equal to 0.0.";
         }
 
         if ($this->container['latitude'] === null) {
@@ -179,13 +179,13 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetailsHeads implements 
      */
     public function valid()
     {
-        if ($this->container['headId'] === null) {
+        if ($this->container['head_id'] === null) {
             return false;
         }
-        if ($this->container['headId'] > 9.0) {
+        if ($this->container['head_id'] > 9.0) {
             return false;
         }
-        if ($this->container['headId'] < 0.0) {
+        if ($this->container['head_id'] < 0.0) {
             return false;
         }
         if ($this->container['latitude'] === null) {
@@ -199,29 +199,29 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetailsHeads implements 
 
 
     /**
-     * Gets headId
+     * Gets head_id
      * @return int
      */
     public function getHeadId()
     {
-        return $this->container['headId'];
+        return $this->container['head_id'];
     }
 
     /**
-     * Sets headId
-     * @param int $headId head_id integer
+     * Sets head_id
+     * @param int $head_id head_id integer
      * @return $this
      */
-    public function setHeadId($headId)
+    public function setHeadId($head_id)
     {
 
-        if ($headId > 9.0) {
-            throw new \InvalidArgumentException('invalid value for $headId when calling GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetailsHeads., must be smaller than or equal to 9.0.');
+        if ($head_id > 9.0) {
+            throw new \InvalidArgumentException('invalid value for $head_id when calling GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetailsHeads., must be smaller than or equal to 9.0.');
         }
-        if ($headId < 0.0) {
-            throw new \InvalidArgumentException('invalid value for $headId when calling GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetailsHeads., must be bigger than or equal to 0.0.');
+        if ($head_id < 0.0) {
+            throw new \InvalidArgumentException('invalid value for $head_id when calling GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetailsHeads., must be bigger than or equal to 0.0.');
         }
-        $this->container['headId'] = $headId;
+        $this->container['head_id'] = $head_id;
 
         return $this;
     }

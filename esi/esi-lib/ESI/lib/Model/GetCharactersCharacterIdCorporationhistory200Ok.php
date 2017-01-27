@@ -67,10 +67,10 @@ class GetCharactersCharacterIdCorporationhistory200Ok implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'corporationId' => 'int',
-        'isDeleted' => 'bool',
-        'recordId' => 'int',
-        'startDate' => '\DateTime'
+        'corporation_id' => 'int',
+        'is_deleted' => 'bool',
+        'record_id' => 'int',
+        'start_date' => '\DateTime'
     );
 
     public static function swaggerTypes()
@@ -83,10 +83,10 @@ class GetCharactersCharacterIdCorporationhistory200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'corporationId' => 'corporation_id',
-        'isDeleted' => 'is_deleted',
-        'recordId' => 'record_id',
-        'startDate' => 'start_date'
+        'corporation_id' => 'corporation_id',
+        'is_deleted' => 'is_deleted',
+        'record_id' => 'record_id',
+        'start_date' => 'start_date'
     );
 
     public static function attributeMap()
@@ -99,10 +99,10 @@ class GetCharactersCharacterIdCorporationhistory200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'corporationId' => 'setCorporationId',
-        'isDeleted' => 'setIsDeleted',
-        'recordId' => 'setRecordId',
-        'startDate' => 'setStartDate'
+        'corporation_id' => 'setCorporationId',
+        'is_deleted' => 'setIsDeleted',
+        'record_id' => 'setRecordId',
+        'start_date' => 'setStartDate'
     );
 
     public static function setters()
@@ -115,10 +115,10 @@ class GetCharactersCharacterIdCorporationhistory200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'corporationId' => 'getCorporationId',
-        'isDeleted' => 'getIsDeleted',
-        'recordId' => 'getRecordId',
-        'startDate' => 'getStartDate'
+        'corporation_id' => 'getCorporationId',
+        'is_deleted' => 'getIsDeleted',
+        'record_id' => 'getRecordId',
+        'start_date' => 'getStartDate'
     );
 
     public static function getters()
@@ -142,10 +142,10 @@ class GetCharactersCharacterIdCorporationhistory200Ok implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['corporationId'] = isset($data['corporationId']) ? $data['corporationId'] : null;
-        $this->container['isDeleted'] = isset($data['isDeleted']) ? $data['isDeleted'] : null;
-        $this->container['recordId'] = isset($data['recordId']) ? $data['recordId'] : null;
-        $this->container['startDate'] = isset($data['startDate']) ? $data['startDate'] : null;
+        $this->container['corporation_id'] = isset($data['corporation_id']) ? $data['corporation_id'] : null;
+        $this->container['is_deleted'] = isset($data['is_deleted']) ? $data['is_deleted'] : null;
+        $this->container['record_id'] = isset($data['record_id']) ? $data['record_id'] : null;
+        $this->container['start_date'] = isset($data['start_date']) ? $data['start_date'] : null;
     }
 
     /**
@@ -172,85 +172,85 @@ class GetCharactersCharacterIdCorporationhistory200Ok implements ArrayAccess
 
 
     /**
-     * Gets corporationId
+     * Gets corporation_id
      * @return int
      */
     public function getCorporationId()
     {
-        return $this->container['corporationId'];
+        return $this->container['corporation_id'];
     }
 
     /**
-     * Sets corporationId
-     * @param int $corporationId corporation_id integer
+     * Sets corporation_id
+     * @param int $corporation_id corporation_id integer
      * @return $this
      */
-    public function setCorporationId($corporationId)
+    public function setCorporationId($corporation_id)
     {
-        $this->container['corporationId'] = $corporationId;
+        $this->container['corporation_id'] = $corporation_id;
 
         return $this;
     }
 
     /**
-     * Gets isDeleted
+     * Gets is_deleted
      * @return bool
      */
     public function getIsDeleted()
     {
-        return $this->container['isDeleted'];
+        return $this->container['is_deleted'];
     }
 
     /**
-     * Sets isDeleted
-     * @param bool $isDeleted True if the corporation has been deleted
+     * Sets is_deleted
+     * @param bool $is_deleted True if the corporation has been deleted
      * @return $this
      */
-    public function setIsDeleted($isDeleted)
+    public function setIsDeleted($is_deleted)
     {
-        $this->container['isDeleted'] = $isDeleted;
+        $this->container['is_deleted'] = $is_deleted;
 
         return $this;
     }
 
     /**
-     * Gets recordId
+     * Gets record_id
      * @return int
      */
     public function getRecordId()
     {
-        return $this->container['recordId'];
+        return $this->container['record_id'];
     }
 
     /**
-     * Sets recordId
-     * @param int $recordId An incrementing ID that can be used to canonically establish order of records in cases where dates may be ambiguous
+     * Sets record_id
+     * @param int $record_id An incrementing ID that can be used to canonically establish order of records in cases where dates may be ambiguous
      * @return $this
      */
-    public function setRecordId($recordId)
+    public function setRecordId($record_id)
     {
-        $this->container['recordId'] = $recordId;
+        $this->container['record_id'] = $record_id;
 
         return $this;
     }
 
     /**
-     * Gets startDate
+     * Gets start_date
      * @return \DateTime
      */
     public function getStartDate()
     {
-        return $this->container['startDate'];
+        return $this->container['start_date'];
     }
 
     /**
-     * Sets startDate
-     * @param \DateTime $startDate start_date string
+     * Sets start_date
+     * @param \DateTime $start_date start_date string
      * @return $this
      */
-    public function setStartDate($startDate)
+    public function setStartDate($start_date)
     {
-        $this->container['startDate'] = $startDate;
+        $this->container['start_date'] = $start_date;
 
         return $this;
     }

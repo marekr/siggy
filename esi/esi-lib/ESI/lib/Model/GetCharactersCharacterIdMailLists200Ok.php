@@ -67,7 +67,7 @@ class GetCharactersCharacterIdMailLists200Ok implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'mailingListId' => 'int',
+        'mailing_list_id' => 'int',
         'name' => 'string'
     );
 
@@ -81,7 +81,7 @@ class GetCharactersCharacterIdMailLists200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'mailingListId' => 'mailing_list_id',
+        'mailing_list_id' => 'mailing_list_id',
         'name' => 'name'
     );
 
@@ -95,7 +95,7 @@ class GetCharactersCharacterIdMailLists200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'mailingListId' => 'setMailingListId',
+        'mailing_list_id' => 'setMailingListId',
         'name' => 'setName'
     );
 
@@ -109,7 +109,7 @@ class GetCharactersCharacterIdMailLists200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'mailingListId' => 'getMailingListId',
+        'mailing_list_id' => 'getMailingListId',
         'name' => 'getName'
     );
 
@@ -134,7 +134,7 @@ class GetCharactersCharacterIdMailLists200Ok implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['mailingListId'] = isset($data['mailingListId']) ? $data['mailingListId'] : null;
+        $this->container['mailing_list_id'] = isset($data['mailing_list_id']) ? $data['mailing_list_id'] : null;
         $this->container['name'] = isset($data['name']) ? $data['name'] : null;
     }
 
@@ -146,8 +146,8 @@ class GetCharactersCharacterIdMailLists200Ok implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['mailingListId'] === null) {
-            $invalid_properties[] = "'mailingListId' can't be null";
+        if ($this->container['mailing_list_id'] === null) {
+            $invalid_properties[] = "'mailing_list_id' can't be null";
         }
         if ($this->container['name'] === null) {
             $invalid_properties[] = "'name' can't be null";
@@ -163,7 +163,7 @@ class GetCharactersCharacterIdMailLists200Ok implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['mailingListId'] === null) {
+        if ($this->container['mailing_list_id'] === null) {
             return false;
         }
         if ($this->container['name'] === null) {
@@ -174,22 +174,22 @@ class GetCharactersCharacterIdMailLists200Ok implements ArrayAccess
 
 
     /**
-     * Gets mailingListId
+     * Gets mailing_list_id
      * @return int
      */
     public function getMailingListId()
     {
-        return $this->container['mailingListId'];
+        return $this->container['mailing_list_id'];
     }
 
     /**
-     * Sets mailingListId
-     * @param int $mailingListId Mailing list ID
+     * Sets mailing_list_id
+     * @param int $mailing_list_id Mailing list ID
      * @return $this
      */
-    public function setMailingListId($mailingListId)
+    public function setMailingListId($mailing_list_id)
     {
-        $this->container['mailingListId'] = $mailingListId;
+        $this->container['mailing_list_id'] = $mailing_list_id;
 
         return $this;
     }

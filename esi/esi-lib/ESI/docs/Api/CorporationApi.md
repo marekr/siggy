@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 
 # **getCorporationsCorporationId**
-> \ESI\Model\GetCorporationsCorporationIdOk getCorporationsCorporationId($corporationId, $datasource)
+> \ESI\Model\GetCorporationsCorporationIdOk getCorporationsCorporationId($corporation_id, $datasource)
 
 Get corporation information
 
@@ -25,11 +25,11 @@ Public information about a corporation  ---  Alternate route: `/v3/corporations/
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new ESI\Api\CorporationApi();
-$corporationId = 56; // int | An Eve corporation ID
+$corporation_id = 56; // int | An Eve corporation ID
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getCorporationsCorporationId($corporationId, $datasource);
+    $result = $api_instance->getCorporationsCorporationId($corporation_id, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling CorporationApi->getCorporationsCorporationId: ', $e->getMessage(), PHP_EOL;
@@ -41,7 +41,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **corporationId** | **int**| An Eve corporation ID |
+ **corporation_id** | **int**| An Eve corporation ID |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -60,7 +60,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getCorporationsCorporationIdAlliancehistory**
-> \ESI\Model\GetCorporationsCorporationIdAlliancehistory200Ok[] getCorporationsCorporationIdAlliancehistory($corporationId, $datasource)
+> \ESI\Model\GetCorporationsCorporationIdAlliancehistory200Ok[] getCorporationsCorporationIdAlliancehistory($corporation_id, $datasource)
 
 Get alliance history
 
@@ -72,11 +72,11 @@ Get a list of all the alliances a corporation has been a member of  ---  Alterna
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new ESI\Api\CorporationApi();
-$corporationId = 56; // int | An EVE corporation ID
+$corporation_id = 56; // int | An EVE corporation ID
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getCorporationsCorporationIdAlliancehistory($corporationId, $datasource);
+    $result = $api_instance->getCorporationsCorporationIdAlliancehistory($corporation_id, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling CorporationApi->getCorporationsCorporationIdAlliancehistory: ', $e->getMessage(), PHP_EOL;
@@ -88,7 +88,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **corporationId** | **int**| An EVE corporation ID |
+ **corporation_id** | **int**| An EVE corporation ID |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -107,7 +107,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getCorporationsCorporationIdIcons**
-> \ESI\Model\GetCorporationsCorporationIdIconsOk getCorporationsCorporationIdIcons($corporationId, $datasource)
+> \ESI\Model\GetCorporationsCorporationIdIconsOk getCorporationsCorporationIdIcons($corporation_id, $datasource)
 
 Get corporation icon
 
@@ -119,11 +119,11 @@ Get the icon urls for a corporation  ---  Alternate route: `/v1/corporations/{co
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new ESI\Api\CorporationApi();
-$corporationId = 56; // int | An EVE corporation ID
+$corporation_id = 56; // int | An EVE corporation ID
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getCorporationsCorporationIdIcons($corporationId, $datasource);
+    $result = $api_instance->getCorporationsCorporationIdIcons($corporation_id, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling CorporationApi->getCorporationsCorporationIdIcons: ', $e->getMessage(), PHP_EOL;
@@ -135,7 +135,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **corporationId** | **int**| An EVE corporation ID |
+ **corporation_id** | **int**| An EVE corporation ID |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -154,7 +154,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getCorporationsCorporationIdMembers**
-> \ESI\Model\GetCorporationsCorporationIdMembers200Ok[] getCorporationsCorporationIdMembers($corporationId, $datasource)
+> \ESI\Model\GetCorporationsCorporationIdMembers200Ok[] getCorporationsCorporationIdMembers($corporation_id, $datasource)
 
 Get corporation members
 
@@ -169,11 +169,11 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\CorporationApi();
-$corporationId = 56; // int | A corporation ID
+$corporation_id = 56; // int | A corporation ID
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getCorporationsCorporationIdMembers($corporationId, $datasource);
+    $result = $api_instance->getCorporationsCorporationIdMembers($corporation_id, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling CorporationApi->getCorporationsCorporationIdMembers: ', $e->getMessage(), PHP_EOL;
@@ -185,7 +185,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **corporationId** | **int**| A corporation ID |
+ **corporation_id** | **int**| A corporation ID |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -204,7 +204,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getCorporationsCorporationIdRoles**
-> \ESI\Model\GetCorporationsCorporationIdRoles200Ok[] getCorporationsCorporationIdRoles($corporationId, $datasource)
+> \ESI\Model\GetCorporationsCorporationIdRoles200Ok[] getCorporationsCorporationIdRoles($corporation_id, $datasource)
 
 Get corporation member roles
 
@@ -219,11 +219,11 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\CorporationApi();
-$corporationId = 56; // int | A corporation ID
+$corporation_id = 56; // int | A corporation ID
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getCorporationsCorporationIdRoles($corporationId, $datasource);
+    $result = $api_instance->getCorporationsCorporationIdRoles($corporation_id, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling CorporationApi->getCorporationsCorporationIdRoles: ', $e->getMessage(), PHP_EOL;
@@ -235,7 +235,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **corporationId** | **int**| A corporation ID |
+ **corporation_id** | **int**| A corporation ID |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -254,7 +254,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getCorporationsNames**
-> \ESI\Model\GetCorporationsNames200Ok[] getCorporationsNames($corporationIds, $datasource)
+> \ESI\Model\GetCorporationsNames200Ok[] getCorporationsNames($corporation_ids, $datasource)
 
 Get corporation names
 
@@ -266,11 +266,11 @@ Resolve a set of corporation IDs to corporation names  ---  Alternate route: `/v
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new ESI\Api\CorporationApi();
-$corporationIds = array(56); // int[] | A comma separated list of corporation IDs
+$corporation_ids = array(56); // int[] | A comma separated list of corporation IDs
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getCorporationsNames($corporationIds, $datasource);
+    $result = $api_instance->getCorporationsNames($corporation_ids, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling CorporationApi->getCorporationsNames: ', $e->getMessage(), PHP_EOL;
@@ -282,7 +282,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **corporationIds** | [**int[]**](../Model/int.md)| A comma separated list of corporation IDs |
+ **corporation_ids** | [**int[]**](../Model/int.md)| A comma separated list of corporation IDs |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type

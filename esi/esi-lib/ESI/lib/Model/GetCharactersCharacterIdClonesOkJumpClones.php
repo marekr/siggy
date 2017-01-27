@@ -68,8 +68,8 @@ class GetCharactersCharacterIdClonesOkJumpClones implements ArrayAccess
       */
     protected static $swaggerTypes = array(
         'implants' => 'int[]',
-        'locationId' => 'int',
-        'locationType' => 'string'
+        'location_id' => 'int',
+        'location_type' => 'string'
     );
 
     public static function swaggerTypes()
@@ -83,8 +83,8 @@ class GetCharactersCharacterIdClonesOkJumpClones implements ArrayAccess
      */
     protected static $attributeMap = array(
         'implants' => 'implants',
-        'locationId' => 'location_id',
-        'locationType' => 'location_type'
+        'location_id' => 'location_id',
+        'location_type' => 'location_type'
     );
 
     public static function attributeMap()
@@ -98,8 +98,8 @@ class GetCharactersCharacterIdClonesOkJumpClones implements ArrayAccess
      */
     protected static $setters = array(
         'implants' => 'setImplants',
-        'locationId' => 'setLocationId',
-        'locationType' => 'setLocationType'
+        'location_id' => 'setLocationId',
+        'location_type' => 'setLocationType'
     );
 
     public static function setters()
@@ -113,8 +113,8 @@ class GetCharactersCharacterIdClonesOkJumpClones implements ArrayAccess
      */
     protected static $getters = array(
         'implants' => 'getImplants',
-        'locationId' => 'getLocationId',
-        'locationType' => 'getLocationType'
+        'location_id' => 'getLocationId',
+        'location_type' => 'getLocationType'
     );
 
     public static function getters()
@@ -153,8 +153,8 @@ class GetCharactersCharacterIdClonesOkJumpClones implements ArrayAccess
     public function __construct(array $data = null)
     {
         $this->container['implants'] = isset($data['implants']) ? $data['implants'] : null;
-        $this->container['locationId'] = isset($data['locationId']) ? $data['locationId'] : null;
-        $this->container['locationType'] = isset($data['locationType']) ? $data['locationType'] : null;
+        $this->container['location_id'] = isset($data['location_id']) ? $data['location_id'] : null;
+        $this->container['location_type'] = isset($data['location_type']) ? $data['location_type'] : null;
     }
 
     /**
@@ -166,8 +166,8 @@ class GetCharactersCharacterIdClonesOkJumpClones implements ArrayAccess
     {
         $invalid_properties = array();
         $allowed_values = array("station", "structure");
-        if (!in_array($this->container['locationType'], $allowed_values)) {
-            $invalid_properties[] = "invalid value for 'locationType', must be one of #{allowed_values}.";
+        if (!in_array($this->container['location_type'], $allowed_values)) {
+            $invalid_properties[] = "invalid value for 'location_type', must be one of #{allowed_values}.";
         }
 
         return $invalid_properties;
@@ -182,7 +182,7 @@ class GetCharactersCharacterIdClonesOkJumpClones implements ArrayAccess
     public function valid()
     {
         $allowed_values = array("station", "structure");
-        if (!in_array($this->container['locationType'], $allowed_values)) {
+        if (!in_array($this->container['location_type'], $allowed_values)) {
             return false;
         }
         return true;
@@ -211,47 +211,47 @@ class GetCharactersCharacterIdClonesOkJumpClones implements ArrayAccess
     }
 
     /**
-     * Gets locationId
+     * Gets location_id
      * @return int
      */
     public function getLocationId()
     {
-        return $this->container['locationId'];
+        return $this->container['location_id'];
     }
 
     /**
-     * Sets locationId
-     * @param int $locationId location_id integer
+     * Sets location_id
+     * @param int $location_id location_id integer
      * @return $this
      */
-    public function setLocationId($locationId)
+    public function setLocationId($location_id)
     {
-        $this->container['locationId'] = $locationId;
+        $this->container['location_id'] = $location_id;
 
         return $this;
     }
 
     /**
-     * Gets locationType
+     * Gets location_type
      * @return string
      */
     public function getLocationType()
     {
-        return $this->container['locationType'];
+        return $this->container['location_type'];
     }
 
     /**
-     * Sets locationType
-     * @param string $locationType location_type string
+     * Sets location_type
+     * @param string $location_type location_type string
      * @return $this
      */
-    public function setLocationType($locationType)
+    public function setLocationType($location_type)
     {
         $allowed_values = array('station', 'structure');
-        if (!in_array($locationType, $allowed_values)) {
-            throw new \InvalidArgumentException("Invalid value for 'locationType', must be one of 'station', 'structure'");
+        if (!in_array($location_type, $allowed_values)) {
+            throw new \InvalidArgumentException("Invalid value for 'location_type', must be one of 'station', 'structure'");
         }
-        $this->container['locationType'] = $locationType;
+        $this->container['location_type'] = $location_type;
 
         return $this;
     }

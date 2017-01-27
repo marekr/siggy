@@ -68,10 +68,10 @@ class GetCharactersCharacterIdFittings200Ok implements ArrayAccess
       */
     protected static $swaggerTypes = array(
         'description' => 'string',
-        'fittingId' => 'int',
+        'fitting_id' => 'int',
         'items' => '\ESI\Model\CharacterscharacterIdfittingsItems[]',
         'name' => 'string',
-        'shipTypeId' => 'int'
+        'ship_type_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -85,10 +85,10 @@ class GetCharactersCharacterIdFittings200Ok implements ArrayAccess
      */
     protected static $attributeMap = array(
         'description' => 'description',
-        'fittingId' => 'fitting_id',
+        'fitting_id' => 'fitting_id',
         'items' => 'items',
         'name' => 'name',
-        'shipTypeId' => 'ship_type_id'
+        'ship_type_id' => 'ship_type_id'
     );
 
     public static function attributeMap()
@@ -102,10 +102,10 @@ class GetCharactersCharacterIdFittings200Ok implements ArrayAccess
      */
     protected static $setters = array(
         'description' => 'setDescription',
-        'fittingId' => 'setFittingId',
+        'fitting_id' => 'setFittingId',
         'items' => 'setItems',
         'name' => 'setName',
-        'shipTypeId' => 'setShipTypeId'
+        'ship_type_id' => 'setShipTypeId'
     );
 
     public static function setters()
@@ -119,10 +119,10 @@ class GetCharactersCharacterIdFittings200Ok implements ArrayAccess
      */
     protected static $getters = array(
         'description' => 'getDescription',
-        'fittingId' => 'getFittingId',
+        'fitting_id' => 'getFittingId',
         'items' => 'getItems',
         'name' => 'getName',
-        'shipTypeId' => 'getShipTypeId'
+        'ship_type_id' => 'getShipTypeId'
     );
 
     public static function getters()
@@ -147,10 +147,10 @@ class GetCharactersCharacterIdFittings200Ok implements ArrayAccess
     public function __construct(array $data = null)
     {
         $this->container['description'] = isset($data['description']) ? $data['description'] : null;
-        $this->container['fittingId'] = isset($data['fittingId']) ? $data['fittingId'] : null;
+        $this->container['fitting_id'] = isset($data['fitting_id']) ? $data['fitting_id'] : null;
         $this->container['items'] = isset($data['items']) ? $data['items'] : null;
         $this->container['name'] = isset($data['name']) ? $data['name'] : null;
-        $this->container['shipTypeId'] = isset($data['shipTypeId']) ? $data['shipTypeId'] : null;
+        $this->container['ship_type_id'] = isset($data['ship_type_id']) ? $data['ship_type_id'] : null;
     }
 
     /**
@@ -164,8 +164,8 @@ class GetCharactersCharacterIdFittings200Ok implements ArrayAccess
         if ($this->container['description'] === null) {
             $invalid_properties[] = "'description' can't be null";
         }
-        if ($this->container['fittingId'] === null) {
-            $invalid_properties[] = "'fittingId' can't be null";
+        if ($this->container['fitting_id'] === null) {
+            $invalid_properties[] = "'fitting_id' can't be null";
         }
         if ($this->container['items'] === null) {
             $invalid_properties[] = "'items' can't be null";
@@ -173,8 +173,8 @@ class GetCharactersCharacterIdFittings200Ok implements ArrayAccess
         if ($this->container['name'] === null) {
             $invalid_properties[] = "'name' can't be null";
         }
-        if ($this->container['shipTypeId'] === null) {
-            $invalid_properties[] = "'shipTypeId' can't be null";
+        if ($this->container['ship_type_id'] === null) {
+            $invalid_properties[] = "'ship_type_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -190,7 +190,7 @@ class GetCharactersCharacterIdFittings200Ok implements ArrayAccess
         if ($this->container['description'] === null) {
             return false;
         }
-        if ($this->container['fittingId'] === null) {
+        if ($this->container['fitting_id'] === null) {
             return false;
         }
         if ($this->container['items'] === null) {
@@ -199,7 +199,7 @@ class GetCharactersCharacterIdFittings200Ok implements ArrayAccess
         if ($this->container['name'] === null) {
             return false;
         }
-        if ($this->container['shipTypeId'] === null) {
+        if ($this->container['ship_type_id'] === null) {
             return false;
         }
         return true;
@@ -228,22 +228,22 @@ class GetCharactersCharacterIdFittings200Ok implements ArrayAccess
     }
 
     /**
-     * Gets fittingId
+     * Gets fitting_id
      * @return int
      */
     public function getFittingId()
     {
-        return $this->container['fittingId'];
+        return $this->container['fitting_id'];
     }
 
     /**
-     * Sets fittingId
-     * @param int $fittingId fitting_id integer
+     * Sets fitting_id
+     * @param int $fitting_id fitting_id integer
      * @return $this
      */
-    public function setFittingId($fittingId)
+    public function setFittingId($fitting_id)
     {
-        $this->container['fittingId'] = $fittingId;
+        $this->container['fitting_id'] = $fitting_id;
 
         return $this;
     }
@@ -291,22 +291,22 @@ class GetCharactersCharacterIdFittings200Ok implements ArrayAccess
     }
 
     /**
-     * Gets shipTypeId
+     * Gets ship_type_id
      * @return int
      */
     public function getShipTypeId()
     {
-        return $this->container['shipTypeId'];
+        return $this->container['ship_type_id'];
     }
 
     /**
-     * Sets shipTypeId
-     * @param int $shipTypeId ship_type_id integer
+     * Sets ship_type_id
+     * @param int $ship_type_id ship_type_id integer
      * @return $this
      */
-    public function setShipTypeId($shipTypeId)
+    public function setShipTypeId($ship_type_id)
     {
-        $this->container['shipTypeId'] = $shipTypeId;
+        $this->container['ship_type_id'] = $ship_type_id;
 
         return $this;
     }

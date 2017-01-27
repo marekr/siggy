@@ -107,14 +107,14 @@ class CorporationApi
      *
      * Get corporation information
      *
-     * @param int $corporationId An Eve corporation ID (required)
+     * @param int $corporation_id An Eve corporation ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCorporationsCorporationIdOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCorporationsCorporationId($corporationId, $datasource = null)
+    public function getCorporationsCorporationId($corporation_id, $datasource = null)
     {
-        list($response) = $this->getCorporationsCorporationIdWithHttpInfo($corporationId, $datasource);
+        list($response) = $this->getCorporationsCorporationIdWithHttpInfo($corporation_id, $datasource);
         return $response;
     }
 
@@ -123,16 +123,16 @@ class CorporationApi
      *
      * Get corporation information
      *
-     * @param int $corporationId An Eve corporation ID (required)
+     * @param int $corporation_id An Eve corporation ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCorporationsCorporationIdOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCorporationsCorporationIdWithHttpInfo($corporationId, $datasource = null)
+    public function getCorporationsCorporationIdWithHttpInfo($corporation_id, $datasource = null)
     {
-        // verify the required parameter 'corporationId' is set
-        if ($corporationId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $corporationId when calling getCorporationsCorporationId');
+        // verify the required parameter 'corporation_id' is set
+        if ($corporation_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $corporation_id when calling getCorporationsCorporationId');
         }
         // parse inputs
         $resourcePath = "/corporations/{corporation_id}/";
@@ -151,10 +151,10 @@ class CorporationApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($corporationId !== null) {
+        if ($corporation_id !== null) {
             $resourcePath = str_replace(
                 "{" . "corporation_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($corporationId),
+                $this->apiClient->getSerializer()->toPathValue($corporation_id),
                 $resourcePath
             );
         }
@@ -206,14 +206,14 @@ class CorporationApi
      *
      * Get alliance history
      *
-     * @param int $corporationId An EVE corporation ID (required)
+     * @param int $corporation_id An EVE corporation ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCorporationsCorporationIdAlliancehistory200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCorporationsCorporationIdAlliancehistory($corporationId, $datasource = null)
+    public function getCorporationsCorporationIdAlliancehistory($corporation_id, $datasource = null)
     {
-        list($response) = $this->getCorporationsCorporationIdAlliancehistoryWithHttpInfo($corporationId, $datasource);
+        list($response) = $this->getCorporationsCorporationIdAlliancehistoryWithHttpInfo($corporation_id, $datasource);
         return $response;
     }
 
@@ -222,16 +222,16 @@ class CorporationApi
      *
      * Get alliance history
      *
-     * @param int $corporationId An EVE corporation ID (required)
+     * @param int $corporation_id An EVE corporation ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCorporationsCorporationIdAlliancehistory200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCorporationsCorporationIdAlliancehistoryWithHttpInfo($corporationId, $datasource = null)
+    public function getCorporationsCorporationIdAlliancehistoryWithHttpInfo($corporation_id, $datasource = null)
     {
-        // verify the required parameter 'corporationId' is set
-        if ($corporationId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $corporationId when calling getCorporationsCorporationIdAlliancehistory');
+        // verify the required parameter 'corporation_id' is set
+        if ($corporation_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $corporation_id when calling getCorporationsCorporationIdAlliancehistory');
         }
         // parse inputs
         $resourcePath = "/corporations/{corporation_id}/alliancehistory/";
@@ -250,10 +250,10 @@ class CorporationApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($corporationId !== null) {
+        if ($corporation_id !== null) {
             $resourcePath = str_replace(
                 "{" . "corporation_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($corporationId),
+                $this->apiClient->getSerializer()->toPathValue($corporation_id),
                 $resourcePath
             );
         }
@@ -301,14 +301,14 @@ class CorporationApi
      *
      * Get corporation icon
      *
-     * @param int $corporationId An EVE corporation ID (required)
+     * @param int $corporation_id An EVE corporation ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCorporationsCorporationIdIconsOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCorporationsCorporationIdIcons($corporationId, $datasource = null)
+    public function getCorporationsCorporationIdIcons($corporation_id, $datasource = null)
     {
-        list($response) = $this->getCorporationsCorporationIdIconsWithHttpInfo($corporationId, $datasource);
+        list($response) = $this->getCorporationsCorporationIdIconsWithHttpInfo($corporation_id, $datasource);
         return $response;
     }
 
@@ -317,16 +317,16 @@ class CorporationApi
      *
      * Get corporation icon
      *
-     * @param int $corporationId An EVE corporation ID (required)
+     * @param int $corporation_id An EVE corporation ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCorporationsCorporationIdIconsOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCorporationsCorporationIdIconsWithHttpInfo($corporationId, $datasource = null)
+    public function getCorporationsCorporationIdIconsWithHttpInfo($corporation_id, $datasource = null)
     {
-        // verify the required parameter 'corporationId' is set
-        if ($corporationId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $corporationId when calling getCorporationsCorporationIdIcons');
+        // verify the required parameter 'corporation_id' is set
+        if ($corporation_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $corporation_id when calling getCorporationsCorporationIdIcons');
         }
         // parse inputs
         $resourcePath = "/corporations/{corporation_id}/icons/";
@@ -345,10 +345,10 @@ class CorporationApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($corporationId !== null) {
+        if ($corporation_id !== null) {
             $resourcePath = str_replace(
                 "{" . "corporation_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($corporationId),
+                $this->apiClient->getSerializer()->toPathValue($corporation_id),
                 $resourcePath
             );
         }
@@ -400,14 +400,14 @@ class CorporationApi
      *
      * Get corporation members
      *
-     * @param int $corporationId A corporation ID (required)
+     * @param int $corporation_id A corporation ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCorporationsCorporationIdMembers200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCorporationsCorporationIdMembers($corporationId, $datasource = null)
+    public function getCorporationsCorporationIdMembers($corporation_id, $datasource = null)
     {
-        list($response) = $this->getCorporationsCorporationIdMembersWithHttpInfo($corporationId, $datasource);
+        list($response) = $this->getCorporationsCorporationIdMembersWithHttpInfo($corporation_id, $datasource);
         return $response;
     }
 
@@ -416,16 +416,16 @@ class CorporationApi
      *
      * Get corporation members
      *
-     * @param int $corporationId A corporation ID (required)
+     * @param int $corporation_id A corporation ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCorporationsCorporationIdMembers200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCorporationsCorporationIdMembersWithHttpInfo($corporationId, $datasource = null)
+    public function getCorporationsCorporationIdMembersWithHttpInfo($corporation_id, $datasource = null)
     {
-        // verify the required parameter 'corporationId' is set
-        if ($corporationId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $corporationId when calling getCorporationsCorporationIdMembers');
+        // verify the required parameter 'corporation_id' is set
+        if ($corporation_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $corporation_id when calling getCorporationsCorporationIdMembers');
         }
         // parse inputs
         $resourcePath = "/corporations/{corporation_id}/members/";
@@ -444,10 +444,10 @@ class CorporationApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($corporationId !== null) {
+        if ($corporation_id !== null) {
             $resourcePath = str_replace(
                 "{" . "corporation_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($corporationId),
+                $this->apiClient->getSerializer()->toPathValue($corporation_id),
                 $resourcePath
             );
         }
@@ -503,14 +503,14 @@ class CorporationApi
      *
      * Get corporation member roles
      *
-     * @param int $corporationId A corporation ID (required)
+     * @param int $corporation_id A corporation ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCorporationsCorporationIdRoles200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCorporationsCorporationIdRoles($corporationId, $datasource = null)
+    public function getCorporationsCorporationIdRoles($corporation_id, $datasource = null)
     {
-        list($response) = $this->getCorporationsCorporationIdRolesWithHttpInfo($corporationId, $datasource);
+        list($response) = $this->getCorporationsCorporationIdRolesWithHttpInfo($corporation_id, $datasource);
         return $response;
     }
 
@@ -519,16 +519,16 @@ class CorporationApi
      *
      * Get corporation member roles
      *
-     * @param int $corporationId A corporation ID (required)
+     * @param int $corporation_id A corporation ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCorporationsCorporationIdRoles200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCorporationsCorporationIdRolesWithHttpInfo($corporationId, $datasource = null)
+    public function getCorporationsCorporationIdRolesWithHttpInfo($corporation_id, $datasource = null)
     {
-        // verify the required parameter 'corporationId' is set
-        if ($corporationId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $corporationId when calling getCorporationsCorporationIdRoles');
+        // verify the required parameter 'corporation_id' is set
+        if ($corporation_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $corporation_id when calling getCorporationsCorporationIdRoles');
         }
         // parse inputs
         $resourcePath = "/corporations/{corporation_id}/roles/";
@@ -547,10 +547,10 @@ class CorporationApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($corporationId !== null) {
+        if ($corporation_id !== null) {
             $resourcePath = str_replace(
                 "{" . "corporation_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($corporationId),
+                $this->apiClient->getSerializer()->toPathValue($corporation_id),
                 $resourcePath
             );
         }
@@ -606,14 +606,14 @@ class CorporationApi
      *
      * Get corporation names
      *
-     * @param int[] $corporationIds A comma separated list of corporation IDs (required)
+     * @param int[] $corporation_ids A comma separated list of corporation IDs (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCorporationsNames200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCorporationsNames($corporationIds, $datasource = null)
+    public function getCorporationsNames($corporation_ids, $datasource = null)
     {
-        list($response) = $this->getCorporationsNamesWithHttpInfo($corporationIds, $datasource);
+        list($response) = $this->getCorporationsNamesWithHttpInfo($corporation_ids, $datasource);
         return $response;
     }
 
@@ -622,16 +622,16 @@ class CorporationApi
      *
      * Get corporation names
      *
-     * @param int[] $corporationIds A comma separated list of corporation IDs (required)
+     * @param int[] $corporation_ids A comma separated list of corporation IDs (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCorporationsNames200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCorporationsNamesWithHttpInfo($corporationIds, $datasource = null)
+    public function getCorporationsNamesWithHttpInfo($corporation_ids, $datasource = null)
     {
-        // verify the required parameter 'corporationIds' is set
-        if ($corporationIds === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $corporationIds when calling getCorporationsNames');
+        // verify the required parameter 'corporation_ids' is set
+        if ($corporation_ids === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $corporation_ids when calling getCorporationsNames');
         }
 
         // parse inputs
@@ -647,11 +647,11 @@ class CorporationApi
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array());
 
         // query params
-        if (is_array($corporationIds)) {
-            $corporationIds = $this->apiClient->getSerializer()->serializeCollection($corporationIds, 'csv', true);
+        if (is_array($corporation_ids)) {
+            $corporation_ids = $this->apiClient->getSerializer()->serializeCollection($corporation_ids, 'csv', true);
         }
-        if ($corporationIds !== null) {
-            $queryParams['corporation_ids'] = $this->apiClient->getSerializer()->toQueryValue($corporationIds);
+        if ($corporation_ids !== null) {
+            $queryParams['corporation_ids'] = $this->apiClient->getSerializer()->toQueryValue($corporation_ids);
         }
         // query params
         if ($datasource !== null) {

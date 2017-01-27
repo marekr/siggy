@@ -107,15 +107,15 @@ class FittingsApi
      *
      * Delete fitting
      *
-     * @param int $characterId ID for a character (required)
-     * @param int $fittingId ID for a fitting of this character (required)
+     * @param int $character_id ID for a character (required)
+     * @param int $fitting_id ID for a fitting of this character (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return void
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function deleteCharactersCharacterIdFittingsFittingId($characterId, $fittingId, $datasource = null)
+    public function deleteCharactersCharacterIdFittingsFittingId($character_id, $fitting_id, $datasource = null)
     {
-        list($response) = $this->deleteCharactersCharacterIdFittingsFittingIdWithHttpInfo($characterId, $fittingId, $datasource);
+        list($response) = $this->deleteCharactersCharacterIdFittingsFittingIdWithHttpInfo($character_id, $fitting_id, $datasource);
         return $response;
     }
 
@@ -124,21 +124,21 @@ class FittingsApi
      *
      * Delete fitting
      *
-     * @param int $characterId ID for a character (required)
-     * @param int $fittingId ID for a fitting of this character (required)
+     * @param int $character_id ID for a character (required)
+     * @param int $fitting_id ID for a fitting of this character (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of null, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function deleteCharactersCharacterIdFittingsFittingIdWithHttpInfo($characterId, $fittingId, $datasource = null)
+    public function deleteCharactersCharacterIdFittingsFittingIdWithHttpInfo($character_id, $fitting_id, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling deleteCharactersCharacterIdFittingsFittingId');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling deleteCharactersCharacterIdFittingsFittingId');
         }
-        // verify the required parameter 'fittingId' is set
-        if ($fittingId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $fittingId when calling deleteCharactersCharacterIdFittingsFittingId');
+        // verify the required parameter 'fitting_id' is set
+        if ($fitting_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $fitting_id when calling deleteCharactersCharacterIdFittingsFittingId');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/fittings/{fitting_id}/";
@@ -157,18 +157,18 @@ class FittingsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
         // path params
-        if ($fittingId !== null) {
+        if ($fitting_id !== null) {
             $resourcePath = str_replace(
                 "{" . "fitting_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($fittingId),
+                $this->apiClient->getSerializer()->toPathValue($fitting_id),
                 $resourcePath
             );
         }
@@ -220,14 +220,14 @@ class FittingsApi
      *
      * Get fittings
      *
-     * @param int $characterId ID for a character (required)
+     * @param int $character_id ID for a character (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdFittings200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdFittings($characterId, $datasource = null)
+    public function getCharactersCharacterIdFittings($character_id, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdFittingsWithHttpInfo($characterId, $datasource);
+        list($response) = $this->getCharactersCharacterIdFittingsWithHttpInfo($character_id, $datasource);
         return $response;
     }
 
@@ -236,16 +236,16 @@ class FittingsApi
      *
      * Get fittings
      *
-     * @param int $characterId ID for a character (required)
+     * @param int $character_id ID for a character (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdFittings200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdFittingsWithHttpInfo($characterId, $datasource = null)
+    public function getCharactersCharacterIdFittingsWithHttpInfo($character_id, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdFittings');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdFittings');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/fittings/";
@@ -264,10 +264,10 @@ class FittingsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
@@ -323,15 +323,15 @@ class FittingsApi
      *
      * Create fitting
      *
-     * @param int $characterId ID for a character (required)
+     * @param int $character_id ID for a character (required)
      * @param \ESI\Model\PostCharactersCharacterIdFittingsFitting $fitting Details about the new fitting (optional)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\PostCharactersCharacterIdFittingsCreated
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postCharactersCharacterIdFittings($characterId, $fitting = null, $datasource = null)
+    public function postCharactersCharacterIdFittings($character_id, $fitting = null, $datasource = null)
     {
-        list($response) = $this->postCharactersCharacterIdFittingsWithHttpInfo($characterId, $fitting, $datasource);
+        list($response) = $this->postCharactersCharacterIdFittingsWithHttpInfo($character_id, $fitting, $datasource);
         return $response;
     }
 
@@ -340,17 +340,17 @@ class FittingsApi
      *
      * Create fitting
      *
-     * @param int $characterId ID for a character (required)
+     * @param int $character_id ID for a character (required)
      * @param \ESI\Model\PostCharactersCharacterIdFittingsFitting $fitting Details about the new fitting (optional)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\PostCharactersCharacterIdFittingsCreated, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postCharactersCharacterIdFittingsWithHttpInfo($characterId, $fitting = null, $datasource = null)
+    public function postCharactersCharacterIdFittingsWithHttpInfo($character_id, $fitting = null, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling postCharactersCharacterIdFittings');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling postCharactersCharacterIdFittings');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/fittings/";
@@ -369,10 +369,10 @@ class FittingsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }

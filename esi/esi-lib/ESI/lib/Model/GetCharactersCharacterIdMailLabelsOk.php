@@ -68,7 +68,7 @@ class GetCharactersCharacterIdMailLabelsOk implements ArrayAccess
       */
     protected static $swaggerTypes = array(
         'labels' => '\ESI\Model\GetCharactersCharacterIdMailLabelsOkLabels[]',
-        'totalUnreadCount' => 'int'
+        'total_unread_count' => 'int'
     );
 
     public static function swaggerTypes()
@@ -82,7 +82,7 @@ class GetCharactersCharacterIdMailLabelsOk implements ArrayAccess
      */
     protected static $attributeMap = array(
         'labels' => 'labels',
-        'totalUnreadCount' => 'total_unread_count'
+        'total_unread_count' => 'total_unread_count'
     );
 
     public static function attributeMap()
@@ -96,7 +96,7 @@ class GetCharactersCharacterIdMailLabelsOk implements ArrayAccess
      */
     protected static $setters = array(
         'labels' => 'setLabels',
-        'totalUnreadCount' => 'setTotalUnreadCount'
+        'total_unread_count' => 'setTotalUnreadCount'
     );
 
     public static function setters()
@@ -110,7 +110,7 @@ class GetCharactersCharacterIdMailLabelsOk implements ArrayAccess
      */
     protected static $getters = array(
         'labels' => 'getLabels',
-        'totalUnreadCount' => 'getTotalUnreadCount'
+        'total_unread_count' => 'getTotalUnreadCount'
     );
 
     public static function getters()
@@ -135,7 +135,7 @@ class GetCharactersCharacterIdMailLabelsOk implements ArrayAccess
     public function __construct(array $data = null)
     {
         $this->container['labels'] = isset($data['labels']) ? $data['labels'] : null;
-        $this->container['totalUnreadCount'] = isset($data['totalUnreadCount']) ? $data['totalUnreadCount'] : null;
+        $this->container['total_unread_count'] = isset($data['total_unread_count']) ? $data['total_unread_count'] : null;
     }
 
     /**
@@ -146,8 +146,8 @@ class GetCharactersCharacterIdMailLabelsOk implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if (!is_null($this->container['totalUnreadCount']) && ($this->container['totalUnreadCount'] < 0.0)) {
-            $invalid_properties[] = "invalid value for 'totalUnreadCount', must be bigger than or equal to 0.0.";
+        if (!is_null($this->container['total_unread_count']) && ($this->container['total_unread_count'] < 0.0)) {
+            $invalid_properties[] = "invalid value for 'total_unread_count', must be bigger than or equal to 0.0.";
         }
 
         return $invalid_properties;
@@ -161,7 +161,7 @@ class GetCharactersCharacterIdMailLabelsOk implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['totalUnreadCount'] < 0.0) {
+        if ($this->container['total_unread_count'] < 0.0) {
             return false;
         }
         return true;
@@ -190,26 +190,26 @@ class GetCharactersCharacterIdMailLabelsOk implements ArrayAccess
     }
 
     /**
-     * Gets totalUnreadCount
+     * Gets total_unread_count
      * @return int
      */
     public function getTotalUnreadCount()
     {
-        return $this->container['totalUnreadCount'];
+        return $this->container['total_unread_count'];
     }
 
     /**
-     * Sets totalUnreadCount
-     * @param int $totalUnreadCount total_unread_count integer
+     * Sets total_unread_count
+     * @param int $total_unread_count total_unread_count integer
      * @return $this
      */
-    public function setTotalUnreadCount($totalUnreadCount)
+    public function setTotalUnreadCount($total_unread_count)
     {
 
-        if ($totalUnreadCount < 0.0) {
-            throw new \InvalidArgumentException('invalid value for $totalUnreadCount when calling GetCharactersCharacterIdMailLabelsOk., must be bigger than or equal to 0.0.');
+        if ($total_unread_count < 0.0) {
+            throw new \InvalidArgumentException('invalid value for $total_unread_count when calling GetCharactersCharacterIdMailLabelsOk., must be bigger than or equal to 0.0.');
         }
-        $this->container['totalUnreadCount'] = $totalUnreadCount;
+        $this->container['total_unread_count'] = $total_unread_count;
 
         return $this;
     }

@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **finished** | [**\DateTime**](\DateTime.md) | Time the war ended and shooting was no longer allowed | [optional] 
 **id** | **int** | ID of the specified war | 
 **mutual** | **bool** | Was the war declared mutual by both parties | 
-**openForAllies** | **bool** | Is the war currently open for allies or not | 
+**open_for_allies** | **bool** | Is the war currently open for allies or not | 
 **retracted** | [**\DateTime**](\DateTime.md) | Time the war was retracted but both sides could still shoot each other | [optional] 
 **started** | [**\DateTime**](\DateTime.md) | Time when the war started and both sides could shoot each other | [optional] 
 

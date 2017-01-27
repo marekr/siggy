@@ -67,8 +67,8 @@ class GetCharactersCharacterIdContactsLabels200Ok implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'labelId' => 'int',
-        'labelName' => 'string'
+        'label_id' => 'int',
+        'label_name' => 'string'
     );
 
     public static function swaggerTypes()
@@ -81,8 +81,8 @@ class GetCharactersCharacterIdContactsLabels200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'labelId' => 'label_id',
-        'labelName' => 'label_name'
+        'label_id' => 'label_id',
+        'label_name' => 'label_name'
     );
 
     public static function attributeMap()
@@ -95,8 +95,8 @@ class GetCharactersCharacterIdContactsLabels200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'labelId' => 'setLabelId',
-        'labelName' => 'setLabelName'
+        'label_id' => 'setLabelId',
+        'label_name' => 'setLabelName'
     );
 
     public static function setters()
@@ -109,8 +109,8 @@ class GetCharactersCharacterIdContactsLabels200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'labelId' => 'getLabelId',
-        'labelName' => 'getLabelName'
+        'label_id' => 'getLabelId',
+        'label_name' => 'getLabelName'
     );
 
     public static function getters()
@@ -134,8 +134,8 @@ class GetCharactersCharacterIdContactsLabels200Ok implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['labelId'] = isset($data['labelId']) ? $data['labelId'] : null;
-        $this->container['labelName'] = isset($data['labelName']) ? $data['labelName'] : null;
+        $this->container['label_id'] = isset($data['label_id']) ? $data['label_id'] : null;
+        $this->container['label_name'] = isset($data['label_name']) ? $data['label_name'] : null;
     }
 
     /**
@@ -146,11 +146,11 @@ class GetCharactersCharacterIdContactsLabels200Ok implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['labelId'] === null) {
-            $invalid_properties[] = "'labelId' can't be null";
+        if ($this->container['label_id'] === null) {
+            $invalid_properties[] = "'label_id' can't be null";
         }
-        if ($this->container['labelName'] === null) {
-            $invalid_properties[] = "'labelName' can't be null";
+        if ($this->container['label_name'] === null) {
+            $invalid_properties[] = "'label_name' can't be null";
         }
         return $invalid_properties;
     }
@@ -163,10 +163,10 @@ class GetCharactersCharacterIdContactsLabels200Ok implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['labelId'] === null) {
+        if ($this->container['label_id'] === null) {
             return false;
         }
-        if ($this->container['labelName'] === null) {
+        if ($this->container['label_name'] === null) {
             return false;
         }
         return true;
@@ -174,43 +174,43 @@ class GetCharactersCharacterIdContactsLabels200Ok implements ArrayAccess
 
 
     /**
-     * Gets labelId
+     * Gets label_id
      * @return int
      */
     public function getLabelId()
     {
-        return $this->container['labelId'];
+        return $this->container['label_id'];
     }
 
     /**
-     * Sets labelId
-     * @param int $labelId label_id integer
+     * Sets label_id
+     * @param int $label_id label_id integer
      * @return $this
      */
-    public function setLabelId($labelId)
+    public function setLabelId($label_id)
     {
-        $this->container['labelId'] = $labelId;
+        $this->container['label_id'] = $label_id;
 
         return $this;
     }
 
     /**
-     * Gets labelName
+     * Gets label_name
      * @return string
      */
     public function getLabelName()
     {
-        return $this->container['labelName'];
+        return $this->container['label_name'];
     }
 
     /**
-     * Sets labelName
-     * @param string $labelName label_name string
+     * Sets label_name
+     * @param string $label_name label_name string
      * @return $this
      */
-    public function setLabelName($labelName)
+    public function setLabelName($label_name)
     {
-        $this->container['labelName'] = $labelName;
+        $this->container['label_name'] = $label_name;
 
         return $this;
     }

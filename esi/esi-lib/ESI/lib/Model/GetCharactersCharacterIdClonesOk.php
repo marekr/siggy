@@ -67,9 +67,9 @@ class GetCharactersCharacterIdClonesOk implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'homeLocation' => '\ESI\Model\GetCharactersCharacterIdClonesOkHomeLocation',
-        'jumpClones' => '\ESI\Model\GetCharactersCharacterIdClonesOkJumpClones[]',
-        'lastJumpDate' => '\DateTime'
+        'home_location' => '\ESI\Model\GetCharactersCharacterIdClonesOkHomeLocation',
+        'jump_clones' => '\ESI\Model\GetCharactersCharacterIdClonesOkJumpClones[]',
+        'last_jump_date' => '\DateTime'
     );
 
     public static function swaggerTypes()
@@ -82,9 +82,9 @@ class GetCharactersCharacterIdClonesOk implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'homeLocation' => 'home_location',
-        'jumpClones' => 'jump_clones',
-        'lastJumpDate' => 'last_jump_date'
+        'home_location' => 'home_location',
+        'jump_clones' => 'jump_clones',
+        'last_jump_date' => 'last_jump_date'
     );
 
     public static function attributeMap()
@@ -97,9 +97,9 @@ class GetCharactersCharacterIdClonesOk implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'homeLocation' => 'setHomeLocation',
-        'jumpClones' => 'setJumpClones',
-        'lastJumpDate' => 'setLastJumpDate'
+        'home_location' => 'setHomeLocation',
+        'jump_clones' => 'setJumpClones',
+        'last_jump_date' => 'setLastJumpDate'
     );
 
     public static function setters()
@@ -112,9 +112,9 @@ class GetCharactersCharacterIdClonesOk implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'homeLocation' => 'getHomeLocation',
-        'jumpClones' => 'getJumpClones',
-        'lastJumpDate' => 'getLastJumpDate'
+        'home_location' => 'getHomeLocation',
+        'jump_clones' => 'getJumpClones',
+        'last_jump_date' => 'getLastJumpDate'
     );
 
     public static function getters()
@@ -138,9 +138,9 @@ class GetCharactersCharacterIdClonesOk implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['homeLocation'] = isset($data['homeLocation']) ? $data['homeLocation'] : null;
-        $this->container['jumpClones'] = isset($data['jumpClones']) ? $data['jumpClones'] : null;
-        $this->container['lastJumpDate'] = isset($data['lastJumpDate']) ? $data['lastJumpDate'] : null;
+        $this->container['home_location'] = isset($data['home_location']) ? $data['home_location'] : null;
+        $this->container['jump_clones'] = isset($data['jump_clones']) ? $data['jump_clones'] : null;
+        $this->container['last_jump_date'] = isset($data['last_jump_date']) ? $data['last_jump_date'] : null;
     }
 
     /**
@@ -151,8 +151,8 @@ class GetCharactersCharacterIdClonesOk implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['jumpClones'] === null) {
-            $invalid_properties[] = "'jumpClones' can't be null";
+        if ($this->container['jump_clones'] === null) {
+            $invalid_properties[] = "'jump_clones' can't be null";
         }
         return $invalid_properties;
     }
@@ -165,7 +165,7 @@ class GetCharactersCharacterIdClonesOk implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['jumpClones'] === null) {
+        if ($this->container['jump_clones'] === null) {
             return false;
         }
         return true;
@@ -173,64 +173,64 @@ class GetCharactersCharacterIdClonesOk implements ArrayAccess
 
 
     /**
-     * Gets homeLocation
+     * Gets home_location
      * @return \ESI\Model\GetCharactersCharacterIdClonesOkHomeLocation
      */
     public function getHomeLocation()
     {
-        return $this->container['homeLocation'];
+        return $this->container['home_location'];
     }
 
     /**
-     * Sets homeLocation
-     * @param \ESI\Model\GetCharactersCharacterIdClonesOkHomeLocation $homeLocation
+     * Sets home_location
+     * @param \ESI\Model\GetCharactersCharacterIdClonesOkHomeLocation $home_location
      * @return $this
      */
-    public function setHomeLocation($homeLocation)
+    public function setHomeLocation($home_location)
     {
-        $this->container['homeLocation'] = $homeLocation;
+        $this->container['home_location'] = $home_location;
 
         return $this;
     }
 
     /**
-     * Gets jumpClones
+     * Gets jump_clones
      * @return \ESI\Model\GetCharactersCharacterIdClonesOkJumpClones[]
      */
     public function getJumpClones()
     {
-        return $this->container['jumpClones'];
+        return $this->container['jump_clones'];
     }
 
     /**
-     * Sets jumpClones
-     * @param \ESI\Model\GetCharactersCharacterIdClonesOkJumpClones[] $jumpClones jump_clones array
+     * Sets jump_clones
+     * @param \ESI\Model\GetCharactersCharacterIdClonesOkJumpClones[] $jump_clones jump_clones array
      * @return $this
      */
-    public function setJumpClones($jumpClones)
+    public function setJumpClones($jump_clones)
     {
-        $this->container['jumpClones'] = $jumpClones;
+        $this->container['jump_clones'] = $jump_clones;
 
         return $this;
     }
 
     /**
-     * Gets lastJumpDate
+     * Gets last_jump_date
      * @return \DateTime
      */
     public function getLastJumpDate()
     {
-        return $this->container['lastJumpDate'];
+        return $this->container['last_jump_date'];
     }
 
     /**
-     * Sets lastJumpDate
-     * @param \DateTime $lastJumpDate last_jump_date string
+     * Sets last_jump_date
+     * @param \DateTime $last_jump_date last_jump_date string
      * @return $this
      */
-    public function setLastJumpDate($lastJumpDate)
+    public function setLastJumpDate($last_jump_date)
     {
-        $this->container['lastJumpDate'] = $lastJumpDate;
+        $this->container['last_jump_date'] = $last_jump_date;
 
         return $this;
     }

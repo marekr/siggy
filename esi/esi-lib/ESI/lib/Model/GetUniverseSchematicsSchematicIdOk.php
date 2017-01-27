@@ -67,8 +67,8 @@ class GetUniverseSchematicsSchematicIdOk implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'cycleTime' => 'int',
-        'schematicName' => 'string'
+        'cycle_time' => 'int',
+        'schematic_name' => 'string'
     );
 
     public static function swaggerTypes()
@@ -81,8 +81,8 @@ class GetUniverseSchematicsSchematicIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'cycleTime' => 'cycle_time',
-        'schematicName' => 'schematic_name'
+        'cycle_time' => 'cycle_time',
+        'schematic_name' => 'schematic_name'
     );
 
     public static function attributeMap()
@@ -95,8 +95,8 @@ class GetUniverseSchematicsSchematicIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'cycleTime' => 'setCycleTime',
-        'schematicName' => 'setSchematicName'
+        'cycle_time' => 'setCycleTime',
+        'schematic_name' => 'setSchematicName'
     );
 
     public static function setters()
@@ -109,8 +109,8 @@ class GetUniverseSchematicsSchematicIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'cycleTime' => 'getCycleTime',
-        'schematicName' => 'getSchematicName'
+        'cycle_time' => 'getCycleTime',
+        'schematic_name' => 'getSchematicName'
     );
 
     public static function getters()
@@ -134,8 +134,8 @@ class GetUniverseSchematicsSchematicIdOk implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['cycleTime'] = isset($data['cycleTime']) ? $data['cycleTime'] : null;
-        $this->container['schematicName'] = isset($data['schematicName']) ? $data['schematicName'] : null;
+        $this->container['cycle_time'] = isset($data['cycle_time']) ? $data['cycle_time'] : null;
+        $this->container['schematic_name'] = isset($data['schematic_name']) ? $data['schematic_name'] : null;
     }
 
     /**
@@ -146,11 +146,11 @@ class GetUniverseSchematicsSchematicIdOk implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['cycleTime'] === null) {
-            $invalid_properties[] = "'cycleTime' can't be null";
+        if ($this->container['cycle_time'] === null) {
+            $invalid_properties[] = "'cycle_time' can't be null";
         }
-        if ($this->container['schematicName'] === null) {
-            $invalid_properties[] = "'schematicName' can't be null";
+        if ($this->container['schematic_name'] === null) {
+            $invalid_properties[] = "'schematic_name' can't be null";
         }
         return $invalid_properties;
     }
@@ -163,10 +163,10 @@ class GetUniverseSchematicsSchematicIdOk implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['cycleTime'] === null) {
+        if ($this->container['cycle_time'] === null) {
             return false;
         }
-        if ($this->container['schematicName'] === null) {
+        if ($this->container['schematic_name'] === null) {
             return false;
         }
         return true;
@@ -174,43 +174,43 @@ class GetUniverseSchematicsSchematicIdOk implements ArrayAccess
 
 
     /**
-     * Gets cycleTime
+     * Gets cycle_time
      * @return int
      */
     public function getCycleTime()
     {
-        return $this->container['cycleTime'];
+        return $this->container['cycle_time'];
     }
 
     /**
-     * Sets cycleTime
-     * @param int $cycleTime Time in seconds to process a run
+     * Sets cycle_time
+     * @param int $cycle_time Time in seconds to process a run
      * @return $this
      */
-    public function setCycleTime($cycleTime)
+    public function setCycleTime($cycle_time)
     {
-        $this->container['cycleTime'] = $cycleTime;
+        $this->container['cycle_time'] = $cycle_time;
 
         return $this;
     }
 
     /**
-     * Gets schematicName
+     * Gets schematic_name
      * @return string
      */
     public function getSchematicName()
     {
-        return $this->container['schematicName'];
+        return $this->container['schematic_name'];
     }
 
     /**
-     * Sets schematicName
-     * @param string $schematicName schematic_name string
+     * Sets schematic_name
+     * @param string $schematic_name schematic_name string
      * @return $this
      */
-    public function setSchematicName($schematicName)
+    public function setSchematicName($schematic_name)
     {
-        $this->container['schematicName'] = $schematicName;
+        $this->container['schematic_name'] = $schematic_name;
 
         return $this;
     }

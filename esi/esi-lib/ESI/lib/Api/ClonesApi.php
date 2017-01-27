@@ -107,14 +107,14 @@ class ClonesApi
      *
      * Get clones
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdClonesOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdClones($characterId, $datasource = null)
+    public function getCharactersCharacterIdClones($character_id, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdClonesWithHttpInfo($characterId, $datasource);
+        list($response) = $this->getCharactersCharacterIdClonesWithHttpInfo($character_id, $datasource);
         return $response;
     }
 
@@ -123,16 +123,16 @@ class ClonesApi
      *
      * Get clones
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdClonesOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdClonesWithHttpInfo($characterId, $datasource = null)
+    public function getCharactersCharacterIdClonesWithHttpInfo($character_id, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdClones');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdClones');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/clones/";
@@ -151,10 +151,10 @@ class ClonesApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }

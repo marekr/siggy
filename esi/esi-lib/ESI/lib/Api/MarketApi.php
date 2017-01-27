@@ -188,15 +188,15 @@ class MarketApi
      *
      * List historical market statistics in a region
      *
-     * @param int $regionId Return statistics in this region (required)
-     * @param int $typeId Return statistics for this type (required)
+     * @param int $region_id Return statistics in this region (required)
+     * @param int $type_id Return statistics for this type (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetMarketsRegionIdHistory200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getMarketsRegionIdHistory($regionId, $typeId, $datasource = null)
+    public function getMarketsRegionIdHistory($region_id, $type_id, $datasource = null)
     {
-        list($response) = $this->getMarketsRegionIdHistoryWithHttpInfo($regionId, $typeId, $datasource);
+        list($response) = $this->getMarketsRegionIdHistoryWithHttpInfo($region_id, $type_id, $datasource);
         return $response;
     }
 
@@ -205,21 +205,21 @@ class MarketApi
      *
      * List historical market statistics in a region
      *
-     * @param int $regionId Return statistics in this region (required)
-     * @param int $typeId Return statistics for this type (required)
+     * @param int $region_id Return statistics in this region (required)
+     * @param int $type_id Return statistics for this type (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetMarketsRegionIdHistory200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getMarketsRegionIdHistoryWithHttpInfo($regionId, $typeId, $datasource = null)
+    public function getMarketsRegionIdHistoryWithHttpInfo($region_id, $type_id, $datasource = null)
     {
-        // verify the required parameter 'regionId' is set
-        if ($regionId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $regionId when calling getMarketsRegionIdHistory');
+        // verify the required parameter 'region_id' is set
+        if ($region_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $region_id when calling getMarketsRegionIdHistory');
         }
-        // verify the required parameter 'typeId' is set
-        if ($typeId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $typeId when calling getMarketsRegionIdHistory');
+        // verify the required parameter 'type_id' is set
+        if ($type_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $type_id when calling getMarketsRegionIdHistory');
         }
         // parse inputs
         $resourcePath = "/markets/{region_id}/history/";
@@ -234,18 +234,18 @@ class MarketApi
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array());
 
         // query params
-        if ($typeId !== null) {
-            $queryParams['type_id'] = $this->apiClient->getSerializer()->toQueryValue($typeId);
+        if ($type_id !== null) {
+            $queryParams['type_id'] = $this->apiClient->getSerializer()->toQueryValue($type_id);
         }
         // query params
         if ($datasource !== null) {
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($regionId !== null) {
+        if ($region_id !== null) {
             $resourcePath = str_replace(
                 "{" . "region_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($regionId),
+                $this->apiClient->getSerializer()->toPathValue($region_id),
                 $resourcePath
             );
         }
@@ -297,17 +297,17 @@ class MarketApi
      *
      * List orders in a region
      *
-     * @param int $regionId Return orders in this region (required)
-     * @param string $orderType Filter buy/sell orders, return all orders by default. If you query without type_id, we always return both buy and sell orders. (required)
-     * @param int $typeId Return orders only for this type (optional)
+     * @param int $region_id Return orders in this region (required)
+     * @param string $order_type Filter buy/sell orders, return all orders by default. If you query without type_id, we always return both buy and sell orders. (required)
+     * @param int $type_id Return orders only for this type (optional)
      * @param int $page Which page to query, only used for querying without type_id. Starting at 1 (optional, default to 1)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetMarketsRegionIdOrders200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getMarketsRegionIdOrders($regionId, $orderType, $typeId = null, $page = null, $datasource = null)
+    public function getMarketsRegionIdOrders($region_id, $order_type, $type_id = null, $page = null, $datasource = null)
     {
-        list($response) = $this->getMarketsRegionIdOrdersWithHttpInfo($regionId, $orderType, $typeId, $page, $datasource);
+        list($response) = $this->getMarketsRegionIdOrdersWithHttpInfo($region_id, $order_type, $type_id, $page, $datasource);
         return $response;
     }
 
@@ -316,23 +316,23 @@ class MarketApi
      *
      * List orders in a region
      *
-     * @param int $regionId Return orders in this region (required)
-     * @param string $orderType Filter buy/sell orders, return all orders by default. If you query without type_id, we always return both buy and sell orders. (required)
-     * @param int $typeId Return orders only for this type (optional)
+     * @param int $region_id Return orders in this region (required)
+     * @param string $order_type Filter buy/sell orders, return all orders by default. If you query without type_id, we always return both buy and sell orders. (required)
+     * @param int $type_id Return orders only for this type (optional)
      * @param int $page Which page to query, only used for querying without type_id. Starting at 1 (optional, default to 1)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetMarketsRegionIdOrders200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getMarketsRegionIdOrdersWithHttpInfo($regionId, $orderType, $typeId = null, $page = null, $datasource = null)
+    public function getMarketsRegionIdOrdersWithHttpInfo($region_id, $order_type, $type_id = null, $page = null, $datasource = null)
     {
-        // verify the required parameter 'regionId' is set
-        if ($regionId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $regionId when calling getMarketsRegionIdOrders');
+        // verify the required parameter 'region_id' is set
+        if ($region_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $region_id when calling getMarketsRegionIdOrders');
         }
-        // verify the required parameter 'orderType' is set
-        if ($orderType === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $orderType when calling getMarketsRegionIdOrders');
+        // verify the required parameter 'order_type' is set
+        if ($order_type === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $order_type when calling getMarketsRegionIdOrders');
         }
         // parse inputs
         $resourcePath = "/markets/{region_id}/orders/";
@@ -347,12 +347,12 @@ class MarketApi
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array());
 
         // query params
-        if ($typeId !== null) {
-            $queryParams['type_id'] = $this->apiClient->getSerializer()->toQueryValue($typeId);
+        if ($type_id !== null) {
+            $queryParams['type_id'] = $this->apiClient->getSerializer()->toQueryValue($type_id);
         }
         // query params
-        if ($orderType !== null) {
-            $queryParams['order_type'] = $this->apiClient->getSerializer()->toQueryValue($orderType);
+        if ($order_type !== null) {
+            $queryParams['order_type'] = $this->apiClient->getSerializer()->toQueryValue($order_type);
         }
         // query params
         if ($page !== null) {
@@ -363,10 +363,10 @@ class MarketApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($regionId !== null) {
+        if ($region_id !== null) {
             $resourcePath = str_replace(
                 "{" . "region_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($regionId),
+                $this->apiClient->getSerializer()->toPathValue($region_id),
                 $resourcePath
             );
         }
@@ -418,15 +418,15 @@ class MarketApi
      *
      * List orders in a structure
      *
-     * @param int $structureId Return orders in this structure (required)
+     * @param int $structure_id Return orders in this structure (required)
      * @param int $page Which page to query, starting at 1 (optional, default to 1)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetMarketsStructuresStructureId200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getMarketsStructuresStructureId($structureId, $page = null, $datasource = null)
+    public function getMarketsStructuresStructureId($structure_id, $page = null, $datasource = null)
     {
-        list($response) = $this->getMarketsStructuresStructureIdWithHttpInfo($structureId, $page, $datasource);
+        list($response) = $this->getMarketsStructuresStructureIdWithHttpInfo($structure_id, $page, $datasource);
         return $response;
     }
 
@@ -435,17 +435,17 @@ class MarketApi
      *
      * List orders in a structure
      *
-     * @param int $structureId Return orders in this structure (required)
+     * @param int $structure_id Return orders in this structure (required)
      * @param int $page Which page to query, starting at 1 (optional, default to 1)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetMarketsStructuresStructureId200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getMarketsStructuresStructureIdWithHttpInfo($structureId, $page = null, $datasource = null)
+    public function getMarketsStructuresStructureIdWithHttpInfo($structure_id, $page = null, $datasource = null)
     {
-        // verify the required parameter 'structureId' is set
-        if ($structureId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $structureId when calling getMarketsStructuresStructureId');
+        // verify the required parameter 'structure_id' is set
+        if ($structure_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $structure_id when calling getMarketsStructuresStructureId');
         }
         // parse inputs
         $resourcePath = "/markets/structures/{structure_id}/";
@@ -468,10 +468,10 @@ class MarketApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($structureId !== null) {
+        if ($structure_id !== null) {
             $resourcePath = str_replace(
                 "{" . "structure_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($structureId),
+                $this->apiClient->getSerializer()->toPathValue($structure_id),
                 $resourcePath
             );
         }

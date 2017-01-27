@@ -67,12 +67,12 @@ class GetIncursions200Ok implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'constellationId' => 'int',
-        'factionId' => 'int',
-        'hasBoss' => 'bool',
-        'infestedSolarSystems' => 'int[]',
+        'constellation_id' => 'int',
+        'faction_id' => 'int',
+        'has_boss' => 'bool',
+        'infested_solar_systems' => 'int[]',
         'influence' => 'float',
-        'stagingSolarSystemId' => 'int',
+        'staging_solar_system_id' => 'int',
         'state' => 'string',
         'type' => 'string'
     );
@@ -87,12 +87,12 @@ class GetIncursions200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'constellationId' => 'constellation_id',
-        'factionId' => 'faction_id',
-        'hasBoss' => 'has_boss',
-        'infestedSolarSystems' => 'infested_solar_systems',
+        'constellation_id' => 'constellation_id',
+        'faction_id' => 'faction_id',
+        'has_boss' => 'has_boss',
+        'infested_solar_systems' => 'infested_solar_systems',
         'influence' => 'influence',
-        'stagingSolarSystemId' => 'staging_solar_system_id',
+        'staging_solar_system_id' => 'staging_solar_system_id',
         'state' => 'state',
         'type' => 'type'
     );
@@ -107,12 +107,12 @@ class GetIncursions200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'constellationId' => 'setConstellationId',
-        'factionId' => 'setFactionId',
-        'hasBoss' => 'setHasBoss',
-        'infestedSolarSystems' => 'setInfestedSolarSystems',
+        'constellation_id' => 'setConstellationId',
+        'faction_id' => 'setFactionId',
+        'has_boss' => 'setHasBoss',
+        'infested_solar_systems' => 'setInfestedSolarSystems',
         'influence' => 'setInfluence',
-        'stagingSolarSystemId' => 'setStagingSolarSystemId',
+        'staging_solar_system_id' => 'setStagingSolarSystemId',
         'state' => 'setState',
         'type' => 'setType'
     );
@@ -127,12 +127,12 @@ class GetIncursions200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'constellationId' => 'getConstellationId',
-        'factionId' => 'getFactionId',
-        'hasBoss' => 'getHasBoss',
-        'infestedSolarSystems' => 'getInfestedSolarSystems',
+        'constellation_id' => 'getConstellationId',
+        'faction_id' => 'getFactionId',
+        'has_boss' => 'getHasBoss',
+        'infested_solar_systems' => 'getInfestedSolarSystems',
         'influence' => 'getInfluence',
-        'stagingSolarSystemId' => 'getStagingSolarSystemId',
+        'staging_solar_system_id' => 'getStagingSolarSystemId',
         'state' => 'getState',
         'type' => 'getType'
     );
@@ -174,12 +174,12 @@ class GetIncursions200Ok implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['constellationId'] = isset($data['constellationId']) ? $data['constellationId'] : null;
-        $this->container['factionId'] = isset($data['factionId']) ? $data['factionId'] : null;
-        $this->container['hasBoss'] = isset($data['hasBoss']) ? $data['hasBoss'] : null;
-        $this->container['infestedSolarSystems'] = isset($data['infestedSolarSystems']) ? $data['infestedSolarSystems'] : null;
+        $this->container['constellation_id'] = isset($data['constellation_id']) ? $data['constellation_id'] : null;
+        $this->container['faction_id'] = isset($data['faction_id']) ? $data['faction_id'] : null;
+        $this->container['has_boss'] = isset($data['has_boss']) ? $data['has_boss'] : null;
+        $this->container['infested_solar_systems'] = isset($data['infested_solar_systems']) ? $data['infested_solar_systems'] : null;
         $this->container['influence'] = isset($data['influence']) ? $data['influence'] : null;
-        $this->container['stagingSolarSystemId'] = isset($data['stagingSolarSystemId']) ? $data['stagingSolarSystemId'] : null;
+        $this->container['staging_solar_system_id'] = isset($data['staging_solar_system_id']) ? $data['staging_solar_system_id'] : null;
         $this->container['state'] = isset($data['state']) ? $data['state'] : null;
         $this->container['type'] = isset($data['type']) ? $data['type'] : null;
     }
@@ -192,23 +192,23 @@ class GetIncursions200Ok implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['constellationId'] === null) {
-            $invalid_properties[] = "'constellationId' can't be null";
+        if ($this->container['constellation_id'] === null) {
+            $invalid_properties[] = "'constellation_id' can't be null";
         }
-        if ($this->container['factionId'] === null) {
-            $invalid_properties[] = "'factionId' can't be null";
+        if ($this->container['faction_id'] === null) {
+            $invalid_properties[] = "'faction_id' can't be null";
         }
-        if ($this->container['hasBoss'] === null) {
-            $invalid_properties[] = "'hasBoss' can't be null";
+        if ($this->container['has_boss'] === null) {
+            $invalid_properties[] = "'has_boss' can't be null";
         }
-        if ($this->container['infestedSolarSystems'] === null) {
-            $invalid_properties[] = "'infestedSolarSystems' can't be null";
+        if ($this->container['infested_solar_systems'] === null) {
+            $invalid_properties[] = "'infested_solar_systems' can't be null";
         }
         if ($this->container['influence'] === null) {
             $invalid_properties[] = "'influence' can't be null";
         }
-        if ($this->container['stagingSolarSystemId'] === null) {
-            $invalid_properties[] = "'stagingSolarSystemId' can't be null";
+        if ($this->container['staging_solar_system_id'] === null) {
+            $invalid_properties[] = "'staging_solar_system_id' can't be null";
         }
         if ($this->container['state'] === null) {
             $invalid_properties[] = "'state' can't be null";
@@ -232,22 +232,22 @@ class GetIncursions200Ok implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['constellationId'] === null) {
+        if ($this->container['constellation_id'] === null) {
             return false;
         }
-        if ($this->container['factionId'] === null) {
+        if ($this->container['faction_id'] === null) {
             return false;
         }
-        if ($this->container['hasBoss'] === null) {
+        if ($this->container['has_boss'] === null) {
             return false;
         }
-        if ($this->container['infestedSolarSystems'] === null) {
+        if ($this->container['infested_solar_systems'] === null) {
             return false;
         }
         if ($this->container['influence'] === null) {
             return false;
         }
-        if ($this->container['stagingSolarSystemId'] === null) {
+        if ($this->container['staging_solar_system_id'] === null) {
             return false;
         }
         if ($this->container['state'] === null) {
@@ -265,85 +265,85 @@ class GetIncursions200Ok implements ArrayAccess
 
 
     /**
-     * Gets constellationId
+     * Gets constellation_id
      * @return int
      */
     public function getConstellationId()
     {
-        return $this->container['constellationId'];
+        return $this->container['constellation_id'];
     }
 
     /**
-     * Sets constellationId
-     * @param int $constellationId The constellation id in which this incursion takes place
+     * Sets constellation_id
+     * @param int $constellation_id The constellation id in which this incursion takes place
      * @return $this
      */
-    public function setConstellationId($constellationId)
+    public function setConstellationId($constellation_id)
     {
-        $this->container['constellationId'] = $constellationId;
+        $this->container['constellation_id'] = $constellation_id;
 
         return $this;
     }
 
     /**
-     * Gets factionId
+     * Gets faction_id
      * @return int
      */
     public function getFactionId()
     {
-        return $this->container['factionId'];
+        return $this->container['faction_id'];
     }
 
     /**
-     * Sets factionId
-     * @param int $factionId The attacking faction's id
+     * Sets faction_id
+     * @param int $faction_id The attacking faction's id
      * @return $this
      */
-    public function setFactionId($factionId)
+    public function setFactionId($faction_id)
     {
-        $this->container['factionId'] = $factionId;
+        $this->container['faction_id'] = $faction_id;
 
         return $this;
     }
 
     /**
-     * Gets hasBoss
+     * Gets has_boss
      * @return bool
      */
     public function getHasBoss()
     {
-        return $this->container['hasBoss'];
+        return $this->container['has_boss'];
     }
 
     /**
-     * Sets hasBoss
-     * @param bool $hasBoss Whether the final encounter has boss or not
+     * Sets has_boss
+     * @param bool $has_boss Whether the final encounter has boss or not
      * @return $this
      */
-    public function setHasBoss($hasBoss)
+    public function setHasBoss($has_boss)
     {
-        $this->container['hasBoss'] = $hasBoss;
+        $this->container['has_boss'] = $has_boss;
 
         return $this;
     }
 
     /**
-     * Gets infestedSolarSystems
+     * Gets infested_solar_systems
      * @return int[]
      */
     public function getInfestedSolarSystems()
     {
-        return $this->container['infestedSolarSystems'];
+        return $this->container['infested_solar_systems'];
     }
 
     /**
-     * Sets infestedSolarSystems
-     * @param int[] $infestedSolarSystems A list of infested solar system ids that are a part of this incursion
+     * Sets infested_solar_systems
+     * @param int[] $infested_solar_systems A list of infested solar system ids that are a part of this incursion
      * @return $this
      */
-    public function setInfestedSolarSystems($infestedSolarSystems)
+    public function setInfestedSolarSystems($infested_solar_systems)
     {
-        $this->container['infestedSolarSystems'] = $infestedSolarSystems;
+        $this->container['infested_solar_systems'] = $infested_solar_systems;
 
         return $this;
     }
@@ -370,22 +370,22 @@ class GetIncursions200Ok implements ArrayAccess
     }
 
     /**
-     * Gets stagingSolarSystemId
+     * Gets staging_solar_system_id
      * @return int
      */
     public function getStagingSolarSystemId()
     {
-        return $this->container['stagingSolarSystemId'];
+        return $this->container['staging_solar_system_id'];
     }
 
     /**
-     * Sets stagingSolarSystemId
-     * @param int $stagingSolarSystemId Staging solar system for this incursion
+     * Sets staging_solar_system_id
+     * @param int $staging_solar_system_id Staging solar system for this incursion
      * @return $this
      */
-    public function setStagingSolarSystemId($stagingSolarSystemId)
+    public function setStagingSolarSystemId($staging_solar_system_id)
     {
-        $this->container['stagingSolarSystemId'] = $stagingSolarSystemId;
+        $this->container['staging_solar_system_id'] = $staging_solar_system_id;
 
         return $this;
     }

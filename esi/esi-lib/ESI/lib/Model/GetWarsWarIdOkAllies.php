@@ -67,8 +67,8 @@ class GetWarsWarIdOkAllies implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'allianceId' => 'int',
-        'corporationId' => 'int'
+        'alliance_id' => 'int',
+        'corporation_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -81,8 +81,8 @@ class GetWarsWarIdOkAllies implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'allianceId' => 'alliance_id',
-        'corporationId' => 'corporation_id'
+        'alliance_id' => 'alliance_id',
+        'corporation_id' => 'corporation_id'
     );
 
     public static function attributeMap()
@@ -95,8 +95,8 @@ class GetWarsWarIdOkAllies implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'allianceId' => 'setAllianceId',
-        'corporationId' => 'setCorporationId'
+        'alliance_id' => 'setAllianceId',
+        'corporation_id' => 'setCorporationId'
     );
 
     public static function setters()
@@ -109,8 +109,8 @@ class GetWarsWarIdOkAllies implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'allianceId' => 'getAllianceId',
-        'corporationId' => 'getCorporationId'
+        'alliance_id' => 'getAllianceId',
+        'corporation_id' => 'getCorporationId'
     );
 
     public static function getters()
@@ -134,8 +134,8 @@ class GetWarsWarIdOkAllies implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['allianceId'] = isset($data['allianceId']) ? $data['allianceId'] : null;
-        $this->container['corporationId'] = isset($data['corporationId']) ? $data['corporationId'] : null;
+        $this->container['alliance_id'] = isset($data['alliance_id']) ? $data['alliance_id'] : null;
+        $this->container['corporation_id'] = isset($data['corporation_id']) ? $data['corporation_id'] : null;
     }
 
     /**
@@ -162,43 +162,43 @@ class GetWarsWarIdOkAllies implements ArrayAccess
 
 
     /**
-     * Gets allianceId
+     * Gets alliance_id
      * @return int
      */
     public function getAllianceId()
     {
-        return $this->container['allianceId'];
+        return $this->container['alliance_id'];
     }
 
     /**
-     * Sets allianceId
-     * @param int $allianceId Alliance ID if and only if this ally is an alliance
+     * Sets alliance_id
+     * @param int $alliance_id Alliance ID if and only if this ally is an alliance
      * @return $this
      */
-    public function setAllianceId($allianceId)
+    public function setAllianceId($alliance_id)
     {
-        $this->container['allianceId'] = $allianceId;
+        $this->container['alliance_id'] = $alliance_id;
 
         return $this;
     }
 
     /**
-     * Gets corporationId
+     * Gets corporation_id
      * @return int
      */
     public function getCorporationId()
     {
-        return $this->container['corporationId'];
+        return $this->container['corporation_id'];
     }
 
     /**
-     * Sets corporationId
-     * @param int $corporationId Corporation ID if and only if this ally is a corporation
+     * Sets corporation_id
+     * @param int $corporation_id Corporation ID if and only if this ally is a corporation
      * @return $this
      */
-    public function setCorporationId($corporationId)
+    public function setCorporationId($corporation_id)
     {
-        $this->container['corporationId'] = $corporationId;
+        $this->container['corporation_id'] = $corporation_id;
 
         return $this;
     }

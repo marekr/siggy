@@ -68,7 +68,7 @@ class GetCharactersCharacterIdSkillsOk implements ArrayAccess
       */
     protected static $swaggerTypes = array(
         'skills' => '\ESI\Model\GetCharactersCharacterIdSkillsOkSkills[]',
-        'totalSp' => 'int'
+        'total_sp' => 'int'
     );
 
     public static function swaggerTypes()
@@ -82,7 +82,7 @@ class GetCharactersCharacterIdSkillsOk implements ArrayAccess
      */
     protected static $attributeMap = array(
         'skills' => 'skills',
-        'totalSp' => 'total_sp'
+        'total_sp' => 'total_sp'
     );
 
     public static function attributeMap()
@@ -96,7 +96,7 @@ class GetCharactersCharacterIdSkillsOk implements ArrayAccess
      */
     protected static $setters = array(
         'skills' => 'setSkills',
-        'totalSp' => 'setTotalSp'
+        'total_sp' => 'setTotalSp'
     );
 
     public static function setters()
@@ -110,7 +110,7 @@ class GetCharactersCharacterIdSkillsOk implements ArrayAccess
      */
     protected static $getters = array(
         'skills' => 'getSkills',
-        'totalSp' => 'getTotalSp'
+        'total_sp' => 'getTotalSp'
     );
 
     public static function getters()
@@ -135,7 +135,7 @@ class GetCharactersCharacterIdSkillsOk implements ArrayAccess
     public function __construct(array $data = null)
     {
         $this->container['skills'] = isset($data['skills']) ? $data['skills'] : null;
-        $this->container['totalSp'] = isset($data['totalSp']) ? $data['totalSp'] : null;
+        $this->container['total_sp'] = isset($data['total_sp']) ? $data['total_sp'] : null;
     }
 
     /**
@@ -183,22 +183,22 @@ class GetCharactersCharacterIdSkillsOk implements ArrayAccess
     }
 
     /**
-     * Gets totalSp
+     * Gets total_sp
      * @return int
      */
     public function getTotalSp()
     {
-        return $this->container['totalSp'];
+        return $this->container['total_sp'];
     }
 
     /**
-     * Sets totalSp
-     * @param int $totalSp total_sp integer
+     * Sets total_sp
+     * @param int $total_sp total_sp integer
      * @return $this
      */
-    public function setTotalSp($totalSp)
+    public function setTotalSp($total_sp)
     {
-        $this->container['totalSp'] = $totalSp;
+        $this->container['total_sp'] = $total_sp;
 
         return $this;
     }

@@ -68,9 +68,9 @@ class GetCharactersCharacterIdMailLabelsOkLabels implements ArrayAccess
       */
     protected static $swaggerTypes = array(
         'color' => 'string',
-        'labelId' => 'int',
+        'label_id' => 'int',
         'name' => 'string',
-        'unreadCount' => 'int'
+        'unread_count' => 'int'
     );
 
     public static function swaggerTypes()
@@ -84,9 +84,9 @@ class GetCharactersCharacterIdMailLabelsOkLabels implements ArrayAccess
      */
     protected static $attributeMap = array(
         'color' => 'color',
-        'labelId' => 'label_id',
+        'label_id' => 'label_id',
         'name' => 'name',
-        'unreadCount' => 'unread_count'
+        'unread_count' => 'unread_count'
     );
 
     public static function attributeMap()
@@ -100,9 +100,9 @@ class GetCharactersCharacterIdMailLabelsOkLabels implements ArrayAccess
      */
     protected static $setters = array(
         'color' => 'setColor',
-        'labelId' => 'setLabelId',
+        'label_id' => 'setLabelId',
         'name' => 'setName',
-        'unreadCount' => 'setUnreadCount'
+        'unread_count' => 'setUnreadCount'
     );
 
     public static function setters()
@@ -116,9 +116,9 @@ class GetCharactersCharacterIdMailLabelsOkLabels implements ArrayAccess
      */
     protected static $getters = array(
         'color' => 'getColor',
-        'labelId' => 'getLabelId',
+        'label_id' => 'getLabelId',
         'name' => 'getName',
-        'unreadCount' => 'getUnreadCount'
+        'unread_count' => 'getUnreadCount'
     );
 
     public static function getters()
@@ -189,9 +189,9 @@ class GetCharactersCharacterIdMailLabelsOkLabels implements ArrayAccess
     public function __construct(array $data = null)
     {
         $this->container['color'] = isset($data['color']) ? $data['color'] : '#ffffff';
-        $this->container['labelId'] = isset($data['labelId']) ? $data['labelId'] : null;
+        $this->container['label_id'] = isset($data['label_id']) ? $data['label_id'] : null;
         $this->container['name'] = isset($data['name']) ? $data['name'] : null;
-        $this->container['unreadCount'] = isset($data['unreadCount']) ? $data['unreadCount'] : null;
+        $this->container['unread_count'] = isset($data['unread_count']) ? $data['unread_count'] : null;
     }
 
     /**
@@ -207,16 +207,16 @@ class GetCharactersCharacterIdMailLabelsOkLabels implements ArrayAccess
             $invalid_properties[] = "invalid value for 'color', must be one of #{allowed_values}.";
         }
 
-        if (!is_null($this->container['labelId']) && ($this->container['labelId'] < 0.0)) {
-            $invalid_properties[] = "invalid value for 'labelId', must be bigger than or equal to 0.0.";
+        if (!is_null($this->container['label_id']) && ($this->container['label_id'] < 0.0)) {
+            $invalid_properties[] = "invalid value for 'label_id', must be bigger than or equal to 0.0.";
         }
 
         if (!is_null($this->container['name']) && (strlen($this->container['name']) > 40)) {
             $invalid_properties[] = "invalid value for 'name', the character length must be smaller than or equal to 40.";
         }
 
-        if (!is_null($this->container['unreadCount']) && ($this->container['unreadCount'] < 0.0)) {
-            $invalid_properties[] = "invalid value for 'unreadCount', must be bigger than or equal to 0.0.";
+        if (!is_null($this->container['unread_count']) && ($this->container['unread_count'] < 0.0)) {
+            $invalid_properties[] = "invalid value for 'unread_count', must be bigger than or equal to 0.0.";
         }
 
         return $invalid_properties;
@@ -234,13 +234,13 @@ class GetCharactersCharacterIdMailLabelsOkLabels implements ArrayAccess
         if (!in_array($this->container['color'], $allowed_values)) {
             return false;
         }
-        if ($this->container['labelId'] < 0.0) {
+        if ($this->container['label_id'] < 0.0) {
             return false;
         }
         if (strlen($this->container['name']) > 40) {
             return false;
         }
-        if ($this->container['unreadCount'] < 0.0) {
+        if ($this->container['unread_count'] < 0.0) {
             return false;
         }
         return true;
@@ -273,26 +273,26 @@ class GetCharactersCharacterIdMailLabelsOkLabels implements ArrayAccess
     }
 
     /**
-     * Gets labelId
+     * Gets label_id
      * @return int
      */
     public function getLabelId()
     {
-        return $this->container['labelId'];
+        return $this->container['label_id'];
     }
 
     /**
-     * Sets labelId
-     * @param int $labelId label_id integer
+     * Sets label_id
+     * @param int $label_id label_id integer
      * @return $this
      */
-    public function setLabelId($labelId)
+    public function setLabelId($label_id)
     {
 
-        if ($labelId < 0.0) {
-            throw new \InvalidArgumentException('invalid value for $labelId when calling GetCharactersCharacterIdMailLabelsOkLabels., must be bigger than or equal to 0.0.');
+        if ($label_id < 0.0) {
+            throw new \InvalidArgumentException('invalid value for $label_id when calling GetCharactersCharacterIdMailLabelsOkLabels., must be bigger than or equal to 0.0.');
         }
-        $this->container['labelId'] = $labelId;
+        $this->container['label_id'] = $label_id;
 
         return $this;
     }
@@ -322,26 +322,26 @@ class GetCharactersCharacterIdMailLabelsOkLabels implements ArrayAccess
     }
 
     /**
-     * Gets unreadCount
+     * Gets unread_count
      * @return int
      */
     public function getUnreadCount()
     {
-        return $this->container['unreadCount'];
+        return $this->container['unread_count'];
     }
 
     /**
-     * Sets unreadCount
-     * @param int $unreadCount unread_count integer
+     * Sets unread_count
+     * @param int $unread_count unread_count integer
      * @return $this
      */
-    public function setUnreadCount($unreadCount)
+    public function setUnreadCount($unread_count)
     {
 
-        if ($unreadCount < 0.0) {
-            throw new \InvalidArgumentException('invalid value for $unreadCount when calling GetCharactersCharacterIdMailLabelsOkLabels., must be bigger than or equal to 0.0.');
+        if ($unread_count < 0.0) {
+            throw new \InvalidArgumentException('invalid value for $unread_count when calling GetCharactersCharacterIdMailLabelsOkLabels., must be bigger than or equal to 0.0.');
         }
-        $this->container['unreadCount'] = $unreadCount;
+        $this->container['unread_count'] = $unread_count;
 
         return $this;
     }

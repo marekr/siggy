@@ -107,14 +107,14 @@ class PlanetaryInteractionApi
      *
      * Get colonies
      *
-     * @param int $characterId Character id of the target character (required)
+     * @param int $character_id Character id of the target character (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdPlanets200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdPlanets($characterId, $datasource = null)
+    public function getCharactersCharacterIdPlanets($character_id, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdPlanetsWithHttpInfo($characterId, $datasource);
+        list($response) = $this->getCharactersCharacterIdPlanetsWithHttpInfo($character_id, $datasource);
         return $response;
     }
 
@@ -123,16 +123,16 @@ class PlanetaryInteractionApi
      *
      * Get colonies
      *
-     * @param int $characterId Character id of the target character (required)
+     * @param int $character_id Character id of the target character (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdPlanets200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdPlanetsWithHttpInfo($characterId, $datasource = null)
+    public function getCharactersCharacterIdPlanetsWithHttpInfo($character_id, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdPlanets');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdPlanets');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/planets/";
@@ -151,10 +151,10 @@ class PlanetaryInteractionApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
@@ -210,15 +210,15 @@ class PlanetaryInteractionApi
      *
      * Get colony layout
      *
-     * @param int $characterId Character id of the target character (required)
-     * @param int $planetId Planet id of the target planet (required)
+     * @param int $character_id Character id of the target character (required)
+     * @param int $planet_id Planet id of the target planet (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdPlanetsPlanetIdOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdPlanetsPlanetId($characterId, $planetId, $datasource = null)
+    public function getCharactersCharacterIdPlanetsPlanetId($character_id, $planet_id, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdPlanetsPlanetIdWithHttpInfo($characterId, $planetId, $datasource);
+        list($response) = $this->getCharactersCharacterIdPlanetsPlanetIdWithHttpInfo($character_id, $planet_id, $datasource);
         return $response;
     }
 
@@ -227,21 +227,21 @@ class PlanetaryInteractionApi
      *
      * Get colony layout
      *
-     * @param int $characterId Character id of the target character (required)
-     * @param int $planetId Planet id of the target planet (required)
+     * @param int $character_id Character id of the target character (required)
+     * @param int $planet_id Planet id of the target planet (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdPlanetsPlanetIdOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdPlanetsPlanetIdWithHttpInfo($characterId, $planetId, $datasource = null)
+    public function getCharactersCharacterIdPlanetsPlanetIdWithHttpInfo($character_id, $planet_id, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdPlanetsPlanetId');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdPlanetsPlanetId');
         }
-        // verify the required parameter 'planetId' is set
-        if ($planetId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $planetId when calling getCharactersCharacterIdPlanetsPlanetId');
+        // verify the required parameter 'planet_id' is set
+        if ($planet_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $planet_id when calling getCharactersCharacterIdPlanetsPlanetId');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/planets/{planet_id}/";
@@ -260,18 +260,18 @@ class PlanetaryInteractionApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
         // path params
-        if ($planetId !== null) {
+        if ($planet_id !== null) {
             $resourcePath = str_replace(
                 "{" . "planet_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($planetId),
+                $this->apiClient->getSerializer()->toPathValue($planet_id),
                 $resourcePath
             );
         }
@@ -331,14 +331,14 @@ class PlanetaryInteractionApi
      *
      * Get schematic information
      *
-     * @param int $schematicId A PI schematic ID (required)
+     * @param int $schematic_id A PI schematic ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetUniverseSchematicsSchematicIdOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getUniverseSchematicsSchematicId($schematicId, $datasource = null)
+    public function getUniverseSchematicsSchematicId($schematic_id, $datasource = null)
     {
-        list($response) = $this->getUniverseSchematicsSchematicIdWithHttpInfo($schematicId, $datasource);
+        list($response) = $this->getUniverseSchematicsSchematicIdWithHttpInfo($schematic_id, $datasource);
         return $response;
     }
 
@@ -347,16 +347,16 @@ class PlanetaryInteractionApi
      *
      * Get schematic information
      *
-     * @param int $schematicId A PI schematic ID (required)
+     * @param int $schematic_id A PI schematic ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetUniverseSchematicsSchematicIdOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getUniverseSchematicsSchematicIdWithHttpInfo($schematicId, $datasource = null)
+    public function getUniverseSchematicsSchematicIdWithHttpInfo($schematic_id, $datasource = null)
     {
-        // verify the required parameter 'schematicId' is set
-        if ($schematicId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $schematicId when calling getUniverseSchematicsSchematicId');
+        // verify the required parameter 'schematic_id' is set
+        if ($schematic_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $schematic_id when calling getUniverseSchematicsSchematicId');
         }
         // parse inputs
         $resourcePath = "/universe/schematics/{schematic_id}/";
@@ -375,10 +375,10 @@ class PlanetaryInteractionApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($schematicId !== null) {
+        if ($schematic_id !== null) {
             $resourcePath = str_replace(
                 "{" . "schematic_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($schematicId),
+                $this->apiClient->getSerializer()->toPathValue($schematic_id),
                 $resourcePath
             );
         }

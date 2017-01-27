@@ -107,14 +107,14 @@ class SkillsApi
      *
      * Get character's skill queue
      *
-     * @param int $characterId Character id of the target character (required)
+     * @param int $character_id Character id of the target character (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdSkillqueue200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdSkillqueue($characterId, $datasource = null)
+    public function getCharactersCharacterIdSkillqueue($character_id, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdSkillqueueWithHttpInfo($characterId, $datasource);
+        list($response) = $this->getCharactersCharacterIdSkillqueueWithHttpInfo($character_id, $datasource);
         return $response;
     }
 
@@ -123,16 +123,16 @@ class SkillsApi
      *
      * Get character's skill queue
      *
-     * @param int $characterId Character id of the target character (required)
+     * @param int $character_id Character id of the target character (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdSkillqueue200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdSkillqueueWithHttpInfo($characterId, $datasource = null)
+    public function getCharactersCharacterIdSkillqueueWithHttpInfo($character_id, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdSkillqueue');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdSkillqueue');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/skillqueue/";
@@ -151,10 +151,10 @@ class SkillsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
@@ -210,14 +210,14 @@ class SkillsApi
      *
      * Get character skills
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdSkillsOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdSkills($characterId, $datasource = null)
+    public function getCharactersCharacterIdSkills($character_id, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdSkillsWithHttpInfo($characterId, $datasource);
+        list($response) = $this->getCharactersCharacterIdSkillsWithHttpInfo($character_id, $datasource);
         return $response;
     }
 
@@ -226,16 +226,16 @@ class SkillsApi
      *
      * Get character skills
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdSkillsOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdSkillsWithHttpInfo($characterId, $datasource = null)
+    public function getCharactersCharacterIdSkillsWithHttpInfo($character_id, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdSkills');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdSkills');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/skills/";
@@ -254,10 +254,10 @@ class SkillsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }

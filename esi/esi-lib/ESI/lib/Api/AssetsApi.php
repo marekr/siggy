@@ -107,14 +107,14 @@ class AssetsApi
      *
      * Get character assets
      *
-     * @param int $characterId Character id of the target character (required)
+     * @param int $character_id Character id of the target character (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdAssets200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdAssets($characterId, $datasource = null)
+    public function getCharactersCharacterIdAssets($character_id, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdAssetsWithHttpInfo($characterId, $datasource);
+        list($response) = $this->getCharactersCharacterIdAssetsWithHttpInfo($character_id, $datasource);
         return $response;
     }
 
@@ -123,16 +123,16 @@ class AssetsApi
      *
      * Get character assets
      *
-     * @param int $characterId Character id of the target character (required)
+     * @param int $character_id Character id of the target character (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdAssets200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdAssetsWithHttpInfo($characterId, $datasource = null)
+    public function getCharactersCharacterIdAssetsWithHttpInfo($character_id, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdAssets');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdAssets');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/assets/";
@@ -151,10 +151,10 @@ class AssetsApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }

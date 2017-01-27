@@ -3,14 +3,14 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**allianceId** | **int** | id of alliance that corporation is a member of, if any | [optional] 
-**ceoId** | **int** | ceo_id integer | 
-**corporationDescription** | **string** | corporation_description string | 
-**corporationName** | **string** | the full name of the corporation | 
-**creationDate** | [**\DateTime**](\DateTime.md) | creation_date string | 
-**creatorId** | **int** | creator_id integer | 
-**memberCount** | **int** | member_count integer | 
-**taxRate** | **float** | tax_rate number | 
+**alliance_id** | **int** | id of alliance that corporation is a member of, if any | [optional] 
+**ceo_id** | **int** | ceo_id integer | 
+**corporation_description** | **string** | corporation_description string | 
+**corporation_name** | **string** | the full name of the corporation | 
+**creation_date** | [**\DateTime**](\DateTime.md) | creation_date string | 
+**creator_id** | **int** | creator_id integer | 
+**member_count** | **int** | member_count integer | 
+**tax_rate** | **float** | tax_rate number | 
 **ticker** | **string** | the short name of the corporation | 
 **url** | **string** | url string | 
 

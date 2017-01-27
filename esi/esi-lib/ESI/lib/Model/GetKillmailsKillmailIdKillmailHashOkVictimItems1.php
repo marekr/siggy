@@ -68,10 +68,10 @@ class GetKillmailsKillmailIdKillmailHashOkVictimItems1 implements ArrayAccess
       */
     protected static $swaggerTypes = array(
         'flag' => 'int',
-        'itemTypeId' => 'int',
+        'item_type_id' => 'int',
         'items' => '\ESI\Model\GetKillmailsKillmailIdKillmailHashOkVictimItems[]',
-        'quantityDestroyed' => 'int',
-        'quantityDropped' => 'int',
+        'quantity_destroyed' => 'int',
+        'quantity_dropped' => 'int',
         'singleton' => 'int'
     );
 
@@ -86,10 +86,10 @@ class GetKillmailsKillmailIdKillmailHashOkVictimItems1 implements ArrayAccess
      */
     protected static $attributeMap = array(
         'flag' => 'flag',
-        'itemTypeId' => 'item_type_id',
+        'item_type_id' => 'item_type_id',
         'items' => 'items',
-        'quantityDestroyed' => 'quantity_destroyed',
-        'quantityDropped' => 'quantity_dropped',
+        'quantity_destroyed' => 'quantity_destroyed',
+        'quantity_dropped' => 'quantity_dropped',
         'singleton' => 'singleton'
     );
 
@@ -104,10 +104,10 @@ class GetKillmailsKillmailIdKillmailHashOkVictimItems1 implements ArrayAccess
      */
     protected static $setters = array(
         'flag' => 'setFlag',
-        'itemTypeId' => 'setItemTypeId',
+        'item_type_id' => 'setItemTypeId',
         'items' => 'setItems',
-        'quantityDestroyed' => 'setQuantityDestroyed',
-        'quantityDropped' => 'setQuantityDropped',
+        'quantity_destroyed' => 'setQuantityDestroyed',
+        'quantity_dropped' => 'setQuantityDropped',
         'singleton' => 'setSingleton'
     );
 
@@ -122,10 +122,10 @@ class GetKillmailsKillmailIdKillmailHashOkVictimItems1 implements ArrayAccess
      */
     protected static $getters = array(
         'flag' => 'getFlag',
-        'itemTypeId' => 'getItemTypeId',
+        'item_type_id' => 'getItemTypeId',
         'items' => 'getItems',
-        'quantityDestroyed' => 'getQuantityDestroyed',
-        'quantityDropped' => 'getQuantityDropped',
+        'quantity_destroyed' => 'getQuantityDestroyed',
+        'quantity_dropped' => 'getQuantityDropped',
         'singleton' => 'getSingleton'
     );
 
@@ -151,10 +151,10 @@ class GetKillmailsKillmailIdKillmailHashOkVictimItems1 implements ArrayAccess
     public function __construct(array $data = null)
     {
         $this->container['flag'] = isset($data['flag']) ? $data['flag'] : null;
-        $this->container['itemTypeId'] = isset($data['itemTypeId']) ? $data['itemTypeId'] : null;
+        $this->container['item_type_id'] = isset($data['item_type_id']) ? $data['item_type_id'] : null;
         $this->container['items'] = isset($data['items']) ? $data['items'] : null;
-        $this->container['quantityDestroyed'] = isset($data['quantityDestroyed']) ? $data['quantityDestroyed'] : null;
-        $this->container['quantityDropped'] = isset($data['quantityDropped']) ? $data['quantityDropped'] : null;
+        $this->container['quantity_destroyed'] = isset($data['quantity_destroyed']) ? $data['quantity_destroyed'] : null;
+        $this->container['quantity_dropped'] = isset($data['quantity_dropped']) ? $data['quantity_dropped'] : null;
         $this->container['singleton'] = isset($data['singleton']) ? $data['singleton'] : null;
     }
 
@@ -169,8 +169,8 @@ class GetKillmailsKillmailIdKillmailHashOkVictimItems1 implements ArrayAccess
         if ($this->container['flag'] === null) {
             $invalid_properties[] = "'flag' can't be null";
         }
-        if ($this->container['itemTypeId'] === null) {
-            $invalid_properties[] = "'itemTypeId' can't be null";
+        if ($this->container['item_type_id'] === null) {
+            $invalid_properties[] = "'item_type_id' can't be null";
         }
         if ($this->container['singleton'] === null) {
             $invalid_properties[] = "'singleton' can't be null";
@@ -189,7 +189,7 @@ class GetKillmailsKillmailIdKillmailHashOkVictimItems1 implements ArrayAccess
         if ($this->container['flag'] === null) {
             return false;
         }
-        if ($this->container['itemTypeId'] === null) {
+        if ($this->container['item_type_id'] === null) {
             return false;
         }
         if ($this->container['singleton'] === null) {
@@ -221,22 +221,22 @@ class GetKillmailsKillmailIdKillmailHashOkVictimItems1 implements ArrayAccess
     }
 
     /**
-     * Gets itemTypeId
+     * Gets item_type_id
      * @return int
      */
     public function getItemTypeId()
     {
-        return $this->container['itemTypeId'];
+        return $this->container['item_type_id'];
     }
 
     /**
-     * Sets itemTypeId
-     * @param int $itemTypeId item_type_id integer
+     * Sets item_type_id
+     * @param int $item_type_id item_type_id integer
      * @return $this
      */
-    public function setItemTypeId($itemTypeId)
+    public function setItemTypeId($item_type_id)
     {
-        $this->container['itemTypeId'] = $itemTypeId;
+        $this->container['item_type_id'] = $item_type_id;
 
         return $this;
     }
@@ -263,43 +263,43 @@ class GetKillmailsKillmailIdKillmailHashOkVictimItems1 implements ArrayAccess
     }
 
     /**
-     * Gets quantityDestroyed
+     * Gets quantity_destroyed
      * @return int
      */
     public function getQuantityDestroyed()
     {
-        return $this->container['quantityDestroyed'];
+        return $this->container['quantity_destroyed'];
     }
 
     /**
-     * Sets quantityDestroyed
-     * @param int $quantityDestroyed How many of the item were destroyed if any
+     * Sets quantity_destroyed
+     * @param int $quantity_destroyed How many of the item were destroyed if any
      * @return $this
      */
-    public function setQuantityDestroyed($quantityDestroyed)
+    public function setQuantityDestroyed($quantity_destroyed)
     {
-        $this->container['quantityDestroyed'] = $quantityDestroyed;
+        $this->container['quantity_destroyed'] = $quantity_destroyed;
 
         return $this;
     }
 
     /**
-     * Gets quantityDropped
+     * Gets quantity_dropped
      * @return int
      */
     public function getQuantityDropped()
     {
-        return $this->container['quantityDropped'];
+        return $this->container['quantity_dropped'];
     }
 
     /**
-     * Sets quantityDropped
-     * @param int $quantityDropped How many of the item were dropped if any
+     * Sets quantity_dropped
+     * @param int $quantity_dropped How many of the item were dropped if any
      * @return $this
      */
-    public function setQuantityDropped($quantityDropped)
+    public function setQuantityDropped($quantity_dropped)
     {
-        $this->container['quantityDropped'] = $quantityDropped;
+        $this->container['quantity_dropped'] = $quantity_dropped;
 
         return $this;
     }

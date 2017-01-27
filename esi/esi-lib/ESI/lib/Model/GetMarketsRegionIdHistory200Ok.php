@@ -71,7 +71,7 @@ class GetMarketsRegionIdHistory200Ok implements ArrayAccess
         'date' => '\DateTime',
         'highest' => 'float',
         'lowest' => 'float',
-        'orderCount' => 'int',
+        'order_count' => 'int',
         'volume' => 'int'
     );
 
@@ -89,7 +89,7 @@ class GetMarketsRegionIdHistory200Ok implements ArrayAccess
         'date' => 'date',
         'highest' => 'highest',
         'lowest' => 'lowest',
-        'orderCount' => 'order_count',
+        'order_count' => 'order_count',
         'volume' => 'volume'
     );
 
@@ -107,7 +107,7 @@ class GetMarketsRegionIdHistory200Ok implements ArrayAccess
         'date' => 'setDate',
         'highest' => 'setHighest',
         'lowest' => 'setLowest',
-        'orderCount' => 'setOrderCount',
+        'order_count' => 'setOrderCount',
         'volume' => 'setVolume'
     );
 
@@ -125,7 +125,7 @@ class GetMarketsRegionIdHistory200Ok implements ArrayAccess
         'date' => 'getDate',
         'highest' => 'getHighest',
         'lowest' => 'getLowest',
-        'orderCount' => 'getOrderCount',
+        'order_count' => 'getOrderCount',
         'volume' => 'getVolume'
     );
 
@@ -154,7 +154,7 @@ class GetMarketsRegionIdHistory200Ok implements ArrayAccess
         $this->container['date'] = isset($data['date']) ? $data['date'] : null;
         $this->container['highest'] = isset($data['highest']) ? $data['highest'] : null;
         $this->container['lowest'] = isset($data['lowest']) ? $data['lowest'] : null;
-        $this->container['orderCount'] = isset($data['orderCount']) ? $data['orderCount'] : null;
+        $this->container['order_count'] = isset($data['order_count']) ? $data['order_count'] : null;
         $this->container['volume'] = isset($data['volume']) ? $data['volume'] : null;
     }
 
@@ -178,8 +178,8 @@ class GetMarketsRegionIdHistory200Ok implements ArrayAccess
         if ($this->container['lowest'] === null) {
             $invalid_properties[] = "'lowest' can't be null";
         }
-        if ($this->container['orderCount'] === null) {
-            $invalid_properties[] = "'orderCount' can't be null";
+        if ($this->container['order_count'] === null) {
+            $invalid_properties[] = "'order_count' can't be null";
         }
         if ($this->container['volume'] === null) {
             $invalid_properties[] = "'volume' can't be null";
@@ -207,7 +207,7 @@ class GetMarketsRegionIdHistory200Ok implements ArrayAccess
         if ($this->container['lowest'] === null) {
             return false;
         }
-        if ($this->container['orderCount'] === null) {
+        if ($this->container['order_count'] === null) {
             return false;
         }
         if ($this->container['volume'] === null) {
@@ -302,22 +302,22 @@ class GetMarketsRegionIdHistory200Ok implements ArrayAccess
     }
 
     /**
-     * Gets orderCount
+     * Gets order_count
      * @return int
      */
     public function getOrderCount()
     {
-        return $this->container['orderCount'];
+        return $this->container['order_count'];
     }
 
     /**
-     * Sets orderCount
-     * @param int $orderCount Total number of orders happened that day
+     * Sets order_count
+     * @param int $order_count Total number of orders happened that day
      * @return $this
      */
-    public function setOrderCount($orderCount)
+    public function setOrderCount($order_count)
     {
-        $this->container['orderCount'] = $orderCount;
+        $this->container['order_count'] = $order_count;
 
         return $this;
     }

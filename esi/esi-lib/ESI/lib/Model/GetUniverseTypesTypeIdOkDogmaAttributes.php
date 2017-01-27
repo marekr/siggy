@@ -67,7 +67,7 @@ class GetUniverseTypesTypeIdOkDogmaAttributes implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'attributeId' => 'int',
+        'attribute_id' => 'int',
         'value' => 'float'
     );
 
@@ -81,7 +81,7 @@ class GetUniverseTypesTypeIdOkDogmaAttributes implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'attributeId' => 'attribute_id',
+        'attribute_id' => 'attribute_id',
         'value' => 'value'
     );
 
@@ -95,7 +95,7 @@ class GetUniverseTypesTypeIdOkDogmaAttributes implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'attributeId' => 'setAttributeId',
+        'attribute_id' => 'setAttributeId',
         'value' => 'setValue'
     );
 
@@ -109,7 +109,7 @@ class GetUniverseTypesTypeIdOkDogmaAttributes implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'attributeId' => 'getAttributeId',
+        'attribute_id' => 'getAttributeId',
         'value' => 'getValue'
     );
 
@@ -134,7 +134,7 @@ class GetUniverseTypesTypeIdOkDogmaAttributes implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['attributeId'] = isset($data['attributeId']) ? $data['attributeId'] : null;
+        $this->container['attribute_id'] = isset($data['attribute_id']) ? $data['attribute_id'] : null;
         $this->container['value'] = isset($data['value']) ? $data['value'] : null;
     }
 
@@ -146,8 +146,8 @@ class GetUniverseTypesTypeIdOkDogmaAttributes implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['attributeId'] === null) {
-            $invalid_properties[] = "'attributeId' can't be null";
+        if ($this->container['attribute_id'] === null) {
+            $invalid_properties[] = "'attribute_id' can't be null";
         }
         if ($this->container['value'] === null) {
             $invalid_properties[] = "'value' can't be null";
@@ -163,7 +163,7 @@ class GetUniverseTypesTypeIdOkDogmaAttributes implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['attributeId'] === null) {
+        if ($this->container['attribute_id'] === null) {
             return false;
         }
         if ($this->container['value'] === null) {
@@ -174,22 +174,22 @@ class GetUniverseTypesTypeIdOkDogmaAttributes implements ArrayAccess
 
 
     /**
-     * Gets attributeId
+     * Gets attribute_id
      * @return int
      */
     public function getAttributeId()
     {
-        return $this->container['attributeId'];
+        return $this->container['attribute_id'];
     }
 
     /**
-     * Sets attributeId
-     * @param int $attributeId attribute_id integer
+     * Sets attribute_id
+     * @param int $attribute_id attribute_id integer
      * @return $this
      */
-    public function setAttributeId($attributeId)
+    public function setAttributeId($attribute_id)
     {
-        $this->container['attributeId'] = $attributeId;
+        $this->container['attribute_id'] = $attribute_id;
 
         return $this;
     }

@@ -67,8 +67,8 @@ class GetAlliancesNames200Ok implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'allianceId' => 'int',
-        'allianceName' => 'string'
+        'alliance_id' => 'int',
+        'alliance_name' => 'string'
     );
 
     public static function swaggerTypes()
@@ -81,8 +81,8 @@ class GetAlliancesNames200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'allianceId' => 'alliance_id',
-        'allianceName' => 'alliance_name'
+        'alliance_id' => 'alliance_id',
+        'alliance_name' => 'alliance_name'
     );
 
     public static function attributeMap()
@@ -95,8 +95,8 @@ class GetAlliancesNames200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'allianceId' => 'setAllianceId',
-        'allianceName' => 'setAllianceName'
+        'alliance_id' => 'setAllianceId',
+        'alliance_name' => 'setAllianceName'
     );
 
     public static function setters()
@@ -109,8 +109,8 @@ class GetAlliancesNames200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'allianceId' => 'getAllianceId',
-        'allianceName' => 'getAllianceName'
+        'alliance_id' => 'getAllianceId',
+        'alliance_name' => 'getAllianceName'
     );
 
     public static function getters()
@@ -134,8 +134,8 @@ class GetAlliancesNames200Ok implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['allianceId'] = isset($data['allianceId']) ? $data['allianceId'] : null;
-        $this->container['allianceName'] = isset($data['allianceName']) ? $data['allianceName'] : null;
+        $this->container['alliance_id'] = isset($data['alliance_id']) ? $data['alliance_id'] : null;
+        $this->container['alliance_name'] = isset($data['alliance_name']) ? $data['alliance_name'] : null;
     }
 
     /**
@@ -146,11 +146,11 @@ class GetAlliancesNames200Ok implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['allianceId'] === null) {
-            $invalid_properties[] = "'allianceId' can't be null";
+        if ($this->container['alliance_id'] === null) {
+            $invalid_properties[] = "'alliance_id' can't be null";
         }
-        if ($this->container['allianceName'] === null) {
-            $invalid_properties[] = "'allianceName' can't be null";
+        if ($this->container['alliance_name'] === null) {
+            $invalid_properties[] = "'alliance_name' can't be null";
         }
         return $invalid_properties;
     }
@@ -163,10 +163,10 @@ class GetAlliancesNames200Ok implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['allianceId'] === null) {
+        if ($this->container['alliance_id'] === null) {
             return false;
         }
-        if ($this->container['allianceName'] === null) {
+        if ($this->container['alliance_name'] === null) {
             return false;
         }
         return true;
@@ -174,43 +174,43 @@ class GetAlliancesNames200Ok implements ArrayAccess
 
 
     /**
-     * Gets allianceId
+     * Gets alliance_id
      * @return int
      */
     public function getAllianceId()
     {
-        return $this->container['allianceId'];
+        return $this->container['alliance_id'];
     }
 
     /**
-     * Sets allianceId
-     * @param int $allianceId alliance_id integer
+     * Sets alliance_id
+     * @param int $alliance_id alliance_id integer
      * @return $this
      */
-    public function setAllianceId($allianceId)
+    public function setAllianceId($alliance_id)
     {
-        $this->container['allianceId'] = $allianceId;
+        $this->container['alliance_id'] = $alliance_id;
 
         return $this;
     }
 
     /**
-     * Gets allianceName
+     * Gets alliance_name
      * @return string
      */
     public function getAllianceName()
     {
-        return $this->container['allianceName'];
+        return $this->container['alliance_name'];
     }
 
     /**
-     * Sets allianceName
-     * @param string $allianceName alliance_name string
+     * Sets alliance_name
+     * @param string $alliance_name alliance_name string
      * @return $this
      */
-    public function setAllianceName($allianceName)
+    public function setAllianceName($alliance_name)
     {
-        $this->container['allianceName'] = $allianceName;
+        $this->container['alliance_name'] = $alliance_name;
 
         return $this;
     }

@@ -8,7 +8,7 @@ Method | HTTP request | Description
 
 
 # **getCharactersCharacterIdAssets**
-> \ESI\Model\GetCharactersCharacterIdAssets200Ok[] getCharactersCharacterIdAssets($characterId, $datasource)
+> \ESI\Model\GetCharactersCharacterIdAssets200Ok[] getCharactersCharacterIdAssets($character_id, $datasource)
 
 Get character assets
 
@@ -23,11 +23,11 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\AssetsApi();
-$characterId = 56; // int | Character id of the target character
+$character_id = 56; // int | Character id of the target character
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getCharactersCharacterIdAssets($characterId, $datasource);
+    $result = $api_instance->getCharactersCharacterIdAssets($character_id, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling AssetsApi->getCharactersCharacterIdAssets: ', $e->getMessage(), PHP_EOL;
@@ -39,7 +39,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **characterId** | **int**| Character id of the target character |
+ **character_id** | **int**| Character id of the target character |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type

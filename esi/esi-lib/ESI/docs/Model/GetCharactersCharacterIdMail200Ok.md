@@ -4,9 +4,9 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **from** | **int** | From whom the mail was sent | [optional] 
-**isRead** | **bool** | is_read boolean | [optional] 
+**is_read** | **bool** | is_read boolean | [optional] 
 **labels** | **int[]** | labels array | [optional] 
-**mailId** | **int** | mail_id integer | [optional] 
+**mail_id** | **int** | mail_id integer | [optional] 
 **recipients** | [**\ESI\Model\CharacterscharacterIdmailRecipients[]**](CharacterscharacterIdmailRecipients.md) | Recipients of the mail | [optional] 
 **subject** | **string** | Mail subject | [optional] 
 **timestamp** | [**\DateTime**](\DateTime.md) | When the mail was sent | [optional] 

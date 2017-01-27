@@ -107,14 +107,14 @@ class LocationApi
      *
      * Get character location
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdLocationOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdLocation($characterId, $datasource = null)
+    public function getCharactersCharacterIdLocation($character_id, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdLocationWithHttpInfo($characterId, $datasource);
+        list($response) = $this->getCharactersCharacterIdLocationWithHttpInfo($character_id, $datasource);
         return $response;
     }
 
@@ -123,16 +123,16 @@ class LocationApi
      *
      * Get character location
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdLocationOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdLocationWithHttpInfo($characterId, $datasource = null)
+    public function getCharactersCharacterIdLocationWithHttpInfo($character_id, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdLocation');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdLocation');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/location/";
@@ -151,10 +151,10 @@ class LocationApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
@@ -210,14 +210,14 @@ class LocationApi
      *
      * Get current ship
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdShipOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdShip($characterId, $datasource = null)
+    public function getCharactersCharacterIdShip($character_id, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdShipWithHttpInfo($characterId, $datasource);
+        list($response) = $this->getCharactersCharacterIdShipWithHttpInfo($character_id, $datasource);
         return $response;
     }
 
@@ -226,16 +226,16 @@ class LocationApi
      *
      * Get current ship
      *
-     * @param int $characterId An EVE character ID (required)
+     * @param int $character_id An EVE character ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdShipOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdShipWithHttpInfo($characterId, $datasource = null)
+    public function getCharactersCharacterIdShipWithHttpInfo($character_id, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdShip');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdShip');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/ship/";
@@ -254,10 +254,10 @@ class LocationApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }

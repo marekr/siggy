@@ -107,15 +107,15 @@ class CalendarApi
      *
      * List calendar event summaries
      *
-     * @param int $characterId The character to retrieve events from (required)
-     * @param int $fromEvent The event ID to retrieve events from (optional)
+     * @param int $character_id The character to retrieve events from (required)
+     * @param int $from_event The event ID to retrieve events from (optional)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdCalendar200Ok[]
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdCalendar($characterId, $fromEvent = null, $datasource = null)
+    public function getCharactersCharacterIdCalendar($character_id, $from_event = null, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdCalendarWithHttpInfo($characterId, $fromEvent, $datasource);
+        list($response) = $this->getCharactersCharacterIdCalendarWithHttpInfo($character_id, $from_event, $datasource);
         return $response;
     }
 
@@ -124,17 +124,17 @@ class CalendarApi
      *
      * List calendar event summaries
      *
-     * @param int $characterId The character to retrieve events from (required)
-     * @param int $fromEvent The event ID to retrieve events from (optional)
+     * @param int $character_id The character to retrieve events from (required)
+     * @param int $from_event The event ID to retrieve events from (optional)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdCalendar200Ok[], HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdCalendarWithHttpInfo($characterId, $fromEvent = null, $datasource = null)
+    public function getCharactersCharacterIdCalendarWithHttpInfo($character_id, $from_event = null, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdCalendar');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdCalendar');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/calendar/";
@@ -149,18 +149,18 @@ class CalendarApi
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array());
 
         // query params
-        if ($fromEvent !== null) {
-            $queryParams['from_event'] = $this->apiClient->getSerializer()->toQueryValue($fromEvent);
+        if ($from_event !== null) {
+            $queryParams['from_event'] = $this->apiClient->getSerializer()->toQueryValue($from_event);
         }
         // query params
         if ($datasource !== null) {
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
@@ -216,15 +216,15 @@ class CalendarApi
      *
      * Get an event
      *
-     * @param int $characterId The character id requesting the event (required)
-     * @param int $eventId The id of the event requested (required)
+     * @param int $character_id The character id requesting the event (required)
+     * @param int $event_id The id of the event requested (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetCharactersCharacterIdCalendarEventIdOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdCalendarEventId($characterId, $eventId, $datasource = null)
+    public function getCharactersCharacterIdCalendarEventId($character_id, $event_id, $datasource = null)
     {
-        list($response) = $this->getCharactersCharacterIdCalendarEventIdWithHttpInfo($characterId, $eventId, $datasource);
+        list($response) = $this->getCharactersCharacterIdCalendarEventIdWithHttpInfo($character_id, $event_id, $datasource);
         return $response;
     }
 
@@ -233,21 +233,21 @@ class CalendarApi
      *
      * Get an event
      *
-     * @param int $characterId The character id requesting the event (required)
-     * @param int $eventId The id of the event requested (required)
+     * @param int $character_id The character id requesting the event (required)
+     * @param int $event_id The id of the event requested (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetCharactersCharacterIdCalendarEventIdOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getCharactersCharacterIdCalendarEventIdWithHttpInfo($characterId, $eventId, $datasource = null)
+    public function getCharactersCharacterIdCalendarEventIdWithHttpInfo($character_id, $event_id, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling getCharactersCharacterIdCalendarEventId');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling getCharactersCharacterIdCalendarEventId');
         }
-        // verify the required parameter 'eventId' is set
-        if ($eventId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $eventId when calling getCharactersCharacterIdCalendarEventId');
+        // verify the required parameter 'event_id' is set
+        if ($event_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $event_id when calling getCharactersCharacterIdCalendarEventId');
         }
         // parse inputs
         $resourcePath = "/characters/{character_id}/calendar/{event_id}/";
@@ -266,18 +266,18 @@ class CalendarApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
         // path params
-        if ($eventId !== null) {
+        if ($event_id !== null) {
             $resourcePath = str_replace(
                 "{" . "event_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($eventId),
+                $this->apiClient->getSerializer()->toPathValue($event_id),
                 $resourcePath
             );
         }
@@ -333,16 +333,16 @@ class CalendarApi
      *
      * Respond to an event
      *
-     * @param int $characterId The character ID requesting the event (required)
-     * @param int $eventId The ID of the event requested (required)
+     * @param int $character_id The character ID requesting the event (required)
+     * @param int $event_id The ID of the event requested (required)
      * @param \ESI\Model\PutCharactersCharacterIdCalendarEventIdResponse $response The response value to set, overriding current value. (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return void
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function putCharactersCharacterIdCalendarEventId($characterId, $eventId, $response, $datasource = null)
+    public function putCharactersCharacterIdCalendarEventId($character_id, $event_id, $response, $datasource = null)
     {
-        list($response) = $this->putCharactersCharacterIdCalendarEventIdWithHttpInfo($characterId, $eventId, $response, $datasource);
+        list($response) = $this->putCharactersCharacterIdCalendarEventIdWithHttpInfo($character_id, $event_id, $response, $datasource);
         return $response;
     }
 
@@ -351,22 +351,22 @@ class CalendarApi
      *
      * Respond to an event
      *
-     * @param int $characterId The character ID requesting the event (required)
-     * @param int $eventId The ID of the event requested (required)
+     * @param int $character_id The character ID requesting the event (required)
+     * @param int $event_id The ID of the event requested (required)
      * @param \ESI\Model\PutCharactersCharacterIdCalendarEventIdResponse $response The response value to set, overriding current value. (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of null, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function putCharactersCharacterIdCalendarEventIdWithHttpInfo($characterId, $eventId, $response, $datasource = null)
+    public function putCharactersCharacterIdCalendarEventIdWithHttpInfo($character_id, $event_id, $response, $datasource = null)
     {
-        // verify the required parameter 'characterId' is set
-        if ($characterId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $characterId when calling putCharactersCharacterIdCalendarEventId');
+        // verify the required parameter 'character_id' is set
+        if ($character_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $character_id when calling putCharactersCharacterIdCalendarEventId');
         }
-        // verify the required parameter 'eventId' is set
-        if ($eventId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $eventId when calling putCharactersCharacterIdCalendarEventId');
+        // verify the required parameter 'event_id' is set
+        if ($event_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $event_id when calling putCharactersCharacterIdCalendarEventId');
         }
         // verify the required parameter 'response' is set
         if ($response === null) {
@@ -389,18 +389,18 @@ class CalendarApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($characterId !== null) {
+        if ($character_id !== null) {
             $resourcePath = str_replace(
                 "{" . "character_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($characterId),
+                $this->apiClient->getSerializer()->toPathValue($character_id),
                 $resourcePath
             );
         }
         // path params
-        if ($eventId !== null) {
+        if ($event_id !== null) {
             $resourcePath = str_replace(
                 "{" . "event_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($eventId),
+                $this->apiClient->getSerializer()->toPathValue($event_id),
                 $resourcePath
             );
         }

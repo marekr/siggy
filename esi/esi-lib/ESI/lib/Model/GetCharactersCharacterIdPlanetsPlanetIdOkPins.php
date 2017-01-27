@@ -67,16 +67,16 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkPins implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'expiryTime' => '\DateTime',
-        'extractorDetails' => '\ESI\Model\GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetails',
-        'factoryDetails' => '\ESI\Model\GetCharactersCharacterIdPlanetsPlanetIdOkFactoryDetails',
-        'installTime' => '\DateTime',
-        'lastCycleStart' => '\DateTime',
+        'expiry_time' => '\DateTime',
+        'extractor_details' => '\ESI\Model\GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetails',
+        'factory_details' => '\ESI\Model\GetCharactersCharacterIdPlanetsPlanetIdOkFactoryDetails',
+        'install_time' => '\DateTime',
+        'last_cycle_start' => '\DateTime',
         'latitude' => 'float',
         'longitude' => 'float',
-        'pinId' => 'int',
-        'schematicId' => 'int',
-        'typeId' => 'int'
+        'pin_id' => 'int',
+        'schematic_id' => 'int',
+        'type_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -89,16 +89,16 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkPins implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'expiryTime' => 'expiry_time',
-        'extractorDetails' => 'extractor_details',
-        'factoryDetails' => 'factory_details',
-        'installTime' => 'install_time',
-        'lastCycleStart' => 'last_cycle_start',
+        'expiry_time' => 'expiry_time',
+        'extractor_details' => 'extractor_details',
+        'factory_details' => 'factory_details',
+        'install_time' => 'install_time',
+        'last_cycle_start' => 'last_cycle_start',
         'latitude' => 'latitude',
         'longitude' => 'longitude',
-        'pinId' => 'pin_id',
-        'schematicId' => 'schematic_id',
-        'typeId' => 'type_id'
+        'pin_id' => 'pin_id',
+        'schematic_id' => 'schematic_id',
+        'type_id' => 'type_id'
     );
 
     public static function attributeMap()
@@ -111,16 +111,16 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkPins implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'expiryTime' => 'setExpiryTime',
-        'extractorDetails' => 'setExtractorDetails',
-        'factoryDetails' => 'setFactoryDetails',
-        'installTime' => 'setInstallTime',
-        'lastCycleStart' => 'setLastCycleStart',
+        'expiry_time' => 'setExpiryTime',
+        'extractor_details' => 'setExtractorDetails',
+        'factory_details' => 'setFactoryDetails',
+        'install_time' => 'setInstallTime',
+        'last_cycle_start' => 'setLastCycleStart',
         'latitude' => 'setLatitude',
         'longitude' => 'setLongitude',
-        'pinId' => 'setPinId',
-        'schematicId' => 'setSchematicId',
-        'typeId' => 'setTypeId'
+        'pin_id' => 'setPinId',
+        'schematic_id' => 'setSchematicId',
+        'type_id' => 'setTypeId'
     );
 
     public static function setters()
@@ -133,16 +133,16 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkPins implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'expiryTime' => 'getExpiryTime',
-        'extractorDetails' => 'getExtractorDetails',
-        'factoryDetails' => 'getFactoryDetails',
-        'installTime' => 'getInstallTime',
-        'lastCycleStart' => 'getLastCycleStart',
+        'expiry_time' => 'getExpiryTime',
+        'extractor_details' => 'getExtractorDetails',
+        'factory_details' => 'getFactoryDetails',
+        'install_time' => 'getInstallTime',
+        'last_cycle_start' => 'getLastCycleStart',
         'latitude' => 'getLatitude',
         'longitude' => 'getLongitude',
-        'pinId' => 'getPinId',
-        'schematicId' => 'getSchematicId',
-        'typeId' => 'getTypeId'
+        'pin_id' => 'getPinId',
+        'schematic_id' => 'getSchematicId',
+        'type_id' => 'getTypeId'
     );
 
     public static function getters()
@@ -166,16 +166,16 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkPins implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['expiryTime'] = isset($data['expiryTime']) ? $data['expiryTime'] : null;
-        $this->container['extractorDetails'] = isset($data['extractorDetails']) ? $data['extractorDetails'] : null;
-        $this->container['factoryDetails'] = isset($data['factoryDetails']) ? $data['factoryDetails'] : null;
-        $this->container['installTime'] = isset($data['installTime']) ? $data['installTime'] : null;
-        $this->container['lastCycleStart'] = isset($data['lastCycleStart']) ? $data['lastCycleStart'] : null;
+        $this->container['expiry_time'] = isset($data['expiry_time']) ? $data['expiry_time'] : null;
+        $this->container['extractor_details'] = isset($data['extractor_details']) ? $data['extractor_details'] : null;
+        $this->container['factory_details'] = isset($data['factory_details']) ? $data['factory_details'] : null;
+        $this->container['install_time'] = isset($data['install_time']) ? $data['install_time'] : null;
+        $this->container['last_cycle_start'] = isset($data['last_cycle_start']) ? $data['last_cycle_start'] : null;
         $this->container['latitude'] = isset($data['latitude']) ? $data['latitude'] : null;
         $this->container['longitude'] = isset($data['longitude']) ? $data['longitude'] : null;
-        $this->container['pinId'] = isset($data['pinId']) ? $data['pinId'] : null;
-        $this->container['schematicId'] = isset($data['schematicId']) ? $data['schematicId'] : null;
-        $this->container['typeId'] = isset($data['typeId']) ? $data['typeId'] : null;
+        $this->container['pin_id'] = isset($data['pin_id']) ? $data['pin_id'] : null;
+        $this->container['schematic_id'] = isset($data['schematic_id']) ? $data['schematic_id'] : null;
+        $this->container['type_id'] = isset($data['type_id']) ? $data['type_id'] : null;
     }
 
     /**
@@ -192,11 +192,11 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkPins implements ArrayAccess
         if ($this->container['longitude'] === null) {
             $invalid_properties[] = "'longitude' can't be null";
         }
-        if ($this->container['pinId'] === null) {
-            $invalid_properties[] = "'pinId' can't be null";
+        if ($this->container['pin_id'] === null) {
+            $invalid_properties[] = "'pin_id' can't be null";
         }
-        if ($this->container['typeId'] === null) {
-            $invalid_properties[] = "'typeId' can't be null";
+        if ($this->container['type_id'] === null) {
+            $invalid_properties[] = "'type_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -215,10 +215,10 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkPins implements ArrayAccess
         if ($this->container['longitude'] === null) {
             return false;
         }
-        if ($this->container['pinId'] === null) {
+        if ($this->container['pin_id'] === null) {
             return false;
         }
-        if ($this->container['typeId'] === null) {
+        if ($this->container['type_id'] === null) {
             return false;
         }
         return true;
@@ -226,106 +226,106 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkPins implements ArrayAccess
 
 
     /**
-     * Gets expiryTime
+     * Gets expiry_time
      * @return \DateTime
      */
     public function getExpiryTime()
     {
-        return $this->container['expiryTime'];
+        return $this->container['expiry_time'];
     }
 
     /**
-     * Sets expiryTime
-     * @param \DateTime $expiryTime expiry_time string
+     * Sets expiry_time
+     * @param \DateTime $expiry_time expiry_time string
      * @return $this
      */
-    public function setExpiryTime($expiryTime)
+    public function setExpiryTime($expiry_time)
     {
-        $this->container['expiryTime'] = $expiryTime;
+        $this->container['expiry_time'] = $expiry_time;
 
         return $this;
     }
 
     /**
-     * Gets extractorDetails
+     * Gets extractor_details
      * @return \ESI\Model\GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetails
      */
     public function getExtractorDetails()
     {
-        return $this->container['extractorDetails'];
+        return $this->container['extractor_details'];
     }
 
     /**
-     * Sets extractorDetails
-     * @param \ESI\Model\GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetails $extractorDetails
+     * Sets extractor_details
+     * @param \ESI\Model\GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetails $extractor_details
      * @return $this
      */
-    public function setExtractorDetails($extractorDetails)
+    public function setExtractorDetails($extractor_details)
     {
-        $this->container['extractorDetails'] = $extractorDetails;
+        $this->container['extractor_details'] = $extractor_details;
 
         return $this;
     }
 
     /**
-     * Gets factoryDetails
+     * Gets factory_details
      * @return \ESI\Model\GetCharactersCharacterIdPlanetsPlanetIdOkFactoryDetails
      */
     public function getFactoryDetails()
     {
-        return $this->container['factoryDetails'];
+        return $this->container['factory_details'];
     }
 
     /**
-     * Sets factoryDetails
-     * @param \ESI\Model\GetCharactersCharacterIdPlanetsPlanetIdOkFactoryDetails $factoryDetails
+     * Sets factory_details
+     * @param \ESI\Model\GetCharactersCharacterIdPlanetsPlanetIdOkFactoryDetails $factory_details
      * @return $this
      */
-    public function setFactoryDetails($factoryDetails)
+    public function setFactoryDetails($factory_details)
     {
-        $this->container['factoryDetails'] = $factoryDetails;
+        $this->container['factory_details'] = $factory_details;
 
         return $this;
     }
 
     /**
-     * Gets installTime
+     * Gets install_time
      * @return \DateTime
      */
     public function getInstallTime()
     {
-        return $this->container['installTime'];
+        return $this->container['install_time'];
     }
 
     /**
-     * Sets installTime
-     * @param \DateTime $installTime install_time string
+     * Sets install_time
+     * @param \DateTime $install_time install_time string
      * @return $this
      */
-    public function setInstallTime($installTime)
+    public function setInstallTime($install_time)
     {
-        $this->container['installTime'] = $installTime;
+        $this->container['install_time'] = $install_time;
 
         return $this;
     }
 
     /**
-     * Gets lastCycleStart
+     * Gets last_cycle_start
      * @return \DateTime
      */
     public function getLastCycleStart()
     {
-        return $this->container['lastCycleStart'];
+        return $this->container['last_cycle_start'];
     }
 
     /**
-     * Sets lastCycleStart
-     * @param \DateTime $lastCycleStart last_cycle_start string
+     * Sets last_cycle_start
+     * @param \DateTime $last_cycle_start last_cycle_start string
      * @return $this
      */
-    public function setLastCycleStart($lastCycleStart)
+    public function setLastCycleStart($last_cycle_start)
     {
-        $this->container['lastCycleStart'] = $lastCycleStart;
+        $this->container['last_cycle_start'] = $last_cycle_start;
 
         return $this;
     }
@@ -373,64 +373,64 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkPins implements ArrayAccess
     }
 
     /**
-     * Gets pinId
+     * Gets pin_id
      * @return int
      */
     public function getPinId()
     {
-        return $this->container['pinId'];
+        return $this->container['pin_id'];
     }
 
     /**
-     * Sets pinId
-     * @param int $pinId pin_id integer
+     * Sets pin_id
+     * @param int $pin_id pin_id integer
      * @return $this
      */
-    public function setPinId($pinId)
+    public function setPinId($pin_id)
     {
-        $this->container['pinId'] = $pinId;
+        $this->container['pin_id'] = $pin_id;
 
         return $this;
     }
 
     /**
-     * Gets schematicId
+     * Gets schematic_id
      * @return int
      */
     public function getSchematicId()
     {
-        return $this->container['schematicId'];
+        return $this->container['schematic_id'];
     }
 
     /**
-     * Sets schematicId
-     * @param int $schematicId schematic_id integer
+     * Sets schematic_id
+     * @param int $schematic_id schematic_id integer
      * @return $this
      */
-    public function setSchematicId($schematicId)
+    public function setSchematicId($schematic_id)
     {
-        $this->container['schematicId'] = $schematicId;
+        $this->container['schematic_id'] = $schematic_id;
 
         return $this;
     }
 
     /**
-     * Gets typeId
+     * Gets type_id
      * @return int
      */
     public function getTypeId()
     {
-        return $this->container['typeId'];
+        return $this->container['type_id'];
     }
 
     /**
-     * Sets typeId
-     * @param int $typeId type_id integer
+     * Sets type_id
+     * @param int $type_id type_id integer
      * @return $this
      */
-    public function setTypeId($typeId)
+    public function setTypeId($type_id)
     {
-        $this->container['typeId'] = $typeId;
+        $this->container['type_id'] = $type_id;
 
         return $this;
     }

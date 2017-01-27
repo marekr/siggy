@@ -69,11 +69,11 @@ class GetCharactersCharacterIdCalendarEventIdOk implements ArrayAccess
     protected static $swaggerTypes = array(
         'date' => '\DateTime',
         'duration' => 'int',
-        'eventId' => 'int',
+        'event_id' => 'int',
         'importance' => 'int',
-        'ownerId' => 'int',
-        'ownerName' => 'string',
-        'ownerType' => 'string',
+        'owner_id' => 'int',
+        'owner_name' => 'string',
+        'owner_type' => 'string',
         'response' => 'string',
         'text' => 'string',
         'title' => 'string'
@@ -91,11 +91,11 @@ class GetCharactersCharacterIdCalendarEventIdOk implements ArrayAccess
     protected static $attributeMap = array(
         'date' => 'date',
         'duration' => 'duration',
-        'eventId' => 'event_id',
+        'event_id' => 'event_id',
         'importance' => 'importance',
-        'ownerId' => 'owner_id',
-        'ownerName' => 'owner_name',
-        'ownerType' => 'owner_type',
+        'owner_id' => 'owner_id',
+        'owner_name' => 'owner_name',
+        'owner_type' => 'owner_type',
         'response' => 'response',
         'text' => 'text',
         'title' => 'title'
@@ -113,11 +113,11 @@ class GetCharactersCharacterIdCalendarEventIdOk implements ArrayAccess
     protected static $setters = array(
         'date' => 'setDate',
         'duration' => 'setDuration',
-        'eventId' => 'setEventId',
+        'event_id' => 'setEventId',
         'importance' => 'setImportance',
-        'ownerId' => 'setOwnerId',
-        'ownerName' => 'setOwnerName',
-        'ownerType' => 'setOwnerType',
+        'owner_id' => 'setOwnerId',
+        'owner_name' => 'setOwnerName',
+        'owner_type' => 'setOwnerType',
         'response' => 'setResponse',
         'text' => 'setText',
         'title' => 'setTitle'
@@ -135,11 +135,11 @@ class GetCharactersCharacterIdCalendarEventIdOk implements ArrayAccess
     protected static $getters = array(
         'date' => 'getDate',
         'duration' => 'getDuration',
-        'eventId' => 'getEventId',
+        'event_id' => 'getEventId',
         'importance' => 'getImportance',
-        'ownerId' => 'getOwnerId',
-        'ownerName' => 'getOwnerName',
-        'ownerType' => 'getOwnerType',
+        'owner_id' => 'getOwnerId',
+        'owner_name' => 'getOwnerName',
+        'owner_type' => 'getOwnerType',
         'response' => 'getResponse',
         'text' => 'getText',
         'title' => 'getTitle'
@@ -188,11 +188,11 @@ class GetCharactersCharacterIdCalendarEventIdOk implements ArrayAccess
     {
         $this->container['date'] = isset($data['date']) ? $data['date'] : null;
         $this->container['duration'] = isset($data['duration']) ? $data['duration'] : null;
-        $this->container['eventId'] = isset($data['eventId']) ? $data['eventId'] : null;
+        $this->container['event_id'] = isset($data['event_id']) ? $data['event_id'] : null;
         $this->container['importance'] = isset($data['importance']) ? $data['importance'] : null;
-        $this->container['ownerId'] = isset($data['ownerId']) ? $data['ownerId'] : null;
-        $this->container['ownerName'] = isset($data['ownerName']) ? $data['ownerName'] : null;
-        $this->container['ownerType'] = isset($data['ownerType']) ? $data['ownerType'] : null;
+        $this->container['owner_id'] = isset($data['owner_id']) ? $data['owner_id'] : null;
+        $this->container['owner_name'] = isset($data['owner_name']) ? $data['owner_name'] : null;
+        $this->container['owner_type'] = isset($data['owner_type']) ? $data['owner_type'] : null;
         $this->container['response'] = isset($data['response']) ? $data['response'] : null;
         $this->container['text'] = isset($data['text']) ? $data['text'] : null;
         $this->container['title'] = isset($data['title']) ? $data['title'] : null;
@@ -212,24 +212,24 @@ class GetCharactersCharacterIdCalendarEventIdOk implements ArrayAccess
         if ($this->container['duration'] === null) {
             $invalid_properties[] = "'duration' can't be null";
         }
-        if ($this->container['eventId'] === null) {
-            $invalid_properties[] = "'eventId' can't be null";
+        if ($this->container['event_id'] === null) {
+            $invalid_properties[] = "'event_id' can't be null";
         }
         if ($this->container['importance'] === null) {
             $invalid_properties[] = "'importance' can't be null";
         }
-        if ($this->container['ownerId'] === null) {
-            $invalid_properties[] = "'ownerId' can't be null";
+        if ($this->container['owner_id'] === null) {
+            $invalid_properties[] = "'owner_id' can't be null";
         }
-        if ($this->container['ownerName'] === null) {
-            $invalid_properties[] = "'ownerName' can't be null";
+        if ($this->container['owner_name'] === null) {
+            $invalid_properties[] = "'owner_name' can't be null";
         }
-        if ($this->container['ownerType'] === null) {
-            $invalid_properties[] = "'ownerType' can't be null";
+        if ($this->container['owner_type'] === null) {
+            $invalid_properties[] = "'owner_type' can't be null";
         }
         $allowed_values = array("eve_server", "corporation", "faction", "character", "alliance");
-        if (!in_array($this->container['ownerType'], $allowed_values)) {
-            $invalid_properties[] = "invalid value for 'ownerType', must be one of #{allowed_values}.";
+        if (!in_array($this->container['owner_type'], $allowed_values)) {
+            $invalid_properties[] = "invalid value for 'owner_type', must be one of #{allowed_values}.";
         }
 
         if ($this->container['response'] === null) {
@@ -258,23 +258,23 @@ class GetCharactersCharacterIdCalendarEventIdOk implements ArrayAccess
         if ($this->container['duration'] === null) {
             return false;
         }
-        if ($this->container['eventId'] === null) {
+        if ($this->container['event_id'] === null) {
             return false;
         }
         if ($this->container['importance'] === null) {
             return false;
         }
-        if ($this->container['ownerId'] === null) {
+        if ($this->container['owner_id'] === null) {
             return false;
         }
-        if ($this->container['ownerName'] === null) {
+        if ($this->container['owner_name'] === null) {
             return false;
         }
-        if ($this->container['ownerType'] === null) {
+        if ($this->container['owner_type'] === null) {
             return false;
         }
         $allowed_values = array("eve_server", "corporation", "faction", "character", "alliance");
-        if (!in_array($this->container['ownerType'], $allowed_values)) {
+        if (!in_array($this->container['owner_type'], $allowed_values)) {
             return false;
         }
         if ($this->container['response'] === null) {
@@ -333,22 +333,22 @@ class GetCharactersCharacterIdCalendarEventIdOk implements ArrayAccess
     }
 
     /**
-     * Gets eventId
+     * Gets event_id
      * @return int
      */
     public function getEventId()
     {
-        return $this->container['eventId'];
+        return $this->container['event_id'];
     }
 
     /**
-     * Sets eventId
-     * @param int $eventId event_id integer
+     * Sets event_id
+     * @param int $event_id event_id integer
      * @return $this
      */
-    public function setEventId($eventId)
+    public function setEventId($event_id)
     {
-        $this->container['eventId'] = $eventId;
+        $this->container['event_id'] = $event_id;
 
         return $this;
     }
@@ -375,68 +375,68 @@ class GetCharactersCharacterIdCalendarEventIdOk implements ArrayAccess
     }
 
     /**
-     * Gets ownerId
+     * Gets owner_id
      * @return int
      */
     public function getOwnerId()
     {
-        return $this->container['ownerId'];
+        return $this->container['owner_id'];
     }
 
     /**
-     * Sets ownerId
-     * @param int $ownerId owner_id integer
+     * Sets owner_id
+     * @param int $owner_id owner_id integer
      * @return $this
      */
-    public function setOwnerId($ownerId)
+    public function setOwnerId($owner_id)
     {
-        $this->container['ownerId'] = $ownerId;
+        $this->container['owner_id'] = $owner_id;
 
         return $this;
     }
 
     /**
-     * Gets ownerName
+     * Gets owner_name
      * @return string
      */
     public function getOwnerName()
     {
-        return $this->container['ownerName'];
+        return $this->container['owner_name'];
     }
 
     /**
-     * Sets ownerName
-     * @param string $ownerName owner_name string
+     * Sets owner_name
+     * @param string $owner_name owner_name string
      * @return $this
      */
-    public function setOwnerName($ownerName)
+    public function setOwnerName($owner_name)
     {
-        $this->container['ownerName'] = $ownerName;
+        $this->container['owner_name'] = $owner_name;
 
         return $this;
     }
 
     /**
-     * Gets ownerType
+     * Gets owner_type
      * @return string
      */
     public function getOwnerType()
     {
-        return $this->container['ownerType'];
+        return $this->container['owner_type'];
     }
 
     /**
-     * Sets ownerType
-     * @param string $ownerType owner_type string
+     * Sets owner_type
+     * @param string $owner_type owner_type string
      * @return $this
      */
-    public function setOwnerType($ownerType)
+    public function setOwnerType($owner_type)
     {
         $allowed_values = array('eve_server', 'corporation', 'faction', 'character', 'alliance');
-        if (!in_array($ownerType, $allowed_values)) {
-            throw new \InvalidArgumentException("Invalid value for 'ownerType', must be one of 'eve_server', 'corporation', 'faction', 'character', 'alliance'");
+        if (!in_array($owner_type, $allowed_values)) {
+            throw new \InvalidArgumentException("Invalid value for 'owner_type', must be one of 'eve_server', 'corporation', 'faction', 'character', 'alliance'");
         }
-        $this->container['ownerType'] = $ownerType;
+        $this->container['owner_type'] = $owner_type;
 
         return $this;
     }

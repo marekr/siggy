@@ -67,14 +67,14 @@ class GetKillmailsKillmailIdKillmailHashOkVictim implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'allianceId' => 'int',
-        'characterId' => 'int',
-        'corporationId' => 'int',
-        'damageTaken' => 'int',
-        'factionId' => 'int',
+        'alliance_id' => 'int',
+        'character_id' => 'int',
+        'corporation_id' => 'int',
+        'damage_taken' => 'int',
+        'faction_id' => 'int',
         'items' => '\ESI\Model\GetKillmailsKillmailIdKillmailHashOkVictimItems1[]',
         'position' => '\ESI\Model\GetKillmailsKillmailIdKillmailHashOkVictimPosition',
-        'shipTypeId' => 'int'
+        'ship_type_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -87,14 +87,14 @@ class GetKillmailsKillmailIdKillmailHashOkVictim implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'allianceId' => 'alliance_id',
-        'characterId' => 'character_id',
-        'corporationId' => 'corporation_id',
-        'damageTaken' => 'damage_taken',
-        'factionId' => 'faction_id',
+        'alliance_id' => 'alliance_id',
+        'character_id' => 'character_id',
+        'corporation_id' => 'corporation_id',
+        'damage_taken' => 'damage_taken',
+        'faction_id' => 'faction_id',
         'items' => 'items',
         'position' => 'position',
-        'shipTypeId' => 'ship_type_id'
+        'ship_type_id' => 'ship_type_id'
     );
 
     public static function attributeMap()
@@ -107,14 +107,14 @@ class GetKillmailsKillmailIdKillmailHashOkVictim implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'allianceId' => 'setAllianceId',
-        'characterId' => 'setCharacterId',
-        'corporationId' => 'setCorporationId',
-        'damageTaken' => 'setDamageTaken',
-        'factionId' => 'setFactionId',
+        'alliance_id' => 'setAllianceId',
+        'character_id' => 'setCharacterId',
+        'corporation_id' => 'setCorporationId',
+        'damage_taken' => 'setDamageTaken',
+        'faction_id' => 'setFactionId',
         'items' => 'setItems',
         'position' => 'setPosition',
-        'shipTypeId' => 'setShipTypeId'
+        'ship_type_id' => 'setShipTypeId'
     );
 
     public static function setters()
@@ -127,14 +127,14 @@ class GetKillmailsKillmailIdKillmailHashOkVictim implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'allianceId' => 'getAllianceId',
-        'characterId' => 'getCharacterId',
-        'corporationId' => 'getCorporationId',
-        'damageTaken' => 'getDamageTaken',
-        'factionId' => 'getFactionId',
+        'alliance_id' => 'getAllianceId',
+        'character_id' => 'getCharacterId',
+        'corporation_id' => 'getCorporationId',
+        'damage_taken' => 'getDamageTaken',
+        'faction_id' => 'getFactionId',
         'items' => 'getItems',
         'position' => 'getPosition',
-        'shipTypeId' => 'getShipTypeId'
+        'ship_type_id' => 'getShipTypeId'
     );
 
     public static function getters()
@@ -158,14 +158,14 @@ class GetKillmailsKillmailIdKillmailHashOkVictim implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['allianceId'] = isset($data['allianceId']) ? $data['allianceId'] : null;
-        $this->container['characterId'] = isset($data['characterId']) ? $data['characterId'] : null;
-        $this->container['corporationId'] = isset($data['corporationId']) ? $data['corporationId'] : null;
-        $this->container['damageTaken'] = isset($data['damageTaken']) ? $data['damageTaken'] : null;
-        $this->container['factionId'] = isset($data['factionId']) ? $data['factionId'] : null;
+        $this->container['alliance_id'] = isset($data['alliance_id']) ? $data['alliance_id'] : null;
+        $this->container['character_id'] = isset($data['character_id']) ? $data['character_id'] : null;
+        $this->container['corporation_id'] = isset($data['corporation_id']) ? $data['corporation_id'] : null;
+        $this->container['damage_taken'] = isset($data['damage_taken']) ? $data['damage_taken'] : null;
+        $this->container['faction_id'] = isset($data['faction_id']) ? $data['faction_id'] : null;
         $this->container['items'] = isset($data['items']) ? $data['items'] : null;
         $this->container['position'] = isset($data['position']) ? $data['position'] : null;
-        $this->container['shipTypeId'] = isset($data['shipTypeId']) ? $data['shipTypeId'] : null;
+        $this->container['ship_type_id'] = isset($data['ship_type_id']) ? $data['ship_type_id'] : null;
     }
 
     /**
@@ -176,11 +176,11 @@ class GetKillmailsKillmailIdKillmailHashOkVictim implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['damageTaken'] === null) {
-            $invalid_properties[] = "'damageTaken' can't be null";
+        if ($this->container['damage_taken'] === null) {
+            $invalid_properties[] = "'damage_taken' can't be null";
         }
-        if ($this->container['shipTypeId'] === null) {
-            $invalid_properties[] = "'shipTypeId' can't be null";
+        if ($this->container['ship_type_id'] === null) {
+            $invalid_properties[] = "'ship_type_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -193,10 +193,10 @@ class GetKillmailsKillmailIdKillmailHashOkVictim implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['damageTaken'] === null) {
+        if ($this->container['damage_taken'] === null) {
             return false;
         }
-        if ($this->container['shipTypeId'] === null) {
+        if ($this->container['ship_type_id'] === null) {
             return false;
         }
         return true;
@@ -204,106 +204,106 @@ class GetKillmailsKillmailIdKillmailHashOkVictim implements ArrayAccess
 
 
     /**
-     * Gets allianceId
+     * Gets alliance_id
      * @return int
      */
     public function getAllianceId()
     {
-        return $this->container['allianceId'];
+        return $this->container['alliance_id'];
     }
 
     /**
-     * Sets allianceId
-     * @param int $allianceId alliance_id integer
+     * Sets alliance_id
+     * @param int $alliance_id alliance_id integer
      * @return $this
      */
-    public function setAllianceId($allianceId)
+    public function setAllianceId($alliance_id)
     {
-        $this->container['allianceId'] = $allianceId;
+        $this->container['alliance_id'] = $alliance_id;
 
         return $this;
     }
 
     /**
-     * Gets characterId
+     * Gets character_id
      * @return int
      */
     public function getCharacterId()
     {
-        return $this->container['characterId'];
+        return $this->container['character_id'];
     }
 
     /**
-     * Sets characterId
-     * @param int $characterId character_id integer
+     * Sets character_id
+     * @param int $character_id character_id integer
      * @return $this
      */
-    public function setCharacterId($characterId)
+    public function setCharacterId($character_id)
     {
-        $this->container['characterId'] = $characterId;
+        $this->container['character_id'] = $character_id;
 
         return $this;
     }
 
     /**
-     * Gets corporationId
+     * Gets corporation_id
      * @return int
      */
     public function getCorporationId()
     {
-        return $this->container['corporationId'];
+        return $this->container['corporation_id'];
     }
 
     /**
-     * Sets corporationId
-     * @param int $corporationId corporation_id integer
+     * Sets corporation_id
+     * @param int $corporation_id corporation_id integer
      * @return $this
      */
-    public function setCorporationId($corporationId)
+    public function setCorporationId($corporation_id)
     {
-        $this->container['corporationId'] = $corporationId;
+        $this->container['corporation_id'] = $corporation_id;
 
         return $this;
     }
 
     /**
-     * Gets damageTaken
+     * Gets damage_taken
      * @return int
      */
     public function getDamageTaken()
     {
-        return $this->container['damageTaken'];
+        return $this->container['damage_taken'];
     }
 
     /**
-     * Sets damageTaken
-     * @param int $damageTaken How much total damage was taken by the victim
+     * Sets damage_taken
+     * @param int $damage_taken How much total damage was taken by the victim
      * @return $this
      */
-    public function setDamageTaken($damageTaken)
+    public function setDamageTaken($damage_taken)
     {
-        $this->container['damageTaken'] = $damageTaken;
+        $this->container['damage_taken'] = $damage_taken;
 
         return $this;
     }
 
     /**
-     * Gets factionId
+     * Gets faction_id
      * @return int
      */
     public function getFactionId()
     {
-        return $this->container['factionId'];
+        return $this->container['faction_id'];
     }
 
     /**
-     * Sets factionId
-     * @param int $factionId faction_id integer
+     * Sets faction_id
+     * @param int $faction_id faction_id integer
      * @return $this
      */
-    public function setFactionId($factionId)
+    public function setFactionId($faction_id)
     {
-        $this->container['factionId'] = $factionId;
+        $this->container['faction_id'] = $faction_id;
 
         return $this;
     }
@@ -351,22 +351,22 @@ class GetKillmailsKillmailIdKillmailHashOkVictim implements ArrayAccess
     }
 
     /**
-     * Gets shipTypeId
+     * Gets ship_type_id
      * @return int
      */
     public function getShipTypeId()
     {
-        return $this->container['shipTypeId'];
+        return $this->container['ship_type_id'];
     }
 
     /**
-     * Sets shipTypeId
-     * @param int $shipTypeId The ship that the victim was piloting and was destroyed
+     * Sets ship_type_id
+     * @param int $ship_type_id The ship that the victim was piloting and was destroyed
      * @return $this
      */
-    public function setShipTypeId($shipTypeId)
+    public function setShipTypeId($ship_type_id)
     {
-        $this->container['shipTypeId'] = $shipTypeId;
+        $this->container['ship_type_id'] = $ship_type_id;
 
         return $this;
     }

@@ -67,9 +67,9 @@ class GetFleetsFleetIdOk implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'isFreeMove' => 'bool',
-        'isRegistered' => 'bool',
-        'isVoiceEnabled' => 'bool',
+        'is_free_move' => 'bool',
+        'is_registered' => 'bool',
+        'is_voice_enabled' => 'bool',
         'motd' => 'string'
     );
 
@@ -83,9 +83,9 @@ class GetFleetsFleetIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'isFreeMove' => 'is_free_move',
-        'isRegistered' => 'is_registered',
-        'isVoiceEnabled' => 'is_voice_enabled',
+        'is_free_move' => 'is_free_move',
+        'is_registered' => 'is_registered',
+        'is_voice_enabled' => 'is_voice_enabled',
         'motd' => 'motd'
     );
 
@@ -99,9 +99,9 @@ class GetFleetsFleetIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'isFreeMove' => 'setIsFreeMove',
-        'isRegistered' => 'setIsRegistered',
-        'isVoiceEnabled' => 'setIsVoiceEnabled',
+        'is_free_move' => 'setIsFreeMove',
+        'is_registered' => 'setIsRegistered',
+        'is_voice_enabled' => 'setIsVoiceEnabled',
         'motd' => 'setMotd'
     );
 
@@ -115,9 +115,9 @@ class GetFleetsFleetIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'isFreeMove' => 'getIsFreeMove',
-        'isRegistered' => 'getIsRegistered',
-        'isVoiceEnabled' => 'getIsVoiceEnabled',
+        'is_free_move' => 'getIsFreeMove',
+        'is_registered' => 'getIsRegistered',
+        'is_voice_enabled' => 'getIsVoiceEnabled',
         'motd' => 'getMotd'
     );
 
@@ -142,9 +142,9 @@ class GetFleetsFleetIdOk implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['isFreeMove'] = isset($data['isFreeMove']) ? $data['isFreeMove'] : null;
-        $this->container['isRegistered'] = isset($data['isRegistered']) ? $data['isRegistered'] : null;
-        $this->container['isVoiceEnabled'] = isset($data['isVoiceEnabled']) ? $data['isVoiceEnabled'] : null;
+        $this->container['is_free_move'] = isset($data['is_free_move']) ? $data['is_free_move'] : null;
+        $this->container['is_registered'] = isset($data['is_registered']) ? $data['is_registered'] : null;
+        $this->container['is_voice_enabled'] = isset($data['is_voice_enabled']) ? $data['is_voice_enabled'] : null;
         $this->container['motd'] = isset($data['motd']) ? $data['motd'] : null;
     }
 
@@ -156,14 +156,14 @@ class GetFleetsFleetIdOk implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['isFreeMove'] === null) {
-            $invalid_properties[] = "'isFreeMove' can't be null";
+        if ($this->container['is_free_move'] === null) {
+            $invalid_properties[] = "'is_free_move' can't be null";
         }
-        if ($this->container['isRegistered'] === null) {
-            $invalid_properties[] = "'isRegistered' can't be null";
+        if ($this->container['is_registered'] === null) {
+            $invalid_properties[] = "'is_registered' can't be null";
         }
-        if ($this->container['isVoiceEnabled'] === null) {
-            $invalid_properties[] = "'isVoiceEnabled' can't be null";
+        if ($this->container['is_voice_enabled'] === null) {
+            $invalid_properties[] = "'is_voice_enabled' can't be null";
         }
         if ($this->container['motd'] === null) {
             $invalid_properties[] = "'motd' can't be null";
@@ -179,13 +179,13 @@ class GetFleetsFleetIdOk implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['isFreeMove'] === null) {
+        if ($this->container['is_free_move'] === null) {
             return false;
         }
-        if ($this->container['isRegistered'] === null) {
+        if ($this->container['is_registered'] === null) {
             return false;
         }
-        if ($this->container['isVoiceEnabled'] === null) {
+        if ($this->container['is_voice_enabled'] === null) {
             return false;
         }
         if ($this->container['motd'] === null) {
@@ -196,64 +196,64 @@ class GetFleetsFleetIdOk implements ArrayAccess
 
 
     /**
-     * Gets isFreeMove
+     * Gets is_free_move
      * @return bool
      */
     public function getIsFreeMove()
     {
-        return $this->container['isFreeMove'];
+        return $this->container['is_free_move'];
     }
 
     /**
-     * Sets isFreeMove
-     * @param bool $isFreeMove Is free-move enabled
+     * Sets is_free_move
+     * @param bool $is_free_move Is free-move enabled
      * @return $this
      */
-    public function setIsFreeMove($isFreeMove)
+    public function setIsFreeMove($is_free_move)
     {
-        $this->container['isFreeMove'] = $isFreeMove;
+        $this->container['is_free_move'] = $is_free_move;
 
         return $this;
     }
 
     /**
-     * Gets isRegistered
+     * Gets is_registered
      * @return bool
      */
     public function getIsRegistered()
     {
-        return $this->container['isRegistered'];
+        return $this->container['is_registered'];
     }
 
     /**
-     * Sets isRegistered
-     * @param bool $isRegistered Does the fleet have an active fleet advertisement
+     * Sets is_registered
+     * @param bool $is_registered Does the fleet have an active fleet advertisement
      * @return $this
      */
-    public function setIsRegistered($isRegistered)
+    public function setIsRegistered($is_registered)
     {
-        $this->container['isRegistered'] = $isRegistered;
+        $this->container['is_registered'] = $is_registered;
 
         return $this;
     }
 
     /**
-     * Gets isVoiceEnabled
+     * Gets is_voice_enabled
      * @return bool
      */
     public function getIsVoiceEnabled()
     {
-        return $this->container['isVoiceEnabled'];
+        return $this->container['is_voice_enabled'];
     }
 
     /**
-     * Sets isVoiceEnabled
-     * @param bool $isVoiceEnabled Is EVE Voice enabled
+     * Sets is_voice_enabled
+     * @param bool $is_voice_enabled Is EVE Voice enabled
      * @return $this
      */
-    public function setIsVoiceEnabled($isVoiceEnabled)
+    public function setIsVoiceEnabled($is_voice_enabled)
     {
-        $this->container['isVoiceEnabled'] = $isVoiceEnabled;
+        $this->container['is_voice_enabled'] = $is_voice_enabled;
 
         return $this;
     }

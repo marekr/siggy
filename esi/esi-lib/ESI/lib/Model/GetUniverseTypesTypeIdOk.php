@@ -69,17 +69,17 @@ class GetUniverseTypesTypeIdOk implements ArrayAccess
     protected static $swaggerTypes = array(
         'capacity' => 'float',
         'description' => 'string',
-        'dogmaAttributes' => '\ESI\Model\GetUniverseTypesTypeIdOkDogmaAttributes[]',
-        'dogmaEffects' => '\ESI\Model\GetUniverseTypesTypeIdOkDogmaEffects[]',
-        'graphicId' => 'int',
-        'groupId' => 'int',
-        'iconId' => 'int',
+        'dogma_attributes' => '\ESI\Model\GetUniverseTypesTypeIdOkDogmaAttributes[]',
+        'dogma_effects' => '\ESI\Model\GetUniverseTypesTypeIdOkDogmaEffects[]',
+        'graphic_id' => 'int',
+        'group_id' => 'int',
+        'icon_id' => 'int',
         'mass' => 'float',
         'name' => 'string',
-        'portionSize' => 'int',
+        'portion_size' => 'int',
         'published' => 'bool',
         'radius' => 'float',
-        'typeId' => 'int',
+        'type_id' => 'int',
         'volume' => 'float'
     );
 
@@ -95,17 +95,17 @@ class GetUniverseTypesTypeIdOk implements ArrayAccess
     protected static $attributeMap = array(
         'capacity' => 'capacity',
         'description' => 'description',
-        'dogmaAttributes' => 'dogma_attributes',
-        'dogmaEffects' => 'dogma_effects',
-        'graphicId' => 'graphic_id',
-        'groupId' => 'group_id',
-        'iconId' => 'icon_id',
+        'dogma_attributes' => 'dogma_attributes',
+        'dogma_effects' => 'dogma_effects',
+        'graphic_id' => 'graphic_id',
+        'group_id' => 'group_id',
+        'icon_id' => 'icon_id',
         'mass' => 'mass',
         'name' => 'name',
-        'portionSize' => 'portion_size',
+        'portion_size' => 'portion_size',
         'published' => 'published',
         'radius' => 'radius',
-        'typeId' => 'type_id',
+        'type_id' => 'type_id',
         'volume' => 'volume'
     );
 
@@ -121,17 +121,17 @@ class GetUniverseTypesTypeIdOk implements ArrayAccess
     protected static $setters = array(
         'capacity' => 'setCapacity',
         'description' => 'setDescription',
-        'dogmaAttributes' => 'setDogmaAttributes',
-        'dogmaEffects' => 'setDogmaEffects',
-        'graphicId' => 'setGraphicId',
-        'groupId' => 'setGroupId',
-        'iconId' => 'setIconId',
+        'dogma_attributes' => 'setDogmaAttributes',
+        'dogma_effects' => 'setDogmaEffects',
+        'graphic_id' => 'setGraphicId',
+        'group_id' => 'setGroupId',
+        'icon_id' => 'setIconId',
         'mass' => 'setMass',
         'name' => 'setName',
-        'portionSize' => 'setPortionSize',
+        'portion_size' => 'setPortionSize',
         'published' => 'setPublished',
         'radius' => 'setRadius',
-        'typeId' => 'setTypeId',
+        'type_id' => 'setTypeId',
         'volume' => 'setVolume'
     );
 
@@ -147,17 +147,17 @@ class GetUniverseTypesTypeIdOk implements ArrayAccess
     protected static $getters = array(
         'capacity' => 'getCapacity',
         'description' => 'getDescription',
-        'dogmaAttributes' => 'getDogmaAttributes',
-        'dogmaEffects' => 'getDogmaEffects',
-        'graphicId' => 'getGraphicId',
-        'groupId' => 'getGroupId',
-        'iconId' => 'getIconId',
+        'dogma_attributes' => 'getDogmaAttributes',
+        'dogma_effects' => 'getDogmaEffects',
+        'graphic_id' => 'getGraphicId',
+        'group_id' => 'getGroupId',
+        'icon_id' => 'getIconId',
         'mass' => 'getMass',
         'name' => 'getName',
-        'portionSize' => 'getPortionSize',
+        'portion_size' => 'getPortionSize',
         'published' => 'getPublished',
         'radius' => 'getRadius',
-        'typeId' => 'getTypeId',
+        'type_id' => 'getTypeId',
         'volume' => 'getVolume'
     );
 
@@ -184,17 +184,17 @@ class GetUniverseTypesTypeIdOk implements ArrayAccess
     {
         $this->container['capacity'] = isset($data['capacity']) ? $data['capacity'] : null;
         $this->container['description'] = isset($data['description']) ? $data['description'] : null;
-        $this->container['dogmaAttributes'] = isset($data['dogmaAttributes']) ? $data['dogmaAttributes'] : null;
-        $this->container['dogmaEffects'] = isset($data['dogmaEffects']) ? $data['dogmaEffects'] : null;
-        $this->container['graphicId'] = isset($data['graphicId']) ? $data['graphicId'] : null;
-        $this->container['groupId'] = isset($data['groupId']) ? $data['groupId'] : null;
-        $this->container['iconId'] = isset($data['iconId']) ? $data['iconId'] : null;
+        $this->container['dogma_attributes'] = isset($data['dogma_attributes']) ? $data['dogma_attributes'] : null;
+        $this->container['dogma_effects'] = isset($data['dogma_effects']) ? $data['dogma_effects'] : null;
+        $this->container['graphic_id'] = isset($data['graphic_id']) ? $data['graphic_id'] : null;
+        $this->container['group_id'] = isset($data['group_id']) ? $data['group_id'] : null;
+        $this->container['icon_id'] = isset($data['icon_id']) ? $data['icon_id'] : null;
         $this->container['mass'] = isset($data['mass']) ? $data['mass'] : null;
         $this->container['name'] = isset($data['name']) ? $data['name'] : null;
-        $this->container['portionSize'] = isset($data['portionSize']) ? $data['portionSize'] : null;
+        $this->container['portion_size'] = isset($data['portion_size']) ? $data['portion_size'] : null;
         $this->container['published'] = isset($data['published']) ? $data['published'] : null;
         $this->container['radius'] = isset($data['radius']) ? $data['radius'] : null;
-        $this->container['typeId'] = isset($data['typeId']) ? $data['typeId'] : null;
+        $this->container['type_id'] = isset($data['type_id']) ? $data['type_id'] : null;
         $this->container['volume'] = isset($data['volume']) ? $data['volume'] : null;
     }
 
@@ -209,8 +209,8 @@ class GetUniverseTypesTypeIdOk implements ArrayAccess
         if ($this->container['description'] === null) {
             $invalid_properties[] = "'description' can't be null";
         }
-        if ($this->container['groupId'] === null) {
-            $invalid_properties[] = "'groupId' can't be null";
+        if ($this->container['group_id'] === null) {
+            $invalid_properties[] = "'group_id' can't be null";
         }
         if ($this->container['name'] === null) {
             $invalid_properties[] = "'name' can't be null";
@@ -218,8 +218,8 @@ class GetUniverseTypesTypeIdOk implements ArrayAccess
         if ($this->container['published'] === null) {
             $invalid_properties[] = "'published' can't be null";
         }
-        if ($this->container['typeId'] === null) {
-            $invalid_properties[] = "'typeId' can't be null";
+        if ($this->container['type_id'] === null) {
+            $invalid_properties[] = "'type_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -235,7 +235,7 @@ class GetUniverseTypesTypeIdOk implements ArrayAccess
         if ($this->container['description'] === null) {
             return false;
         }
-        if ($this->container['groupId'] === null) {
+        if ($this->container['group_id'] === null) {
             return false;
         }
         if ($this->container['name'] === null) {
@@ -244,7 +244,7 @@ class GetUniverseTypesTypeIdOk implements ArrayAccess
         if ($this->container['published'] === null) {
             return false;
         }
-        if ($this->container['typeId'] === null) {
+        if ($this->container['type_id'] === null) {
             return false;
         }
         return true;
@@ -294,106 +294,106 @@ class GetUniverseTypesTypeIdOk implements ArrayAccess
     }
 
     /**
-     * Gets dogmaAttributes
+     * Gets dogma_attributes
      * @return \ESI\Model\GetUniverseTypesTypeIdOkDogmaAttributes[]
      */
     public function getDogmaAttributes()
     {
-        return $this->container['dogmaAttributes'];
+        return $this->container['dogma_attributes'];
     }
 
     /**
-     * Sets dogmaAttributes
-     * @param \ESI\Model\GetUniverseTypesTypeIdOkDogmaAttributes[] $dogmaAttributes dogma_attributes array
+     * Sets dogma_attributes
+     * @param \ESI\Model\GetUniverseTypesTypeIdOkDogmaAttributes[] $dogma_attributes dogma_attributes array
      * @return $this
      */
-    public function setDogmaAttributes($dogmaAttributes)
+    public function setDogmaAttributes($dogma_attributes)
     {
-        $this->container['dogmaAttributes'] = $dogmaAttributes;
+        $this->container['dogma_attributes'] = $dogma_attributes;
 
         return $this;
     }
 
     /**
-     * Gets dogmaEffects
+     * Gets dogma_effects
      * @return \ESI\Model\GetUniverseTypesTypeIdOkDogmaEffects[]
      */
     public function getDogmaEffects()
     {
-        return $this->container['dogmaEffects'];
+        return $this->container['dogma_effects'];
     }
 
     /**
-     * Sets dogmaEffects
-     * @param \ESI\Model\GetUniverseTypesTypeIdOkDogmaEffects[] $dogmaEffects dogma_effects array
+     * Sets dogma_effects
+     * @param \ESI\Model\GetUniverseTypesTypeIdOkDogmaEffects[] $dogma_effects dogma_effects array
      * @return $this
      */
-    public function setDogmaEffects($dogmaEffects)
+    public function setDogmaEffects($dogma_effects)
     {
-        $this->container['dogmaEffects'] = $dogmaEffects;
+        $this->container['dogma_effects'] = $dogma_effects;
 
         return $this;
     }
 
     /**
-     * Gets graphicId
+     * Gets graphic_id
      * @return int
      */
     public function getGraphicId()
     {
-        return $this->container['graphicId'];
+        return $this->container['graphic_id'];
     }
 
     /**
-     * Sets graphicId
-     * @param int $graphicId graphic_id integer
+     * Sets graphic_id
+     * @param int $graphic_id graphic_id integer
      * @return $this
      */
-    public function setGraphicId($graphicId)
+    public function setGraphicId($graphic_id)
     {
-        $this->container['graphicId'] = $graphicId;
+        $this->container['graphic_id'] = $graphic_id;
 
         return $this;
     }
 
     /**
-     * Gets groupId
+     * Gets group_id
      * @return int
      */
     public function getGroupId()
     {
-        return $this->container['groupId'];
+        return $this->container['group_id'];
     }
 
     /**
-     * Sets groupId
-     * @param int $groupId group_id integer
+     * Sets group_id
+     * @param int $group_id group_id integer
      * @return $this
      */
-    public function setGroupId($groupId)
+    public function setGroupId($group_id)
     {
-        $this->container['groupId'] = $groupId;
+        $this->container['group_id'] = $group_id;
 
         return $this;
     }
 
     /**
-     * Gets iconId
+     * Gets icon_id
      * @return int
      */
     public function getIconId()
     {
-        return $this->container['iconId'];
+        return $this->container['icon_id'];
     }
 
     /**
-     * Sets iconId
-     * @param int $iconId icon_id integer
+     * Sets icon_id
+     * @param int $icon_id icon_id integer
      * @return $this
      */
-    public function setIconId($iconId)
+    public function setIconId($icon_id)
     {
-        $this->container['iconId'] = $iconId;
+        $this->container['icon_id'] = $icon_id;
 
         return $this;
     }
@@ -441,22 +441,22 @@ class GetUniverseTypesTypeIdOk implements ArrayAccess
     }
 
     /**
-     * Gets portionSize
+     * Gets portion_size
      * @return int
      */
     public function getPortionSize()
     {
-        return $this->container['portionSize'];
+        return $this->container['portion_size'];
     }
 
     /**
-     * Sets portionSize
-     * @param int $portionSize portion_size integer
+     * Sets portion_size
+     * @param int $portion_size portion_size integer
      * @return $this
      */
-    public function setPortionSize($portionSize)
+    public function setPortionSize($portion_size)
     {
-        $this->container['portionSize'] = $portionSize;
+        $this->container['portion_size'] = $portion_size;
 
         return $this;
     }
@@ -504,22 +504,22 @@ class GetUniverseTypesTypeIdOk implements ArrayAccess
     }
 
     /**
-     * Gets typeId
+     * Gets type_id
      * @return int
      */
     public function getTypeId()
     {
-        return $this->container['typeId'];
+        return $this->container['type_id'];
     }
 
     /**
-     * Sets typeId
-     * @param int $typeId type_id integer
+     * Sets type_id
+     * @param int $type_id type_id integer
      * @return $this
      */
-    public function setTypeId($typeId)
+    public function setTypeId($type_id)
     {
-        $this->container['typeId'] = $typeId;
+        $this->container['type_id'] = $type_id;
 
         return $this;
     }

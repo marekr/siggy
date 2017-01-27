@@ -67,14 +67,14 @@ class GetCorporationsCorporationIdOk implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'allianceId' => 'int',
-        'ceoId' => 'int',
-        'corporationDescription' => 'string',
-        'corporationName' => 'string',
-        'creationDate' => '\DateTime',
-        'creatorId' => 'int',
-        'memberCount' => 'int',
-        'taxRate' => 'float',
+        'alliance_id' => 'int',
+        'ceo_id' => 'int',
+        'corporation_description' => 'string',
+        'corporation_name' => 'string',
+        'creation_date' => '\DateTime',
+        'creator_id' => 'int',
+        'member_count' => 'int',
+        'tax_rate' => 'float',
         'ticker' => 'string',
         'url' => 'string'
     );
@@ -89,14 +89,14 @@ class GetCorporationsCorporationIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'allianceId' => 'alliance_id',
-        'ceoId' => 'ceo_id',
-        'corporationDescription' => 'corporation_description',
-        'corporationName' => 'corporation_name',
-        'creationDate' => 'creation_date',
-        'creatorId' => 'creator_id',
-        'memberCount' => 'member_count',
-        'taxRate' => 'tax_rate',
+        'alliance_id' => 'alliance_id',
+        'ceo_id' => 'ceo_id',
+        'corporation_description' => 'corporation_description',
+        'corporation_name' => 'corporation_name',
+        'creation_date' => 'creation_date',
+        'creator_id' => 'creator_id',
+        'member_count' => 'member_count',
+        'tax_rate' => 'tax_rate',
         'ticker' => 'ticker',
         'url' => 'url'
     );
@@ -111,14 +111,14 @@ class GetCorporationsCorporationIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'allianceId' => 'setAllianceId',
-        'ceoId' => 'setCeoId',
-        'corporationDescription' => 'setCorporationDescription',
-        'corporationName' => 'setCorporationName',
-        'creationDate' => 'setCreationDate',
-        'creatorId' => 'setCreatorId',
-        'memberCount' => 'setMemberCount',
-        'taxRate' => 'setTaxRate',
+        'alliance_id' => 'setAllianceId',
+        'ceo_id' => 'setCeoId',
+        'corporation_description' => 'setCorporationDescription',
+        'corporation_name' => 'setCorporationName',
+        'creation_date' => 'setCreationDate',
+        'creator_id' => 'setCreatorId',
+        'member_count' => 'setMemberCount',
+        'tax_rate' => 'setTaxRate',
         'ticker' => 'setTicker',
         'url' => 'setUrl'
     );
@@ -133,14 +133,14 @@ class GetCorporationsCorporationIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'allianceId' => 'getAllianceId',
-        'ceoId' => 'getCeoId',
-        'corporationDescription' => 'getCorporationDescription',
-        'corporationName' => 'getCorporationName',
-        'creationDate' => 'getCreationDate',
-        'creatorId' => 'getCreatorId',
-        'memberCount' => 'getMemberCount',
-        'taxRate' => 'getTaxRate',
+        'alliance_id' => 'getAllianceId',
+        'ceo_id' => 'getCeoId',
+        'corporation_description' => 'getCorporationDescription',
+        'corporation_name' => 'getCorporationName',
+        'creation_date' => 'getCreationDate',
+        'creator_id' => 'getCreatorId',
+        'member_count' => 'getMemberCount',
+        'tax_rate' => 'getTaxRate',
         'ticker' => 'getTicker',
         'url' => 'getUrl'
     );
@@ -166,14 +166,14 @@ class GetCorporationsCorporationIdOk implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['allianceId'] = isset($data['allianceId']) ? $data['allianceId'] : null;
-        $this->container['ceoId'] = isset($data['ceoId']) ? $data['ceoId'] : null;
-        $this->container['corporationDescription'] = isset($data['corporationDescription']) ? $data['corporationDescription'] : null;
-        $this->container['corporationName'] = isset($data['corporationName']) ? $data['corporationName'] : null;
-        $this->container['creationDate'] = isset($data['creationDate']) ? $data['creationDate'] : null;
-        $this->container['creatorId'] = isset($data['creatorId']) ? $data['creatorId'] : null;
-        $this->container['memberCount'] = isset($data['memberCount']) ? $data['memberCount'] : null;
-        $this->container['taxRate'] = isset($data['taxRate']) ? $data['taxRate'] : null;
+        $this->container['alliance_id'] = isset($data['alliance_id']) ? $data['alliance_id'] : null;
+        $this->container['ceo_id'] = isset($data['ceo_id']) ? $data['ceo_id'] : null;
+        $this->container['corporation_description'] = isset($data['corporation_description']) ? $data['corporation_description'] : null;
+        $this->container['corporation_name'] = isset($data['corporation_name']) ? $data['corporation_name'] : null;
+        $this->container['creation_date'] = isset($data['creation_date']) ? $data['creation_date'] : null;
+        $this->container['creator_id'] = isset($data['creator_id']) ? $data['creator_id'] : null;
+        $this->container['member_count'] = isset($data['member_count']) ? $data['member_count'] : null;
+        $this->container['tax_rate'] = isset($data['tax_rate']) ? $data['tax_rate'] : null;
         $this->container['ticker'] = isset($data['ticker']) ? $data['ticker'] : null;
         $this->container['url'] = isset($data['url']) ? $data['url'] : null;
     }
@@ -186,33 +186,33 @@ class GetCorporationsCorporationIdOk implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['ceoId'] === null) {
-            $invalid_properties[] = "'ceoId' can't be null";
+        if ($this->container['ceo_id'] === null) {
+            $invalid_properties[] = "'ceo_id' can't be null";
         }
-        if ($this->container['corporationDescription'] === null) {
-            $invalid_properties[] = "'corporationDescription' can't be null";
+        if ($this->container['corporation_description'] === null) {
+            $invalid_properties[] = "'corporation_description' can't be null";
         }
-        if ($this->container['corporationName'] === null) {
-            $invalid_properties[] = "'corporationName' can't be null";
+        if ($this->container['corporation_name'] === null) {
+            $invalid_properties[] = "'corporation_name' can't be null";
         }
-        if ($this->container['creationDate'] === null) {
-            $invalid_properties[] = "'creationDate' can't be null";
+        if ($this->container['creation_date'] === null) {
+            $invalid_properties[] = "'creation_date' can't be null";
         }
-        if ($this->container['creatorId'] === null) {
-            $invalid_properties[] = "'creatorId' can't be null";
+        if ($this->container['creator_id'] === null) {
+            $invalid_properties[] = "'creator_id' can't be null";
         }
-        if ($this->container['memberCount'] === null) {
-            $invalid_properties[] = "'memberCount' can't be null";
+        if ($this->container['member_count'] === null) {
+            $invalid_properties[] = "'member_count' can't be null";
         }
-        if ($this->container['taxRate'] === null) {
-            $invalid_properties[] = "'taxRate' can't be null";
+        if ($this->container['tax_rate'] === null) {
+            $invalid_properties[] = "'tax_rate' can't be null";
         }
-        if (($this->container['taxRate'] > 1.0)) {
-            $invalid_properties[] = "invalid value for 'taxRate', must be smaller than or equal to 1.0.";
+        if (($this->container['tax_rate'] > 1.0)) {
+            $invalid_properties[] = "invalid value for 'tax_rate', must be smaller than or equal to 1.0.";
         }
 
-        if (($this->container['taxRate'] < 0.0)) {
-            $invalid_properties[] = "invalid value for 'taxRate', must be bigger than or equal to 0.0.";
+        if (($this->container['tax_rate'] < 0.0)) {
+            $invalid_properties[] = "invalid value for 'tax_rate', must be bigger than or equal to 0.0.";
         }
 
         if ($this->container['ticker'] === null) {
@@ -232,31 +232,31 @@ class GetCorporationsCorporationIdOk implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['ceoId'] === null) {
+        if ($this->container['ceo_id'] === null) {
             return false;
         }
-        if ($this->container['corporationDescription'] === null) {
+        if ($this->container['corporation_description'] === null) {
             return false;
         }
-        if ($this->container['corporationName'] === null) {
+        if ($this->container['corporation_name'] === null) {
             return false;
         }
-        if ($this->container['creationDate'] === null) {
+        if ($this->container['creation_date'] === null) {
             return false;
         }
-        if ($this->container['creatorId'] === null) {
+        if ($this->container['creator_id'] === null) {
             return false;
         }
-        if ($this->container['memberCount'] === null) {
+        if ($this->container['member_count'] === null) {
             return false;
         }
-        if ($this->container['taxRate'] === null) {
+        if ($this->container['tax_rate'] === null) {
             return false;
         }
-        if ($this->container['taxRate'] > 1.0) {
+        if ($this->container['tax_rate'] > 1.0) {
             return false;
         }
-        if ($this->container['taxRate'] < 0.0) {
+        if ($this->container['tax_rate'] < 0.0) {
             return false;
         }
         if ($this->container['ticker'] === null) {
@@ -270,176 +270,176 @@ class GetCorporationsCorporationIdOk implements ArrayAccess
 
 
     /**
-     * Gets allianceId
+     * Gets alliance_id
      * @return int
      */
     public function getAllianceId()
     {
-        return $this->container['allianceId'];
+        return $this->container['alliance_id'];
     }
 
     /**
-     * Sets allianceId
-     * @param int $allianceId id of alliance that corporation is a member of, if any
+     * Sets alliance_id
+     * @param int $alliance_id id of alliance that corporation is a member of, if any
      * @return $this
      */
-    public function setAllianceId($allianceId)
+    public function setAllianceId($alliance_id)
     {
-        $this->container['allianceId'] = $allianceId;
+        $this->container['alliance_id'] = $alliance_id;
 
         return $this;
     }
 
     /**
-     * Gets ceoId
+     * Gets ceo_id
      * @return int
      */
     public function getCeoId()
     {
-        return $this->container['ceoId'];
+        return $this->container['ceo_id'];
     }
 
     /**
-     * Sets ceoId
-     * @param int $ceoId ceo_id integer
+     * Sets ceo_id
+     * @param int $ceo_id ceo_id integer
      * @return $this
      */
-    public function setCeoId($ceoId)
+    public function setCeoId($ceo_id)
     {
-        $this->container['ceoId'] = $ceoId;
+        $this->container['ceo_id'] = $ceo_id;
 
         return $this;
     }
 
     /**
-     * Gets corporationDescription
+     * Gets corporation_description
      * @return string
      */
     public function getCorporationDescription()
     {
-        return $this->container['corporationDescription'];
+        return $this->container['corporation_description'];
     }
 
     /**
-     * Sets corporationDescription
-     * @param string $corporationDescription corporation_description string
+     * Sets corporation_description
+     * @param string $corporation_description corporation_description string
      * @return $this
      */
-    public function setCorporationDescription($corporationDescription)
+    public function setCorporationDescription($corporation_description)
     {
-        $this->container['corporationDescription'] = $corporationDescription;
+        $this->container['corporation_description'] = $corporation_description;
 
         return $this;
     }
 
     /**
-     * Gets corporationName
+     * Gets corporation_name
      * @return string
      */
     public function getCorporationName()
     {
-        return $this->container['corporationName'];
+        return $this->container['corporation_name'];
     }
 
     /**
-     * Sets corporationName
-     * @param string $corporationName the full name of the corporation
+     * Sets corporation_name
+     * @param string $corporation_name the full name of the corporation
      * @return $this
      */
-    public function setCorporationName($corporationName)
+    public function setCorporationName($corporation_name)
     {
-        $this->container['corporationName'] = $corporationName;
+        $this->container['corporation_name'] = $corporation_name;
 
         return $this;
     }
 
     /**
-     * Gets creationDate
+     * Gets creation_date
      * @return \DateTime
      */
     public function getCreationDate()
     {
-        return $this->container['creationDate'];
+        return $this->container['creation_date'];
     }
 
     /**
-     * Sets creationDate
-     * @param \DateTime $creationDate creation_date string
+     * Sets creation_date
+     * @param \DateTime $creation_date creation_date string
      * @return $this
      */
-    public function setCreationDate($creationDate)
+    public function setCreationDate($creation_date)
     {
-        $this->container['creationDate'] = $creationDate;
+        $this->container['creation_date'] = $creation_date;
 
         return $this;
     }
 
     /**
-     * Gets creatorId
+     * Gets creator_id
      * @return int
      */
     public function getCreatorId()
     {
-        return $this->container['creatorId'];
+        return $this->container['creator_id'];
     }
 
     /**
-     * Sets creatorId
-     * @param int $creatorId creator_id integer
+     * Sets creator_id
+     * @param int $creator_id creator_id integer
      * @return $this
      */
-    public function setCreatorId($creatorId)
+    public function setCreatorId($creator_id)
     {
-        $this->container['creatorId'] = $creatorId;
+        $this->container['creator_id'] = $creator_id;
 
         return $this;
     }
 
     /**
-     * Gets memberCount
+     * Gets member_count
      * @return int
      */
     public function getMemberCount()
     {
-        return $this->container['memberCount'];
+        return $this->container['member_count'];
     }
 
     /**
-     * Sets memberCount
-     * @param int $memberCount member_count integer
+     * Sets member_count
+     * @param int $member_count member_count integer
      * @return $this
      */
-    public function setMemberCount($memberCount)
+    public function setMemberCount($member_count)
     {
-        $this->container['memberCount'] = $memberCount;
+        $this->container['member_count'] = $member_count;
 
         return $this;
     }
 
     /**
-     * Gets taxRate
+     * Gets tax_rate
      * @return float
      */
     public function getTaxRate()
     {
-        return $this->container['taxRate'];
+        return $this->container['tax_rate'];
     }
 
     /**
-     * Sets taxRate
-     * @param float $taxRate tax_rate number
+     * Sets tax_rate
+     * @param float $tax_rate tax_rate number
      * @return $this
      */
-    public function setTaxRate($taxRate)
+    public function setTaxRate($tax_rate)
     {
 
-        if ($taxRate > 1.0) {
-            throw new \InvalidArgumentException('invalid value for $taxRate when calling GetCorporationsCorporationIdOk., must be smaller than or equal to 1.0.');
+        if ($tax_rate > 1.0) {
+            throw new \InvalidArgumentException('invalid value for $tax_rate when calling GetCorporationsCorporationIdOk., must be smaller than or equal to 1.0.');
         }
-        if ($taxRate < 0.0) {
-            throw new \InvalidArgumentException('invalid value for $taxRate when calling GetCorporationsCorporationIdOk., must be bigger than or equal to 0.0.');
+        if ($tax_rate < 0.0) {
+            throw new \InvalidArgumentException('invalid value for $tax_rate when calling GetCorporationsCorporationIdOk., must be bigger than or equal to 0.0.');
         }
-        $this->container['taxRate'] = $taxRate;
+        $this->container['tax_rate'] = $tax_rate;
 
         return $this;
     }

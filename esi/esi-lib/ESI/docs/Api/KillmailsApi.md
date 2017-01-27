@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 
 # **getCharactersCharacterIdKillmailsRecent**
-> \ESI\Model\GetCharactersCharacterIdKillmailsRecent200Ok[] getCharactersCharacterIdKillmailsRecent($characterId, $maxCount, $maxKillId, $datasource)
+> \ESI\Model\GetCharactersCharacterIdKillmailsRecent200Ok[] getCharactersCharacterIdKillmailsRecent($character_id, $max_count, $max_kill_id, $datasource)
 
 List kills and losses
 
@@ -24,13 +24,13 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\KillmailsApi();
-$characterId = 56; // int | An EVE character ID
-$maxCount = 50; // int | How many killmails to return at maximum
-$maxKillId = 56; // int | Only return killmails with ID smaller than this.
+$character_id = 56; // int | An EVE character ID
+$max_count = 50; // int | How many killmails to return at maximum
+$max_kill_id = 56; // int | Only return killmails with ID smaller than this.
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getCharactersCharacterIdKillmailsRecent($characterId, $maxCount, $maxKillId, $datasource);
+    $result = $api_instance->getCharactersCharacterIdKillmailsRecent($character_id, $max_count, $max_kill_id, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling KillmailsApi->getCharactersCharacterIdKillmailsRecent: ', $e->getMessage(), PHP_EOL;
@@ -42,9 +42,9 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **characterId** | **int**| An EVE character ID |
- **maxCount** | **int**| How many killmails to return at maximum | [optional] [default to 50]
- **maxKillId** | **int**| Only return killmails with ID smaller than this. | [optional]
+ **character_id** | **int**| An EVE character ID |
+ **max_count** | **int**| How many killmails to return at maximum | [optional] [default to 50]
+ **max_kill_id** | **int**| Only return killmails with ID smaller than this. | [optional]
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type
@@ -63,7 +63,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getKillmailsKillmailIdKillmailHash**
-> \ESI\Model\GetKillmailsKillmailIdKillmailHashOk getKillmailsKillmailIdKillmailHash($killmailId, $killmailHash, $datasource)
+> \ESI\Model\GetKillmailsKillmailIdKillmailHashOk getKillmailsKillmailIdKillmailHash($killmail_id, $killmail_hash, $datasource)
 
 Get a single killmail
 
@@ -75,12 +75,12 @@ Return a single killmail from its ID and hash  ---  Alternate route: `/v1/killma
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new ESI\Api\KillmailsApi();
-$killmailId = 56; // int | The killmail ID to be queried
-$killmailHash = "killmailHash_example"; // string | The killmail hash for verification
+$killmail_id = 56; // int | The killmail ID to be queried
+$killmail_hash = "killmail_hash_example"; // string | The killmail hash for verification
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getKillmailsKillmailIdKillmailHash($killmailId, $killmailHash, $datasource);
+    $result = $api_instance->getKillmailsKillmailIdKillmailHash($killmail_id, $killmail_hash, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling KillmailsApi->getKillmailsKillmailIdKillmailHash: ', $e->getMessage(), PHP_EOL;
@@ -92,8 +92,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **killmailId** | **int**| The killmail ID to be queried |
- **killmailHash** | **string**| The killmail hash for verification |
+ **killmail_id** | **int**| The killmail ID to be queried |
+ **killmail_hash** | **string**| The killmail hash for verification |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type

@@ -67,13 +67,13 @@ class GetCharactersCharacterIdAssets200Ok implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'isSingleton' => 'bool',
-        'itemId' => 'int',
-        'locationFlag' => 'string',
-        'locationId' => 'int',
-        'locationType' => 'string',
+        'is_singleton' => 'bool',
+        'item_id' => 'int',
+        'location_flag' => 'string',
+        'location_id' => 'int',
+        'location_type' => 'string',
         'quantity' => 'int',
-        'typeId' => 'int'
+        'type_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -86,13 +86,13 @@ class GetCharactersCharacterIdAssets200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'isSingleton' => 'is_singleton',
-        'itemId' => 'item_id',
-        'locationFlag' => 'location_flag',
-        'locationId' => 'location_id',
-        'locationType' => 'location_type',
+        'is_singleton' => 'is_singleton',
+        'item_id' => 'item_id',
+        'location_flag' => 'location_flag',
+        'location_id' => 'location_id',
+        'location_type' => 'location_type',
         'quantity' => 'quantity',
-        'typeId' => 'type_id'
+        'type_id' => 'type_id'
     );
 
     public static function attributeMap()
@@ -105,13 +105,13 @@ class GetCharactersCharacterIdAssets200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'isSingleton' => 'setIsSingleton',
-        'itemId' => 'setItemId',
-        'locationFlag' => 'setLocationFlag',
-        'locationId' => 'setLocationId',
-        'locationType' => 'setLocationType',
+        'is_singleton' => 'setIsSingleton',
+        'item_id' => 'setItemId',
+        'location_flag' => 'setLocationFlag',
+        'location_id' => 'setLocationId',
+        'location_type' => 'setLocationType',
         'quantity' => 'setQuantity',
-        'typeId' => 'setTypeId'
+        'type_id' => 'setTypeId'
     );
 
     public static function setters()
@@ -124,13 +124,13 @@ class GetCharactersCharacterIdAssets200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'isSingleton' => 'getIsSingleton',
-        'itemId' => 'getItemId',
-        'locationFlag' => 'getLocationFlag',
-        'locationId' => 'getLocationId',
-        'locationType' => 'getLocationType',
+        'is_singleton' => 'getIsSingleton',
+        'item_id' => 'getItemId',
+        'location_flag' => 'getLocationFlag',
+        'location_id' => 'getLocationId',
+        'location_type' => 'getLocationType',
         'quantity' => 'getQuantity',
-        'typeId' => 'getTypeId'
+        'type_id' => 'getTypeId'
     );
 
     public static function getters()
@@ -332,13 +332,13 @@ class GetCharactersCharacterIdAssets200Ok implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['isSingleton'] = isset($data['isSingleton']) ? $data['isSingleton'] : null;
-        $this->container['itemId'] = isset($data['itemId']) ? $data['itemId'] : null;
-        $this->container['locationFlag'] = isset($data['locationFlag']) ? $data['locationFlag'] : null;
-        $this->container['locationId'] = isset($data['locationId']) ? $data['locationId'] : null;
-        $this->container['locationType'] = isset($data['locationType']) ? $data['locationType'] : null;
+        $this->container['is_singleton'] = isset($data['is_singleton']) ? $data['is_singleton'] : null;
+        $this->container['item_id'] = isset($data['item_id']) ? $data['item_id'] : null;
+        $this->container['location_flag'] = isset($data['location_flag']) ? $data['location_flag'] : null;
+        $this->container['location_id'] = isset($data['location_id']) ? $data['location_id'] : null;
+        $this->container['location_type'] = isset($data['location_type']) ? $data['location_type'] : null;
         $this->container['quantity'] = isset($data['quantity']) ? $data['quantity'] : null;
-        $this->container['typeId'] = isset($data['typeId']) ? $data['typeId'] : null;
+        $this->container['type_id'] = isset($data['type_id']) ? $data['type_id'] : null;
     }
 
     /**
@@ -349,33 +349,33 @@ class GetCharactersCharacterIdAssets200Ok implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['isSingleton'] === null) {
-            $invalid_properties[] = "'isSingleton' can't be null";
+        if ($this->container['is_singleton'] === null) {
+            $invalid_properties[] = "'is_singleton' can't be null";
         }
-        if ($this->container['itemId'] === null) {
-            $invalid_properties[] = "'itemId' can't be null";
+        if ($this->container['item_id'] === null) {
+            $invalid_properties[] = "'item_id' can't be null";
         }
-        if ($this->container['locationFlag'] === null) {
-            $invalid_properties[] = "'locationFlag' can't be null";
+        if ($this->container['location_flag'] === null) {
+            $invalid_properties[] = "'location_flag' can't be null";
         }
         $allowed_values = array("AutoFit", "Cargo", "CorpseBay", "DroneBay", "FleetHangar", "Deliveries", "HiddenModifiers", "Hangar", "HangarAll", "LoSlot0", "LoSlot1", "LoSlot2", "LoSlot3", "LoSlot4", "LoSlot5", "LoSlot6", "LoSlot7", "MedSlot0", "MedSlot1", "MedSlot2", "MedSlot3", "MedSlot4", "MedSlot5", "MedSlot6", "MedSlot7", "HiSlot0", "HiSlot1", "HiSlot2", "HiSlot3", "HiSlot4", "HiSlot5", "HiSlot6", "HiSlot7", "AssetSafety", "Locked", "Unlocked", "Implant", "QuafeBay", "RigSlot0", "RigSlot1", "RigSlot2", "RigSlot3", "RigSlot4", "RigSlot5", "RigSlot6", "RigSlot7", "ShipHangar", "SpecializedFuelBay", "SpecializedOreHold", "SpecializedGasHold", "SpecializedMineralHold", "SpecializedSalvageHold", "SpecializedShipHold", "SpecializedSmallShipHold", "SpecializedMediumShipHold", "SpecializedLargeShipHold", "SpecializedIndustrialShipHold", "SpecializedAmmoHold", "SpecializedCommandCenterHold", "SpecializedPlanetaryCommoditiesHold", "SpecializedMaterialBay", "SubSystemSlot0", "SubSystemSlot1", "SubSystemSlot2", "SubSystemSlot3", "SubSystemSlot4", "SubSystemSlot5", "SubSystemSlot6", "SubSystemSlot7", "FighterBay", "FighterTube0", "FighterTube1", "FighterTube2", "FighterTube3", "FighterTube4", "Module");
-        if (!in_array($this->container['locationFlag'], $allowed_values)) {
-            $invalid_properties[] = "invalid value for 'locationFlag', must be one of #{allowed_values}.";
+        if (!in_array($this->container['location_flag'], $allowed_values)) {
+            $invalid_properties[] = "invalid value for 'location_flag', must be one of #{allowed_values}.";
         }
 
-        if ($this->container['locationId'] === null) {
-            $invalid_properties[] = "'locationId' can't be null";
+        if ($this->container['location_id'] === null) {
+            $invalid_properties[] = "'location_id' can't be null";
         }
-        if ($this->container['locationType'] === null) {
-            $invalid_properties[] = "'locationType' can't be null";
+        if ($this->container['location_type'] === null) {
+            $invalid_properties[] = "'location_type' can't be null";
         }
         $allowed_values = array("station", "solar_system", "other");
-        if (!in_array($this->container['locationType'], $allowed_values)) {
-            $invalid_properties[] = "invalid value for 'locationType', must be one of #{allowed_values}.";
+        if (!in_array($this->container['location_type'], $allowed_values)) {
+            $invalid_properties[] = "invalid value for 'location_type', must be one of #{allowed_values}.";
         }
 
-        if ($this->container['typeId'] === null) {
-            $invalid_properties[] = "'typeId' can't be null";
+        if ($this->container['type_id'] === null) {
+            $invalid_properties[] = "'type_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -388,30 +388,30 @@ class GetCharactersCharacterIdAssets200Ok implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['isSingleton'] === null) {
+        if ($this->container['is_singleton'] === null) {
             return false;
         }
-        if ($this->container['itemId'] === null) {
+        if ($this->container['item_id'] === null) {
             return false;
         }
-        if ($this->container['locationFlag'] === null) {
+        if ($this->container['location_flag'] === null) {
             return false;
         }
         $allowed_values = array("AutoFit", "Cargo", "CorpseBay", "DroneBay", "FleetHangar", "Deliveries", "HiddenModifiers", "Hangar", "HangarAll", "LoSlot0", "LoSlot1", "LoSlot2", "LoSlot3", "LoSlot4", "LoSlot5", "LoSlot6", "LoSlot7", "MedSlot0", "MedSlot1", "MedSlot2", "MedSlot3", "MedSlot4", "MedSlot5", "MedSlot6", "MedSlot7", "HiSlot0", "HiSlot1", "HiSlot2", "HiSlot3", "HiSlot4", "HiSlot5", "HiSlot6", "HiSlot7", "AssetSafety", "Locked", "Unlocked", "Implant", "QuafeBay", "RigSlot0", "RigSlot1", "RigSlot2", "RigSlot3", "RigSlot4", "RigSlot5", "RigSlot6", "RigSlot7", "ShipHangar", "SpecializedFuelBay", "SpecializedOreHold", "SpecializedGasHold", "SpecializedMineralHold", "SpecializedSalvageHold", "SpecializedShipHold", "SpecializedSmallShipHold", "SpecializedMediumShipHold", "SpecializedLargeShipHold", "SpecializedIndustrialShipHold", "SpecializedAmmoHold", "SpecializedCommandCenterHold", "SpecializedPlanetaryCommoditiesHold", "SpecializedMaterialBay", "SubSystemSlot0", "SubSystemSlot1", "SubSystemSlot2", "SubSystemSlot3", "SubSystemSlot4", "SubSystemSlot5", "SubSystemSlot6", "SubSystemSlot7", "FighterBay", "FighterTube0", "FighterTube1", "FighterTube2", "FighterTube3", "FighterTube4", "Module");
-        if (!in_array($this->container['locationFlag'], $allowed_values)) {
+        if (!in_array($this->container['location_flag'], $allowed_values)) {
             return false;
         }
-        if ($this->container['locationId'] === null) {
+        if ($this->container['location_id'] === null) {
             return false;
         }
-        if ($this->container['locationType'] === null) {
+        if ($this->container['location_type'] === null) {
             return false;
         }
         $allowed_values = array("station", "solar_system", "other");
-        if (!in_array($this->container['locationType'], $allowed_values)) {
+        if (!in_array($this->container['location_type'], $allowed_values)) {
             return false;
         }
-        if ($this->container['typeId'] === null) {
+        if ($this->container['type_id'] === null) {
             return false;
         }
         return true;
@@ -419,114 +419,114 @@ class GetCharactersCharacterIdAssets200Ok implements ArrayAccess
 
 
     /**
-     * Gets isSingleton
+     * Gets is_singleton
      * @return bool
      */
     public function getIsSingleton()
     {
-        return $this->container['isSingleton'];
+        return $this->container['is_singleton'];
     }
 
     /**
-     * Sets isSingleton
-     * @param bool $isSingleton is_singleton boolean
+     * Sets is_singleton
+     * @param bool $is_singleton is_singleton boolean
      * @return $this
      */
-    public function setIsSingleton($isSingleton)
+    public function setIsSingleton($is_singleton)
     {
-        $this->container['isSingleton'] = $isSingleton;
+        $this->container['is_singleton'] = $is_singleton;
 
         return $this;
     }
 
     /**
-     * Gets itemId
+     * Gets item_id
      * @return int
      */
     public function getItemId()
     {
-        return $this->container['itemId'];
+        return $this->container['item_id'];
     }
 
     /**
-     * Sets itemId
-     * @param int $itemId item_id integer
+     * Sets item_id
+     * @param int $item_id item_id integer
      * @return $this
      */
-    public function setItemId($itemId)
+    public function setItemId($item_id)
     {
-        $this->container['itemId'] = $itemId;
+        $this->container['item_id'] = $item_id;
 
         return $this;
     }
 
     /**
-     * Gets locationFlag
+     * Gets location_flag
      * @return string
      */
     public function getLocationFlag()
     {
-        return $this->container['locationFlag'];
+        return $this->container['location_flag'];
     }
 
     /**
-     * Sets locationFlag
-     * @param string $locationFlag location_flag string
+     * Sets location_flag
+     * @param string $location_flag location_flag string
      * @return $this
      */
-    public function setLocationFlag($locationFlag)
+    public function setLocationFlag($location_flag)
     {
         $allowed_values = array('AutoFit', 'Cargo', 'CorpseBay', 'DroneBay', 'FleetHangar', 'Deliveries', 'HiddenModifiers', 'Hangar', 'HangarAll', 'LoSlot0', 'LoSlot1', 'LoSlot2', 'LoSlot3', 'LoSlot4', 'LoSlot5', 'LoSlot6', 'LoSlot7', 'MedSlot0', 'MedSlot1', 'MedSlot2', 'MedSlot3', 'MedSlot4', 'MedSlot5', 'MedSlot6', 'MedSlot7', 'HiSlot0', 'HiSlot1', 'HiSlot2', 'HiSlot3', 'HiSlot4', 'HiSlot5', 'HiSlot6', 'HiSlot7', 'AssetSafety', 'Locked', 'Unlocked', 'Implant', 'QuafeBay', 'RigSlot0', 'RigSlot1', 'RigSlot2', 'RigSlot3', 'RigSlot4', 'RigSlot5', 'RigSlot6', 'RigSlot7', 'ShipHangar', 'SpecializedFuelBay', 'SpecializedOreHold', 'SpecializedGasHold', 'SpecializedMineralHold', 'SpecializedSalvageHold', 'SpecializedShipHold', 'SpecializedSmallShipHold', 'SpecializedMediumShipHold', 'SpecializedLargeShipHold', 'SpecializedIndustrialShipHold', 'SpecializedAmmoHold', 'SpecializedCommandCenterHold', 'SpecializedPlanetaryCommoditiesHold', 'SpecializedMaterialBay', 'SubSystemSlot0', 'SubSystemSlot1', 'SubSystemSlot2', 'SubSystemSlot3', 'SubSystemSlot4', 'SubSystemSlot5', 'SubSystemSlot6', 'SubSystemSlot7', 'FighterBay', 'FighterTube0', 'FighterTube1', 'FighterTube2', 'FighterTube3', 'FighterTube4', 'Module');
-        if (!in_array($locationFlag, $allowed_values)) {
-            throw new \InvalidArgumentException("Invalid value for 'locationFlag', must be one of 'AutoFit', 'Cargo', 'CorpseBay', 'DroneBay', 'FleetHangar', 'Deliveries', 'HiddenModifiers', 'Hangar', 'HangarAll', 'LoSlot0', 'LoSlot1', 'LoSlot2', 'LoSlot3', 'LoSlot4', 'LoSlot5', 'LoSlot6', 'LoSlot7', 'MedSlot0', 'MedSlot1', 'MedSlot2', 'MedSlot3', 'MedSlot4', 'MedSlot5', 'MedSlot6', 'MedSlot7', 'HiSlot0', 'HiSlot1', 'HiSlot2', 'HiSlot3', 'HiSlot4', 'HiSlot5', 'HiSlot6', 'HiSlot7', 'AssetSafety', 'Locked', 'Unlocked', 'Implant', 'QuafeBay', 'RigSlot0', 'RigSlot1', 'RigSlot2', 'RigSlot3', 'RigSlot4', 'RigSlot5', 'RigSlot6', 'RigSlot7', 'ShipHangar', 'SpecializedFuelBay', 'SpecializedOreHold', 'SpecializedGasHold', 'SpecializedMineralHold', 'SpecializedSalvageHold', 'SpecializedShipHold', 'SpecializedSmallShipHold', 'SpecializedMediumShipHold', 'SpecializedLargeShipHold', 'SpecializedIndustrialShipHold', 'SpecializedAmmoHold', 'SpecializedCommandCenterHold', 'SpecializedPlanetaryCommoditiesHold', 'SpecializedMaterialBay', 'SubSystemSlot0', 'SubSystemSlot1', 'SubSystemSlot2', 'SubSystemSlot3', 'SubSystemSlot4', 'SubSystemSlot5', 'SubSystemSlot6', 'SubSystemSlot7', 'FighterBay', 'FighterTube0', 'FighterTube1', 'FighterTube2', 'FighterTube3', 'FighterTube4', 'Module'");
+        if (!in_array($location_flag, $allowed_values)) {
+            throw new \InvalidArgumentException("Invalid value for 'location_flag', must be one of 'AutoFit', 'Cargo', 'CorpseBay', 'DroneBay', 'FleetHangar', 'Deliveries', 'HiddenModifiers', 'Hangar', 'HangarAll', 'LoSlot0', 'LoSlot1', 'LoSlot2', 'LoSlot3', 'LoSlot4', 'LoSlot5', 'LoSlot6', 'LoSlot7', 'MedSlot0', 'MedSlot1', 'MedSlot2', 'MedSlot3', 'MedSlot4', 'MedSlot5', 'MedSlot6', 'MedSlot7', 'HiSlot0', 'HiSlot1', 'HiSlot2', 'HiSlot3', 'HiSlot4', 'HiSlot5', 'HiSlot6', 'HiSlot7', 'AssetSafety', 'Locked', 'Unlocked', 'Implant', 'QuafeBay', 'RigSlot0', 'RigSlot1', 'RigSlot2', 'RigSlot3', 'RigSlot4', 'RigSlot5', 'RigSlot6', 'RigSlot7', 'ShipHangar', 'SpecializedFuelBay', 'SpecializedOreHold', 'SpecializedGasHold', 'SpecializedMineralHold', 'SpecializedSalvageHold', 'SpecializedShipHold', 'SpecializedSmallShipHold', 'SpecializedMediumShipHold', 'SpecializedLargeShipHold', 'SpecializedIndustrialShipHold', 'SpecializedAmmoHold', 'SpecializedCommandCenterHold', 'SpecializedPlanetaryCommoditiesHold', 'SpecializedMaterialBay', 'SubSystemSlot0', 'SubSystemSlot1', 'SubSystemSlot2', 'SubSystemSlot3', 'SubSystemSlot4', 'SubSystemSlot5', 'SubSystemSlot6', 'SubSystemSlot7', 'FighterBay', 'FighterTube0', 'FighterTube1', 'FighterTube2', 'FighterTube3', 'FighterTube4', 'Module'");
         }
-        $this->container['locationFlag'] = $locationFlag;
+        $this->container['location_flag'] = $location_flag;
 
         return $this;
     }
 
     /**
-     * Gets locationId
+     * Gets location_id
      * @return int
      */
     public function getLocationId()
     {
-        return $this->container['locationId'];
+        return $this->container['location_id'];
     }
 
     /**
-     * Sets locationId
-     * @param int $locationId location_id integer
+     * Sets location_id
+     * @param int $location_id location_id integer
      * @return $this
      */
-    public function setLocationId($locationId)
+    public function setLocationId($location_id)
     {
-        $this->container['locationId'] = $locationId;
+        $this->container['location_id'] = $location_id;
 
         return $this;
     }
 
     /**
-     * Gets locationType
+     * Gets location_type
      * @return string
      */
     public function getLocationType()
     {
-        return $this->container['locationType'];
+        return $this->container['location_type'];
     }
 
     /**
-     * Sets locationType
-     * @param string $locationType location_type string
+     * Sets location_type
+     * @param string $location_type location_type string
      * @return $this
      */
-    public function setLocationType($locationType)
+    public function setLocationType($location_type)
     {
         $allowed_values = array('station', 'solar_system', 'other');
-        if (!in_array($locationType, $allowed_values)) {
-            throw new \InvalidArgumentException("Invalid value for 'locationType', must be one of 'station', 'solar_system', 'other'");
+        if (!in_array($location_type, $allowed_values)) {
+            throw new \InvalidArgumentException("Invalid value for 'location_type', must be one of 'station', 'solar_system', 'other'");
         }
-        $this->container['locationType'] = $locationType;
+        $this->container['location_type'] = $location_type;
 
         return $this;
     }
@@ -553,22 +553,22 @@ class GetCharactersCharacterIdAssets200Ok implements ArrayAccess
     }
 
     /**
-     * Gets typeId
+     * Gets type_id
      * @return int
      */
     public function getTypeId()
     {
-        return $this->container['typeId'];
+        return $this->container['type_id'];
     }
 
     /**
-     * Sets typeId
-     * @param int $typeId type_id integer
+     * Sets type_id
+     * @param int $type_id type_id integer
      * @return $this
      */
-    public function setTypeId($typeId)
+    public function setTypeId($type_id)
     {
-        $this->container['typeId'] = $typeId;
+        $this->container['type_id'] = $type_id;
 
         return $this;
     }

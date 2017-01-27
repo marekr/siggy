@@ -67,9 +67,9 @@ class GetCharactersCharacterIdLocationOk implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'solarSystemId' => 'int',
-        'stationId' => 'int',
-        'structureId' => 'int'
+        'solar_system_id' => 'int',
+        'station_id' => 'int',
+        'structure_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -82,9 +82,9 @@ class GetCharactersCharacterIdLocationOk implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'solarSystemId' => 'solar_system_id',
-        'stationId' => 'station_id',
-        'structureId' => 'structure_id'
+        'solar_system_id' => 'solar_system_id',
+        'station_id' => 'station_id',
+        'structure_id' => 'structure_id'
     );
 
     public static function attributeMap()
@@ -97,9 +97,9 @@ class GetCharactersCharacterIdLocationOk implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'solarSystemId' => 'setSolarSystemId',
-        'stationId' => 'setStationId',
-        'structureId' => 'setStructureId'
+        'solar_system_id' => 'setSolarSystemId',
+        'station_id' => 'setStationId',
+        'structure_id' => 'setStructureId'
     );
 
     public static function setters()
@@ -112,9 +112,9 @@ class GetCharactersCharacterIdLocationOk implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'solarSystemId' => 'getSolarSystemId',
-        'stationId' => 'getStationId',
-        'structureId' => 'getStructureId'
+        'solar_system_id' => 'getSolarSystemId',
+        'station_id' => 'getStationId',
+        'structure_id' => 'getStructureId'
     );
 
     public static function getters()
@@ -138,9 +138,9 @@ class GetCharactersCharacterIdLocationOk implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['solarSystemId'] = isset($data['solarSystemId']) ? $data['solarSystemId'] : null;
-        $this->container['stationId'] = isset($data['stationId']) ? $data['stationId'] : null;
-        $this->container['structureId'] = isset($data['structureId']) ? $data['structureId'] : null;
+        $this->container['solar_system_id'] = isset($data['solar_system_id']) ? $data['solar_system_id'] : null;
+        $this->container['station_id'] = isset($data['station_id']) ? $data['station_id'] : null;
+        $this->container['structure_id'] = isset($data['structure_id']) ? $data['structure_id'] : null;
     }
 
     /**
@@ -151,8 +151,8 @@ class GetCharactersCharacterIdLocationOk implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['solarSystemId'] === null) {
-            $invalid_properties[] = "'solarSystemId' can't be null";
+        if ($this->container['solar_system_id'] === null) {
+            $invalid_properties[] = "'solar_system_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -165,7 +165,7 @@ class GetCharactersCharacterIdLocationOk implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['solarSystemId'] === null) {
+        if ($this->container['solar_system_id'] === null) {
             return false;
         }
         return true;
@@ -173,64 +173,64 @@ class GetCharactersCharacterIdLocationOk implements ArrayAccess
 
 
     /**
-     * Gets solarSystemId
+     * Gets solar_system_id
      * @return int
      */
     public function getSolarSystemId()
     {
-        return $this->container['solarSystemId'];
+        return $this->container['solar_system_id'];
     }
 
     /**
-     * Sets solarSystemId
-     * @param int $solarSystemId solar_system_id integer
+     * Sets solar_system_id
+     * @param int $solar_system_id solar_system_id integer
      * @return $this
      */
-    public function setSolarSystemId($solarSystemId)
+    public function setSolarSystemId($solar_system_id)
     {
-        $this->container['solarSystemId'] = $solarSystemId;
+        $this->container['solar_system_id'] = $solar_system_id;
 
         return $this;
     }
 
     /**
-     * Gets stationId
+     * Gets station_id
      * @return int
      */
     public function getStationId()
     {
-        return $this->container['stationId'];
+        return $this->container['station_id'];
     }
 
     /**
-     * Sets stationId
-     * @param int $stationId station_id integer
+     * Sets station_id
+     * @param int $station_id station_id integer
      * @return $this
      */
-    public function setStationId($stationId)
+    public function setStationId($station_id)
     {
-        $this->container['stationId'] = $stationId;
+        $this->container['station_id'] = $station_id;
 
         return $this;
     }
 
     /**
-     * Gets structureId
+     * Gets structure_id
      * @return int
      */
     public function getStructureId()
     {
-        return $this->container['structureId'];
+        return $this->container['structure_id'];
     }
 
     /**
-     * Sets structureId
-     * @param int $structureId structure_id integer
+     * Sets structure_id
+     * @param int $structure_id structure_id integer
      * @return $this
      */
-    public function setStructureId($structureId)
+    public function setStructureId($structure_id)
     {
-        $this->container['structureId'] = $structureId;
+        $this->container['structure_id'] = $structure_id;
 
         return $this;
     }

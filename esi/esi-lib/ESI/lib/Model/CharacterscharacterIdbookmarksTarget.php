@@ -69,7 +69,7 @@ class CharacterscharacterIdbookmarksTarget implements ArrayAccess
     protected static $swaggerTypes = array(
         'coordinates' => '\ESI\Model\CharacterscharacterIdbookmarksTargetCoordinates',
         'item' => '\ESI\Model\CharacterscharacterIdbookmarksTargetItem',
-        'locationId' => 'int'
+        'location_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -84,7 +84,7 @@ class CharacterscharacterIdbookmarksTarget implements ArrayAccess
     protected static $attributeMap = array(
         'coordinates' => 'coordinates',
         'item' => 'item',
-        'locationId' => 'location_id'
+        'location_id' => 'location_id'
     );
 
     public static function attributeMap()
@@ -99,7 +99,7 @@ class CharacterscharacterIdbookmarksTarget implements ArrayAccess
     protected static $setters = array(
         'coordinates' => 'setCoordinates',
         'item' => 'setItem',
-        'locationId' => 'setLocationId'
+        'location_id' => 'setLocationId'
     );
 
     public static function setters()
@@ -114,7 +114,7 @@ class CharacterscharacterIdbookmarksTarget implements ArrayAccess
     protected static $getters = array(
         'coordinates' => 'getCoordinates',
         'item' => 'getItem',
-        'locationId' => 'getLocationId'
+        'location_id' => 'getLocationId'
     );
 
     public static function getters()
@@ -140,7 +140,7 @@ class CharacterscharacterIdbookmarksTarget implements ArrayAccess
     {
         $this->container['coordinates'] = isset($data['coordinates']) ? $data['coordinates'] : null;
         $this->container['item'] = isset($data['item']) ? $data['item'] : null;
-        $this->container['locationId'] = isset($data['locationId']) ? $data['locationId'] : null;
+        $this->container['location_id'] = isset($data['location_id']) ? $data['location_id'] : null;
     }
 
     /**
@@ -151,8 +151,8 @@ class CharacterscharacterIdbookmarksTarget implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['locationId'] === null) {
-            $invalid_properties[] = "'locationId' can't be null";
+        if ($this->container['location_id'] === null) {
+            $invalid_properties[] = "'location_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -165,7 +165,7 @@ class CharacterscharacterIdbookmarksTarget implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['locationId'] === null) {
+        if ($this->container['location_id'] === null) {
             return false;
         }
         return true;
@@ -215,22 +215,22 @@ class CharacterscharacterIdbookmarksTarget implements ArrayAccess
     }
 
     /**
-     * Gets locationId
+     * Gets location_id
      * @return int
      */
     public function getLocationId()
     {
-        return $this->container['locationId'];
+        return $this->container['location_id'];
     }
 
     /**
-     * Sets locationId
-     * @param int $locationId location_id integer
+     * Sets location_id
+     * @param int $location_id location_id integer
      * @return $this
      */
-    public function setLocationId($locationId)
+    public function setLocationId($location_id)
     {
-        $this->container['locationId'] = $locationId;
+        $this->container['location_id'] = $location_id;
 
         return $this;
     }

@@ -67,8 +67,8 @@ class GetWarsWarIdKillmails200Ok implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'killmailHash' => 'string',
-        'killmailId' => 'int'
+        'killmail_hash' => 'string',
+        'killmail_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -81,8 +81,8 @@ class GetWarsWarIdKillmails200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'killmailHash' => 'killmail_hash',
-        'killmailId' => 'killmail_id'
+        'killmail_hash' => 'killmail_hash',
+        'killmail_id' => 'killmail_id'
     );
 
     public static function attributeMap()
@@ -95,8 +95,8 @@ class GetWarsWarIdKillmails200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'killmailHash' => 'setKillmailHash',
-        'killmailId' => 'setKillmailId'
+        'killmail_hash' => 'setKillmailHash',
+        'killmail_id' => 'setKillmailId'
     );
 
     public static function setters()
@@ -109,8 +109,8 @@ class GetWarsWarIdKillmails200Ok implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'killmailHash' => 'getKillmailHash',
-        'killmailId' => 'getKillmailId'
+        'killmail_hash' => 'getKillmailHash',
+        'killmail_id' => 'getKillmailId'
     );
 
     public static function getters()
@@ -134,8 +134,8 @@ class GetWarsWarIdKillmails200Ok implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['killmailHash'] = isset($data['killmailHash']) ? $data['killmailHash'] : null;
-        $this->container['killmailId'] = isset($data['killmailId']) ? $data['killmailId'] : null;
+        $this->container['killmail_hash'] = isset($data['killmail_hash']) ? $data['killmail_hash'] : null;
+        $this->container['killmail_id'] = isset($data['killmail_id']) ? $data['killmail_id'] : null;
     }
 
     /**
@@ -146,11 +146,11 @@ class GetWarsWarIdKillmails200Ok implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['killmailHash'] === null) {
-            $invalid_properties[] = "'killmailHash' can't be null";
+        if ($this->container['killmail_hash'] === null) {
+            $invalid_properties[] = "'killmail_hash' can't be null";
         }
-        if ($this->container['killmailId'] === null) {
-            $invalid_properties[] = "'killmailId' can't be null";
+        if ($this->container['killmail_id'] === null) {
+            $invalid_properties[] = "'killmail_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -163,10 +163,10 @@ class GetWarsWarIdKillmails200Ok implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['killmailHash'] === null) {
+        if ($this->container['killmail_hash'] === null) {
             return false;
         }
-        if ($this->container['killmailId'] === null) {
+        if ($this->container['killmail_id'] === null) {
             return false;
         }
         return true;
@@ -174,43 +174,43 @@ class GetWarsWarIdKillmails200Ok implements ArrayAccess
 
 
     /**
-     * Gets killmailHash
+     * Gets killmail_hash
      * @return string
      */
     public function getKillmailHash()
     {
-        return $this->container['killmailHash'];
+        return $this->container['killmail_hash'];
     }
 
     /**
-     * Sets killmailHash
-     * @param string $killmailHash A hash of this killmail
+     * Sets killmail_hash
+     * @param string $killmail_hash A hash of this killmail
      * @return $this
      */
-    public function setKillmailHash($killmailHash)
+    public function setKillmailHash($killmail_hash)
     {
-        $this->container['killmailHash'] = $killmailHash;
+        $this->container['killmail_hash'] = $killmail_hash;
 
         return $this;
     }
 
     /**
-     * Gets killmailId
+     * Gets killmail_id
      * @return int
      */
     public function getKillmailId()
     {
-        return $this->container['killmailId'];
+        return $this->container['killmail_id'];
     }
 
     /**
-     * Sets killmailId
-     * @param int $killmailId ID of this killmail
+     * Sets killmail_id
+     * @param int $killmail_id ID of this killmail
      * @return $this
      */
-    public function setKillmailId($killmailId)
+    public function setKillmailId($killmail_id)
     {
-        $this->container['killmailId'] = $killmailId;
+        $this->container['killmail_id'] = $killmail_id;
 
         return $this;
     }

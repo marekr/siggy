@@ -67,9 +67,9 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkLinks implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'destinationPinId' => 'int',
-        'linkLevel' => 'int',
-        'sourcePinId' => 'int'
+        'destination_pin_id' => 'int',
+        'link_level' => 'int',
+        'source_pin_id' => 'int'
     );
 
     public static function swaggerTypes()
@@ -82,9 +82,9 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkLinks implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'destinationPinId' => 'destination_pin_id',
-        'linkLevel' => 'link_level',
-        'sourcePinId' => 'source_pin_id'
+        'destination_pin_id' => 'destination_pin_id',
+        'link_level' => 'link_level',
+        'source_pin_id' => 'source_pin_id'
     );
 
     public static function attributeMap()
@@ -97,9 +97,9 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkLinks implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'destinationPinId' => 'setDestinationPinId',
-        'linkLevel' => 'setLinkLevel',
-        'sourcePinId' => 'setSourcePinId'
+        'destination_pin_id' => 'setDestinationPinId',
+        'link_level' => 'setLinkLevel',
+        'source_pin_id' => 'setSourcePinId'
     );
 
     public static function setters()
@@ -112,9 +112,9 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkLinks implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'destinationPinId' => 'getDestinationPinId',
-        'linkLevel' => 'getLinkLevel',
-        'sourcePinId' => 'getSourcePinId'
+        'destination_pin_id' => 'getDestinationPinId',
+        'link_level' => 'getLinkLevel',
+        'source_pin_id' => 'getSourcePinId'
     );
 
     public static function getters()
@@ -138,9 +138,9 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkLinks implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['destinationPinId'] = isset($data['destinationPinId']) ? $data['destinationPinId'] : null;
-        $this->container['linkLevel'] = isset($data['linkLevel']) ? $data['linkLevel'] : null;
-        $this->container['sourcePinId'] = isset($data['sourcePinId']) ? $data['sourcePinId'] : null;
+        $this->container['destination_pin_id'] = isset($data['destination_pin_id']) ? $data['destination_pin_id'] : null;
+        $this->container['link_level'] = isset($data['link_level']) ? $data['link_level'] : null;
+        $this->container['source_pin_id'] = isset($data['source_pin_id']) ? $data['source_pin_id'] : null;
     }
 
     /**
@@ -151,22 +151,22 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkLinks implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['destinationPinId'] === null) {
-            $invalid_properties[] = "'destinationPinId' can't be null";
+        if ($this->container['destination_pin_id'] === null) {
+            $invalid_properties[] = "'destination_pin_id' can't be null";
         }
-        if ($this->container['linkLevel'] === null) {
-            $invalid_properties[] = "'linkLevel' can't be null";
+        if ($this->container['link_level'] === null) {
+            $invalid_properties[] = "'link_level' can't be null";
         }
-        if (($this->container['linkLevel'] > 10.0)) {
-            $invalid_properties[] = "invalid value for 'linkLevel', must be smaller than or equal to 10.0.";
-        }
-
-        if (($this->container['linkLevel'] < 0.0)) {
-            $invalid_properties[] = "invalid value for 'linkLevel', must be bigger than or equal to 0.0.";
+        if (($this->container['link_level'] > 10.0)) {
+            $invalid_properties[] = "invalid value for 'link_level', must be smaller than or equal to 10.0.";
         }
 
-        if ($this->container['sourcePinId'] === null) {
-            $invalid_properties[] = "'sourcePinId' can't be null";
+        if (($this->container['link_level'] < 0.0)) {
+            $invalid_properties[] = "invalid value for 'link_level', must be bigger than or equal to 0.0.";
+        }
+
+        if ($this->container['source_pin_id'] === null) {
+            $invalid_properties[] = "'source_pin_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -179,19 +179,19 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkLinks implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['destinationPinId'] === null) {
+        if ($this->container['destination_pin_id'] === null) {
             return false;
         }
-        if ($this->container['linkLevel'] === null) {
+        if ($this->container['link_level'] === null) {
             return false;
         }
-        if ($this->container['linkLevel'] > 10.0) {
+        if ($this->container['link_level'] > 10.0) {
             return false;
         }
-        if ($this->container['linkLevel'] < 0.0) {
+        if ($this->container['link_level'] < 0.0) {
             return false;
         }
-        if ($this->container['sourcePinId'] === null) {
+        if ($this->container['source_pin_id'] === null) {
             return false;
         }
         return true;
@@ -199,71 +199,71 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkLinks implements ArrayAccess
 
 
     /**
-     * Gets destinationPinId
+     * Gets destination_pin_id
      * @return int
      */
     public function getDestinationPinId()
     {
-        return $this->container['destinationPinId'];
+        return $this->container['destination_pin_id'];
     }
 
     /**
-     * Sets destinationPinId
-     * @param int $destinationPinId destination_pin_id integer
+     * Sets destination_pin_id
+     * @param int $destination_pin_id destination_pin_id integer
      * @return $this
      */
-    public function setDestinationPinId($destinationPinId)
+    public function setDestinationPinId($destination_pin_id)
     {
-        $this->container['destinationPinId'] = $destinationPinId;
+        $this->container['destination_pin_id'] = $destination_pin_id;
 
         return $this;
     }
 
     /**
-     * Gets linkLevel
+     * Gets link_level
      * @return int
      */
     public function getLinkLevel()
     {
-        return $this->container['linkLevel'];
+        return $this->container['link_level'];
     }
 
     /**
-     * Sets linkLevel
-     * @param int $linkLevel link_level integer
+     * Sets link_level
+     * @param int $link_level link_level integer
      * @return $this
      */
-    public function setLinkLevel($linkLevel)
+    public function setLinkLevel($link_level)
     {
 
-        if ($linkLevel > 10.0) {
-            throw new \InvalidArgumentException('invalid value for $linkLevel when calling GetCharactersCharacterIdPlanetsPlanetIdOkLinks., must be smaller than or equal to 10.0.');
+        if ($link_level > 10.0) {
+            throw new \InvalidArgumentException('invalid value for $link_level when calling GetCharactersCharacterIdPlanetsPlanetIdOkLinks., must be smaller than or equal to 10.0.');
         }
-        if ($linkLevel < 0.0) {
-            throw new \InvalidArgumentException('invalid value for $linkLevel when calling GetCharactersCharacterIdPlanetsPlanetIdOkLinks., must be bigger than or equal to 0.0.');
+        if ($link_level < 0.0) {
+            throw new \InvalidArgumentException('invalid value for $link_level when calling GetCharactersCharacterIdPlanetsPlanetIdOkLinks., must be bigger than or equal to 0.0.');
         }
-        $this->container['linkLevel'] = $linkLevel;
+        $this->container['link_level'] = $link_level;
 
         return $this;
     }
 
     /**
-     * Gets sourcePinId
+     * Gets source_pin_id
      * @return int
      */
     public function getSourcePinId()
     {
-        return $this->container['sourcePinId'];
+        return $this->container['source_pin_id'];
     }
 
     /**
-     * Sets sourcePinId
-     * @param int $sourcePinId source_pin_id integer
+     * Sets source_pin_id
+     * @param int $source_pin_id source_pin_id integer
      * @return $this
      */
-    public function setSourcePinId($sourcePinId)
+    public function setSourcePinId($source_pin_id)
     {
-        $this->container['sourcePinId'] = $sourcePinId;
+        $this->container['source_pin_id'] = $source_pin_id;
 
         return $this;
     }

@@ -68,16 +68,16 @@ class GetMarketsRegionIdOrders200Ok implements ArrayAccess
       */
     protected static $swaggerTypes = array(
         'duration' => 'int',
-        'isBuyOrder' => 'bool',
+        'is_buy_order' => 'bool',
         'issued' => '\DateTime',
-        'locationId' => 'int',
-        'minVolume' => 'int',
-        'orderId' => 'int',
+        'location_id' => 'int',
+        'min_volume' => 'int',
+        'order_id' => 'int',
         'price' => 'float',
         'range' => 'string',
-        'typeId' => 'int',
-        'volumeRemain' => 'int',
-        'volumeTotal' => 'int'
+        'type_id' => 'int',
+        'volume_remain' => 'int',
+        'volume_total' => 'int'
     );
 
     public static function swaggerTypes()
@@ -91,16 +91,16 @@ class GetMarketsRegionIdOrders200Ok implements ArrayAccess
      */
     protected static $attributeMap = array(
         'duration' => 'duration',
-        'isBuyOrder' => 'is_buy_order',
+        'is_buy_order' => 'is_buy_order',
         'issued' => 'issued',
-        'locationId' => 'location_id',
-        'minVolume' => 'min_volume',
-        'orderId' => 'order_id',
+        'location_id' => 'location_id',
+        'min_volume' => 'min_volume',
+        'order_id' => 'order_id',
         'price' => 'price',
         'range' => 'range',
-        'typeId' => 'type_id',
-        'volumeRemain' => 'volume_remain',
-        'volumeTotal' => 'volume_total'
+        'type_id' => 'type_id',
+        'volume_remain' => 'volume_remain',
+        'volume_total' => 'volume_total'
     );
 
     public static function attributeMap()
@@ -114,16 +114,16 @@ class GetMarketsRegionIdOrders200Ok implements ArrayAccess
      */
     protected static $setters = array(
         'duration' => 'setDuration',
-        'isBuyOrder' => 'setIsBuyOrder',
+        'is_buy_order' => 'setIsBuyOrder',
         'issued' => 'setIssued',
-        'locationId' => 'setLocationId',
-        'minVolume' => 'setMinVolume',
-        'orderId' => 'setOrderId',
+        'location_id' => 'setLocationId',
+        'min_volume' => 'setMinVolume',
+        'order_id' => 'setOrderId',
         'price' => 'setPrice',
         'range' => 'setRange',
-        'typeId' => 'setTypeId',
-        'volumeRemain' => 'setVolumeRemain',
-        'volumeTotal' => 'setVolumeTotal'
+        'type_id' => 'setTypeId',
+        'volume_remain' => 'setVolumeRemain',
+        'volume_total' => 'setVolumeTotal'
     );
 
     public static function setters()
@@ -137,16 +137,16 @@ class GetMarketsRegionIdOrders200Ok implements ArrayAccess
      */
     protected static $getters = array(
         'duration' => 'getDuration',
-        'isBuyOrder' => 'getIsBuyOrder',
+        'is_buy_order' => 'getIsBuyOrder',
         'issued' => 'getIssued',
-        'locationId' => 'getLocationId',
-        'minVolume' => 'getMinVolume',
-        'orderId' => 'getOrderId',
+        'location_id' => 'getLocationId',
+        'min_volume' => 'getMinVolume',
+        'order_id' => 'getOrderId',
         'price' => 'getPrice',
         'range' => 'getRange',
-        'typeId' => 'getTypeId',
-        'volumeRemain' => 'getVolumeRemain',
-        'volumeTotal' => 'getVolumeTotal'
+        'type_id' => 'getTypeId',
+        'volume_remain' => 'getVolumeRemain',
+        'volume_total' => 'getVolumeTotal'
     );
 
     public static function getters()
@@ -205,16 +205,16 @@ class GetMarketsRegionIdOrders200Ok implements ArrayAccess
     public function __construct(array $data = null)
     {
         $this->container['duration'] = isset($data['duration']) ? $data['duration'] : null;
-        $this->container['isBuyOrder'] = isset($data['isBuyOrder']) ? $data['isBuyOrder'] : null;
+        $this->container['is_buy_order'] = isset($data['is_buy_order']) ? $data['is_buy_order'] : null;
         $this->container['issued'] = isset($data['issued']) ? $data['issued'] : null;
-        $this->container['locationId'] = isset($data['locationId']) ? $data['locationId'] : null;
-        $this->container['minVolume'] = isset($data['minVolume']) ? $data['minVolume'] : null;
-        $this->container['orderId'] = isset($data['orderId']) ? $data['orderId'] : null;
+        $this->container['location_id'] = isset($data['location_id']) ? $data['location_id'] : null;
+        $this->container['min_volume'] = isset($data['min_volume']) ? $data['min_volume'] : null;
+        $this->container['order_id'] = isset($data['order_id']) ? $data['order_id'] : null;
         $this->container['price'] = isset($data['price']) ? $data['price'] : null;
         $this->container['range'] = isset($data['range']) ? $data['range'] : null;
-        $this->container['typeId'] = isset($data['typeId']) ? $data['typeId'] : null;
-        $this->container['volumeRemain'] = isset($data['volumeRemain']) ? $data['volumeRemain'] : null;
-        $this->container['volumeTotal'] = isset($data['volumeTotal']) ? $data['volumeTotal'] : null;
+        $this->container['type_id'] = isset($data['type_id']) ? $data['type_id'] : null;
+        $this->container['volume_remain'] = isset($data['volume_remain']) ? $data['volume_remain'] : null;
+        $this->container['volume_total'] = isset($data['volume_total']) ? $data['volume_total'] : null;
     }
 
     /**
@@ -228,20 +228,20 @@ class GetMarketsRegionIdOrders200Ok implements ArrayAccess
         if ($this->container['duration'] === null) {
             $invalid_properties[] = "'duration' can't be null";
         }
-        if ($this->container['isBuyOrder'] === null) {
-            $invalid_properties[] = "'isBuyOrder' can't be null";
+        if ($this->container['is_buy_order'] === null) {
+            $invalid_properties[] = "'is_buy_order' can't be null";
         }
         if ($this->container['issued'] === null) {
             $invalid_properties[] = "'issued' can't be null";
         }
-        if ($this->container['locationId'] === null) {
-            $invalid_properties[] = "'locationId' can't be null";
+        if ($this->container['location_id'] === null) {
+            $invalid_properties[] = "'location_id' can't be null";
         }
-        if ($this->container['minVolume'] === null) {
-            $invalid_properties[] = "'minVolume' can't be null";
+        if ($this->container['min_volume'] === null) {
+            $invalid_properties[] = "'min_volume' can't be null";
         }
-        if ($this->container['orderId'] === null) {
-            $invalid_properties[] = "'orderId' can't be null";
+        if ($this->container['order_id'] === null) {
+            $invalid_properties[] = "'order_id' can't be null";
         }
         if ($this->container['price'] === null) {
             $invalid_properties[] = "'price' can't be null";
@@ -254,14 +254,14 @@ class GetMarketsRegionIdOrders200Ok implements ArrayAccess
             $invalid_properties[] = "invalid value for 'range', must be one of #{allowed_values}.";
         }
 
-        if ($this->container['typeId'] === null) {
-            $invalid_properties[] = "'typeId' can't be null";
+        if ($this->container['type_id'] === null) {
+            $invalid_properties[] = "'type_id' can't be null";
         }
-        if ($this->container['volumeRemain'] === null) {
-            $invalid_properties[] = "'volumeRemain' can't be null";
+        if ($this->container['volume_remain'] === null) {
+            $invalid_properties[] = "'volume_remain' can't be null";
         }
-        if ($this->container['volumeTotal'] === null) {
-            $invalid_properties[] = "'volumeTotal' can't be null";
+        if ($this->container['volume_total'] === null) {
+            $invalid_properties[] = "'volume_total' can't be null";
         }
         return $invalid_properties;
     }
@@ -277,19 +277,19 @@ class GetMarketsRegionIdOrders200Ok implements ArrayAccess
         if ($this->container['duration'] === null) {
             return false;
         }
-        if ($this->container['isBuyOrder'] === null) {
+        if ($this->container['is_buy_order'] === null) {
             return false;
         }
         if ($this->container['issued'] === null) {
             return false;
         }
-        if ($this->container['locationId'] === null) {
+        if ($this->container['location_id'] === null) {
             return false;
         }
-        if ($this->container['minVolume'] === null) {
+        if ($this->container['min_volume'] === null) {
             return false;
         }
-        if ($this->container['orderId'] === null) {
+        if ($this->container['order_id'] === null) {
             return false;
         }
         if ($this->container['price'] === null) {
@@ -302,13 +302,13 @@ class GetMarketsRegionIdOrders200Ok implements ArrayAccess
         if (!in_array($this->container['range'], $allowed_values)) {
             return false;
         }
-        if ($this->container['typeId'] === null) {
+        if ($this->container['type_id'] === null) {
             return false;
         }
-        if ($this->container['volumeRemain'] === null) {
+        if ($this->container['volume_remain'] === null) {
             return false;
         }
-        if ($this->container['volumeTotal'] === null) {
+        if ($this->container['volume_total'] === null) {
             return false;
         }
         return true;
@@ -337,22 +337,22 @@ class GetMarketsRegionIdOrders200Ok implements ArrayAccess
     }
 
     /**
-     * Gets isBuyOrder
+     * Gets is_buy_order
      * @return bool
      */
     public function getIsBuyOrder()
     {
-        return $this->container['isBuyOrder'];
+        return $this->container['is_buy_order'];
     }
 
     /**
-     * Sets isBuyOrder
-     * @param bool $isBuyOrder is_buy_order boolean
+     * Sets is_buy_order
+     * @param bool $is_buy_order is_buy_order boolean
      * @return $this
      */
-    public function setIsBuyOrder($isBuyOrder)
+    public function setIsBuyOrder($is_buy_order)
     {
-        $this->container['isBuyOrder'] = $isBuyOrder;
+        $this->container['is_buy_order'] = $is_buy_order;
 
         return $this;
     }
@@ -379,64 +379,64 @@ class GetMarketsRegionIdOrders200Ok implements ArrayAccess
     }
 
     /**
-     * Gets locationId
+     * Gets location_id
      * @return int
      */
     public function getLocationId()
     {
-        return $this->container['locationId'];
+        return $this->container['location_id'];
     }
 
     /**
-     * Sets locationId
-     * @param int $locationId location_id integer
+     * Sets location_id
+     * @param int $location_id location_id integer
      * @return $this
      */
-    public function setLocationId($locationId)
+    public function setLocationId($location_id)
     {
-        $this->container['locationId'] = $locationId;
+        $this->container['location_id'] = $location_id;
 
         return $this;
     }
 
     /**
-     * Gets minVolume
+     * Gets min_volume
      * @return int
      */
     public function getMinVolume()
     {
-        return $this->container['minVolume'];
+        return $this->container['min_volume'];
     }
 
     /**
-     * Sets minVolume
-     * @param int $minVolume min_volume integer
+     * Sets min_volume
+     * @param int $min_volume min_volume integer
      * @return $this
      */
-    public function setMinVolume($minVolume)
+    public function setMinVolume($min_volume)
     {
-        $this->container['minVolume'] = $minVolume;
+        $this->container['min_volume'] = $min_volume;
 
         return $this;
     }
 
     /**
-     * Gets orderId
+     * Gets order_id
      * @return int
      */
     public function getOrderId()
     {
-        return $this->container['orderId'];
+        return $this->container['order_id'];
     }
 
     /**
-     * Sets orderId
-     * @param int $orderId order_id integer
+     * Sets order_id
+     * @param int $order_id order_id integer
      * @return $this
      */
-    public function setOrderId($orderId)
+    public function setOrderId($order_id)
     {
-        $this->container['orderId'] = $orderId;
+        $this->container['order_id'] = $order_id;
 
         return $this;
     }
@@ -488,64 +488,64 @@ class GetMarketsRegionIdOrders200Ok implements ArrayAccess
     }
 
     /**
-     * Gets typeId
+     * Gets type_id
      * @return int
      */
     public function getTypeId()
     {
-        return $this->container['typeId'];
+        return $this->container['type_id'];
     }
 
     /**
-     * Sets typeId
-     * @param int $typeId type_id integer
+     * Sets type_id
+     * @param int $type_id type_id integer
      * @return $this
      */
-    public function setTypeId($typeId)
+    public function setTypeId($type_id)
     {
-        $this->container['typeId'] = $typeId;
+        $this->container['type_id'] = $type_id;
 
         return $this;
     }
 
     /**
-     * Gets volumeRemain
+     * Gets volume_remain
      * @return int
      */
     public function getVolumeRemain()
     {
-        return $this->container['volumeRemain'];
+        return $this->container['volume_remain'];
     }
 
     /**
-     * Sets volumeRemain
-     * @param int $volumeRemain volume_remain integer
+     * Sets volume_remain
+     * @param int $volume_remain volume_remain integer
      * @return $this
      */
-    public function setVolumeRemain($volumeRemain)
+    public function setVolumeRemain($volume_remain)
     {
-        $this->container['volumeRemain'] = $volumeRemain;
+        $this->container['volume_remain'] = $volume_remain;
 
         return $this;
     }
 
     /**
-     * Gets volumeTotal
+     * Gets volume_total
      * @return int
      */
     public function getVolumeTotal()
     {
-        return $this->container['volumeTotal'];
+        return $this->container['volume_total'];
     }
 
     /**
-     * Sets volumeTotal
-     * @param int $volumeTotal volume_total integer
+     * Sets volume_total
+     * @param int $volume_total volume_total integer
      * @return $this
      */
-    public function setVolumeTotal($volumeTotal)
+    public function setVolumeTotal($volume_total)
     {
-        $this->container['volumeTotal'] = $volumeTotal;
+        $this->container['volume_total'] = $volume_total;
 
         return $this;
     }

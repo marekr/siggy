@@ -67,7 +67,7 @@ class PostCharactersCharacterIdMailMail implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'approvedCost' => 'int',
+        'approved_cost' => 'int',
         'body' => 'string',
         'recipients' => '\ESI\Model\CharacterscharacterIdmailRecipients1[]',
         'subject' => 'string'
@@ -83,7 +83,7 @@ class PostCharactersCharacterIdMailMail implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'approvedCost' => 'approved_cost',
+        'approved_cost' => 'approved_cost',
         'body' => 'body',
         'recipients' => 'recipients',
         'subject' => 'subject'
@@ -99,7 +99,7 @@ class PostCharactersCharacterIdMailMail implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'approvedCost' => 'setApprovedCost',
+        'approved_cost' => 'setApprovedCost',
         'body' => 'setBody',
         'recipients' => 'setRecipients',
         'subject' => 'setSubject'
@@ -115,7 +115,7 @@ class PostCharactersCharacterIdMailMail implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'approvedCost' => 'getApprovedCost',
+        'approved_cost' => 'getApprovedCost',
         'body' => 'getBody',
         'recipients' => 'getRecipients',
         'subject' => 'getSubject'
@@ -142,7 +142,7 @@ class PostCharactersCharacterIdMailMail implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['approvedCost'] = isset($data['approvedCost']) ? $data['approvedCost'] : 0;
+        $this->container['approved_cost'] = isset($data['approved_cost']) ? $data['approved_cost'] : 0;
         $this->container['body'] = isset($data['body']) ? $data['body'] : null;
         $this->container['recipients'] = isset($data['recipients']) ? $data['recipients'] : null;
         $this->container['subject'] = isset($data['subject']) ? $data['subject'] : null;
@@ -204,22 +204,22 @@ class PostCharactersCharacterIdMailMail implements ArrayAccess
 
 
     /**
-     * Gets approvedCost
+     * Gets approved_cost
      * @return int
      */
     public function getApprovedCost()
     {
-        return $this->container['approvedCost'];
+        return $this->container['approved_cost'];
     }
 
     /**
-     * Sets approvedCost
-     * @param int $approvedCost approved_cost integer
+     * Sets approved_cost
+     * @param int $approved_cost approved_cost integer
      * @return $this
      */
-    public function setApprovedCost($approvedCost)
+    public function setApprovedCost($approved_cost)
     {
-        $this->container['approvedCost'] = $approvedCost;
+        $this->container['approved_cost'] = $approved_cost;
 
         return $this;
     }

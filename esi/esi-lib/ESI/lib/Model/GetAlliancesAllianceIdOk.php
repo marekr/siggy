@@ -67,9 +67,9 @@ class GetAlliancesAllianceIdOk implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'allianceName' => 'string',
-        'dateFounded' => '\DateTime',
-        'executorCorporationId' => 'int',
+        'alliance_name' => 'string',
+        'date_founded' => '\DateTime',
+        'executor_corporation_id' => 'int',
         'ticker' => 'string'
     );
 
@@ -83,9 +83,9 @@ class GetAlliancesAllianceIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'allianceName' => 'alliance_name',
-        'dateFounded' => 'date_founded',
-        'executorCorporationId' => 'executor_corporation_id',
+        'alliance_name' => 'alliance_name',
+        'date_founded' => 'date_founded',
+        'executor_corporation_id' => 'executor_corporation_id',
         'ticker' => 'ticker'
     );
 
@@ -99,9 +99,9 @@ class GetAlliancesAllianceIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'allianceName' => 'setAllianceName',
-        'dateFounded' => 'setDateFounded',
-        'executorCorporationId' => 'setExecutorCorporationId',
+        'alliance_name' => 'setAllianceName',
+        'date_founded' => 'setDateFounded',
+        'executor_corporation_id' => 'setExecutorCorporationId',
         'ticker' => 'setTicker'
     );
 
@@ -115,9 +115,9 @@ class GetAlliancesAllianceIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'allianceName' => 'getAllianceName',
-        'dateFounded' => 'getDateFounded',
-        'executorCorporationId' => 'getExecutorCorporationId',
+        'alliance_name' => 'getAllianceName',
+        'date_founded' => 'getDateFounded',
+        'executor_corporation_id' => 'getExecutorCorporationId',
         'ticker' => 'getTicker'
     );
 
@@ -142,9 +142,9 @@ class GetAlliancesAllianceIdOk implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['allianceName'] = isset($data['allianceName']) ? $data['allianceName'] : null;
-        $this->container['dateFounded'] = isset($data['dateFounded']) ? $data['dateFounded'] : null;
-        $this->container['executorCorporationId'] = isset($data['executorCorporationId']) ? $data['executorCorporationId'] : null;
+        $this->container['alliance_name'] = isset($data['alliance_name']) ? $data['alliance_name'] : null;
+        $this->container['date_founded'] = isset($data['date_founded']) ? $data['date_founded'] : null;
+        $this->container['executor_corporation_id'] = isset($data['executor_corporation_id']) ? $data['executor_corporation_id'] : null;
         $this->container['ticker'] = isset($data['ticker']) ? $data['ticker'] : null;
     }
 
@@ -156,11 +156,11 @@ class GetAlliancesAllianceIdOk implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['allianceName'] === null) {
-            $invalid_properties[] = "'allianceName' can't be null";
+        if ($this->container['alliance_name'] === null) {
+            $invalid_properties[] = "'alliance_name' can't be null";
         }
-        if ($this->container['dateFounded'] === null) {
-            $invalid_properties[] = "'dateFounded' can't be null";
+        if ($this->container['date_founded'] === null) {
+            $invalid_properties[] = "'date_founded' can't be null";
         }
         if ($this->container['ticker'] === null) {
             $invalid_properties[] = "'ticker' can't be null";
@@ -176,10 +176,10 @@ class GetAlliancesAllianceIdOk implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['allianceName'] === null) {
+        if ($this->container['alliance_name'] === null) {
             return false;
         }
-        if ($this->container['dateFounded'] === null) {
+        if ($this->container['date_founded'] === null) {
             return false;
         }
         if ($this->container['ticker'] === null) {
@@ -190,64 +190,64 @@ class GetAlliancesAllianceIdOk implements ArrayAccess
 
 
     /**
-     * Gets allianceName
+     * Gets alliance_name
      * @return string
      */
     public function getAllianceName()
     {
-        return $this->container['allianceName'];
+        return $this->container['alliance_name'];
     }
 
     /**
-     * Sets allianceName
-     * @param string $allianceName the full name of the alliance
+     * Sets alliance_name
+     * @param string $alliance_name the full name of the alliance
      * @return $this
      */
-    public function setAllianceName($allianceName)
+    public function setAllianceName($alliance_name)
     {
-        $this->container['allianceName'] = $allianceName;
+        $this->container['alliance_name'] = $alliance_name;
 
         return $this;
     }
 
     /**
-     * Gets dateFounded
+     * Gets date_founded
      * @return \DateTime
      */
     public function getDateFounded()
     {
-        return $this->container['dateFounded'];
+        return $this->container['date_founded'];
     }
 
     /**
-     * Sets dateFounded
-     * @param \DateTime $dateFounded date_founded string
+     * Sets date_founded
+     * @param \DateTime $date_founded date_founded string
      * @return $this
      */
-    public function setDateFounded($dateFounded)
+    public function setDateFounded($date_founded)
     {
-        $this->container['dateFounded'] = $dateFounded;
+        $this->container['date_founded'] = $date_founded;
 
         return $this;
     }
 
     /**
-     * Gets executorCorporationId
+     * Gets executor_corporation_id
      * @return int
      */
     public function getExecutorCorporationId()
     {
-        return $this->container['executorCorporationId'];
+        return $this->container['executor_corporation_id'];
     }
 
     /**
-     * Sets executorCorporationId
-     * @param int $executorCorporationId the executor corporation ID, if this alliance is not closed
+     * Sets executor_corporation_id
+     * @param int $executor_corporation_id the executor corporation ID, if this alliance is not closed
      * @return $this
      */
-    public function setExecutorCorporationId($executorCorporationId)
+    public function setExecutorCorporationId($executor_corporation_id)
     {
-        $this->container['executorCorporationId'] = $executorCorporationId;
+        $this->container['executor_corporation_id'] = $executor_corporation_id;
 
         return $this;
     }

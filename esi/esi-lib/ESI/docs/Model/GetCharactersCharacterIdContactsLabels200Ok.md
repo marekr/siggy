@@ -3,8 +3,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**labelId** | **int** | label_id integer | 
-**labelName** | **string** | label_name string | 
+**label_id** | **int** | label_id integer | 
+**label_name** | **string** | label_name string | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

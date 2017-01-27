@@ -188,15 +188,15 @@ class UniverseApi
      *
      * Get item category information
      *
-     * @param int $categoryId An Eve item category ID (required)
+     * @param int $category_id An Eve item category ID (required)
      * @param string $language Language to use in the response (optional, default to en-us)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetUniverseCategoriesCategoryIdOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getUniverseCategoriesCategoryId($categoryId, $language = null, $datasource = null)
+    public function getUniverseCategoriesCategoryId($category_id, $language = null, $datasource = null)
     {
-        list($response) = $this->getUniverseCategoriesCategoryIdWithHttpInfo($categoryId, $language, $datasource);
+        list($response) = $this->getUniverseCategoriesCategoryIdWithHttpInfo($category_id, $language, $datasource);
         return $response;
     }
 
@@ -205,17 +205,17 @@ class UniverseApi
      *
      * Get item category information
      *
-     * @param int $categoryId An Eve item category ID (required)
+     * @param int $category_id An Eve item category ID (required)
      * @param string $language Language to use in the response (optional, default to en-us)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetUniverseCategoriesCategoryIdOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getUniverseCategoriesCategoryIdWithHttpInfo($categoryId, $language = null, $datasource = null)
+    public function getUniverseCategoriesCategoryIdWithHttpInfo($category_id, $language = null, $datasource = null)
     {
-        // verify the required parameter 'categoryId' is set
-        if ($categoryId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $categoryId when calling getUniverseCategoriesCategoryId');
+        // verify the required parameter 'category_id' is set
+        if ($category_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $category_id when calling getUniverseCategoriesCategoryId');
         }
         // parse inputs
         $resourcePath = "/universe/categories/{category_id}/";
@@ -238,10 +238,10 @@ class UniverseApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($categoryId !== null) {
+        if ($category_id !== null) {
             $resourcePath = str_replace(
                 "{" . "category_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($categoryId),
+                $this->apiClient->getSerializer()->toPathValue($category_id),
                 $resourcePath
             );
         }
@@ -384,15 +384,15 @@ class UniverseApi
      *
      * Get item group information
      *
-     * @param int $groupId An Eve item group ID (required)
+     * @param int $group_id An Eve item group ID (required)
      * @param string $language Language to use in the response (optional, default to en-us)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetUniverseGroupsGroupIdOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getUniverseGroupsGroupId($groupId, $language = null, $datasource = null)
+    public function getUniverseGroupsGroupId($group_id, $language = null, $datasource = null)
     {
-        list($response) = $this->getUniverseGroupsGroupIdWithHttpInfo($groupId, $language, $datasource);
+        list($response) = $this->getUniverseGroupsGroupIdWithHttpInfo($group_id, $language, $datasource);
         return $response;
     }
 
@@ -401,17 +401,17 @@ class UniverseApi
      *
      * Get item group information
      *
-     * @param int $groupId An Eve item group ID (required)
+     * @param int $group_id An Eve item group ID (required)
      * @param string $language Language to use in the response (optional, default to en-us)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetUniverseGroupsGroupIdOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getUniverseGroupsGroupIdWithHttpInfo($groupId, $language = null, $datasource = null)
+    public function getUniverseGroupsGroupIdWithHttpInfo($group_id, $language = null, $datasource = null)
     {
-        // verify the required parameter 'groupId' is set
-        if ($groupId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $groupId when calling getUniverseGroupsGroupId');
+        // verify the required parameter 'group_id' is set
+        if ($group_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $group_id when calling getUniverseGroupsGroupId');
         }
         // parse inputs
         $resourcePath = "/universe/groups/{group_id}/";
@@ -434,10 +434,10 @@ class UniverseApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($groupId !== null) {
+        if ($group_id !== null) {
             $resourcePath = str_replace(
                 "{" . "group_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($groupId),
+                $this->apiClient->getSerializer()->toPathValue($group_id),
                 $resourcePath
             );
         }
@@ -576,14 +576,14 @@ class UniverseApi
      *
      * Get station information
      *
-     * @param int $stationId An Eve station ID (required)
+     * @param int $station_id An Eve station ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetUniverseStationsStationIdOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getUniverseStationsStationId($stationId, $datasource = null)
+    public function getUniverseStationsStationId($station_id, $datasource = null)
     {
-        list($response) = $this->getUniverseStationsStationIdWithHttpInfo($stationId, $datasource);
+        list($response) = $this->getUniverseStationsStationIdWithHttpInfo($station_id, $datasource);
         return $response;
     }
 
@@ -592,16 +592,16 @@ class UniverseApi
      *
      * Get station information
      *
-     * @param int $stationId An Eve station ID (required)
+     * @param int $station_id An Eve station ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetUniverseStationsStationIdOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getUniverseStationsStationIdWithHttpInfo($stationId, $datasource = null)
+    public function getUniverseStationsStationIdWithHttpInfo($station_id, $datasource = null)
     {
-        // verify the required parameter 'stationId' is set
-        if ($stationId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $stationId when calling getUniverseStationsStationId');
+        // verify the required parameter 'station_id' is set
+        if ($station_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $station_id when calling getUniverseStationsStationId');
         }
         // parse inputs
         $resourcePath = "/universe/stations/{station_id}/";
@@ -620,10 +620,10 @@ class UniverseApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($stationId !== null) {
+        if ($station_id !== null) {
             $resourcePath = str_replace(
                 "{" . "station_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($stationId),
+                $this->apiClient->getSerializer()->toPathValue($station_id),
                 $resourcePath
             );
         }
@@ -752,14 +752,14 @@ class UniverseApi
      *
      * Get structure information
      *
-     * @param int $structureId An Eve structure ID (required)
+     * @param int $structure_id An Eve structure ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetUniverseStructuresStructureIdOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getUniverseStructuresStructureId($structureId, $datasource = null)
+    public function getUniverseStructuresStructureId($structure_id, $datasource = null)
     {
-        list($response) = $this->getUniverseStructuresStructureIdWithHttpInfo($structureId, $datasource);
+        list($response) = $this->getUniverseStructuresStructureIdWithHttpInfo($structure_id, $datasource);
         return $response;
     }
 
@@ -768,16 +768,16 @@ class UniverseApi
      *
      * Get structure information
      *
-     * @param int $structureId An Eve structure ID (required)
+     * @param int $structure_id An Eve structure ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetUniverseStructuresStructureIdOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getUniverseStructuresStructureIdWithHttpInfo($structureId, $datasource = null)
+    public function getUniverseStructuresStructureIdWithHttpInfo($structure_id, $datasource = null)
     {
-        // verify the required parameter 'structureId' is set
-        if ($structureId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $structureId when calling getUniverseStructuresStructureId');
+        // verify the required parameter 'structure_id' is set
+        if ($structure_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $structure_id when calling getUniverseStructuresStructureId');
         }
         // parse inputs
         $resourcePath = "/universe/structures/{structure_id}/";
@@ -796,10 +796,10 @@ class UniverseApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($structureId !== null) {
+        if ($structure_id !== null) {
             $resourcePath = str_replace(
                 "{" . "structure_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($structureId),
+                $this->apiClient->getSerializer()->toPathValue($structure_id),
                 $resourcePath
             );
         }
@@ -859,14 +859,14 @@ class UniverseApi
      *
      * Get solar system information
      *
-     * @param int $systemId An Eve solar system ID (required)
+     * @param int $system_id An Eve solar system ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetUniverseSystemsSystemIdOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getUniverseSystemsSystemId($systemId, $datasource = null)
+    public function getUniverseSystemsSystemId($system_id, $datasource = null)
     {
-        list($response) = $this->getUniverseSystemsSystemIdWithHttpInfo($systemId, $datasource);
+        list($response) = $this->getUniverseSystemsSystemIdWithHttpInfo($system_id, $datasource);
         return $response;
     }
 
@@ -875,16 +875,16 @@ class UniverseApi
      *
      * Get solar system information
      *
-     * @param int $systemId An Eve solar system ID (required)
+     * @param int $system_id An Eve solar system ID (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetUniverseSystemsSystemIdOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getUniverseSystemsSystemIdWithHttpInfo($systemId, $datasource = null)
+    public function getUniverseSystemsSystemIdWithHttpInfo($system_id, $datasource = null)
     {
-        // verify the required parameter 'systemId' is set
-        if ($systemId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $systemId when calling getUniverseSystemsSystemId');
+        // verify the required parameter 'system_id' is set
+        if ($system_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $system_id when calling getUniverseSystemsSystemId');
         }
         // parse inputs
         $resourcePath = "/universe/systems/{system_id}/";
@@ -903,10 +903,10 @@ class UniverseApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($systemId !== null) {
+        if ($system_id !== null) {
             $resourcePath = str_replace(
                 "{" . "system_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($systemId),
+                $this->apiClient->getSerializer()->toPathValue($system_id),
                 $resourcePath
             );
         }
@@ -1049,15 +1049,15 @@ class UniverseApi
      *
      * Get type information
      *
-     * @param int $typeId An Eve item type ID (required)
+     * @param int $type_id An Eve item type ID (required)
      * @param string $language Language to use in the response (optional, default to en-us)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return \ESI\Model\GetUniverseTypesTypeIdOk
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getUniverseTypesTypeId($typeId, $language = null, $datasource = null)
+    public function getUniverseTypesTypeId($type_id, $language = null, $datasource = null)
     {
-        list($response) = $this->getUniverseTypesTypeIdWithHttpInfo($typeId, $language, $datasource);
+        list($response) = $this->getUniverseTypesTypeIdWithHttpInfo($type_id, $language, $datasource);
         return $response;
     }
 
@@ -1066,17 +1066,17 @@ class UniverseApi
      *
      * Get type information
      *
-     * @param int $typeId An Eve item type ID (required)
+     * @param int $type_id An Eve item type ID (required)
      * @param string $language Language to use in the response (optional, default to en-us)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of \ESI\Model\GetUniverseTypesTypeIdOk, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function getUniverseTypesTypeIdWithHttpInfo($typeId, $language = null, $datasource = null)
+    public function getUniverseTypesTypeIdWithHttpInfo($type_id, $language = null, $datasource = null)
     {
-        // verify the required parameter 'typeId' is set
-        if ($typeId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $typeId when calling getUniverseTypesTypeId');
+        // verify the required parameter 'type_id' is set
+        if ($type_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $type_id when calling getUniverseTypesTypeId');
         }
         // parse inputs
         $resourcePath = "/universe/types/{type_id}/";
@@ -1099,10 +1099,10 @@ class UniverseApi
             $queryParams['datasource'] = $this->apiClient->getSerializer()->toQueryValue($datasource);
         }
         // path params
-        if ($typeId !== null) {
+        if ($type_id !== null) {
             $resourcePath = str_replace(
                 "{" . "type_id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($typeId),
+                $this->apiClient->getSerializer()->toPathValue($type_id),
                 $resourcePath
             );
         }

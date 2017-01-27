@@ -74,7 +74,7 @@ class GetWarsWarIdOk implements ArrayAccess
         'finished' => '\DateTime',
         'id' => 'int',
         'mutual' => 'bool',
-        'openForAllies' => 'bool',
+        'open_for_allies' => 'bool',
         'retracted' => '\DateTime',
         'started' => '\DateTime'
     );
@@ -96,7 +96,7 @@ class GetWarsWarIdOk implements ArrayAccess
         'finished' => 'finished',
         'id' => 'id',
         'mutual' => 'mutual',
-        'openForAllies' => 'open_for_allies',
+        'open_for_allies' => 'open_for_allies',
         'retracted' => 'retracted',
         'started' => 'started'
     );
@@ -118,7 +118,7 @@ class GetWarsWarIdOk implements ArrayAccess
         'finished' => 'setFinished',
         'id' => 'setId',
         'mutual' => 'setMutual',
-        'openForAllies' => 'setOpenForAllies',
+        'open_for_allies' => 'setOpenForAllies',
         'retracted' => 'setRetracted',
         'started' => 'setStarted'
     );
@@ -140,7 +140,7 @@ class GetWarsWarIdOk implements ArrayAccess
         'finished' => 'getFinished',
         'id' => 'getId',
         'mutual' => 'getMutual',
-        'openForAllies' => 'getOpenForAllies',
+        'open_for_allies' => 'getOpenForAllies',
         'retracted' => 'getRetracted',
         'started' => 'getStarted'
     );
@@ -173,7 +173,7 @@ class GetWarsWarIdOk implements ArrayAccess
         $this->container['finished'] = isset($data['finished']) ? $data['finished'] : null;
         $this->container['id'] = isset($data['id']) ? $data['id'] : null;
         $this->container['mutual'] = isset($data['mutual']) ? $data['mutual'] : null;
-        $this->container['openForAllies'] = isset($data['openForAllies']) ? $data['openForAllies'] : null;
+        $this->container['open_for_allies'] = isset($data['open_for_allies']) ? $data['open_for_allies'] : null;
         $this->container['retracted'] = isset($data['retracted']) ? $data['retracted'] : null;
         $this->container['started'] = isset($data['started']) ? $data['started'] : null;
     }
@@ -195,8 +195,8 @@ class GetWarsWarIdOk implements ArrayAccess
         if ($this->container['mutual'] === null) {
             $invalid_properties[] = "'mutual' can't be null";
         }
-        if ($this->container['openForAllies'] === null) {
-            $invalid_properties[] = "'openForAllies' can't be null";
+        if ($this->container['open_for_allies'] === null) {
+            $invalid_properties[] = "'open_for_allies' can't be null";
         }
         return $invalid_properties;
     }
@@ -218,7 +218,7 @@ class GetWarsWarIdOk implements ArrayAccess
         if ($this->container['mutual'] === null) {
             return false;
         }
-        if ($this->container['openForAllies'] === null) {
+        if ($this->container['open_for_allies'] === null) {
             return false;
         }
         return true;
@@ -373,22 +373,22 @@ class GetWarsWarIdOk implements ArrayAccess
     }
 
     /**
-     * Gets openForAllies
+     * Gets open_for_allies
      * @return bool
      */
     public function getOpenForAllies()
     {
-        return $this->container['openForAllies'];
+        return $this->container['open_for_allies'];
     }
 
     /**
-     * Sets openForAllies
-     * @param bool $openForAllies Is the war currently open for allies or not
+     * Sets open_for_allies
+     * @param bool $open_for_allies Is the war currently open for allies or not
      * @return $this
      */
-    public function setOpenForAllies($openForAllies)
+    public function setOpenForAllies($open_for_allies)
     {
-        $this->container['openForAllies'] = $openForAllies;
+        $this->container['open_for_allies'] = $open_for_allies;
 
         return $this;
     }

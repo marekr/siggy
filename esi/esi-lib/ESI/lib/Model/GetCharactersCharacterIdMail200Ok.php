@@ -68,9 +68,9 @@ class GetCharactersCharacterIdMail200Ok implements ArrayAccess
       */
     protected static $swaggerTypes = array(
         'from' => 'int',
-        'isRead' => 'bool',
+        'is_read' => 'bool',
         'labels' => 'int[]',
-        'mailId' => 'int',
+        'mail_id' => 'int',
         'recipients' => '\ESI\Model\CharacterscharacterIdmailRecipients[]',
         'subject' => 'string',
         'timestamp' => '\DateTime'
@@ -87,9 +87,9 @@ class GetCharactersCharacterIdMail200Ok implements ArrayAccess
      */
     protected static $attributeMap = array(
         'from' => 'from',
-        'isRead' => 'is_read',
+        'is_read' => 'is_read',
         'labels' => 'labels',
-        'mailId' => 'mail_id',
+        'mail_id' => 'mail_id',
         'recipients' => 'recipients',
         'subject' => 'subject',
         'timestamp' => 'timestamp'
@@ -106,9 +106,9 @@ class GetCharactersCharacterIdMail200Ok implements ArrayAccess
      */
     protected static $setters = array(
         'from' => 'setFrom',
-        'isRead' => 'setIsRead',
+        'is_read' => 'setIsRead',
         'labels' => 'setLabels',
-        'mailId' => 'setMailId',
+        'mail_id' => 'setMailId',
         'recipients' => 'setRecipients',
         'subject' => 'setSubject',
         'timestamp' => 'setTimestamp'
@@ -125,9 +125,9 @@ class GetCharactersCharacterIdMail200Ok implements ArrayAccess
      */
     protected static $getters = array(
         'from' => 'getFrom',
-        'isRead' => 'getIsRead',
+        'is_read' => 'getIsRead',
         'labels' => 'getLabels',
-        'mailId' => 'getMailId',
+        'mail_id' => 'getMailId',
         'recipients' => 'getRecipients',
         'subject' => 'getSubject',
         'timestamp' => 'getTimestamp'
@@ -155,9 +155,9 @@ class GetCharactersCharacterIdMail200Ok implements ArrayAccess
     public function __construct(array $data = null)
     {
         $this->container['from'] = isset($data['from']) ? $data['from'] : null;
-        $this->container['isRead'] = isset($data['isRead']) ? $data['isRead'] : null;
+        $this->container['is_read'] = isset($data['is_read']) ? $data['is_read'] : null;
         $this->container['labels'] = isset($data['labels']) ? $data['labels'] : null;
-        $this->container['mailId'] = isset($data['mailId']) ? $data['mailId'] : null;
+        $this->container['mail_id'] = isset($data['mail_id']) ? $data['mail_id'] : null;
         $this->container['recipients'] = isset($data['recipients']) ? $data['recipients'] : null;
         $this->container['subject'] = isset($data['subject']) ? $data['subject'] : null;
         $this->container['timestamp'] = isset($data['timestamp']) ? $data['timestamp'] : null;
@@ -208,22 +208,22 @@ class GetCharactersCharacterIdMail200Ok implements ArrayAccess
     }
 
     /**
-     * Gets isRead
+     * Gets is_read
      * @return bool
      */
     public function getIsRead()
     {
-        return $this->container['isRead'];
+        return $this->container['is_read'];
     }
 
     /**
-     * Sets isRead
-     * @param bool $isRead is_read boolean
+     * Sets is_read
+     * @param bool $is_read is_read boolean
      * @return $this
      */
-    public function setIsRead($isRead)
+    public function setIsRead($is_read)
     {
-        $this->container['isRead'] = $isRead;
+        $this->container['is_read'] = $is_read;
 
         return $this;
     }
@@ -250,22 +250,22 @@ class GetCharactersCharacterIdMail200Ok implements ArrayAccess
     }
 
     /**
-     * Gets mailId
+     * Gets mail_id
      * @return int
      */
     public function getMailId()
     {
-        return $this->container['mailId'];
+        return $this->container['mail_id'];
     }
 
     /**
-     * Sets mailId
-     * @param int $mailId mail_id integer
+     * Sets mail_id
+     * @param int $mail_id mail_id integer
      * @return $this
      */
-    public function setMailId($mailId)
+    public function setMailId($mail_id)
     {
-        $this->container['mailId'] = $mailId;
+        $this->container['mail_id'] = $mail_id;
 
         return $this;
     }

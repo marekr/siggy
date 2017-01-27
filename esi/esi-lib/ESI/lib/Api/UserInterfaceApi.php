@@ -107,16 +107,16 @@ class UserInterfaceApi
      *
      * Set Autopilot Waypoint
      *
-     * @param int $destinationId The destination to travel to, can be solar system, station or structure&#39;s id (required)
-     * @param bool $clearOtherWaypoints Whether clean other waypoints beforing adding this one (required)
-     * @param bool $addToBeginning Whether this solar system should be added to the beginning of all waypoints (required)
+     * @param int $destination_id The destination to travel to, can be solar system, station or structure&#39;s id (required)
+     * @param bool $clear_other_waypoints Whether clean other waypoints beforing adding this one (required)
+     * @param bool $add_to_beginning Whether this solar system should be added to the beginning of all waypoints (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return void
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postUiAutopilotWaypoint($destinationId, $clearOtherWaypoints, $addToBeginning, $datasource = null)
+    public function postUiAutopilotWaypoint($destination_id, $clear_other_waypoints, $add_to_beginning, $datasource = null)
     {
-        list($response) = $this->postUiAutopilotWaypointWithHttpInfo($destinationId, $clearOtherWaypoints, $addToBeginning, $datasource);
+        list($response) = $this->postUiAutopilotWaypointWithHttpInfo($destination_id, $clear_other_waypoints, $add_to_beginning, $datasource);
         return $response;
     }
 
@@ -125,26 +125,26 @@ class UserInterfaceApi
      *
      * Set Autopilot Waypoint
      *
-     * @param int $destinationId The destination to travel to, can be solar system, station or structure&#39;s id (required)
-     * @param bool $clearOtherWaypoints Whether clean other waypoints beforing adding this one (required)
-     * @param bool $addToBeginning Whether this solar system should be added to the beginning of all waypoints (required)
+     * @param int $destination_id The destination to travel to, can be solar system, station or structure&#39;s id (required)
+     * @param bool $clear_other_waypoints Whether clean other waypoints beforing adding this one (required)
+     * @param bool $add_to_beginning Whether this solar system should be added to the beginning of all waypoints (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of null, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postUiAutopilotWaypointWithHttpInfo($destinationId, $clearOtherWaypoints, $addToBeginning, $datasource = null)
+    public function postUiAutopilotWaypointWithHttpInfo($destination_id, $clear_other_waypoints, $add_to_beginning, $datasource = null)
     {
-        // verify the required parameter 'destinationId' is set
-        if ($destinationId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $destinationId when calling postUiAutopilotWaypoint');
+        // verify the required parameter 'destination_id' is set
+        if ($destination_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $destination_id when calling postUiAutopilotWaypoint');
         }
-        // verify the required parameter 'clearOtherWaypoints' is set
-        if ($clearOtherWaypoints === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $clearOtherWaypoints when calling postUiAutopilotWaypoint');
+        // verify the required parameter 'clear_other_waypoints' is set
+        if ($clear_other_waypoints === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $clear_other_waypoints when calling postUiAutopilotWaypoint');
         }
-        // verify the required parameter 'addToBeginning' is set
-        if ($addToBeginning === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $addToBeginning when calling postUiAutopilotWaypoint');
+        // verify the required parameter 'add_to_beginning' is set
+        if ($add_to_beginning === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $add_to_beginning when calling postUiAutopilotWaypoint');
         }
         // parse inputs
         $resourcePath = "/ui/autopilot/waypoint/";
@@ -159,16 +159,16 @@ class UserInterfaceApi
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array());
 
         // query params
-        if ($destinationId !== null) {
-            $queryParams['destination_id'] = $this->apiClient->getSerializer()->toQueryValue($destinationId);
+        if ($destination_id !== null) {
+            $queryParams['destination_id'] = $this->apiClient->getSerializer()->toQueryValue($destination_id);
         }
         // query params
-        if ($clearOtherWaypoints !== null) {
-            $queryParams['clear_other_waypoints'] = $this->apiClient->getSerializer()->toQueryValue($clearOtherWaypoints);
+        if ($clear_other_waypoints !== null) {
+            $queryParams['clear_other_waypoints'] = $this->apiClient->getSerializer()->toQueryValue($clear_other_waypoints);
         }
         // query params
-        if ($addToBeginning !== null) {
-            $queryParams['add_to_beginning'] = $this->apiClient->getSerializer()->toQueryValue($addToBeginning);
+        if ($add_to_beginning !== null) {
+            $queryParams['add_to_beginning'] = $this->apiClient->getSerializer()->toQueryValue($add_to_beginning);
         }
         // query params
         if ($datasource !== null) {
@@ -222,14 +222,14 @@ class UserInterfaceApi
      *
      * Open Contract Window
      *
-     * @param int $contractId The contract to open (required)
+     * @param int $contract_id The contract to open (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return void
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postUiOpenwindowContract($contractId, $datasource = null)
+    public function postUiOpenwindowContract($contract_id, $datasource = null)
     {
-        list($response) = $this->postUiOpenwindowContractWithHttpInfo($contractId, $datasource);
+        list($response) = $this->postUiOpenwindowContractWithHttpInfo($contract_id, $datasource);
         return $response;
     }
 
@@ -238,16 +238,16 @@ class UserInterfaceApi
      *
      * Open Contract Window
      *
-     * @param int $contractId The contract to open (required)
+     * @param int $contract_id The contract to open (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of null, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postUiOpenwindowContractWithHttpInfo($contractId, $datasource = null)
+    public function postUiOpenwindowContractWithHttpInfo($contract_id, $datasource = null)
     {
-        // verify the required parameter 'contractId' is set
-        if ($contractId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $contractId when calling postUiOpenwindowContract');
+        // verify the required parameter 'contract_id' is set
+        if ($contract_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $contract_id when calling postUiOpenwindowContract');
         }
         // parse inputs
         $resourcePath = "/ui/openwindow/contract/";
@@ -262,8 +262,8 @@ class UserInterfaceApi
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array());
 
         // query params
-        if ($contractId !== null) {
-            $queryParams['contract_id'] = $this->apiClient->getSerializer()->toQueryValue($contractId);
+        if ($contract_id !== null) {
+            $queryParams['contract_id'] = $this->apiClient->getSerializer()->toQueryValue($contract_id);
         }
         // query params
         if ($datasource !== null) {
@@ -317,14 +317,14 @@ class UserInterfaceApi
      *
      * Open Information Window
      *
-     * @param int $targetId The target to open (required)
+     * @param int $target_id The target to open (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return void
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postUiOpenwindowInformation($targetId, $datasource = null)
+    public function postUiOpenwindowInformation($target_id, $datasource = null)
     {
-        list($response) = $this->postUiOpenwindowInformationWithHttpInfo($targetId, $datasource);
+        list($response) = $this->postUiOpenwindowInformationWithHttpInfo($target_id, $datasource);
         return $response;
     }
 
@@ -333,16 +333,16 @@ class UserInterfaceApi
      *
      * Open Information Window
      *
-     * @param int $targetId The target to open (required)
+     * @param int $target_id The target to open (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of null, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postUiOpenwindowInformationWithHttpInfo($targetId, $datasource = null)
+    public function postUiOpenwindowInformationWithHttpInfo($target_id, $datasource = null)
     {
-        // verify the required parameter 'targetId' is set
-        if ($targetId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $targetId when calling postUiOpenwindowInformation');
+        // verify the required parameter 'target_id' is set
+        if ($target_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $target_id when calling postUiOpenwindowInformation');
         }
         // parse inputs
         $resourcePath = "/ui/openwindow/information/";
@@ -357,8 +357,8 @@ class UserInterfaceApi
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array());
 
         // query params
-        if ($targetId !== null) {
-            $queryParams['target_id'] = $this->apiClient->getSerializer()->toQueryValue($targetId);
+        if ($target_id !== null) {
+            $queryParams['target_id'] = $this->apiClient->getSerializer()->toQueryValue($target_id);
         }
         // query params
         if ($datasource !== null) {
@@ -412,14 +412,14 @@ class UserInterfaceApi
      *
      * Open Market Details
      *
-     * @param int $typeId The item type to open in market window (required)
+     * @param int $type_id The item type to open in market window (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return void
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postUiOpenwindowMarketdetails($typeId, $datasource = null)
+    public function postUiOpenwindowMarketdetails($type_id, $datasource = null)
     {
-        list($response) = $this->postUiOpenwindowMarketdetailsWithHttpInfo($typeId, $datasource);
+        list($response) = $this->postUiOpenwindowMarketdetailsWithHttpInfo($type_id, $datasource);
         return $response;
     }
 
@@ -428,16 +428,16 @@ class UserInterfaceApi
      *
      * Open Market Details
      *
-     * @param int $typeId The item type to open in market window (required)
+     * @param int $type_id The item type to open in market window (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of null, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postUiOpenwindowMarketdetailsWithHttpInfo($typeId, $datasource = null)
+    public function postUiOpenwindowMarketdetailsWithHttpInfo($type_id, $datasource = null)
     {
-        // verify the required parameter 'typeId' is set
-        if ($typeId === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $typeId when calling postUiOpenwindowMarketdetails');
+        // verify the required parameter 'type_id' is set
+        if ($type_id === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $type_id when calling postUiOpenwindowMarketdetails');
         }
         // parse inputs
         $resourcePath = "/ui/openwindow/marketdetails/";
@@ -452,8 +452,8 @@ class UserInterfaceApi
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array());
 
         // query params
-        if ($typeId !== null) {
-            $queryParams['type_id'] = $this->apiClient->getSerializer()->toQueryValue($typeId);
+        if ($type_id !== null) {
+            $queryParams['type_id'] = $this->apiClient->getSerializer()->toQueryValue($type_id);
         }
         // query params
         if ($datasource !== null) {
@@ -507,14 +507,14 @@ class UserInterfaceApi
      *
      * Open New Mail Window
      *
-     * @param \ESI\Model\PostUiOpenwindowNewmailNewMail $newMail The details of mail to create (required)
+     * @param \ESI\Model\PostUiOpenwindowNewmailNewMail $new_mail The details of mail to create (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return void
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postUiOpenwindowNewmail($newMail, $datasource = null)
+    public function postUiOpenwindowNewmail($new_mail, $datasource = null)
     {
-        list($response) = $this->postUiOpenwindowNewmailWithHttpInfo($newMail, $datasource);
+        list($response) = $this->postUiOpenwindowNewmailWithHttpInfo($new_mail, $datasource);
         return $response;
     }
 
@@ -523,16 +523,16 @@ class UserInterfaceApi
      *
      * Open New Mail Window
      *
-     * @param \ESI\Model\PostUiOpenwindowNewmailNewMail $newMail The details of mail to create (required)
+     * @param \ESI\Model\PostUiOpenwindowNewmailNewMail $new_mail The details of mail to create (required)
      * @param string $datasource The server name you would like data from (optional, default to tranquility)
      * @return Array of null, HTTP status code, HTTP response headers (array of strings)
      * @throws \ESI\ApiException on non-2xx response
      */
-    public function postUiOpenwindowNewmailWithHttpInfo($newMail, $datasource = null)
+    public function postUiOpenwindowNewmailWithHttpInfo($new_mail, $datasource = null)
     {
-        // verify the required parameter 'newMail' is set
-        if ($newMail === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $newMail when calling postUiOpenwindowNewmail');
+        // verify the required parameter 'new_mail' is set
+        if ($new_mail === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $new_mail when calling postUiOpenwindowNewmail');
         }
         // parse inputs
         $resourcePath = "/ui/openwindow/newmail/";
@@ -555,8 +555,8 @@ class UserInterfaceApi
 
         // body params
         $_tempBody = null;
-        if (isset($newMail)) {
-            $_tempBody = $newMail;
+        if (isset($new_mail)) {
+            $_tempBody = $new_mail;
         }
 
         // for model (json/xml)

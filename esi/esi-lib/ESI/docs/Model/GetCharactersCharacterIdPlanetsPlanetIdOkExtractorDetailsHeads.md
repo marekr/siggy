@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**headId** | **int** | head_id integer | 
+**head_id** | **int** | head_id integer | 
 **latitude** | **float** | latitude number | 
 **longitude** | **float** | longitude number | 
 

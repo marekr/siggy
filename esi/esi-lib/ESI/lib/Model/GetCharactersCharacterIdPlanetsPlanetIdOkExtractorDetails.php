@@ -67,11 +67,11 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetails implements Array
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'cycleTime' => 'int',
-        'headRadius' => 'float',
+        'cycle_time' => 'int',
+        'head_radius' => 'float',
         'heads' => '\ESI\Model\GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetailsHeads[]',
-        'productTypeId' => 'int',
-        'qtyPerCycle' => 'int'
+        'product_type_id' => 'int',
+        'qty_per_cycle' => 'int'
     );
 
     public static function swaggerTypes()
@@ -84,11 +84,11 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetails implements Array
      * @var string[]
      */
     protected static $attributeMap = array(
-        'cycleTime' => 'cycle_time',
-        'headRadius' => 'head_radius',
+        'cycle_time' => 'cycle_time',
+        'head_radius' => 'head_radius',
         'heads' => 'heads',
-        'productTypeId' => 'product_type_id',
-        'qtyPerCycle' => 'qty_per_cycle'
+        'product_type_id' => 'product_type_id',
+        'qty_per_cycle' => 'qty_per_cycle'
     );
 
     public static function attributeMap()
@@ -101,11 +101,11 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetails implements Array
      * @var string[]
      */
     protected static $setters = array(
-        'cycleTime' => 'setCycleTime',
-        'headRadius' => 'setHeadRadius',
+        'cycle_time' => 'setCycleTime',
+        'head_radius' => 'setHeadRadius',
         'heads' => 'setHeads',
-        'productTypeId' => 'setProductTypeId',
-        'qtyPerCycle' => 'setQtyPerCycle'
+        'product_type_id' => 'setProductTypeId',
+        'qty_per_cycle' => 'setQtyPerCycle'
     );
 
     public static function setters()
@@ -118,11 +118,11 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetails implements Array
      * @var string[]
      */
     protected static $getters = array(
-        'cycleTime' => 'getCycleTime',
-        'headRadius' => 'getHeadRadius',
+        'cycle_time' => 'getCycleTime',
+        'head_radius' => 'getHeadRadius',
         'heads' => 'getHeads',
-        'productTypeId' => 'getProductTypeId',
-        'qtyPerCycle' => 'getQtyPerCycle'
+        'product_type_id' => 'getProductTypeId',
+        'qty_per_cycle' => 'getQtyPerCycle'
     );
 
     public static function getters()
@@ -146,11 +146,11 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetails implements Array
      */
     public function __construct(array $data = null)
     {
-        $this->container['cycleTime'] = isset($data['cycleTime']) ? $data['cycleTime'] : null;
-        $this->container['headRadius'] = isset($data['headRadius']) ? $data['headRadius'] : null;
+        $this->container['cycle_time'] = isset($data['cycle_time']) ? $data['cycle_time'] : null;
+        $this->container['head_radius'] = isset($data['head_radius']) ? $data['head_radius'] : null;
         $this->container['heads'] = isset($data['heads']) ? $data['heads'] : null;
-        $this->container['productTypeId'] = isset($data['productTypeId']) ? $data['productTypeId'] : null;
-        $this->container['qtyPerCycle'] = isset($data['qtyPerCycle']) ? $data['qtyPerCycle'] : null;
+        $this->container['product_type_id'] = isset($data['product_type_id']) ? $data['product_type_id'] : null;
+        $this->container['qty_per_cycle'] = isset($data['qty_per_cycle']) ? $data['qty_per_cycle'] : null;
     }
 
     /**
@@ -161,20 +161,20 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetails implements Array
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['cycleTime'] === null) {
-            $invalid_properties[] = "'cycleTime' can't be null";
+        if ($this->container['cycle_time'] === null) {
+            $invalid_properties[] = "'cycle_time' can't be null";
         }
-        if ($this->container['headRadius'] === null) {
-            $invalid_properties[] = "'headRadius' can't be null";
+        if ($this->container['head_radius'] === null) {
+            $invalid_properties[] = "'head_radius' can't be null";
         }
         if ($this->container['heads'] === null) {
             $invalid_properties[] = "'heads' can't be null";
         }
-        if ($this->container['productTypeId'] === null) {
-            $invalid_properties[] = "'productTypeId' can't be null";
+        if ($this->container['product_type_id'] === null) {
+            $invalid_properties[] = "'product_type_id' can't be null";
         }
-        if ($this->container['qtyPerCycle'] === null) {
-            $invalid_properties[] = "'qtyPerCycle' can't be null";
+        if ($this->container['qty_per_cycle'] === null) {
+            $invalid_properties[] = "'qty_per_cycle' can't be null";
         }
         return $invalid_properties;
     }
@@ -187,19 +187,19 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetails implements Array
      */
     public function valid()
     {
-        if ($this->container['cycleTime'] === null) {
+        if ($this->container['cycle_time'] === null) {
             return false;
         }
-        if ($this->container['headRadius'] === null) {
+        if ($this->container['head_radius'] === null) {
             return false;
         }
         if ($this->container['heads'] === null) {
             return false;
         }
-        if ($this->container['productTypeId'] === null) {
+        if ($this->container['product_type_id'] === null) {
             return false;
         }
-        if ($this->container['qtyPerCycle'] === null) {
+        if ($this->container['qty_per_cycle'] === null) {
             return false;
         }
         return true;
@@ -207,43 +207,43 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetails implements Array
 
 
     /**
-     * Gets cycleTime
+     * Gets cycle_time
      * @return int
      */
     public function getCycleTime()
     {
-        return $this->container['cycleTime'];
+        return $this->container['cycle_time'];
     }
 
     /**
-     * Sets cycleTime
-     * @param int $cycleTime in seconds
+     * Sets cycle_time
+     * @param int $cycle_time in seconds
      * @return $this
      */
-    public function setCycleTime($cycleTime)
+    public function setCycleTime($cycle_time)
     {
-        $this->container['cycleTime'] = $cycleTime;
+        $this->container['cycle_time'] = $cycle_time;
 
         return $this;
     }
 
     /**
-     * Gets headRadius
+     * Gets head_radius
      * @return float
      */
     public function getHeadRadius()
     {
-        return $this->container['headRadius'];
+        return $this->container['head_radius'];
     }
 
     /**
-     * Sets headRadius
-     * @param float $headRadius head_radius number
+     * Sets head_radius
+     * @param float $head_radius head_radius number
      * @return $this
      */
-    public function setHeadRadius($headRadius)
+    public function setHeadRadius($head_radius)
     {
-        $this->container['headRadius'] = $headRadius;
+        $this->container['head_radius'] = $head_radius;
 
         return $this;
     }
@@ -270,43 +270,43 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkExtractorDetails implements Array
     }
 
     /**
-     * Gets productTypeId
+     * Gets product_type_id
      * @return int
      */
     public function getProductTypeId()
     {
-        return $this->container['productTypeId'];
+        return $this->container['product_type_id'];
     }
 
     /**
-     * Sets productTypeId
-     * @param int $productTypeId product_type_id integer
+     * Sets product_type_id
+     * @param int $product_type_id product_type_id integer
      * @return $this
      */
-    public function setProductTypeId($productTypeId)
+    public function setProductTypeId($product_type_id)
     {
-        $this->container['productTypeId'] = $productTypeId;
+        $this->container['product_type_id'] = $product_type_id;
 
         return $this;
     }
 
     /**
-     * Gets qtyPerCycle
+     * Gets qty_per_cycle
      * @return int
      */
     public function getQtyPerCycle()
     {
-        return $this->container['qtyPerCycle'];
+        return $this->container['qty_per_cycle'];
     }
 
     /**
-     * Sets qtyPerCycle
-     * @param int $qtyPerCycle qty_per_cycle integer
+     * Sets qty_per_cycle
+     * @param int $qty_per_cycle qty_per_cycle integer
      * @return $this
      */
-    public function setQtyPerCycle($qtyPerCycle)
+    public function setQtyPerCycle($qty_per_cycle)
     {
-        $this->container['qtyPerCycle'] = $qtyPerCycle;
+        $this->container['qty_per_cycle'] = $qty_per_cycle;
 
         return $this;
     }

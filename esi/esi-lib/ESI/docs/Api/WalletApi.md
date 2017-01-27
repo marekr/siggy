@@ -8,7 +8,7 @@ Method | HTTP request | Description
 
 
 # **getCharactersCharacterIdWallets**
-> \ESI\Model\GetCharactersCharacterIdWallets200Ok[] getCharactersCharacterIdWallets($characterId, $datasource)
+> \ESI\Model\GetCharactersCharacterIdWallets200Ok[] getCharactersCharacterIdWallets($character_id, $datasource)
 
 List wallets and balances
 
@@ -23,11 +23,11 @@ require_once(__DIR__ . '/vendor/autoload.php');
 ESI\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
 
 $api_instance = new ESI\Api\WalletApi();
-$characterId = 56; // int | An EVE character ID
+$character_id = 56; // int | An EVE character ID
 $datasource = "tranquility"; // string | The server name you would like data from
 
 try {
-    $result = $api_instance->getCharactersCharacterIdWallets($characterId, $datasource);
+    $result = $api_instance->getCharactersCharacterIdWallets($character_id, $datasource);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling WalletApi->getCharactersCharacterIdWallets: ', $e->getMessage(), PHP_EOL;
@@ -39,7 +39,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **characterId** | **int**| An EVE character ID |
+ **character_id** | **int**| An EVE character ID |
  **datasource** | **string**| The server name you would like data from | [optional] [default to tranquility]
 
 ### Return type

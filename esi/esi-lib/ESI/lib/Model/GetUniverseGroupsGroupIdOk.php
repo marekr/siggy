@@ -67,8 +67,8 @@ class GetUniverseGroupsGroupIdOk implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'categoryId' => 'float',
-        'groupId' => 'int',
+        'category_id' => 'float',
+        'group_id' => 'int',
         'name' => 'string',
         'published' => 'bool',
         'types' => 'int[]'
@@ -84,8 +84,8 @@ class GetUniverseGroupsGroupIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'categoryId' => 'category_id',
-        'groupId' => 'group_id',
+        'category_id' => 'category_id',
+        'group_id' => 'group_id',
         'name' => 'name',
         'published' => 'published',
         'types' => 'types'
@@ -101,8 +101,8 @@ class GetUniverseGroupsGroupIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'categoryId' => 'setCategoryId',
-        'groupId' => 'setGroupId',
+        'category_id' => 'setCategoryId',
+        'group_id' => 'setGroupId',
         'name' => 'setName',
         'published' => 'setPublished',
         'types' => 'setTypes'
@@ -118,8 +118,8 @@ class GetUniverseGroupsGroupIdOk implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'categoryId' => 'getCategoryId',
-        'groupId' => 'getGroupId',
+        'category_id' => 'getCategoryId',
+        'group_id' => 'getGroupId',
         'name' => 'getName',
         'published' => 'getPublished',
         'types' => 'getTypes'
@@ -146,8 +146,8 @@ class GetUniverseGroupsGroupIdOk implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['categoryId'] = isset($data['categoryId']) ? $data['categoryId'] : null;
-        $this->container['groupId'] = isset($data['groupId']) ? $data['groupId'] : null;
+        $this->container['category_id'] = isset($data['category_id']) ? $data['category_id'] : null;
+        $this->container['group_id'] = isset($data['group_id']) ? $data['group_id'] : null;
         $this->container['name'] = isset($data['name']) ? $data['name'] : null;
         $this->container['published'] = isset($data['published']) ? $data['published'] : null;
         $this->container['types'] = isset($data['types']) ? $data['types'] : null;
@@ -161,11 +161,11 @@ class GetUniverseGroupsGroupIdOk implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['categoryId'] === null) {
-            $invalid_properties[] = "'categoryId' can't be null";
+        if ($this->container['category_id'] === null) {
+            $invalid_properties[] = "'category_id' can't be null";
         }
-        if ($this->container['groupId'] === null) {
-            $invalid_properties[] = "'groupId' can't be null";
+        if ($this->container['group_id'] === null) {
+            $invalid_properties[] = "'group_id' can't be null";
         }
         if ($this->container['name'] === null) {
             $invalid_properties[] = "'name' can't be null";
@@ -187,10 +187,10 @@ class GetUniverseGroupsGroupIdOk implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['categoryId'] === null) {
+        if ($this->container['category_id'] === null) {
             return false;
         }
-        if ($this->container['groupId'] === null) {
+        if ($this->container['group_id'] === null) {
             return false;
         }
         if ($this->container['name'] === null) {
@@ -207,43 +207,43 @@ class GetUniverseGroupsGroupIdOk implements ArrayAccess
 
 
     /**
-     * Gets categoryId
+     * Gets category_id
      * @return float
      */
     public function getCategoryId()
     {
-        return $this->container['categoryId'];
+        return $this->container['category_id'];
     }
 
     /**
-     * Sets categoryId
-     * @param float $categoryId category_id number
+     * Sets category_id
+     * @param float $category_id category_id number
      * @return $this
      */
-    public function setCategoryId($categoryId)
+    public function setCategoryId($category_id)
     {
-        $this->container['categoryId'] = $categoryId;
+        $this->container['category_id'] = $category_id;
 
         return $this;
     }
 
     /**
-     * Gets groupId
+     * Gets group_id
      * @return int
      */
     public function getGroupId()
     {
-        return $this->container['groupId'];
+        return $this->container['group_id'];
     }
 
     /**
-     * Sets groupId
-     * @param int $groupId group_id integer
+     * Sets group_id
+     * @param int $group_id group_id integer
      * @return $this
      */
-    public function setGroupId($groupId)
+    public function setGroupId($group_id)
     {
-        $this->container['groupId'] = $groupId;
+        $this->container['group_id'] = $group_id;
 
         return $this;
     }

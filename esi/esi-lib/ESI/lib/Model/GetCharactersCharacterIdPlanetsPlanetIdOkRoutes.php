@@ -67,11 +67,11 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkRoutes implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = array(
-        'contentTypeId' => 'int',
-        'destinationPinId' => 'int',
+        'content_type_id' => 'int',
+        'destination_pin_id' => 'int',
         'quantity' => 'int',
-        'routeId' => 'int',
-        'sourcePinId' => 'int',
+        'route_id' => 'int',
+        'source_pin_id' => 'int',
         'waypoints' => '\ESI\Model\GetCharactersCharacterIdPlanetsPlanetIdOkWaypoints[]'
     );
 
@@ -85,11 +85,11 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkRoutes implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'contentTypeId' => 'content_type_id',
-        'destinationPinId' => 'destination_pin_id',
+        'content_type_id' => 'content_type_id',
+        'destination_pin_id' => 'destination_pin_id',
         'quantity' => 'quantity',
-        'routeId' => 'route_id',
-        'sourcePinId' => 'source_pin_id',
+        'route_id' => 'route_id',
+        'source_pin_id' => 'source_pin_id',
         'waypoints' => 'waypoints'
     );
 
@@ -103,11 +103,11 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkRoutes implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'contentTypeId' => 'setContentTypeId',
-        'destinationPinId' => 'setDestinationPinId',
+        'content_type_id' => 'setContentTypeId',
+        'destination_pin_id' => 'setDestinationPinId',
         'quantity' => 'setQuantity',
-        'routeId' => 'setRouteId',
-        'sourcePinId' => 'setSourcePinId',
+        'route_id' => 'setRouteId',
+        'source_pin_id' => 'setSourcePinId',
         'waypoints' => 'setWaypoints'
     );
 
@@ -121,11 +121,11 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkRoutes implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'contentTypeId' => 'getContentTypeId',
-        'destinationPinId' => 'getDestinationPinId',
+        'content_type_id' => 'getContentTypeId',
+        'destination_pin_id' => 'getDestinationPinId',
         'quantity' => 'getQuantity',
-        'routeId' => 'getRouteId',
-        'sourcePinId' => 'getSourcePinId',
+        'route_id' => 'getRouteId',
+        'source_pin_id' => 'getSourcePinId',
         'waypoints' => 'getWaypoints'
     );
 
@@ -150,11 +150,11 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkRoutes implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['contentTypeId'] = isset($data['contentTypeId']) ? $data['contentTypeId'] : null;
-        $this->container['destinationPinId'] = isset($data['destinationPinId']) ? $data['destinationPinId'] : null;
+        $this->container['content_type_id'] = isset($data['content_type_id']) ? $data['content_type_id'] : null;
+        $this->container['destination_pin_id'] = isset($data['destination_pin_id']) ? $data['destination_pin_id'] : null;
         $this->container['quantity'] = isset($data['quantity']) ? $data['quantity'] : null;
-        $this->container['routeId'] = isset($data['routeId']) ? $data['routeId'] : null;
-        $this->container['sourcePinId'] = isset($data['sourcePinId']) ? $data['sourcePinId'] : null;
+        $this->container['route_id'] = isset($data['route_id']) ? $data['route_id'] : null;
+        $this->container['source_pin_id'] = isset($data['source_pin_id']) ? $data['source_pin_id'] : null;
         $this->container['waypoints'] = isset($data['waypoints']) ? $data['waypoints'] : null;
     }
 
@@ -166,20 +166,20 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkRoutes implements ArrayAccess
     public function listInvalidProperties()
     {
         $invalid_properties = array();
-        if ($this->container['contentTypeId'] === null) {
-            $invalid_properties[] = "'contentTypeId' can't be null";
+        if ($this->container['content_type_id'] === null) {
+            $invalid_properties[] = "'content_type_id' can't be null";
         }
-        if ($this->container['destinationPinId'] === null) {
-            $invalid_properties[] = "'destinationPinId' can't be null";
+        if ($this->container['destination_pin_id'] === null) {
+            $invalid_properties[] = "'destination_pin_id' can't be null";
         }
         if ($this->container['quantity'] === null) {
             $invalid_properties[] = "'quantity' can't be null";
         }
-        if ($this->container['routeId'] === null) {
-            $invalid_properties[] = "'routeId' can't be null";
+        if ($this->container['route_id'] === null) {
+            $invalid_properties[] = "'route_id' can't be null";
         }
-        if ($this->container['sourcePinId'] === null) {
-            $invalid_properties[] = "'sourcePinId' can't be null";
+        if ($this->container['source_pin_id'] === null) {
+            $invalid_properties[] = "'source_pin_id' can't be null";
         }
         return $invalid_properties;
     }
@@ -192,19 +192,19 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkRoutes implements ArrayAccess
      */
     public function valid()
     {
-        if ($this->container['contentTypeId'] === null) {
+        if ($this->container['content_type_id'] === null) {
             return false;
         }
-        if ($this->container['destinationPinId'] === null) {
+        if ($this->container['destination_pin_id'] === null) {
             return false;
         }
         if ($this->container['quantity'] === null) {
             return false;
         }
-        if ($this->container['routeId'] === null) {
+        if ($this->container['route_id'] === null) {
             return false;
         }
-        if ($this->container['sourcePinId'] === null) {
+        if ($this->container['source_pin_id'] === null) {
             return false;
         }
         return true;
@@ -212,43 +212,43 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkRoutes implements ArrayAccess
 
 
     /**
-     * Gets contentTypeId
+     * Gets content_type_id
      * @return int
      */
     public function getContentTypeId()
     {
-        return $this->container['contentTypeId'];
+        return $this->container['content_type_id'];
     }
 
     /**
-     * Sets contentTypeId
-     * @param int $contentTypeId content_type_id integer
+     * Sets content_type_id
+     * @param int $content_type_id content_type_id integer
      * @return $this
      */
-    public function setContentTypeId($contentTypeId)
+    public function setContentTypeId($content_type_id)
     {
-        $this->container['contentTypeId'] = $contentTypeId;
+        $this->container['content_type_id'] = $content_type_id;
 
         return $this;
     }
 
     /**
-     * Gets destinationPinId
+     * Gets destination_pin_id
      * @return int
      */
     public function getDestinationPinId()
     {
-        return $this->container['destinationPinId'];
+        return $this->container['destination_pin_id'];
     }
 
     /**
-     * Sets destinationPinId
-     * @param int $destinationPinId destination_pin_id integer
+     * Sets destination_pin_id
+     * @param int $destination_pin_id destination_pin_id integer
      * @return $this
      */
-    public function setDestinationPinId($destinationPinId)
+    public function setDestinationPinId($destination_pin_id)
     {
-        $this->container['destinationPinId'] = $destinationPinId;
+        $this->container['destination_pin_id'] = $destination_pin_id;
 
         return $this;
     }
@@ -275,43 +275,43 @@ class GetCharactersCharacterIdPlanetsPlanetIdOkRoutes implements ArrayAccess
     }
 
     /**
-     * Gets routeId
+     * Gets route_id
      * @return int
      */
     public function getRouteId()
     {
-        return $this->container['routeId'];
+        return $this->container['route_id'];
     }
 
     /**
-     * Sets routeId
-     * @param int $routeId route_id integer
+     * Sets route_id
+     * @param int $route_id route_id integer
      * @return $this
      */
-    public function setRouteId($routeId)
+    public function setRouteId($route_id)
     {
-        $this->container['routeId'] = $routeId;
+        $this->container['route_id'] = $route_id;
 
         return $this;
     }
 
     /**
-     * Gets sourcePinId
+     * Gets source_pin_id
      * @return int
      */
     public function getSourcePinId()
     {
-        return $this->container['sourcePinId'];
+        return $this->container['source_pin_id'];
     }
 
     /**
-     * Sets sourcePinId
-     * @param int $sourcePinId source_pin_id integer
+     * Sets source_pin_id
+     * @param int $source_pin_id source_pin_id integer
      * @return $this
      */
-    public function setSourcePinId($sourcePinId)
+    public function setSourcePinId($source_pin_id)
     {
-        $this->container['sourcePinId'] = $sourcePinId;
+        $this->container['source_pin_id'] = $source_pin_id;
 
         return $this;
     }
