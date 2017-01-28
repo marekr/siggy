@@ -72,6 +72,7 @@ siggy2.Map = function(core, options)
     this.selectionBox = $('<div>').addClass('selection-box');
 
 	this.blobTemplate = Handlebars.compile( $("#template-chainmap-system-blob").html() );
+	this.templateJumpLogEntry = Handlebars.compile( $("#template-jump-log-entry").html() );
 
 	$(document).on('click','.map-system-blob', function(e)
 	{
@@ -1357,6 +1358,7 @@ siggy2.Map.prototype.systemEditorSave = function()
 
 siggy2.Map.prototype.updateJumpLog = function( hash )
 {
+		var $this = this;
 		var logList = $('#jumpLogList');
 		logList.empty();
 
@@ -1369,61 +1371,78 @@ siggy2.Map.prototype.updateJumpLog = function( hash )
 			wormhole_hash: hash
 		}
 
-		var that = this;
 		$.get(this.baseUrl + 'chainmap/jump_log', request, function (data)
 		{
-			data.totalMass = parseInt(data.totalMass);
-			var displayMass = roundNumber(data.totalMass/1000000,2);
-			$('#totalJumpedMass').text(displayMass);
-
-			if( data.totalMass > 0 )
+			if( typeof(data.totalMass) != 'undefined' )
 			{
+				data.totalMass = parseInt(data.totalMass);
+				var displayMass = roundNumber(data.totalMass/1000000,2);
+				$('#totalJumpedMass').text(displayMass);
+
 				for( var i in data.jumpItems )
 				{
 					var item = data.jumpItems[i];
 
-					var mass = roundNumber(parseInt(item.mass)/1000000,2);
+					var mass = 0;
+					if(item.mass != null)
+					{
+						mass = roundNumber(parseInt(item.mass)/1000000,2);
+					}
 
 					var charName = '';
-					if( that.settings.jumpTrackerShowNames )
+					if( $this.settings.jumpTrackerShowNames )
 					{
-						charName = ' - '+item.charName;
+						charName = ' - '+item.character_name;
 					}
 
 					var time = '';
-					if( that.settings.jumpTrackerShowTime )
+					if( $this.settings.jumpTrackerShowTime )
 					{
-						time =  siggy2.Helpers.displayTimeStamp(item.time);
+						time =  item.jumped_at;
 					}
+
+					var shipName = 'Unknown';
+					if(item.ship_id != 0)
+					{
+						shipName = item.shipName;
+					}
+
+					var shipClass = 'unknown';
+					if(item.ship_id != 0)
+					{
+						shipClass = item.shipClass;
+					}
+
 
 					var direction = '';
+
+					var originSystem = $this.systems[item.origin_id];
 					var fromDName = '';
-
-					if( that.systems[item.origin].displayName != '' )
+					if( originSystem.displayName != '' )
 					{
-						fromDName = ' ('+that.systems[item.origin].displayName+')';
+						fromDName = ' ('+originSystem.displayName+')';
 					}
-					direction += that.systems[item.origin].name+fromDName + ' -> ';
+					direction += originSystem.name+fromDName + ' -> ';
 
+					var destinationSystem = $this.systems[item.destination_id];
 					var toDName = '';
-					if( that.systems[item.destination].displayName != '' )
+					if( destinationSystem.displayName != '' )
 					{
-						toDName = ' ('+that.systems[item.destination].displayName+')';
+						toDName = ' ('+destinationSystem.displayName+')';
 					}
-					direction += that.systems[item.destination].name+toDName;
+					direction += destinationSystem.name+toDName;
 
 
-					var s = $('<li><p style="float:left"><b>' + item.shipName +'</b>' + charName + '<br />' +
-						item.shipClass + '<br />' +
-						time +
-						'</p>' +
-						'<p style="float:right">' +
-						'Mass: ' + mass + 'mil' +
-						'</p><div class="clear"></div>' +
-						'<div class="center">' + direction +'</div></li>');
+					var entry = $($this.templateJumpLogEntry({
+						mass: mass,
+						direction: direction,
+						ship_name: shipName,
+						character_name: charName,
+						jumped_at: time,
+						ship_class: shipClass
+					}));
 
-					logList.append(s);
-
+					logList.append(entry);
 				}
 			}
 			else
