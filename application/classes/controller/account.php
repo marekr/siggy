@@ -4,7 +4,6 @@ require Kohana::find_file('vendor', 'OAuth\bootstrap');
 use OAuth\OAuth2\Service\Eve;
 use OAuth\Common\Storage\Session as OSession;
 use OAuth\Common\Consumer\Credentials;
-use Pheal\Pheal;
 use Carbon\Carbon;
 
 class Controller_Account extends FrontController {
@@ -119,8 +118,22 @@ class Controller_Account extends FrontController {
 
 			$eveService = $serviceFactory->createService('Eve', $credentials, $storage, [
 																						\OAuth\OAuth2\Service\Eve::SCOPE_CHARACTER_LOCATION_READ,
-																						\OAuth\OAuth2\Service\Eve::SCOPE_CHARACTER_NAVIGATION_WRITE
+																						\OAuth\OAuth2\Service\Eve::SCOPE_CHARACTER_NAVIGATION_WRITE,
+																						\OAuth\OAuth2\Service\Eve::SCOPE_ESI_UI_WRITE_WAYPOINT,
+																						\OAuth\OAuth2\Service\Eve::SCOPE_ESI_LOCATION_READ_LOCATION,
+																						\OAuth\OAuth2\Service\Eve::SCOPE_ESI_LOCATION_READ_SHIP_TYPE,
+																						\OAuth\OAuth2\Service\Eve::SCOPE_ESI_UI_OPEN_WINDOW
 																						]);
+
+			$dbScopes = [
+				'scope_esi_location_read_location' => 1,
+				'scope_esi_location_read_ship_type' => 1,
+				'scope_esi_ui_write_waypoint' => 1,
+				'scope_esi_ui_open_window' => 1,
+				'scope_character_location_read' => 1,
+				'scope_character_navigation_write' => 1,
+			];
+
 			if ( !empty($_GET['code']) )
 			{
 				// retrieve the CSRF state parameter
@@ -146,10 +159,12 @@ class Controller_Account extends FrontController {
 					if( $userID == Auth::$user->id )
 					{
 						Message::add('info', __('The character\'s connection has been updated successfully.'));
+
 						Auth::$user->updateSSOCharacter($result['CharacterID'],
 															$token->getAccessToken(),
 															$token->getRefreshToken(),
-															$expiration);
+															$expiration,
+															$dbScopes);
 
 						HTTP::redirect('/account/connected');
 					}
@@ -160,7 +175,8 @@ class Controller_Account extends FrontController {
 													$result['CharacterID'], 
 													$token->getAccessToken(), 
 													$expiration, 
-													$token->getRefreshToken());
+													$token->getRefreshToken(),
+													$dbScopes);
 						
 						HTTP::redirect('/account/connected');
 					}
@@ -187,7 +203,8 @@ class Controller_Account extends FrontController {
 						Auth::$user->updateSSOCharacter($result['CharacterID'],
 														$token->getAccessToken(),
 														$token->getRefreshToken(),
-														$expiration);
+														$expiration,
+														$dbScopes);
 
 						HTTP::redirect('/');
 					}
@@ -198,6 +215,7 @@ class Controller_Account extends FrontController {
 						$session->set('sso_character_id', $result['CharacterID']);
 						$session->set('sso_access_token', $token->getAccessToken());
 						$session->set('sso_refresh_token', $token->getRefreshToken());
+						$session->set('sso_scopes', $dbScopes);
 
 						$session->set('sso_token_eol', $expiration);
 						
@@ -283,7 +301,8 @@ class Controller_Account extends FrontController {
 								$session->get_once('sso_character_id'),
 								$session->get_once('sso_access_token'),
 								$session->get_once('sso_token_eol'),
-								$session->get_once('sso_refresh_token'));
+								$session->get_once('sso_refresh_token'),
+								$session->get_once('sso_scopes'));
 
 							HTTP::redirect('/');
 						}
@@ -651,7 +670,8 @@ class Controller_Account extends FrontController {
 												$session->get_once('sso_character_id'), 
 												$session->get_once('sso_access_token'), 
 												$session->get_once('sso_token_eol'), 
-												$session->get_once('sso_refresh_token'));
+												$session->get_once('sso_refresh_token'),
+												$session->get_once('sso_scopes'));
 				}
 
 				if( isset($_REQUEST['bounce'] ) )

@@ -15,6 +15,10 @@ class Eve extends AbstractService
 {
     const SCOPE_CHARACTER_LOCATION_READ                = 'characterLocationRead';
     const SCOPE_CHARACTER_NAVIGATION_WRITE                = 'characterNavigationWrite';
+    const SCOPE_ESI_UI_WRITE_WAYPOINT                = 'esi-ui.write_waypoint.v1';
+    const SCOPE_ESI_LOCATION_READ_LOCATION                = 'esi-location.read_location.v1';
+    const SCOPE_ESI_LOCATION_READ_SHIP_TYPE                = 'esi-location.read_ship_type.v1';
+    const SCOPE_ESI_UI_OPEN_WINDOW                = 'esi-ui.open_window.v1';
     
     public function __construct(
         CredentialsInterface $credentials,

@@ -15,7 +15,13 @@ class UserSSOCharacter extends Model {
 			'access_token',
 			'access_token_expiration',
 			'refresh_token',
-			'valid'
+			'valid',
+			'scope_character_location_read',
+			'scope_character_navigation_write',
+			'scope_esi_location_read_location',
+			'scope_esi_location_read_ship_type',
+			'scope_esi_ui_write_waypoint',
+			'scope_esi_ui_open_window',
 		];
 
 	public function character()

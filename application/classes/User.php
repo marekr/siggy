@@ -117,7 +117,7 @@ class User extends Model {
 		return TRUE;
 	}
 
-	public function updateSSOCharacter(int $characterId, $token, $refreshToken, $expiration)
+	public function updateSSOCharacter(int $characterId, string $token, string $refreshToken, $expiration, array $scopes = [])
 	{
 		$char = $this->ssoCharacters()->where('character_id', $characterId)->first();
 		$data = [
@@ -127,13 +127,18 @@ class User extends Model {
 			'valid' => 1
 		];
 
+		if(!empty($scopes))
+		{
+			$data = array_merge($data, $scopes);
+		}
+
 		$char->fill($data);
 		$char->save();
 		
 		return TRUE;
 	}
 
-	public function addSSOCharacter($hash, $characterId, $token, $expiration, $refreshToken)
+	public function addSSOCharacter($hash, $characterId, $token, $expiration, $refreshToken, $scopes = [])
 	{
 		$insert = [
 			'user_id' => $this->id,
@@ -144,6 +149,11 @@ class User extends Model {
 			'refresh_token' => $refreshToken,
 			'valid' => 1
 		];
+
+		if(!empty($scopes))
+		{
+			$insert = array_merge($insert, $scopes);
+		}
 
 		$this->ssoCharacters()->create($insert);
 
