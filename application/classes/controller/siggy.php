@@ -353,7 +353,7 @@ class Controller_Siggy extends FrontController {
 		
 		if( Auth::$session->group->jump_log_enabled )
 		{
-			$charID = ( Auth::$session->group->jumpLogRecordNames ? Auth::$session->character_id : 0 );
+			$charID = ( Auth::$session->group->jump_log_record_names ? Auth::$session->character_id : 0 );
 
 			$data = [
 				'wormhole_hash' => $whHash,

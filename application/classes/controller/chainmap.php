@@ -679,14 +679,14 @@ class Controller_Chainmap extends FrontController {
 
 		if(	!$this->siggyAccessGranted() )
 		{
-			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
-			exit();
+			$this->response->body(json_encode(['error' => 1, 'errorMsg' => 'Invalid auth']));
+			return;
 		}
 
 		if( !isset($_GET['wormhole_hash']) || empty( $_GET['wormhole_hash'] ) )
 		{
-			echo json_encode(array('error' => 1, 'errorMsg' => 'Missing wormhole_hash parameter.'));
-			exit();
+			$this->response->body(json_encode(['error' => 1, 'errorMsg' => 'Missing wormhole_hash parameter.']));
+			return;
 		}
 
 		$hash = $_GET['wormhole_hash'];

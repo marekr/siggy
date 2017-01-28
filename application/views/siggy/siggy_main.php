@@ -381,6 +381,7 @@
 	<?php echo View::factory('siggy/handlebars/notifier_form_site_found'); ?>
 	<?php echo View::factory('siggy/handlebars/chainmap_table_row'); ?>
 	<?php echo View::factory('siggy/handlebars/sig_create_new_wormhole_form'); ?>
+	<?php echo View::factory('siggy/handlebars/jump_log_entry'); ?>
 
 	<script type='text/javascript'>
 		$(document).ready(function() {
