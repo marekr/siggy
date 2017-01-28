@@ -282,8 +282,10 @@ class Controller_Siggy extends FrontController {
 		return FALSE;
 	}
 
-	private function __wormholeJump($origin, $dest)
+	private function __wormholeJump(CharacterLocationHistory $record)
 	{
+		$origin = $record->current_system_id;
+		$dest = $record->previous_system_id;
 		//are we running with a chain map?
 		if( $this->chainmap == NULL )
 		{
@@ -348,26 +350,22 @@ class Controller_Siggy extends FrontController {
 		}
 
 		//TODO fix me......this is a more involved one
-		/*
-		if( Auth::$session->accessData['jumpLogEnabled']  && !empty( $_SERVER['HTTP_EVE_SHIPTYPEID'] ) )
+		
+		if( Auth::$session->group->jump_log_enabled )
 		{
-			$charID = ( Auth::$session->accessData['jumpLogRecordNames'] ? $_SERVER['HTTP_EVE_CHARID'] : 0 );
-			$charName = ( Auth::$session->accessData['jumpLogRecordNames'] ? $_SERVER['HTTP_EVE_CHARNAME'] : '' );
-			$jumpTime = ( Auth::$session->accessData['jumpLogRecordTime'] ? time() : 0 );
+			$charID = ( Auth::$session->group->jumpLogRecordNames ? Auth::$session->character_id : 0 );
 
-			DB::query(Database::INSERT, 'INSERT INTO wormholetracker (`wormhole_hash`, `origin`, `destination`, `group_id`, `chainmap_id`, `time`, `shipTypeID`,`charID`, `charName`)
-																VALUES(:hash, :origin, :dest, :groupID, :chainmap, :time,:shipTypeID,:charID,:charName)')
-						->param(':hash', $whHash )
-						->param(':dest', $dest)
-						->param(':origin', $origin )
-						->param(':groupID', Auth::$session->group->id )
-						->param(':chainmap', Auth::$session->accessData['active_chain_map'] )
-						->param(':time', $jumpTime )
-						->param(':shipTypeID',  $_SERVER['HTTP_EVE_SHIPTYPEID'] )
-						->param(':charID', $charID)
-						->param(':charName', $charName)
-						->execute();
-		}*/
+			$data = [
+				'wormhole_hash' => $whHash,
+				'destination_id' => $dest,
+				'origin_id' => $origin,
+				'group_id' => Auth::$session->group->id,
+				'ship_id' => $record->ship_id,
+				'character_id' => $charID
+			];
+			
+			$jumpEntry = WormholeJump::create($data);
+		}
 	}
 
 	private function doSystemMappedNotifications($systems)
@@ -690,8 +688,7 @@ class Controller_Siggy extends FrontController {
 
 						try
 						{
-						
-							$this->__wormholeJump($record->current_system_id, $record->previous_system_id);
+							$this->__wormholeJump($record);
 						}
 						catch(Exception $e)
 						{

@@ -88,8 +88,8 @@ class Chainmap extends Model {
 		{
 			/* Include all the group tracked jumps from all chainmaps since this is important not to trap oneself out */
 			$jumpTotal  = DB::selectOne("SELECT COALESCE(SUM(s.mass),0) as total
-														FROM wormholetracker wt
-														LEFT JOIN ships as s ON s.shipID = wt.shipTypeID
+														FROM wormhole_jumps wt
+														LEFT JOIN ships as s ON s.shipID = wt.ship_id
 														WHERE wt.group_id = :groupID AND wt.wormhole_hash = :hash",
 														[
 															'groupID' => $this->group_id,
@@ -634,11 +634,10 @@ class Chainmap extends Model {
 							]);
 
 
-		DB::delete('DELETE FROM wormholetracker 
-						WHERE wormhole_hash IN('.$wormholeHashes.') AND group_id=:groupID AND chainmap_id=:chainmap',
+		DB::delete('DELETE FROM wormhole_jumps 
+						WHERE wormhole_hash IN('.$wormholeHashes.') AND group_id=:groupID',
 							[
-								'groupID' => $this->group_id,
-								'chainmap' => $this->id
+								'groupID' => $this->group_id
 							]);
 
 		$log_message .= ' from the chainmap "'. $this->chainmap_name.'"';

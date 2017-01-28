@@ -693,11 +693,18 @@ class Controller_Chainmap extends FrontController {
 
 		/* Include all the group tracked jumps from all chainmaps since this is important not to trap oneself out */
 		$jumpData = array();
-		$jumpData  = DB::select("SELECT wt.shipTypeID, wt.charName, wt.charID, wt.origin, wt.destination, wt.time, s.shipName, s.mass, s.shipClass
-													FROM wormholetracker wt
-													LEFT JOIN ships as s ON s.shipID = wt.shipTypeID
+		$jumpData  = DB::select("SELECT wt.ship_id, c.name as character_name, wt.character_id, 
+													wt.origin_id, 
+													wt.destination_id, 
+													wt.jumped_at, 
+														s.shipName, 
+														s.mass, 
+														s.shipClass
+													FROM wormhole_jumps wt
+													LEFT JOIN ships as s ON s.shipID = wt.ship_id
+													JOIN characters c ON (c.id = wt.character_id)
 													WHERE wt.group_id = :groupID AND wt.wormhole_hash = :hash
-													ORDER BY wt.time DESC",[
+													ORDER BY wt.jumped_at DESC",[
 														'groupID' => Auth::$session->group->id,
 														'hash' => $hash
 													]);
