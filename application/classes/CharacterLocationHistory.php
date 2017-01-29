@@ -20,7 +20,7 @@ class CharacterLocationHistory extends Model
 	public static function findNewerThan(int $charId, Carbon $threshold): array
 	{
 		return self::where('character_id', $charId)
-			->where('changed_at','>=',$threshold->toDateTimeString())
+			->where('changed_at','>',$threshold->toDateTimeString())
 			->get()
 			->all();	
 	}

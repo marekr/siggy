@@ -3,37 +3,7 @@
 require APPPATH . 'vendor/autoload.php';
 use Illuminate\Database\Capsule\Manager as DB;
 
-/**
- * Fixup $_SERVER headers
- * Need to strtoupper and replace dashes with udnerscores for eve headers
- * as apache->fastcgi converts it
- */
-$headers = apache_request_headers();
-foreach($headers as $k => $v)
-{
-	if( strpos($k,'EVE') == 0 )
-	{
-		$k = 'HTTP_' . strtoupper(str_replace('-','_',$k));
-		if( !isset($_SERVER[$k]) )
-			$_SERVER[$k] = $v;
-	}
-}
-
-//CCP putting xml tags in header fix
-if( isset($_SERVER['HTTP_EVE_SHIPTYPENAME']) )
-{
-	$_SERVER['HTTP_EVE_SHIPTYPENAME'] = str_replace('*','',strip_tags($_SERVER['HTTP_EVE_SHIPTYPENAME']));
-}
-
-if( isset($_SERVER['HTTP_EVE_REGIONNAME']) )
-{
-	$_SERVER['HTTP_EVE_REGIONNAME'] = str_replace('*','',strip_tags($_SERVER['HTTP_EVE_REGIONNAME']));
-}
-
-if( isset($_SERVER['HTTP_EVE_SOLARSYSTEMNAME']) )
-{
-	$_SERVER['HTTP_EVE_SOLARSYSTEMNAME'] = str_replace('*','',strip_tags($_SERVER['HTTP_EVE_SOLARSYSTEMNAME']));
-}
+define('SIGGY_VERSION', '2.31.1');
 
 // -- Environment setup --------------------------------------------------------
 
@@ -111,7 +81,6 @@ if (isset($_SERVER['SERVER_PROTOCOL']))
 
 Kohana::$environment = ($_SERVER['SERVER_NAME'] !== 'localhost' && $_SERVER['SERVER_NAME'] !== 'dev.siggy.borkedlabs.com') ? Kohana::PRODUCTION : Kohana::DEVELOPMENT;
 
-define('SIGGY_VERSION', '2.31.0');
 if( Kohana::$environment == Kohana::PRODUCTION)
 {
 	define('WIN_DEV', true);
@@ -140,7 +109,7 @@ Cookie::$salt = 'y[$e.swbDs@|Gd(ndtUSy^';
  * - boolean  caching     enable or disable internal caching                 FALSE
  */
 $initOptions = array(
-  'base_url'   => 'http://siggy.borkedlabs.com',
+  'base_url'   => 'https://siggy.borkedlabs.com',
   'index_file' => FALSE,
   'profile'    => Kohana::$environment !== Kohana::PRODUCTION,
   'caching'    => Kohana::$environment === Kohana::PRODUCTION,
@@ -150,7 +119,7 @@ $initOptions = array(
 
 if( Kohana::$environment == Kohana::PRODUCTION)
 {
-	$initOptions['base_url'] = 'http://siggy.borkedlabs.com';
+	$initOptions['base_url'] = 'https://siggy.borkedlabs.com';
 }
 else
 {

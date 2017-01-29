@@ -647,17 +647,25 @@ class Controller_Siggy extends FrontController {
 			if($charData->canAccessMap(Auth::$session->group->id,Auth::$session->accessData['active_chain_map']))
 			{
 				$locationThreshold = $charData->location_processed_at;
+				$locationThresholdCutoff = Carbon::now()->subMinutes(1);
 				if($locationThreshold == null)
 				{
-					$locationThreshold = Carbon::now()->subMinutes(1);
+					$locationThreshold = $locationThresholdCutoff;
 				}
 				else
 				{
 					$locationThreshold = Carbon::parse($locationThreshold);
+
+					//make sure our "saved" point isnt that far back in time or else we may start mapping things unexpectedly
+					if($locationThreshold->lt($locationThresholdCutoff))
+					{
+						$locationThreshold = $locationThresholdCutoff;
+					}
 				}
 
 				$history = CharacterLocationHistory::findNewerThan($character->character_id, $locationThreshold);
 
+				$lastHistoryDatetime = null;
 				foreach($history as $record)
 				{
 					if($record->current_system_id != $record->previous_system_id)
@@ -694,8 +702,15 @@ class Controller_Siggy extends FrontController {
 						{
 						}
 					}
+
+					$lastHistoryDatetime = $record->changed_at;
 				}
 
+				if($lastHistoryDatetime != null)
+				{
+					$charData->location_processed_at = $lastHistoryDatetime;
+					$charData->save();
+				}
 			
 				if( $currentLocation != null )
 				{
@@ -736,9 +751,6 @@ class Controller_Siggy extends FrontController {
 											'shipName2' => ''
 										]);
 				}
-				
-				$charData->location_processed_at = Carbon::now()->toDateTimeString();
-				$charData->save();
 			}
 		}
 

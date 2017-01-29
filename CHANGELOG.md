@@ -1,5 +1,12 @@
 # siggy Changelog
 
+## 2.31.1 - 2017-01-28
+### Fixes
+- Fixed character location tracking hammering database with severely more updates than required
+- Removed legacy IGB header handling code
+- Fixed case where wormhole jumps may be suddenly mapped out of nowhere, this was due to characters playing the game without siggy 
+and then opening siggy at just the right time
+
 ## 2.31.0 - 2017-01-28
 ### Changes
 - Four new scopes for ESI are requested. siggy now tracks what scopes were granted
