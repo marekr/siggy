@@ -1,5 +1,10 @@
 # siggy Changelog
 
+## 2.32.1 - 2017-01-29
+### Fixes
+- Add some apple touch icons to suppress 404 exceptions in siggy's log file <.<
+- Fixed error on Connected Characters page when CCP/ESI would not return proper character information at the time of page load
+
 ## 2.32.0 - 2017-01-29
 ### Fixes
 - Settings which were previously character level (legacy IGB reasons) are now user account level
