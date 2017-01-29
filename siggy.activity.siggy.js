@@ -19,6 +19,7 @@ siggy2.Activity.siggy = function(core)
 	this.map = null;
 	this.freezeSystem = false;
 	this.lastUpdate = 0;
+	this.updateInProgress = false;
 
 	this.chainMapID = 0;
 
@@ -220,6 +221,11 @@ siggy2.Activity.siggy.prototype.update = function()
 
 	if( typeof(this.systemID) == 'undefined' || this.systemID == 0 )
 		return;
+	
+	if( this.updateInProgress )
+		return;
+
+	this.updateInProgress = true;
 
 	var request = {
 		systemID: this.systemID,
@@ -313,6 +319,7 @@ siggy2.Activity.siggy.prototype.update = function()
 		}
 	}).always(function(){
 		$this.forceUpdate = false;
+		$this.updateInProgress = false;
 		$this.queueUpdate();
 		$('span.updateTime').text($this.core.getCurrentTime());
 	});
