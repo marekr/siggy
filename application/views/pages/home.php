@@ -11,8 +11,8 @@
 			<img class="featurette-image img-responsive" width="500" src="<?php echo URL::base(TRUE, TRUE);?>images/intro/intro-igboog.png">
 		</div>
 		<div class="col-md-7">
-			<h2 class="featurette-heading">IGB and OOG Support. <span class="text-muted">Works ingame and out of game!</span></h2>
-			<p class="lead">Use the in-game browser(IGB) to take advantage of location tracking features and make scanning easier! siggy also works in all major modern browsers are supported out of game(OOG) minus the tracking.</p>
+			<h2 class="featurette-heading">OOG Support via CREST/ESI. <span class="text-muted">Works out of game!</span></h2>
+			<p class="lead">siggy also works in all major modern browsers and is able to track your movement using CREST/ESI!</p>
 		</div>
 	</div>
 

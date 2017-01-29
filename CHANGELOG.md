@@ -5,6 +5,7 @@
 - Four new scopes for ESI are requested. siggy now tracks what scopes were granted
 - Reimplement the jump log partially in preparation of restoring ship type
 - Add new changelog
+- Remove mention of IGB from home page
 
 ## 2.30.0 - 2017-01-25
 ### Changes
