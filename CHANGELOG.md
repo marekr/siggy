@@ -1,5 +1,9 @@
 # siggy Changelog
 
+## 2.31.2 - 2017-01-28
+### Fixes
+- Fixed signature descriptions not displaying html entities unencoded
+
 ## 2.31.1 - 2017-01-28
 ### Fixes
 - Fixed character location tracking hammering database with severely more updates than required

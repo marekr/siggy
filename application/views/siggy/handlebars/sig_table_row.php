@@ -23,7 +23,7 @@
 					{{ whHashToDestination chainmap_wormhole }}
 				{{/if}}
 				<p>
-					{{ description }}
+					{{{ description }}}
 				</p>
 			</td>
 			<td class='text-center moreinfo'>
