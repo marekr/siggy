@@ -1,5 +1,9 @@
 # siggy Changelog
 
+## 2.32.0 - 2017-01-29
+### Fixes
+- Settings which were previously character level (legacy IGB reasons) are now user account level
+
 ## 2.31.2 - 2017-01-28
 ### Fixes
 - Fixed signature descriptions not displaying html entities unencoded
