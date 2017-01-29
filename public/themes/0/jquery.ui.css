@@ -24,7 +24,7 @@
 	left: 0;
 }
 .ui-resizable-s {
-	cursor: pointer;
+	cursor: s-resize;
 	height: 6px;
 	width: 100%;
 	bottom: -0px;
