@@ -111,7 +111,7 @@ if (isset($_SERVER['SERVER_PROTOCOL']))
 
 Kohana::$environment = ($_SERVER['SERVER_NAME'] !== 'localhost' && $_SERVER['SERVER_NAME'] !== 'dev.siggy.borkedlabs.com') ? Kohana::PRODUCTION : Kohana::DEVELOPMENT;
 
-define('SIGGY_VERSION', '2.30.0');
+define('SIGGY_VERSION', '2.31.0');
 if( Kohana::$environment == Kohana::PRODUCTION)
 {
 	define('WIN_DEV', true);
