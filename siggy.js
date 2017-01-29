@@ -178,7 +178,7 @@ siggy2.Core.prototype.initialize = function ()
 				$this.displayFatalError("siggy session timed out due to one hour of inactivity");
 			}
 		},
-		idle: 1000*(60*60)*2,	// 60 minutes
+		idle: 1000*(60*60)*1.5,	// 60 minutes
 	})
 
 	siggy2.StaticData.load(this.settings.baseUrl);
@@ -232,6 +232,7 @@ siggy2.Core.prototype.update = function()
 		cache: false,
 		async: true,
 		method: 'post',
+		timeout: 10000,	//ten second timeout
 		beforeSend : function(xhr, opts){
 			if($this.fatalError == true)
 			{
@@ -274,9 +275,9 @@ siggy2.Core.prototype.update = function()
 
 			delete data;
 		}
+	}).always(function(){
+		$this.queueUpdate();
 	});
-
-	this.queueUpdate();
 }
 
 siggy2.Core.prototype.registerMainMenu = function()

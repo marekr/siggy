@@ -238,6 +238,7 @@ siggy2.Activity.siggy.prototype.update = function()
 		cache: false,
 		async: true,
 		method: 'post',
+		timeout: 10000,
 		beforeSend : function(xhr, opts){
 			if($this.core.fatalError == true)
 			{
@@ -310,12 +311,12 @@ siggy2.Activity.siggy.prototype.update = function()
 
 			delete data;
 		}
+	}).always(function(){
+		$this.forceUpdate = false;
+		$this.queueUpdate();
+		$('span.updateTime').text($this.core.getCurrentTime());
 	});
 
-	this.forceUpdate = false;
-	$('span.updateTime').text(this.core.getCurrentTime());
-
-	this.queueUpdate();
 
 	return true;
 }
