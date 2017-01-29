@@ -3,7 +3,7 @@
 require APPPATH . 'vendor/autoload.php';
 use Illuminate\Database\Capsule\Manager as DB;
 
-define('SIGGY_VERSION', '2.32.1');
+define('SIGGY_VERSION', '2.32.2');
 
 // -- Environment setup --------------------------------------------------------
 

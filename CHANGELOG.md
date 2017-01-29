@@ -1,5 +1,9 @@
 # siggy Changelog
 
+## 2.32.2 - 2017-01-29
+### Fixes
+- Allow SSO refresh tokens to be null. SSO is mysteriously returning null refresh tokens for random users.
+
 ## 2.32.1 - 2017-01-29
 ### Fixes
 - Add some apple touch icons to suppress 404 exceptions in siggy's log file <.<

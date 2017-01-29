@@ -118,7 +118,7 @@ class User extends Model {
 		return TRUE;
 	}
 
-	public function updateSSOCharacter(int $characterId, string $token, string $refreshToken, $expiration, array $scopes = [])
+	public function updateSSOCharacter(int $characterId, string $token, ?string $refreshToken, $expiration, array $scopes = [])
 	{
 		$char = $this->ssoCharacters()->where('character_id', $characterId)->first();
 		$data = [
@@ -139,7 +139,7 @@ class User extends Model {
 		return TRUE;
 	}
 
-	public function addSSOCharacter($hash, $characterId, $token, $expiration, $refreshToken, $scopes = [])
+	public function addSSOCharacter(string $hash, int $characterId, string $token, $expiration, ?string $refreshToken, array $scopes = [])
 	{
 		$insert = [
 			'user_id' => $this->id,
