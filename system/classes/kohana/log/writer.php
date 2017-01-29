@@ -92,6 +92,18 @@ abstract class Kohana_Log_Writer {
 			{
 				$string .= PHP_EOL."Request Uri: ". $_SERVER['REQUEST_URI'];
 			}
+			else if(isset($_SERVER['PATH_INFO']))
+			{
+				$string .= PHP_EOL."Request Uri: ". $_SERVER['PATH_INFO'];
+			}
+			else if(isset($_SERVER['REDIRECT_URL']))
+			{
+				$string .= PHP_EOL."Request Uri: ". $_SERVER['REDIRECT_URL'];
+			}
+			else if(isset($_SERVER['PHP_SELF']))
+			{
+				$string .= PHP_EOL."Request Uri: ". $_SERVER['PHP_SELF'];
+			}
 
 			if(Auth::$user != null)
 			{
