@@ -1,8 +1,13 @@
 # siggy Changelog
 
+## 2.32.3 - 2017-01-29
+### Fixes
+- Fixed situation where multiple ajax calls can end up stacked up because of a timeout on one
+- Changed idle timeout to 1.5 hours to ease some pressure on the server
+
 ## 2.32.2 - 2017-01-29
 ### Fixes
-- Allow SSO refresh tokens to be null. SSO is mysteriously returning null refresh tokens for random users.
+- Allow SSO refresh tokens to be null. SSO is mysteriously returning null refresh tokens for random users
 
 ## 2.32.1 - 2017-01-29
 ### Fixes
