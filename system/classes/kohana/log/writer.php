@@ -87,6 +87,16 @@ abstract class Kohana_Log_Writer {
 			$message['level'] = $this->_log_levels[Log_Writer::$strace_level];
 
 			$string .= PHP_EOL.strtr($format, array_filter($message, 'is_scalar'));
+
+			if(isset($_SERVER['REQUEST_URI']))
+			{
+				$string .= PHP_EOL."Request Uri: ". $_SERVER['REQUEST_URI'];
+			}
+
+			if(Auth::$user != null)
+			{
+				$string .= PHP_EOL."User Id: " . Auth::$user->id;
+			}
 		}
 
 		return $string;
