@@ -105,7 +105,6 @@ class Controller_Siggy extends FrontController {
 
 		$themeID = intval($settingsData['theme_id']);
 		$combineScanIntel = intval($settingsData['combine_scan_intel']);
-		$zoom = $settingsData['zoom'];
 		$language = $settingsData['language'];
 		$activity = !empty($settingsData['default_activity']) ? $settingsData['default_activity'] : null;
 
