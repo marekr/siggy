@@ -104,7 +104,7 @@
 					</a>
 					<ul class="dropdown-menu" role="menu">
 						<li><a target="_blank" href="http://wiki.siggy.borkedlabs.com">Guide</a></li>
-						<li><a target="_blank" href="<?php echo URL::base(TRUE, TRUE);?>announcements">Changelog</a></li>
+						<li><a target="_blank" href="<?php echo URL::base(TRUE, TRUE);?>changelog">Changelog</a></li>
 						<li><a target="_blank" href="http://wiki.siggy.borkedlabs.com/support/contact/">Contact</a></li>
 					</ul>
 				</li>
