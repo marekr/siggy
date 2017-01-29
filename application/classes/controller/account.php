@@ -607,12 +607,14 @@ class Controller_Account extends FrontController {
 		$charID =  Auth::$user->char_id;
 		$ssoChars = Auth::$user->ssoCharacters;
 
-		
 		$charData = [];
 		foreach($ssoChars as $ssoChar)
 		{
 			$char = Character::find($ssoChar->character_id);
-			$charData[ $char->id ] = $char;
+			if($char != null)
+			{
+				$charData[ $char->id ] = $char;
+			}
 		}
 
 		$this->template->title = __('siggy: connected accounts');
