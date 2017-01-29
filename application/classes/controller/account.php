@@ -580,8 +580,6 @@ class Controller_Account extends FrontController {
 			$charID = intval($_POST['charID']);
 			if( $charID && isset( $selectableChars[ $charID ] ) )
 			{
-				Auth::$user->corp_id = $selectableChars[ $charID ]->corporation_id;
-				Auth::$user->char_name = $selectableChars[ $charID ]->name;
 				Auth::$user->char_id = $charID;
 
 				Auth::$user->save();

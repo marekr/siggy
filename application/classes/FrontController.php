@@ -91,7 +91,6 @@ class FrontController extends Controller {
 		{
 			$this->template = View::factory( $this->template );
 
-
 			$settings = $this->loadSettings();
 			$this->template->settings = $settings;
 
@@ -105,25 +104,25 @@ class FrontController extends Controller {
 
 	protected function loadSettings()
 	{
-		if( Auth::$session->character_id != 0)
+		if( Auth::loggedIn() )
 		{
-				$settings = CharacterSetting::find(Auth::$session->character_id);
+			$settings = new stdClass;
+			$settings->theme_id = Auth::$user->theme_id;
+			$settings->combine_scan_intel = Auth::$user->combine_scan_intel;
+			$settings->language = Auth::$user->language;
+			$settings->default_activity = Auth::$user->default_activity;
 
-				if( $settings != null )
-				{
-					if( $settings->language != 'en' )
-					{
-						i18n::lang($settings->language);
-					}
+			if( Auth::$user->language != 'en' )
+			{
+				i18n::lang(Auth::$user->language);
+			}
 
-					return $settings;
-				}
+			return $settings;
 		}
 
 		$default_settings = new stdClass;
 		$default_settings->theme_id = 0;
 		$default_settings->combine_scan_intel = 0;
-		$default_settings->zoom = 1;
 		$default_settings->language = 'en';
 		$default_settings->default_activity = '';
 		return $default_settings;

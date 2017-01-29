@@ -15,7 +15,11 @@ class User extends Model {
 		'username',
 		'password',
 		'email',
-		'active'
+		'active',
+		'theme_id',
+		'combine_scan_intel',
+		'language',
+		'default_activity'
 	];
 
 	protected $hidden = [
@@ -68,11 +72,8 @@ class User extends Model {
 		}
 
 		/* update the corp id */
-		if( $character->corporation_id != $this->corp_id )
+		if( $character->corporation_id != Auth::$session->corporation_id )
 		{
-			$this->corp_id = $character->corporation_id;
-			$this->save();
-
 			if( $this->id == Auth::$user->id )
 			{
 				Auth::$session->reloadUserSession();

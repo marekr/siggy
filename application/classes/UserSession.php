@@ -154,7 +154,6 @@ class UserSession {
 
 	private function __generateSession(): bool
 	{
-		// corp_id will most likely only be "valid" for IGB/non-auth user sessions
 		// so we must update it too
 		$insert = array( 'id' => $this->id,
 					'character_id' => $this->character_id,

@@ -95,33 +95,30 @@ class Controller_Siggy extends FrontController {
 		$this->response->headers('Content-Type','application/json');
 		$this->response->headers('Cache-Control','no-cache, must-revalidate');
 
-		$charID = Auth::$session->character_id;
-
-		if( !empty($charID) )
+		if(	!$this->siggyAccessGranted() )
 		{
-			$settingsData = json_decode($this->request->body(), true);
+			$this->response->body(json_encode(['error' => 1, 'errorMsg' => 'Invalid auth']));
+			return;
+		}
 
-			$themeID = intval($settingsData['theme_id']);
-			$combineScanIntel = intval($settingsData['combine_scan_intel']);
-			$zoom = $settingsData['zoom'];
-			$language = $settingsData['language'];
-			$activity = !empty($settingsData['default_activity']) ? $settingsData['default_activity'] : null;
+		$settingsData = json_decode($this->request->body(), true);
 
-			$theme = Theme::findByGroup(Auth::$session->group->id, $themeID);
+		$themeID = intval($settingsData['theme_id']);
+		$combineScanIntel = intval($settingsData['combine_scan_intel']);
+		$zoom = $settingsData['zoom'];
+		$language = $settingsData['language'];
+		$activity = !empty($settingsData['default_activity']) ? $settingsData['default_activity'] : null;
 
-			if( $theme != null )
-			{
-				DB::insert('REPLACE INTO character_settings (`char_id`, `theme_id`,`combine_scan_intel`,`zoom`,`language`, `default_activity`)
-							VALUES(:charID, :themeID, :combineScanIntel, :zoom,:language, :defaultActivity)',
-							[
-									'charID'=> $charID,
-									'themeID'=> $themeID,
-									'zoom'=> $zoom,
-									'language'=> $language,
-									'combineScanIntel'=> $combineScanIntel,
-									'defaultActivity'=> $activity
-							]);
-			}
+		$theme = Theme::findByGroup(Auth::$session->group->id, $themeID);
+
+		if( $theme != null )
+		{
+			Auth::$user->theme_id = $themeID;
+			Auth::$user->language = $language;
+			Auth::$user->combine_scan_intel = $combineScanIntel;
+			Auth::$user->default_activity = $activity;
+			
+			Auth::$user->save();
 		}
 
 		$this->response->body(json_encode(''));
