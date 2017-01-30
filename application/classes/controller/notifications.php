@@ -67,7 +67,17 @@ class Controller_Notifications extends FrontController {
 
 		if( $type == NotificationTypes::SystemMappedByName )
 		{
-			$data['system_id'] = miscUtils::findSystemByName($data['system_name']);
+			$system = System::findByName($data['system_name']);
+			if($system != null)
+			{
+				$data['system_id'] = $system->id;
+			}
+			else
+			{
+				//error
+				echo json_encode(array('error' => 1, 'error_message' => 'Invalid system'));
+				exit();
+			}
 		}
 		else if( $type == NotificationTypes::SystemMapppedWithResident )
 		{

@@ -111,10 +111,10 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 					$v = trim($v);
 					if( !empty($v) != '' )
 					{
-						$id = mapUtils::findSystemByEVEName($v);
-						if( $id != 0 )
+						$system = System::findByName($v);
+						if($system != null)
 						{
-							$homeSystemIDs[] = $id;
+							$homeSystemIDs[] = $system->id;
 						}
 						else
 						{

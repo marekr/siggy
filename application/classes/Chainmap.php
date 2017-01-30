@@ -295,7 +295,7 @@ class Chainmap extends Model {
 
 	public function add_system_to_map($sys1, $sys2, $eol=0, $mass=0, $wh_type_id = 0)
 	{
-		$whHash = mapUtils::whHashByID($sys1 , $sys2);
+		$whHash = self::whHashByID($sys1 , $sys2);
 
 		$this->_placeSystems($sys1,$sys2);
 
@@ -366,10 +366,33 @@ class Chainmap extends Model {
 			}
 		}
 	}
+	
+
+	public static function coordsToBB($x,$y)
+	{
+		return array( 'left' => $x,
+					  'top' => $y,
+					  'width' => 78,
+					  'height' => 38,
+					  'right' => $x+78,
+					  'bottom' => $y+38 );
+	}
+
+	public static function whHashByID($to, $from)
+	{
+		if( $to < $from )
+		{
+			return md5( intval($to) . intval($from) );
+		}
+		else
+		{
+			return md5( intval($from) . intval($to) );
+		}
+	}
 
 	public function add_stargate_to_map($sys1, $sys2)
 	{
-		$whHash = mapUtils::whHashByID($sys1, $sys2);
+		$whHash = self::whHashByID($sys1, $sys2);
 
 		$this->_placeSystems($sys1,$sys2);
 		try
@@ -396,7 +419,7 @@ class Chainmap extends Model {
 
 	public function add_jumpbridge_to_map($sys1, $sys2)
 	{
-		$whHash = mapUtils::whHashByID($sys1 , $sys2);
+		$whHash = self::whHashByID($sys1 , $sys2);
 
 		$this->_placeSystems($sys1,$sys2);
 		try
@@ -423,7 +446,7 @@ class Chainmap extends Model {
 
 	public function add_cyno_to_map($sys1, $sys2)
 	{
-		$whHash = mapUtils::whHashByID($sys1, $sys2);
+		$whHash = self::whHashByID($sys1, $sys2);
 
 		$this->_placeSystems($sys1,$sys2);
 		try
@@ -461,14 +484,14 @@ class Chainmap extends Model {
 			$sysData->y = 0;
 		}
 
-		$spots = mapUtils::generatePossibleSystemLocations($sysData->x, $sysData->y);
+		$spots = self::generatePossibleSystemLocations($sysData->x, $sysData->y);
 
 		foreach($spots as $spot)
 		{
 			$intersect = false;
 			foreach($originSystems as $sys)
 			{
-				if( mapUtils::doBoxesIntersect(mapUtils::coordsToBB($spot['x'],$spot['y']), mapUtils::coordsToBB($sys->x,$sys->y)) )
+				if( self::doBoxesIntersect(self::coordsToBB($spot['x'],$spot['y']), self::coordsToBB($sys->x,$sys->y)) )
 				{
 					$intersect = true;
 				}
@@ -646,5 +669,60 @@ class Chainmap extends Model {
 		$group->logAction('delwhs', $log_message );
 
 		return $systemIDs;
+	}
+
+	
+	public static function generatePossibleSystemLocations($x, $y)
+	{
+		$originBB = self::coordsToBB($x,$y);
+
+		$cX = $originBB['left'];
+		$cY = $originBB['top'];
+
+		$ret = array();
+
+		for($level = 1; $level <= 3; $level++)
+		{
+			$positions = 8*$level;
+			$rotation = 2 * M_PI / $positions;
+
+			for($position = 0; $position < $positions; ++$position)
+			{
+				$spot_rotation = $position * $rotation;
+				$newx = $cX + 125*$level*cos($spot_rotation);
+				$newy = $cY + 85*$level*sin($spot_rotation);
+
+				//limited horizontal span
+				if( $newy < 780 && $newy > 0 && $newx > 0 )
+				{
+					$ret[] = array('x' => $newx, 'y' => $newy);
+				}
+			}
+		}
+
+		return $ret;
+	}
+
+	public static function doBoxesIntersect($a, $b)
+	{
+		$x1 = $a['left'];
+		$x2 = $a['left'] + $a['width'];
+		$y1 = $a['bottom'];
+		$y2 = $a['bottom'] + $a['height'];
+
+		$a1 = $b['left'];
+
+		$a2 = $b['left'] + $b['width'];
+		$b1 =  $b['bottom'];
+		$b2 =  $b['bottom'] +  $b['height'];
+
+		return  ( ($x1 <= $a1 && $a1 <= $x2) && ($y1 <= $b1 && $b1 <= $y2) ) ||
+				( ($x1 <= $a2 && $a2 <= $x2) && ($y1 <= $b1 && $b1 <= $y2) ) ||
+				( ($x1 <= $a1 && $a1 <= $x2) && ($y1 <= $b2 && $b2 <= $y2) ) ||
+				( ($x1 <= $a2 && $a1 <= $x2) && ($y1 <= $b2 && $b2 <= $y2) ) ||
+				( ($a1 <= $x1 && $x1 <= $a2) && ($b1 <= $y1 && $y1 <= $b2) ) ||
+				( ($a1 <= $x2 && $x2 <= $a2) && ($b1 <= $y1 && $y1 <= $b2) ) ||
+				( ($a1 <= $x1 && $x1 <= $a2) && ($b1 <= $y2 && $y2 <= $b2) ) ||
+				( ($a1 <= $x2 && $x1 <= $a2) && ($b1 <= $y2 && $y2 <= $b2) );
 	}
 }

@@ -160,18 +160,6 @@ final class miscUtils {
 		]);
 	}
 
-	static function findSystemByName($name)
-	{
-		$system = DB::selectOne('SELECT id,name FROM solarsystems WHERE LOWER(name) = ?',[strtolower($name)]);
-		
-		if($system != null)
-		{
-			return $system->id;
-		}
-
-		return 0;
-	}
-
 	static function systemNameByID($id)
 	{
 		$system = DB::selectOne('SELECT id,name FROM solarsystems WHERE id = ?',[$id]);

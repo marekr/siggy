@@ -40,6 +40,7 @@
 		<script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.static.js?<?php echo time(); ?>'></script>
 		<script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.timer.js?<?php echo time(); ?>'></script>
 		<script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.eve.js?<?php echo time(); ?>'></script>
+		<script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.socket.js?<?php echo time(); ?>'></script>
 		<script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.sigtable.js?<?php echo time(); ?>'></script>
 		<script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.intel.poses.js?<?php echo time(); ?>'></script>
 		<script type='text/javascript' src='<?php echo URL::base(TRUE, TRUE);?>js/siggy.intel.dscan.js?<?php echo time(); ?>'></script>

@@ -575,7 +575,7 @@ class Controller_Special extends Controller {
 		foreach( $wormholes as $wh )
 		{
 			$oldhash = $wh['hash'];
-			$newhash = $this->whHashByID($wh['to'], $wh['from']);
+			$newhash = Chainmap::whHashByID($wh['to'], $wh['from']);
 
 			DB::update('wormholes')->set( array('hash' => $newhash) )->where('hash', '=',  $oldhash)->execute();
 		}
@@ -648,18 +648,5 @@ class Controller_Special extends Controller {
 
 
 			return $data;
-	}
-
-
-	private function whHashByID($to, $from)
-	{
-		if( $to < $from )
-		{
-			return md5( intval($to) . intval($from) );
-		}
-		else
-		{
-			return md5( intval($from) . intval($to) );
-		}
 	}
 }

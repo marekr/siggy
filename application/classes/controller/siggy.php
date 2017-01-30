@@ -303,7 +303,7 @@ class Controller_Siggy extends FrontController {
 			return;
 		}
 
-		$whHash = mapUtils::whHashByID($origin, $dest);
+		$whHash = Chainmap::whHashByID($origin, $dest);
 
 		$connection = DB::selectOne("SELECT `hash` 
 										FROM wormholes 

@@ -292,7 +292,7 @@ class Controller_Sig extends FrontController {
 
 				}
 
-				$whHash = mapUtils::whHashByID($request['system_id'], $toSysID);
+				$whHash = Chainmap::whHashByID($request['system_id'], $toSysID);
 				$replace = [
 								'wormhole_hash' => $whHash,
 								'chainmap_id' => $chainmapID,
