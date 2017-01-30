@@ -5,7 +5,7 @@
 - Make the map resize handle use a resize cursor rather than a pointer (old IGB kludge)
 
 ### Fixes
-- Fix situation where clicking on map systems would eventually cause multiple refresh events to be queued leading and keep occuring
+- Fix situation where clicking on map systems would eventually cause multiple refresh events to be queued and keep being queued rather than just one
 
 ## 2.32.3 - 2017-01-29
 ### Fixes
