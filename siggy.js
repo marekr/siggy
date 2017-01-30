@@ -138,6 +138,12 @@ siggy2.Core = function( options )
 
 		$.unblockUI();
 	});
+
+	if(typeof(siggy2.Socket) != "undefined")
+	{
+		siggy2.Socket.Initialize("ws://localhost:51760/ws?token=" + this.settings.sessionID);
+		siggy2.Socket.Open();
+	}
 }
 
 siggy2.Core.prototype.queueUpdate = function()
