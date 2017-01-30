@@ -69,6 +69,11 @@ class Controller_Account extends FrontController {
 		parent::after();
 	}
 
+	public function action_index()
+	{
+		HTTP::redirect('account/overview');
+	}
+
 	public function action_sso_complete()
 	{
 		$this->template->title = "Complete SSO Login";
