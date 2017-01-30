@@ -1,7 +1,5 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-require_once APPPATH.'classes/mapUtils.php';
-require_once APPPATH.'classes/miscUtils.php';
 require_once APPPATH.'classes/formRenderer.php';
 
 class FrontController extends Controller {

@@ -3,9 +3,6 @@
 use Pheal\Pheal;
 use Carbon\Carbon;
 
-require_once APPPATH.'classes/mapUtils.php';
-require_once APPPATH.'classes/miscUtils.php';
-
 class Controller_Special extends Controller {
 
 	private $groupData = array();
@@ -14,10 +11,8 @@ class Controller_Special extends Controller {
 
 	function __construct(Kohana_Request $request, Kohana_Response $response)
 	{
-
 		parent::__construct($request, $response);
 	}
-
 
 	public function action_test2512()
 	{

@@ -1,8 +1,5 @@
 <?php
 
-require_once APPPATH.'classes/mapUtils.php';
-require_once APPPATH.'classes/miscUtils.php';
-
 class Controller_Manage_Settings extends Controller_Manage
 {
 	/*

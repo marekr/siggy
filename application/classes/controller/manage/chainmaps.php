@@ -2,9 +2,6 @@
 
 use Illuminate\Database\Capsule\Manager as DB;
 
-require_once APPPATH.'classes/mapUtils.php';
-require_once APPPATH.'classes/miscUtils.php';
-
 class Controller_Manage_Chainmaps extends Controller_Manage
 {
 	/**

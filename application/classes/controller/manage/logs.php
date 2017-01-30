@@ -2,8 +2,6 @@
 
 use Illuminate\Database\Capsule\Manager as DB;
 
-require_once APPPATH.'classes/mapUtils.php';
-require_once APPPATH.'classes/miscUtils.php';
 require_once APPPATH.'classes/ZebraPagination2.php';
 /**
  * User controller: user administration, also user accounts/profiles.
