@@ -62,7 +62,11 @@ class Character extends Model {
 				$rawData = self::getAPICharacterAffiliation($id);
 
 				if( $rawData == null )
-					return null;
+				{
+					//something stupid happened with ESI
+					//for now return the char
+					return $char;
+				}
 
 				$update = [ 'name' => $rawData['character_name'],
 							'corporation_id' => $rawData['corporation_id']
