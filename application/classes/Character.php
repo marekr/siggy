@@ -13,10 +13,12 @@ class Character extends Model {
 		'id',
 		'corporation_id',
 		'name',
-		'location_processed_at'
+		'location_processed_at',
+		'last_sync_attempt_at',
+		'last_sync_successful_at'
 	];
 	
-	public $dates = ['location_processed_at'];
+	public $dates = ['location_processed_at','last_sync_attempt_at','last_sync_successful_at'];
 
 	public function canAccessMap(int $groupId, int $chainmap): bool
 	{
@@ -51,32 +53,34 @@ class Character extends Model {
 
 		if($char != null)
 		{
-			if( ($char->updated_at != null &&
-				$char->updated_at->addMinutes(60) > Carbon::now()) ||
-				$avoidAPIFetch )
-			{
-				return $char;
-			}
-			else 
+			if( ($char->last_sync_attempt_at == null ||
+				$char->last_sync_attempt_at->addMinutes(60) < Carbon::now()) &&
+				!$avoidAPIFetch )
 			{
 				$rawData = self::getAPICharacterAffiliation($id);
-
-				if( $rawData == null )
+				$update = [];
+				if( $rawData != null )
 				{
-					//something stupid happened with ESI
-					//for now return the char
-					return $char;
-				}
+					$update = [ 
+								'name' => $rawData['character_name'],
+								'corporation_id' => $rawData['corporation_id'],
+								'last_sync_successful_at' => Carbon::now()->toDateTimeString(),
+								'last_sync_attempt_at' => Carbon::now()->toDateTimeString()
+							];
 
-				$update = [ 'name' => $rawData['character_name'],
-							'corporation_id' => $rawData['corporation_id']
-						];
+				}
+				else 
+				{
+					$update = [ 
+								'last_sync_attempt_at' => Carbon::now()->toDateTimeString()
+							];
+				}
 
 				$char->fill($update);
 				$char->save();
-
-				return $char;
 			}
+
+			return $char;
 		}
 		else 
 		{
@@ -88,7 +92,9 @@ class Character extends Model {
 			$insert = [ 'id' => $id,
 						'name' => $rawData['character_name'],
 						'corporation_id' => $rawData['corporation_id'],
-						'updated_at' => Carbon::now()->toDateTimeString()
+						'updated_at' => Carbon::now()->toDateTimeString(),
+						'last_sync_attempt_at' =>  Carbon::now()->toDateTimeString(),
+						'last_sync_successful_at' => Carbon::now()->toDateTimeString()
 					];
 
 			$res = self::create($insert);

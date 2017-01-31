@@ -16,25 +16,39 @@ class Corporation extends Model {
 		'description',
 		'member_count',
 		'updated_at',
+		'last_sync_attempt_at',
+		'last_sync_successful_at'
 	];
+
+	public $dates = ['last_sync_attempt_at','last_sync_successful_at'];
 
 	public function syncWithApi()
 	{
+		$update = [];
 		$rawData = self::getAPICorpDetails($this->id);
-		if( $rawData == null )
-			return FALSE;
+		if( $rawData != null )
+		{
+			$update = [ 'member_count' => $rawData['member_count'],
+					//todo, fix me once ESI adds it back :/
+					//	'description' => $rawData['description'],
+						'ticker' => $rawData['ticker'],
+						'name' => $rawData['name'],
+						'last_sync_successful_at' => Carbon::now()->toDateTimeString(),
+						'last_sync_attempt_at' => Carbon::now()->toDateTimeString()
+					];
+		}
+		else
+		{
+			$update = [ 
+						'last_sync_attempt_at' => Carbon::now()->toDateTimeString()
+					];
 
-		$update = [ 'member_count' => $rawData['member_count'],
-				//todo, fix me once ESI adds it back :/
-				//	'description' => $rawData['description'],
-					'ticker' => $rawData['ticker'],
-					'name' => $rawData['name']
-				];
+		}
 
 		$this->fill($update);
 		$this->save();
 
-		return TRUE;
+		return;
 	}
 
 	public static function find(int $id): ?Corporation
@@ -42,8 +56,8 @@ class Corporation extends Model {
 		$corp = self::where('id', $id)->first();
 		if($corp != null)
 		{
-			if( $corp->updated_at == null ||
-				$corp->updated_at->addMinutes(60) < Carbon::now() )
+			if( $corp->last_sync_attempt_at == null ||
+				$corp->last_sync_attempt_at->addMinutes(90) < Carbon::now() )
 			{
 				$corp->syncWithApi();
 			}
@@ -63,7 +77,9 @@ class Corporation extends Model {
 						//todo, fix me once ESI adds it back :/
 						//'description' => $rawData['description'],
 						'ticker' => $rawData['ticker'],
-						'updated_at' => Carbon::now()->toDateTimeString()
+						'updated_at' => Carbon::now()->toDateTimeString(),
+						'last_sync_attempt_at' =>  Carbon::now()->toDateTimeString(),
+						'last_sync_successful_at' => Carbon::now()->toDateTimeString()
 					];
 
 			$res = self::create($insert);
