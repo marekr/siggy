@@ -878,7 +878,8 @@ class Controller_Siggy extends FrontController {
 			$id = intval($_POST['systemID']);
 			if( !$id )
 			{
-				exit();
+				$this->response->body(json_encode(false));
+				return;
 			}
 
 			$update = array();
@@ -912,11 +913,11 @@ class Controller_Siggy extends FrontController {
 
 			if( empty($update) )
 			{
-				exit();
+				$this->response->body(json_encode(false));
+				return;
 			}
 
 			$this->chainmap->update_system($_POST['systemID'], $update);
-			echo json_encode('1');
 
 
 			Auth::$session->group->logAction('editsystem', $log_message );
@@ -924,6 +925,6 @@ class Controller_Siggy extends FrontController {
 			$this->chainmap->rebuild_map_data_cache();
 		}
 
-		$this->response->body(json_encode([]));
+		$this->response->body(json_encode(true));
 	}
 }
