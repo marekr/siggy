@@ -1,5 +1,11 @@
 # siggy Changelog
 
+## 2.32.5 - 2017-01-30
+### Fixes
+- Handle ESI/Crest being slow better. Stop being overaggressive at syncing with them for character and corporation info
+- Make /account redirect to /account/overview
+- Handle oddities where characters aren't returned for the /account/connected page
+
 ## 2.32.4 - 2017-01-29
 ### Changes
 - Make the map resize handle use a resize cursor rather than a pointer (old IGB kludge)

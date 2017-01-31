@@ -106,6 +106,10 @@ class Character extends Model {
 	public static function getAPICharacterAffiliation(int $id): ?array
 	{
 		$details = [];
+
+		$config = ESI\Configuration::getDefaultConfiguration();
+		$config->setCurlTimeout(10);	//10 second timeout should be reasonable
+
 		$api_instance = new ESI\Api\CharacterApi();
 		$datasource = "tranquility"; // string | The server name you would like data from
 
