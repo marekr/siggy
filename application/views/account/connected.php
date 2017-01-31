@@ -20,6 +20,7 @@
 			<th width="10%">Actions</th>
 		</tr>
 		<?php foreach( $characters as $character ): ?>
+		<?php if(!isset($character_data[$character->character_id])) continue; ?>
 		<tr>
 			<td><?php echo $character_data[$character->character_id]->id; ?></td>
 			<td><?php echo $character_data[$character->character_id]->name; ?></td>
