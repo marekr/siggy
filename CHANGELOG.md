@@ -1,5 +1,9 @@
 # siggy Changelog
 
+## 2.32.6 - 2017-01-30
+### Changes
+- Ship types can now be reported again if ESI scopes are present on the associated characters
+
 ## 2.32.5 - 2017-01-30
 ### Fixes
 - Handle ESI/Crest being slow better. Stop being overaggressive at syncing with them for character and corporation info

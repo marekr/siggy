@@ -736,14 +736,14 @@ class Controller_Siggy extends FrontController {
 											'broadcast' => $broadcast,
 											'systemID' => (int)$currentLocation->system_id,
 											'groupID' => Auth::$session->group->id,
-											'shipType' => 0,
+											'shipType' => $currentLocation->ship_id,
 											'shipName' => '',
 											'chainmap' => Auth::$session->accessData['active_chain_map'],
 											'lastBeep' => time(),
 											'lastBeep2' => time(),
 											'systemID2' => (int)$currentLocation->system_id,
 											'broadcast2' => $broadcast,
-											'shipType2' => 0,
+											'shipType2' => $currentLocation->ship_id,
 											'shipName2' => ''
 										]);
 				}
