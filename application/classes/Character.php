@@ -107,8 +107,7 @@ class Character extends Model {
 	{
 		$details = [];
 
-		$config = ESI\Configuration::getDefaultConfiguration();
-		$config->setCurlTimeout(10);	//10 second timeout should be reasonable
+		ESIHelper::configure();
 
 		$api_instance = new ESI\Api\CharacterApi();
 		$datasource = "tranquility"; // string | The server name you would like data from

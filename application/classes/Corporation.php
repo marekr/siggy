@@ -93,9 +93,8 @@ class Corporation extends Model {
 	{
 		$details = null;
 
-		$config = ESI\Configuration::getDefaultConfiguration();
-		$config->setCurlTimeout(10);	//10 second timeout should be reasonable
-		
+		ESIHelper::configure();
+
 		$api_instance = new ESI\Api\CorporationApi();
 		$datasource = "tranquility"; // string | The server name you would like data from
 
