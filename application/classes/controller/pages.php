@@ -3,9 +3,6 @@
 use Illuminate\Database\Capsule\Manager as DB;
 
 class Controller_Pages extends FrontController {
-	private $auth;
-	private $user;
-	public $template = 'template/public_bootstrap32';
 	protected $noAutoAuthRedirects = true;
 
 	function __construct(Kohana_Request $request, Kohana_Response $response)
@@ -84,13 +81,6 @@ class Controller_Pages extends FrontController {
 
 	public function action_createGroup()
 	{
-		$this->template->title = 'Create siggy group';
-		$this->template->selectedTab = 'createGroup';
-		$this->template->layoutMode = 'blank';
-
-		$this->template->loggedIn = Auth::loggedIn();
-		$this->template->user = Auth::$user;
-
 		if(!Auth::loggedIn())
 		{
 			HTTP::redirect('/account/login');
@@ -100,7 +90,11 @@ class Controller_Pages extends FrontController {
 
 		if( $id == 0 || $id == 1 )
 		{
-			$this->template->content = View::factory('pages/createGroupIntro');
+			$resp = view('create_group_intro.blade', [
+													'title' => 'siggy: create group',
+													'selectedTab' => 'createGroup',
+													'layoutMode' => 'blank'
+												]);
 		}
 		else if( $id == 2 )
 		{
@@ -143,7 +137,7 @@ class Controller_Pages extends FrontController {
 
 							Auth::$session->reloadUserSession();
 
-							HTTP::redirect('pages/createGroup/3');
+							HTTP::redirect('pages/create-group/3');
 						}
 						else
 						{
@@ -155,11 +149,23 @@ class Controller_Pages extends FrontController {
 						$errors = $validator->errors('pages/createGroup');
 				}
 			}
-			$this->template->content = View::factory('pages/createGroupForm')->bind('errors', $errors);
+			
+			$resp = view('create_group_form.blade', [
+													'title' => 'siggy: create group',
+													'selectedTab' => 'createGroup',
+													'layoutMode' => 'blank',
+													'errors' => $errors
+												]);
 		}
 		else if ( $id == 3 )
 		{
-			$this->template->content = View::factory('pages/createGroupComplete');
+			$resp = view('create_group_complete.blade', [
+													'title' => 'siggy: create group',
+													'selectedTab' => 'createGroup',
+													'layoutMode' => 'blank'
+												]);
 		}
+
+		$this->response->body($resp);
 	}
 }

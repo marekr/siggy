@@ -13,13 +13,13 @@
 			<th>Daily Cost (isk)</th>
 			<th>Approx. 30 Days (isk)</th>
 		</tr>
-		<?php for($i =1; $i <= 310; $i += 25): ?>
+		@for($i =1; $i <= 310; $i += 25)
 		<tr>
-			<td><?php echo $i; ?></td>
-			<td><?php echo number_format(miscUtils::computeCostPerDays($i,1)); ?></td>
-			<td><?php echo number_format(miscUtils::computeCostPerDays($i,30)); ?></td>
+			<td>{{$i}}</td>
+			<td>{{ number_format(miscUtils::computeCostPerDays($i,1)) }}</td>
+			<td>{{ number_format(miscUtils::computeCostPerDays($i,30)) }}</td>
 		</tr>
-		<?php endfor; ?>
+		@endfor
 		</table>
 	</div>
 </div>
