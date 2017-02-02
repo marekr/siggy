@@ -18,13 +18,11 @@ class Controller_Sig extends FrontController {
 	public function action_add()
 	{
 		$this->profiler = NULL;
-		$this->auto_render = FALSE;
-		$this->response->headers('Content-Type','application/json');
-		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+		$this->response->noCache();
 
 		if(	 !$this->siggyAccessGranted() )
 		{
-			$this->response->body(json_encode(['error' => 1, 'errorMsg' => 'Invalid auth']));
+			$this->response->json(['error' => 1, 'errorMsg' => 'Invalid auth']);
 			return;
 		}
 
@@ -54,7 +52,7 @@ class Controller_Sig extends FrontController {
 
 			$this->notifierCheck($sig);
 
-			$this->response->body(json_encode([$sig->id => $sig]));
+			$this->response->json([$sig->id => $sig]);
 		}
 	}
 
@@ -91,13 +89,11 @@ class Controller_Sig extends FrontController {
 	public function action_mass_add()
 	{
 		$this->profiler = NULL;
-		$this->auto_render = FALSE;
-		$this->response->headers('Content-Type','application/json');
-		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+		$this->response->noCache();
 
 		if(	 !$this->siggyAccessGranted() )
 		{
-			$this->response->body(json_encode(['error' => 1, 'errorMsg' => 'Invalid auth']));
+			$this->response->json(['error' => 1, 'errorMsg' => 'Invalid auth']);
 			return;
 		}
 
@@ -180,7 +176,7 @@ class Controller_Sig extends FrontController {
 					$this->chainmap->update_system($systemID, array('lastUpdate' => time(),'lastActive' => time() ) );
 				}
 
-				$this->response->body(json_encode($addedSigs));
+				$this->response->json($addedSigs);
 			}
 		}
 	}
@@ -188,9 +184,7 @@ class Controller_Sig extends FrontController {
 	public function action_edit()
 	{
 		$this->profiler = NULL;
-		$this->auto_render = FALSE;
-		$this->response->headers('Content-Type','application/json');
-		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+		$this->response->noCache();
 
 		$sigData = json_decode($this->request->body(), true);
 
@@ -217,7 +211,7 @@ class Controller_Sig extends FrontController {
 			$sig = Signature::findByGroup(Auth::$session->group->id,$id);
 			if($sig == null)
 			{
-				$this->response->body(json_encode('0'));
+				$this->response->json('0');
 				return;
 			}
 
@@ -250,16 +244,14 @@ class Controller_Sig extends FrontController {
 
 			Auth::$session->group->incrementStat('updates', Auth::$session->accessData);
 
-			$this->response->body(json_encode('1'));
+			$this->response->json('1');
 		}
 	}
 
 	public function action_create_wormholes()
 	{
 		$this->profiler = NULL;
-		$this->auto_render = FALSE;
-		$this->response->headers('Content-Type','application/json');
-		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+		$this->response->noCache();
 
 		$request = json_decode($this->request->body(),true);
 
@@ -308,15 +300,13 @@ class Controller_Sig extends FrontController {
 			$this->chainmap->rebuild_map_data_cache();
 		}
 
-		$this->response->body(json_encode('1'));
+		$this->response->json('1');
 	}
 
 	public function action_remove()
 	{
 		$this->profiler = NULL;
-		$this->auto_render = FALSE;
-		$this->response->headers('Content-Type','application/json');
-		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+		$this->response->noCache();
 
 		if( isset($_POST['id']) )
 		{
@@ -325,7 +315,7 @@ class Controller_Sig extends FrontController {
 			$sigData = Signature::findByGroupWithSystem(Auth::$session->group->id, $id);
 			if($sigData == null)
 			{
-				$this->response->body(json_encode('0'));
+				$this->response->json('0');
 				return;
 			}
 
@@ -352,16 +342,14 @@ class Controller_Sig extends FrontController {
 			}
 
 			Auth::$session->group->logAction('delsig', $message);
-			$this->response->body(json_encode('1'));
+			$this->response->json('1');
 		}
 	}
 
 	public function action_scanned_systems()
 	{
 		$this->profiler = NULL;
-		$this->auto_render = FALSE;
-		$this->response->headers('Content-Type','application/json');
-		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+		$this->response->noCache();
 
 		$data = DB::select("SELECT ss.name as system_name, ss.id,
 													r.regionName as region_name,
@@ -386,6 +374,6 @@ class Controller_Sig extends FrontController {
 													Auth::$session->group->id
 												]);
 
-		$this->response->body(json_encode($data));
+		$this->response->json($data);
 	}
 }

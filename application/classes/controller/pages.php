@@ -15,12 +15,6 @@ class Controller_Pages extends FrontController {
 
 	public function before()
 	{
-		$page = $this->request->param('page','');
-		if( $page == 'about' )
-		{
-			$this->template = 'template/public_bootstrap32';
-		}
-
 		parent::before();
 	}
 
@@ -34,34 +28,35 @@ class Controller_Pages extends FrontController {
 				HTTP::redirect('/');
 			}
 		}
-		$this->template->title = 'siggy';
-
-		$this->template->selectedTab = 'home';
-		$this->template->layoutMode = 'blank';
-
-		if( $page == 'getting-siggy' )
-		{
-			$this->template->title = 'siggy: getting siggy';
-			$this->template->content = View::factory('pages/gettingSiggy');
-		}
-		else if( $page == 'create-group' || $page == 'createGroup' )
+		
+		if( $page == 'create-group' )
 		{
 			if(!Auth::loggedIn())
 			{
 				HTTP::redirect('/account/login');
 			}
-			$this->template->selectedTab = 'createGroup';
-			$this->template->content = View::factory('pages/createGroupIntro');
+			
+			$resp = view('pages.createGroupIntro', [
+													'title' => 'siggy: getting siggy',
+													'selectedTab' => 'createGroup',
+													'layoutMode' => 'blank'
+												]);
 		}
 		else if( $page == 'costs' )
 		{
-			$this->template->content = View::factory('pages/costs');
+			$resp = view('pages.costs', [
+													'title' => 'siggy: costs',
+													'selectedTab' => 'costs',
+													'layoutMode' => 'blank'
+												]);
 		}
 		else if( $page == 'about' )
 		{
-			$this->template->title = 'siggy: about';
-			$this->template->selectedTab = 'about';
-			$this->template->content = View::factory('pages/about');
+			$resp = view('pages.about', [
+													'title' => 'siggy: about',
+													'selectedTab' => 'about',
+													'layoutMode' => 'blank'
+												]);
 		}
 		else if( $page == 'no-group-access')
 		{
@@ -70,19 +65,17 @@ class Controller_Pages extends FrontController {
 
 			$this->template->content = $view = View::factory('pages/no_group_access');
 		}
-		else if( $page == 'error')
-		{
-			$message = $this->request->param('message');
-			print_r($this->request);
-			$this->template->content = View::factory('errors/http');
-		}
 		else
 		{
-			$this->template->content = View::factory('pages/home');
+			$resp = view('pages.home', [
+													'title' => 'siggy: home',
+													'selectedTab' => 'home',
+													'layoutMode' => 'blank'
+												]);
 		}
 
-		$this->template->loggedIn = Auth::loggedIn();
-		$this->template->user = Auth::$user;
+
+		$this->response->body($resp);
 	}
 
 	public function action_error()

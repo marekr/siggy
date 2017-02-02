@@ -1,3 +1,7 @@
+@extends('layouts.public')
+
+@section('content')
+
 <div class="container">
 	<div class="row">
 		<h2>About siggy</h2>
@@ -19,3 +23,5 @@
 		<p>siggy is closed source and development is done by only 1 individual. If there are any bugs or issues feel free to send a eve mail to <b>Jack Tronic</b>. Feature suggestions welcome.</p>
 	</div>
 </div>
+
+@endsection

@@ -1,3 +1,6 @@
+@extends('layouts.public')
+
+@section('content')
 <div class="container">
 	<div class="row">
 		<h2>siggy stats</h2>
@@ -38,5 +41,6 @@
 		</div>
 	</div>
 </div>
+@yield('content')
+@endsection
 
-<?php echo $content; ?>

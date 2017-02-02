@@ -14,9 +14,7 @@ class Controller_Search extends FrontController {
 	public function action_everything()
 	{
 		$this->profiler = NULL;
-		$this->auto_render = FALSE;
-		$this->response->headers('Content-Type','application/json');
-		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+		$this->response->noCache();
 
 		$results = array();
 
@@ -56,6 +54,6 @@ class Controller_Search extends FrontController {
 			}
 		}
 
-		$this->response->body(json_encode($results));
+		$this->response->json($results);
 	}
 }

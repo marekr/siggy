@@ -1,3 +1,6 @@
+@extends('layouts.public')
+
+@section('content')
 <div class="container">
 	<div class="well">
 		<h2>Costs</h2>
@@ -20,3 +23,4 @@
 		</table>
 	</div>
 </div>
+@endsection

@@ -4,9 +4,6 @@ use \Michelf\Markdown;
 use Illuminate\Database\Capsule\Manager as DB;
 
 class Controller_Announcements extends FrontController {
-	private $auth;
-	private $user;
-	public $template = 'template/public_bootstrap32';
 	protected $noAutoAuthRedirects = true;
 
 	function __construct(Kohana_Request $request, Kohana_Response $response)
@@ -16,12 +13,6 @@ class Controller_Announcements extends FrontController {
 
 	public function action_index()
 	{
-		$this->template->title = "siggy: announcements";
-		$this->template->selectedTab = "announcements";
-		$this->template->loggedIn = Auth::loggedIn();
-		$this->template->user = Auth::$user;
-		$this->template->layoutMode = 'blank';
-
 		$resultCount = DB::selectOne("SELECT COUNT(*) as total
 									FROM announcements
 									WHERE datePublished != 0 and visibility = 'all'");
@@ -34,24 +25,25 @@ class Controller_Announcements extends FrontController {
 		$paginationHTML = $pagination->render(true);
 		$offset = $pagination->next_page_offset();
 
-		$view = View::factory('announcements/index');
-
 		$results = DB::select("SELECT *
 									FROM announcements
 									WHERE datePublished != 0 and visibility = 'all'
 									ORDER BY datePublished DESC
 									LIMIT ".$offset.",5");
-
-
-		$view->pagination = $paginationHTML;
-		$view->announcements = $results;
-		$this->template->content = $view;
+		
+		$resp = view('announcements.index', [
+												'announcements' => $results,
+												'pagination' => $paginationHTML,
+												'title' => "siggy: announcements",
+												'selectedTab' => 'announcements',
+												'layoutMode' => 'blank'
+											]);
+		$this->response->body($resp);
 	}
 
 	public function action_view()
 	{
-        $this->profiler = NULL;
-        $this->auto_render = FALSE;
+		$this->profiler = NULL;
 
 		$id = (int)$_GET['id'];
 
@@ -60,7 +52,6 @@ class Controller_Announcements extends FrontController {
 									WHERE datePublished != 0 and visibility = 'all'
 									AND id = ?",[$id]);
 
-		print json_encode($result);
-		die();
+		$this->response->json($result);
 	}
 }

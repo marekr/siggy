@@ -26,15 +26,13 @@ class Controller_Chainmap extends FrontController {
 	public function action_find_nearest_exits()
 	{
 		$this->profiler = NULL;
-		$this->auto_render = FALSE;
-		$this->response->headers('Content-Type','application/json');
-		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+		$this->response->noCache();
 
 
 		if(	 !$this->siggyAccessGranted() )
 		{
-			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
-			exit();
+			$this->response->json(['error' => 1, 'errorMsg' => 'Invalid auth']);
+			return;
 		}
 
 
@@ -55,8 +53,8 @@ class Controller_Chainmap extends FrontController {
 
 		if( $targetID == 0 || $targetID >= 31000000 )
 		{
-			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid system'));
-			exit();
+			$this->response->json(['error' => 1, 'errorMsg' => 'Invalid system']);
+			return;
 		}
 
 		$systems = DB::select("( SELECT DISTINCT w.to_system_id as sys_id,ss.name
@@ -87,7 +85,7 @@ class Controller_Chainmap extends FrontController {
 
 		usort($result, array('Controller_Chainmap','sortResults'));
 
-		$this->response->body(json_encode(['result' => $result]));
+		$this->response->json(['result' => $result]);
 	}
 
 	private static function sortResults($a, $b)
@@ -102,9 +100,7 @@ class Controller_Chainmap extends FrontController {
 	public function action_save()
 	{
 		$this->profiler = NULL;
-		$this->auto_render = FALSE;
-		header('content-type: application/json');
-		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+		$this->response->noCache();
 
 		$systemData = json_decode($_POST['systemData'], TRUE);
 		if( count( $systemData ) > 0 )
@@ -134,7 +130,7 @@ class Controller_Chainmap extends FrontController {
 			$this->chainmap->rebuild_map_data_cache();
 		}
 
-		exit();
+		$this->response->json(true);
 	}
 
 	private function _hash_array_to_string($arr)
@@ -150,8 +146,7 @@ class Controller_Chainmap extends FrontController {
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
-		$this->response->headers('Content-Type','application/json');
-		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+		$this->response->noCache();
 
 		$systemIDs = array();
 
@@ -290,20 +285,19 @@ class Controller_Chainmap extends FrontController {
 			$this->chainmap->rebuild_map_data_cache();
 		}
 
-		$this->response->body(json_encode('1'));
+		$this->response->json(true);
 	}
 
 	public function action_connection_edit()
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
-		header('content-type: application/json');
-		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+		$this->response->noCache();
 
 		if(	 !$this->siggyAccessGranted() )
 		{
-			echo json_encode(array('error' => 1, 'error_message' => 'Invalid auth'));
-			exit();
+			$this->response->json(['error' => 1, 'error_message' => 'Invalid auth']);
+			return;
 		}
 
 		$update = array();
@@ -311,8 +305,8 @@ class Controller_Chainmap extends FrontController {
 
 		if( empty($hash) )
 		{
-			echo json_encode(array('error' => 1, 'error_message' => 'Missing wormhole hash'));
-			exit();
+			$this->response->json(['error' => 1, 'error_message' => 'Missing wormhole hash']);
+			return;
 		}
 
 		$wormhole = DB::selectOne('SELECT * FROM wormholes WHERE hash=:hash AND group_id=:groupID AND chainmap_id=:chainmap',
@@ -324,8 +318,8 @@ class Controller_Chainmap extends FrontController {
 
 		if( $wormhole == null )
 		{
-			echo json_encode(array('error' => 1, 'error_message' => 'Wormhole does not exist.'));
-			exit();
+			$this->response->json(['error' => 1, 'error_message' => 'Wormhole does not exist']);
+			return;
 		}
 
 		if( isset($_POST['eol']) )
@@ -369,6 +363,8 @@ class Controller_Chainmap extends FrontController {
 
 			$this->chainmap->rebuild_map_data_cache();
 		}
+		
+		$this->response->json(true);
 	}
 
 	private function lookupWHTypeByName(string $name): int
@@ -385,13 +381,12 @@ class Controller_Chainmap extends FrontController {
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
-		header('content-type: application/json');
-		header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
+		$this->response->noCache();
 
 		if(	 !$this->siggyAccessGranted() )
 		{
-			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
-			exit();
+			$this->response->json(['error' => 1, 'error_message' => 'Invalid auth']);
+			return;
 		}
 
 		$type = $_POST['type'];
@@ -502,8 +497,8 @@ class Controller_Chainmap extends FrontController {
 
 			if( count($errors) > 0 )
 			{
-				echo json_encode(array('success' => 0, 'dataErrorMsgs' => $errors ) );
-				exit();
+				$this->response->json(['success' => 0, 'dataErrorMsgs' => $errors ]);
+				return;
 			}
 
 			$eol = intval($_POST['eol']);
@@ -519,8 +514,8 @@ class Controller_Chainmap extends FrontController {
 		{
 			if( count($errors) > 0 )
 			{
-				echo json_encode(array('success' => 0, 'dataErrorMsgs' => $errors ) );
-				exit();
+				$this->response->json(['success' => 0, 'dataErrorMsgs' => $errors ]);
+				return;
 			}
 
 			$this->chainmap->add_stargate_to_map($fromSysID, $toSysID);
@@ -529,8 +524,8 @@ class Controller_Chainmap extends FrontController {
 		{
 			if( count($errors) > 0 )
 			{
-				echo json_encode(array('success' => 0, 'dataErrorMsgs' => $errors ) );
-				exit();
+				$this->response->json(['success' => 0, 'dataErrorMsgs' => $errors ]);
+				return;
 			}
 
 			$this->chainmap->add_jumpbridge_to_map($fromSysID, $toSysID);
@@ -539,17 +534,15 @@ class Controller_Chainmap extends FrontController {
 		{
 			if( count($errors) > 0 )
 			{
-				echo json_encode(array('success' => 0, 'dataErrorMsgs' => $errors ) );
-				exit();
+				$this->response->json(['success' => 0, 'dataErrorMsgs' => $errors ]);
+				return;
 			}
 
 			$this->chainmap->add_cyno_to_map($fromSysID, $toSysID);
 		}
 
-
-		echo json_encode( array('success' => 1) );
-
-		exit();
+		$this->response->json(['success' => 1]);
+		return;
 	}
 
 	public function action_switch()
@@ -580,13 +573,12 @@ class Controller_Chainmap extends FrontController {
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
-		$this->response->headers('Content-Type','application/json');
-		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+		$this->response->noCache();
 
 		if(	 !$this->siggyAccessGranted() )
 		{
-			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
-			exit();
+			$this->response->json(['error' => 1, 'error_message' => 'Invalid auth']);
+			return;
 		}
 
 		$data = $this->chainmap->get_map_cache();
@@ -620,7 +612,7 @@ class Controller_Chainmap extends FrontController {
 			$output['connections'][] = $c;
 		}
 
-		$this->response->body(json_encode($output));
+		$this->response->json($output);
 	}
 
 	public function action_autocomplete_wh()
@@ -667,7 +659,7 @@ class Controller_Chainmap extends FrontController {
 								'region_name' => $system->region_name );
 		}
 
-		$this->response->body(json_encode($output));
+		$this->response->json_encode($output);
 	}
 
 	public function action_jump_log()
@@ -679,13 +671,13 @@ class Controller_Chainmap extends FrontController {
 
 		if(	!$this->siggyAccessGranted() )
 		{
-			$this->response->body(json_encode(['error' => 1, 'errorMsg' => 'Invalid auth']));
+			$this->response->json(['error' => 1, 'error_message' => 'Invalid auth']);
 			return;
 		}
 
 		if( !isset($_GET['wormhole_hash']) || empty( $_GET['wormhole_hash'] ) )
 		{
-			$this->response->body(json_encode(['error' => 1, 'errorMsg' => 'Missing wormhole_hash parameter.']));
+			$this->response->json(['error' => 1, 'errorMsg' => 'Missing wormhole_hash parameter.']);
 			return;
 		}
 
@@ -718,6 +710,6 @@ class Controller_Chainmap extends FrontController {
 		$output['totalMass'] = $totalMass;
 		$output['jumpItems'] = $jumpData;
 
-		$this->response->body(json_encode($output));
+		$this->response->json($output);
 	}
 }

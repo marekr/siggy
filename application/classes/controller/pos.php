@@ -6,9 +6,7 @@ class Controller_Pos extends FrontController {
 	public function action_add()
 	{
 		$this->profiler = NULL;
-		$this->auto_render = FALSE;
-		$this->response->headers('Content-Type','application/json');
-		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+		$this->response->noCache();
 
 
 		if(	 !$this->siggyAccessGranted() )
@@ -32,8 +30,8 @@ class Controller_Pos extends FrontController {
 
 		if( empty($data['location_planet'] ) || empty($data['location_moon'] ) )
 		{
-			echo json_encode(array('error' => 1, 'errorMsg' => 'Missing POS Location'));
-			exit();
+			$this->response->json(['error' => 1, 'errorMsg' => 'Missing POS Location']);
+			return;
 		}
 
 		if( !in_array( $data['size'], ['small','medium','large'] ) )
@@ -45,15 +43,13 @@ class Controller_Pos extends FrontController {
 
 		Auth::$session->group->incrementStat('pos_adds', Auth::$session->accessData);
 
-		$this->response->body(json_encode([]));
+		$this->response->json(true);
 	}
 
 	public function action_edit()
 	{
 		$this->profiler = NULL;
-		$this->auto_render = FALSE;
-		$this->response->headers('Content-Type','application/json');
-		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+		$this->response->noCache();
 
 		$id = $_POST['pos_id'];
 
@@ -61,7 +57,7 @@ class Controller_Pos extends FrontController {
 
 		if( $pos == null )
 		{
-			$this->response->body(json_encode(['error' => 1, 'errorMsg' => 'Invalid POS ID']));
+			$this->response->json(['error' => 1, 'errorMsg' => 'Invalid POS ID']);
 			return;
 		}
 
@@ -77,7 +73,7 @@ class Controller_Pos extends FrontController {
 
 		if( empty($data['location_planet'] ) || empty($data['location_moon'] ) )
 		{
-			$this->response->body(json_encode(['error' => 1, 'errorMsg' => 'Missing POS Location']));
+			$this->response->json(['error' => 1, 'errorMsg' => 'Missing POS Location']);
 			return;
 		}
 
@@ -94,15 +90,13 @@ class Controller_Pos extends FrontController {
 		$log_message = sprintf("%s edit POS in system %s", Auth::$session->character_name, $pos->system->name);
 		Auth::$session->group->logAction('editpos', $log_message);
 
-		$this->response->body(json_encode([]));
+		$this->response->json(true);
 	}
 
 	public function action_remove()
 	{
 		$this->profiler = NULL;
-		$this->auto_render = FALSE;
-		$this->response->headers('Content-Type','application/json');
-		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+		$this->response->noCache();
 
 		$id = $_POST['pos_id'];
 
@@ -110,7 +104,7 @@ class Controller_Pos extends FrontController {
 
 		if( $pos == null )
 		{
-			$this->response->body(json_encode(['error' => 1, 'errorMsg' => 'Invalid POS ID']));
+			$this->response->json(['error' => 1, 'errorMsg' => 'Invalid POS ID']);
 			return;
 		}
 
@@ -119,6 +113,6 @@ class Controller_Pos extends FrontController {
 		$log_message = sprintf("%s deleted POS from system %s", Auth::$session->character_name, $pos->system->name);
 		Auth::$session->group->logAction('delpos', $log_message);
 		
-		$this->response->body(json_encode([]));
+		$this->response->json(true);
 	}
 }

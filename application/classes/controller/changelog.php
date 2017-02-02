@@ -13,21 +13,19 @@ class Controller_Changelog extends FrontController {
 
 	public function action_index()
 	{
-		$this->title = 'Changelog';
-		$this->template->title = 'siggy';
-		$this->template->selectedTab = 'siggy';
-		$this->template->loggedIn = Auth::loggedIn();
-		$this->template->user = Auth::$user;
-		$this->template->layoutMode = 'blank';
 		$changelog = file_get_contents(DOCROOT.'changelog.md');
 
 		$parser = new \cebe\markdown\GithubMarkdown();
 		$parser->html5 = true;
 		$changelog = $parser->parse($changelog);
-
-		$view = View::factory('changelog/index');
-		$view->log = $changelog;
-		$this->template->content = $view;
+		
+		$resp = view('changelog.index', [
+												'log' => $changelog,
+												'title' => 'Changelog',
+												'selectedTab' => 'changelog',
+												'layoutMode' => 'blank'
+											]);
+		$this->response->body($resp);
 	}
 
 }

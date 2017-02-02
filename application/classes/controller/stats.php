@@ -16,27 +16,17 @@ class Controller_Stats extends FrontController {
 
 	public function action_leaderboard()
 	{
-		$this->template->title = "siggy: leaderboard";
-
-		$wrapper = View::factory('stats/stats_wrapper');
-
 		$datep = $this->__setupDatePager();
-		$wrapper->previous_date = $datep->getPreviousDate();
-		$wrapper->current_date = $datep->getCurrentDate();
-		$wrapper->next_date = $datep->getNextDate();
-		$wrapper->stats_mode = $datep->mode;
-		$wrapper->sub_page = 'leaderboard';
 
-		$view = View::factory('stats/leaderboard');
 
 		$dateRange = $datep->getTimestamps();
 
 		//short names for vars for multipliers
-		$view->wormhole = $wormhole = (double)Auth::$session->group->stats_wh_map_points;
-		$view->sig_add = $sig_add = (double)Auth::$session->group->stats_sig_add_points;
-		$view->sig_update = $sig_update = (double)Auth::$session->group->stats_sig_update_points;
-		$view->pos_add = $pos_add= (double)Auth::$session->group->stats_pos_add_points;
-		$view->pos_update = $pos_update = (double)Auth::$session->group->stats_pos_update_points;
+		$wormhole = (double)Auth::$session->group->stats_wh_map_points;
+		$sig_add = (double)Auth::$session->group->stats_sig_add_points;
+		$sig_update = (double)Auth::$session->group->stats_sig_update_points;
+		$pos_add= (double)Auth::$session->group->stats_pos_add_points;
+		$pos_update = (double)Auth::$session->group->stats_pos_update_points;
 
 		$number_per_page = 25;
 
@@ -80,24 +70,35 @@ class Controller_Stats extends FrontController {
 												'end' => $dateRange['end']
 											]);
 
-		$view->results = $results;
-		$view->rank_offset = $offset;
-		$view->pagination = $paginationHTML;
+		$view =  view('stats.leaderboard', [
+											'wormhole' => (double)Auth::$session->group->stats_wh_map_points,
+											'sig_add' => (double)Auth::$session->group->stats_sig_add_points,
+											'sig_update' => (double)Auth::$session->group->stats_sig_update_points,
+											'pos_add' => (double)Auth::$session->group->stats_pos_add_points,
+											'pos_update' => (double)Auth::$session->group->stats_pos_update_points,
+											'results' => $results,
+											'rank_offset' => $offset,
+											'pagination' => $paginationHTML
+										]);
 
-
-		$wrapper->content = $view;
-		$this->template->content = $wrapper;
+		
+		$resp = view('stats.wrapper', [
+												'title' => 'siggy: leaderboard',
+												'selectedTab' => 'stats',
+												'layoutMode' => 'blank',
+												'previous_date' => $datep->getPreviousDate(),
+												'current_date' => $datep->getCurrentDate(),
+												'next_date' => $datep->getNextDate(),
+												'stats_mode' => $datep->mode,
+												'sub_page' => 'leaderboard',
+												'content' => $view
+											]);
+		$this->response->body($resp);
 	}
 
 	public function before()
 	{
 		parent::before();
-
-		$this->template->title = "siggy: stats";
-		$this->template->selectedTab = 'stats';
-		$this->template->loggedIn = Auth::loggedIn();
-		$this->template->user = Auth::$user;
-		$this->template->layoutMode = 'blank';
 	}
 
 	public function action_sig_updates()
@@ -127,8 +128,6 @@ class Controller_Stats extends FrontController {
 
 	private function handle_keyed_stats($key)
 	{
-		$wrapper = View::factory('stats/stats_wrapper');
-
 		$keyLookup = array('sig_adds' => 'adds',
 							'sig_updates' => 'updates',
 							'pos_adds' => 'pos_adds',
@@ -138,13 +137,6 @@ class Controller_Stats extends FrontController {
 		$convertedKey = $keyLookup[$key];
 
 		$datep = $this->__setupDatePager();
-		$wrapper->previous_date = $datep->getPreviousDate();
-		$wrapper->current_date = $datep->getCurrentDate();
-		$wrapper->next_date = $datep->getNextDate();
-		$wrapper->stats_mode = $datep->mode;
-		$wrapper->sub_page = $key;
-
-		$view = View::factory('stats/specific_stat');
 
 		$dateRange = $datep->getTimestamps();
 
@@ -179,11 +171,30 @@ class Controller_Stats extends FrontController {
 												'end' => $dateRange['end']
 											]);
 
-		$view->results = $results;
-		$view->rank_offset = $offset;
-		$view->pagination = $paginationHTML;
-		$wrapper->content = $view;
-		$this->template->content = $wrapper;
+		$view =  view('stats.specific_stat', [
+											'wormhole' => (double)Auth::$session->group->stats_wh_map_points,
+											'sig_add' => (double)Auth::$session->group->stats_sig_add_points,
+											'sig_update' => (double)Auth::$session->group->stats_sig_update_points,
+											'pos_add' => (double)Auth::$session->group->stats_pos_add_points,
+											'pos_update' => (double)Auth::$session->group->stats_pos_update_points,
+											'results' => $results,
+											'rank_offset' => $offset,
+											'pagination' => $paginationHTML
+										]);
+
+		
+		$resp = view('stats.wrapper', [
+												'title' => 'siggy: leaderboard',
+												'selectedTab' => 'stats',
+												'layoutMode' => 'blank',
+												'previous_date' => $datep->getPreviousDate(),
+												'current_date' => $datep->getCurrentDate(),
+												'next_date' => $datep->getNextDate(),
+												'stats_mode' => $datep->mode,
+												'sub_page' => $key,
+												'content' => $view
+											]);
+		$this->response->body($resp);
 	}
 
 	private function __setupDatePager()
@@ -212,48 +223,48 @@ class Controller_Stats extends FrontController {
 
 	public function action_overview()
 	{
-		$this->template->title = "siggy: stats";
-
-		$wrapper = View::factory('stats/stats_wrapper');
-		$view = View::factory('stats/stats');
-
 		$datep = $this->__setupDatePager();
-
-		$wrapper->previous_date = $datep->getPreviousDate();
-		$wrapper->current_date = $datep->getCurrentDate();
-		$wrapper->next_date = $datep->getNextDate();
-		$wrapper->stats_mode = $datep->mode;
-		$wrapper->sub_page = 'overview';
-
 		$dateRange = $datep->getTimestamps();
 
 		$top10Adds = $this->getTop10('adds',$dateRange['start'],$dateRange['end']);
-		$addsHTML = View::factory('stats/top10');
-		$addsHTML->max = $top10Adds['max'];
-		$addsHTML->data = $top10Adds['top10'];
-		$addsHTML->title = "Signatures added";
+		$addsHTML = view('stats.top10', [
+											'max' => $top10Adds['max'],
+											'data' => $top10Adds['top10'],
+											'title' => "Signatures added"
+										]);
 
 		$top10Edits = $this->getTop10('updates',$dateRange['start'],$dateRange['end']);
-		$editsHTML = View::factory('stats/top10');
-		$editsHTML->max = $top10Edits['max'];
-		$editsHTML->data = $top10Edits['top10'];
-		$editsHTML->title = "Signatures updated";
-
+		$editsHTML = view('stats.top10', [
+											'max' => $top10Edits['max'],
+											'data' => $top10Edits['top10'],
+											'title' => "Signatures updated"
+										]);
 
 		$top10WHs = $this->getTop10('wormholes',$dateRange['start'],$dateRange['end']);
-		$whsHTML = View::factory('stats/top10');
-		$whsHTML->max = $top10WHs['max'];
-		$whsHTML->data = $top10WHs['top10'];
-		$whsHTML->title = "Wormholes mapped";
+		$whsHTML = view('stats.top10', [
+											'max' => $top10WHs['max'],
+											'data' => $top10WHs['top10'],
+											'title' => "Wormholes mapped"
+										]);
 
+		$view = view('stats.stats', [
+												'addsHTML' => $addsHTML,
+												'editsHTML' => $editsHTML,
+												'whsHTML' => $whsHTML
+											]);
 
-		$view->addsHTML = $addsHTML;
-		$view->editsHTML = $editsHTML;
-		$view->whsHTML = $whsHTML;
-
-		$wrapper->content = $view;
-
-		$this->template->content = $wrapper;
+		$resp = view('stats.wrapper', [
+												'title' => 'siggy:stats',
+												'selectedTab' => 'stats',
+												'layoutMode' => 'blank',
+												'previous_date' => $datep->getPreviousDate(),
+												'current_date' => $datep->getCurrentDate(),
+												'next_date' => $datep->getNextDate(),
+												'stats_mode' => $datep->mode,
+												'sub_page' => 'overview',
+												'content' => $view
+											]);
+		$this->response->body($resp);
 	}
 
 	private function getTop10($key, $start, $end)

@@ -17,9 +17,7 @@ class Controller_Crest extends FrontController {
 	public function action_waypoint()
 	{
 		$this->profiler = NULL;
-		$this->auto_render = FALSE;
-		$this->response->headers('Content-Type','application/json');
-		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+		$this->response->noCache();
 
 		$req = json_decode($this->request->body(), true);
 		$waypoint = ((bool)$req['waypoint'] != true);
@@ -61,7 +59,7 @@ class Controller_Crest extends FrontController {
 		}
 
 		$output = [];
-		$this->response->body(json_encode($output));
+		$this->response->json($output);
 	}
 
 }

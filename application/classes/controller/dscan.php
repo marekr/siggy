@@ -15,14 +15,14 @@ class Controller_Dscan extends FrontController {
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
-		header('content-type: application/json');
-		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1\
+		
+		$this->response->noCache();
 
 
 		if(	 !$this->siggyAccessGranted() )
 		{
-			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
-			exit();
+			$this->response->json(['error' => 1, 'error_message' => 'Invalid auth']);
+			return;
 		}
 
 		$blob = $_REQUEST['blob'];
@@ -93,7 +93,7 @@ class Controller_Dscan extends FrontController {
 			}
 		}
 
-
+		$this->response->json([true]);
 	}
 
 	function parse_csv ($csv_string, $delimiter = ",", $skip_empty_lines = true, $trim_fields = true)
@@ -207,11 +207,13 @@ class Controller_Dscan extends FrontController {
 
 		if( $dscan == null )
 		{
-			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid dscan'));
-			exit();
+			$this->response->json(['error' => 1, 'error_message' => 'Invalid dscan']);
+			return;
 		}
 
 		DB::table('dscan')->where('dscan_id', '=', $id)->delete();
 		DB::table('dscan_records')->where('dscan_id', '=', $id)->delete();
+		
+		$this->response->json([true]);
 	}
 }

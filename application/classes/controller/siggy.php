@@ -13,17 +13,12 @@ class Controller_Siggy extends FrontController {
 
 	public function action_index()
 	{
-		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-
-		$view = View::factory('siggy/siggy_main');
-
 		$ssname = $this->request->param('ssname', '');
 
 		// set default
 		$sysData = new stdClass();
 		$sysData->id = 30000142;
 		$sysData->name = 'Jita';
-		$view->systemData = $sysData;
 
 		ScribeCommandBus::UnfreezeCharacter(Auth::$session->character_id);
 
@@ -44,7 +39,6 @@ class Controller_Siggy extends FrontController {
 			if( !empty($sysData) )
 			{
 				$requested = true;
-				$view->systemData = $sysData;
 			}
 		}
 		else
@@ -59,45 +53,32 @@ class Controller_Siggy extends FrontController {
 				{
 					$sysData->id = $homeSystems[0];
 					$sysData->name = '';
-					$view->systemData = $sysData;
 				}
 			}
-			$view->initialSystem = true;
 		}
-
-		$view->initialSystem = true;
-		$view->group = Auth::$session->group;
-		$view->accessData = Auth::$session->accessData;
-		$view->requested = $requested;
-        $view->settings = $this->template->settings;
-
-		$view->sessionID = '';
-
-		$this->template->content = $view;
-
-		//load chain map html
-		$chainMapHTML = View::factory('siggy/chainmap');
-		$chainMapHTML->group = Auth::$session->group;
-		$chainMapHTML->accessData = Auth::$session->accessData;
-		$view->chainMap = $chainMapHTML;
 
 		//load header tools
 		$themes = Theme::allByGroup(Auth::$session->group->id);
-		
-		$view->themes = $themes;
-		$view->settings = $this->template->settings;
+
+		$resp = view('siggy.siggy_main', [
+												'group' => Auth::$session->group,
+												'themes' => Theme::allByGroup(Auth::$session->group->id),
+												'settings' => $this->loadSettings(),
+												'systemData' => $sysData,
+												'requested' => $requested
+											]);
+		$this->response->body($resp)
+						->noCache();
 	}
 
-    public function action_save_character_settings()
-    {
+	public function action_save_character_settings()
+	{
 		$this->profiler = NULL;
-		$this->auto_render = FALSE;
-		$this->response->headers('Content-Type','application/json');
-		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+		$this->response->noCache();
 
 		if(	!$this->siggyAccessGranted() )
 		{
-			$this->response->body(json_encode(['error' => 1, 'errorMsg' => 'Invalid auth']));
+			$this->response->json(['error' => 1, 'errorMsg' => 'Invalid auth']);
 			return;
 		}
 
@@ -120,8 +101,8 @@ class Controller_Siggy extends FrontController {
 			Auth::$user->save();
 		}
 
-		$this->response->body(json_encode(''));
-    }
+		$this->response->json(true);
+	}
 
 	public function before()
 	{
@@ -516,8 +497,7 @@ class Controller_Siggy extends FrontController {
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
-		$this->response->headers('Content-Type','application/json');
-		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+		$this->response->noCache();
 
 		if( Kohana::$environment == Kohana::PRODUCTION )
 		{
@@ -526,7 +506,7 @@ class Controller_Siggy extends FrontController {
 
 		if(	!$this->siggyAccessGranted() )
 		{
-			$this->response->body(json_encode(['error' => 1, 'errorMsg' => 'Invalid auth']));
+			$this->response->json(['error' => 1, 'errorMsg' => 'Invalid auth']);
 			return;
 		}
 
@@ -597,15 +577,14 @@ class Controller_Siggy extends FrontController {
 			$update['error'] = 'You suck';
 		}
 
-		$this->response->body(json_encode($update));
+		$this->response->json($update);
 	}
 
 	public function action_update()
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
-		$this->response->headers('Content-Type','application/json');
-		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+		$this->response->noCache();
 
 		if( Kohana::$environment == Kohana::PRODUCTION )
 		{
@@ -614,7 +593,7 @@ class Controller_Siggy extends FrontController {
 
 		if(	!$this->siggyAccessGranted() )
 		{
-			$this->response->body(json_encode(['error' => 1, 'errorMsg' => 'Invalid auth']));
+			$this->response->json(['error' => 1, 'errorMsg' => 'Invalid auth']);
 			return;
 		}
 
@@ -778,7 +757,7 @@ class Controller_Siggy extends FrontController {
 		$update['notifications'] = array('last_read' => $returnLastRead, 'items' => $notifications);
 
 
-		$this->response->body(json_encode($update));
+		$this->response->json($update);
 	}
 
 	private function _update_process_map(&$update)
@@ -849,13 +828,12 @@ class Controller_Siggy extends FrontController {
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
-		$this->response->headers('Content-Type','application/json');
-		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+		$this->response->noCache();
 
 		if(	 !$this->siggyAccessGranted() )
 		{
-			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
-			exit();
+			$this->response->json(['error' => 1, 'errorMsg' => 'Invalid auth']);
+			return;
 		}
 
 		$notes = htmlspecialchars($_POST['notes']);
@@ -863,15 +841,14 @@ class Controller_Siggy extends FrontController {
 		Auth::$session->group->notes = $notes;
 		Auth::$session->group->save();
 
-		$this->response->body(json_encode(time()));
+		$this->response->json(time());
 	}
 
 	public function action_save_system()
 	{
 		$this->profiler = NULL;
 		$this->auto_render = FALSE;
-		$this->response->headers('Content-Type','application/json');
-		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+		$this->response->noCache();
 
 		$this->validateCSRF();
 		
@@ -880,7 +857,7 @@ class Controller_Siggy extends FrontController {
 			$id = intval($_POST['systemID']);
 			if( !$id )
 			{
-				$this->response->body(json_encode(false));
+				$this->response->json(false);
 				return;
 			}
 
@@ -915,7 +892,7 @@ class Controller_Siggy extends FrontController {
 
 			if( empty($update) )
 			{
-				$this->response->body(json_encode(false));
+				$this->response->json(false);
 				return;
 			}
 
@@ -927,6 +904,6 @@ class Controller_Siggy extends FrontController {
 			$this->chainmap->rebuild_map_data_cache();
 		}
 
-		$this->response->body(json_encode(true));
+		$this->response->json(true);
 	}
 }

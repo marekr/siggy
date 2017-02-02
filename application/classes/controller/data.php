@@ -8,7 +8,6 @@ class Controller_Data extends FrontController {
     {
 		if( Kohana::$environment == Kohana::PRODUCTION )
 		{
-			header('content-type: application/json');
 			ob_start( 'ob_gzhandler' );
 		}
 	}
@@ -16,23 +15,19 @@ class Controller_Data extends FrontController {
 	public function action_systems()
 	{
 		$this->profiler = NULL;
-		$this->auto_render = FALSE;
-		$this->response->headers('Content-Type','application/json');
-		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+		$this->response->noCache();
 
         $systems = DB::select("SELECT ss.id, ss.name, r.regionName as region_name, ss.sec, ss.sysClass as class
 													FROM solarsystems ss
 													LEFT JOIN regions r ON(ss.region = r.regionID)");
 
-		$this->response->body(json_encode($systems,JSON_NUMERIC_CHECK));
+		$this->response->json($systems,JSON_NUMERIC_CHECK);
 	}
 
 	public function action_sig_types()
 	{
 		$this->profiler = NULL;
-		$this->auto_render = FALSE;
-		$this->response->headers('Content-Type','application/json');
-		$this->response->headers('Cache-Control','no-cache, must-revalidate');
+		$this->response->noCache();
 
 		$output = array();
 
@@ -74,6 +69,6 @@ class Controller_Data extends FrontController {
 			$output['maps'][ $site->type ][ $site->system_class ][] = $site->id;
 		}
 
-		$this->response->body(json_encode($output));
+		$this->response->json($output);
 	}
 }

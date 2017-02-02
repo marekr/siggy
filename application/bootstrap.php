@@ -5,6 +5,14 @@ use Illuminate\Database\Capsule\Manager as DB;
 
 define('SIGGY_VERSION', '2.32.5');
 
+
+$blade = new siggy\Blade(APPPATH.'views', APPPATH.'cache/blade');
+function view(string $path, ?array $args = null)
+{
+	global $blade;
+	return $blade->make($path, $args);
+}
+
 // -- Environment setup --------------------------------------------------------
 
 // Load the core Kohana class

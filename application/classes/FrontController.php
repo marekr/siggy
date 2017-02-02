@@ -1,27 +1,13 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-require_once APPPATH.'classes/formRenderer.php';
-
 class FrontController extends Controller {
 	protected $groupData = array();
-	protected $trusted = false;
-
 	//new
 	protected $authStatus = false;
-
-	protected $charID = 0;
-	protected $corpID = 0;
-	protected $charName = '';
-
-	protected $apiCharInfo = array();
 
 	protected $ajaxRequest = false;
 
 	protected $noAutoAuthRedirects = false;
-
-	public $template = '';
-
-	public $auto_render = true;
 
 	function __construct(Kohana_Request $request, Kohana_Response $response)
 	{
@@ -84,20 +70,6 @@ class FrontController extends Controller {
 		{
 			$this->authCheckAndRedirect();
 		}
-
-		if( !$this->ajaxRequest && $this->template != '' )
-		{
-			$this->template = View::factory( $this->template );
-
-			$settings = $this->loadSettings();
-			$this->template->settings = $settings;
-
-			$this->template->group = Auth::$session->group;
-			$this->template->accessData = Auth::$session->accessData;
-					
-
-			$this->template->apilogin = Auth::loggedIn();
-		}
 	}
 
 	protected function loadSettings()
@@ -159,9 +131,5 @@ class FrontController extends Controller {
 
 	public function after()
 	{
-		if( !$this->ajaxRequest && $this->template != '' && $this->auto_render )
-		{
-			$this->response->body($this->template->render());
-		}
 	}
 }

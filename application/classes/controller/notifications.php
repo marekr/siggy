@@ -18,8 +18,7 @@ class Controller_Notifications extends FrontController {
 	{
 		$data = Notifier::allByGroupCharacter(Auth::$session->group->id, Auth::$session->character_id);
 
-		echo json_encode($data);
-		exit();
+		$this->response->json($data);
 	}
 
 	public function action_all()
@@ -39,8 +38,8 @@ class Controller_Notifications extends FrontController {
 			'items' => $data,
 			'total_pages' => $totalPages
 		);
-		echo json_encode($response);
-		exit();
+		
+		$this->response->json($response);
 	}
 
 	public function action_notifiers_add()
@@ -50,8 +49,8 @@ class Controller_Notifications extends FrontController {
 		if( $scope == NULL || ($scope != 'personal' && $scope != 'group') )
 		{
 			//error
-			echo json_encode(array('error' => 1, 'error_message' => 'Invalid scope'));
-			exit();
+			$this->response->json(['error' => 1, 'error_message' => 'Invalid scope']);
+			return;
 		}
 
 		$type = $this->request->post('type');
@@ -59,8 +58,8 @@ class Controller_Notifications extends FrontController {
 		if( $type == NULL || !in_array($type, NotificationTypes::asArray()) )
 		{
 			//error
-			echo json_encode(array('error' => 1, 'error_message' => 'Invalid type'));
-			exit();
+			$this->response->json(['error' => 1, 'error_message' => 'Invalid type']);
+			return;
 		}
 
 		$data = $this->request->post('notifier');
@@ -75,8 +74,8 @@ class Controller_Notifications extends FrontController {
 			else
 			{
 				//error
-				echo json_encode(array('error' => 1, 'error_message' => 'Invalid system'));
-				exit();
+				$this->response->json(['error' => 1, 'error_message' => 'Invalid system']);
+				return;
 			}
 		}
 		else if( $type == NotificationTypes::SystemMapppedWithResident )
@@ -94,13 +93,13 @@ class Controller_Notifications extends FrontController {
 
 	public function action_notifiers_delete()
 	{
+		$this->response->noCache();
 		$id = $this->request->post('id');
 
 		if( $id == NULL )
 		{
-			//error
-			echo json_encode(array('error' => 1, 'error_message' => 'ID missing'));
-			exit();
+			$this->response->json(['error' => 1, 'error_message' => 'ID missing']);
+			return;
 		}
 
 		Notifier::deleteByIdGroupCharacter( $id, Auth::$session->group->id, Auth::$session->character_id );

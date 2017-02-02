@@ -46,9 +46,9 @@
 			</div>
 			<div style="right: 0;position: absolute;">
 				<!--- broadcast -->
-				<?php if( !$group->always_broadcast): ?>
+				@if( !$group->always_broadcast)
 				<button id="chainmap-broadcast-button" class="btn btn-default btn-xs"><i class="fa fa-wifi"></i><?php echo ( ( isset($_COOKIE['broadcast']) && $_COOKIE['broadcast'] == 0 ) ? "Enable location broadcast" : "Disable location broadcast" ); ?></button>
-				<?php endif; ?>
+				@endif
 			</div>
 			<!-- magic buttons -->
 			<div class="buttons">
@@ -70,16 +70,16 @@
 						<i class="fa fa-pencil"></i> Edit
 					</a>
 				</li>
-				<?php if( $group->jump_log_enabled ): ?>
+				@if( $group->jump_log_enabled )
 				<li role='presentation'>
 					<a href='#jump-log' aria-controls='home' role='tab' data-toggle='tab'>
 						<i class="fa fa-list"></i> Jump Log
 					</a>
 				</li>
-				<?php endif; ?>
+				@endif
 			</ul>
 			<div class='tab-content'>
-				<?php if( $group->jump_log_enabled ): ?>
+				@if( $group->jump_log_enabled )
 				<div role="tabpanel" id="jump-log" style="padding: 10px !important;" class="box-tab tab-pane">
 					<div class="text-center" style="margin:10px;">
 						<a id='jump-log-refresh' class="btn btn-primary btn-sm"><i class="fa fa-refresh"></i> Refresh Log</a>
@@ -95,7 +95,7 @@
 						<button class="btn btn-default btn-xs chainmap-dialog-cancel">Close</button>
 					</div>
 				</div>
-				<?php endif; ?>
+				@endif
 				<div role="tabpanel" id="connection-editor" class="tab-pane box-tab active">
 					<div id="connection-editor-add" class="connection-editor-group">
 						<div class='box-header'><i class="fa fa-link"></i> Create a connection</div>
@@ -117,7 +117,7 @@
 							<div class="form-group">
 								<label>Connection Type
 									<select name="connection-editor-type" class='siggy-input'>
-										<option value="wormhole"><?php echo __('Wormhole');?></option>
+										<option value="wormhole">{{__('Wormhole')}}</option>
 										<option value="stargate">Stargate</option>
 										<option value="jumpbridge">Jumpbridge</option>
 										<option value="cyno">Cyno</option>

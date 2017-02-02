@@ -161,6 +161,19 @@ class Kohana_Response implements HTTP_Response {
 		return $this;
 	}
 
+	public function json($object = NULL)
+	{
+		$this->_body = (string) json_encode($object);
+		$this->headers('Content-Type','application/json');
+		return $this;
+	}
+
+	public function noCache()
+	{
+		$this->headers('Cache-Control','no-cache, must-revalidate');
+		return $this;
+	}
+
 	/**
 	 * Gets or sets the HTTP protocol. The standard protocol to use
 	 * is `HTTP/1.1`.

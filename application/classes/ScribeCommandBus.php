@@ -7,6 +7,11 @@ class ScribeCommandBus {
 
 	public static function Connect(): void
 	{
+		if(self::$connected)
+		{
+			return;
+		}
+
 		$dsn = '';
 		if( Kohana::$environment == Kohana::PRODUCTION )
 		{
@@ -15,12 +20,6 @@ class ScribeCommandBus {
 		else
 		{
 			$dsn = Kohana::$config->load('scribe.development.connection_string');
-		}
-
-
-		if(self::$connected)
-		{
-			return;
 		}
 
 		self::$socket = new ZMQSocket(new ZMQContext(), ZMQ::SOCKET_PUSH, 'scribeCommandBus');
@@ -36,7 +35,7 @@ class ScribeCommandBus {
 		self::$connected = true;
 	}
 
-	public static function UnfreezeCharacter(int $characterId): void
+	public static function UnfreezeCharacter(string $characterOwnerHash): void
 	{
 		self::Connect();
 
@@ -48,7 +47,27 @@ class ScribeCommandBus {
 		$payload = [
 			'type' => 'unfreeze_character',
 			'parameters' => [
-				'character_id' => $characterId
+				'character_owner_hash' => $characterOwnerHash
+			]
+		];
+
+		/* Send and receive */
+		self::$socket->send(json_encode($payload));
+	}
+	
+	public static function UpdateSSOCharacter(string $characterOwnerHash): void
+	{
+		self::Connect();
+
+		if(!self::$connected)
+		{
+			return;
+		}
+
+		$payload = [
+			'type' => 'update_sso_character',
+			'parameters' => [
+				'character_owner_hash' => $characterOwnerHash
 			]
 		];
 

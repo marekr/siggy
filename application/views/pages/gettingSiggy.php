@@ -1,3 +1,6 @@
+@extends('layouts.public')
+
+@section('content')
 <div class="well">
 	<h2>Getting a siggy group</h2>
 	
@@ -22,3 +25,4 @@
 	</div>
 	<?php endif; ?>
 </div>
+@endsection
