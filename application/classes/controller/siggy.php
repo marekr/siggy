@@ -873,6 +873,8 @@ class Controller_Siggy extends FrontController {
 		$this->response->headers('Content-Type','application/json');
 		$this->response->headers('Cache-Control','no-cache, must-revalidate');
 
+		$this->validateCSRF();
+		
 		if( isset($_POST['systemID']) )
 		{
 			$id = intval($_POST['systemID']);
