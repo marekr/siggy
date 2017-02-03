@@ -659,7 +659,7 @@ class Controller_Chainmap extends FrontController {
 								'region_name' => $system->region_name );
 		}
 
-		$this->response->json_encode($output);
+		$this->response->json($output);
 	}
 
 	public function action_jump_log()
