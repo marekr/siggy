@@ -123,14 +123,6 @@ class Controller_Dscan extends FrontController {
 
 	public function action_view()
 	{
-		$this->template->title = "siggy: dscan";
-		$this->template->selectedTab = 'home';
-		$this->template->loggedIn = Auth::loggedIn();
-		$this->template->user = Auth::$user;
-		$this->template->layoutMode = 'blank';
-
-		$view = View::factory('dscan/view');
-
 		$id = $this->request->param('id');
 
 		$dscan = DB::selectOne("SELECT d.dscan_id, d.dscan_title, d.dscan_date,dscan_added_by,ss.name as system_name
@@ -145,7 +137,6 @@ class Controller_Dscan extends FrontController {
 		{
 			HTTP::redirect('/');
 		}
-		$this->template->title = "siggy: dscan " . $dscan->dscan_title;
 
 		$recs = DB::select("SELECT r.record_name, i.typeName,g.groupID, g.groupName, r.item_distance
 										FROM dscan_records r
@@ -188,11 +179,13 @@ class Controller_Dscan extends FrontController {
 		{
 			$group['record_count'] = count($group['records']);
 		}
-
-		$view->dscan = $dscan;
-		$view->all = $dscan_data;
-		$view->ongrid = $ongrid_data;
-		$this->template->content = $view;
+		
+		$resp = view('dscan.view', [
+												'dscan' => $dscan,
+												'all' => $dscan_data,
+												'ongrid' => $ongrid_data
+											]);
+		$this->response->body($resp);
 	}
 
 	public function action_remove()

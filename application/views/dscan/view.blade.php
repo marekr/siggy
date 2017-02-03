@@ -1,3 +1,9 @@
+@extends('layouts.legacy',[
+							'title' => 'siggy: dscan',
+							'selectedTab' => 'dscan'
+						])
+
+@section('content')
 <style type="text/css">
 	.dscan-col
 	{
@@ -72,3 +78,4 @@
 		});
 	} );
 </script>
+@endsection
