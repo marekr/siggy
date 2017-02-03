@@ -1,3 +1,7 @@
+@extends('layouts.siggy')
+
+@section('alt_content')
+
 <style type='text/css'>
 #message
 {
@@ -43,3 +47,4 @@
 		</div>
 	</div>
 </div>
+@endsection

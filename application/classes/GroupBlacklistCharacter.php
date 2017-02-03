@@ -37,6 +37,7 @@ class GroupBlacklistCharacter extends Model
 	{
 		return self::where('group_id', $groupId)
 			->get()
+			->keyBy('character_id')
 			->all();
 	}
 
