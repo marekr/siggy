@@ -71,31 +71,31 @@
 			</ul>
 		</div>
 	</div>
-	<?php if( $layoutMode == 'blank' ): ?>
-		<?php if(Message::count() > 0): ?>
+	@if( $layoutMode == 'blank' )
+		@if(Message::count() > 0)
 			<div class="row">
-				<?php echo Message::output(); ?>
+				{{Message::output()}}
 			</div>
-		<?php endif; ?>
+		@endif
 		@yield('content')
-	<?php elseif( $layoutMode == 'leftMenu' ): ?>
+	@elseif( $layoutMode == 'leftMenu' )
 
 		<div class="container">
 			<div class="row">
 				<div class="sidenav col-lg-3">
-				<?php echo $leftMenu; ?>
+					@yield('left_menu')
 				</div>
 				<div class=" col-lg-9">
-					<?php if(Message::count() > 0): ?>
+					@if(Message::count() > 0)
 						<div class="row">
 							<?php echo Message::output(); ?>
 						</div>
-					<?php endif; ?>
+					@endif
 					@yield('content')
 				</div>
 			</div>
 		</div>
-		<?php endif; ?>
+	@endif
 		
 	<hr class="featurette-divider">
 	<div class="container">
@@ -103,7 +103,7 @@
 			<!-- FOOTER -->
 			<footer>
 				<p class="pull-right"><a href="#">Back to top</a></p>
-				<p>&copy; 2011-<?php echo date("Y"); ?> borkedLabs.<br />
+				<p>&copy; 2011-{{date("Y")}} borkedLabs.<br />
 					All artwork, screenshots, characters, vehicles, storylines, world facts or other recognizable features of the intellectual property relating to these trademarks are likewise the intellectual property of CCP hf. "EVE", "EVE Online", "CCP", and all related logos and images are trademarks or registered trademarks of CCP hf.
 				</p>
 			</footer>

@@ -1,3 +1,7 @@
+
+@extends('layouts.public',['layoutMode' => 'blank', 'title' => 'siggy: complete sso', 'selectedTab'=>'login'])
+
+@section('content')
 <style type='text/css'>
   .login-or {
     position: relative;
@@ -93,3 +97,4 @@
 		</div>
 	</div>
 </div>
+@endsection

@@ -1,3 +1,6 @@
+@extends('layouts.public',['layoutMode' => 'leftMenu', 'title' => 'siggy: connected accounts', 'selectedTab'=>'account'])
+
+@section('content')
 	<h3>
 		Connected Characters
 	</h3>
@@ -52,3 +55,8 @@
 		</tr>
 		<?php endforeach; ?>
 	</table>
+@endsection
+
+@section('left_menu')
+@include('account.menu')
+@endsection

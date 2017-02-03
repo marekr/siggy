@@ -7,9 +7,6 @@ use OAuth\Common\Consumer\Credentials;
 use Carbon\Carbon;
 
 class Controller_Account extends FrontController {
-	private $auth;
-	private $user;
-	public $template = 'template/public_bootstrap32';
 	protected $noAutoAuthRedirects = true;
 
 	function __construct(Kohana_Request $request, Kohana_Response $response)
@@ -42,30 +39,6 @@ class Controller_Account extends FrontController {
 
 	public function after()
 	{
-		switch( $this->request->action() )
-		{
-			case 'login':
-			case 'forgotPassword':
-			case 'sso_complete':
-			case 'completePasswordReset':
-				$this->template->selectedTab = 'login';
-				$this->template->layoutMode = 'blank';
-				break;
-			case 'register':
-				$this->template->selectedTab = 'register';
-				$this->template->layoutMode = 'blank';
-				break;
-			default:
-				$this->template->layoutMode = 'leftMenu';
-				$this->template->selectedTab = 'account';
-				$view = View::factory('account/menu');
-				$this->template->leftMenu = $view;
-				break;
-		}
-
-		$this->template->loggedIn = Auth::loggedIn();
-		$this->template->user = Auth::$user;
-
 		parent::after();
 	}
 
@@ -76,8 +49,11 @@ class Controller_Account extends FrontController {
 
 	public function action_sso_complete()
 	{
-		$this->template->title = "Complete SSO Login";
-		$this->template->content =  View::Factory('account/sso_complete')->set('invalidLogin', false);
+		$resp = view('account.sso_complete', [ 
+										 'invalidLogin' => false
+										]);
+		$this->response->body($resp)
+						->noCache();
 	}
 
 	public function action_sso()
@@ -245,18 +221,13 @@ class Controller_Account extends FrontController {
 
 	public function action_overview()
 	{
-		$this->template->title = "Account overview";
-
-		$view = View::factory('account/overview');
-		$view->user = Auth::$user;
-
-		$this->template->content = $view;
+		$resp = view('account.overview', [ 'user' =>  Auth::$user ]);
+		$this->response->body($resp)
+						->noCache();
 	}
 
 	public function action_register()
 	{
-		$this->template->title = __('Register a new account');
-
 		if( Auth::loggedIn() )
 		{
 			HTTP::redirect('/account');
@@ -328,7 +299,11 @@ class Controller_Account extends FrontController {
 			}
 		}
 
-		$this->template->content =  View::Factory('account/register')->bind('errors', $errors);
+		$resp = view('account.register', [ 
+										'errors' => $errors
+										]);
+		$this->response->body($resp)
+						->noCache();
 	}
 
 	public function action_changePassword()
@@ -338,9 +313,6 @@ class Controller_Account extends FrontController {
 			HTTP::redirect('/');
 			return;
 		}
-
-		$this->template->title = __('siggy: change password');
-		$view = View::factory('account/changePassword');
 
 		$errors = array();
 		if ($this->request->method() == "POST")
@@ -369,9 +341,12 @@ class Controller_Account extends FrontController {
 				HTTP::redirect('/');
 			}
 		}
-
-		$view->bind('errors',$errors);
-		$this->template->content = $view;
+		
+		$resp = view('account.password_change', [
+													'errors' => $errors
+												]);
+		$this->response->body($resp)
+						->noCache();
 	}
 
 	public function action_forgotPassword()
@@ -381,8 +356,6 @@ class Controller_Account extends FrontController {
 			HTTP::redirect('/');
 			return;
 		}
-
-		$this->template->title = __('siggy: forgot password');
 
 		$errors = array();
 		if ($this->request->method() == "POST")
@@ -437,14 +410,20 @@ class Controller_Account extends FrontController {
 					}
 				}
 
-				$view = $this->template->content = View::factory('messages/forgotPasswordSent');
-				$view->email = $_POST['reset_email'];
+				$resp = view('account.forgot_password_sent', [ 
+												'email' => $_POST['reset_email']
+												]);
+				$this->response->body($resp)
+								->noCache();
 				return;
 			}
 		}
-
-		$this->template->content = $view = View::factory('account/forgotPassword');
-		$view->errors = $errors;
+		
+		$resp = view('account.forgot_password', [ 
+										 'errors' => $errors
+										]);
+		$this->response->body($resp)
+						->noCache();
 	}
 
 	public function action_completePasswordReset()
@@ -454,11 +433,10 @@ class Controller_Account extends FrontController {
 			HTTP::redirect('/');
 			return;
 		}
-		$this->template->title = __('siggy: complete password reset');
 
+		$errors = [];
 		if( isset( $_REQUEST['reset_token'] ) )
 		{
-			$errors = array();
 
 			if( empty( $_REQUEST['reset_email'] ) )
 			{
@@ -470,23 +448,11 @@ class Controller_Account extends FrontController {
 				$errors['reset_token'] = 'You must enter a valid reset token.';
 			}
 
-
-			if( count( $errors ) )
-			{
-				$view = $this->template->content = View::factory('account/completePasswordReset');
-				$view->errors = $errors;
-			}
-			else
+			if( !count( $errors ) )
 			{
 				$user = User::findByEmail($_REQUEST['reset_email']);
 
-				if( $user->reset_token != $_REQUEST['reset_token'] )
-				{
-					$errors['reset_token'] = 'The reset token you have entered is invalid';
-					$view = $this->template->content = View::factory('account/completePasswordReset');
-					$view->errors = $errors;
-				}
-				else if ( isset($user->id) && ($user->reset_token == $_REQUEST['reset_token']) )
+				if ( isset($user->id) && ($user->reset_token == $_REQUEST['reset_token']) )
 				{
 					$password = Auth::generatePassword();
 					$user->reset_token = '';
@@ -521,18 +487,20 @@ class Controller_Account extends FrontController {
 					catch(Exception $e)
 					{
 					}
-					$view = $this->template->content = View::factory('messages/passwordResetCompleteMessage');
-				}
-				else
-				{
-					die("something stupid has occured");
+					
+					$resp = view('account.password_reset_completed', [ ]);
+					$this->response->body($resp)
+									->noCache();
+					return;
 				}
 			}
 		}
-		else
-		{
-			$view = $this->template->content = View::factory('account/completePasswordReset');
-		}
+		
+		$resp = view('account.complete_password_reset_form', [ 
+										'errors' => $errors
+										]);
+		$this->response->body($resp)
+						->noCache();
 	}
 
 	public function action_characters()
@@ -550,8 +518,6 @@ class Controller_Account extends FrontController {
 		{
 			HTTP::redirect('/account/connected');
 		}
-
-		$this->template->title = __('siggy: characters');
 
 		$chars = [];
 		$selectableChars = [];
@@ -594,11 +560,14 @@ class Controller_Account extends FrontController {
 			}
 		}
 
-		$view = View::factory('account/characters');
-		$view->selectableChars = $selectableChars;
-		$view->unselectableChars = $unselectableChars;
-		$view->selectedCharID = $charID;
-		$this->template->content = $view;
+		
+		$resp = view('account.characters', [
+													'selectableChars' => $selectableChars,
+													'unselectableChars' => $unselectableChars,
+													'selectedCharID' => $charID
+												]);
+		$this->response->body($resp)
+						->noCache();
 	}
 
 	public function action_connected()
@@ -621,13 +590,13 @@ class Controller_Account extends FrontController {
 				$charData[ $char->id ] = $char;
 			}
 		}
-
-		$this->template->title = __('siggy: connected accounts');
-
-		$view = View::factory('account/connected');
-		$view->characters = $ssoChars;
-		$view->character_data = $charData;
-		$this->template->content = $view;
+		
+		$resp = view('account.connected', [
+													'characters' => $ssoChars,
+													'character_data' => $charData
+												]);
+		$this->response->body($resp)
+						->noCache();
 	}
 
 	public function action_disconnect()
@@ -654,9 +623,6 @@ class Controller_Account extends FrontController {
 
 	public function action_login()
 	{
-		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-		$this->template->title = __('siggy: login required');
-
 		if( Auth::loggedIn() )
 		{
 			HTTP::redirect('/');
@@ -690,20 +656,22 @@ class Controller_Account extends FrontController {
 			}
 			else
 			{
-				$view = View::factory('account/login');
-				$view->invalidLogin = true;
-				$view->bounce = isset($_REQUEST['bounce']) ? $_REQUEST['bounce'] : '';
-				$view->set('username', $_POST['username']);
-				$this->template->content = $view;
+				$invalidLogin = true;
 			}
 		}
 		else
 		{
-			$view = View::factory('account/login');
-			$view->invalidLogin = false;
-			$view->bounce = isset($_REQUEST['bounce']) ? $_REQUEST['bounce'] : '';
-			$this->template->content =$view;
+			$invalidLogin = false;
 		}
+
+		
+		$resp = view('account.login', [ 
+										'bounce' => isset($_REQUEST['bounce']) ? $_REQUEST['bounce'] : '',
+										 'username' => isset($_POST['username']) ? $_POST['username'] : '',
+										 'invalidLogin' => $invalidLogin
+										]);
+		$this->response->body($resp)
+						->noCache();
 	}
 
 

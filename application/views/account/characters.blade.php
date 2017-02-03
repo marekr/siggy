@@ -1,4 +1,6 @@
+@extends('layouts.public',['layoutMode' => 'leftMenu', 'title' => 'siggy: characters', 'selectedTab'=>'account'])
 
+@section('content')
 <h3>Character Select</h3>
 	<?php if(count($selectableChars) < 1 && count($unselectableChars) < 1 ): ?>
 	<div class="well">
@@ -61,3 +63,8 @@
 		create a group if you do not have one. <a href="http://wiki.siggy.borkedlabs.com/getting-siggy">http://wiki.siggy.borkedlabs.com/getting-siggy</a>
 	</div>
 	<?php endif; ?>
+@endsection
+
+@section('left_menu')
+@include('account.menu')
+@endsection
