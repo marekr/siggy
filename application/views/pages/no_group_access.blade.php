@@ -1,3 +1,10 @@
+@extends('layouts.public',[
+							'title' => 'siggy: no group access',
+							'selectedTab' => 'about',
+							'layoutMode' => 'blank'
+						])
+
+@section('content')
 
 <div class="container">
 	<div class="row">
@@ -15,3 +22,4 @@
 		</p>
 	</div>
 </div>
+@endsection

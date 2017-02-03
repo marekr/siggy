@@ -1,3 +1,10 @@
+@extends('layouts.public',[
+							'title' => 'siggy: create group',
+							'selectedTab' => 'createGroup',
+							'layoutMode' => 'blank'
+						])
+
+@section('content')
 <div class="container">
 	<div class="well">
 		<h2>Siggy Group Creation</h2>
@@ -9,3 +16,4 @@
 		</div>
 	</div>
 </div>
+@endsection

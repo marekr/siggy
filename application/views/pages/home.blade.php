@@ -1,4 +1,8 @@
-@extends('layouts.public')
+@extends('layouts.public',[
+							'title' => 'siggy: home',
+							'selectedTab' => 'home',
+							'layoutMode' => 'blank'
+						])
 
 @section('content')
 <div class="jumbotron">

@@ -26,49 +26,30 @@ class Controller_Pages extends FrontController {
 			}
 		}
 		
-		if( $page == 'create-group' )
+		if( $page == 'create-group' || $page == 'createGroup' )
 		{
 			if(!Auth::loggedIn())
 			{
 				HTTP::redirect('/account/login');
 			}
 			
-			$resp = view('pages.createGroupIntro', [
-													'title' => 'siggy: getting siggy',
-													'selectedTab' => 'createGroup',
-													'layoutMode' => 'blank'
-												]);
+			$resp = view('pages.create_group_intro', []);
 		}
 		else if( $page == 'costs' )
 		{
-			$resp = view('pages.costs', [
-													'title' => 'siggy: costs',
-													'selectedTab' => 'costs',
-													'layoutMode' => 'blank'
-												]);
+			$resp = view('pages.costs', []);
 		}
 		else if( $page == 'about' )
 		{
-			$resp = view('pages.about', [
-													'title' => 'siggy: about',
-													'selectedTab' => 'about',
-													'layoutMode' => 'blank'
-												]);
+			$resp = view('pages.about', []);
 		}
 		else if( $page == 'no-group-access')
 		{
-			$this->template->title = "No group access";
-			$this->template->selectedTab = 'home';
-
-			$this->template->content = $view = View::factory('pages/no_group_access');
+			$resp = view('pages.no_group_access',[]);
 		}
 		else
 		{
-			$resp = view('pages.home', [
-													'title' => 'siggy: home',
-													'selectedTab' => 'home',
-													'layoutMode' => 'blank'
-												]);
+			$resp = view('pages.home', []);
 		}
 
 
@@ -90,7 +71,7 @@ class Controller_Pages extends FrontController {
 
 		if( $id == 0 || $id == 1 )
 		{
-			$resp = view('create_group_intro.blade', [
+			$resp = view('create_group_intro', [
 													'title' => 'siggy: create group',
 													'selectedTab' => 'createGroup',
 													'layoutMode' => 'blank'
@@ -137,7 +118,7 @@ class Controller_Pages extends FrontController {
 
 							Auth::$session->reloadUserSession();
 
-							HTTP::redirect('pages/create-group/3');
+							HTTP::redirect('pages/createGroup/3');
 						}
 						else
 						{
@@ -150,7 +131,7 @@ class Controller_Pages extends FrontController {
 				}
 			}
 			
-			$resp = view('create_group_form.blade', [
+			$resp = view('pages.create_group_form', [
 													'title' => 'siggy: create group',
 													'selectedTab' => 'createGroup',
 													'layoutMode' => 'blank',
@@ -159,7 +140,7 @@ class Controller_Pages extends FrontController {
 		}
 		else if ( $id == 3 )
 		{
-			$resp = view('create_group_complete.blade', [
+			$resp = view('pages.create_group_complete', [
 													'title' => 'siggy: create group',
 													'selectedTab' => 'createGroup',
 													'layoutMode' => 'blank'

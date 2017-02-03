@@ -1,4 +1,8 @@
-@extends('layouts.public')
+@extends('layouts.public',[
+							'title' => 'siggy: costs',
+							'selectedTab' => 'costs',
+							'layoutMode' => 'blank'
+						])
 
 @section('content')
 <div class="container">

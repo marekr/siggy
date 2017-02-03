@@ -3,7 +3,6 @@
 use \cebe\markdown\Markdown;
 
 class Controller_Changelog extends FrontController {
-	public $template = 'template/public_bootstrap32';
 	protected $noAutoAuthRedirects = true;
 
 	function __construct(Kohana_Request $request, Kohana_Response $response)

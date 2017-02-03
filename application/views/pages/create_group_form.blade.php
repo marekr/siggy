@@ -1,3 +1,10 @@
+@extends('layouts.public',[
+							'title' => 'siggy: create group',
+							'selectedTab' => 'createGroup',
+							'layoutMode' => 'blank'
+						])
+
+@section('content')
 <div class="container">
 	<div class="row">
 		<div class="well">
@@ -12,7 +19,7 @@
 				</ul>
 			</div>
 			@endif
-			<form method="POST" action="{{URL::base(TRUE, TRUE)}}pages/create-group/2">
+			<form method="POST" action="{{URL::base(TRUE, TRUE)}}pages/createGroup/2">
 				<fieldset>
 					<legend>General Info</legend>
 					<?php echo formRenderer::input('Group Name', 'groupName', '', '', $errors); ?>
@@ -33,4 +40,4 @@
 		</div>
 	</div>
 </div>
-
+@endsection

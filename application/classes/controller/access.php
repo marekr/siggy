@@ -14,11 +14,7 @@ class Controller_Access extends FrontController {
 			HTTP::redirect('/');
 		}
 
-		$view = View::factory('access/groupPassword');
-		$view->groupData = Auth::$session->accessData;
-		$view->trusted = $this->trusted;
-		$view->wrongPass = false;
-		$this->template->siggyMode = false;
+		$wrongPass = false;
 
 		$groupID = Auth::$session->group->id;
 
@@ -34,13 +30,19 @@ class Controller_Access extends FrontController {
 				}
 				else
 				{
-					$view->wrongPass = true;
+					$wrongPass = true;
 				}
 			}
 		}
-
-		$this->template->content = '';
-		$this->template->alt_content = $view;
+		
+		$resp = view('access.group_password', [
+												'group' => Auth::$session->group,
+												'themes' => Theme::allByGroup(Auth::$session->group->id),
+												'settings' => $this->loadSettings(),
+												'wrongPass' => $wrongPass
+											]);
+		$this->response->body($resp)
+						->noCache();
 	}
 
 	public function action_blacklisted()
@@ -51,20 +53,26 @@ class Controller_Access extends FrontController {
 			HTTP::redirect('/');
 		}
 
-		$view = View::factory('access/blacklisted');
-
-		$view->groupName = Auth::$session->group->name;
-
+		$reason = '';
 		foreach(Auth::$session->group->blacklistCharacters() as $char)
 		{
 			if($char->character_id == Auth::$session->character_id )
 			{
-				$view->reason = $char->reason;
+				$reason = $char->reason;
 				break;
 			}
 		}
+
 		
-		$this->template->content = $view;
+		$resp = view('access.blacklisted', [
+												'group' => Auth::$session->group,
+												'themes' => Theme::allByGroup(Auth::$session->group->id),
+												'settings' => $this->loadSettings(),
+												'reason' => $reason,
+												'groupName' => Auth::$session->group->name
+											]);
+		$this->response->body($resp)
+						->noCache();
 	}
 	
 	public function action_groups()
@@ -84,10 +92,14 @@ class Controller_Access extends FrontController {
 				HTTP::redirect('/');
 			}
 		}
-
-		$view = View::factory('access/groups');
-		$view->groups = $groups;
-		$this->template->content = $view;
+		
+		$resp = view('access.groups', [
+												'group' => Auth::$session->group,
+												'settings' => $this->loadSettings(),
+												'groups' => $groups
+											]);
+		$this->response->body($resp)
+						->noCache();
 	}
 
 	public function before()

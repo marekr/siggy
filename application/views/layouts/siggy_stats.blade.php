@@ -16,6 +16,11 @@
 
 		@include('layouts._javascript')
 		<meta name="csrf-token" content="{{ Auth::$session->csrf_token }}">
+		<style text='text/css'>
+			table {
+				background-color: rgb(29, 21, 21);
+			}
+		</style>
 	</head>
 	<body>
 		<div class="navbar navbar-default navbar-fixed-top">
@@ -37,6 +42,9 @@
 				</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<a href="<?php echo URL::base(TRUE,TRUE); ?>">Back to scanning!</a>
+				</li>
 				@if( count(Auth::$session->accessibleGroups()) > 1 )
 				<li class="dropdown">
 					<a data-toggle="dropdown" href="#">
