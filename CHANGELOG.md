@@ -1,8 +1,12 @@
 # siggy Changelog
 
-## 2.32.6 - 2017-01-30
+## 2.33.0 - 2017-01-30
 ### Changes
-- Ship types can now be reported again if ESI scopes are present on the associated characters
+- Backend change to how pages and responses are generated, some cpu load reduction on long term sessions as a result
+- Added some padding to context menus to make them a little less cramped
+
+### Fixes
+- Fixed case where blacklisting a character may not have taken effect
 
 ## 2.32.5 - 2017-01-30
 ### Fixes
