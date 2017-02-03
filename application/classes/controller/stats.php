@@ -52,7 +52,8 @@ class Controller_Stats extends FrontController {
 		$paginationHTML = $pagination->render(true);
 		$offset = $pagination->next_page_offset();
 
-		$results = DB::select("SELECT charID, charName, ({$wormhole}*sum(wormholes) + {$sig_add}*sum(adds) + {$sig_update}*sum(updates) + {$pos_add}*sum(pos_adds)+{$pos_update}*sum(pos_updates)) as score,
+		$results = DB::select("SELECT charID, charName, ({$wormhole}*sum(wormholes) + {$sig_add}*sum(adds) + 
+											{$sig_update}*sum(updates) + {$pos_add}*sum(pos_adds)+{$pos_update}*sum(pos_updates)) as score,
 											sum(wormholes) as wormholes,
 											sum(adds) as adds,
 											sum(updates) as updates,
@@ -70,7 +71,7 @@ class Controller_Stats extends FrontController {
 												'end' => $dateRange['end']
 											]);
 
-		$view =  view('stats.leaderboard', [
+		$resp =  view('stats.leaderboard', [
 											'wormhole' => (double)Auth::$session->group->stats_wh_map_points,
 											'sig_add' => (double)Auth::$session->group->stats_sig_add_points,
 											'sig_update' => (double)Auth::$session->group->stats_sig_update_points,
@@ -78,21 +79,18 @@ class Controller_Stats extends FrontController {
 											'pos_update' => (double)Auth::$session->group->stats_pos_update_points,
 											'results' => $results,
 											'rank_offset' => $offset,
-											'pagination' => $paginationHTML
+											'pagination' => $paginationHTML,
+											'title' => 'siggy: leaderboard',
+											'selectedTab' => 'stats',
+											'layoutMode' => 'blank',
+											'previous_date' => $datep->getPreviousDate(),
+											'current_date' => $datep->getCurrentDate(),
+											'next_date' => $datep->getNextDate(),
+											'stats_mode' => $datep->mode,
+											'sub_page' => 'leaderboard',
+											'settings' => $this->loadSettings(),
+											'group' => Auth::$session->group,
 										]);
-
-		
-		$resp = view('stats.wrapper', [
-												'title' => 'siggy: leaderboard',
-												'selectedTab' => 'stats',
-												'layoutMode' => 'blank',
-												'previous_date' => $datep->getPreviousDate(),
-												'current_date' => $datep->getCurrentDate(),
-												'next_date' => $datep->getNextDate(),
-												'stats_mode' => $datep->mode,
-												'sub_page' => 'leaderboard',
-												'content' => $view
-											]);
 		$this->response->body($resp);
 	}
 
@@ -171,7 +169,7 @@ class Controller_Stats extends FrontController {
 												'end' => $dateRange['end']
 											]);
 
-		$view =  view('stats.specific_stat', [
+		$resp =  view('stats.specific_stat', [
 											'wormhole' => (double)Auth::$session->group->stats_wh_map_points,
 											'sig_add' => (double)Auth::$session->group->stats_sig_add_points,
 											'sig_update' => (double)Auth::$session->group->stats_sig_update_points,
@@ -179,12 +177,9 @@ class Controller_Stats extends FrontController {
 											'pos_update' => (double)Auth::$session->group->stats_pos_update_points,
 											'results' => $results,
 											'rank_offset' => $offset,
-											'pagination' => $paginationHTML
-										]);
+											'pagination' => $paginationHTML,
 
-		
-		$resp = view('stats.wrapper', [
-												'title' => 'siggy: leaderboard',
+											'title' => 'siggy: leaderboard',
 												'selectedTab' => 'stats',
 												'layoutMode' => 'blank',
 												'previous_date' => $datep->getPreviousDate(),
@@ -192,8 +187,9 @@ class Controller_Stats extends FrontController {
 												'next_date' => $datep->getNextDate(),
 												'stats_mode' => $datep->mode,
 												'sub_page' => $key,
-												'content' => $view
-											]);
+												'settings' => $this->loadSettings(),
+												'group' => Auth::$session->group,
+										]);
 		$this->response->body($resp);
 	}
 
@@ -247,13 +243,10 @@ class Controller_Stats extends FrontController {
 											'title' => "Wormholes mapped"
 										]);
 
-		$view = view('stats.stats', [
-												'addsHTML' => $addsHTML,
-												'editsHTML' => $editsHTML,
-												'whsHTML' => $whsHTML
-											]);
-
-		$resp = view('stats.wrapper', [
+		$resp = view('stats.stats', [
+												'top10Adds' => $top10Adds,
+												'top10Edits' => $top10Edits,
+												'top10WHs' => $top10WHs,
 												'title' => 'siggy:stats',
 												'selectedTab' => 'stats',
 												'layoutMode' => 'blank',
@@ -262,7 +255,8 @@ class Controller_Stats extends FrontController {
 												'next_date' => $datep->getNextDate(),
 												'stats_mode' => $datep->mode,
 												'sub_page' => 'overview',
-												'content' => $view
+												'settings' => $this->loadSettings(),
+												'group' => Auth::$session->group,
 											]);
 		$this->response->body($resp);
 	}

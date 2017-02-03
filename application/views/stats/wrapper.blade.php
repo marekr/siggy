@@ -1,9 +1,8 @@
-@extends('layouts.public')
+@extends('layouts.siggy_stats')
 
 @section('content')
 <div class="container">
 	<div class="row">
-		<h2>siggy stats</h2>
 		<div class="btn-toolbar" role="toolbar">
 			<div class="btn-group">
 				<a class="btn btn-default<?php echo ( $stats_mode == DatePager::MODEWEEKLY ? ' active' : '') ?>" href="<?php echo URL::base(TRUE, TRUE);?>stats/<?php echo $sub_page; ?>/year/<?php echo date("Y");?>/week/<?php echo date("W");?>">Weekly</a>
@@ -41,6 +40,6 @@
 		</div>
 	</div>
 </div>
-@yield('content')
+@yield('stats_content')
 @endsection
 

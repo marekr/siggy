@@ -12,58 +12,7 @@
 		<link href="{{ URL::base(TRUE, TRUE) }}font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet">
 		<link rel="icon" href="{{ URL::base(TRUE, TRUE) }}favicon.ico">
 
-		@if( Kohana::$environment == Kohana::DEVELOPMENT )
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/handlebars-v2.0.0.js'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/handlebars.form-helpers.js'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/handlebars.helpers.js'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/translate.js'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery-1.11.2.js'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery-ui.1.11.4.min.js'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.tablesorter.js'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.blockUI.js'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.color.js'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.flot.js'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.ui.position.js'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.contextMenu.js'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.qtip.js'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.jsPlumb-1.6.4.js'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.placeholder.js'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.hotkeys.js'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.simplePagination.js'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.idle.js'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/dropdown.js'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/tab.js'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/misc.js'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/typeahead.bundle.js'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.helpers.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.static.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.timer.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.eve.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.socket.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.sigtable.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.intel.poses.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.intel.dscan.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.globalnotes.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.charactersettings.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.hotkeyhelper.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.dialog.sigcreatewormhole.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.map.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.map.connection.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.notifications.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.activity.thera.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.activity.search.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.activity.homestead.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.activity.siggy.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.activity.scannedsystems.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.activity.notifications.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.activity.astrolabe.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.activity.chainmap.js?{{ time() }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/vendor/moment.js?{{ time() }}'></script>
-		@else
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/thirdparty.compiled.js?{{ SIGGY_VERSION }}'></script>
-		<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.compiled.js?{{ SIGGY_VERSION }}'></script>
-		@endif
+		@include('layouts._javascript')
 		<meta name="csrf-token" content="{{ Auth::$session->csrf_token }}">
 	</head>
 	<body>
@@ -185,9 +134,7 @@
 		@include('siggy.activities.notifications')
 		@include('siggy.activities.astrolabe')
 		@include('siggy.activities.chainmap')
-		<div id="activity-siggy" class="wrapper" style="display:none">
-			@yield('content')
-		</div>
+		@yield('content')
 
 		@yield('alt_content')
 

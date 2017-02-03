@@ -47,7 +47,7 @@ class Controller_Sig extends FrontController {
 			$this->chainmap->update_system($insert['systemID'], array('lastUpdate' => time(),
 																'lastActive' => time() )
 										);
-
+										
 			Auth::$session->group->incrementStat('adds', Auth::$session->accessData);
 
 			$this->notifierCheck($sig);

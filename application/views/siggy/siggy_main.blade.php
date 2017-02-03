@@ -1,6 +1,7 @@
 @extends('layouts.siggy')
 
 @section('content')
+<div id="activity-siggy" class="wrapper" style="display:none">
 	@if( $group->isk_balance < 0 )
 	<div class="box" style="background-color:rgb(179, 52, 52)">
 		<div class='box-header'>Balance warning</div>
@@ -427,4 +428,5 @@
 			siggy.initialize();
 		} );
 	</script>
+</div>
 @endsection

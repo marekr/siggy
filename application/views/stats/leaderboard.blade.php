@@ -1,3 +1,6 @@
+@extends('stats.wrapper')
+
+@section('stats_content')
 <div class="container">
 	<div class="row">
 		<?php echo $pagination; ?>
@@ -19,12 +22,12 @@
 					<b><a href='javascript:CCPEVE.showInfo(1377, <?php echo $result->charID; ?>)'><?php echo $result->charName; ?></a></b><br />
 					<img src='http://image.eveonline.com/Character/<?php echo $result->charID;?>_32.jpg' />
 				</td>
-				<td><?php echo $result->adds; ?></td>
-				<td><?php echo $result->updates; ?></td>
-				<td><?php echo $result->wormholes; ?></td>
-				<td><?php echo $result->pos_adds; ?></td>
-				<td><?php echo $result->pos_updates; ?></td>
-				<td><?php echo $result->score; ?></td>
+				<td>{{$result->adds}}</td>
+				<td>{{$result->updates}}</td>
+				<td>{{$result->wormholes}}</td>
+				<td>{{$result->pos_adds}}</td>
+				<td>{{$result->pos_updates}}</td>
+				<td>{{$result->score}}</td>
 			</tr>
 			<?php endforeach; ?>
 		</table>
@@ -63,3 +66,4 @@
 		</table>
 	</div>
 </div>
+@endsection

@@ -212,6 +212,8 @@ class Group extends Model {
 								'chainmap' => $acccessData['active_chain_map'] ,
 								'dayStamp' => miscUtils::getDayStamp()
 							]);
+										print 'hi';
+										die();
 	}
 
 
