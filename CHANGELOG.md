@@ -2,6 +2,10 @@
 
 ## 2.33.0 - 2017-01-30
 ### Changes
+- Reimplemented cron jobs in a more stable/sane structure
+
+## 2.33.0 - 2017-01-30
+### Changes
 - Backend change to how pages and responses are generated, some cpu load reduction on long term sessions as a result
 - Added some padding to context menus to make them a little less cramped
 
