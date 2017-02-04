@@ -30,17 +30,17 @@ class Kernel extends ConsoleKernel
 	protected function schedule(Schedule $schedule)
 	{
 		$schedule->command('sessions:clear')
-		          ->hourly();
+		          ->hourlyAt(00);
 		$schedule->command('notifications:clear')
 		          ->daily();
 		$schedule->command('billing:payments')
-		          ->hourly();
+		          ->hourlyAt(05);
 		$schedule->command('billing:charges')
-		          ->dailyAt('00:00');
-		$schedule->command('eve:systemstats')
-		          ->hourly();
-		$schedule->command('signatures:clear')
 		          ->daily();
+		$schedule->command('eve:systemstats')
+		          ->hourlyAt(01);
+		$schedule->command('signatures:clear')
+		          ->dailyAt('01:00');
 	}
 
 	/**
