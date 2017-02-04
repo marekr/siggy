@@ -16,9 +16,22 @@
 		"loduis/artisan": "~5.4"
     },
 	"autoload": {
+		"classmap": ["application/classes"],
 		"psr-4": {
-			"siggy\\": "application/classes",
+            "Siggy\\": "siggy/",
 			"ESI\\": "esi/esi-lib/ESI/lib"
 		}
-	}
+	},
+    "extra": {
+        "laravel": {
+            "applications": {
+                "siggy": {
+                    "description": "This is the main application",
+                    "paths" : {
+                        "commands": "Console/Commands"
+                    }
+                }
+            }
+        }
+    }
 }

@@ -1,0 +1,74 @@
+#!/usr/bin/env php
+<?php
+
+define('LARAVEL_START', microtime(true));
+
+/*
+|--------------------------------------------------------------------------
+| Register The Composer Auto Loader
+|--------------------------------------------------------------------------
+|
+| Composer provides a convenient, automatically generated class loader
+| for our application. We just need to utilize it! We'll require it
+| into the script here so that we do not have to worry about the
+| loading of any our classes "manually". Feels great to relax.
+|
+*/
+
+require_once __DIR__.'/application/vendor/autoload.php';
+
+/*
+	Database Setup
+	Horrible spot but yea
+ */
+use Illuminate\Database\Capsule\Manager as DB;
+$dotenv = new Dotenv\Dotenv(__DIR__);
+$dotenv->load();
+
+$db = new DB;
+
+$connConfig = [
+	'driver' => 'mysql',
+	'host' => getenv('DB_HOST'),
+	'database' => getenv('DB_DATABASE'),
+	'username' => getenv('DB_USERNAME'),
+	'password' => getenv('DB_PASSWORD'),
+	'charset' => 'utf8',
+	'collation' => 'utf8_unicode_ci'
+];
+
+if( getenv('DB_PERSISTANT') )
+{
+	$connConfig['options']   = [
+			PDO::ATTR_PERSISTENT => true,
+	];
+}
+
+$db->addConnection($connConfig);
+
+use Illuminate\Events\Dispatcher;
+use Illuminate\Container\Container;
+$db->setEventDispatcher(new Dispatcher(new Container));
+$db->bootEloquent();
+$db->setAsGlobal();
+
+/*
+|--------------------------------------------------------------------------
+| Get the current basePath
+|--------------------------------------------------------------------------
+*/
+
+$basePath = getcwd();
+
+/*
+|--------------------------------------------------------------------------
+| Run The Artisan Application
+|--------------------------------------------------------------------------
+|
+| When we run the console application, the current CLI command will be
+| executed in this console and the response sent back to a terminal
+| or another output device for the developers. Here goes nothing!
+|
+*/
+
+exit(Illuminate\Foundation\Console::run($basePath));
