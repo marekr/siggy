@@ -9,6 +9,6 @@ class ESIHelper {
 	{
 		$config = ESI\Configuration::getDefaultConfiguration();
 		$config->setCurlTimeout(10);	//10 second timeout should be reasonable
-		$config->setUserAgent('siggy '.SIGGY_VERSION.' mark.roszko@gmail.com');
+		$config->setUserAgent('siggy mark.roszko@gmail.com');
 	}
 }

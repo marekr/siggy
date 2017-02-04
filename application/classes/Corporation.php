@@ -9,6 +9,8 @@ class Corporation extends Model {
 	public $timestamps = true;
 	public $incrementing = false;
 
+	public const  SYNC_INTERVAL_MINUTES = 90;
+
 	protected $fillable = [
 		'id',
 		'name',
@@ -57,7 +59,7 @@ class Corporation extends Model {
 		if($corp != null)
 		{
 			if( $corp->last_sync_attempt_at == null ||
-				$corp->last_sync_attempt_at->addMinutes(90) < Carbon::now() )
+				$corp->last_sync_attempt_at->addMinutes(self::SYNC_INTERVAL_MINUTES) < Carbon::now() )
 			{
 				$corp->syncWithApi();
 			}

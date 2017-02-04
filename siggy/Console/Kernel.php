@@ -18,7 +18,8 @@ class Kernel extends ConsoleKernel
 		\Siggy\Console\Commands\BillingChargeCommand::class,
 		\Siggy\Console\Commands\SessionsClearCommand::class,
 		\Siggy\Console\Commands\BillingPaymentsCommand::class,
-		\Siggy\Console\Commands\NotificationsClearCommand::class
+		\Siggy\Console\Commands\NotificationsClearCommand::class,
+		\Siggy\Console\Commands\CorporationsUpdateCommand::class
 	];
 
 	/**
@@ -41,6 +42,8 @@ class Kernel extends ConsoleKernel
 		          ->hourlyAt(01);
 		$schedule->command('signatures:clear')
 		          ->dailyAt('01:00');
+		$schedule->command('corps:update')
+		          ->hourlyAt(05);
 	}
 
 	/**

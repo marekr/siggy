@@ -11,38 +11,6 @@ use Illuminate\Database\Capsule\Manager as DB;
 
 class Controller_Cron extends Controller
 {
-	public function action_apiUpdateCorpData()
-	{
-		set_time_limit(0);
-
-		PhealHelper::configure();
-		$pheal = new Pheal(null,null,'corp');
-
-		$select = date('G');
-		if( $select > 9 )
-		{
-			$select -= 9;
-			if( $select > 9 )
-			{
-				$select -= 9;
-			}
-		}
-
-		$corpsToUpdate = array();
-		$corpsToUpdate = DB::select(Database::SELECT, "SELECT * FROM groupmembers WHERE memberType='corp' AND SUBSTR(id,LENGTH(id),1) = ?",[$select]);
-
-		foreach($corpsToUpdate as $gm)
-		{
-			$corp = Corporation::find((int)$gm->eveID);
-
-			//incase this fails...
-			if($corp != null)
-			{
-				$corp->syncWithApi();
-			}
-		}
-	}
-
 	public function action_resetStuff()
 	{
 		$this->profiler = NULL;
@@ -54,9 +22,5 @@ class Controller_Cron extends Controller
 		DB::table('wormholes')->where('last_jump', '<=', $cutoff)->delete();
 
 		print 'done!';
-	}
-
-	public function action_hourlyAPIStats()
-	{
 	}
 }
