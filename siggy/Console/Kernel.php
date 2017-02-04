@@ -13,7 +13,12 @@ class Kernel extends ConsoleKernel
 	 * @var array
 	 */
 	protected $commands = [
-		//
+		\Siggy\Console\Commands\EveSystemStatsCommand::class,
+		\Siggy\Console\Commands\SignaturesClearCommand::class,
+		\Siggy\Console\Commands\BillingChargeCommand::class,
+		\Siggy\Console\Commands\SessionsClearCommand::class,
+		\Siggy\Console\Commands\BillingPaymentsCommand::class,
+		\Siggy\Console\Commands\NotificationsClearCommand::class
 	];
 
 	/**
@@ -27,9 +32,15 @@ class Kernel extends ConsoleKernel
 		$schedule->command('sessions:clear')
 		          ->hourly();
 		$schedule->command('notifications:clear')
-		          ->hourly();
+		          ->daily();
 		$schedule->command('billing:payments')
 		          ->hourly();
+		$schedule->command('billing:charges')
+		          ->dailyAt('00:00');
+		$schedule->command('eve:systemstats')
+		          ->hourly();
+		$schedule->command('signatures:clear')
+		          ->daily();
 	}
 
 	/**
