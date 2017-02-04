@@ -8,7 +8,7 @@ class PhealHelper {
 	public static function configure()
 	{
 		Config::getInstance()->http_ssl_verifypeer = false;
-		Config::getInstance()->http_user_agent = 'siggy '.SIGGY_VERSION.' mark.roszko@gmail.com';
+		Config::getInstance()->http_user_agent = 'siggy mark.roszko@gmail.com';
 		
 		if(CACHE_METHOD == 'memcache')
 		{
@@ -16,7 +16,7 @@ class PhealHelper {
 		}
 		else
 		{
-			Config::getInstance()->cache = new \Pheal\Cache\FileStorage(APPPATH.'cache/api/');
+			Config::getInstance()->cache = new \Pheal\Cache\FileStorage(__DIR__.'/../cache/api/');
 		}
 	}
 }

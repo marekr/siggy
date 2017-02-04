@@ -21,6 +21,7 @@ require_once __DIR__.'/application/vendor/autoload.php';
 	Database Setup
 	Horrible spot but yea
  */
+define('CACHE_METHOD', env('PHEAL_CACHE'));
 use Illuminate\Database\Capsule\Manager as DB;
 $dotenv = new Dotenv\Dotenv(__DIR__);
 $dotenv->load();

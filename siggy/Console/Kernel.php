@@ -26,6 +26,10 @@ class Kernel extends ConsoleKernel
 	{
 		$schedule->command('sessions:clear')
 		          ->hourly();
+		$schedule->command('notifications:clear')
+		          ->hourly();
+		$schedule->command('billing:payments')
+		          ->hourly();
 	}
 
 	/**
