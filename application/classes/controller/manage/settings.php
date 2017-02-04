@@ -32,7 +32,7 @@ class Controller_Manage_Settings extends Controller_Manage
 	
 	public function action_chain_map()
 	{
-		$this->template->title = __('Chain Map settings');
+		$this->template->title = ___('Chain Map settings');
 
 		$group = Auth::$user->group;
 
@@ -58,7 +58,7 @@ class Controller_Manage_Settings extends Controller_Manage
 			$group->fill($save);
 			$group->save();
 			
-			Message::add('success', __('Chain map settings saved.'));
+			Message::add('success', ___('Chain map settings saved.'));
 			
 			HTTP::redirect('manage/settings/chain_map');
 			return;
@@ -71,7 +71,7 @@ class Controller_Manage_Settings extends Controller_Manage
 	
 	public function action_statistics()
 	{
-		$this->template->title = __('Chain Map settings');
+		$this->template->title = ___('Chain Map settings');
 
 		$group = Auth::$user->group;
 
@@ -85,17 +85,17 @@ class Controller_Manage_Settings extends Controller_Manage
 			$save = [
 				'stats_enabled' => intval($_POST['statsEnabled']),
 				'record_jumps' => intval($_POST['recordJumps']),
-				'stats_sig_add_points' => $this->__get_point_multiplier($_POST['stats_sig_add_points']),
-				'stats_sig_update_points' => $this->__get_point_multiplier($_POST['stats_sig_update_points']),
-				'stats_wh_map_points' => $this->__get_point_multiplier($_POST['stats_wh_map_points']),
-				'stats_pos_add_points' => $this->__get_point_multiplier($_POST['stats_pos_add_points']),
-				'stats_pos_update_points' => $this->__get_point_multiplier($_POST['stats_pos_update_points'])
+				'stats_sig_add_points' => $this->___get_point_multiplier($_POST['stats_sig_add_points']),
+				'stats_sig_update_points' => $this->___get_point_multiplier($_POST['stats_sig_update_points']),
+				'stats_wh_map_points' => $this->___get_point_multiplier($_POST['stats_wh_map_points']),
+				'stats_pos_add_points' => $this->___get_point_multiplier($_POST['stats_pos_add_points']),
+				'stats_pos_update_points' => $this->___get_point_multiplier($_POST['stats_pos_update_points'])
 			];
 				
 			$group->fill($save);
 			$group->save();
 				
-			Message::add('success', __('Chain map settings saved.'));
+			Message::add('success', ___('Chain map settings saved.'));
 			
 			HTTP::redirect('manage/settings/statistics');
 			return;
@@ -106,7 +106,7 @@ class Controller_Manage_Settings extends Controller_Manage
 		$this->template->content = $view;
 	}
 	
-	private function __get_point_multiplier($value)
+	private function ___get_point_multiplier($value)
 	{
 		//cast it as a float
 		$value = (double)$value;
@@ -125,7 +125,7 @@ class Controller_Manage_Settings extends Controller_Manage
    
 	public function action_general()
 	{
-		$this->template->title = __('General settings');
+		$this->template->title = ___('General settings');
 
 		$group = Auth::$user->group;
 
@@ -152,13 +152,13 @@ class Controller_Manage_Settings extends Controller_Manage
 				}
 				else
 				{
-					Message::add( 'error', __('Error: The password was not saved because it did not match between the two fields.') );
+					Message::add( 'error', ___('Error: The password was not saved because it did not match between the two fields.') );
 				}
 			}
 			$group->fill($save);
 			$group->save();
 				
-			Message::add('success', __('Settings saved.'));;
+			Message::add('success', ___('Settings saved.'));;
 			HTTP::redirect('manage/settings/general');
 			return;
 		}
@@ -170,7 +170,7 @@ class Controller_Manage_Settings extends Controller_Manage
   
     public function action_noaccess() 
     {
-		$this->template->title = __('Access not allowed');
+		$this->template->title = ___('Access not allowed');
 		$view = $this->template->content = View::factory('user/noaccess');
     }
 }

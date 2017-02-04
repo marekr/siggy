@@ -25,7 +25,7 @@ class Controller_Manage_Dashboard extends Controller_Manage
 	*/
 	public function action_index() 
 	{
-		$this->template->title = __('Manage');
+		$this->template->title = ___('Manage');
 		$view = View::factory('manage/dashboard/index');
 
 
@@ -49,7 +49,7 @@ class Controller_Manage_Dashboard extends Controller_Manage
 	*/
 	public function action_noaccess() 
 	{
-		$this->template->title = __('Access not allowed');
+		$this->template->title = ___('Access not allowed');
 		$view = $this->template->content = View::factory('user/noaccess');
 	}
 

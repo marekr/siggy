@@ -37,7 +37,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
 	public function action_list()
 	{
-		$this->template->title = __('Chain Map Management');
+		$this->template->title = ___('Chain Map Management');
 
 		$view = $this->template->content = View::factory('manage/chainmaps/list');
 
@@ -53,7 +53,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 	{
 		$errors = array();
 
-		$this->template->title = __('Add a Chain Map');
+		$this->template->title = ___('Add a Chain Map');
 
 		$group = Auth::$user->group;
 
@@ -77,7 +77,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				'chainmap_skip_purge_home_sigs' => intval($_POST['chainmap_skip_purge_home_sigs']),
 			];
 			
-			list($new['chainmap_homesystems_ids'], $new['chainmap_homesystems']) = $this->__process_home_system_input($_POST['chainmap_homesystems']);
+			list($new['chainmap_homesystems_ids'], $new['chainmap_homesystems']) = $this->___process_home_system_input($_POST['chainmap_homesystems']);
 
 			$chainmap = Chainmap::create($new);
 			$chainmap->rebuild_map_data_cache();
@@ -91,7 +91,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		$this->template->content = $view;
 	}
 
-	private function __process_home_system_input($txt)
+	private function ___process_home_system_input($txt)
 	{
 		$homeSystemIDs = array();
 		$homeSystems = array();
@@ -137,14 +137,14 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		$cm = Chainmap::find($chainmap_id, Auth::$user->groupID);
 		if( $cm == null )
 		{
-			Message::add('error', __('Error: You do not have permission for that chainmap.'));
+			Message::add('error', ___('Error: You do not have permission for that chainmap.'));
 			HTTP::redirect('manage/chainmaps');
 		}
 
 		$member = GroupMember::find($groupMemberID);
 		if( $member == null || $member->groupID != Auth::$user->group->id )
 		{
-			Message::add('error', __('Error: The group member does not exist.'));
+			Message::add('error', ___('Error: The group member does not exist.'));
 			HTTP::redirect('manage/group/members');
 		}
 
@@ -188,12 +188,12 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 	{
 		$id = intval($this->request->param('id'));
 
-		$this->template->title = __('Edit Chain Map');
+		$this->template->title = ___('Edit Chain Map');
 
 		$chainmap = Chainmap::find($id, Auth::$user->groupID);
 		if( $chainmap == null )
 		{
-			Message::add('error', __('Error: You do not have permission to edit that chainmap.'));
+			Message::add('error', ___('Error: You do not have permission to edit that chainmap.'));
 			HTTP::redirect('manage/chainmaps');
 		}
 
@@ -214,7 +214,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				'chainmap_skip_purge_home_sigs' => intval($_POST['chainmap_skip_purge_home_sigs'])
 			];
 
-			list($update['chainmap_homesystems_ids'], $update['chainmap_homesystems']) = $this->__process_home_system_input($_POST['chainmap_homesystems']);
+			list($update['chainmap_homesystems_ids'], $update['chainmap_homesystems']) = $this->___process_home_system_input($_POST['chainmap_homesystems']);
 			$chainmap->fill($update);
 			$chainmap->save();
 
@@ -235,18 +235,18 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 	{
 		$id = intval($this->request->param('id'));
 
-		$this->template->title = __('Remove Chain Map');
+		$this->template->title = ___('Remove Chain Map');
 
 		$chainmap = Chainmap::find($id, Auth::$user->groupID);
 		if( $chainmap == null )
 		{
-			Message::add('error', __('Error: You do not have permission to remove that chainmap.'));
+			Message::add('error', ___('Error: You do not have permission to remove that chainmap.'));
 			HTTP::redirect('manage/chainmaps');
 		}
 
 		if( $chainmap->chainmap_type == 'default' )
 		{
-			Message::add('error', __('Error: You cannot delete your default chain map'));
+			Message::add('error', ___('Error: You cannot delete your default chain map'));
 			HTTP::redirect('manage/chainmaps');
 		}
 
@@ -290,7 +290,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				}
 				else
 				{
-					Message::add('error', __('Error: Removal of subgroup failed for unknown reasons.'));
+					Message::add('error', ___('Error: Removal of subgroup failed for unknown reasons.'));
 				}
 			}
 		}
@@ -305,7 +305,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 	*/
 	public function action_noaccess()
 	{
-		$this->template->title = __('Access not allowed');
+		$this->template->title = ___('Access not allowed');
 		$view = $this->template->content = View::factory('user/noaccess');
 	}
 }

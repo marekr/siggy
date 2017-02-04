@@ -50,7 +50,7 @@
                 <li role='presentation'><a href='#system-info' aria-controls='home' role='tab' data-toggle='tab'>Extra</a></li>
                 <li role='presentation' class='active'><a href='#sigs' aria-controls='home' role='tab' data-toggle='tab'>Scan</a></li>
                 <li role='presentation'><a href='#system-intel' aria-controls='home' role='tab' data-toggle='tab'>Intel</a></li>
-                <li role='presentation'><a href='#system-options' aria-controls='home' role='tab' data-toggle='tab'><?php echo __('Options'); ?></a></li>
+                <li role='presentation'><a href='#system-options' aria-controls='home' role='tab' data-toggle='tab'><?php echo ___('Options'); ?></a></li>
             </ul>
         </div>
 		<div class='tab-content'>
@@ -70,7 +70,7 @@
 	                <tr>
 	                    <td class="title">True Sec</td>
 	                    <td class="content" id="truesec"></td>
-	                    <td class="title"><?php echo __('Constellation'); ?></td>
+	                    <td class="title"><?php echo ___('Constellation'); ?></td>
 	                    <td class="content" id="constellation"></td>
 	                </tr>
 	            </table>
@@ -214,7 +214,7 @@
 	        <div role="tabpanel" id="sigs" class="tab-pane active">
 	            <table id="system-table" cellspacing="1" class='siggy-table'>
 	                <tr>
-	                    <td class="title">Region / <?php echo __('Constellation'); ?></td>
+	                    <td class="title">Region / <?php echo ___('Constellation'); ?></td>
 	                    <td class="content" id="region"></td>
 	                    <td class="title">System Effect</td>
 	                    <td class="content" id="system-effect"></td>
@@ -290,12 +290,12 @@
 	                                <label>Type</label>
 	                                <select name="type" class="siggy-input">
 	                                    <option value="none" selected="selected"> -- </option>
-	                                    <option value="wh"><?php echo __('WH');?></option>
-	                                    <option value="gas"><?php echo __('Gas');?></option>
-	                                    <option value="ore"><?php echo __('Ore');?></option>
-	                                    <option value="data"><?php echo __('Data');?></option>
-	                                    <option value="relic"><?php echo __('Relic');?></option>
-	                                    <option value="anomaly"><?php echo __('Combat');?></option>
+	                                    <option value="wh"><?php echo ___('WH');?></option>
+	                                    <option value="gas"><?php echo ___('Gas');?></option>
+	                                    <option value="ore"><?php echo ___('Ore');?></option>
+	                                    <option value="data"><?php echo ___('Data');?></option>
+	                                    <option value="relic"><?php echo ___('Relic');?></option>
+	                                    <option value="anomaly"><?php echo ___('Combat');?></option>
 	                                </select>
 	                            </div>
 	                            <div class="input-group" style="width: auto;">
@@ -316,17 +316,17 @@
 				<div class="sub-display-group">
 					<div class='sub-display-group-header'>
 						<span id='number-sigs'>0</span> /
-							<span id='total-sigs'>0</span> <?php echo __('signature(s) shown'); ?>
+							<span id='total-sigs'>0</span> <?php echo ___('signature(s) shown'); ?>
 						<div id="sig-filter" class="button-group pull-right">
 							<button type="button" class="btn btn-xs dropdown-toggle btn-info" data-toggle="dropdown"><span class="glyphicon glyphicon-filter"></span> Filter <i class="fa fa-caret-down"></i></button>
 							<ul class="dropdown-menu">
-								<li><a href="#" class="small" data-value="wh" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo __('Wormhole');?></a></li>
-								<li><a href="#" class="small" data-value="ore" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo __('Ore');?></a></li>
-								<li><a href="#" class="small" data-value="gas" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo __('Gas');?></a></li>
-								<li><a href="#" class="small" data-value="data" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo __('Data');?></a></li>
-								<li><a href="#" class="small" data-value="relic" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo __('Relic');?></a></li>
-								<li><a href="#" class="small" data-value="anomaly" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo __('Combat');?></a></li>
-								<li><a href="#" class="small" data-value="none" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo __('None');?></a></li>
+								<li><a href="#" class="small" data-value="wh" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo ___('Wormhole');?></a></li>
+								<li><a href="#" class="small" data-value="ore" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo ___('Ore');?></a></li>
+								<li><a href="#" class="small" data-value="gas" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo ___('Gas');?></a></li>
+								<li><a href="#" class="small" data-value="data" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo ___('Data');?></a></li>
+								<li><a href="#" class="small" data-value="relic" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo ___('Relic');?></a></li>
+								<li><a href="#" class="small" data-value="anomaly" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo ___('Combat');?></a></li>
+								<li><a href="#" class="small" data-value="none" tabIndex="-1"><input type="checkbox"/>&nbsp;<?php echo ___('None');?></a></li>
 							</ul>
 						</div>
 						<div class='clear'></div>

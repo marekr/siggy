@@ -12,7 +12,8 @@
 		"mpociot/laravel-composite-key": "^1.0",
 		"yadakhov/insert-on-duplicate-key": "^1.0",
 		"cebe/markdown": "~1.1.1",
-		"illuminate/view": "^5.4"
+		"illuminate/view": "^5.4",
+		"loduis/artisan": "~5.4"
     },
 	"autoload": {
 		"psr-4": {

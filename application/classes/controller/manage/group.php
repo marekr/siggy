@@ -43,13 +43,13 @@ class Controller_Manage_Group extends Controller_Manage
 	*/
 	public function action_noaccess()
 	{
-		$this->template->title = __('Access not allowed');
+		$this->template->title = ___('Access not allowed');
 		$view = $this->template->content = View::factory('user/noaccess');
 	}
 
 	public function action_members()
 	{
-		$this->template->title = __('Group management');
+		$this->template->title = ___('Group management');
 
 		$view = $this->template->content = View::factory('manage/group/members');
 
@@ -83,7 +83,7 @@ class Controller_Manage_Group extends Controller_Manage
 
 	public function action_addMember()
 	{
-		$this->template->title = __('Group management');
+		$this->template->title = ___('Group management');
 
 		$id = intval($this->request->param('id'));
 
@@ -200,7 +200,7 @@ class Controller_Manage_Group extends Controller_Manage
 
 					if( $chainmaps == null)
 					{
-						Message::add('error', __('This member already has access to all chain maps possible'));
+						Message::add('error', ___('This member already has access to all chain maps possible'));
 						HTTP::redirect('manage/group/addMember');
 					}
 
@@ -231,12 +231,12 @@ class Controller_Manage_Group extends Controller_Manage
 	{
 		$id = $this->request->param('id');
 
-		$this->template->title = __('Group management');
+		$this->template->title = ___('Group management');
 
 		$member = GroupMember::find($id);
 		if( $member->groupID != Auth::$user->groupID )
 		{
-			Message::add('error', __('Error: You do not have permission to edit that group member.'));
+			Message::add('error', ___('Error: You do not have permission to edit that group member.'));
 			HTTP::redirect('manage/group/members');
 		}
 
@@ -281,12 +281,12 @@ class Controller_Manage_Group extends Controller_Manage
 	{
 		$id = intval($this->request->param('id'));
 
-		$this->template->title = __('Group management');
+		$this->template->title = ___('Group management');
 
 		$member = GroupMember::find($id);
 		if( $member->groupID != Auth::$user->groupID )
 		{
-			Message::add('error', __('Error: You do not have permission to remove that group member.'));
+			Message::add('error', ___('Error: You do not have permission to remove that group member.'));
 			HTTP::redirect('manage/group/members');
 		}
 

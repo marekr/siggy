@@ -100,7 +100,7 @@ class formRenderer {
 
 		$desc_html = !empty($desc) ? '<p class="help-block">'.$desc.'</p>' : '';
 
-		$i18n_name = __($name);
+		$i18n_name = ___($name);
 
 		$out = <<<OUT
 <div class="form-group{$error_class}">

@@ -33,13 +33,13 @@ class Controller_Manage_Blacklist extends Controller_Manage
 	*/
 	public function action_denied() 
 	{
-		$this->template->title = __('Access not allowed');
+		$this->template->title = ___('Access not allowed');
 		$view = $this->template->content = View::factory('manage/access/denied');
 	}
 	
 	public function action_list()
 	{
-		$this->template->title = __('Manage Blacklist');
+		$this->template->title = ___('Manage Blacklist');
 		
 		$view = $this->template->content = View::factory('manage/blacklist/list');
 
@@ -62,7 +62,7 @@ class Controller_Manage_Blacklist extends Controller_Manage
 
 	public function action_add()
 	{
-		$this->template->title = __('Add Character To Blacklist');
+		$this->template->title = ___('Add Character To Blacklist');
 		
 		$errors = array();
 

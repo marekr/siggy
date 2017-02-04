@@ -63,34 +63,34 @@ final class miscUtils {
 					continue;
 				}
 
-				$regex = "/^(".__('Wormhole')."|".__('Data Site')."|".__('Gas Site')."|".__('Relic Site')."|".__('Ore Site')."|".__('Combat Site').")$/";
+				$regex = "/^(".___('Wormhole')."|".___('Data Site')."|".___('Gas Site')."|".___('Relic Site')."|".___('Ore Site')."|".___('Combat Site').")$/";
 
 				preg_match($regex, $item, $matches );
 				if( count($matches) == 2 )
 				{
 					switch( $matches[1] )
 					{
-						case __('Wormhole'):
+						case ___('Wormhole'):
 							$sigData['type'] = 'wh';
 							$sigData['siteID'] = 0;
 							break;
-						case __('Data Site'):
+						case ___('Data Site'):
 							$sigData['type'] = 'data';
 							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+1], $sigData['type'] );
 							break;
-						case __('Gas Site'):
+						case ___('Gas Site'):
 							$sigData['type'] = 'gas';
 							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+1], $sigData['type'] );
 							break;
-						case __('Relic Site'):
+						case ___('Relic Site'):
 							$sigData['type'] = 'relic';
 							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+1], $sigData['type'] );
 							break;
-						case __('Ore Site'):
+						case ___('Ore Site'):
 							$sigData['type'] = 'ore';
 							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+1], $sigData['type'] );
 							break;
-						case __('Combat Site'):
+						case ___('Combat Site'):
 							$sigData['type'] = 'anomaly';
 							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+1], $sigData['type'] );
 							break;
@@ -113,7 +113,7 @@ final class miscUtils {
 
 		foreach( $sites as $site )
 		{
-			if( __($site->name) == $name )
+			if( ___($site->name) == $name )
 			{
 				return $site->id;
 			}

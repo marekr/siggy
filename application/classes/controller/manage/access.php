@@ -36,7 +36,7 @@ class Controller_Manage_Access extends Controller_Manage
 	*/
 	public function action_denied() 
 	{
-		$this->template->title = __('Access not allowed');
+		$this->template->title = ___('Access not allowed');
 		$view = $this->template->content = View::factory('manage/access/denied');
 	}
    
@@ -66,7 +66,7 @@ class Controller_Manage_Access extends Controller_Manage
 	
 	public function action_configure()
 	{
-		$this->template->title = __('Configure access');
+		$this->template->title = ___('Configure access');
 		
 		$view = $this->template->content = View::factory('manage/access/configure');
 		
@@ -105,7 +105,7 @@ class Controller_Manage_Access extends Controller_Manage
     
     public function action_add()
     {
-		$this->template->title = __('Add access');
+		$this->template->title = ___('Add access');
         
         $errors = array();
                             
@@ -156,7 +156,7 @@ class Controller_Manage_Access extends Controller_Manage
     
     public function action_edit()
     {
-		$this->template->title = __('Edit access');
+		$this->template->title = ___('Edit access');
         
         $id = $this->request->param('id');
         

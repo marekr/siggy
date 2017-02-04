@@ -9,9 +9,9 @@ use Carbon\Carbon;
 class Controller_Account extends FrontController {
 	protected $noAutoAuthRedirects = true;
 
-	function __construct(Kohana_Request $request, Kohana_Response $response)
+	function ___construct(Kohana_Request $request, Kohana_Response $response)
 	{
-		parent::__construct($request, $response);
+		parent::___construct($request, $response);
 	}
 
 	public function before()
@@ -129,7 +129,7 @@ class Controller_Account extends FrontController {
 				{
 					if( !is_array($result) )
 					{
-						Message::add('danger', __('Error getting SSO data.'));
+						Message::add('danger', ___('Error getting SSO data.'));
 						HTTP::redirect('/account/connected');
 					}
 
@@ -139,7 +139,7 @@ class Controller_Account extends FrontController {
 
 					if( $userID == Auth::$user->id )
 					{
-						Message::add('info', __('The character\'s connection has been updated successfully.'));
+						Message::add('info', ___('The character\'s connection has been updated successfully.'));
 
 						Auth::$user->updateSSOCharacter($result['CharacterID'],
 															$token->getAccessToken(),
@@ -151,7 +151,7 @@ class Controller_Account extends FrontController {
 					}
 					else if ( $userID == null )
 					{
-						Message::add('success', __('The character has been successfully connected to your siggy account.'));
+						Message::add('success', ___('The character has been successfully connected to your siggy account.'));
 						Auth::$user->addSSOCharacter($result['CharacterOwnerHash'], 
 													$result['CharacterID'], 
 													$token->getAccessToken(), 
@@ -163,7 +163,7 @@ class Controller_Account extends FrontController {
 					}
 					else
 					{
-						Message::add('danger', __('The character is connected to a different account. You must disconnect it first if you want to connect it to this one.'));
+						Message::add('danger', ___('The character is connected to a different account. You must disconnect it first if you want to connect it to this one.'));
 						HTTP::redirect('/account/connected');
 					}
 				}
@@ -384,13 +384,13 @@ class Controller_Account extends FrontController {
 					$mailer = Email::connect();
 					// Create complex Swift_Message object stored in $message
 					// MUST PASS ALL PARAMS AS REFS
-					$subject = __('siggy: Account password reset');
+					$subject = ___('siggy: Account password reset');
 
 					$to = $_POST['reset_email'];
 					$from = Kohana::$config->load('auth')->sender_email_address;
 
 
-					$body =  __($message, array(
+					$body =  ___($message, array(
 						':reset_token_link' => URL::site('account/completePasswordReset?reset_token='.$user->reset_token.'&reset_email='.$_POST['reset_email'], TRUE),
 						':reset_link' => URL::site('account/completePasswordReset', TRUE),
 						':reset_token' => $user->reset_token,
@@ -466,12 +466,12 @@ class Controller_Account extends FrontController {
 					$mailer = Email::connect();
 					// Create complex Swift_Message object stored in $message
 					// MUST PASS ALL PARAMS AS REFS
-					$subject = __('siggy: Your new password');
+					$subject = ___('siggy: Your new password');
 
 					$to = $_REQUEST['reset_email'];
 					$from = Kohana::$config->load('auth')->sender_email_address;
 
-					$body =  __($message, array(
+					$body =  ___($message, array(
 							':url' => URL::site('', TRUE),
 							':password' => $password
 					));
@@ -615,7 +615,7 @@ class Controller_Account extends FrontController {
 
 			Auth::$user->removeSSOCharacter($charId);
 
-			Message::add('success', __('The character has been disconnected from your siggy account. You must remove the character permissions on the EVE Online website if you want to ensure siggy no longer has permission to access the character (not required)'));
+			Message::add('success', ___('The character has been disconnected from your siggy account. You must remove the character permissions on the EVE Online website if you want to ensure siggy no longer has permission to access the character (not required)'));
 
 			HTTP::redirect('account/connected');
 		}
