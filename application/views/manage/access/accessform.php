@@ -12,7 +12,7 @@ else
 
 ?>
    <form role="form" action="<?php echo $formUrl; ?>" method="POST">
-   <h2><?php echo ($mode == 'edit' ?  __('Editing Access') : __('Adding Access') ); ?> for <?php echo $data['username']; ?></h2>
+   <h2><?php echo ($mode == 'edit' ?  ___('Editing Access') : ___('Adding Access') ); ?> for <?php echo $data['username']; ?></h2>
         <?php if( $mode == 'add' ): ?>
         
         <?php echo formRenderer::input('Username', 'username', $data['username'], 'Siggy account username to add. Must be valid and already exist.', $errors); ?>

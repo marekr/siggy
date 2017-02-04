@@ -23,7 +23,7 @@
 				<?php echo $m->accessName ?>
 			</td>
 			<td>
-				<?php echo Html::anchor('manage/chainmaps/remove_access/'.$chainmap_id.'-'.$m->id, __('<i class="fa fa-trash"></i>&nbsp;Remove'), array('class' =>'btn btn-xs btn-danger')); ?>
+				<?php echo Html::anchor('manage/chainmaps/remove_access/'.$chainmap_id.'-'.$m->id, ___('<i class="fa fa-trash"></i>&nbsp;Remove'), array('class' =>'btn btn-xs btn-danger')); ?>
 			</td>
 		</tr>
 		<?php endforeach ?>

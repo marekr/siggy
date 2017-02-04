@@ -1,7 +1,7 @@
 <h2>Manage Blacklist</h2>
 <p>Use the blacklist to block specific characters from viewing your siggy. This is useful generally when you kick characters.</p>
 <div class="pull-right">
-    <?php echo Html::anchor('manage/blacklist/add', __('<i class="icon-plus-sign"></i>&nbsp;Add Character to Blacklist'), array('class' => 'btn btn-primary') ); ?>
+    <?php echo Html::anchor('manage/blacklist/add', ___('<i class="icon-plus-sign"></i>&nbsp;Add Character to Blacklist'), array('class' => 'btn btn-primary') ); ?>
 </div>
 <div class="clearfix"></div>
 <br />
@@ -26,7 +26,7 @@
 			<td><?php echo $char->reason; ?></td>
 			<td><?php echo $char->created_at; ?></td>
 			<td>
-				<?php echo Html::anchor('manage/blacklist/remove/'.$char->id, __('<i class="icon-trash"></i>&nbsp;Remove'), array('class' => 'btn btn-xs btn-danger')); ?>
+				<?php echo Html::anchor('manage/blacklist/remove/'.$char->id, ___('<i class="icon-trash"></i>&nbsp;Remove'), array('class' => 'btn btn-xs btn-danger')); ?>
 			</td>
 		</tr>
 		<?php endforeach; ?>

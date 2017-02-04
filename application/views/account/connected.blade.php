@@ -11,7 +11,7 @@
 			</ul>
 	</p>
 
-	<?php echo Html::anchor('account/connect', __('<i class="glyphicon glyphicon-plus"></i>&nbsp;Connect new character'), array('class' => 'btn btn-primary pull-right') ); ?>
+	<?php echo Html::anchor('account/connect', ___('<i class="glyphicon glyphicon-plus"></i>&nbsp;Connect new character'), array('class' => 'btn btn-primary pull-right') ); ?>
 	<br clear='all' />
 	<br />
 	<table class="table table-striped">
@@ -49,7 +49,7 @@
 					<input type="hidden" name="_token" value="<?php echo Auth::$session->csrf_token;?>" />
 					<input type="hidden" name="character_id" value="<?php echo $character_data[$character->character_id]->id; ?>" />
 					<button class='btn btn-danger btn-xs' type="submit"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Disconnect</button>
-					<?php echo Html::anchor('account/connect', __('<i class="glyphicon glyphicon-plus"></i>&nbsp;Reconnect character'), array('class' => 'btn btn-primary btn-xs') ); ?>
+					<?php echo Html::anchor('account/connect', ___('<i class="glyphicon glyphicon-plus"></i>&nbsp;Reconnect character'), array('class' => 'btn btn-primary btn-xs') ); ?>
 				</form>
 			</td>
 		</tr>

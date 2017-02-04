@@ -19,7 +19,7 @@ $type = array('corp' => 'Corp', 'char' => 'Character');
 
 ?>
    <form class="form-horizontal" action="<?php echo $formUrl; ?>" method="post">
-   <h2><?php echo ($mode == 'edit' ?  __('Edit Group Member') : __('Add Group Member') ); ?></h2>
+   <h2><?php echo ($mode == 'edit' ?  ___('Edit Group Member') : ___('Add Group Member') ); ?></h2>
 		<?php echo formRenderer::select('Member Type', 'memberType', $type, $data['memberType'], '', $errors); ?>
 		<?php echo formRenderer::input('EVE/Corp ID', 'eveID', $data['eveID'], 'ID Number from EVE for the character or corp', $errors); ?>
 		<?php echo formRenderer::input('Access Name/Corp Ticker', 'accessName', $data['accessName'], '', $errors); ?>

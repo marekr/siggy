@@ -1,8 +1,8 @@
 
-   <h1><?php echo __('Groups') ?></h1>
+   <h1><?php echo ___('Groups') ?></h1>
    <div class="content">
 			<div class="info">The EVEID listed on this page are the ids that eve uses in game to reference your corp. You may find these from either your API info or sites such as http://evemaps.dotlan.net</div>
-			<?php echo Html::anchor('manage/admin/addGroup', __('Add New Group')); ?>
+			<?php echo Html::anchor('manage/admin/addGroup', ___('Add New Group')); ?>
 			
 					<table class="table table-striped" width="100%">
 						<tr>
@@ -16,7 +16,7 @@
 							<td><?php echo $m->groupTicker ?></td>
 							<td><?php echo $m->groupName ?></td>
 							<td><?php echo ($m->billable) ? ($m->lastPayment + 60*60*24*($m->payedForDays) ) : '--'; ?></td>
-							<td><?php echo Html::anchor('manage/admin/groupBill/'.$m->groupID, __('Bill')); ?></td>
+							<td><?php echo Html::anchor('manage/admin/groupBill/'.$m->groupID, ___('Bill')); ?></td>
 						</tr>
 					<?php endforeach ?>
 					</table>

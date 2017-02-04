@@ -88,14 +88,14 @@
 			<div class="sidebar-collapse">
 				<ul class="nav" id="side-menu">
 					<li>
-						<?php echo Html::anchor('manage/dashboard', __('<i class="fa fa-sitemap fa-fw"></i>Dashboard')); ?>
+						<?php echo Html::anchor('manage/dashboard', ___('<i class="fa fa-sitemap fa-fw"></i>Dashboard')); ?>
 					</li>
 					<?php if( Auth::$user->admin || $perms->can_manage_group_members || $perms->can_manage_access ): ?>
                     <li class="active <?php echo (Request::initial()->controller() == "Group"?" active" : "") ?>">
                         <a href="#"><i class="fa fa-chain fa-fw"></i> Chainmaps<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <?php echo Html::anchor('manage/chainmaps/list', __('Manage')); ?>
+                                <?php echo Html::anchor('manage/chainmaps/list', ___('Manage')); ?>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
@@ -105,15 +105,15 @@
 						<ul class="nav nav-second-level">
 							<?php if( Auth::$user->admin || $perms->can_manage_group_members ): ?>
 							<li>
-								<?php echo Html::anchor('manage/group/members', __('Group Members')); ?>
+								<?php echo Html::anchor('manage/group/members', ___('Group Members')); ?>
 							</li>
 							<li>
-								<?php echo Html::anchor('manage/blacklist/list', __('Character Blacklist')); ?>
+								<?php echo Html::anchor('manage/blacklist/list', ___('Character Blacklist')); ?>
 							</li>
 							<?php endif; ?>
 							<?php if( Auth::$user->admin || $perms->can_manage_access ): ?>
 							<li>
-								<?php echo Html::anchor('manage/access/configure', __('Admin Access')); ?>
+								<?php echo Html::anchor('manage/access/configure', ___('Admin Access')); ?>
 							</li>
 							<?php endif; ?>
 						</ul>
@@ -125,13 +125,13 @@
 						<a href="#"><i class="fa fa-wrench fa-fw"></i>Settings<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
 							<li>
-								<?php echo Html::anchor('manage/settings/general', __('General')); ?>
+								<?php echo Html::anchor('manage/settings/general', ___('General')); ?>
 							</li>
 							<li>
-								<?php echo Html::anchor('manage/settings/chain_map', __('Chain Map')); ?>
+								<?php echo Html::anchor('manage/settings/chain_map', ___('Chain Map')); ?>
 							</li>
 							<li>
-								<?php echo Html::anchor('manage/settings/statistics', __('Statistics')); ?>
+								<?php echo Html::anchor('manage/settings/statistics', ___('Statistics')); ?>
 							</li>
 						</ul>
 						<!-- /.nav-second-level -->
@@ -142,10 +142,10 @@
 						<a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Activity<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
 							<li>
-								<?php echo Html::anchor('manage/logs/activity', __('Usage Logs')); ?>
+								<?php echo Html::anchor('manage/logs/activity', ___('Usage Logs')); ?>
 							</li>
 							<li>
-								<?php echo Html::anchor('manage/logs/sessions', __('Active Sessions')); ?>
+								<?php echo Html::anchor('manage/logs/sessions', ___('Active Sessions')); ?>
 							</li>
 						</ul>
 						<!-- /.nav-second-level -->
@@ -156,7 +156,7 @@
 						<a href="#"><i class="fa fa-university fa-fw"></i>Financial<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
 							<li>
-								<?php echo Html::anchor('manage/billing/overview', __('Billing Overview')); ?>
+								<?php echo Html::anchor('manage/billing/overview', ___('Billing Overview')); ?>
 							</li>
 						</ul>
 						<!-- /.nav-second-level -->

@@ -1,5 +1,5 @@
 
-   <h1><?php echo __('Groups') ?></h1>
+   <h1><?php echo ___('Groups') ?></h1>
    <div class="content">
 			<div class="info">Boo</div>
 			

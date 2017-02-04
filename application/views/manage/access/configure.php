@@ -1,6 +1,6 @@
 <h2>Configure Access</h2>
 <div class="pull-right">
-    <?php echo Html::anchor('manage/access/add', __('<i class="icon-plus-sign"></i>&nbsp;Add Access'), array('class' => 'btn btn-primary') ); ?>
+    <?php echo Html::anchor('manage/access/add', ___('<i class="icon-plus-sign"></i>&nbsp;Add Access'), array('class' => 'btn btn-primary') ); ?>
 </div>
 <div class="clearfix"></div>
 <br />
@@ -15,8 +15,8 @@
 	<?php foreach($users as $user): ?>
 		<tr>
 			<td><?php echo $user->username; ?></td>
-			<td><?php echo Html::anchor('manage/access/edit/'.$user->user_id, __('<i class="icon-pencil"></i>&nbsp;Edit'), array('class' => 'btn btn-xs btn-default')); ?>
-			<?php echo Html::anchor('manage/access/remove/'.$user->user_id, __('<i class="icon-trash"></i>&nbsp;Remove'), array('class' => 'btn btn-xs btn-danger')); ?>
+			<td><?php echo Html::anchor('manage/access/edit/'.$user->user_id, ___('<i class="icon-pencil"></i>&nbsp;Edit'), array('class' => 'btn btn-xs btn-default')); ?>
+			<?php echo Html::anchor('manage/access/remove/'.$user->user_id, ___('<i class="icon-trash"></i>&nbsp;Remove'), array('class' => 'btn btn-xs btn-danger')); ?>
 			</td>
 		</tr>
 		<?php endforeach; ?>

@@ -1,9 +1,9 @@
-<h1><?php echo __('Chainmaps List') ?></h1>
+<h1><?php echo ___('Chainmaps List') ?></h1>
 <div class="info">
 This page lists all the chainmaps that are setup. There is a "default" chain map which cannot ever be deleted but can have its settings modified. All other chainmaps can be freely modified and removed.
 </div>
 
-<?php echo Html::anchor('manage/chainmaps/add', __('<i class="fa fa-plus-circle fa-fw"></i>&nbsp;Add New Chainmap'), array('class' => 'btn btn-primary pull-right') ); ?>
+<?php echo Html::anchor('manage/chainmaps/add', ___('<i class="fa fa-plus-circle fa-fw"></i>&nbsp;Add New Chainmap'), array('class' => 'btn btn-primary pull-right') ); ?>
 <br />
 <br />
 <br />
@@ -22,9 +22,9 @@ This page lists all the chainmaps that are setup. There is a "default" chain map
 			<td><?php echo $s->chainmap_name ?></td>
 			<td>---</td>
 			<td>
-				<?php echo Html::anchor('manage/chainmaps/edit/'.$s->chainmap_id, __('<i class="icon-edit"></i>&nbsp;Edit'),array('class' => 'btn btn-default btn-xs')); ?>
+				<?php echo Html::anchor('manage/chainmaps/edit/'.$s->chainmap_id, ___('<i class="icon-edit"></i>&nbsp;Edit'),array('class' => 'btn btn-default btn-xs')); ?>
 				<?php if( $s->chainmap_type != 'default' ): ?>
-				<?php echo Html::anchor('manage/chainmaps/remove/'.$s->chainmap_id, __('<i class="icon-trash"></i>&nbsp;Remove'),array('class' => 'btn btn-danger btn-xs')); ?>
+				<?php echo Html::anchor('manage/chainmaps/remove/'.$s->chainmap_id, ___('<i class="icon-trash"></i>&nbsp;Remove'),array('class' => 'btn btn-danger btn-xs')); ?>
 				<?php endif; ?>
 			</td>
 		</tr>

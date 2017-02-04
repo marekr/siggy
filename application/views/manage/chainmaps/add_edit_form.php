@@ -10,7 +10,7 @@ else
 }
 
 ?>
-<h2><?php echo ($mode == 'edit' ?  __('Edit Chain Map') : __('Add Chain Map') ); ?></h2>
+<h2><?php echo ($mode == 'edit' ?  ___('Edit Chain Map') : ___('Add Chain Map') ); ?></h2>
 <form role="form" action="<?php echo URL::base(TRUE,TRUE); ?><?php echo $formUrl; ?>" method="POST">
 	<legend>General</legend>
 	<?php echo formRenderer::input('Name', 'chainmap_name', $chainmap->chainmap_name, '', $errors); ?>

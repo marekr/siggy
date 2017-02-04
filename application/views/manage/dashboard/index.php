@@ -5,7 +5,7 @@
 	<p>
 	Looks like you didn't add any group members yet, if you want to be able to use siggy you must do so.
 	</p>
-	<?php echo Html::anchor('manage/group/members', __('Manage Group Members'),array('class' => 'btn btn-primary btn-xs')); ?>
+	<?php echo Html::anchor('manage/group/members', ___('Manage Group Members'),array('class' => 'btn btn-primary btn-xs')); ?>
 </div>
 <?php endif; ?>
 
@@ -18,7 +18,7 @@
 	This is optional and you may ignore this warning.
 	</p>
 	<br />
-	<?php echo Html::anchor('manage/settings/general', __('Edit Settings'),array('class' => 'btn btn-primary btn-xs')); ?>
+	<?php echo Html::anchor('manage/settings/general', ___('Edit Settings'),array('class' => 'btn btn-primary btn-xs')); ?>
 </div>
 <?php endif; ?>
 
