@@ -41,30 +41,41 @@ class BillingChargeCommand extends Command
 	 */
 	public function handle()
 	{
-		$groups = Group::where('billable',1)->get();
-		foreach($groups as $group)
-		{
-			$numUsers = $group->getCharacterUsageCount();
-			if( $numUsers == 0 )
-			{
-				continue;
-			}
+		$dayAgo = Carbon::now()->subDay();
+		$groups = Group::where('billable',1)
+			->where('last_billing_charge_at', '<',$dayAgo)
+			->orWhereNull('last_billing_charge_at')
+			->chunk(50, function ($groups) use ($dayAgo) {
+				foreach($groups as $group)
+				{
+					$this->info("processing group {$group->id}");
+					$activeChars = $group->activeCharsFromDate($dayAgo);
+					if( $activeChars == 0 )
+					{
+						continue;
+					}
 
-			$cost = miscUtils::computeCostPerDays($numUsers, 1);
+					$cost = miscUtils::computeCostPerDays($activeChars, 1);
 
-			$message = 'Daily usage cost - ' . $numUsers . ' characters';
+					$message = "Daily usage cost - {$activeChars} characters";
+					$this->info($message);
 
-			$insert = array(
-								'amount' => $cost,
-								'date' => time(),
-								'groupID' => $group->id,
-								'memberCount' => $numUsers,
-								'message' => $message
-							);
-			$result = DB::table('billing_charges')->insert($insert);
+					$insert = array(
+										'amount' => $cost,
+										'date' => time(),
+										'groupID' => $group->id,
+										'memberCount' => $activeChars,
+										'message' => $message
+									);
+					$result = DB::table('billing_charges')->insert($insert);
 
-			$group->applyISKCharge( $cost );
-		}
+					$group->applyISKCharge( $cost );
+					$group->last_billing_charge_at = Carbon::now();
+					$group->save();
+				}
+			});
+
+		
 
 		$this->info('Charged groups');
 	}

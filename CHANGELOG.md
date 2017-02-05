@@ -1,6 +1,18 @@
 # siggy Changelog
 
-## 2.33.0 - 2017-01-30
+## 2.34.0 - 2017-02-04
+### Changes
+The methodology behind billing has changed. Charges are now based on actual usage of siggy on mostly a character basis per day. This is
+a replacement for the original system that simply summed up the total number of characters in corps and standalone that were added to siggy.
+i.e. If you access a group with a character selected, it counts agaisnt the total for the day.
+Alts that may be tracked and shown on the map but not selected in the siggy interface will not count towards the total.
+
+This also means for those that may barely use siggy at all, you will not be charged for days with zero usage.
+The charge per character has been adjusted to compensate and may yet still change but overall it won't cost more than before.
+
+For a fresh start, all balances under 0 have been reset to 1,000,000 ISK.
+
+## 2.33.0 - 2017-02-03
 ### Changes
 - Reimplemented cron jobs in a more stable/sane structure
 

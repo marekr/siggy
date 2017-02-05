@@ -9,15 +9,18 @@
 	<div class="well">
 		<h2>Costs</h2>
 
-		<p>siggy's costs are computed on a daily basis depending on the number of characters total in your group. The costs are currently computed using a linear model where the cost per member decreases with the total number of members. The table below shows values calculated live by the current payment model. Since costs will be constantly changing with your member count totals, these are just approximate numbers.</p>
+		<p>
+			siggy's costs are computed on a daily basis counting on total number of characters that accessed your group from the web interface.
+			Currently alt characters that may be recorded by siggy on the map but not "used" as don't cost extra.
+		</p>
 
 		<table class="table table-striped">
 		<tr>
-			<th>Num. Members</th>
-			<th>Daily Cost (isk)</th>
-			<th>Approx. 30 Days (isk)</th>
+			<th>Total characters used</th>
+			<th>Daily cost (isk)</th>
+			<th>Daily cost for a month (isk)</th>
 		</tr>
-		@for($i =1; $i <= 310; $i += 25)
+		@for($i = 0; $i <= 200; $i += 25)
 		<tr>
 			<td>{{$i}}</td>
 			<td>{{ number_format(miscUtils::computeCostPerDays($i,1)) }}</td>

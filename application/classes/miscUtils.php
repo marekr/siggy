@@ -6,10 +6,6 @@ use Illuminate\Database\Capsule\Manager as DB;
 
 final class miscUtils {
 
-	const TIER1COST = 33000;
-	const TIER2COST = 29000;
-	const TIER3COST = 25000;
-
 	static function computeCostPerDays( $memberCount, $days )
 	{
 		if( $memberCount == 0 )
@@ -17,7 +13,7 @@ final class miscUtils {
 			return 0;
 		}
 
-		$total = 25420*$memberCount + 283650;
+		$total = 200000*$memberCount + 250000;
 		return $total*$days;
 	}
 

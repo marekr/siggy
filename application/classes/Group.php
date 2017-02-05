@@ -35,6 +35,7 @@ class Group extends Model {
 							'allow_map_height_expand',
 							'chainmap_always_show_class',
 							'chainmap_max_characters_shown',
+							'last_billing_charged_at'
 							];
 
 	public $groupMembers = null;
@@ -186,6 +187,13 @@ class Group extends Model {
 		$num_chars = $num_chars->total;
 
 		return ($num_corps + $num_chars);
+	}
+
+	public function activeCharsFromDate(Carbon $date): int
+	{
+		return CharacterGroup::where('group_id', $this->id)
+					->where('last_group_access_at', '>=', $date)
+					->count();
 	}
 	
 	public function incrementStat(string $stat, array $acccessData)
