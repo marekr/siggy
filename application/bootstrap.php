@@ -6,10 +6,15 @@ use Illuminate\Database\Capsule\Manager as DB;
 define('SIGGY_VERSION', '2.35.0');
 
 
-$blade = new siggy\Blade(APPPATH.'views', APPPATH.'cache/blade');
-function view(string $path, ?array $args = null)
+$blade = null;
+function view(string $path, array $args = [])
 {
 	global $blade;
+	if($blade == null)
+	{
+		$blade = new siggy\Blade(APPPATH.'views', APPPATH.'cache/blade');
+	}
+
 	return $blade->make($path, $args);
 }
 
