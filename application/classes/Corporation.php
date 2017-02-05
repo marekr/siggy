@@ -11,7 +11,7 @@ class Corporation extends Model {
 	public $timestamps = true;
 	public $incrementing = false;
 
-	public const  SYNC_INTERVAL_MINUTES = 90;
+	public const  SYNC_INTERVAL_MINUTES = 60*24;
 
 	protected $fillable = [
 		'id',
