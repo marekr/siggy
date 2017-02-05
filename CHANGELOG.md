@@ -1,6 +1,6 @@
 # siggy Changelog
 
-## 2.34.0 - 2017-02-04
+## 2.35.0 - 2017-02-04
 ### Changes
 The methodology behind billing has changed. Charges are now based on actual usage of siggy on mostly a character basis per day. This is
 a replacement for the original system that simply summed up the total number of characters in corps and standalone that were added to siggy.
@@ -12,7 +12,7 @@ The charge per character has been adjusted to compensate and may yet still chang
 
 For a fresh start, all balances under 0 have been reset to 1,000,000 ISK.
 
-## 2.33.0 - 2017-02-03
+## 2.34.0 - 2017-02-03
 ### Changes
 - Reimplemented cron jobs in a more stable/sane structure
 
