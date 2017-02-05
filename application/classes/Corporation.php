@@ -4,6 +4,8 @@ use Carbon\Carbon;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Eloquent\Model;
 
+use Siggy\ESI\Client as ESIClient;
+
 class Corporation extends Model {
 
 	public $timestamps = true;
@@ -95,22 +97,17 @@ class Corporation extends Model {
 	{
 		$details = null;
 
-		ESIHelper::configure();
-
-		$api_instance = new ESI\Api\CorporationApi();
-		$datasource = "tranquility"; // string | The server name you would like data from
-
-		try {
-			$result = $api_instance->getCorporationsCorporationId($id, $datasource);
-			
-			$details = ['member_count' => (int)$result['member_count'],
-				'name' => $result['corporation_name'],
-				'ticker' => $result['ticker'],
-				'alliance_id' => (int)$result['alliance_id'],
+		$client = new ESIClient();
+		$result = $client->getCorporationInformationV1($id);
+		
+		if($result != null)
+		{
+			$details = ['member_count' => (int)$result -> member_count,
+				'name' => $result->corporation_name,
+				'ticker' => $result->ticker,
+				'alliance_id' => property_exists($result, 'alliance_id') ? $result->alliance_id : 0
 				//todo, add back description
 			];
-		} catch (Exception $e) {
-			return null;
 		}
 
 		return $details;
