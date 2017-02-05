@@ -43,8 +43,10 @@ class BillingChargeCommand extends Command
 	{
 		$dayAgo = Carbon::now()->subDay();
 		$groups = Group::where('billable',1)
-			->where('last_billing_charge_at', '<',$dayAgo)
-			->orWhereNull('last_billing_charge_at')
+			->where( function($q) use ($dayAgo) {
+				$q->where('last_billing_charge_at', '<',$dayAgo)
+					->orWhereNull('last_billing_charge_at');
+			})
 			->chunk(50, function ($groups) use ($dayAgo) {
 				foreach($groups as $group)
 				{
