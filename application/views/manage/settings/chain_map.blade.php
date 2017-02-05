@@ -1,3 +1,8 @@
+@extends('layouts.manage',[
+							'title' => 'siggy.manage: chainmap settings'
+						])
+
+@section('content')
 <form role="form" action="<?php echo URL::base(TRUE,TRUE); ?>manage/settings/chain_map" method="POST">
 	<fieldset>
 		<legend>Basic</legend>
@@ -20,3 +25,4 @@
 		<button type="button" class="btn" onclick="history.go(-1);return false;">Cancel</button>
 	</div> 			
 </form>
+@endsection

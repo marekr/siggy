@@ -35,28 +35,12 @@ class Controller_Manage_Group extends Controller_Manage
 		}
 		else
 		{
-			HTTP::redirect('account/overview');
+			HTTP::redirect('manage/access/denied');
 		}
-	}
-	/**
-	* View: Access not allowed.
-	*/
-	public function action_noaccess()
-	{
-		$this->template->title = ___('Access not allowed');
-		$view = $this->template->content = View::factory('user/noaccess');
 	}
 
 	public function action_members()
 	{
-		$this->template->title = ___('Group management');
-
-		$view = $this->template->content = View::factory('manage/group/members');
-
-		$view->set('user', Auth::$user );
-
-		$group = Auth::$user->group;
-
 		$chainmaps = Chainmap::where('group_id', Auth::$user->group->id)
 						->get()
 						->keyBy('chainmap_id')
@@ -65,26 +49,28 @@ class Controller_Manage_Group extends Controller_Manage
 
 		foreach($chainmaps as $c)
 		{
-			$html = View::factory('manage/group/members_table');
-
 			$members = DB::select("SELECT gm.* FROM groupmembers gm
 													LEFT JOIN chainmaps_access a ON(gm.id=a.groupmember_id)
 													WHERE chainmap_id=?",[$c->chainmap_id]);
-			$html->set('members', $members);
-			$html->set('chainmap_id', $c->chainmap_id);
+			
+			$html = view('manage.group.members_table', [
+													'members' => $members,
+													'chainmap_id' => $c->chainmap_id
+												]);
 
 			$membersHTML[ $c->chainmap_id ] = $html;
 		}
-
-		$view->set('group', $group );
-		$view->set('chainmaps', $chainmaps );
-		$view->set('membersHTML', $membersHTML );
+		
+		$resp = view('manage.group.members', [
+												'chainmaps' => $chainmaps,
+												'membersHTML' => $membersHTML
+											]);
+		
+		$this->response->body($resp);
 	}
 
 	public function action_addMember()
 	{
-		$this->template->title = ___('Group management');
-
 		$id = intval($this->request->param('id'));
 
 		if( $id == 0 || $id == 1 )
@@ -92,7 +78,6 @@ class Controller_Manage_Group extends Controller_Manage
 			$results = array();
 			$errors = array();
 			$data = array('memberType' => 'corp');
-			$view = View::factory('manage/group/addMemberSimple');
 
 			if ($this->request->method() == "POST")
 			{
@@ -106,26 +91,25 @@ class Controller_Manage_Group extends Controller_Manage
 				{
 					if($_POST['memberType'] == 'char')
 					{
-						$results = Character::searchEVEAPI($_POST['searchName']);
+						$results = Character::searchEVEAPI($_POST['searchName'], false);
 					}
 
 					if($_POST['memberType'] == 'corp')
 					{
-						$results = Corporation::searchEVEAPI($_POST['searchName']);
+						$results = Corporation::searchEVEAPI($_POST['searchName'], false);
 					}
-
-					$view->bind('memberType', $_POST['memberType'] );
 				}
 			}
-
-
-			$group = Auth::$user->group;
-			$view->set('group', $group );
-			$view->bind('data', $data);
-			$view->bind('errors', $errors);
-			$view->bind('results', $results);
-
-			$this->template->content = $view;
+		
+			$resp = view('manage.group.add_member_search', [
+													'data' => $data,
+													'errors' => $errors,
+													'results' => $results,
+													'memberType' => isset($_POST['memberType']) ? $_POST['memberType'] : 'char'
+												]);
+			
+			$this->response->body($resp);
+			return;
 		}
 		else if( $id == 2 )
 		{
@@ -172,9 +156,6 @@ class Controller_Manage_Group extends Controller_Manage
 						HTTP::redirect('manage/group/addMember');
 					}
 
-					$view = View::factory('manage/group/addMemberSimpleSelected');
-					$group = Auth::$user->group;
-
 					//see if member exists?
 					$member = GroupMember::findByGroupAndType(Auth::$user->groupID, $_POST['memberType'], (int)$_POST['eveID']);
 
@@ -203,14 +184,15 @@ class Controller_Manage_Group extends Controller_Manage
 						Message::add('error', ___('This member already has access to all chain maps possible'));
 						HTTP::redirect('manage/group/addMember');
 					}
-
-					$view->set('chainmaps', $chainmaps);
-					$view->set('group', $group );
-
-					$view->set('eveID', intval($_POST['eveID']) );
-					$view->set('accessName', $_POST['accessName'] );
-					$view->set('memberType', $_POST['memberType'] );
-					$this->template->content = $view;
+					
+					$resp = view('manage.group.add_member_selected', [
+															'chainmaps' => $chainmaps,
+															'eveID' => intval($_POST['eveID']),
+															'memberType' =>  $_POST['memberType'],
+														]);
+					
+					$this->response->body($resp);
+					return;
 				}
 				else
 				{
@@ -227,61 +209,9 @@ class Controller_Manage_Group extends Controller_Manage
 		}
 	}
 
-	public function action_editMember()
-	{
-		$id = $this->request->param('id');
-
-		$this->template->title = ___('Group management');
-
-		$member = GroupMember::find($id);
-		if( $member->groupID != Auth::$user->groupID )
-		{
-			Message::add('error', ___('Error: You do not have permission to edit that group member.'));
-			HTTP::redirect('manage/group/members');
-		}
-
-		$errors = array();
-
-		$view = View::factory('manage/group/memberForm');
-		$view->bind('errors', $errors);
-		$view->set('mode', 'edit');
-		$view->set('id', $id);
-
-		if ($this->request->method() == HTTP_Request::POST)
-		{
-			//delete to prevent LOLs
-			$save = [
-				'eveID' => $_POST['eveID'],
-				'accessName' => $_POST['accessName'],
-				'groupID' => Auth::$user->groupID,
-				'memberType' => $_POST['memberType']
-			];
-
-			$member->fill($save);
-			$member->save();
-
-			Auth::$user->group->save();
-			Auth::$user->group->recacheMembers();
-
-			HTTP::redirect('manage/group/members');
-			return;
-		}
-
-		$view->set('data', $member->as_array() );
-
-		$view->set('user', Auth::$user);
-
-		$group = Auth::$user->group;
-		$view->set('group', $group );
-
-		$this->template->content = $view;
-	}
-
 	public function action_removeMember()
 	{
 		$id = intval($this->request->param('id'));
-
-		$this->template->title = ___('Group management');
 
 		$member = GroupMember::find($id);
 		if( $member->groupID != Auth::$user->groupID )
@@ -290,8 +220,6 @@ class Controller_Manage_Group extends Controller_Manage
 			HTTP::redirect('manage/group/members');
 		}
 
-		$view = View::factory('manage/group/deleteForm');
-		$view->set('id', $id);
 		if ($this->request->method() == HTTP_Request::POST)
 		{
 			//trigger last_update value to change
@@ -300,9 +228,12 @@ class Controller_Manage_Group extends Controller_Manage
 
 			HTTP::redirect('manage/group/members');
 		}
-
-		$view->set('data', $member->as_array() );
-
-		$this->template->content = $view;
+		
+		$resp = view('manage.group.delete_form', [
+												'data' => $member->as_array(),
+												'id' => $id,
+											]);
+		
+		$this->response->body($resp);
 	}
 }

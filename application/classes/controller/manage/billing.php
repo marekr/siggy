@@ -32,16 +32,13 @@ class Controller_Manage_Billing extends Controller_Manage
 		}
 		else 
 		{
-			HTTP::redirect('account/overview');
+			HTTP::redirect('manage/access/denied');
 		}
 	}
 
 	public function action_overview()
 	{
-		$user = Auth::$user;
-		
 		$numUsers = Auth::$user->group->getCharacterUsageCount();
-		
 		
 		$payments = array();
 		$payments = DB::select("SELECT * FROM billing_payments WHERE groupID=:group ORDER BY paymentID DESC LIMIT 0,10",['group' => Auth::$user->group->id]);
@@ -49,26 +46,13 @@ class Controller_Manage_Billing extends Controller_Manage
 		$charges = array();
 		$charges = DB::select("SELECT * FROM billing_charges WHERE groupID=:group ORDER BY chargeID DESC LIMIT 0,10",['group' => Auth::$user->group->id]);
 	  
-		$view = View::factory('manage/billing/overview');
-		$view->bind('payments', $payments);
-		$view->bind('charges', $charges);
 		
-		$group = Auth::$user->group;
-		$view->set('group', $group );
+		$resp = view('manage.billing.overview', [
+												'payments' => $payments,
+												'charges' => $charges,
+												'numUsers' => $numUsers,
+											]);
 		
-		$view->set('numUsers', $numUsers);
-		
-		$this->template->content = $view;
-		$this->template->title = "Billing Overview";
+		$this->response->body($resp);
 	}
-
-	/**
-	* View: Access not allowed.
-	*/
-	public function action_noaccess() 
-	{
-		$this->template->title = ___('Access not allowed');
-		$view = $this->template->content = View::factory('user/noaccess');
-	}
-
 }

@@ -31,29 +31,24 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		}
 		else
 		{
-			HTTP::redirect('account/overview');
+			HTTP::redirect('manage/access/denied');
 		}
 	}
 
 	public function action_list()
 	{
-		$this->template->title = ___('Chain Map Management');
-
-		$view = $this->template->content = View::factory('manage/chainmaps/list');
-
-		$view->set('user', Auth::$user);
-
 		$group = Auth::$user->group;
 		$chainmaps = $group->chainMaps();
-
-		$view->set('chainmaps', $chainmaps );
+		$resp = view('manage.chainmaps.list', [
+												'chainmaps' => $chainmaps
+											]);
+		
+		$this->response->body($resp);
 	}
 
 	public function action_add()
 	{
 		$errors = array();
-
-		$this->template->title = ___('Add a Chain Map');
 
 		$group = Auth::$user->group;
 
@@ -61,12 +56,6 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 		$data->chainmap_name = '';
 		$data->chainmap_homesystems = '';
 		$data->chainmap_skip_purge_home_sigs = 1;
-
-		$view = View::factory('manage/chainmaps/add_edit_form');
-		$view->bind('errors', $errors);
-		$view->bind('chainmap', $data);
-
-		$view->set('mode', 'add');
 
 		if ($this->request->method() == "POST")
 		{
@@ -88,7 +77,13 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 			HTTP::redirect('manage/chainmaps/list');
 		}
 
-		$this->template->content = $view;
+		$resp = view('manage.chainmaps.add_edit_form', [
+												'mode' => 'add',
+												'chainmap' => $data,
+												'errors' => $errors
+											]);
+		
+		$this->response->body($resp);
 	}
 
 	private function ___process_home_system_input($txt)
@@ -147,9 +142,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 			Message::add('error', ___('Error: The group member does not exist.'));
 			HTTP::redirect('manage/group/members');
 		}
-
-		$view = View::factory('manage/chainmaps/remove_access');
-		$view->set('id', $id);
+		
 		if ($this->request->method() == HTTP_Request::POST)
 		{
 			DB::delete('DELETE FROM chainmaps_access
@@ -178,17 +171,18 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
 			HTTP::redirect('manage/group/members');
 		}
-
-		$view->set('member', $member );
-
-		$this->template->content = $view;
+		
+		$resp = view('manage.chainmaps.remove_access', [
+												'id' => $id,
+												'member' => $member,
+											]);
+		
+		$this->response->body($resp);
 	}
 
 	public function action_edit()
 	{
 		$id = intval($this->request->param('id'));
-
-		$this->template->title = ___('Edit Chain Map');
 
 		$chainmap = Chainmap::find($id, Auth::$user->groupID);
 		if( $chainmap == null )
@@ -197,15 +191,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 			HTTP::redirect('manage/chainmaps');
 		}
 
-		$group = Auth::$user->group;
-
-		$errors = array();
-
-		$view = View::factory('manage/chainmaps/add_edit_form');
-		$view->bind('errors', $errors);
-		$view->set('mode', 'edit');
-		$view->set('id', $id);
-
+		$errors = [];
 
 		if ( !empty($_POST)  )
 		{
@@ -224,18 +210,20 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
 			HTTP::redirect('manage/chainmaps/list');
 		}
-
-		$view->set('chainmap', $chainmap );
-
-		$this->template->content = $view;
+		
+		$resp = view('manage.chainmaps.add_edit_form', [
+												'mode' => 'edit',
+												'chainmap' => $chainmap,
+												'errors' => $errors
+											]);
+		
+		$this->response->body($resp);
 	}
 
 
 	public function action_remove()
 	{
 		$id = intval($this->request->param('id'));
-
-		$this->template->title = ___('Remove Chain Map');
 
 		$chainmap = Chainmap::find($id, Auth::$user->groupID);
 		if( $chainmap == null )
@@ -250,8 +238,6 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 			HTTP::redirect('manage/chainmaps');
 		}
 
-		$view = View::factory('manage/chainmaps/delete');
-		$view->set('id', $id);
 		if ( !empty($_POST)  )
 		{
 			try
@@ -294,18 +280,11 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				}
 			}
 		}
-
-		$view->set('chainmap', $chainmap);
-
-		$this->template->content = $view;
-	}
-
-	/**
-	* View: Access not allowed.
-	*/
-	public function action_noaccess()
-	{
-		$this->template->title = ___('Access not allowed');
-		$view = $this->template->content = View::factory('user/noaccess');
+		
+		$resp = view('manage.chainmaps.delete', [
+												'chainmap' => $chainmap
+											]);
+		
+		$this->response->body($resp);
 	}
 }

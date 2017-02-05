@@ -1,3 +1,9 @@
+
+@extends('layouts.manage',[
+							'title' => 'siggy.manage: Configure Access'
+						])
+
+@section('content')
 <h2>Configure Access</h2>
 <div class="pull-right">
     <?php echo Html::anchor('manage/access/add', ___('<i class="icon-plus-sign"></i>&nbsp;Add Access'), array('class' => 'btn btn-primary') ); ?>
@@ -23,3 +29,4 @@
 	</tbody>
 
 </table>
+@endsection

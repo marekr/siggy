@@ -36,8 +36,9 @@ class Controller_Manage_Access extends Controller_Manage
 	*/
 	public function action_denied() 
 	{
-		$this->template->title = ___('Access not allowed');
-		$view = $this->template->content = View::factory('manage/access/denied');
+		$resp = view('manage.access.denied');
+		
+		$this->response->body($resp);
 	}
    
 	public function action_set()
@@ -66,16 +67,15 @@ class Controller_Manage_Access extends Controller_Manage
 	
 	public function action_configure()
 	{
-		$this->template->title = ___('Configure access');
-		
-		$view = $this->template->content = View::factory('manage/access/configure');
-		
-		
 		$users = DB::select("SELECT u.username,ua.* FROM users u
 							JOIN users_group_acl ua ON(u.id = ua.user_id)
-                            WHERE ua.group_id = :groupID",['groupID' => Auth::$user->groupID]);
+							WHERE ua.group_id = :groupID",['groupID' => Auth::$user->groupID]);
 		
-		$view->users = $users;
+		$resp = view('manage.access.configure', [
+												'users' => $users,
+											]);
+		
+		$this->response->body($resp);
 	}
     
     public function action_remove()
@@ -103,101 +103,100 @@ class Controller_Manage_Access extends Controller_Manage
         HTTP::redirect('manage/access/configure');
     }
     
-    public function action_add()
-    {
-		$this->template->title = ___('Add access');
-        
-        $errors = array();
-                            
-        if ($this->request->method() == "POST") 
-        {
-            $userID = Auth::usernameExists( $_POST['username'] );
-            
-            if( !$userID )
-            {
-                $errors['username'] = "Invalid username";
-            }
-        
-            if( count($errors) )
-            {
-                $view = $this->template->content = View::factory('manage/access/accessform');
-                $view->mode = 'add';
-                $view->bind('data', $data);
-                $view->bind('errors', $errors);
-            }
-            else
-            {
-                $save = array(
-                            'can_view_logs' => isset( $_POST['can_view_logs'] ) ? intval( $_POST['can_view_logs'] ) : 0,
-                            'can_manage_group_members' => isset( $_POST['can_manage_group_members'] ) ? intval( $_POST['can_manage_group_members'] ) : 0,
-                            'can_manage_settings' => isset( $_POST['can_manage_settings'] ) ? intval( $_POST['can_manage_settings'] ) : 0,
-                            'can_view_financial' => isset( $_POST['can_view_financial'] ) ? intval( $_POST['can_view_financial'] ) : 0,
-                            'can_manage_access' => isset( $_POST['can_manage_access'] ) ? intval( $_POST['can_manage_access'] ) : 0,
-                            'user_id' => $userID,
-                            'group_id' => Auth::$user->groupID,
+	public function action_add()
+	{
+		$errors = [];
+		$data = [
+					'username' => '',
+					'can_view_logs' => 0,
+					'can_manage_group_members' => 0,
+					'can_manage_settings' => 0,
+					'can_view_financial' => 0,
+					'can_manage_access' => 0
+				];
+							
+		if ($this->request->method() == "POST") 
+		{
+			$userID = Auth::usernameExists( $_POST['username'] );
+			
+			if( !$userID )
+			{
+				$errors['username'] = "Invalid username";
+			}
+		
+			if( !count($errors) )
+			{
+				$save = array(
+							'can_view_logs' => isset( $_POST['can_view_logs'] ) ? intval( $_POST['can_view_logs'] ) : 0,
+							'can_manage_group_members' => isset( $_POST['can_manage_group_members'] ) ? intval( $_POST['can_manage_group_members'] ) : 0,
+							'can_manage_settings' => isset( $_POST['can_manage_settings'] ) ? intval( $_POST['can_manage_settings'] ) : 0,
+							'can_view_financial' => isset( $_POST['can_view_financial'] ) ? intval( $_POST['can_view_financial'] ) : 0,
+							'can_manage_access' => isset( $_POST['can_manage_access'] ) ? intval( $_POST['can_manage_access'] ) : 0,
+							'user_id' => $userID,
+							'group_id' => Auth::$user->groupID,
 							'created_at' => Carbon::now()->toDateTimeString()
-                        );
-                
-                
-                DB::table('users_group_acl')->insert($save);
-                
-                Message::add('success', 'User access added succesfully');
-                HTTP::redirect('manage/access/configure');
-            }
-        }
-        else
-        {
-            $view = $this->template->content = View::factory('manage/access/accessform');
-            $view->mode = 'add';
-            $view->bind('data', $data);
-            $view->errors = array();
-        }
+						);
+				
+				
+				DB::table('users_group_acl')->insert($save);
+				
+				Message::add('success', 'User access added succesfully');
+				HTTP::redirect('manage/access/configure');
+			}
+		}
+		
+		$resp = view('manage.access.accessform', [
+												'data' => $data,
+												'errors' => $errors,
+												'mode' => 'add'
+											]);
+		
+		$this->response->body($resp);
     }
-    
-    public function action_edit()
-    {
-		$this->template->title = ___('Edit access');
-        
-        $id = $this->request->param('id');
-        
-        $data = DB::selectOne("SELECT u.username,ua.* FROM users u
+
+	public function action_edit()
+	{
+		$id = $this->request->param('id');
+		$errors = [];
+		$data = DB::selectOne("SELECT u.username,ua.* FROM users u
 								JOIN users_group_acl ua ON(u.id = ua.user_id)
 								WHERE ua.user_id = :id AND ua.group_id = :groupID",
 								[
 									'id' => $id,
 									'groupID' => Auth::$user->group->id
 								]);
-                            
-        if( $data == null )
-        {
-            Message::add('error', 'Invalid user selected.');
+							
+		if( $data == null )
+		{
+			Message::add('error', 'Invalid user selected.');
 			HTTP::redirect('manage/access/configure');
-        }
-                            
-        if ($this->request->method() == "POST") 
-        {
-            $update = array(
-                        'can_view_logs' => isset( $_POST['can_view_logs'] ) ? intval( $_POST['can_view_logs'] ) : 0,
-                        'can_manage_group_members' => isset( $_POST['can_manage_group_members'] ) ? intval( $_POST['can_manage_group_members'] ) : 0,
-                        'can_manage_settings' => isset( $_POST['can_manage_settings'] ) ? intval( $_POST['can_manage_settings'] ) : 0,
-                        'can_view_financial' => isset( $_POST['can_view_financial'] ) ? intval( $_POST['can_view_financial'] ) : 0,
-                        'can_manage_access' => isset( $_POST['can_manage_access'] ) ? intval( $_POST['can_manage_access'] ) : 0,
+		}
+							
+		if ($this->request->method() == "POST") 
+		{
+			$update = array(
+						'can_view_logs' => isset( $_POST['can_view_logs'] ) ? intval( $_POST['can_view_logs'] ) : 0,
+						'can_manage_group_members' => isset( $_POST['can_manage_group_members'] ) ? intval( $_POST['can_manage_group_members'] ) : 0,
+						'can_manage_settings' => isset( $_POST['can_manage_settings'] ) ? intval( $_POST['can_manage_settings'] ) : 0,
+						'can_view_financial' => isset( $_POST['can_view_financial'] ) ? intval( $_POST['can_view_financial'] ) : 0,
+						'can_manage_access' => isset( $_POST['can_manage_access'] ) ? intval( $_POST['can_manage_access'] ) : 0,
 						'updated_at' => Carbon::now()->toDateTimeString()
-                    );
+					);
 			
-            DB::table('users_group_acl')->where( 'user_id', '=', $id )->where('group_id','=',Auth::$user->groupID)->update( $update );
-            
-            
-            Message::add('success', 'User access edited succesfully');
+			DB::table('users_group_acl')->where( 'user_id', '=', $id )->where('group_id','=',Auth::$user->groupID)->update( $update );
+			
+			
+			Message::add('success', 'User access edited succesfully');
 			HTTP::redirect('manage/access/configure');
-        }
-        else
-        {
-            $view = $this->template->content = View::factory('manage/access/accessform');
-            $view->mode = 'edit';
-            $view->id = $id;
-			$view->data = json_decode(json_encode($data), true);
-            $view->errors = array();
-        }
-    }
+		}
+		
+		$resp = view('manage.access.accessform', [
+												'data' => json_decode(json_encode($data), true),
+												'errors' => $errors,
+												'id' => $id,
+												'mode' => 'edit'
+											]);
+		
+		$this->response->body($resp);
+	}
 }

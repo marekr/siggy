@@ -26,20 +26,15 @@ class Controller_Manage_Settings extends Controller_Manage
 		} 
 		else 
 		{
-			HTTP::redirect('account/overview');
+			HTTP::redirect('manage/access/denied');
 		}
 	}
 	
 	public function action_chain_map()
 	{
-		$this->template->title = ___('Chain Map settings');
-
 		$group = Auth::$user->group;
 
-		$errors = array();
-		$view = $this->template->content = View::factory('manage/settings/chain_map');
-		
-		$view->bind('errors', $errors);
+		$errors = [];
 					
 		if ($this->request->method() == "POST") 
 		{
@@ -63,23 +58,20 @@ class Controller_Manage_Settings extends Controller_Manage
 			HTTP::redirect('manage/settings/chain_map');
 			return;
 		}
-
-		$view->set('group', $group );
-
-		$this->template->content = $view;
+		
+		$resp = view('manage.settings.chain_map', [
+												'errors' => $errors
+											]);
+		
+		$this->response->body($resp);
 	}
 	
 	public function action_statistics()
 	{
-		$this->template->title = ___('Chain Map settings');
-
 		$group = Auth::$user->group;
 
-		$errors = array();
-		$view = $this->template->content = View::factory('manage/settings/statistics');
-		
-		$view->bind('errors', $errors);
-					
+		$errors = [];
+
 		if ($this->request->method() == "POST") 
 		{
 			$save = [
@@ -101,9 +93,11 @@ class Controller_Manage_Settings extends Controller_Manage
 			return;
 		}
 
-		$view->set('group', $group );
-
-		$this->template->content = $view;
+		$resp = view('manage.settings.statistics', [
+												'errors' => $errors
+											]);
+		
+		$this->response->body($resp);
 	}
 	
 	private function ___get_point_multiplier($value)
@@ -125,14 +119,9 @@ class Controller_Manage_Settings extends Controller_Manage
    
 	public function action_general()
 	{
-		$this->template->title = ___('General settings');
-
 		$group = Auth::$user->group;
 
-		$errors = array();
-		$view = $this->template->content = View::factory('manage/settings/general');
-		
-		$view->bind('errors', $errors);
+		$errors = [];
 					
 		if ($this->request->method() == "POST") 
 		{
@@ -163,14 +152,10 @@ class Controller_Manage_Settings extends Controller_Manage
 			return;
 		}
 
-		$view->set('group', $group );
-
-		$this->template->content = $view;
+		$resp = view('manage.settings.general', [
+												'errors' => $errors
+											]);
+		
+		$this->response->body($resp);
 	}
-  
-    public function action_noaccess() 
-    {
-		$this->template->title = ___('Access not allowed');
-		$view = $this->template->content = View::factory('user/noaccess');
-    }
 }

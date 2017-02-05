@@ -1,3 +1,8 @@
+@extends('layouts.manage',[
+							'title' => 'siggy.manage: blacklist'
+						])
+
+@section('content')
 <h2>Manage Blacklist</h2>
 <p>Use the blacklist to block specific characters from viewing your siggy. This is useful generally when you kick characters.</p>
 <div class="pull-right">
@@ -33,3 +38,4 @@
 	</tbody>
 
 </table>
+@endsection

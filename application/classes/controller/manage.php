@@ -2,8 +2,7 @@
 
 use Illuminate\Database\Capsule\Manager as DB;
 
-
-require_once APPPATH.'classes/auth.php';
+use Siggy\View;
 
 /**
  * App controller class.
@@ -14,14 +13,7 @@ require_once APPPATH.'classes/auth.php';
  */
 class Controller_Manage extends Controller
 {
-	public $template = 'template/default';
-
-
-	public $auto_render = TRUE;
-
 	public $auth_required = FALSE;
-
-
 	public $secure_actions = array();
 
 	public function access_required()
@@ -126,30 +118,12 @@ class Controller_Manage extends Controller
 			$this->access_required();
 		}
 
-		if ($this->auto_render)
-		{
-
-			// only load the template if the template has not been set..
-			$this->template = View::factory($this->template);
-
-			$this->template->perms = isset(Auth::$user->perms()[ Auth::$user->groupID ]) ? Auth::$user->perms()[ Auth::$user->groupID ] : array();
-			// Initialize empty values
-			// Page title
-			$this->template->title   = '';
-			// Page content
-			$this->template->content = '';
-			// Styles in header
-			$this->template->styles = array();
-			// Scripts in header
-			$this->template->scripts = array();
-			// ControllerName will contain the name of the Controller in the Template
-			$this->template->controllerName = $this->request->controller();
-			// ActionName will contain the name of the Action in the Template
-			$this->template->actionName = $this->request->action();
-			// next, it is expected that $this->template->content is set e.g. by rendering a view into it.
-		}
-
-		$this->template->avaliableGroups = self::getAvaliableGroups();
+		View::share('avaliableGroups',self::getAvaliableGroups());
+		View::share('controllerName', $this->request->controller());
+		View::share('perms', isset(Auth::$user->perms()[ Auth::$user->groupID ]) ? Auth::$user->perms()[ Auth::$user->groupID ] : []);
+		View::share('user', Auth::$user);
+		View::share('group', Auth::$user->group);
+		View::share('actionName',$this->request->action());
 	}
 
 	/**
@@ -160,16 +134,6 @@ class Controller_Manage extends Controller
 	*/
 	public function after()
 	{
-		if ($this->auto_render === TRUE)
-		{
-			$styles = array( 'css/manage.css' => 'screen');
-			$scripts = array();
-
-			$this->template->styles = array_merge( $this->template->styles, $styles );
-			$this->template->scripts = array_merge( $this->template->scripts, $scripts );
-			// Assign the template as the request response and render it
-			$this->response->body( $this->template );
-		}
 		parent::after();
 	}
 }

@@ -1,4 +1,8 @@
+@extends('layouts.manage',[
+							'title' => 'siggy.manage: remove user from chainmap'
+						])
 
+@section('content')
 <h2>Confirm deletion</h2>
 <form action="<?php echo URL::base(true,true);?>manage/chainmaps/remove_access/<?php echo $id; ?>" method="POST">
 	<input type="hidden" value="1" name="confirm" />
@@ -8,3 +12,4 @@
 	<button type="submit" class="btn btn-danger">Confirm Deletion</button>
 	<button type="button" class="btn" onclick="history.go(-1);return false;">Cancel</button>
 </form>
+@endsection

@@ -1,3 +1,8 @@
+@extends('layouts.manage',[
+							'title' => 'siggy.manage: sessions'
+						])
+
+@section('content')
 <h3>Active Sessions (last 30 minutes)</h3>
 <p>This page shows all access that has occurred in the last 30 minutes. Data is organized by the reported character along with any additional information.</p>
 <p>Please note, if you change the group password or remove someones access, they will still show as an active session but they will no longer be updating.</p>
@@ -50,3 +55,4 @@
 	<?php endforeach; ?>
 	<?php endif; ?>
 </table>
+@endsection

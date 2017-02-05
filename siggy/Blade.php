@@ -1,6 +1,6 @@
 <?php
 
-namespace siggy;
+namespace Siggy;
 
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Container\Container as ContainerInterface;
@@ -15,7 +15,7 @@ class Blade
      *
      * @var Container
      */
-    protected $container;
+    public $container;
 
     /**
      * Engine Resolver

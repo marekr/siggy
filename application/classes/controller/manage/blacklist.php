@@ -28,22 +28,15 @@ class Controller_Manage_Blacklist extends Controller_Manage
 		}
 	}
 
-	/**
-	* View: Access not allowed.
-	*/
-	public function action_denied() 
-	{
-		$this->template->title = ___('Access not allowed');
-		$view = $this->template->content = View::factory('manage/access/denied');
-	}
-	
 	public function action_list()
 	{
-		$this->template->title = ___('Manage Blacklist');
+		$chars = Auth::$user->group->blacklistCharacters();
 		
-		$view = $this->template->content = View::factory('manage/blacklist/list');
-
-		$view->chars = Auth::$user->group->blacklistCharacters();
+		$resp = view('manage.blacklist.list', [
+												'chars' => $chars
+											]);
+		
+		$this->response->body($resp);
 	}
 
 	public function action_remove()
@@ -62,9 +55,9 @@ class Controller_Manage_Blacklist extends Controller_Manage
 
 	public function action_add()
 	{
-		$this->template->title = ___('Add Character To Blacklist');
-		
-		$errors = array();
+		$errors = [];
+		$data = ['reason' => '', 
+				'character_name' => ''];
 
 		if ($this->request->method() == "POST") 
 		{
@@ -75,7 +68,6 @@ class Controller_Manage_Blacklist extends Controller_Manage
 			}
 			else
 			{
-			
 				$charSearchResults = Character::searchEVEAPI( $_POST['character_name'], true );
 				if( $charSearchResults == null )
 				{
@@ -94,25 +86,28 @@ class Controller_Manage_Blacklist extends Controller_Manage
 				}
 			}
 				
-        
-            if( count($errors) == 0 )
+		
+			if( count($errors) == 0 )
 			{
-                $save = [
-                            'reason' => $_POST['reason'],
-                            'character_id' => $charSearchResults->id,
-                            'group_id' => Auth::$user->groupID
+				$save = [
+							'reason' => $_POST['reason'],
+							'character_id' => $charSearchResults->id,
+							'group_id' => Auth::$user->groupID
 				];
 
 				GroupBlacklistCharacter::create($save);
-                
-                Message::add('success', 'Character added to blacklist succesfully');
-                HTTP::redirect('manage/blacklist/list');
-            }
-        }
+				
+				Message::add('success', 'Character added to blacklist succesfully');
+				HTTP::redirect('manage/blacklist/list');
+			}
+		}
 
-		$view = $this->template->content = View::factory('manage/blacklist/form');
-		$view->mode = 'add';
-		$view->bind('data', $data);
-		$view->bind('errors', $errors);
-    }
+		$resp = view('manage.blacklist.form', [
+												'errors' => $errors,
+												'mode' => 'add',
+												'data' => $data
+											]);
+		
+		$this->response->body($resp);
+	}
 }

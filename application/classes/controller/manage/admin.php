@@ -31,17 +31,8 @@ class Controller_Manage_Admin extends Controller_Manage
 		} 
 		else 
 		{
-			HTTP::redirect('manage/admin/noaccess');
+			HTTP::redirect('manage/access/denied');
 		}
-	}
-
-	/**
-	* View: Access not allowed.
-	*/
-	public function action_noaccess() 
-	{
-		$this->template->title = ___('Access not allowed');
-		$view = $this->template->content = View::factory('user/noaccess');
 	}
    
 	public function action_changeGroup()

@@ -33,23 +33,23 @@ class Controller_Pages extends FrontController {
 				HTTP::redirect('/account/login');
 			}
 			
-			$resp = view('pages.create_group_intro', []);
+			$resp = view('pages.create_group_intro');
 		}
 		else if( $page == 'costs' )
 		{
-			$resp = view('pages.costs', []);
+			$resp = view('pages.costs');
 		}
 		else if( $page == 'about' )
 		{
-			$resp = view('pages.about', []);
+			$resp = view('pages.about');
 		}
 		else if( $page == 'no-group-access')
 		{
-			$resp = view('pages.no_group_access',[]);
+			$resp = view('pages.no_group_access');
 		}
 		else
 		{
-			$resp = view('pages.home', []);
+			$resp = view('pages.home');
 		}
 
 

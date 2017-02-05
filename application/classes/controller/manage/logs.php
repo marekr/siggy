@@ -43,7 +43,7 @@ class Controller_Manage_Logs extends Controller_Manage
 		} 
 		else 
 		{
-			HTTP::redirect('account/overview');
+			HTTP::redirect('manage/access/denied');
 		}
 	}
 	
@@ -54,8 +54,6 @@ class Controller_Manage_Logs extends Controller_Manage
 												LEFT JOIN chainmaps cm ON(cm.chainmap_id = ss.chainmap_id)
 												LEFT JOIN characters c ON(c.id=ss.character_id)
 												WHERE ss.group_id=? ORDER BY ss.updated_at DESC",[Auth::$user->group->id]);
-
-		$view = View::factory('manage/logs/sessions');
 		
 		//lump the data by chars
 		$sessData = [];
@@ -72,13 +70,11 @@ class Controller_Manage_Logs extends Controller_Manage
 			$sessData[ $charID ]['data'][] = $sess;
 		}
 
-
-		$view->bind('sessions', $sessData);
-
-		$group = Auth::$user->group;
-
-		$this->template->content = $view;
-		$this->template->title = "Active Sessions";
+		$resp = view('manage.logs.sessions', [
+												'sessions' => $sessData,
+											]);
+		
+		$this->response->body($resp);
 	}
      
 	public function action_activity()
@@ -132,23 +128,12 @@ class Controller_Manage_Logs extends Controller_Manage
 		$logs = [];
 		$logs = DB::select("SELECT * FROM logs WHERE groupID=? " . $extraSQL . " ORDER BY logID DESC LIMIT ".$offset.",20",[Auth::$user->group->id]);
 
-		$view = View::factory('manage/logs/activity');
-		$view->bind('logs', $logs);
-		$view->bind('pagination', $paginationHTML);
-		$view->set('filterType', $filterType);
-
-		$group = Auth::$user->group;
-
-		$this->template->content = $view;
-		$this->template->title = "Activity Logs";
+		$resp = view('manage.logs.activity', [
+												'logs' => $logs,
+												'filterType' => $filterType,
+												'pagination' => $paginationHTML,
+											]);
+		
+		$this->response->body($resp);
 	}
-
-    /**
-    * View: Access not allowed.
-    */
-    public function action_noaccess() 
-    {
-		$this->template->title = ___('Access not allowed');
-		$view = $this->template->content = View::factory('user/noaccess');
-    }
 }

@@ -1,5 +1,10 @@
-<?php
 
+@extends('layouts.manage',[
+							'title' => 'siggy.manage: Add Access'
+						])
+
+@section('content')
+<?php
 if( $mode == 'edit' )
 {
 	$formUrl = URL::base(TRUE,TRUE).'manage/access/edit/'.$id;
@@ -8,16 +13,14 @@ else
 {
 	$formUrl =  URL::base(TRUE,TRUE).'manage/access/add';
 }
-
-
 ?>
-   <form role="form" action="<?php echo $formUrl; ?>" method="POST">
-   <h2><?php echo ($mode == 'edit' ?  ___('Editing Access') : ___('Adding Access') ); ?> for <?php echo $data['username']; ?></h2>
-        <?php if( $mode == 'add' ): ?>
-        
-        <?php echo formRenderer::input('Username', 'username', $data['username'], 'Siggy account username to add. Must be valid and already exist.', $errors); ?>
-        <?php endif; ?>
-   
+	<form role="form" action="<?php echo $formUrl; ?>" method="POST">
+	<h2><?php echo ($mode == 'edit' ?  ___('Editing Access') : ___('Adding Access') ); ?> for <?php echo $data['username']; ?></h2>
+		<?php if( $mode == 'add' ): ?>
+		
+		<?php echo formRenderer::input('Username', 'username', $data['username'], 'Siggy account username to add. Must be valid and already exist.', $errors); ?>
+		<?php endif; ?>
+
 		<?php echo formRenderer::checkbox('Can view logs?', 'can_view_logs', $data['can_view_logs'], '', $errors); ?>
 		<?php echo formRenderer::checkbox('Can manage group members?', 'can_manage_group_members', $data['can_manage_group_members'], '', $errors); ?>
 		<?php echo formRenderer::checkbox('Can manage settings?', 'can_manage_settings', $data['can_manage_settings'], '', $errors); ?>
@@ -37,4 +40,5 @@ else
 			
 			<button type="button" class="btn" onclick="history.go(-1);return false;">Cancel</button>
 		</div>
-   </form>
+	</form>
+@endsection
