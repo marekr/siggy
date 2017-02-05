@@ -36,14 +36,14 @@ class Kernel extends ConsoleKernel
 		          ->daily();
 		$schedule->command('billing:payments')
 		          ->hourlyAt(05);
-		$schedule->command('billing:charges')
+		$schedule->command('billing:charge')
 		          ->daily();
 		$schedule->command('eve:systemstats')
 		          ->hourlyAt(01);
 		$schedule->command('signatures:clear')
 		          ->dailyAt('01:00');
 		$schedule->command('corps:update')
-		          ->hourlyAt(05);
+		          ->dailyAt('02:00');
 	}
 
 	/**
