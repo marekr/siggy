@@ -115,21 +115,16 @@ class Corporation extends Model {
 	
 	static function searchEVEAPI( string $name ): ?array
 	{
-		$results = [];
+		$results = null;
 
-		$api_instance = new ESI\Api\SearchApi();
+		$client = new ESIClient();
+		$result = $client->getSearchV1($name, ['corporation']);
 
-		$categories = ['corporation'];
-		
-		$language = "en-us"; // string | Search locale
-		$strict = false; // bool | Whether the search should be a strict match
-		$datasource = "tranquility"; // string | The server name you would like data from
-
-		try {
-			$result = $api_instance->getSearch($name, $categories, $language, $strict, $datasource);
-			if(isset($result['corporation']))
+		if($result != null)
+		{
+			if(property_exists($result,'corporation'))
 			{
-				foreach($result['corporation'] as $id)
+				foreach($result->corporation as $id)
 				{
 					$corp = Corporation::find($id);
 					if($corp != null)
@@ -138,8 +133,6 @@ class Corporation extends Model {
 					}
 				}
 			}
-		} catch (Exception $e) {
-			return null;
 		}
 
 		return $results;

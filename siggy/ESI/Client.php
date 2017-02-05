@@ -28,16 +28,19 @@ class Client
 		$this->client = new GuzzleClient($options);
 	}
 
-	private function request($method, $route, $datasource = "tranquility")
+	private function request($method, $route, array $queryBits = [], $datasource = "tranquility")
 	{
 		$resp = null;
 		try
 		{
-			$resp = $this->client->request('GET', $route, [
+			$options =	[
 				'query' => [
 								'datasource' => $datasource
 							]
-			]);
+			];
+
+			$options['query'] = array_merge($options['query'],$queryBits);
+			$resp = $this->client->request($method, $route, $options);
 		}
 		catch(ClientException $e)
 		{
@@ -77,6 +80,27 @@ class Client
 	public function getCharacterInformationV4(int $character_id): ?\stdClass
 	{
 		$response = $this->request('GET', "/v4/characters/{$character_id}/");
+		
+		if( $response == null ||
+			$response->getStatusCode() != 200)
+		{
+			return null;
+		}
+		
+		$resp = $response->getBody();
+
+		return json_decode($resp);
+	}
+
+	
+	public function getSearchV1(string $search, array $categories, string $language = 'en-us', $strict = false): ?\stdClass
+	{
+		$response = $this->request('GET', "/v1/search/",[
+			'search' => $search,
+			'categories' => implode(",",$categories),
+			'language' => $language,
+			'strict' => $strict ? 'true' : 'false'
+		]);
 		
 		if( $response == null ||
 			$response->getStatusCode() != 200)

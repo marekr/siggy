@@ -125,21 +125,16 @@ class Character extends Model {
 	
 	static function searchEVEAPI(string $name, bool $strict = false): ?array
 	{
-		$results = [];
+		$results = null;
 
-		$api_instance = new ESI\Api\SearchApi();
+		$client = new ESIClient();
+		$result = $client->getSearchV1($name, ['character']);
 
-		$categories = ['character'];
-		
-		$language = "en-us"; // string | Search locale
-		$datasource = "tranquility"; // string | The server name you would like data from
-
-		try {
-			$result = $api_instance->getSearch($name, $categories, $language, $strict, $datasource);
-			
-			if(isset($result['character']))
+		if($result != null)
+		{	
+			if(property_exists($result,'character'))
 			{
-				foreach($result['character'] as $id)
+				foreach($result->character as $id)
 				{
 					$char = Character::find($id);
 					if($char != null)
@@ -148,8 +143,6 @@ class Character extends Model {
 					}
 				}
 			}
-		} catch (Exception $e) {
-			return null;
 		}
 
 		return $results;
