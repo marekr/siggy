@@ -98,7 +98,7 @@ class Corporation extends Model {
 		$details = null;
 
 		$client = new ESIClient();
-		$result = $client->getCorporationInformationV1($id);
+		$result = $client->getCorporationInformationV2($id);
 		
 		if($result != null)
 		{

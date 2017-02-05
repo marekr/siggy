@@ -59,9 +59,24 @@ class Client
 		}
 	}
 
-	public function getCorporationInformationV1(int $corporation_id): ?\stdClass
+	public function getCorporationInformationV2(int $corporation_id): ?\stdClass
 	{
-		$response = $this->request('GET', "/v1/corporations/{$corporation_id}/");
+		$response = $this->request('GET', "/v2/corporations/{$corporation_id}/");
+		
+		if( $response == null ||
+			$response->getStatusCode() != 200)
+		{
+			return null;
+		}
+		
+		$resp = $response->getBody();
+
+		return json_decode($resp);
+	}
+	
+	public function getCharacterInformationV4(int $character_id): ?\stdClass
+	{
+		$response = $this->request('GET', "/v4/characters/{$character_id}/");
 		
 		if( $response == null ||
 			$response->getStatusCode() != 200)

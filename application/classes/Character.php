@@ -4,6 +4,8 @@ use Carbon\Carbon;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Eloquent\Model;
 
+use Siggy\ESI\Client as ESIClient;
+
 class Character extends Model {
 	
 	public $timestamps = true;
@@ -105,21 +107,17 @@ class Character extends Model {
 
 	public static function getAPICharacterAffiliation(int $id): ?array
 	{
-		$details = [];
+		$details = null;
 
-		ESIHelper::configure();
+		$client = new ESIClient();
+		$result = $client->getCharacterInformationV4($id);
 
-		$api_instance = new ESI\Api\CharacterApi();
-		$datasource = "tranquility"; // string | The server name you would like data from
-
-		try {
-			$result = $api_instance->getCharactersCharacterId($id, $datasource);
+		if($result != null)
+		{
 			$details = [
-				'corporation_id' => $result['corporation_id'],
-				'character_name' => $result['name']
+				'corporation_id' => $result->corporation_id,
+				'character_name' => $result->name
 			];
-		} catch (Exception $e) {
-			return null;
 		}
 
 		return $details;
