@@ -49,6 +49,10 @@ class Client
 			//5xx errors
 			//placeholder as we can error log here
 		}
+		catch (\Exception $e) 
+		{
+			
+		}
 		finally
 		{
 			return $resp;
