@@ -3,6 +3,7 @@
 use Carbon\Carbon;
 use OpenCrest\OpenCrest;
 use SimpleCrest\Endpoint;
+use Siggy\ESI\Client as ESIClient;
 
 class Controller_Crest extends FrontController {
 	protected $output_array = array();
@@ -46,16 +47,8 @@ class Controller_Crest extends FrontController {
 		}
 		else if($sso->scope_esi_ui_write_waypoint)
 		{
-			ESI\Api\Configuration::getDefaultConfiguration()->setAccessToken($sso->access_token);
-			$api_instance = new ESI\Api\UserInterfaceApi();
-			$destination_id = $systemId; // int | The destination to travel to, can be solar system, station or structure's id
-			$clear_other_waypoints = $waypoint; // bool | Whether clean other waypoints beforing adding this one
-			$add_to_beginning = false; // bool | Whether this solar system should be added to the beginning of all waypoints
-			$datasource = "tranquility"; // string | The server name you would like data from
-			try {
-				$api_instance->postUiAutopilotWaypoint($destination_id, $clear_other_waypoints, $add_to_beginning, $datasource);
-			} catch (Exception $e) {
-			}
+			$client = new ESIClient($sso->access_token);
+			$client->postUiAutopilotWaypointV2($systemId, $waypoint, false);
 		}
 
 		$output = [];

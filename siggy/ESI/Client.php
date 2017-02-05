@@ -8,9 +8,12 @@ class Client
 {
 	private $client = null;
 	private $clientOptions = [];
+	private $accessToken = "";
 
 	public function __construct($accessToken = '', $timeout = 10)
 	{
+		$this->accessToken = $accessToken;
+
 		$options = [
 			'base_uri' => 'https://esi.tech.ccp.is/',
 			'timeout'  => $timeout,
@@ -26,6 +29,14 @@ class Client
 		}
 
 		$this->client = new GuzzleClient($options);
+	}
+
+	private function accessTokenRequired()
+	{
+		if(empty($this->accessToken))
+		{
+			throw new \BadFunctionCallException("Missing access token");
+		}
 	}
 
 	private function request($method, $route, array $queryBits = [], $datasource = "tranquility")
@@ -111,5 +122,25 @@ class Client
 		$resp = $response->getBody();
 
 		return json_decode($resp);
+	}
+
+	
+	public function postUiAutopilotWaypointV2(int $destination_id, bool $clear_other_waypoints, bool $add_to_beginning): bool
+	{
+		$this->accessTokenRequired();
+
+		$response = $this->request('POST', "/v2/ui/autopilot/waypoint/",[
+			'destination_id' => $destination_id,
+			'clear_other_waypoints' => $clear_other_waypoints ? 'true' : 'false',
+			'add_to_beginning' => $add_to_beginning ? 'true' : 'false'
+		]);
+		
+		if( $response == null ||
+			$response->getStatusCode() != 204)
+		{
+			return false;
+		}
+		
+		return true;
 	}
 }
