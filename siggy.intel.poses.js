@@ -220,13 +220,18 @@ intelposes.prototype.editPOS = function(posID)
 intelposes.prototype.removePOS = function(posID)
 {
 	var $this = this;
-	this.siggyMain.confirmDialog("Are you sure you want to delete the POS?", function() {
-		$.post(this.settings.baseUrl + 'pos/remove', {pos_id: posID}, function ()
-		{
-			$('#pos-'+posID).remove();
 
-			$this.forceUpdate = true;
-			$this.siggyMain.updateNow();
-		});
+	siggy2.Dialogs.confirm({
+		message: "Are you sure you want to delete the POS?",
+		title: "Confirm deletion",
+		yesCallback: function() {
+			$.post($this.settings.baseUrl + 'pos/remove', {pos_id: posID}, function ()
+			{
+				$('#pos-'+posID).remove();
+
+				$this.forceUpdate = true;
+				$this.siggyMain.updateNow();
+			});
+		}
 	});
 }

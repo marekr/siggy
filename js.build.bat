@@ -3,6 +3,7 @@ java.exe -jar compiler.jar ^
 --js=siggy.js ^
 --js=siggy.helpers.js ^
 --js=siggy.static.js ^
+--js=siggy.dialogs.js ^
 --js=siggy.intel.dscan.js ^
 --js=siggy.intel.poses.js ^
 --js=siggy.charactersettings.js ^

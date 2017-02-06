@@ -66,7 +66,7 @@ siggy2.Core = function( options )
 		sessionID: ''
 	};
 
-	this.settings = $.extend({}, this.defaults, options);
+	this.settings = $.extend(true, {}, this.defaults, options);
 
 	this.defaultDisplayStates = {
 		statsOpen: false,
@@ -89,6 +89,7 @@ siggy2.Core = function( options )
 	}
 
 	siggy2.Eve.Initialize(this.settings.baseUrl);
+	siggy2.Dialogs.init();
 
 	siggy2.Helpers.setupHandlebars();
 	this.initializeBasicSystemContextMenu();
@@ -102,10 +103,7 @@ siggy2.Core = function( options )
 		dispStates = $.parseJSON(displayStatesCookie);
 	}
 
-	this.displayStates = $.extend({}, this.defaultDisplayStates, dispStates);
-	this.displayStates.map = $.extend({}, this.defaultDisplayStates.map, dispStates.map);
-	this.displayStates.sigFilters = $.extend({}, this.defaultDisplayStates.sigFilters, dispStates.sigFilters);
-
+	this.displayStates = $.extend(true, {}, this.defaultDisplayStates, dispStates);
 
 	this.charactersettings = new charactersettings(this, this.settings.charsettings);
 	this.charactersettings.settings.baseUrl = this.settings.baseUrl;
@@ -181,7 +179,15 @@ siggy2.Core.prototype.initialize = function ()
 			if(!$this.inactive)
 			{
 				$this.inactive = true;
-				$this.displayFatalError("siggy session timed out due to one hour of inactivity");
+				
+				siggy2.Dialogs.alert({ 
+						message: "siggy session timed out due to one hour of inactivity", 
+						title:"Session expired",
+						okButtonText: "Refresh",
+						okCallback: function(){
+							window.location.reload(true);
+						}
+				});
 			}
 		},
 		idle: 1000*(60*60)*1.5,	// 60 minutes
@@ -400,27 +406,13 @@ siggy2.Core.prototype.getCurrentTime = function ()
 
 siggy2.Core.prototype.displayFatalError = function(message)
 {
-	$('#fatal-error-message').html(message);
-
-	$.blockUI({
-		message: $('#fatal-error'),
-		css: {
-			border: 'none',
-			padding: '15px',
-			background: 'transparent',
-			color: 'inherit',
-			cursor: 'auto',
-			textAlign: 'left',
-			top: '20%',
-			width: 'auto',
-			centerX: true,
-			centerY: true
-		},
-		overlayCSS: {
-			cursor: 'auto'
-		},
-		fadeIn:  0,
-		fadeOut:  0
+	siggy2.Dialogs.alert({ 
+			message: message, 
+			title:"Fatal error has occurred",
+			okButtonText: "Reload",
+			okCallback: function(){
+				window.location.reload(true);
+			}
 	});
 }
 
@@ -440,11 +432,8 @@ siggy2.Core.prototype.setupFatalErrorHandler = function()
 	$(document).ajaxSuccess( function() {
 		that.ajaxErrors = 0;
 	} );
-
-	$('#fatal-error-refresh').click( function() {
-		location.reload(true);
-	} );
 }
+
 
 siggy2.Core.prototype.openBox = function(ele)
 {
@@ -474,28 +463,6 @@ siggy2.Core.prototype.openBox = function(ele)
 
 	return false;
 }
-
-siggy2.Core.prototype.confirmDialog = function(message, yesCallback, noCallback)
-{
-	var $this = this;
-
-	$this.openBox("#confirm-dialog");
-
-	$("#confirm-dialog-message").text(message);
-	$("#confirm-dialog-yes").unbind('click').click( function() {
-		$.unblockUI();
-		if (typeof(yesCallback) != "undefined" ) {
-			yesCallback.call($this);
-		}
-	});
-	$("#confirm-dialog-no").unbind('click').click( function() {
-		$.unblockUI();
-		if (noCallback && $.isFunction(noCallback)) {
-			noCallback.call($this);
-		}
-	});
-}
-
 
 siggy2.Core.prototype.initializeBasicSystemContextMenu = function()
 {

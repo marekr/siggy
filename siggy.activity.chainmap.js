@@ -33,15 +33,20 @@ siggy2.Activity.Chainmap = function(core)
 
 	$('#chainmap-connections-table').on('click','.chainmap-connection-delete', function(e) {
 		var $row = this;
-		$this.core.confirmDialog("Are you sure you want to delete the connection?", function() {
-			var type = $($row).data('type')+"s";
+		siggy2.Dialogs.confirm(
+		{
+			title: "Confirm deletion",
+			message: "Are you sure you want to delete the connection?",
+			yesCallback: function() {
+				var type = $($row).data('type')+"s";
 
-			var hashes = {count: 1};
-			hashes[type] = [ $($row).data('hash') ];
+				var hashes = {count: 1};
+				hashes[type] = [ $($row).data('hash') ];
 
-			$this.core.activities.siggy.map.processConnectionDelete(hashes, $this.chainMapID);
+				$this.core.activities.siggy.map.processConnectionDelete(hashes, $this.chainMapID);
 
-			$($row).parent().parent().remove();
+				$($row).parent().parent().remove();
+			}
 		});
 	});
 

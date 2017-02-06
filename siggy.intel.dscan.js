@@ -126,10 +126,15 @@ inteldscan.prototype.updateDScan = function( data )
 
 inteldscan.prototype.removeDScan = function(dscanID)
 {
-	this.siggyMain.confirmDialog("Are you sure you want to delete the dscan entry?", function() {
-		$.post(this.settings.baseUrl + 'dscan/remove', {dscan_id: dscanID}, function ()
-		{
-			$('#dscan-'+dscanID).remove();
-		});
+	var $this = this;
+	siggy2.Dialogs.confirm({
+		message: "Confirm deletion",
+		title: "Are you sure you want to delete the dscan entry?",
+		yesCallback: function() {
+			$.post($this.settings.baseUrl + 'dscan/remove', {dscan_id: dscanID}, function ()
+			{
+				$('#dscan-'+dscanID).remove();
+			});
+		}
 	});
 }
