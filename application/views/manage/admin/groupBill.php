@@ -25,5 +25,4 @@
 							<td><?php echo $cost;?> mil isk</td>
 						</tr>
 					</table>
-<?php // echo View::factory('profiler/stats'); ?>
    </div>

@@ -20,5 +20,4 @@
 						</tr>
 					<?php endforeach ?>
 					</table>
-<?php // echo View::factory('profiler/stats'); ?>
-   </div>
+	</div>
