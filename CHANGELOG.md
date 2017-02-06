@@ -3,6 +3,10 @@
 ## 2.36.0 - 2017-02-05
 ### Changes
 - Migrated management pages to the new templating system
+- Replaced swagger generated library for ESI with a simpler hand written implementation
+
+### Fixes
+- Fixed slight issue with billing not applying properly to some groups
 
 ## 2.35.0 - 2017-02-04
 ### Changes
