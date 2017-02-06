@@ -7,3 +7,4 @@ git submodule update --init --recursive
 cd public/js
 call js.thirdparty.bat
 call js.build.bat
+cd ../../
