@@ -40,7 +40,12 @@ siggy2.Dialogs.build = function(dialogData, buttons)
 		}
 	});
 
-	dialog.one("closeRequested.dialog", function(){
+	
+	dialog.one("shown.dialog", function(){
+		dialog.find('.btn-focus-me').focus();
+	});
+
+	dialog.one("hide.dialog", function(){
 		dialog.off("click");
 		$.unblockUI();
 		dialog.remove();
@@ -74,9 +79,10 @@ siggy2.Dialogs.alert = function(options)
 					options.okCallback();
 				}
 
-				dialog.trigger('closeRequested.dialog');
+				dialog.trigger('hide.dialog');
 			},
-			style: 'primary'
+			style: 'primary',
+			focus: false
 		}
 	};
 
@@ -116,7 +122,7 @@ siggy2.Dialogs.confirm = function(options)
 					options.yesCallback();
 				}
 
-				dialog.trigger('closeRequested.dialog');
+				dialog.trigger('hide.dialog');
 			},
 			style: 'primary'
 		},
@@ -129,9 +135,10 @@ siggy2.Dialogs.confirm = function(options)
 					options.noCallback();
 				}
 
-				dialog.trigger('closeRequested.dialog');
+				dialog.trigger('hide.dialog');
 			},
-			style: 'danger'
+			style: 'danger',
+			focus: true
 		}
 	};
 
@@ -162,6 +169,11 @@ siggy2.Dialogs.populateButtons = function(dialog, buttons)
 		{
 			buttonEle.addClass('btn-'+button.style);
 		}
+
+		if(button.focus)
+		{
+			buttonEle.addClass('btn-focus-me');
+		}
 	});
 
 	dialog.data('callbacks',callbacks);
@@ -191,11 +203,14 @@ siggy2.Dialogs.show = function(dialog)
 			cursor: 'auto'
 		},
 		fadeIn:  0,
-		fadeOut:  0
+		fadeOut:  0,
+		focusInput: false
 	});
+	
+	dialog.trigger('shown.dialog');
 }
 
 siggy2.Dialogs.hide = function(dialog)
 {
-	dialog.trigger('closeRequested.dialog');
+	dialog.trigger('hide.dialog');
 }
