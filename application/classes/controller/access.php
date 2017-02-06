@@ -77,6 +77,12 @@ class Controller_Access extends FrontController {
 	
 	public function action_groups()
 	{
+		if(!Auth::loggedIn())
+		{
+			//kick them off where hopefully the frontpagecontroller pushes them to the right spot
+			HTTP::redirect('/');
+		}
+
 		$groups = Auth::$session->accessibleGroups();
 		if ($this->request->method() == "POST")
 		{
