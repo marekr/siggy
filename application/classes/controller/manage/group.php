@@ -188,6 +188,7 @@ class Controller_Manage_Group extends Controller_Manage
 					$resp = view('manage.group.add_member_selected', [
 															'chainmaps' => $chainmaps,
 															'eveID' => intval($_POST['eveID']),
+															'accessName' => $_POST['accessName'],
 															'memberType' =>  $_POST['memberType'],
 														]);
 					
