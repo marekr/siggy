@@ -1,5 +1,9 @@
 # siggy Changelog
 
+## 2.36.0 - 2017-02-05
+### Changes
+- Migrated management pages to the new templating system
+
 ## 2.35.0 - 2017-02-04
 ### Changes
 The methodology behind billing has changed. Charges are now based on actual usage of siggy on mostly a character basis per day. This is
