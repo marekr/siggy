@@ -358,7 +358,6 @@
     </div>
     <br />
 
-	@include('siggy/boxes/fatal_error')
 	@include('siggy/boxes/confirm')
 	@include('siggy/boxes/hotkey_helper')
 	@include('siggy/boxes/group_notes')
@@ -386,6 +385,7 @@
 	@include('siggy/handlebars/chainmap_table_row')
 	@include('siggy/handlebars/sig_create_new_wormhole_form')
 	@include('siggy/handlebars/jump_log_entry')
+	@include('siggy/handlebars/dialog_base')
 
 	<script type='text/javascript'>
 		$(document).ready(function() {

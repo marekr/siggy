@@ -1,5 +1,10 @@
 # siggy Changelog
 
+## 2.37.0 - 2017-02-06
+### Changes
+- Reimplemented the following dialogs: Fatal Error, Session Timeout, POS Delete, and Dscan Delete in a new central class
+- Included a new style for updated dialogs
+
 ## 2.36.0 - 2017-02-05
 ### Changes
 - Migrated management pages to the new templating system

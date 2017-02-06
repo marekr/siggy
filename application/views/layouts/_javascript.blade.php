@@ -45,6 +45,7 @@
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.activity.notifications.js?{{ time() }}'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.activity.astrolabe.js?{{ time() }}'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.activity.chainmap.js?{{ time() }}'></script>
+<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.dialogs.js?{{ time() }}'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/vendor/moment.js?{{ time() }}'></script>
 @else
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/thirdparty.compiled.js?{{ SIGGY_VERSION }}'></script>
