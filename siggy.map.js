@@ -785,7 +785,7 @@ siggy2.Map.prototype.processConnectionDelete = function(hashes, chainMapID)
 				dataType: 'json'
 			})
 			.fail(function(){
-				alert('Error deleting connection');
+				siggy2.Dialogs.alertServerError("deleting the connection");
 			})
 			.always(function(){
 				$(document).trigger('siggy.updateRequested', false );

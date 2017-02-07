@@ -54,6 +54,7 @@ siggy2.Dialogs.build = function(dialogData, buttons)
 	return dialog;
 }
 
+
 siggy2.Dialogs.alert = function(options)
 {
 	var defaultOptions = {
@@ -213,4 +214,13 @@ siggy2.Dialogs.show = function(dialog)
 siggy2.Dialogs.hide = function(dialog)
 {
 	dialog.trigger('hide.dialog');
+}
+
+
+siggy2.Dialogs.alertServerError = function(action)
+{
+	return siggy2.Dialogs.alert({ 
+					message: "The server encountered an error while "+action+", sorry", 
+					title:"Server Error"
+			})
 }

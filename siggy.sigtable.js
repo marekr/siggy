@@ -287,18 +287,20 @@ siggy2.SigTable.prototype.sigAddHandler = function()
 						$('#sig-table').trigger('update');
 					},
 			dataType: 'json'
+		}).fail(function(){
+			siggy2.Dialogs.alertServerError("saving the signature");
+		}).done(function(){
+			sigEle.val('');
+			if( $this.settings.showSigSizeCol )
+			{
+				sizeEle.val('');
+			}
+			typeEle.val('none');
+			descEle.val('');
+			siteEle.replaceWith($('<select>').attr('name', 'site').addClass('siggy-input'));
+
+			sigEle.focus();
 		});
-
-	sigEle.val('');
-	if( $this.settings.showSigSizeCol )
-	{
-		sizeEle.val('');
-	}
-	typeEle.val('none');
-	descEle.val('');
-	siteEle.replaceWith($('<select>').attr('name', 'site').addClass('siggy-input'));
-
-	sigEle.focus();
 }
 
 siggy2.SigTable.prototype.massAddHandler = function(systemID, data)
@@ -951,7 +953,7 @@ siggy2.SigTable.prototype.editSig = function (id)
 			dataType: 'json'
 		})
 		.fail(function(){
-			alert('Error saving sig');
+			siggy2.Dialogs.alertServerError("saving the signature");
 		})
 		.always(function(){
 			$this.editingSig = false;
