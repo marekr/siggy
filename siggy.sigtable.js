@@ -153,41 +153,35 @@ siggy2.SigTable.prototype.initializeHotkeys = function()
 siggy2.SigTable.prototype.setupAddDialog = function ()
 {
 	var $this = this;
-	var massAddBlob = $('#mass-add-sig-box textarea[name=blob]');
-	massAddBlob.val('');
 
-	$('#mass-add-sig-box form').on('submit', function(e)
+	$('#mass-add-sigs').click(function (ev)
 	{
-		e.preventDefault();
+		ev.preventDefault();
 
-		var data = $('#mass-add-sig-box form').serializeObject();
-		$this.massAddHandler($this.systemID, data);
-	});
+		var dlg = siggy2.Dialogs.dialog({
+								title: "Mass Sig Reader",
+								content: $('#template-dialog-mass-add-content').html(),
+								id: "mass-add-sig-box",
+								buttons:{
+									submit: {
+										text: "Submit",
+										style: 'primary',
+										callback: function(dialog) {
+											var data = $('#mass-add-sig-box form').serializeObject();
+											$this.massAddHandler($this.systemID, data);
+										}
+									},
+									cancel: {
+										text: "Cancel",
+										style: 'danger',
+										callback: function(dialog) {
+											dialog.trigger('hide.dialog');
+										}
+									},
+								}
+							});
 
-	$('#mass-add-sigs').click(function ()
-	{
-		$.blockUI({
-			message: $('#mass-add-sig-box'),
-			css: {
-				border: 'none',
-				padding: '15px',
-				background: 'transparent',
-				color: 'inherit',
-				cursor: 'auto',
-				textAlign: 'left',
-				top: '20%',
-				width: 'auto',
-				centerX: true,
-				centerY: false
-			},
-			overlayCSS: {
-				cursor: 'auto'
-			},
-			fadeIn:  0,
-			fadeOut:  0
-		});
-		$('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);
-		return false;
+		siggy2.Dialogs.show(dlg);
 	});
 
 	//override potential form memory
@@ -332,11 +326,6 @@ siggy2.SigTable.prototype.massAddHandler = function(systemID, data)
 					$(document).trigger('siggy.updateRequested', true );
 				}
 			}
-
-			var massAddBlob = $('#mass-add-sig-box textarea[name=blob]');
-			massAddBlob.val('');
-
-			$('#mass-add-sig-box input[name=delete_nonexistent_sigs]').prop('checked', false);
 
 			$.unblockUI();
 		});

@@ -36,7 +36,7 @@ siggy2.Dialogs.build = function(dialogData, buttons)
 
 		if(!typeof(callbacks[key]) != "undefined")
 		{
-			callbacks[key]();
+			callbacks[key](dialog);
 		}
 	});
 
@@ -73,11 +73,11 @@ siggy2.Dialogs.alert = function(options)
 	var buttons = {
 		ok: {
 			text: options.okButtonText,
-			callback: function()
+			callback: function(dialog)
 			{
 				if(options.okCallback != null)
 				{
-					options.okCallback();
+					options.okCallback(dialog);
 				}
 
 				dialog.trigger('hide.dialog');
@@ -116,11 +116,11 @@ siggy2.Dialogs.confirm = function(options)
 	var buttons = {
 		yes: {
 			text: options.yesText,
-			callback: function()
+			callback: function(dialog)
 			{
 				if(options.yesCallback != null)
 				{
-					options.yesCallback();
+					options.yesCallback(dialog);
 				}
 
 				dialog.trigger('hide.dialog');
@@ -129,11 +129,11 @@ siggy2.Dialogs.confirm = function(options)
 		},
 		no: {
 			text: options.noText,
-			callback: function()
+			callback: function(dialog)
 			{
 				if(options.noCallback != null)
 				{
-					options.noCallback();
+					options.noCallback(dialog);
 				}
 
 				dialog.trigger('hide.dialog');
@@ -182,7 +182,25 @@ siggy2.Dialogs.populateButtons = function(dialog, buttons)
 
 siggy2.Dialogs.dialog = function(options)
 {
-	var options = getOptions(options);
+	var defaultOptions = {
+		content: null,
+		title: '',
+		id: '',
+		buttons: {}
+	};
+
+	var options = this.getOptions(defaultOptions, options);
+
+	var dialogData = {
+		title: options.title,
+		content: options.content,
+		type: 'dialog',
+		id: options.id
+	};
+
+	var dialog = this.build(dialogData, options.buttons);
+
+	return dialog;
 }
 
 siggy2.Dialogs.show = function(dialog)
