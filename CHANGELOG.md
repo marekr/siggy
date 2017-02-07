@@ -1,5 +1,14 @@
 # siggy Changelog
 
+## 2.38.0 - 2017-02-07
+### Changes
+- All browser blocking alert messages have been moved to page html based alert messages
+- Mass sig reader has been moved to the new dialog class
+- Adjustments made to input and output of mass sig reader and will now report server errors
+
+### Fixes
+- Fixed initial button focus on confirm dialogs
+
 ## 2.37.0 - 2017-02-06
 ### Changes
 - Reimplemented the following dialogs: Fatal Error, Session Timeout, POS Delete, and Dscan Delete in a new central class

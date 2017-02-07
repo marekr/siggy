@@ -184,11 +184,6 @@ td.sig input
 	display: inline-block;
 }
 
-#mass-add-sig-box
-{
-    display:none;
-    width:300px;
-}
 
 #mass-add-sigs
 {
