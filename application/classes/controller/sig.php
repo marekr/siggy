@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Illuminate\Database\Capsule\Manager as DB;
+use Siggy\StandardResponse;
 
 class Controller_Sig extends FrontController {
 
@@ -91,24 +92,28 @@ class Controller_Sig extends FrontController {
 		$this->profiler = NULL;
 		$this->response->noCache();
 
+		$resp = new StandardResponse();
+
 		if(	 !$this->siggyAccessGranted() )
 		{
-			$this->response->json(['error' => 1, 'errorMsg' => 'Invalid auth']);
+			$this->response->json(StandardResponse::error('Invalid Auth'));
 			return;
 		}
+		
+		$postData = json_decode($this->request->body(), true);
 
 		//load settings to trigger localization
 		$this->loadSettings();
 
-		if( isset($_POST['systemID']) && isset($_POST['blob']) && !empty($_POST['blob']) )
+		if( isset($postData['system_id']) && isset($postData['blob']) && !empty($postData['blob']) )
 		{
-			$sigs = miscUtils::parseIngameSigExport( $_POST['blob'] );
+			$sigs = miscUtils::parseIngameSigExport( $postData['blob'] );
 
-			$systemID = intval($_POST['systemID']);
+			$systemID = intval($postData['system_id']);
 
 			$addedSigs = [];
 
-			$deleteNonExisting = isset($_POST['delete_nonexistent_sigs']) ? (int)$_POST['delete_nonexistent_sigs'] : 0;
+			$deleteNonExisting = isset($postData['delete_nonexistent_sigs']) ? (int)$postData['delete_nonexistent_sigs'] : 0;
 			if( $deleteNonExisting )
 			{
 				$sigList = [];
@@ -176,9 +181,12 @@ class Controller_Sig extends FrontController {
 					$this->chainmap->update_system($systemID, array('lastUpdate' => time(),'lastActive' => time() ) );
 				}
 
-				$this->response->json($addedSigs);
+				$this->response->json(StandardResponse::ok($addedSigs));
+				return;
 			}
 		}
+
+		$this->response->json(StandardResponse::ok());
 	}
 
 	public function action_edit()
