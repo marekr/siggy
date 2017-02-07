@@ -162,12 +162,6 @@ siggy2.SigTable.prototype.setupAddDialog = function ()
 
 		var data = $('#mass-add-sig-box form').serializeObject();
 		$this.massAddHandler($this.systemID, data);
-
-		massAddBlob.val('');
-
-		$('#mass-add-sig-box input[name=delete_nonexistent_sigs]').prop('checked', false);
-
-		$.unblockUI();
 	});
 
 	$('#mass-add-sigs').click(function ()
@@ -277,8 +271,7 @@ siggy2.SigTable.prototype.sigAddHandler = function()
 			url: $this.settings.baseUrl + 'sig/add',
 			data: JSON.stringify(postData),
 			contentType: 'application/json',
-			success: function (newSig)
-					{
+			success: function (newSig) {
 						for (var i in newSig)
 						{
 							$this.addSigRow(newSig[i]);
@@ -288,7 +281,10 @@ siggy2.SigTable.prototype.sigAddHandler = function()
 					},
 			dataType: 'json'
 		}).fail(function(){
-			siggy2.Dialogs.alertServerError("saving the signature");
+			if(jqXHR.status >= 500)
+			{
+				siggy2.Dialogs.alertServerError("saving the signature");
+			}
 		}).done(function(){
 			sigEle.val('');
 			if( $this.settings.showSigSizeCol )
@@ -307,25 +303,43 @@ siggy2.SigTable.prototype.massAddHandler = function(systemID, data)
 {
 	var $this = this;
 
-	data.systemID = systemID;
+	data.system_id = systemID;
 
-	$.post( $this.settings.baseUrl + 'sig/mass_add', data,
-	function (newSig)
-	{
-		for (var i in newSig)
-		{
-			$this.addSigRow(newSig[i]);
-		}
+	$.ajax({
+			type: 'post',
+			url: $this.settings.baseUrl + 'sig/mass_add', 
+			data: JSON.stringify(data),
+			contentType: 'application/json'
+		}).fail(function(jqXHR){
+			if(jqXHR.status >= 500)
+			{
+				siggy2.Dialogs.alertServerError("parsing signature paste");
+			}
+		}).done(function(response){
+			if(response.status == "ok" && typeof(response.result) != "undefined")
+			{
+				for (var i in response.result)
+				{
+					$this.addSigRow(response.result[i]);
+				}
 
-		$.extend($this.sigData, newSig);
-		$('#sig-table').trigger('update');
+				$.extend($this.sigData, response.result);
+				$('#sig-table').trigger('update');
 
-		//trigger the table to update...hackishly
-		if(data.delete_nonexistent_sigs)
-		{
-			$(document).trigger('siggy.updateRequested', true );
-		}
-	}, 'json');
+				//trigger the table to update...hackishly
+				if(data.delete_nonexistent_sigs)
+				{
+					$(document).trigger('siggy.updateRequested', true );
+				}
+			}
+
+			var massAddBlob = $('#mass-add-sig-box textarea[name=blob]');
+			massAddBlob.val('');
+
+			$('#mass-add-sig-box input[name=delete_nonexistent_sigs]').prop('checked', false);
+
+			$.unblockUI();
+		});
 }
 
 siggy2.SigTable.prototype.addBoxEnterHandler = function(e)
@@ -952,8 +966,11 @@ siggy2.SigTable.prototype.editSig = function (id)
 			contentType: 'application/json',
 			dataType: 'json'
 		})
-		.fail(function(){
-			siggy2.Dialogs.alertServerError("saving the signature");
+		.fail(function(jqXHR){
+			if(jqXHR.status >= 500)
+			{
+				siggy2.Dialogs.alertServerError("saving the signature");
+			}
 		})
 		.always(function(){
 			$this.editingSig = false;
