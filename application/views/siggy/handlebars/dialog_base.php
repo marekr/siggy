@@ -3,10 +3,10 @@
 		<div class='dialog-header'>{{title}}</div>
 		<div class='dialog-content'>
 			{{#is type "==" 'confirm'}}
-				{{message}}
+				{{{message}}}
 			{{/is}}
 			{{#is type "==" 'alert'}}
-				{{message}}
+				{{{message}}}
 			{{/is}}
 			{{#is type "==" 'dialog'}}
 				{{{content}}}

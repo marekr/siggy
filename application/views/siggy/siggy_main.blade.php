@@ -2,17 +2,6 @@
 
 @section('content')
 <div id="activity-siggy" class="wrapper" style="display:none">
-	@if( $group->isk_balance < 0 )
-	<div class="box" style="background-color:rgb(179, 52, 52)">
-		<div class='box-header'>Balance warning</div>
-		<div class='box-content'>
-			The balance for this siggy group has gone negative. Payment must be made according to the information in the management panel or service may be discontinued at any time. Contact <b>Jack Tronic</b> if assitance is needed.
-		</div>
-	</div>
-	<br />
-	<br />
-	@endif
-
 	<?php
 	if(isset($_SERVER['HTTP_X_SSL_PROTOCOL']) && trim($_SERVER['HTTP_X_SSL_PROTOCOL']) == 'SSLv3' ): ?>
 	<div class="box" style="width:100%;background-color:rgb(179, 52, 52)">
@@ -397,7 +386,7 @@
 				<?php if($requested): ?>
 				freezeSystem: true,
 				<?php endif; ?>
-				
+				negativeBalance: {{ $group->isk_balance < 0 ? 'true' : 'false' }},
 
 				defaultActivity:  '<?php echo $group->default_activity; ?>',
 				sessionID: '<?php echo Auth::$session->id; ?>',

@@ -1,5 +1,13 @@
 # siggy Changelog
 
+## 2.39.0 - 2017-02-07
+### Changes
+- Negative balances will get you harassed with a recurring popup
+
+### Fixes
+- Fixed stats page showing the wrong titles on the overview page
+
+
 ## 2.38.0 - 2017-02-07
 ### Changes
 - All browser blocking alert messages have been moved to page html based alert messages
