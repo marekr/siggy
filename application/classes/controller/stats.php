@@ -218,25 +218,8 @@ class Controller_Stats extends FrontController {
 		$dateRange = $datep->getTimestamps();
 
 		$top10Adds = $this->getTop10('adds',$dateRange['start'],$dateRange['end']);
-		$addsHTML = view('stats.top10', [
-											'max' => $top10Adds['max'],
-											'data' => $top10Adds['top10'],
-											'title' => "Signatures added"
-										]);
-
 		$top10Edits = $this->getTop10('updates',$dateRange['start'],$dateRange['end']);
-		$editsHTML = view('stats.top10', [
-											'max' => $top10Edits['max'],
-											'data' => $top10Edits['top10'],
-											'title' => "Signatures updated"
-										]);
-
 		$top10WHs = $this->getTop10('wormholes',$dateRange['start'],$dateRange['end']);
-		$whsHTML = view('stats.top10', [
-											'max' => $top10WHs['max'],
-											'data' => $top10WHs['top10'],
-											'title' => "Wormholes mapped"
-										]);
 
 		$resp = view('stats.stats', [
 												'top10Adds' => $top10Adds,
