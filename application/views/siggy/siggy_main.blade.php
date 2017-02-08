@@ -380,7 +380,9 @@
 		$(document).ready(function() {
 			if(typeof(Raven) != "undefined")
 			{
-				Raven.config('https://d5d9885188804b098cd2545ab085a47f@sentry.io/136864').install();
+				Raven.config('https://d5d9885188804b098cd2545ab085a47f@sentry.io/136864',{
+					release: '{{SIGGY_VERSION}}'
+				}).install();
 			}
 
 			var options = {
