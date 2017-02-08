@@ -63,7 +63,8 @@ siggy2.Core = function( options )
 			}
 		},
 		igb: true,
-		sessionID: ''
+		sessionID: '',
+		negativeBalance: false
 	};
 
 	this.settings = $.extend(true, {}, this.defaults, options);
@@ -142,6 +143,25 @@ siggy2.Core = function( options )
 		siggy2.Socket.Initialize("ws://localhost:51760/ws?token=" + this.settings.sessionID);
 		siggy2.Socket.Open();
 	}
+
+	if(this.settings.negativeBalance)
+	{
+		this.balanceHarass();
+	}
+}
+
+siggy2.Core.prototype.balanceHarass = function()
+{
+	var $this = this;
+	siggy2.Dialogs.alert({
+		title: "Negative balance!",
+		message: "The balance for this siggy group has gone negative. Payment must be made according to the information \
+			in the management panel or service may be discontinued at any time. <br />Contact <b>Jack Tronic</b> if assitance is needed. <br /> <br /> \
+			If you have already paid and have waited a hour for processing, refresh the page and this message should stop appearing",
+		okCallback: function() {
+			setTimeout(	function(){ $this.balanceHarass(); }, (1000*60)*10);	//10 minutes for now
+		}
+	});
 }
 
 siggy2.Core.prototype.queueUpdate = function()
