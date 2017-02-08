@@ -378,6 +378,10 @@
 
 	<script type='text/javascript'>
 		$(document).ready(function() {
+			if(typeof(Raven) != "undefined")
+			{
+				Raven.config('https://d5d9885188804b098cd2545ab085a47f@sentry.io/136864').install();
+			}
 
 			var options = {
 				baseUrl: '<?php echo URL::base(TRUE, TRUE);?>',
@@ -412,8 +416,6 @@
 			};
 
 			var siggy = new siggy2.Core( options );
-
-
 			siggy.initialize();
 		} );
 	</script>

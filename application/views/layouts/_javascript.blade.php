@@ -50,4 +50,5 @@
 @else
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/thirdparty.compiled.js?{{ SIGGY_VERSION }}'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.compiled.js?{{ SIGGY_VERSION }}'></script>
+<script src="https://cdn.ravenjs.com/3.10.0/raven.min.js"></script>
 @endif
