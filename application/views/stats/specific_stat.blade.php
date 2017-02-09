@@ -15,7 +15,7 @@
 				<td>{{++$rank_offset}}</td>
 				<td class="center">
 					<b><a href='javascript:CCPEVE.showInfo(1377, {{$result->charID}})'>{{$result->charName}}</a></b><br />
-					<img src='http://image.eveonline.com/Character/{{$result->charID}}_32.jpg' />
+					<img src='https://image.eveonline.com/Character/{{$result->charID}}_32.jpg' />
 				</td>
 				<td>{{$result->value}}</td>
 			</tr>

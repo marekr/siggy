@@ -23,11 +23,11 @@ $type = array('corp' => 'Corp', 'char' => 'Character');
 
 	<?php if( $memberType == 'corp' ): ?>
 	<p>
-		<img src="http://image.eveonline.com/Corporation/<?php echo $eveID; ?>_64.png" width="64" height="64" />&nbsp;&nbsp;<strong><?php echo $accessName; ?></strong>
+		<img src="https://image.eveonline.com/Corporation/<?php echo $eveID; ?>_64.png" width="64" height="64" />&nbsp;&nbsp;<strong><?php echo $accessName; ?></strong>
 	</p>
 	<?php else: ?>
 	<p>
-		<img src="http://image.eveonline.com/Character/<?php echo $eveID; ?>_64.jpg" width="64" height="64" />&nbsp;&nbsp;<strong><?php echo $accessName; ?></strong>
+		<img src="https://image.eveonline.com/Character/<?php echo $eveID; ?>_64.jpg" width="64" height="64" />&nbsp;&nbsp;<strong><?php echo $accessName; ?></strong>
 	</p>
 	<?php endif; ?>
 

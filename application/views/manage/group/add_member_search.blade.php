@@ -23,7 +23,7 @@ $type = array('corp' => 'Corp', 'char' => 'Character');
 			<?php foreach( $results as $result ): ?>
 			<tr>
 				<?php if( $memberType == 'corp' ): ?>
-				<td><img src="http://image.eveonline.com/Corporation/<?php echo $result->id; ?>_64.png" width="64" height="64" /></td>
+				<td><img src="https://image.eveonline.com/Corporation/<?php echo $result->id; ?>_64.png" width="64" height="64" /></td>
 				<td><?php echo $result->name; ?></td>
 				<td><?php echo $result->id; ?></td>
 				<td>
@@ -36,7 +36,7 @@ $type = array('corp' => 'Corp', 'char' => 'Character');
 					</form>
 				</td>
 				<?php else: ?>
-				<td><img src="http://image.eveonline.com/Character/<?php echo $result->id; ?>_64.jpg" width="64" height="64" /></td>
+				<td><img src="https://image.eveonline.com/Character/<?php echo $result->id; ?>_64.jpg" width="64" height="64" /></td>
 				<td><?php echo $result->name; ?></td>
 				<td><?php echo $result->id; ?></td>
 				<td>

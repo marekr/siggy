@@ -1,7 +1,7 @@
 
    <h1><?php echo ___('Groups') ?></h1>
    <div class="content">
-			<div class="info">The EVEID listed on this page are the ids that eve uses in game to reference your corp. You may find these from either your API info or sites such as http://evemaps.dotlan.net</div>
+			<div class="info">The EVEID listed on this page are the ids that eve uses in game to reference your corp. You may find these from either your API info or sites such as https://evemaps.dotlan.net</div>
 			<?php echo Html::anchor('manage/admin/addGroup', ___('Add New Group')); ?>
 			
 					<table class="table table-striped" width="100%">

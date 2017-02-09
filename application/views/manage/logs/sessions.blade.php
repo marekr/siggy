@@ -20,7 +20,7 @@
 	<?php if( count($sessions) > 0 ): ?>
 	<?php foreach($sessions as $sess): ?>
 	<tr>
-		<td><img src="http://image.eveonline.com/Character/<?php echo $sess['charID']; ?>_32.jpg" width="32" height="32" /> </td>
+		<td><img src="https://image.eveonline.com/Character/<?php echo $sess['charID']; ?>_32.jpg" width="32" height="32" /> </td>
 		<td>
 			<?php echo $sess['charName']; ?>
 			</td>
