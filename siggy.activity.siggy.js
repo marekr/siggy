@@ -505,31 +505,31 @@ siggy2.Activity.siggy.prototype.updateSystemInfo = function (systemData)
 	$('#static-info').empty();
 	if( Object.size(systemData.staticData) > 0 )
 	{
-		var counter = 0;
 		for (var i in systemData.staticData)
 		{
 			var theStatic = siggy2.StaticData.getWormholeByID(systemData.staticData[i].id);
-			var destBlurb = " (to "+siggy2.StaticData.systemClassToString(theStatic.dest_class)+")";
+			if(theStatic != null)
+			{
+				var destBlurb = " (to "+siggy2.StaticData.systemClassToString(theStatic.dest_class)+")";
 
-			var staticBit = $("<p>").text(theStatic.name + destBlurb);
+				var staticBit = $("<p>").text(theStatic.name + destBlurb);
 
-			theStatic.destBlurb = destBlurb;
-			var staticTooltip = siggy2.StaticData.templateWormholeInfoTooltip(theStatic);
+				theStatic.destBlurb = destBlurb;
+				var staticTooltip = siggy2.StaticData.templateWormholeInfoTooltip(theStatic);
 
-			$('#static-info').append(staticBit);
+				$('#static-info').append(staticBit);
 
-			staticBit.qtip({
-				content: {
-					text: staticTooltip
-				},
-				position: {
-					target: 'mouse',
-					adjust: { x: 5, y: 5 },
-					viewport: $(window)
-				}
-			});
-
-			counter++;
+				staticBit.qtip({
+					content: {
+						text: staticTooltip
+					},
+					position: {
+						target: 'mouse',
+						adjust: { x: 5, y: 5 },
+						viewport: $(window)
+					}
+				});
+			}
 		}
 	}
 
