@@ -97,14 +97,14 @@ siggy2.Core = function( options )
 
 
 	// Display states cookie
-	var displayStatesCookie = getCookie('display_states');
-	var dispStates = '';
-	if( displayStatesCookie != null )
+	var displayStatesStored = localStorage.getItem('display_states');
+	
+	if(displayStatesStored != null)
 	{
-		dispStates = $.parseJSON(displayStatesCookie);
+		this.displayStates = $.parseJSON(displayStatesStored);
 	}
 
-	this.displayStates = $.extend(true, {}, this.defaultDisplayStates, dispStates);
+	this.displayStates = $.extend(true, {}, this.defaultDisplayStates, this.displayStates);
 
 	this.charactersettings = new charactersettings(this, this.settings.charsettings);
 	this.charactersettings.settings.baseUrl = this.settings.baseUrl;
@@ -410,7 +410,7 @@ siggy2.Core.prototype.setupCollaspible = function(baseID, displayState, onShow)
 
 siggy2.Core.prototype.saveDisplayState = function()
 {
-	setCookie('display_states', JSON.stringify(this.displayStates), 365);
+	localStorage.setItem('display_states', JSON.stringify(this.displayStates));
 }
 
 
