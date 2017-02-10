@@ -1,5 +1,10 @@
 # siggy Changelog
 
+## 2.40.0 - 2017-02-07
+### Changes
+- Moved a large and legacy cookie to localStorage as the server doesn't need to know UI display states
+- Various url tweaks to match the new stricter Content-Security-Policy implemented
+
 ## 2.39.0 - 2017-02-07
 ### Changes
 - Negative balances will get you harassed with a recurring popup

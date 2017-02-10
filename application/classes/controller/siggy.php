@@ -22,6 +22,9 @@ class Controller_Siggy extends FrontController {
 
 		ScribeCommandBus::UnfreezeCharacter(Auth::$session->character_id);
 
+		//temporary cookie set to destroy this no longer used cookie
+		setcookie('display_states', null, -1, '/');
+
 		// did we have an url requested system?
 		$requested = false;
 		if( !empty($ssname) )
