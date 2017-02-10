@@ -326,36 +326,38 @@ siggy2.StaticData.load = function(baseUrl)
 
 	jQuery.ajax({
 		 url: baseUrl + 'data/sig_types',
-		 success: function(result) {
-					$this.wormholeClassMap = result.wormholes;
-					$this.wormholeTypes = result.wormhole_types;
-					$this.sites = result.sites;
-					$this.maps = result.maps;
-				  },
 		 async: false,
 		 dataType: 'json'
-	});
+	})
+	.then(function(result){
+		
+		$this.wormholeClassMap = result.wormholes;
+		$this.wormholeTypes = result.wormhole_types;
+		$this.sites = result.sites;
+		$this.maps = result.maps;
 
-	jQuery.ajax({
-		 url: baseUrl + 'data/systems?' + time(),
-		 success: function(result) {
-			 		$this.systems = result;
-				  },
-		 async: false,
-		 dataType: 'json'
-	});
+		return jQuery.ajax({
+			url: baseUrl + 'data/systems?' + time(),
+			async: false,
+			dataType: 'json'
+		});
+	}).then(function(result){
+		$this.systems = result;
 
-	this.systemTypeAhead = new Bloodhound({
-		datumTokenizer: function(d) {
-			return Bloodhound.tokenizers.whitespace(d.name);
-		},
-		queryTokenizer: Bloodhound.tokenizers.whitespace,
-		local: $this.systems,
-		remote: {
-			url: baseUrl+'chainmap/autocomplete_wh?q=%QUERY',
-			wildcard: '%QUERY'
-		}
-	});
+		$this.systemTypeAhead = new Bloodhound({
+			datumTokenizer: function(d) {
+				return Bloodhound.tokenizers.whitespace(d.name);
+			},
+			queryTokenizer: Bloodhound.tokenizers.whitespace,
+			local: $this.systems,
+			remote: {
+				url: baseUrl+'chainmap/autocomplete_wh?q=%QUERY',
+				wildcard: '%QUERY'
+			}
+		});
+	})
+
+
 }
 
 siggy2.StaticData.getSystemByID = function( id )

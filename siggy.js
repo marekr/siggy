@@ -97,7 +97,7 @@ siggy2.Core = function( options )
 
 
 	// Display states cookie
-	var displayStatesStored = localStorage.getItem('display_states');
+	var displayStatesStored = window.localStorage.getItem('display_states');
 	
 	if(displayStatesStored != null)
 	{
@@ -410,7 +410,7 @@ siggy2.Core.prototype.setupCollaspible = function(baseID, displayState, onShow)
 
 siggy2.Core.prototype.saveDisplayState = function()
 {
-	localStorage.setItem('display_states', JSON.stringify(this.displayStates));
+	window.localStorage.setItem('display_states', JSON.stringify(this.displayStates));
 }
 
 
