@@ -274,7 +274,7 @@ siggy2.SigTable.prototype.sigAddHandler = function()
 						$('#sig-table').trigger('update');
 					},
 			dataType: 'json'
-		}).fail(function(){
+		}).fail(function(jqXHR){
 			if(jqXHR.status >= 500)
 			{
 				siggy2.Dialogs.alertServerError("saving the signature");
