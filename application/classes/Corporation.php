@@ -118,7 +118,7 @@ class Corporation extends Model {
 		$results = null;
 
 		$client = new ESIClient();
-		$result = $client->getSearchV1($name, ['corporation']);
+		$result = $client->getSearchV1($name, ['corporation'], 'en-us', $strict);
 
 		if($result != null)
 		{
