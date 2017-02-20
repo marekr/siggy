@@ -35,7 +35,7 @@ siggy2.Dialog.SigCreateWormhole = function(core, systemID, sigs)
 						},
 				dataType: 'json'
 			})
-			.fail(function(){
+			.fail(function(jqXHR){
 				siggy2.Dialogs.alertServerError("creating the wormhole");
 			})
 			.always(function(){
