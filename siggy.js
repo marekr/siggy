@@ -410,7 +410,12 @@ siggy2.Core.prototype.setupCollaspible = function(baseID, displayState, onShow)
 
 siggy2.Core.prototype.saveDisplayState = function()
 {
-	window.localStorage.setItem('display_states', JSON.stringify(this.displayStates));
+	try {
+		window.localStorage.setItem('display_states', JSON.stringify(this.displayStates));
+	} catch (e) {
+		//silently ignore the error
+		//incognito/private browsing can cause quota error
+	}
 }
 
 
