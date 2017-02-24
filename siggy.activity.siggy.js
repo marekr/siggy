@@ -97,6 +97,8 @@ siggy2.Activity.siggy.prototype.setSystemID = function (systemID)
 		this.intelposes.systemID = systemID;
 	if( this.inteldscan != null )
 		this.inteldscan.systemID = systemID;
+	if( this.intelstructures != null )
+		this.intelstructures.systemID = systemID;
 }
 
 siggy2.Activity.siggy.prototype.setupFormSystemOptions = function()
@@ -142,6 +144,8 @@ siggy2.Activity.siggy.prototype.initModules = function()
 	this.intelposes.siggyMain = this.core;
 	this.intelposes.settings.baseUrl = this.core.settings.baseUrl;
 
+	this.intelstructures = new siggy2.Intel.Structures(this.core, {baseUrl: this.core.settings.baseUrl});
+	this.intelstructures.initialize();
 
 	// Initialize map
 	this.map = new siggy2.Map(this.core, this.core.settings.map);
@@ -581,6 +585,7 @@ siggy2.Activity.siggy.prototype.updateSystemInfo = function (systemData)
 	
 	this.intelposes.updatePOSList( systemData.poses );
 	this.inteldscan.updateDScan( systemData.dscans );
+	this.intelstructures.update( systemData.structures );
 }
 
 siggy2.Activity.siggy.prototype.renderStats = function()

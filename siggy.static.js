@@ -314,7 +314,8 @@ siggy2.StaticData = {
 	{
 	},
 	systems: {},
-	systemTypeAhead: null
+	systemTypeAhead: null,
+	structureTypes: {}
 };
 
 siggy2.StaticData.load = function(baseUrl)
@@ -328,13 +329,21 @@ siggy2.StaticData.load = function(baseUrl)
 		 url: baseUrl + 'data/sig_types',
 		 async: false,
 		 dataType: 'json'
-	})
-	.then(function(result){
+	}).then(function(result){
 		
 		$this.wormholeClassMap = result.wormholes;
 		$this.wormholeTypes = result.wormhole_types;
 		$this.sites = result.sites;
 		$this.maps = result.maps;
+
+		return jQuery.ajax({
+			url: baseUrl + 'data/structures?' + time(),
+			async: false,
+			dataType: 'json'
+		});
+	}).then(function(result){
+		
+		$this.structureTypes = result;
 
 		return jQuery.ajax({
 			url: baseUrl + 'data/systems?' + time(),
@@ -388,6 +397,14 @@ siggy2.StaticData.getSiteByID = function( id )
 		return null;
 }
 
+siggy2.StaticData.getStructureTypeById = function( id )
+{
+	if( siggy2.isDefined(this.structureTypes[ id ]) )
+		return this.structureTypes[ id ];
+	else
+		return null;
+}
+
 siggy2.StaticData.getSiteList = function( type, sysClass )
 {
 	var result  = {0: ''};
@@ -425,6 +442,17 @@ siggy2.StaticData.getFullSiteListHandleBarDropdown = function()
 	return result;
 }
 
+siggy2.StaticData.getStructureTypeDropdown = function()
+{
+	var result  = [];
+	for( var i in this.structureTypes )
+	{
+		var info = this.structureTypes[i];
+        result.push({ value: info.id, text: _(info.name) });
+	}
+
+	return result;
+}
 
 siggy2.StaticData.getWormholeByID = function( id )
 {

@@ -124,6 +124,14 @@ siggy2.Helpers.setupHandlebars = function()
 		}
 	});
 
+	Handlebars.registerHelper('structureTypeName', function(id) {
+		var structure = siggy2.StaticData.getStructureTypeById(id);
+		if(structure != null)
+		{
+			return structure.name;
+		}
+		return "UNKNOWN STRUCTURE";
+	});
 
 	Handlebars.registerHelper('systemClassTextColor', function(sysClass) {
 	    var classColor = '';
@@ -261,4 +269,9 @@ siggy2.Helpers.isKSpaceClass = function( sysClass )
 		return true;
 	}
 	return false;
+}
+
+siggy2.isDefined = function(value) 
+{
+	return typeof value !== 'undefined';
 }

@@ -1,5 +1,6 @@
 siggy2.Dialogs = siggy2.Dialog || {};
 
+
 siggy2.Dialogs = {
 	templateBaseDialog: function(dummy)
 	{
@@ -24,6 +25,7 @@ siggy2.Dialogs.getOptions = function(defaults, options)
 siggy2.Dialogs.build = function(dialogData, buttons)
 {
 	var dialog = $(this.templateBaseDialog(dialogData));
+	var obj = new siggy2.Dialog(dialog);
 	
 	dialog.data('callbacks',{});
 	this.populateButtons(dialog, buttons);
@@ -36,7 +38,7 @@ siggy2.Dialogs.build = function(dialogData, buttons)
 
 		if(!typeof(callbacks[key]) != "undefined")
 		{
-			callbacks[key](dialog);
+			callbacks[key](obj);
 		}
 	});
 
@@ -51,7 +53,8 @@ siggy2.Dialogs.build = function(dialogData, buttons)
 		dialog.remove();
 	});
 
-	return dialog;
+
+	return obj;
 }
 
 
@@ -80,7 +83,7 @@ siggy2.Dialogs.alert = function(options)
 					options.okCallback(dialog);
 				}
 
-				dialog.trigger('hide.dialog');
+				dialog.hide();
 			},
 			style: 'primary',
 			focus: false
@@ -89,7 +92,7 @@ siggy2.Dialogs.alert = function(options)
 
 	var dialog = this.build(dialogData, buttons);
 
-	this.show(dialog);
+	dialog.show();
 
 	return dialog;
 }
@@ -123,7 +126,7 @@ siggy2.Dialogs.confirm = function(options)
 					options.yesCallback(dialog);
 				}
 
-				dialog.trigger('hide.dialog');
+				dialog.hide();
 			},
 			style: 'primary'
 		},
@@ -136,7 +139,7 @@ siggy2.Dialogs.confirm = function(options)
 					options.noCallback(dialog);
 				}
 
-				dialog.trigger('hide.dialog');
+				dialog.hide();
 			},
 			style: 'danger',
 			focus: true
@@ -145,7 +148,7 @@ siggy2.Dialogs.confirm = function(options)
 
 	var dialog = this.build(dialogData, buttons);
 
-	this.show(dialog);
+	dialog.show();
 
 	return dialog;
 }
@@ -203,10 +206,23 @@ siggy2.Dialogs.dialog = function(options)
 	return dialog;
 }
 
-siggy2.Dialogs.show = function(dialog)
+siggy2.Dialogs.alertServerError = function(action)
+{
+	return siggy2.Dialogs.alert({ 
+					message: "The server encountered an error while "+action+", sorry", 
+					title:"Server Error"
+			})
+}
+
+siggy2.Dialog = function(ele)
+{
+	this.ele = ele;
+}
+
+siggy2.Dialog.prototype.show = function()
 {
 	$.blockUI({
-		message: dialog,
+		message: this.ele,
 		css: {
 			border: 'none',
 			padding: '15px',
@@ -226,19 +242,15 @@ siggy2.Dialogs.show = function(dialog)
 		focusInput: false
 	});
 	
-	dialog.trigger('shown.dialog');
+	$(this.ele).trigger('shown.dialog');
 }
 
-siggy2.Dialogs.hide = function(dialog)
+siggy2.Dialog.prototype.hide = function(dialog)
 {
-	dialog.trigger('hide.dialog');
+	$(this.ele).trigger('hide.dialog');
 }
 
-
-siggy2.Dialogs.alertServerError = function(action)
+siggy2.Dialog.prototype.replaceContent = function(newContent)
 {
-	return siggy2.Dialogs.alert({ 
-					message: "The server encountered an error while "+action+", sorry", 
-					title:"Server Error"
-			})
+	$(this.ele).find('.dialog-content').empty().append(newContent);
 }

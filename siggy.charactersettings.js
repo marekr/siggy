@@ -138,12 +138,14 @@ charactersettings.prototype.performSettingsRefresh = function()
 //	this.siggyMain.changeTab("#sigs");
 	if( this.settings.combineScanIntel )
 	{
+		$("#system-stats").before($("#structure-box"));
 		$("#system-stats").before($("#pos-box"));
 		$("#system-stats").before($("#dscan-box"));
 		$('li a[href="#system-intel"]').parent().hide();
 	}
 	else
 	{
+		$("#structure-box").detach().appendTo($('#system-intel'));
 		$("#pos-box").detach().appendTo($('#system-intel'));
 		$("#dscan-box").detach().appendTo($('#system-intel'));
 		$('li a[href="#system-intel"]').parent().show();

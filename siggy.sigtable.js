@@ -180,8 +180,8 @@ siggy2.SigTable.prototype.setupAddDialog = function ()
 									},
 								}
 							});
-
-		siggy2.Dialogs.show(dlg);
+							
+		dlg.show();
 	});
 
 	//override potential form memory
