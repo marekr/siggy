@@ -92,8 +92,6 @@ class Controller_Sig extends FrontController {
 		$this->profiler = NULL;
 		$this->response->noCache();
 
-		$resp = new StandardResponse();
-
 		if(	 !$this->siggyAccessGranted() )
 		{
 			$this->response->json(StandardResponse::error('Invalid Auth'));

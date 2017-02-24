@@ -87,7 +87,7 @@ class Controller_Pos extends FrontController {
 
 		Auth::$session->group->incrementStat('pos_updates', Auth::$session->accessData);
 
-		$log_message = sprintf("%s edit POS in system %s", Auth::$session->character_name, $pos->system->name);
+		$log_message = sprintf("%s edited POS in system %s", Auth::$session->character_name, $pos->system->name);
 		Auth::$session->group->logAction('editpos', $log_message);
 
 		$this->response->json(true);

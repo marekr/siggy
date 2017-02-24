@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Illuminate\Database\Capsule\Manager as DB;
+use Siggy\Structure;
 
 class Controller_Siggy extends FrontController {
 
@@ -220,6 +221,8 @@ class Controller_Siggy extends FrontController {
 		$systemData->poses = $this->getPOSes( $systemData->id );
 
 		$systemData->dscans = $this->getDScans( $systemData->id );
+
+		$systemData->structures = Structure::findAllByGroupSystem( Auth::$session->group->id, $systemData->id );
 
 		return $systemData;
 	}

@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Capsule\Manager as DB;
 
+use Siggy\StructureType;
+
 class Controller_Data extends FrontController {
 
 	public function before()
@@ -17,11 +19,21 @@ class Controller_Data extends FrontController {
 		$this->profiler = NULL;
 		$this->response->noCache();
 
-        $systems = DB::select("SELECT ss.id, ss.name, r.regionName as region_name, ss.sec, ss.sysClass as class
+		$systems = DB::select("SELECT ss.id, ss.name, r.regionName as region_name, ss.sec, ss.sysClass as class
 													FROM solarsystems ss
 													LEFT JOIN regions r ON(ss.region = r.regionID)");
 
 		$this->response->json($systems,JSON_NUMERIC_CHECK);
+	}
+
+	public function action_structures()
+	{
+		$this->profiler = NULL;
+		$this->response->noCache();
+
+		$structures = StructureType::all()->keyBy('id');
+
+		$this->response->json($structures);
 	}
 
 	public function action_sig_types()
@@ -31,7 +43,7 @@ class Controller_Data extends FrontController {
 
 		$output = array();
 
-        $wormholeTypes = DB::select("SELECT * FROM statics");
+		$wormholeTypes = DB::select("SELECT * FROM statics");
 
 		$types = array();
 		foreach($wormholeTypes as &$row)
@@ -41,8 +53,8 @@ class Controller_Data extends FrontController {
 
 		$output['wormhole_types'] = $type;
 
-        $whStaticMap = DB::select("SELECT * FROM wormhole_class_map
-                                                ORDER BY position ASC");
+		$whStaticMap = DB::select("SELECT * FROM wormhole_class_map
+												ORDER BY position ASC");
 
 		$outWormholes = array();
 		foreach($whStaticMap as $entry)
@@ -61,7 +73,7 @@ class Controller_Data extends FrontController {
 		}
 
 
-        $extra = DB::select("SELECT s.id, scm.system_class, s.name, s.type FROM site_class_map scm
+		$extra = DB::select("SELECT s.id, scm.system_class, s.name, s.type FROM site_class_map scm
 													LEFT JOIN sites s ON(s.id=scm.site_id)");
 
 		foreach($extra as $site)

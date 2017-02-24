@@ -46,6 +46,7 @@
         	<div role="tabpanel" id="system-intel" class="tab-pane clear-fix">
 				@include('siggy/displaygroups/poses')
 				@include('siggy/displaygroups/dscan')
+				@include('siggy/displaygroups/structures')
         	</div>
 
         	<div role="tabpanel" id="system-info" class="tab-pane clear-fix">
@@ -358,6 +359,7 @@
 	@include('siggy/boxes/dialog_notice')
 	@include('siggy/boxes/dialog_notifier')
 	@include('siggy/boxes/dialog_mass_sig')
+	@include('siggy/boxes/dialog_structure')
 	@include('siggy/handlebars/sig_table_row')
 	@include('siggy/handlebars/effect_tooltip')
 	@include('siggy/handlebars/statics_tooltip')
@@ -375,6 +377,7 @@
 	@include('siggy/handlebars/sig_create_new_wormhole_form')
 	@include('siggy/handlebars/jump_log_entry')
 	@include('siggy/handlebars/dialog_base')
+	@include('siggy/handlebars/structure_table_row')
 
 	<script type='text/javascript'>
 		$(document).ready(function() {

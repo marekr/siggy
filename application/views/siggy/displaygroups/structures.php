@@ -5,9 +5,8 @@
 		<table id="system-intel-structures" cellspacing="1" class='siggy-table bordered-wrap'>
 			<thead>
 				<tr>
-					<th width="4%">Status</th>
-					<th width="36%">Corp</th>
-					<th width="4%">Type</th>
+					<th width="25%">Corp</th>
+					<th width="10%">Type</th>
 					<th width="8%">Added</th>
 					<th width="32%">Notes</th>
 					<th width="8%">&nbsp;</th>

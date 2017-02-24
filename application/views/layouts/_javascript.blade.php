@@ -20,6 +20,7 @@
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/dropdown.js'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/tab.js'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/misc.js'></script>
+<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/vendor/validate.js'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/typeahead.bundle.js'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.js?{{ time() }}'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.helpers.js?{{ time() }}'></script>
@@ -30,6 +31,7 @@
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.sigtable.js?{{ time() }}'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.intel.poses.js?{{ time() }}'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.intel.dscan.js?{{ time() }}'></script>
+<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.intel.structures.js?{{ time() }}'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.globalnotes.js?{{ time() }}'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.charactersettings.js?{{ time() }}'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.hotkeyhelper.js?{{ time() }}'></script>
