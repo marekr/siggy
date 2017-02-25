@@ -196,7 +196,7 @@ siggy2.Intel.Structures.prototype.setupForm = function(mode, id)
 								},
 								cancel: {
 									text: "Cancel",
-									style: 'danger',
+									style: 'dangler',
 									callback: function(dialog) {
 										dialog.hide();
 									}
@@ -218,7 +218,7 @@ siggy2.Intel.Structures.prototype.remove = function(id)
 		message: "Are you sure you want to delete the structure?",
 		title: "Confirm deletion",
 		yesCallback: function() {
-			$.post($this.settings.baseUrl + 'structure/remove', {id: id})
+			$.post($this.settings.baseUrl + 'structure/remove', JSON.stringify({id: id}))
 				.done(function ()
 				{
 					$('#structure-'+id).remove();

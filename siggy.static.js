@@ -346,6 +346,15 @@ siggy2.StaticData.load = function(baseUrl)
 		$this.structureTypes = result;
 
 		return jQuery.ajax({
+			url: baseUrl + 'data/poses?' + time(),
+			async: false,
+			dataType: 'json'
+		});
+	}).then(function(result){
+		
+		$this.posTypes = result;
+
+		return jQuery.ajax({
 			url: baseUrl + 'data/systems?' + time(),
 			async: false,
 			dataType: 'json'
@@ -405,6 +414,15 @@ siggy2.StaticData.getStructureTypeById = function( id )
 		return null;
 }
 
+siggy2.StaticData.getPOSTypeById = function( id )
+{
+	if( siggy2.isDefined(this.posTypes[ id ]) )
+		return this.posTypes[ id ];
+	else
+		return null;
+}
+
+
 siggy2.StaticData.getSiteList = function( type, sysClass )
 {
 	var result  = {0: ''};
@@ -452,6 +470,34 @@ siggy2.StaticData.getStructureTypeDropdown = function()
 	}
 
 	return result;
+}
+
+siggy2.StaticData.getPosTypeDropdown = function()
+{
+	var result  = [];
+	for( var i in this.posTypes )
+	{
+		var info = this.posTypes[i];
+        result.push({ value: info.id, text: _(info.name) });
+	}
+
+	return result;
+}
+
+siggy2.StaticData.getPosSizes = function()
+{
+	return [
+		{ value: "small", text: "Small" },
+		{ value: "medium", text: "Medium" },
+		{ value: "large", text: "Large" },
+	];
+}
+siggy2.StaticData.getPosStatuses = function()
+{
+	return [
+		{ value: 0, text: "Offline" },
+		{ value: 1, text: "Online" },
+	];
 }
 
 siggy2.StaticData.getWormholeByID = function( id )

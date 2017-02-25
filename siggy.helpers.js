@@ -124,6 +124,15 @@ siggy2.Helpers.setupHandlebars = function()
 		}
 	});
 
+	Handlebars.registerHelper('posTypeName', function(id) {
+		var pos = siggy2.StaticData.getPOSTypeById(id);
+		if(pos != null)
+		{
+			return pos.name;
+		}
+		return "UNKNOWN POS " + id;
+	});
+
 	Handlebars.registerHelper('structureTypeName', function(id) {
 		var structure = siggy2.StaticData.getStructureTypeById(id);
 		if(structure != null)

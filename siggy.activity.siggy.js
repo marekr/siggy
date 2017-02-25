@@ -141,8 +141,7 @@ siggy2.Activity.siggy.prototype.initModules = function()
 	this.inteldscan.siggyMain = this.core;
 	this.inteldscan.settings.baseUrl = this.core.settings.baseUrl;
 
-	this.intelposes = new intelposes(this.core.settings.intel.poses);
-	this.intelposes.siggyMain = this.core;
+	this.intelposes = new siggy2.Intel.Poses(this.core, {baseUrl: this.core.settings.baseUrl});
 	this.intelposes.settings.baseUrl = this.core.settings.baseUrl;
 
 	this.intelstructures = new siggy2.Intel.Structures(this.core, {baseUrl: this.core.settings.baseUrl});

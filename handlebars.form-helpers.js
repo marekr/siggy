@@ -61,9 +61,7 @@
   function openTag(type, closing, attr) {
     var html = ['<' + type];
     for (var prop in attr) {
-      // A falsy value is used to remove the attribute.
-      // EG: attr[false] to remove, attr['false'] to add
-      if (attr[prop]) {
+      if (!isEmpty(attr[prop])) {
         html.push(prop + '="' + attr[prop] + '"');
       }
     }
@@ -72,6 +70,10 @@
 
   function closeTag(type) {
     return '</' + type + '>';
+  }
+
+  function isEmpty(contents) {
+    return contents  === typeof('undefined') || contents === '';
   }
 
   function createElement(type, closing, attr, contents) {

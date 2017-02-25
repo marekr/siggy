@@ -3,35 +3,89 @@
  * @copyright Copyright (c) 2014 borkedLabs - All Rights Reserved
  */
 
-function intelposes(options)
+siggy2.Intel = siggy2.Intel || {};
+
+siggy2.Intel.Poses = function(core, options)
 {
-	this.siggyMain = null;
+	this.core = core;
 	this.defaults = {
 		baseUrl: ''
 	};
 
-	this.settings = $.extend(this.defaults, options);
+	this.settings = $.extend(true, {}, this.defaults, options);
+
+	this.templateForm = Handlebars.compile( $('#template-dialog-pos').html() );
+	this.templateTableRow = Handlebars.compile( $('#template-pos-table-row').html() );
 
 	/* POSes */
 	this.poses = {};
 
 	/* temp hack */
 	this.systemID = 0;
+
+	
+	this.formDefaults = {
+		location_planet: '',
+		location_moon: '',
+		owner: '',
+		type_id: 1,
+		size: 'large',
+		online: 1,
+		notes: '',
+		system_id: 0
+	};
+
+	this.formConstraints = {
+		location_planet: {
+			 presence: true
+		},
+		location_moon: {
+			 presence: true
+		},
+		owner: {
+			 presence: true
+		},
+		type_id: {
+			presence: true,
+			numericality: true
+		},
+		online: {
+			presence: true,
+			numericality: true
+		},
+		size: {
+			presence: true
+		},
+		notes: {
+			presence: {allowEmpty: true}
+		}
+	};
 }
 
-intelposes.prototype.initialize = function()
+siggy2.Intel.Poses.prototype.initialize = function()
 {
 	var $this = this;
 	$('#system-intel-poses tbody').empty();
 
 	$('#system-intel-add-pos').click( function() {
-		$this.siggyMain.openBox('#pos-form');
-		$this.addPOS();
+		$this.addForm();
 		return false;
 	} );
+	
+
+	$('#system-intel-poses').on('click','.button-pos-edit', function(e) {
+		var id = $(this).data('id');
+		$this.editForm(id);
+	});
+	
+	$('#system-intel-poses').on('click','.button-pos-remove', function(e) {
+		var id = $(this).data('id');
+		
+		$this.remove(id);
+	});
 }
 
-intelposes.prototype.getPOSStatus = function( online )
+siggy2.Intel.Poses.prototype.getPOSStatus = function( online )
 {
 	online = parseInt(online);
 	if( online )
@@ -44,7 +98,7 @@ intelposes.prototype.getPOSStatus = function( online )
 	}
 }
 
-intelposes.prototype.getPOSStatusClass = function( online )
+siggy2.Intel.Poses.prototype.getPOSStatusClass = function( online )
 {
 	online = parseInt(online);
 	if( online )
@@ -57,7 +111,7 @@ intelposes.prototype.getPOSStatusClass = function( online )
 	}
 }
 
-intelposes.prototype.updatePOSList = function( data )
+siggy2.Intel.Poses.prototype.updatePOSList = function( data )
 {
 	var $this = this;
 
@@ -74,48 +128,24 @@ intelposes.prototype.updatePOSList = function( data )
 	{
 		for(var i in data)
 		{
-			var pos_id = data[i].id;
+			var pos = data[i];
 
-			var row = $("<tr>").attr('id', 'pos-'+pos_id);
+			pos.status_class = $this.getPOSStatusClass(pos.online);
+			pos.status = $this.getPOSStatus(pos.online);
 
-			row.append($("<td>").addClass($this.getPOSStatusClass(data[i].online)).text( $this.getPOSStatus(data[i].online) ) );
-			row.append($("<td>").text( data[i].location_planet + " - " + data[i].location_moon ) );
-			row.append($("<td>").text( data[i].owner ) );
-			row.append($("<td>").text( data[i].pos_type_name ) );
-			row.append($("<td>").text( ucfirst(data[i].size) ) );
-			row.append($("<td>").text( siggy2.Helpers.displayTimeStamp(data[i].added_date)));
-			row.append($("<td>").text( data[i].notes ) );
-
-			(function(pos_id){
-				var edit = $("<a>").addClass("btn btn-default btn-xs").text("Edit").click( function() {
-						$this.siggyMain.openBox('#pos-form');
-						$this.editPOS( pos_id );
-					}
-				);
-				var remove = $("<a>").addClass("btn btn-default btn-xs").text("Remove").click( function() {
-						$this.removePOS( pos_id );
-					}
-				);
-
-				row.append(
-							$("<td>").append(edit)
-									 .append(remove)
-						 )
-				   .addClass('center-text');
-			})(pos_id);
-
+			var row = this.templateTableRow(pos);
 			body.append(row);
 
-			if( parseInt(data[i].online) == 1 )
+			if( parseInt(pos.online) == 1 )
 			{
-				owner_names.push(data[i].owner);
+				owner_names.push(pos.owner);
 				online++;
 			}
 			else
 			{
 				offline++;
 			}
-			$this.poses[pos_id] = data[i];
+			$this.poses[pos.id] = pos;
 		}
 
 		owner_names = array_unique(owner_names);
@@ -132,92 +162,116 @@ intelposes.prototype.updatePOSList = function( data )
 	$("#pos-summary").html( summary );
 }
 
-intelposes.prototype.addPOS = function()
+siggy2.Intel.Poses.prototype.addForm = function()
 {
-	this.setupPOSForm('add');
+	this.setupForm('add');
 }
 
-intelposes.prototype.setupPOSForm = function(mode, posID)
+siggy2.Intel.Poses.prototype.saveFormCallback = function(dialog)
 {
 	var $this = this;
+	var formData = $('#dialog-pos form').serializeObject();
 
-	var planet = $("#pos-form input[name=pos_location_planet]");
-	var moon = $("#pos-form input[name=pos_location_moon]");
-	var owner = $("#pos-form input[name=pos_owner]");
-	var type = $("#pos-form select[name=pos_type]");
-	var size = $("#pos-form select[name=pos_size]");
-	var status = $("#pos-form select[name=pos_status]");
-	var notes = $("#pos-form textarea[name=pos_notes]");
+	var errors = validate(formData, this.formConstraints);
 
-	var data = {};
+	var data = {
+		model: formData,
+		posTypes: siggy2.StaticData.getPosTypeDropdown(),
+		posSizes: siggy2.StaticData.getPosSizes(),
+		posStatuses: siggy2.StaticData.getPosStatuses(),
+		errors: errors
+	};
+	
+	if(siggy2.isDefined(errors))
+	{
+		dialog.replaceContent($this.templateForm(data));
+		return;
+	}
+
+	var mode = $(dialog).data('form-mode');
+
 	var action = '';
 	if( mode == 'edit' )
 	{
-		data = this.poses[posID];
+		var id = $(dialog).data('model-id');
+		formData.id = id;
 		action = $this.settings.baseUrl + 'pos/edit';
 	}
 	else
 	{
-		data = {
-					location_planet: '',
-					location_moon: '',
-					owner: '',
-					pos_type_id: 1,
-					size: 'large',
-					online: 1,
-					notes: '',
-					system_id: 0
-				};
 		action = $this.settings.baseUrl + 'pos/add';
 	}
 
-	planet.val( data.location_planet );
-	moon.val( data.location_moon );
-	owner.val( data.owner );
-	type.val( data.pos_type_id );
-	size.val( data.pos_size );
-	status.val( data.online );
-	notes.val( data.notes );
+	formData.system_id = this.systemID;
 
-	$("#pos-form button[name=submit]").off('click');
-	$("#pos-form button[name=submit]").click( function() {
+	$.post(action, JSON.stringify(formData))
+		.done(function(respData) {
+			$(document).trigger('siggy.updateRequested', true );
 
-		var posData = {
-			pos_location_planet: planet.val(),
-			pos_location_moon: moon.val(),
-			pos_owner: owner.val(),
-			pos_type: type.val(),
-			pos_size: size.val(),
-			pos_online: status.val(),
-			pos_notes: notes.val(),
-			pos_system_id: $this.systemID
-		};
-
-		if(mode == 'edit')
-		{
-			posData.pos_id = posID;
-		}
-
-		if( posData.pos_location_moon != "" && posData.pos_location_planet != "" )
-		{
-			$.post(action, posData, function ()
-			{
-                $(document).trigger('siggy.updateRequested', true );
-
-				$.unblockUI();
-			});
-		}
-
-		return false;
-	});
+			$.unblockUI();
+		})
+		.fail(function(jqXHR) {
+			if(jqXHR.status >= 500)
+			{			
+				siggy2.Dialogs.alertServerError("saving the structure");
+			}
+		});
 }
 
-intelposes.prototype.editPOS = function(posID)
+siggy2.Intel.Poses.prototype.setupForm = function(mode, id)
 {
-	this.setupPOSForm('edit', posID);
+	var $this = this;
+
+	var data = {
+		model: $this.formDefaults,
+		posTypes: siggy2.StaticData.getPosTypeDropdown(),
+		posSizes: siggy2.StaticData.getPosSizes(),
+		posStatuses: siggy2.StaticData.getPosStatuses(),
+		errors: {}
+	};
+
+	if(mode == 'edit')
+	{
+		if(siggy2.isDefined(this.poses[id]))
+		{
+			data.model = this.poses[id];
+		}
+	}
+
+	var dlg = siggy2.Dialogs.dialog({
+							title: "POS",
+							content: $this.templateForm(data),
+							id: "dialog-pos",
+							buttons:{
+								submit: {
+									text: "Save",
+									style: 'primary',
+									callback: function(dialog) {
+										$this.saveFormCallback(dialog);
+									}
+								},
+								cancel: {
+									text: "Cancel",
+									style: 'dangler',
+									callback: function(dialog) {
+										dialog.hide();
+									}
+								},
+							}
+						});
+			
+	$(dlg).data('form-mode', mode);
+	$(dlg).data('model-id', id);
+	
+	dlg.show();
 }
 
-intelposes.prototype.removePOS = function(posID)
+siggy2.Intel.Poses.prototype.editForm = function(id)
+{
+	this.setupForm('edit', id);
+}
+
+siggy2.Intel.Poses.prototype.remove = function(id)
 {
 	var $this = this;
 
@@ -225,13 +279,21 @@ intelposes.prototype.removePOS = function(posID)
 		message: "Are you sure you want to delete the POS?",
 		title: "Confirm deletion",
 		yesCallback: function() {
-			$.post($this.settings.baseUrl + 'pos/remove', {pos_id: posID}, function ()
-			{
-				$('#pos-'+posID).remove();
+			$.post($this.settings.baseUrl + 'pos/remove', JSON.stringify({id: id}))
+				.done(function()
+				{
+					$('#pos-'+posID).remove();
 
-				$this.forceUpdate = true;
-				$this.siggyMain.updateNow();
-			});
+					$this.forceUpdate = true;
+					$this.core.updateNow();
+				})
+				.fail(function(jqXHR)
+				{
+					if(jqXHR.status >= 500)
+					{
+						siggy2.Dialogs.alertServerError("removing the POS");
+					}
+				});
 		}
 	});
 }
