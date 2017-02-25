@@ -86,6 +86,7 @@ siggy2.Activity.siggy.prototype.initializeCollaspibles = function()
 	this.core.setupCollaspible('#sig-add-box', 'sigsAddOpen');
 	this.core.setupCollaspible('#dscan-box', 'dscanOpen');
 	this.core.setupCollaspible('#pos-box', 'posesOpen');
+	this.core.setupCollaspible('#structure-box', 'structuresOpen');
 }
 
 siggy2.Activity.siggy.prototype.setSystemID = function (systemID)

@@ -74,6 +74,7 @@ siggy2.Core = function( options )
 		sigsAddOpen: true,
 		posesOpen: true,
 		dscanOpen: true,
+		structuresOpen: true,
 		map: {
 			open: true,
 			height: 400
