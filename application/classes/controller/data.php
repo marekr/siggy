@@ -3,6 +3,7 @@
 use Illuminate\Database\Capsule\Manager as DB;
 
 use Siggy\StructureType;
+use Siggy\POSType;
 
 class Controller_Data extends FrontController {
 
@@ -34,6 +35,16 @@ class Controller_Data extends FrontController {
 		$structures = StructureType::all()->keyBy('id');
 
 		$this->response->json($structures);
+	}
+
+	public function action_poses()
+	{
+		$this->profiler = NULL;
+		$this->response->noCache();
+
+		$poses = POSType::all()->keyBy('id');
+
+		$this->response->json($poses);
 	}
 
 	public function action_sig_types()

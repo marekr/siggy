@@ -1,5 +1,7 @@
 <?php
 
+namespace Siggy;
+
 use Carbon\Carbon;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Eloquent\Model;
@@ -12,13 +14,17 @@ class POS extends Model {
 			'location_planet',
 			'location_moon',
 			'owner',
-			'pos_type_id',
+			'type_id',
 			'online',
 			'size',
 			'notes',
 			'group_id',
 			'added_date',
 			'system_id',
+	];
+
+	protected $hidden = [
+		'group_id'
 	];
 
 	public function system()

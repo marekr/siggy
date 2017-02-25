@@ -2,30 +2,34 @@
 
 use Illuminate\Database\Capsule\Manager as DB;
 
+use Siggy\StandardResponse;
+use Siggy\POS;
+
 class Controller_Pos extends FrontController {
 	public function action_add()
 	{
 		$this->profiler = NULL;
 		$this->response->noCache();
 
-
-		if(	 !$this->siggyAccessGranted() )
+		if( !$this->siggyAccessGranted() )
 		{
-			echo json_encode(array('error' => 1, 'errorMsg' => 'Invalid auth'));
-			exit();
+			$this->response->json(StandardResponse::error('Invalid Auth'));
+			return;
 		}
 
+		$postData = json_decode($this->request->body(), true);
+
 		$data = [
-			'location_planet' => htmlspecialchars($_POST['pos_location_planet']),
-			'location_moon' => htmlspecialchars($_POST['pos_location_moon']),
-			'owner' => $_POST['pos_owner'],
-			'pos_type_id' => isset($_POST['pos_type']) ? intval($_POST['pos_type']) : 1,
-			'online' => intval($_POST['pos_online']),
-			'size' => $_POST['pos_size'],
-			'notes' => htmlspecialchars($_POST['pos_notes']),
+			'location_planet' => htmlspecialchars($postData['location_planet']),
+			'location_moon' => htmlspecialchars($postData['location_moon']),
+			'owner' => $postData['owner'],
+			'type_id' => isset($postData['type_id']) ? intval($postData['type_id']) : 1,
+			'online' => intval($postData['online']),
+			'size' => $postData['size'],
+			'notes' => htmlspecialchars($postData['notes']),
 			'group_id' => Auth::$session->group->id,
 			'added_date' => time(),
-			'system_id' => intval($_POST['pos_system_id'])
+			'system_id' => intval($postData['system_id'])
 		];
 
 		if( empty($data['location_planet'] ) || empty($data['location_moon'] ) )
@@ -51,31 +55,31 @@ class Controller_Pos extends FrontController {
 		$this->profiler = NULL;
 		$this->response->noCache();
 
-		$id = $_POST['pos_id'];
+		if( !$this->siggyAccessGranted() )
+		{
+			$this->response->json(StandardResponse::error('Invalid Auth'));
+			return;
+		}
 
-		$pos = POS::findWithSystemByGroup(Auth::$session->group->id, $id);
+		$postData = json_decode($this->request->body(), true);
+
+		$pos = POS::findWithSystemByGroup(Auth::$session->group->id, $postData['id']);
 
 		if( $pos == null )
 		{
-			$this->response->json(['error' => 1, 'errorMsg' => 'Invalid POS ID']);
+			$this->response->json(StandardResponse::error('POS not found'));
 			return;
 		}
 
-		$data = array(
-			'location_planet' => htmlspecialchars($_POST['pos_location_planet']),
-			'location_moon' => htmlspecialchars($_POST['pos_location_moon']),
-			'owner' => $_POST['pos_owner'],
-			'pos_type_id' => isset($_POST['pos_type']) ? intval($_POST['pos_type']) : 1,
-			'online' => intval($_POST['pos_online']),
-			'size' => $_POST['pos_size'],
-			'notes' => htmlspecialchars($_POST['pos_notes'])
-		);
-
-		if( empty($data['location_planet'] ) || empty($data['location_moon'] ) )
-		{
-			$this->response->json(['error' => 1, 'errorMsg' => 'Missing POS Location']);
-			return;
-		}
+		$data = [
+			'location_planet' => htmlspecialchars($postData['location_planet']),
+			'location_moon' => htmlspecialchars($postData['location_moon']),
+			'owner' => $postData['owner'],
+			'type_id' => isset($postData['type_id']) ? intval($postData['type_id']) : 1,
+			'online' => intval($postData['online']),
+			'size' => $postData['size'],
+			'notes' => htmlspecialchars($postData['notes'])
+		];
 
 		if( !in_array( $data['size'], ['small','medium','large'] ) )
 		{
@@ -90,7 +94,7 @@ class Controller_Pos extends FrontController {
 		$log_message = sprintf("%s edited POS in system %s", Auth::$session->character_name, $pos->system->name);
 		Auth::$session->group->logAction('editpos', $log_message);
 
-		$this->response->json(true);
+		$this->response->json(StandardResponse::ok($pos));
 	}
 
 	public function action_remove()
@@ -98,13 +102,19 @@ class Controller_Pos extends FrontController {
 		$this->profiler = NULL;
 		$this->response->noCache();
 
-		$id = $_POST['pos_id'];
+		if( !$this->siggyAccessGranted() )
+		{
+			$this->response->json(StandardResponse::error('Invalid Auth'));
+			return;
+		}
+		
+		$postData = json_decode($this->request->body(), true);
 
-		$pos = POS::findWithSystemByGroup(Auth::$session->group->id, $id);
+		$pos = POS::findWithSystemByGroup(Auth::$session->group->id, $postData['id']);
 
 		if( $pos == null )
 		{
-			$this->response->json(['error' => 1, 'errorMsg' => 'Invalid POS ID']);
+			$this->response->json(StandardResponse::error('POS not found'));
 			return;
 		}
 
@@ -113,6 +123,6 @@ class Controller_Pos extends FrontController {
 		$log_message = sprintf("%s deleted POS from system %s", Auth::$session->character_name, $pos->system->name);
 		Auth::$session->group->logAction('delpos', $log_message);
 		
-		$this->response->json(true);
+		$this->response->json(StandardResponse::ok());
 	}
 }

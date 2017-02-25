@@ -1,59 +1,52 @@
-<!-- mass add box start -->
-<div id="pos-form" class="box" style="display:none;">
-	<div class='box-header'>Add POS</div>
-	<div class='box-content'>
+<script id="template-dialog-pos" type="text/x-handlebars-template">
 		<form>
-			<div>
-				Location(Planet - Moon)<br />
-				<input type="text" class="siggy-input" value="" name="pos_location_planet" size="2" maxlength="2" style="width:auto"/> -
-				<input type="text" class="siggy-input" value="" name="pos_location_moon" size="3" maxlength="4" style="width:auto"/>
+			{{hidden "id" model.id}}
+			<div class="form-group {{#field_errors 'location_planet' errors}}has-error{{/field_errors}} {{#field_errors 'location_moon' errors}}has-error{{/field_errors}}">
+				<div style="width:40%;display:inline-block">
+				{{label_validation 'location_planet' 'Planet' errors class="control-label"}}
+				{{input_validation 'location_planet' model.location_planet errors class="form-control" maxlength="3"}}
+				</div>
+				<div style="width:40%;display:inline-block">
+					{{label_validation 'location_moon' 'Moon' errors class="control-label"}}
+					{{input_validation 'location_moon' model.location_moon errors class="form-control" maxlength="3"}}
+				</div>
+				<div class="clear"></div>
+				{{field_errors 'location_planet' errors class="help-block text-error"}}
+				{{field_errors 'location_moon' errors class="help-block text-error"}}
 			</div>
-			<label>
-				Owner
-				<input class="siggy-input" type="text" value="" name="pos_owner" />
-			</label>
-			<label>
-				Type
-				<select class="siggy-input" name="pos_type">
-					<option value="1">Amarr</option>
-					<option value="2">Caldari</option>
-					<option value="3">Gallente</option>
-					<option value="4">Minmatar</option>
-					<option value="5">Dread Guristas</option>
-					<option value="6">Shadow Serpentis</option>
-					<option value="7">Guristas</option>
-					<option value="8">Serpentis</option>
-					<option value="9">Angel</option>
-					<option value="10">Blood</option>
-					<option value="11">Dark Blood</option>
-					<option value="12">Domination</option>
-					<option value="13">Sansha</option>
-					<option value="14">True Sansha</option>
-				</select>
-			</label>
-			<label>
-				Size
-				<select class="siggy-input" name="pos_size">
-					<option value="small">Small</option>
-					<option value="medium">Medium</option>
-					<option value="large">Large</option>
-				</select>
-			</label>
-			<label>
-				Status
-				<select class="siggy-input" name="pos_status">
-					<option value="1">Online</option>
-					<option value="0">Offline</option>
-				</select>
-			</label>
-			<label>
-				Notes
-				<textarea name="pos_notes" rows="6" style="width:100%;font-size:11px;"></textarea>
-			</label>
-			<div class="text-center form-actions">
-				<button name='submit' class="btn btn-primary btn-xs" type="submit">Submit</button>
-				<button name='cancel' type="button" class="btn btn-default btn-xs dialog-cancel">Cancel</button>
+			<div class="form-group {{#field_errors 'owner' errors}}has-error{{/field_errors}}">
+				{{label_validation 'owner' 'Owner' errors class="control-label"}}
+				
+				{{input_validation 'owner' model.owner errors class="form-control"}}
+				{{field_errors 'owner' errors class="help-block text-error"}}
+			</div>
+
+			<div class="form-group {{#field_errors 'type_id' errors}}has-error{{/field_errors}}">
+				{{label_validation 'type_id' 'Faction' errors class="control-label"}}
+
+				{{select_validation 'type_id' posTypes model.type_id errors class="form-control"}}
+				{{field_errors 'type_id' errors class="help-block text-error"}}
+			</div>
+
+			<div class="form-group {{#field_errors 'size' errors}}has-error{{/field_errors}}">
+				{{label_validation 'size' 'Size' errors class="control-label"}}
+
+				{{select_validation 'size' posSizes model.size errors class="form-control"}}
+				{{field_errors 'size' errors class="help-block text-error"}}
+			</div>
+			
+			<div class="form-group {{#field_errors 'online' errors}}has-error{{/field_errors}}">
+				{{label_validation 'online' 'Status' errors class="control-label"}}
+
+				{{select_validation 'online' posStatuses model.online errors class="form-control"}}
+				{{field_errors 'online' errors class="help-block text-error"}}
+			</div>
+
+			<div class="form-group {{#field_errors 'notes' errors}}has-error{{/field_errors}}">
+				{{label_validation 'notes' 'Notes' errors class="control-label"}}
+
+				{{textarea_validation 'notes' model.notes errors class="form-control"}}
+				{{field_errors 'notes' errors class="help-block text-error"}}
 			</div>
 		</form>
-	</div>
-</div>
+</script>

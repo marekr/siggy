@@ -229,10 +229,9 @@ class Controller_Siggy extends FrontController {
 
     private function getPOSes( $systemID )
     {
-		$poses = DB::select("SELECT p.id, p.location_planet, p.location_moon, p.online, p.pos_type_id, p.size,
-												p.added_date, p.owner, pt.pos_type_name, p.notes
+		$poses = DB::select("SELECT p.id, p.location_planet, p.location_moon, p.online, p.type_id, p.size,
+												p.added_date, p.owner, p.notes
 												FROM poses p
-												INNER JOIN pos_types pt ON(pt.pos_type_id = p.pos_type_id)
 												WHERE p.group_id=:group_id AND p.system_id=:system_id
 												ORDER BY p.location_planet ASC, p.location_moon ASC",
 												[

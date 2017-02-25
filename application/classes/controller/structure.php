@@ -15,7 +15,7 @@ class Controller_Structure extends FrontController {
 		if( !$this->siggyAccessGranted() )
 		{
 			$this->response->json(StandardResponse::error('Invalid Auth'));
-			exit();
+			return;
 		}
 
 		$postData = json_decode($this->request->body(), true);
@@ -42,13 +42,19 @@ class Controller_Structure extends FrontController {
 		if( !$this->siggyAccessGranted() )
 		{
 			$this->response->json(StandardResponse::error('Invalid Auth'));
-			exit();
+			return;
 		}
 
 		$postData = json_decode($this->request->body(), true);
 		
 		$structure = Structure::findWithSystemByGroup(Auth::$session->group->id, $postData['id']);
 
+		if( $structure == null )
+		{
+			$this->response->json(StandardResponse::error('Structure not found'));
+			return;
+		}
+		
 		$data = [
 			'type_id' => $postData['type_id'],
 			'notes' => $postData['notes'],
@@ -73,12 +79,18 @@ class Controller_Structure extends FrontController {
 		if( !$this->siggyAccessGranted() )
 		{
 			$this->response->json(StandardResponse::error('Invalid Auth'));
-			exit();
+			return;
 		}
 
 		$postData = json_decode($this->request->body(), true);
 		
 		$structure = Structure::findWithSystemByGroup(Auth::$session->group->id, $postData['id']);
+
+		if( $structure == null )
+		{
+			$this->response->json(StandardResponse::error('Structure not found'));
+			return;
+		}
 
 		$structure->delete();
 

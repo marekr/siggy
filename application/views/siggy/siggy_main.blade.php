@@ -378,6 +378,7 @@
 	@include('siggy/handlebars/jump_log_entry')
 	@include('siggy/handlebars/dialog_base')
 	@include('siggy/handlebars/structure_table_row')
+	@include('siggy/handlebars/pos_table_row')
 
 	<script type='text/javascript'>
 		$(document).ready(function() {

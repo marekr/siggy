@@ -20,6 +20,10 @@ class Structure extends Model {
 		'corporation_id'
 	];
 
+	protected $hidden = [
+		'group_id'
+	];
+
 	public function creator()
 	{
 		return $this->belongsTo('Character','creator_id');
