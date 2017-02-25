@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Illuminate\Database\Capsule\Manager as DB;
+use Siggy\POS;
 
 class Controller_Search extends FrontController {
 	protected $output_array = array();
