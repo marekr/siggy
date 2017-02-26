@@ -207,8 +207,6 @@ siggy2.Intel.Poses.prototype.saveFormCallback = function(dialog)
 	$.post(action, JSON.stringify(formData))
 		.done(function(respData) {
 			$(document).trigger('siggy.updateRequested', true );
-
-			$.unblockUI();
 		})
 		.fail(function(jqXHR) {
 			if(jqXHR.status >= 500)
@@ -248,11 +246,12 @@ siggy2.Intel.Poses.prototype.setupForm = function(mode, id)
 									style: 'primary',
 									callback: function(dialog) {
 										$this.saveFormCallback(dialog);
+										dialog.hide();
 									}
 								},
 								cancel: {
 									text: "Cancel",
-									style: 'dangler',
+									style: 'danger',
 									callback: function(dialog) {
 										dialog.hide();
 									}

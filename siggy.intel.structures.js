@@ -65,6 +65,16 @@ siggy2.Intel.Structures.prototype.initialize = function()
 		
 		$this.remove(id);
 	});
+	
+	
+	$('#system-intel-structures').on('click','.button-structure-vulnerability', function(e) {
+		
+		var id = $(this).data('id');
+
+		var vulnDialog = new siggy2.Dialog.StructureVulnerability($this.core, $this.structures[id]);
+		vulnDialog.show();
+		
+	});
 }
 
 siggy2.Intel.Structures.prototype.dockableClass = function( online )
@@ -153,8 +163,6 @@ siggy2.Intel.Structures.prototype.saveFormCallback = function(dialog)
 	$.post(action, JSON.stringify(formData))
 		.done(function(respData) {
 			$(document).trigger('siggy.updateRequested', true );
-
-			$.unblockUI();
 		})
 		.fail(function(jqXHR) {
 			if(jqXHR.status >= 500)
@@ -192,11 +200,12 @@ siggy2.Intel.Structures.prototype.setupForm = function(mode, id)
 									style: 'primary',
 									callback: function(dialog) {
 										$this.saveFormCallback(dialog);
+										dialog.hide();
 									}
 								},
 								cancel: {
 									text: "Cancel",
-									style: 'dangler',
+									style: 'danger',
 									callback: function(dialog) {
 										dialog.hide();
 									}

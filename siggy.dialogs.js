@@ -31,14 +31,14 @@ siggy2.Dialogs.build = function(dialogData, buttons)
 	this.populateButtons(dialog, buttons);
 
 	dialog.on('click', 'button', function(ev){
-		ev.stopPropagation();
 		
 		var key = $(this).data('key');
 		var callbacks = dialog.data('callbacks');
 
-		if(!typeof(callbacks[key]) != "undefined")
+		if(typeof(callbacks[key]) !== "undefined")
 		{
 			callbacks[key](obj);
+			ev.stopPropagation();
 		}
 	});
 
@@ -169,9 +169,14 @@ siggy2.Dialogs.populateButtons = function(dialog, buttons)
 
 		buttonEle.data('key', key);
 
-		if(typeof(button.style) != 'undefined')
+		if(siggy2.isDefined(button.style))
 		{
 			buttonEle.addClass('btn-'+button.style);
+		}
+
+		if(siggy2.isDefined(button.disabled))
+		{
+			buttonEle.prop('disabled', true);
 		}
 
 		if(button.focus)
@@ -216,7 +221,7 @@ siggy2.Dialogs.alertServerError = function(action)
 
 siggy2.Dialog = function(ele)
 {
-	this.ele = ele;
+	this.ele = $(ele);
 }
 
 siggy2.Dialog.prototype.show = function()
@@ -253,4 +258,24 @@ siggy2.Dialog.prototype.hide = function(dialog)
 siggy2.Dialog.prototype.replaceContent = function(newContent)
 {
 	$(this.ele).find('.dialog-content').empty().append(newContent);
+}
+
+siggy2.Dialog.prototype.enableButton = function(key)
+{
+	$(this.ele).find('button').each(function(){
+		if($(this).data('key') == key)
+		{
+			$(this).prop('disabled', false);
+		}
+	});
+}
+
+siggy2.Dialog.prototype.disableButton = function(key)
+{
+	$(this.ele).find('button').each(function(){
+		if($(this).data('key') == key)
+		{
+			$(this).prop('disabled', true);
+		}
+	});
 }

@@ -24,6 +24,8 @@ java.exe -jar compiler.jar ^
 --js=siggy.activity.astrolabe.js ^
 --js=siggy.activity.chainmap.js ^
 --js=siggy.vulnerabilitytable.js ^
+--js=siggy.dialog.sigcreatewormhole.js ^
+--js=siggy.dialog.structurevulnerability.js ^
 --source_map_format=V3 ^
 --create_source_map siggy.compiled.js.map ^
 --js_output_file=siggy.compiled.js
