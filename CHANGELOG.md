@@ -1,5 +1,17 @@
 # siggy Changelog
 
+## 2.41.0 - 2017-02-26
+### New
+- Added citadel/structure tracking to systems, complete with vulnerability editor
+
+### Changes
+- Moved POS add/edit/remove dialogs to the new dialog system, now with form validation and feedback
+- Moved POS table to templated system
+
+### Fixes
+- Fixed some users being recorded with the wrong IP in the sessions viewer, one of siggy's proxies wasn't whitelisted by the application
+- Fixed some character/corporation queries taking long amounts of time becasue the strict parameter to ESI wasn't being passed
+
 ## 2.40.0 - 2017-02-07
 ### Changes
 - Moved a large and legacy cookie to localStorage as the server doesn't need to know UI display states

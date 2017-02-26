@@ -360,6 +360,7 @@
 	@include('siggy/boxes/dialog_notifier')
 	@include('siggy/boxes/dialog_mass_sig')
 	@include('siggy/boxes/dialog_structure')
+	@include('siggy/boxes/dialog_structure_vulnerability')
 	@include('siggy/handlebars/sig_table_row')
 	@include('siggy/handlebars/effect_tooltip')
 	@include('siggy/handlebars/statics_tooltip')

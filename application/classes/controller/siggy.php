@@ -227,8 +227,8 @@ class Controller_Siggy extends FrontController {
 		return $systemData;
 	}
 
-    private function getPOSes( $systemID )
-    {
+	private function getPOSes( $systemID )
+	{
 		$poses = DB::select("SELECT p.id, p.location_planet, p.location_moon, p.online, p.type_id, p.size,
 												p.added_date, p.owner, p.notes
 												FROM poses p

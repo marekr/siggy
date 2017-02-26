@@ -1,7 +1,7 @@
 <script id="template-dialog-pos" type="text/x-handlebars-template">
 		<form>
 			{{hidden "id" model.id}}
-			<div class="form-group {{#field_errors 'location_planet' errors}}has-error{{/field_errors}} {{#field_errors 'location_moon' errors}}has-error{{/field_errors}}">
+			<div class="form-group {{#field_errors 'location_planet' errors}}has-error {{/field_errors}} {{#field_errors 'location_moon' errors}}has-error {{/field_errors}}">
 				<div style="width:40%;display:inline-block">
 				{{label_validation 'location_planet' 'Planet' errors class="control-label"}}
 				{{input_validation 'location_planet' model.location_planet errors class="form-control" maxlength="3"}}

@@ -5,6 +5,7 @@ use Illuminate\Database\Capsule\Manager as DB;
 use Siggy\StandardResponse;
 use Siggy\StructureType;
 use Siggy\Structure;
+use Siggy\StructureVulnerability;
 
 class Controller_Structure extends FrontController {
 	public function action_add()
@@ -97,6 +98,42 @@ class Controller_Structure extends FrontController {
 		$log_message = sprintf("%s deleted structure from system %s", Auth::$session->character_name, $structure->system->name);
 		Auth::$session->group->logAction('delpos', $log_message);
 		
+		$this->response->json(StandardResponse::ok());
+	}
+	
+	public function action_vulnerabilities()
+	{
+		$this->profiler = NULL;
+		$this->response->noCache();
+
+		if( !$this->siggyAccessGranted() )
+		{
+			$this->response->json(StandardResponse::error('Invalid Auth'));
+			return;
+		}
+
+		$postData = json_decode($this->request->body(), true);
+		
+		$structure = Structure::findWithSystemByGroup(Auth::$session->group->id, $postData['id']);
+
+		if( $structure == null )
+		{
+			$this->response->json(StandardResponse::error('Structure not found'));
+			return;
+		}
+
+		StructureVulnerability::where('id', $structure->id)->delete();
+
+		foreach($postData['vulnerabilities'] as $vuln)
+		{
+			StructureVulnerability::create([
+											'id' => $structure->id,
+											'day' => $vuln['day'],
+											'hour' => $vuln['hour']
+											]);
+		}
+
+
 		$this->response->json(StandardResponse::ok());
 	}
 }

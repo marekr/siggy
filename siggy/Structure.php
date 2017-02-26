@@ -24,6 +24,8 @@ class Structure extends Model {
 		'group_id'
 	];
 
+    protected $appends = ['vulnerabilities'];
+
 	public function creator()
 	{
 		return $this->belongsTo('Character','creator_id');
@@ -31,7 +33,7 @@ class Structure extends Model {
 	
 	public function type()
 	{
-		return $this->belongsTo('StructureType','type_id');
+		return $this->belongsTo('Siggy\StructureType','type_id');
 	}
 	
 	public function system()
@@ -39,9 +41,18 @@ class Structure extends Model {
 		return $this->belongsTo('System', 'system_id');
 	}
 
+	public function vulnerabilities()
+	{
+		return $this->hasMany('Siggy\StructureVulnerability', 'id', 'id');
+	}
+	
+    public function getVulnerabilitiesAttribute() {
+        return $this->vulnerabilities()->get()->all();
+    }
+
 	public static function findWithSystemByGroup(int $groupId, int $id): ?Structure
 	{
-		return self::with('system')
+		return self::with('system')->with('vulnerabilities')
 			->where('group_id',$groupId)
 			->where('id',$id)
 			->first();

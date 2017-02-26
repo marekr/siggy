@@ -13,6 +13,7 @@
 			{{ notes }}
 		</td>
 		<td class='text-center'>
+			<button data-id='{{ id }}' class='button-structure-vulnerability btn btn-xs btn-primary'>Vulnerability</button>
 			<button data-id='{{ id }}' class='button-structure-edit btn btn-xs btn-primary'>Edit</button>
 			<button data-id='{{ id }}' class='button-structure-remove btn btn-xs btn-danger'>Remove</button>
 		</td>

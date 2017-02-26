@@ -1076,3 +1076,31 @@ label {
 	background-color: inherit;
 	cursor:inherit;
 }
+
+
+.vuln-table
+{
+	-moz-user-select: none; 
+	-webkit-user-select: none; 
+	-ms-user-select:none; 
+	user-select:none;
+	-o-user-select:none;
+
+	
+}
+
+.vuln-cell 
+{
+	border:1px solid #000;
+}
+
+.vuln-time-cell
+{
+	font-size: 10px;
+	background-color: @alt-primary-background;
+}
+
+.vuln-cell-selected
+{
+	background-color: #fff000;
+}

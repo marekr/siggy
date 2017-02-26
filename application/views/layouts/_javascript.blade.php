@@ -13,7 +13,6 @@
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.contextMenu.js'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.qtip.js'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.jsPlumb-1.6.4.js'></script>
-<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.placeholder.js'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.hotkeys.js'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.simplePagination.js'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.idle.js'></script>
@@ -47,7 +46,9 @@
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.activity.notifications.js?{{ time() }}'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.activity.astrolabe.js?{{ time() }}'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.activity.chainmap.js?{{ time() }}'></script>
+<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.vulnerabilitytable.js?{{ time() }}'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.dialogs.js?{{ time() }}'></script>
+<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.dialog.structurevulnerability.js?{{ time() }}'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/vendor/moment.js?{{ time() }}'></script>
 @else
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/thirdparty.compiled.js?{{ SIGGY_VERSION }}'></script>
