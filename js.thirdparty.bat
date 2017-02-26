@@ -11,7 +11,6 @@ java -jar compiler.jar ^
 --js=jquery/jquery.contextMenu.js ^
 --js=jquery/jquery.hotkeys.js ^
 --js=jquery/jquery.jsPlumb-1.6.4.js ^
---js=jquery/jquery.placeholder.js ^
 --js=jquery/jquery.simplePagination.js ^
 --js=jquery/jquery.idle.js ^
 --js=handlebars-v2.0.0.js ^

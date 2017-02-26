@@ -6,12 +6,14 @@
 
 $( function()
 {
-	$('input, textarea').placeholder();
-
 	$.ajaxSetup({
 		headers: {
 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 		}
+	});
+
+	$(function(){
+		$(document).on('click','input[type=text].select-on-focus',function(){ this.select(); });
 	});
 });
 
