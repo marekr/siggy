@@ -6,6 +6,7 @@ java.exe -jar compiler.jar ^
 --js=siggy.dialogs.js ^
 --js=siggy.intel.dscan.js ^
 --js=siggy.intel.poses.js ^
+--js=siggy.intel.structures.js ^
 --js=siggy.charactersettings.js ^
 --js=siggy.notifications.js ^
 --js=siggy.timer.js ^
@@ -22,6 +23,7 @@ java.exe -jar compiler.jar ^
 --js=siggy.activity.notifications.js ^
 --js=siggy.activity.astrolabe.js ^
 --js=siggy.activity.chainmap.js ^
+--js=siggy.vulnerabilitytable.js ^
 --source_map_format=V3 ^
 --create_source_map siggy.compiled.js.map ^
 --js_output_file=siggy.compiled.js

@@ -21,6 +21,7 @@ java -jar compiler.jar ^
 --js=tab.js ^
 --js=typeahead.bundle.js ^
 --js=vendor/moment.js ^
+--js=vendor/validate.js ^
 --source_map_format=V3 ^
 --create_source_map thirdparty.compiled.js.map ^
 --js_output_file=thirdparty.compiled.js
