@@ -281,7 +281,7 @@ siggy2.Intel.Poses.prototype.remove = function(id)
 			$.post($this.settings.baseUrl + 'pos/remove', JSON.stringify({id: id}))
 				.done(function()
 				{
-					$('#pos-'+posID).remove();
+					$('#pos-'+id).remove();
 
 					$this.forceUpdate = true;
 					$this.core.updateNow();
