@@ -115,7 +115,6 @@ siggy2.MapConnection.prototype.create = function()
 	var $this = this;
 	var connectionOptions = { source: 'map-system-'+this.settings.from,
 						target: 'map-system-'+this.settings.to,
-						anchor:"Continuous",
 						endpointsOnTop:false,
 						endpoint:"Blank",
 						detachable:false,
