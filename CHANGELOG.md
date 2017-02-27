@@ -1,5 +1,10 @@
 # siggy Changelog
 
+## 2.41.3 - 2017-02-26
+### Fixes
+- Fixed mass signature adder dialog not closing
+- Fixed the quick mass signature box not showing its placeholder help text when used once
+
 ## 2.41.2 - 2017-02-26
 ### Fixes
 - Fixed POS deletion
@@ -15,6 +20,7 @@
 ### Changes
 - Moved POS add/edit/remove dialogs to the new dialog system, now with form validation and feedback
 - Moved POS table to templated system
+- Removed placeholder.js compatibility wrapper as IGB is no longer supported and its not needed with other browsers
 
 ### Fixes
 - Fixed some users being recorded with the wrong IP in the sessions viewer, one of siggy's proxies wasn't whitelisted by the application
