@@ -22,7 +22,7 @@ hotkeyhelper.prototype.initialize = function()
 hotkeyhelper.prototype.initializeHotkeys = function()
 {
 	var $this = this;
-	$(document).bind('keydown', 'ctrl+/', function(){
+	$(document).on('keydown', null, 'ctrl+/', function(){
 		$this.siggyMain.openBox("#hotkey-helper");
 	});
 }

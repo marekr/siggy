@@ -52,8 +52,6 @@ charactersettings.prototype.initialize = function()
 	});
 
 	$this.performSettingsRefresh();
-
-	$this.initializeHotkeys();
 }
 
 charactersettings.prototype.initForm = function()
@@ -103,32 +101,6 @@ charactersettings.prototype.saveAll = function()
 	};
 
 	$this.save(data);
-}
-
-charactersettings.prototype.initializeHotkeys = function()
-{
-	var $this = this;
-
-	if( this.core.settings.igb )
-	{
-		$(document).bind('keydown', 'ctrl+-', function(){
-			$this.zoomOut();
-		});
-
-		$(document).bind('keydown', 'ctrl+=', function(){
-			$this.zoomIn();
-		});
-
-		$(document).bind('keydown', 'ctrl+z', function(){
-			$this.resetZoom();
-		});
-
-		this.core.hotkeyhelper.registerHotkey('Ctrl+Z', 'Reset page zoom');
-		this.core.hotkeyhelper.registerHotkey('Ctrl+-', 'Zoom page in');
-		this.core.hotkeyhelper.registerHotkey('Ctrl+=', 'Zoom page out');
-		this.core.hotkeyhelper.registerHotkey('+', 'Zoom page in');
-		this.core.hotkeyhelper.registerHotkey('-', 'Zoom page out');
-	}
 }
 
 charactersettings.prototype.performSettingsRefresh = function()

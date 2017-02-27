@@ -84,9 +84,6 @@ siggy2.SigTable.prototype.initialize = function()
 
 	$('#sig-table').trigger("sorton", [ [[1,0]] ]);
 
-	$('#sig-table').bind('sortEnd', function() {
-	});
-
 
 	$( '#sig-filter .dropdown-menu a' ).each(function(){
 		var $target = $( this ),
@@ -136,11 +133,11 @@ siggy2.SigTable.prototype.initializeHotkeys = function()
 {
 	var $this = this;
 
-	$(document).bind('keydown', 'ctrl+q', function(){
+	$(document).on('keydown', null, 'ctrl+q', function(){
 		$(document).scrollTop( $('#sig-table').offset().top-100 );
 	});
 
-	$(document).bind('keydown', 'ctrl+b', function(){
+	$(document).on('keydown', null, 'ctrl+b', function(){
 		$(document).scrollTop( $("#sig-add-box textarea[name=mass_sigs]").offset().top-100);
 		$("#sig-add-box textarea[name=mass_sigs]").focus();
 	});

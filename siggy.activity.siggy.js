@@ -37,18 +37,18 @@ siggy2.Activity.siggy = function(core)
 
 	this.templateEffectTooltip = Handlebars.compile( $("#template-effect-tooltip").html() );
 
-	$(document).bind('siggy.map.systemSelected', function(e, systemID) {
+	$(document).on('siggy.map.systemSelected', function(e, systemID) {
 		$this.freeze();
 		$this.switchSystem(systemID);
 	} );
 
 
-	$(document).bind('siggy.updateRequested', function(e, force) {
+	$(document).on('siggy.updateRequested', function(e, force) {
 		$this.forceUpdate = force;
 		$this.updateNow();
 	} );
 
-	$(document).bind('siggy.locationChanged', function(e, oldID, newID ) {
+	$(document).on('siggy.locationChanged', function(e, oldID, newID ) {
 		if( !$this.freezeSystem )
 		{
 			// zero our last update to ensure a force update suceeds,
@@ -58,7 +58,7 @@ siggy2.Activity.siggy = function(core)
 		}
 	});
 
-	$(document).bind('siggy.mapsAvaliableUpdate', function(e) {
+	$(document).on('siggy.mapsAvaliableUpdate', function(e) {
 		$this.updateChainMaps(siggy2.Maps.available);
 	});
 

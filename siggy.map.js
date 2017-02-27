@@ -224,7 +224,7 @@ siggy2.Map.prototype.initialize = function()
 	this.setupEditor();
 	this.setupSystemEditor();
 
-	$(window).bind('resize', function()
+	$(window).on('resize', function()
 	{
 		that.updateMessagePositions();
 		that.centerButtons();
@@ -355,7 +355,7 @@ siggy2.Map.prototype.initialize = function()
 		});
 	});
 
-	$(document).bind('siggy.systemSwitched', function(e, systemID) {
+	$(document).on('siggy.systemSwitched', function(e, systemID) {
 		that.setSelectedSystem( systemID );
 		e.stopPropagation();
 	});
@@ -619,7 +619,7 @@ siggy2.Map.prototype.initializeHotkeys = function()
 {
 	var $this = this;
 
-	$(document).bind('keydown', 'ctrl+m', function(){
+	$(document).on('keydown', null, 'ctrl+m', function(){
 		$(document).scrollTop( 0 );
 	});
 
