@@ -1,7 +1,7 @@
 @if( Kohana::$environment == Kohana::DEVELOPMENT )
-<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/handlebars-v2.0.0.js?{{ time() }}'></script>
-<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/handlebars.form-helpers.js?{{ time() }}'></script>
-<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/handlebars.helpers.js?{{ time() }}'></script>
+<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/vendor/handlebars-v4.0.5.js?{{ time() }}'></script>
+<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/vendor/handlebars.form-helpers.js?{{ time() }}'></script>
+<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/vendor/handlebars.helpers.js?{{ time() }}'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/translate.js'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery-1.11.2.js'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery-ui.1.11.4.min.js'></script>
