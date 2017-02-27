@@ -1,5 +1,9 @@
 # siggy Changelog
 
+## 2.41.2 - 2017-02-26
+### Fixes
+- Fixed POS deletion
+
 ## 2.41.1 - 2017-02-26
 ### Fixes
 - Fixed POS and structure edit boxes closing early on invalid entries
