@@ -163,6 +163,7 @@ siggy2.Intel.Structures.prototype.saveFormCallback = function(dialog)
 	$.post(action, JSON.stringify(formData))
 		.done(function(respData) {
 			$(document).trigger('siggy.updateRequested', true );
+			dialog.hide();
 		})
 		.fail(function(jqXHR) {
 			if(jqXHR.status >= 500)
@@ -200,7 +201,6 @@ siggy2.Intel.Structures.prototype.setupForm = function(mode, id)
 									style: 'primary',
 									callback: function(dialog) {
 										$this.saveFormCallback(dialog);
-										dialog.hide();
 									}
 								},
 								cancel: {
