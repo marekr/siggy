@@ -1,4 +1,4 @@
-java.exe -jar compiler.jar ^
+java.exe -jar ./build/closure-compiler-v20170218.jar ^
 --js=misc.js ^
 --js=siggy.js ^
 --js=siggy.helpers.js ^
@@ -26,7 +26,6 @@ java.exe -jar compiler.jar ^
 --js=siggy.vulnerabilitytable.js ^
 --js=siggy.dialog.sigcreatewormhole.js ^
 --js=siggy.dialog.structurevulnerability.js ^
---source_map_format=V3 ^
 --create_source_map siggy.compiled.js.map ^
 --js_output_file=siggy.compiled.js
 
