@@ -168,14 +168,14 @@ siggy2.SigTable.prototype.setupAddDialog = function ()
 										style: 'primary',
 										callback: function(dialog) {
 											var data = $('#mass-add-sig-box form').serializeObject();
-											$this.massAddHandler($this.systemID, data);
+											$this.massAddHandler($this.systemID, data, dialog);
 										}
 									},
 									cancel: {
 										text: "Cancel",
 										style: 'danger',
 										callback: function(dialog) {
-											dialog.trigger('hide.dialog');
+											dialog.hide();
 										}
 									},
 								}
@@ -194,7 +194,7 @@ siggy2.SigTable.prototype.setupAddDialog = function ()
 		if(e.which == 13)
 		{
 			$this.massAddHandler($this.systemID,{blob: $('#sig-add-box textarea[name=mass_sigs]').val()});
-			$('#sig-add-box textarea[name=mass_sigs]').val('');
+			$('#sig-add-box textarea[name=mass_sigs]').val('').blur();
 		}
 	}
 
@@ -293,7 +293,7 @@ siggy2.SigTable.prototype.sigAddHandler = function()
 		});
 }
 
-siggy2.SigTable.prototype.massAddHandler = function(systemID, data)
+siggy2.SigTable.prototype.massAddHandler = function(systemID, data, dialog)
 {
 	var $this = this;
 
@@ -326,8 +326,11 @@ siggy2.SigTable.prototype.massAddHandler = function(systemID, data)
 					$(document).trigger('siggy.updateRequested', true );
 				}
 			}
-
-			$.unblockUI();
+			
+			if(siggy2.isDefined(dialog))
+			{
+				dialog.hide();
+			}
 		});
 }
 
