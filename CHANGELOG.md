@@ -1,5 +1,9 @@
 # siggy Changelog
 
+## 2.41.1 - 2017-02-26
+### Fixes
+- Fixed POS and structure edit boxes closing early on invalid entries
+
 ## 2.41.0 - 2017-02-26
 ### New
 - Added citadel/structure tracking to systems, complete with vulnerability editor
