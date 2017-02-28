@@ -21,7 +21,8 @@ class Controller_Siggy extends FrontController {
 		$sysData->id = 30000142;
 		$sysData->name = 'Jita';
 
-		ScribeCommandBus::UnfreezeCharacter(Auth::$session->character_id);
+		$activeChar = Auth::$user->getActiveSSOCharacter();
+		ScribeCommandBus::UnfreezeCharacter($activeChar->character_owner_hash);
 
 		//temporary cookie set to destroy this no longer used cookie
 		setcookie('display_states', null, -1, '/');

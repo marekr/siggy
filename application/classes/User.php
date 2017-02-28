@@ -136,7 +136,7 @@ class User extends Model {
 		$char->fill($data);
 		$char->save();
 		
-		//ScribeCommandBus::UpdateSSOCharacter($char->character_owner_hash);
+		ScribeCommandBus::UpdateSSOCharacter($char->character_owner_hash);
 		
 		return TRUE;
 	}
