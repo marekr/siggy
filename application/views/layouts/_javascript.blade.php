@@ -3,7 +3,7 @@
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/vendor/handlebars.form-helpers.js?{{ time() }}'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/vendor/handlebars.helpers.js?{{ time() }}'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/translate.js'></script>
-<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery-1.11.2.js'></script>
+<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery-1.12.4.js'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery-ui.1.11.4.min.js'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.tablesorter.js'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.blockUI.js'></script>

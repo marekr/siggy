@@ -1,14 +1,14 @@
 /*
- * qTip2 - Pretty powerful tooltips - v2.1.1
+ * qTip2 - Pretty powerful tooltips - v3.0.3
  * http://qtip2.com
  *
- * Copyright (c) 2013 Craig Michael Thompson
- * Released under the MIT, GPL licenses
+ * Copyright (c) 2017 
+ * Released under the MIT licenses
  * http://jquery.org/license
  *
- * Date: Thu Jul 11 2013 02:03 GMT+0100+0100
- * Plugins: None
- * Styles: None
+ * Date: Mon Jan 9 2017 05:27 EST-0500
+ * Plugins: viewport modal
+ * Styles: core
  */
 .qtip{
 	position: absolute;
@@ -18,7 +18,7 @@
 
 	max-width: 280px;
 	min-width: 50px;
-	
+
 	font-size: 10.5px;
 	line-height: 12px;
 
@@ -28,76 +28,71 @@
 	padding: 0;
 }
 
-.qtip-content{
-    position: relative;
-    padding: 5px 9px;
-    overflow: hidden;
+	.qtip-content{
+		position: relative;
+		padding: 5px 9px;
+		overflow: hidden;
 
-    text-align: left;
-    word-wrap: break-word;
-}
+		text-align: left;
+		word-wrap: break-word;
+	}
 
-.qtip-titlebar{
-    position: relative;
-    padding: 5px 35px 5px 10px;
-    overflow: hidden;
+	.qtip-titlebar{
+		position: relative;
+		padding: 5px 35px 5px 10px;
+		overflow: hidden;
 
-    border-width: 0 0 1px;
-    font-weight: bold;
-}
+		border-width: 0 0 1px;
+		font-weight: bold;
+	}
 
-.qtip-titlebar + .qtip-content{ border-top-width: 0 !important; }
+	.qtip-titlebar + .qtip-content{ border-top-width: 0 !important; }
 
-/* Default close button class */
-.qtip-close{
-    position: absolute;
-    right: -9px; top: -9px;
+	/* Default close button class */
+	.qtip-close{
+		position: absolute;
+		right: -9px; top: -9px;
+		z-index: 11; /* Overlap .qtip-tip */
 
-    cursor: pointer;
-    outline: medium none;
+		cursor: pointer;
+		outline: medium none;
 
-    border-width: 1px;
-    border-style: solid;
-    border-color: transparent;
-}
+		border: 1px solid transparent;
+	}
 
-.qtip-titlebar .qtip-close
-{
-    right: 4px; top: 50%;
-    margin-top: -9px;
-}
+		.qtip-titlebar .qtip-close{
+			right: 4px; top: 50%;
+			margin-top: -9px;
+		}
 
-* html .qtip-titlebar .qtip-close{ top: 16px; } /* IE fix */
+		* html .qtip-titlebar .qtip-close{ top: 16px; } /* IE fix */
 
-.qtip-titlebar .ui-icon,
-.qtip-icon .ui-icon
-{
-    display: block;
-    text-indent: -1000em;
-    direction: ltr;
-}
+		.qtip-titlebar .ui-icon,
+		.qtip-icon .ui-icon{
+			display: block;
+			text-indent: -1000em;
+			direction: ltr;
+		}
 
-.qtip-icon, .qtip-icon .ui-icon
-{
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-    text-decoration: none;
-}
+		.qtip-icon, .qtip-icon .ui-icon{
+			-moz-border-radius: 3px;
+			-webkit-border-radius: 3px;
+			border-radius: 3px;
+			text-decoration: none;
+		}
 
-.qtip-icon .ui-icon
-{
-    width: 18px;
-    height: 14px;
+			.qtip-icon .ui-icon{
+				width: 18px;
+				height: 14px;
 
-    line-height: 14px;
-    text-align: center;
-    text-indent: 0;
-    font: normal bold 10px/13px Tahoma,sans-serif;
+				line-height: 14px;
+				text-align: center;
+				text-indent: 0;
+				font: normal bold 10px/13px Tahoma,sans-serif;
 
-    color: inherit;
-    background: transparent none no-repeat -100em -100em;
-}
+				color: inherit;
+				background: transparent none no-repeat -100em -100em;
+			}
 
 /* Applied to 'focused' tooltips e.g. most recently displayed/interacted with */
 .qtip-focus{}
@@ -106,30 +101,47 @@
 .qtip-hover{}
 
 /* Default tooltip style */
-.qtip-default
-{
-	border-width: 1px;
-	border-style: solid;
-	border-color: #2d2d2d;
+.qtip-default{
+	border: 1px solid #F1D031;
 
-	background-color: #262626;
-	color: #fff;
+	background-color: #FFFFA3;
+	color: #555;
 }
 
-.qtip-default .qtip-titlebar
-{
-    background-color: #FFEF93;
+	.qtip-default .qtip-titlebar{
+		background-color: #FFEF93;
+	}
+
+	.qtip-default .qtip-icon{
+		border-color: #CCC;
+		background: #F1F1F1;
+		color: #777;
+	}
+
+	.qtip-default .qtip-titlebar .qtip-close{
+		border-color: #AAA;
+		color: #111;
+	}
+
+
+#qtip-overlay{
+	position: fixed;
+	left: 0; top: 0;
+	width: 100%; height: 100%;
 }
 
-.qtip-default .qtip-icon
-{
-    border-color: #CCC;
-    background: #F1F1F1;
-    color: #777;
-}
+	/* Applied to modals with show.modal.blur set to true */
+	#qtip-overlay.blurs{ cursor: pointer; }
 
-.qtip-default .qtip-titlebar .qtip-close
-{
-    border-color: #AAA;
-    color: #111;
-}
+	/* Change opacity of overlay here */
+	#qtip-overlay div{
+		position: absolute;
+		left: 0; top: 0;
+		width: 100%; height: 100%;
+
+		background-color: black;
+
+		opacity: 0.7;
+		filter:alpha(opacity=70);
+		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+	}

@@ -1104,3 +1104,32 @@ label {
 {
 	background-color: #fff000;
 }
+
+/* Default tooltip style */
+.qtip-default
+{
+	border-width: 1px;
+	border-style: solid;
+	border-color: #2d2d2d;
+
+	background-color: #262626;
+	color: #fff;
+}
+
+.qtip-default .qtip-titlebar
+{
+    background-color: #FFEF93;
+}
+
+.qtip-default .qtip-icon
+{
+    border-color: #CCC;
+    background: #F1F1F1;
+    color: #777;
+}
+
+.qtip-default .qtip-titlebar .qtip-close
+{
+    border-color: #AAA;
+    color: #111;
+}
