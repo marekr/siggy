@@ -1,6 +1,6 @@
 java -jar ./build/closure-compiler-v20170218.jar ^
 --js=translate.js ^
---js=jquery/jquery-1.11.2.js ^
+--js=jquery/jquery-1.12.4.js ^
 --js=jquery/jquery-ui.1.11.4.min.js ^
 --js=jquery/jquery.qtip.js ^
 --js=jquery/jquery.blockUI.js ^
