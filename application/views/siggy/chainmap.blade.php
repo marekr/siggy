@@ -18,7 +18,6 @@
 				</ul>
 				<br clear="all" />
 			</li>
-			<!--- <li class="tab add"><i class="fa fa-fw fa-plus"></i></li> --->
 			<li class="tab minimize"><i class="expand-collapse-indicator fa fa-caret-down pull-right fa-lg"></i></li>
 		</ul>
 		<div class="chain-map-messages">
@@ -27,9 +26,7 @@
 			<p class="deleting">Click on(or mouse drag) wormhole links to select for deletion</p>
 		</div>
 		<div id="chain-map-inner">
-			<div id="chain-map-scrolltainer">
-				<div id="chain-map">
-				</div>
+			<div id="chain-map">
 			</div>
 		</div>
 
