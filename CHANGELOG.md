@@ -1,5 +1,14 @@
 # siggy Changelog
 
+## 2.42.0 - 2017-02-28
+### Changes
+- Updated several JS libraries to newer versions
+
+### Fixes
+- Reconnected characters should get their location polled properly again
+- Changed supporting map HTML, it should scroll more properly now along with the deletion box working properly
+- Delete selection drags should release now if the mouse leaves the chain map area
+
 ## 2.41.3 - 2017-02-26
 ### Fixes
 - Fixed mass signature adder dialog not closing

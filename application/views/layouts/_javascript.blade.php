@@ -12,10 +12,10 @@
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.ui.position.js'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.contextMenu.js'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.qtip.js'></script>
-<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.jsPlumb-1.6.4.js'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.hotkeys.js'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.simplePagination.js'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/jquery/jquery.idle.js'></script>
+<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/vendor/jsPlumb-1.7.10.js'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/dropdown.js'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/tab.js'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/misc.js'></script>
