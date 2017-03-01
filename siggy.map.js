@@ -224,11 +224,11 @@ siggy2.Map.prototype.initialize = function()
 	this.setupEditor();
 	this.setupSystemEditor();
 
+
 	$(window).on('resize', function()
 	{
 		that.updateMessagePositions();
 		that.centerButtons();
-		$("#chain-map").width($("#chain-map-scrolltainer")[0].scrollWidth);
 	});
 
 	if( this.core.displayStates.map.open )
@@ -261,14 +261,12 @@ siggy2.Map.prototype.initialize = function()
 		{
 			return;
 		}
-		//ulgy hack to make the mass delete selection work for now
-		$("#chain-map").width($("#chain-map-scrolltainer")[0].scrollWidth);
 
 		that.selectionInProgress = true;
 
 		var chainmapOffset = $(this).offset();
-		var click_y = e.pageY-chainmapOffset.top-5,
-			click_x = e.pageX-chainmapOffset.left-5;
+		var click_y = e.pageY-chainmapOffset.top+$(this).scrollTop(),
+			click_x = e.pageX-chainmapOffset.left+$(this).scrollLeft();
 
 		that.selectionBox.css({
 		  'top':    click_y,
@@ -281,12 +279,12 @@ siggy2.Map.prototype.initialize = function()
 
 		that.selectionBox.appendTo($container);
 
-		$container.on('mousemove', function(e) {
+		$container.on('mousemove.map', function(e) {
 			if ( that.selectionInProgress  )
 			{
 				var chainmapOffset = $(this).offset();
-				var move_x = e.pageX-chainmapOffset.left,
-				  move_y = e.pageY-chainmapOffset.top,
+				var move_x = e.pageX-chainmapOffset.left+$(this).scrollLeft(),
+				  move_y = e.pageY-chainmapOffset.top+$(this).scrollTop(),
 				  width  = Math.abs(move_x - click_x),
 				  height = Math.abs(move_y - click_y),
 				  new_x, new_y;
@@ -300,59 +298,60 @@ siggy2.Map.prototype.initialize = function()
 				that.selectionBox.show();
 
 				that.selectionBox.css({
-				'width': width,
-				'height': height,
-				'top': new_y,
-				'left': new_x
+					'width': width,
+					'height': height,
+					'top': new_y,
+					'left': new_x
 				});
 		  }
-		}).on('mouseup', function(e) {
-			if ( that.selectionInProgress )
+		})
+	});
+
+	$(document).on('mouseup.map', function(e){
+		if ( that.selectionInProgress )
+		{
+			//ulgy hack to make the mass delete selection work for now
+
+			that.selectionInProgress = false;
+			$container.off('mousemove.map');
+
+			var bb = {
+					w: that.selectionBox.width(),
+					h: that.selectionBox.height(),
+					x: that.selectionBox.position().left + $container.scrollLeft(),
+					y: that.selectionBox.position().top + $container.scrollTop()
+			};
+
+			that.selectionBox.remove();
+
+			if( bb.w < 1 || bb.h < 1 )
 			{
-				//ulgy hack to make the mass delete selection work for now
-				$("#chain-map").width("auto");
+				return;
+			}
 
-				that.selectionInProgress = false;
-				$container.off('mousemove');
+			for(var i in that.mapConnections)
+			{
+				var conn = that.mapConnections[i];
+				var ele = $( conn.id );
 
-				var bb = {
-					 w: that.selectionBox.width(),
-					 h: that.selectionBox.height(),
-					 x: that.selectionBox.position().left,
-					 y: that.selectionBox.position().top
+				var internalconn = conn.connection.getConnector();
+				var compareBB = {
+					h: internalconn.h,
+					x: internalconn.x,
+					y: internalconn.y,
+					w: internalconn.w
 				};
 
-				that.selectionBox.remove();
+				var inside = Biltong.intersects( bb, compareBB );
 
-				if( bb.w < 1 || bb.h < 1 )
+				if( inside )
 				{
-					return;
+					conn.selected = !conn.selected;
 				}
 
-				for(var i in that.mapConnections)
-				{
-					var conn = that.mapConnections[i];
-					var ele = $( conn.id );
-
-					var internalconn = conn.connection.getConnector();
-					var compareBB = {
-						h: internalconn.h,
-						x: internalconn.x,
-						y: internalconn.y,
-						w: internalconn.w
-					};
-
-					var inside = Biltong.intersects( bb, compareBB );
-
-					if( inside )
-					{
-						conn.selected = !conn.selected;
-					}
-
-					conn.refresh();
-				}
+				conn.refresh();
 			}
-		});
+		}
 	});
 
 	$(document).on('siggy.systemSwitched', function(e, systemID) {
@@ -849,8 +848,6 @@ siggy2.Map.prototype.update = function(timestamp, systems, wormholes, stargates,
 	this.cynos = cynos;
 
 	this.draw();
-	$("#chain-map").width($("#chain-map-scrolltainer")[0].scrollWidth);
-
 	this.hideMessage('loading');
 }
 
