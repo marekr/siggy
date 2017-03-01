@@ -74,6 +74,8 @@ siggy2.Map = function(core, options)
 	this.blobTemplate = Handlebars.compile( $("#template-chainmap-system-blob").html() );
 	this.templateJumpLogEntry = Handlebars.compile( $("#template-jump-log-entry").html() );
 
+	this.jsPlumb = jsPlumb.getInstance();
+
 	$(document).on('click','.map-system-blob', function(e)
 	{
 		e.preventDefault();
@@ -606,9 +608,10 @@ siggy2.Map.prototype.startMapEdit = function()
 
 	$('div.map-system-blob').qtip('disable');
 
+	var $this = this;
 	$('.map-system-blob').each( function()
 	{
-		jsPlumb.setDraggable($(this), true);
+		$this.jsPlumb.setDraggable($(this), true);
 	});
 
 	this.showMessage('editing');
@@ -703,7 +706,7 @@ siggy2.Map.prototype.registerEvents = function()
 
 		$('.map-system-blob').each( function()
 		{
-			jsPlumb.setDraggable($(this), false);
+			$this.jsPlumb.setDraggable($(this), false);
 		});
 
         $.post($this.baseUrl + 'chainmap/save', {
@@ -925,9 +928,10 @@ siggy2.Map.prototype.updateActives = function( activesData )
 siggy2.Map.prototype.draw = function()
 {
     var that = this;
+	var $this = this;
 
 	//reset jsplumb to nuke all events
-	jsPlumb.reset();
+	this.jsPlumb.reset();
 
     $('div.map-system-blob').qtip('destroy');
     $('div.map-system-blob').off();
@@ -1043,7 +1047,7 @@ siggy2.Map.prototype.draw = function()
 			}
 		}
 
-		var connection = new siggy2.MapConnection(jsPlumb,options);
+		var connection = new siggy2.MapConnection(this.jsPlumb,options);
 		connection.map = this;
 		connection.create();
 
@@ -1064,7 +1068,7 @@ siggy2.Map.prototype.draw = function()
 			updatedAt: stargate.updated_at
 		};
 
-		var connection = new siggy2.MapConnection(jsPlumb,options);
+		var connection = new siggy2.MapConnection(this.jsPlumb,options);
 		connection.map = this;
 		connection.create();
 
@@ -1085,7 +1089,7 @@ siggy2.Map.prototype.draw = function()
 			updatedAt: cyno.updated_at
 		};
 
-		var connection = new siggy2.MapConnection(jsPlumb,options);
+		var connection = new siggy2.MapConnection(this.jsPlumb,options);
 		connection.map = this;
 		connection.create();
 
@@ -1107,7 +1111,7 @@ siggy2.Map.prototype.draw = function()
 			updatedAt: jumpbridge.updated_at
 		};
 
-		var connection = new siggy2.MapConnection(jsPlumb,options);
+		var connection = new siggy2.MapConnection(this.jsPlumb,options);
 		connection.map = this;
 		connection.create();
 
@@ -1116,14 +1120,14 @@ siggy2.Map.prototype.draw = function()
 
     if( Object.size(this.systems) > 0 )
 	{
-		jsPlumb.draggable($('.map-system-blob'), {
+		this.jsPlumb.draggable($('.map-system-blob'), {
 			containment: 'parent',
 			stack: "div"
 		});
 
 		$('.map-system-blob').each( function()
 		{
-			jsPlumb.setDraggable($(this), false);
+			$this.jsPlumb.setDraggable($(this), false);
 		});
 	}
 }
