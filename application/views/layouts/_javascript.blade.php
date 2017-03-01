@@ -51,7 +51,7 @@
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.dialog.structurevulnerability.js?{{ time() }}'></script>
 <script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/vendor/moment.js?{{ time() }}'></script>
 @else
-<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/thirdparty.compiled.js?{{ SIGGY_VERSION }}'></script>
-<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.compiled.js?{{ SIGGY_VERSION }}'></script>
+<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/thirdparty.compiled.js?v={{ SIGGY_VERSION }}'></script>
+<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/siggy.compiled.js?v={{ SIGGY_VERSION }}'></script>
 <script src="https://cdn.ravenjs.com/3.10.0/raven.min.js"></script>
 @endif
