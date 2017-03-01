@@ -1,5 +1,6 @@
 java -jar ./build/closure-compiler-v20170218.jar ^
 --js=translate.js ^
+--js=jquery/jquery-1.12.4.js ^
 --js=jquery/jquery-ui.1.11.4.min.js ^
 --js=jquery/jquery.qtip.js ^
 --js=jquery/jquery.blockUI.js ^
@@ -11,7 +12,6 @@ java -jar ./build/closure-compiler-v20170218.jar ^
 --js=jquery/jquery.hotkeys.js ^
 --js=jquery/jquery.simplePagination.js ^
 --js=jquery/jquery.idle.js ^
---js=jquery/jquery-1.12.4.js ^
 --js=vendor/jsPlumb-1.7.10.js ^
 --js=vendor/handlebars-v4.0.5.js ^
 --js=vendor/handlebars.form-helpers.js ^
