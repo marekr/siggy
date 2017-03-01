@@ -28,6 +28,33 @@
 	padding-bottom:6px; /* this fixes the scrollbar being covered up slightly*/
 }
 
+/* Let's get this party started */
+#chain-map::-webkit-scrollbar
+{
+	width: 15px;
+	height: 15px;
+}
+
+/* Track */
+#chain-map::-webkit-scrollbar-track {
+
+}
+
+/* Handle */
+#chain-map::-webkit-scrollbar-thumb {
+	background-color: #A46D00;
+}
+#chain-map::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(255,0,0,0.4);
+}
+
+#chain-map::-webkit-scrollbar-track-piece {
+	background-color: @header-background;
+}
+#chain-map::-webkit-scrollbar-button {
+    background-color: #664402;
+}
+
 #chain-map-container p.editing,
 #chain-map-container p.loading,
 #chain-map-container p.deleting
