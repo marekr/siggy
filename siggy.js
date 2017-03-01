@@ -181,7 +181,6 @@ siggy2.Core.prototype.updateNow = function()
 	return this.update();
 }
 
-
 siggy2.Core.prototype.initialize = function ()
 {
 	var $this = this;
@@ -215,7 +214,11 @@ siggy2.Core.prototype.initialize = function ()
 		idle: 1000*(60*60)*1.5,	// 60 minutes
 	})
 
-	siggy2.StaticData.load(this.settings.baseUrl);
+	siggy2.StaticData.load(this.settings.baseUrl, this);
+}
+
+siggy2.Core.prototype.continueInitialize = function()
+{
 	siggy2.Helpers.setupSystemTypeAhead('.system-typeahead');
 
 

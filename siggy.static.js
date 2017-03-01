@@ -318,7 +318,7 @@ siggy2.StaticData = {
 	structureTypes: {}
 };
 
-siggy2.StaticData.load = function(baseUrl)
+siggy2.StaticData.load = function(baseUrl, core)
 {
 	var $this = this;
 
@@ -327,7 +327,6 @@ siggy2.StaticData.load = function(baseUrl)
 
 	jQuery.ajax({
 		 url: baseUrl + 'data/sig_types',
-		 async: false,
 		 dataType: 'json'
 	}).then(function(result){
 		
@@ -338,7 +337,6 @@ siggy2.StaticData.load = function(baseUrl)
 
 		return jQuery.ajax({
 			url: baseUrl + 'data/structures?' + time(),
-			async: false,
 			dataType: 'json'
 		});
 	}).then(function(result){
@@ -347,7 +345,6 @@ siggy2.StaticData.load = function(baseUrl)
 
 		return jQuery.ajax({
 			url: baseUrl + 'data/poses?' + time(),
-			async: false,
 			dataType: 'json'
 		});
 	}).then(function(result){
@@ -356,12 +353,12 @@ siggy2.StaticData.load = function(baseUrl)
 
 		return jQuery.ajax({
 			url: baseUrl + 'data/systems?' + time(),
-			async: false,
 			dataType: 'json'
 		});
 	}).then(function(result){
 		$this.systems = result;
 
+		
 		$this.systemTypeAhead = new Bloodhound({
 			datumTokenizer: function(d) {
 				return Bloodhound.tokenizers.whitespace(d.name);
@@ -373,9 +370,11 @@ siggy2.StaticData.load = function(baseUrl)
 				wildcard: '%QUERY'
 			}
 		});
+
+		
+		window.loading_screen.finish();
+		core.continueInitialize();
 	})
-
-
 }
 
 siggy2.StaticData.getSystemByID = function( id )
