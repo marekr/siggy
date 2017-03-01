@@ -3,7 +3,7 @@
 require APPPATH . 'vendor/autoload.php';
 use Illuminate\Database\Capsule\Manager as DB;
 
-define('SIGGY_VERSION', '2.41.3');
+define('SIGGY_VERSION', '2.43.0');
 
 
 function view(string $path, array $args = [])

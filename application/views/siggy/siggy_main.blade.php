@@ -381,6 +381,24 @@
 	@include('siggy/handlebars/structure_table_row')
 	@include('siggy/handlebars/pos_table_row')
 
+		
+	<script type='text/javascript' src='{{ URL::base(TRUE, TRUE) }}js/vendor/please-wait.js?{{ time() }}'></script>
+	
+	<script type="text/javascript">
+		var loadingMessages = [
+			'Probing wormholes...',
+			'Hiding the worthwhile sites...',
+			'A sacrifice to Bob a day keeps the drifters away...',
+			'Renaming anomaly bookmarks as wormholes...'
+		];
+		var randomNumber = Math.floor(Math.random()*loadingMessages.length);
+		var message = loadingMessages[randomNumber];
+
+		window.loading_screen = window.pleaseWait({
+			logo: "/images/siggy.png",
+			loadingHtml: "<p class='loading-message'>"+message+"</p><div class='sk-spinner sk-spinner-pulse'></div>",
+		});
+	</script>
 	<script type='text/javascript'>
 		$(document).ready(function() {
 			if(typeof(Raven) != "undefined")

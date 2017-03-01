@@ -1,5 +1,9 @@
 # siggy Changelog
 
+## 2.43.0 - 2017-03-01
+### Changes
+- Add loading screen to rectify race conditions with static data loading
+
 ## 2.42.0 - 2017-02-28
 ### Changes
 - Updated several JS libraries to newer versions

@@ -31,6 +31,7 @@ $themeFiles = array( 'global_variables.css',
                       'autocomplete.css',
                       'siggy.css',
                       'siggy.map.css',
+                      'please-wait.css',
 					);
 
 
