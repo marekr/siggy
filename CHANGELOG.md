@@ -1,5 +1,9 @@
 # siggy Changelog
 
+## 2.43.2 - 2017-03-02
+### Fixes
+- Fixed system positions getting reset
+
 ## 2.43.1 - 2017-03-01
 ### Fixes
 - Revert library upgrade to fix map jumping system issues
