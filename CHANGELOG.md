@@ -1,5 +1,9 @@
 # siggy Changelog
 
+## 2.43.1 - 2017-03-01
+### Fixes
+- Revert library upgrade to fix map jumping system issues
+
 ## 2.43.0 - 2017-03-01
 ### Changes
 - Add loading screen to rectify race conditions with static data loading
