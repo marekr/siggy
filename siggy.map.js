@@ -698,8 +698,8 @@ siggy2.Map.prototype.registerEvents = function()
 
 
             var offset = $( '#map-system-'+sysID ).position();
-            saveSystem.x = offset.left;
-            saveSystem.y = offset.top;
+            saveSystem.x = offset.left + $("#chain-map").scrollLeft();
+            saveSystem.y = offset.top+ $("#chain-map").scrollTop();
 
             saveSystemData.push(saveSystem);
         }
