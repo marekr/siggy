@@ -12,7 +12,7 @@ java -jar ./build/closure-compiler-v20170218.jar ^
 --js=jquery/jquery.hotkeys.js ^
 --js=jquery/jquery.simplePagination.js ^
 --js=jquery/jquery.idle.js ^
---js=vendor/jsPlumb-1.7.10.js ^
+--js=jquery/jquery.jsPlumb-1.6.4.js ^
 --js=vendor/handlebars-v4.0.5.js ^
 --js=vendor/handlebars.form-helpers.js ^
 --js=vendor/handlebars.helpers.js ^
