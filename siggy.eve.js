@@ -39,6 +39,16 @@ siggy2.Eve.ShowSystemInfo = function(systemName)
 	window.open('http://evemaps.dotlan.net/system/'+ systemName , '_blank');
 }
 
+siggy2.Eve.ShowSystemInfoById = function(systemId)
+{
+	window.open('http://evemaps.dotlan.net/system/'+ systemId , '_blank');
+}
+
+siggy2.Eve.EveWho = function(name)
+{
+	window.open('https://evewho.com/pilot/'+ name , '_blank');
+}
+
 siggy2.Eve.addWaypointCall = function(data)
 {
 	$.ajax({
