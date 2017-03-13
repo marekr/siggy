@@ -58,7 +58,7 @@ class AssetsCompileCommand extends Command
 	public function handle()
 	{
 		//clean out the old files...
-		$files = glob(AssetHelpers::joinPaths($this->config['outputPath'], '*'));
+		$files = rglob(AssetHelpers::joinPaths($this->config['outputPath'], '*'));
 		foreach($files as $file){
 			if(is_file($file))
 			{
@@ -66,23 +66,37 @@ class AssetsCompileCommand extends Command
 			}
 		}
 
+		foreach($files as $file){
+			if(is_dir($file))
+			{
+				@rmdir($file);
+			}
+		}
+		
 		$cache = [];
 		foreach($this->config['assets'] as $asset)
 		{
 			$this->info("Compiling {$asset['virtualName']}");
 			$resultingAsset = null;
 
+			$assetName = AssetHelpers::jsAssetFilename($asset['virtualName'],VERSION);
+			$filePath = AssetHelpers::joinPaths($this->config['outputPath'], $assetName);
+
 			if($asset['type'] == 'js')
 			{
 				$files = [];
 				foreach($asset['files'] as $file)
 				{
-					$file = AssetHelpers::joinPaths($asset['basePath'],$file);
-					$files[] = new FileAsset( $file );
+					$sourceFile = AssetHelpers::joinPaths($asset['basePath'],$file);
+					$files[] = new FileAsset( $sourceFile );
+
+					$destPath = AssetHelpers::joinPaths($this->config['outputPath'], $file);
+					@mkdir(dirname($destPath), 0777, true);
+					copy($sourceFile, $destPath);
 				}
 				
 				$resultingAsset = new AssetCollection($files, [
-					new GoogleClosure\CompilerJarFilter($this->config['closurePath'], 'java'),
+					new \Siggy\Assetic\CompilerJarFilter($this->config['closurePath'], $filePath.'.map', 'java'),
 				]);
 			}
 			else{
@@ -90,9 +104,10 @@ class AssetsCompileCommand extends Command
 				$this->error("Unknown asset type {$asset['type']}");
 			}
 
-			$filePath = AssetHelpers::joinPaths($this->config['outputPath'], AssetHelpers::jsAssetFilename($asset['virtualName'],VERSION));
+			$result = $resultingAsset->dump();
+			$result .= "\n//# sourceMappingURL={$assetName}.map\n";
 
-			if (file_put_contents($filePath, $resultingAsset->dump()) === false) {
+			if (file_put_contents($filePath, $result) === false) {
 				$this->error("Error writing asset file: {$file_path}");
 			}
 			$this->info("Wrote {$filePath}");
