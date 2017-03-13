@@ -1,9 +1,12 @@
 # siggy Changelog
 
-## 2.44.0 - 2017-03-??
+## 2.44.0 - 2017-03-12
 ### Changes
 - Added asset management system to deal with js bundling and loading. This will resolve browser cache issues that happen during upgrades.
 - Added maintenance pages triggered during upgrade
+
+### Fixes
+- Fixed legacy IGB show info calls for system info and character info in certain areas
 
 ## 2.43.2 - 2017-03-02
 ### Fixes

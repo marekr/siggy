@@ -19,8 +19,8 @@
 			<tr>
 				<td><?php echo (++$rank_offset); ?></td>
 				<td class="center">
-					<b><a href='javascript:CCPEVE.showInfo(1377, <?php echo $result->charID; ?>)'><?php echo $result->charName; ?></a></b><br />
-					<img src='https://image.eveonline.com/Character/<?php echo $result->charID;?>_32.jpg' />
+					<b><a href='javascript:siggy2.Eve.EveWho("{{urlencode($result->charName)}}")'>{{$result->charName}}</a></b><br />
+					<img src='https://image.eveonline.com/Character/{{$result->charID}}_32.jpg' />
 				</td>
 				<td>{{$result->adds}}</td>
 				<td>{{$result->updates}}</td>

@@ -14,7 +14,7 @@
 					{{else}}
 					<li class='disabled'>
 					{{/isIGB}}
-						<a onclick="javascript:CCPEVE.showInfo(5,{{ toSystem.id }})">Show Info</a>
+						<a onclick="javascript:siggy2.Eve.ShowSystemInfoById({{ toSystem.id }})">Show Info</a>
 					</li>
 					<li><a target="_blank" href="http://evemaps.dotlan.net/system/{{toSystem.name}}">DOTLAN</a></li>
 				</ul>
@@ -34,7 +34,7 @@
 					{{else}}
 					<li class='disabled'>
 					{{/isIGB}}
-						<a onclick="javascript:CCPEVE.showInfo(5,{{ fromSystem.id }})">Show Info</a>
+						<a onclick="javascript:siggy2.Eve.ShowSystemInfoById({{ fromSystem.id }})">Show Info</a>
 					</li>
 					<li><a target="_blank" href="http://evemaps.dotlan.net/system/{{fromSystem.name}}">DOTLAN</a></li>
 				</ul>
