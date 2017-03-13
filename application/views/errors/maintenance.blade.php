@@ -41,6 +41,7 @@
 				{{ $message }}
 				@endif
 			</p>
+			Current version {{ SIGGY_VERSION }}
 			<div class="panel text-left">
 				<div class="panel-body">
 					<div style="height:50vh;overflow-y:auto;">
