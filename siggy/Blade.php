@@ -102,4 +102,9 @@ class Blade
     {
         return call_user_func_array([$this->container['view'], $method], $params);
     }
+	
+    public static function __callStatic($method, $params)
+    {
+        return forward_static_call_array([self::getInstance()->container['view'], $method], $params);
+    }
 }

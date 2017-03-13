@@ -3,13 +3,13 @@
 require APPPATH . 'vendor/autoload.php';
 use Illuminate\Database\Capsule\Manager as DB;
 
-define('SIGGY_VERSION', '2.43.2');
-
+define('SIGGY_VERSION', file_get_contents('../VERSION'));
 
 function view(string $path, array $args = [])
 {
 	return \Siggy\View::getInstance()->make($path, $args);
 }
+\Siggy\BladeHelpers::register(\Siggy\View::getInstance()->compiler());
 
 // -- Environment setup --------------------------------------------------------
 

@@ -18,8 +18,8 @@ class View
 		return self::$blade;
 	}
 	
-    public static function __callStatic($method, $params)
-    {
-        return forward_static_call_array([self::getInstance()->container['view'], $method], $params);
-    }
+	public static function __callStatic($method, $params)
+	{
+		return forward_static_call_array([self::getInstance()->container['view'], $method], $params);
+	}
 }
