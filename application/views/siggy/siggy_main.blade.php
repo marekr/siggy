@@ -389,7 +389,8 @@
 			'Probing wormholes...',
 			'Hiding the worthwhile sites...',
 			'A sacrifice to Bob a day keeps the drifters away...',
-			'Renaming anomaly bookmarks as wormholes...'
+			'Renaming anomaly bookmarks as wormholes...',
+			'Shooing the drifters off the wormhole...'
 		];
 		var randomNumber = Math.floor(Math.random()*loadingMessages.length);
 		var message = loadingMessages[randomNumber];
