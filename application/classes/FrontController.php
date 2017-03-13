@@ -55,15 +55,27 @@ class FrontController extends Controller {
 		}
 	}
 
+	public function storagePath(): string
+	{
+		return STORAGEPATH;
+	}
+
+	public function isDownForMaintenance()
+	{
+		return file_exists($this->storagePath().'/framework/down');
+	}
+	
 	public function before()
 	{
 		//we are not caching any of our pages insanely
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 
-		$offline = false;
-		if( $offline == true )
+		if( $this->isDownForMaintenance() )
 		{
-			$this->siggyredirect('/offline');
+			if(strtolower($this->request->controller()) != "maintenance")
+			{
+				$this->siggyredirect('/maintenance');
+			}
 		}
 
 		if( !$this->noAutoAuthRedirects  )

@@ -8,3 +8,4 @@
 *.compiled.js.map
 /public/*.htaccess
 /.env
+/storage/framework/down
