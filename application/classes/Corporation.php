@@ -113,7 +113,7 @@ class Corporation extends Model {
 		return $details;
 	}
 	
-	static function searchEVEAPI( string $name ): ?array
+	static function searchEVEAPI( string $name, bool $strict = false ): ?array
 	{
 		$results = null;
 
