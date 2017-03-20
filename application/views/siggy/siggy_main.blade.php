@@ -391,7 +391,8 @@
 			'A sacrifice to Bob a day keeps the drifters away...',
 			'Renaming anomaly bookmarks as wormholes...',
 			'Shooing the drifters off the wormhole...',
-			'Shooting Autothysian Lancers is a great way to test your tank...'
+			'Shooting Autothysian Lancers is a great way to test your tank...',
+			'Remember to online your plates before jumping'
 		];
 		var randomNumber = Math.floor(Math.random()*loadingMessages.length);
 		var message = loadingMessages[randomNumber];
