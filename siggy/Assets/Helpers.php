@@ -1,9 +1,9 @@
 <?php
 
-namespace Siggy;
+namespace Siggy\Assets;
 use \URL;
 
-class AssetHelpers
+class Helpers
 {
 	public static function baseUrl()
 	{

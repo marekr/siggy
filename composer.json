@@ -14,7 +14,7 @@
 		"cebe/markdown": "~1.1.1",
 		"illuminate/view": "^5.4",
 		"loduis/artisan": "~5.4",
-		"kriswallsmith/assetic": "^1.4"
+		"symfony/process": "^3.2"
 	},
 	"autoload": {
 		"files": [

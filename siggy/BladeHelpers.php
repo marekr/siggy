@@ -2,7 +2,6 @@
 
 namespace Siggy;
 
-use Siggy\AssetHelpers;
 use \URL;
 
 class BladeHelpers
@@ -19,7 +18,7 @@ class BladeHelpers
 	{
 		if(!$unbundled)
 		{
-			$url = AssetHelpers::jsAssetUrl($name, $version);
+			$url = Siggy\Assets\Helpers::jsAssetUrl($name, $version);
 			
 			return "<script type=\"text/javascript\" src=\"{$url}\"></script>\n";
 		}
@@ -36,7 +35,7 @@ class BladeHelpers
 				$ret = "";
 				foreach($asset['files'] as $file)
 				{
-					$url = AssetHelpers::joinPaths(URL::base(TRUE),$asset['publicPath'],$file."?".$version);
+					$url = Siggy\Assets\Helpers::joinPaths(URL::base(TRUE),$asset['publicPath'],$file."?".$version);
 					
 					$ret .= "<script type=\"text/javascript\" src=\"{$url}\"></script>\n";
 				}

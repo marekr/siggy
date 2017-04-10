@@ -1,6 +1,9 @@
 <?php
 
 /*
+ *
+ * Stolen from assetic.
+ *
  * This file is part of the Assetic package, an OpenSky project.
  *
  * (c) 2010-2014 OpenSky Project Inc
@@ -9,14 +12,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Siggy\Assetic;
+namespace Siggy\Assets;
 
-use Assetic\Asset\AssetInterface;
-use Assetic\Exception\FilterException;
-use Assetic\Util\FilesystemUtils;
 use Symfony\Component\Process\ProcessBuilder;
-
-use Assetic\Filter\GoogleClosure\BaseCompilerFilter;
+use Siggy\Assets\CompilerException;
 
 /**
  * Filter for the Google Closure Compiler JAR.
@@ -24,8 +23,34 @@ use Assetic\Filter\GoogleClosure\BaseCompilerFilter;
  * @link https://developers.google.com/closure/compiler/
  * @author Kris Wallsmith <kris.wallsmith@gmail.com>
  */
-class CompilerJarFilter extends BaseCompilerFilter
+class ClosureJarCompiler
 {
+    // compilation levels
+    const COMPILE_WHITESPACE_ONLY = 'WHITESPACE_ONLY';
+    const COMPILE_SIMPLE_OPTIMIZATIONS = 'SIMPLE_OPTIMIZATIONS';
+    const COMPILE_ADVANCED_OPTIMIZATIONS = 'ADVANCED_OPTIMIZATIONS';
+    // formatting modes
+    const FORMAT_PRETTY_PRINT = 'pretty_print';
+    const FORMAT_PRINT_INPUT_DELIMITER = 'print_input_delimiter';
+    // warning levels
+    const LEVEL_QUIET = 'QUIET';
+    const LEVEL_DEFAULT = 'DEFAULT';
+    const LEVEL_VERBOSE = 'VERBOSE';
+    // languages
+    const LANGUAGE_ECMASCRIPT3 = 'ECMASCRIPT3';
+    const LANGUAGE_ECMASCRIPT5 = 'ECMASCRIPT5';
+    const LANGUAGE_ECMASCRIPT5_STRICT = 'ECMASCRIPT5_STRICT';
+	
+    protected $timeout;
+    protected $compilationLevel;
+    protected $jsExterns;
+    protected $externsUrl;
+    protected $excludeDefaultExterns;
+    protected $formatting;
+    protected $useClosureLibrary;
+    protected $warningLevel;
+    protected $language;
+
     private $jarPath;
     private $javaPath;
     private $flagFile;
@@ -44,7 +69,7 @@ class CompilerJarFilter extends BaseCompilerFilter
         $this->flagFile = $flagFile;
     }
 
-    public function filterDump(AssetInterface $asset)
+    public function compile(array $assets, array $extra = [])
     {
         $is64bit = PHP_INT_SIZE === 8;
         $cleanup = array();
@@ -105,17 +130,69 @@ class CompilerJarFilter extends BaseCompilerFilter
             $pb->add('--create_source_map')->add($this->sourceMap);
 		}
 
-        $pb->add('--js')->add($cleanup[] = $input = FilesystemUtils::createTemporaryFile('google_closure'));
-        file_put_contents($input, $asset->getContent());
+		if(isset($extra['source_map_location_mapping']))
+		{
+			$pb->add('--source_map_location_mapping')->add($extra['source_map_location_mapping']);
+		}
 
-        $proc = $pb->getProcess();
-        $code = $proc->run();
-        array_map('unlink', $cleanup);
+	//	$source = $asset->getSourceDirectory() . DIRECTORY_SEPARATOR . $asset->getSourcePath();
+		
+		foreach($assets as $asset)
+		{
+			$pb->add('--js')->add($asset);
+		}
+		$proc = $pb->getProcess();
+		$code = $proc->run();
 
-        if (0 !== $code) {
-            throw FilterException::fromProcess($proc)->setInput($asset->getContent());
-        }
+		if (0 !== $code) {
+			throw CompilerException::fromProcess($proc)->setInput(implode(",",$assets));
+		}
 
-        $asset->setContent($proc->getOutput());
+		return $proc->getOutput();
+	}
+	
+	public function setTimeout($timeout)
+    {
+        $this->timeout = $timeout;
+    }
+
+    public function setCompilationLevel($compilationLevel)
+    {
+        $this->compilationLevel = $compilationLevel;
+    }
+
+    public function setJsExterns($jsExterns)
+    {
+        $this->jsExterns = $jsExterns;
+    }
+
+    public function setExternsUrl($externsUrl)
+    {
+        $this->externsUrl = $externsUrl;
+    }
+
+    public function setExcludeDefaultExterns($excludeDefaultExterns)
+    {
+        $this->excludeDefaultExterns = $excludeDefaultExterns;
+    }
+
+    public function setFormatting($formatting)
+    {
+        $this->formatting = $formatting;
+    }
+
+    public function setUseClosureLibrary($useClosureLibrary)
+    {
+        $this->useClosureLibrary = $useClosureLibrary;
+    }
+
+    public function setWarningLevel($warningLevel)
+    {
+        $this->warningLevel = $warningLevel;
+    }
+
+    public function setLanguage($language)
+    {
+        $this->language = $language;
     }
 }

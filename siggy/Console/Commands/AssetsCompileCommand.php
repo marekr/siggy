@@ -5,15 +5,8 @@ namespace Siggy\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Console\Config;
 
-use Assetic\AssetManager;
-use Assetic\Asset\AssetCollection;
-use Assetic\Asset\FileAsset;
-use Assetic\Asset\GlobAsset;
-use Assetic\Factory\AssetFactory;
-use Assetic\FilterManager;
-use Assetic\Filter\GoogleClosure;
-
-use Siggy\AssetHelpers;
+use Siggy\Assets\Helpers;
+use Siggy\Assets\ClosureJarCompiler;
 
 define('VERSION', file_get_contents('VERSION'));
 
@@ -58,7 +51,7 @@ class AssetsCompileCommand extends Command
 	public function handle()
 	{
 		//clean out the old files...
-		$files = rglob(AssetHelpers::joinPaths($this->config['outputPath'], '*'));
+		$files = rglob(Helpers::joinPaths($this->config['outputPath'], '*'));
 		foreach($files as $file){
 			if(is_file($file))
 			{
@@ -74,37 +67,35 @@ class AssetsCompileCommand extends Command
 		}
 		
 		$cache = [];
+		$compiledOutput = '';
 		foreach($this->config['assets'] as $asset)
 		{
 			$this->info("Compiling {$asset['virtualName']}");
 			$resultingAsset = null;
 
-			$assetName = AssetHelpers::jsAssetFilename($asset['virtualName'],VERSION);
-			$filePath = AssetHelpers::joinPaths($this->config['outputPath'], $assetName);
+			$assetName = Helpers::jsAssetFilename($asset['virtualName'],VERSION);
+			$filePath = Helpers::joinPaths($this->config['outputPath'], $assetName);
+
+			$remap = $asset['basePath'].'|'.$asset['publicPath'];
 
 			if($asset['type'] == 'js')
 			{
 				$files = [];
 				foreach($asset['files'] as $file)
 				{
-					$sourceFile = AssetHelpers::joinPaths($asset['basePath'],$file);
-					$files[] = new FileAsset( $sourceFile );
-
-					$destPath = AssetHelpers::joinPaths($this->config['outputPath'], $file);
-					@mkdir(dirname($destPath), 0777, true);
-					copy($sourceFile, $destPath);
+					$sourceFile = Helpers::joinPaths($asset['basePath'],$file);
+					$files[] = $sourceFile;
 				}
 				
-				$resultingAsset = new AssetCollection($files, [
-					new \Siggy\Assetic\CompilerJarFilter($this->config['closurePath'], $filePath.'.map', 'java'),
-				]);
+				$compiler = new ClosureJarCompiler($this->config['closurePath'], $filePath.'.map','java');
+				$compiledOutput = $compiler->compile($files, ['source_map_location_mapping' => $remap]);
 			}
 			else{
 				throw new \Exception("Unknown asset type");
 				$this->error("Unknown asset type {$asset['type']}");
 			}
 
-			$result = $resultingAsset->dump();
+			$result = $compiledOutput;
 			$result .= "\n//# sourceMappingURL={$assetName}.map\n";
 
 			if (file_put_contents($filePath, $result) === false) {
@@ -115,6 +106,6 @@ class AssetsCompileCommand extends Command
 			$cache[ $asset['virtualName'] ] = $filePath;
 		}
 		
-		file_put_contents(AssetHelpers::joinPaths($this->config['outputPath'],'assets.json'), json_encode($cache));
+		file_put_contents(Helpers::joinPaths($this->config['outputPath'],'assets.json'), json_encode($cache));
 	}
 }
