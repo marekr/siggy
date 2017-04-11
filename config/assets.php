@@ -7,7 +7,7 @@ return [
 		'siggy.js' => [
 			'type' => 'js',
 			'basePath' => 'public/js/',
-			'publicPath' => '/js',
+			'publicPath' => '/js/',
 			'virtualName' => 'siggy.js',
 			'files' => [
 				'misc.js',
