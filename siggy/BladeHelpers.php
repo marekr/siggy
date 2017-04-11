@@ -18,7 +18,7 @@ class BladeHelpers
 	{
 		if(!$unbundled)
 		{
-			$url = Siggy\Assets\Helpers::jsAssetUrl($name, $version);
+			$url = \Siggy\Assets\Helpers::jsAssetUrl($name, $version);
 			
 			return "<script type=\"text/javascript\" src=\"{$url}\"></script>\n";
 		}
