@@ -4,5 +4,5 @@
 @else
 @siggy_asset_js('thirdparty.js', SIGGY_VERSION)
 @siggy_asset_js('siggy.js', SIGGY_VERSION)
-<script src="https://cdn.ravenjs.com/3.10.0/raven.min.js"></script>
+<script src="https://cdn.ravenjs.com/3.14.0/raven.min.js"></script>
 @endif
