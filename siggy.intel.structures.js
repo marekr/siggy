@@ -98,6 +98,9 @@ siggy2.Intel.Structures.prototype.update = function( data )
 	body.empty();
 	$this.structures = {};
 
+	var summary = '';
+	var owner_names = [];
+
 	if( siggy2.isDefined(data) && Object.size(data) > 0 )
 	{
 		for(var i in data)
@@ -107,12 +110,21 @@ siggy2.Intel.Structures.prototype.update = function( data )
 			body.append(row);
 
 			$this.structures[structure.id] = structure;
+			owner_names.push(structure.corporation_name);
 		}
+		
+		owner_names = array_unique(owner_names);
+		var owner_string = "<b>Residents:</b> "+implode(",",owner_names);
+
+		summary = owner_string;
 	}
 	else
 	{
 		$this.structures = {};
+		summary = "No structures added for this system";
 	}
+	
+	$("#structure-summary").html( summary );
 }
 
 siggy2.Intel.Structures.prototype.addForm = function()
