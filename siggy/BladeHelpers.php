@@ -35,7 +35,7 @@ class BladeHelpers
 				$ret = "";
 				foreach($asset['files'] as $file)
 				{
-					$url = Siggy\Assets\Helpers::joinPaths(URL::base(TRUE),$asset['publicPath'],$file."?".$version);
+					$url = \Siggy\Assets\Helpers::joinPaths(URL::base(TRUE),$asset['publicPath'],$file."?".$version);
 					
 					$ret .= "<script type=\"text/javascript\" src=\"{$url}\"></script>\n";
 				}

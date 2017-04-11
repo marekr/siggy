@@ -217,7 +217,9 @@
 	                </tr>
 	                <tr>
 	                    <td class="title">POS Summary (Intel)</td>
-	                    <td class="content" id="pos-summary" colspan="3"></td>
+	                    <td class="content" id="pos-summary"></td>
+	                    <td class="title">Structure Summary (Intel)</td>
+	                    <td class="content" id="structure-summary"></td>
 	                </tr>
 	            </table>
 	            <!-- start stats -->

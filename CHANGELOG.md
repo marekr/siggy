@@ -1,5 +1,9 @@
 # siggy Changelog
 
+## 2.44.1 - 2017-04-10
+### Changes
+- Add structure summary to system table ala POS summary
+
 ## 2.44.0 - 2017-03-12
 ### Changes
 - Added asset management system to deal with js bundling and loading. This will resolve browser cache issues that happen during upgrades.

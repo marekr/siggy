@@ -65,7 +65,7 @@ class AssetsCompileCommand extends Command
 				@rmdir($file);
 			}
 		}
-		
+
 		$cache = [];
 		$compiledOutput = '';
 		foreach($this->config['assets'] as $asset)
