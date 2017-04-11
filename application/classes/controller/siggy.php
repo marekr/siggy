@@ -3,6 +3,7 @@
 use Carbon\Carbon;
 use Illuminate\Database\Capsule\Manager as DB;
 use Siggy\Structure;
+use Siggy\POS;
 
 class Controller_Siggy extends FrontController {
 
