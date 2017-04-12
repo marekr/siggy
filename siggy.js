@@ -97,13 +97,17 @@ siggy2.Core = function( options )
 	siggy2.Helpers.setupHandlebars();
 	this.initializeBasicSystemContextMenu();
 
-
 	// Display states cookie
-	var displayStatesStored = window.localStorage.getItem('display_states');
-	
-	if(displayStatesStored != null)
-	{
-		this.displayStates = $.parseJSON(displayStatesStored);
+	try {
+		var displayStatesStored = window.localStorage.getItem('display_states');
+		
+		if(displayStatesStored != null)
+		{
+			this.displayStates = $.parseJSON(displayStatesStored);
+		}
+	} catch(e) {
+		//errors such as NS_ERROR_FILE_CORRUPTED can occur on getItem which is stupid but we can't do much
+		this.displayStates = {};
 	}
 
 	this.displayStates = $.extend(true, {}, this.defaultDisplayStates, this.displayStates);
