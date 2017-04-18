@@ -35,7 +35,8 @@ class Group extends Model {
 							'allow_map_height_expand',
 							'chainmap_always_show_class',
 							'chainmap_max_characters_shown',
-							'last_billing_charge_at'
+							'last_billing_charge_at',
+							'payment_code'
 							];
 
 	public $groupMembers = null;
