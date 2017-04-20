@@ -41,11 +41,11 @@ class GroupFixCodesCommand extends Command
 	 */
 	public function handle()
 	{
-		$this->info("syncing corps");
+		$this->info("fixing group");
 		Group::where('payment_code', '=','')
 			->chunk(20, function ($groups) {
 				foreach ($groups as $group) {
-					$this->info("fixing corp {$group->id} {$group->name}");
+					$this->info("fixing group {$group->id} {$group->name}");
 					
 					$group->payment_code = miscUtils::generateString(14);
 					$group->save();
