@@ -1,6 +1,6 @@
 # siggy Changelog
 
-## 2.44.2 - 2017-04-??
+## 2.44.2 - 2017-04-20
 ### Fixes
 - Handle NS_ERROR_FILE_CORRUPTED due to corrupted local storage in browsers instead of throwing the exception
 - Fixed situation where group payment code wasn't generated

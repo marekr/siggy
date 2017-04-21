@@ -19,7 +19,8 @@ class Kernel extends ConsoleKernel
 		\Siggy\Console\Commands\SessionsClearCommand::class,
 		\Siggy\Console\Commands\BillingPaymentsCommand::class,
 		\Siggy\Console\Commands\NotificationsClearCommand::class,
-		\Siggy\Console\Commands\CorporationsUpdateCommand::class
+		\Siggy\Console\Commands\CorporationsUpdateCommand::class,
+		\Siggy\Console\Commands\RedisCleanupCommand::class
 	];
 
 	/**
@@ -44,6 +45,8 @@ class Kernel extends ConsoleKernel
 		          ->dailyAt('01:00');
 		$schedule->command('corps:update')
 		          ->dailyAt('02:00');
+		$schedule->command('redis:cleanup')
+		          ->dailyAt('03:00');
 	}
 
 	/**
