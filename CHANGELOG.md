@@ -1,5 +1,13 @@
 # siggy Changelog
 
+## 2.44.2 - 2017-04-??
+### Fixes
+- Handle NS_ERROR_FILE_CORRUPTED due to corrupted local storage in browsers instead of throwing the exception
+- Fixed situation where group payment code wasn't generated
+
+## Changes
+- ESI success/failure statistic tracking added
+
 ## 2.44.1 - 2017-04-10
 ### Changes
 - Add structure summary to system table ala POS summary

@@ -1,6 +1,10 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 require APPPATH . 'vendor/autoload.php';
+
+$dotenv = new Dotenv\Dotenv(DOCROOT);
+$dotenv->load();
+
 use Illuminate\Database\Capsule\Manager as DB;
 
 define('SIGGY_VERSION', file_get_contents('../VERSION'));

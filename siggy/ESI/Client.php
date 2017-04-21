@@ -3,12 +3,15 @@
 namespace Siggy\ESI;
 
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\BadResponseException;
+use Siggy\Redis\RedisTtlCounter;
 
 class Client
 {
 	private $client = null;
 	private $clientOptions = [];
 	private $accessToken = "";
+	public static $esiStatisticTtl = 300;
 
 	public function __construct($accessToken = '', $timeout = 10)
 	{
@@ -29,6 +32,7 @@ class Client
 		}
 
 		$this->client = new GuzzleClient($options);
+
 	}
 
 	private function accessTokenRequired()
@@ -36,6 +40,32 @@ class Client
 		if(empty($this->accessToken))
 		{
 			throw new \BadFunctionCallException("Missing access token");
+		}
+	}
+	
+	public static function getEsiSuccessCounter(): RedisTtlCounter
+	{
+		$esiCalls = new RedisTtlCounter('ttlc:esiSuccess', self::$esiStatisticTtl);
+		return $esiCalls;
+	}
+	
+	public static function getEsiFailureCounter(): RedisTtlCounter
+	{
+		$esiCalls = new RedisTtlCounter('ttlc:esiFailure', self::$esiStatisticTtl);
+		return $esiCalls;
+	}
+
+	private function incrementStatistic(bool $success)
+	{
+		if($success)
+		{
+			$esiCalls = self::getEsiSuccessCounter();
+			$esiCalls->add(uniqid());
+		}
+		else
+		{
+			$esiCalls = self::getEsiFailureCounter();
+			$esiCalls->add(uniqid());
 		}
 	}
 
@@ -52,16 +82,13 @@ class Client
 
 			$options['query'] = array_merge($options['query'],$queryBits);
 			$resp = $this->client->request($method, $route, $options);
+
+			$this->incrementStatistic(true);
 		}
-		catch(ClientException $e)
+		catch(BadResponseException $e)
 		{
-			//4xx errors
-			//placeholder as we can error log here
-		}
-		catch(ServerException $e)
-		{
-			//5xx errors
-			//placeholder as we can error log here
+			$this->incrementStatistic(false);
+			//4xxand 5xx errors
 		}
 		catch (\Exception $e) 
 		{
