@@ -5,6 +5,7 @@ use OAuth\OAuth2\Service\Eve;
 use OAuth\Common\Storage\Session as OSession;
 use OAuth\Common\Consumer\Credentials;
 use Carbon\Carbon;
+use Siggy\View;
 
 class Controller_Account extends FrontController {
 	protected $noAutoAuthRedirects = true;
@@ -237,24 +238,23 @@ class Controller_Account extends FrontController {
 
 		if ($this->request->method() == "POST")
 		{
-			$validator = Validation::factory($_POST)
-						->rule('username', 'not_empty')
-						->rule('email', 'not_empty')
-						->rule('password', 'not_empty')
-						->rule('password', 'min_length', array(':value', '6'))
-						->rule('password_confirm',  'matches', array(':validation', 'password_confirm', 'password'));
+			$validator = Validator::make($_POST, [
+				'username' => 'required',
+				'email' => 'required|email',
+				'password' => 'required|min:8|confirmed',
+				'password_confirmation' => 'required',
+			]);
 
-
-			if ($validator->check())
+			if(!$validator->fails())
 			{
 				if( Auth::usernameExists( $_POST['username'] ) )
 				{
-					$errors['username'] = 'Username is already in use.';
+					$validator->errors()->add('username', 'Username is already in use.');
 				}
 
 				if( Auth::emailExists( $_POST['email'] ) )
 				{
-					$errors['email'] = 'Email is already in use.';
+					$validator->errors()->add('email', 'Email is already in use.');
 				}
 
 				if( empty( $errors ) )
@@ -289,19 +289,18 @@ class Controller_Account extends FrontController {
 					}
 					else
 					{
-						$errors['username'] = 'Unknown error has occured.';
+						$validator->errors()->add('username', 'Unknown error has occured.');
 					}
 				}
 			}
 			else
 			{
-				$errors = $validator->errors('account/register');
+				View::share('errors', $validator->errors());
 			}
 		}
 
-		$resp = view('account.register', [ 
-										'errors' => $errors
-										]);
+		$resp = view('account.register');
+	
 		$this->response->body($resp)
 						->noCache();
 	}
@@ -317,34 +316,33 @@ class Controller_Account extends FrontController {
 		$errors = array();
 		if ($this->request->method() == "POST")
 		{
-			if( empty( $_POST['current_password'] ) || (Auth::hash($_POST['current_password']) != Auth::$user->password)  )
+			$validator = Validator::make($_POST, [
+				'current_password' => 'required',
+				'password' => 'required|min:8|confirmed',
+				'password_confirmation' => 'required',
+			]);
+
+			if(!$validator->fails())
 			{
-				$errors['current_password'] = 'This is not current password.';
+				if( Auth::hash($_POST['current_password']) != Auth::$user->password )
+				{
+					$validator->errors()->add('current_password', 'This is not current password.');
+				}
 			}
 
-			if( empty( $_POST['password'] ) )
-			{
-				$errors['password'] = 'You must enter a new password.';
-			}
-			if( empty( $_POST['password_confirm'] ) )
-			{
-				$errors['password_confirm'] = 'You must confirm your new selected password.';
-			}
-			if( $_POST['password'] != $_POST['password_confirm'] )
-			{
-				$errors['password_confirm'] = 'The password did not match the new one above.';
-			}
-
-			if( !count( $errors ) )
+			if( !count($validator->errors()) )
 			{
 				Auth::$user->updatePassword($_POST['password']);
 				HTTP::redirect('/');
 			}
+			else
+			{
+				View::share('errors', $validator->errors());
+			}
 		}
 		
-		$resp = view('account.password_change', [
-													'errors' => $errors
-												]);
+		$resp = view('account.password_change');
+
 		$this->response->body($resp)
 						->noCache();
 	}
@@ -357,15 +355,13 @@ class Controller_Account extends FrontController {
 			return;
 		}
 
-		$errors = array();
 		if ($this->request->method() == "POST")
 		{
-			if( empty( $_POST['reset_email'] ) )
-			{
-				$errors['reset_email'] = 'You must enter a valid email address.';
-			}
+			$validator = Validator::make($_POST, [
+				'reset_email' => 'required|email'
+			]);
 
-			if( !count( $errors ) )
+			if($validator->passes())
 			{
 				$user = User::findByEmail($_POST['reset_email']);
 
@@ -417,11 +413,13 @@ class Controller_Account extends FrontController {
 								->noCache();
 				return;
 			}
+			else
+			{
+				View::share('errors', $validator->errors());
+			}
 		}
 		
-		$resp = view('account.forgot_password', [ 
-										 'errors' => $errors
-										]);
+		$resp = view('account.forgot_password');
 		$this->response->body($resp)
 						->noCache();
 	}
@@ -437,18 +435,12 @@ class Controller_Account extends FrontController {
 		$errors = [];
 		if( isset( $_REQUEST['reset_token'] ) )
 		{
+			$validator = Validator::make($_POST, [
+				'reset_email' => 'required|email',
+				'reset_token' => 'required'
+			]);
 
-			if( empty( $_REQUEST['reset_email'] ) )
-			{
-				$errors['reset_email'] = 'You must enter a valid email address.';
-			}
-
-			if( empty( $_REQUEST['reset_token'] ) )
-			{
-				$errors['reset_token'] = 'You must enter a valid reset token.';
-			}
-
-			if( !count( $errors ) )
+			if($validator->passes())
 			{
 				$user = User::findByEmail($_REQUEST['reset_email']);
 
@@ -493,6 +485,10 @@ class Controller_Account extends FrontController {
 									->noCache();
 					return;
 				}
+			}
+			else
+			{
+				View::share('errors', $validator->errors());
 			}
 		}
 		

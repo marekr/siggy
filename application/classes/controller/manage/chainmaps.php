@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Capsule\Manager as DB;
+use Siggy\View;
 
 class Controller_Manage_Chainmaps extends Controller_Manage
 {
@@ -48,8 +49,6 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 
 	public function action_add()
 	{
-		$errors = array();
-
 		$group = Auth::$user->group;
 
 		$data = new stdClass;
@@ -63,24 +62,34 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				'chainmap_name' => $_POST['chainmap_name'],
 				'group_id' => Auth::$user->groupID,
 				'chainmap_type' => 'fixed',
-				'chainmap_skip_purge_home_sigs' => intval($_POST['chainmap_skip_purge_home_sigs']),
+				'chainmap_skip_purge_home_sigs' => intval($_POST['chainmap_skip_purge_home_sigs'] ?? 0),
 			];
 			
-			list($new['chainmap_homesystems_ids'], $new['chainmap_homesystems']) = $this->___process_home_system_input($_POST['chainmap_homesystems']);
+			$validator = Validator::make($new, [
+				'chainmap_name' => 'required',
+			]);
+			
+			if(!$validator->fails())
+			{
+				list($new['chainmap_homesystems_ids'], $new['chainmap_homesystems']) = $this->___process_home_system_input($_POST['chainmap_homesystems']);
 
-			$chainmap = Chainmap::create($new);
-			$chainmap->rebuild_map_data_cache();
+				$chainmap = Chainmap::create($new);
+				$chainmap->rebuild_map_data_cache();
 
-			Auth::$user->group->save();
-			Auth::$user->group->recacheChainmaps();
+				Auth::$user->group->save();
+				Auth::$user->group->recacheChainmaps();
 
-			HTTP::redirect('manage/chainmaps/list');
+				HTTP::redirect('manage/chainmaps/list');
+			}
+			else
+			{
+				View::share('errors', $validator->errors());
+			}
 		}
 
 		$resp = view('manage.chainmaps.add_edit_form', [
 												'mode' => 'add',
-												'chainmap' => $data,
-												'errors' => $errors
+												'chainmap' => $data
 											]);
 		
 		$this->response->body($resp);
@@ -191,30 +200,39 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 			HTTP::redirect('manage/chainmaps');
 		}
 
-		$errors = [];
-
-		if ( !empty($_POST)  )
+		if ($this->request->method() == "POST") 
 		{
 			$update = [
 				'chainmap_name' => $_POST['chainmap_name'],
-				'chainmap_skip_purge_home_sigs' => intval($_POST['chainmap_skip_purge_home_sigs'])
+				'chainmap_skip_purge_home_sigs' => intval($_POST['chainmap_skip_purge_home_sigs'] ?? 0)
 			];
 
-			list($update['chainmap_homesystems_ids'], $update['chainmap_homesystems']) = $this->___process_home_system_input($_POST['chainmap_homesystems']);
-			$chainmap->fill($update);
-			$chainmap->save();
+			$validator = Validator::make($update, [
+				'chainmap_name' => 'required',
+			]);
 
-			$chainmap->rebuild_map_data_cache();
-			Auth::$user->group->save();
-			Auth::$user->group->recacheChainmaps();
 
-			HTTP::redirect('manage/chainmaps/list');
+			if(!$validator->fails())
+			{
+				list($update['chainmap_homesystems_ids'], $update['chainmap_homesystems']) = $this->___process_home_system_input($_POST['chainmap_homesystems']);
+				$chainmap->fill($update);
+				$chainmap->save();
+
+				$chainmap->rebuild_map_data_cache();
+				Auth::$user->group->save();
+				Auth::$user->group->recacheChainmaps();
+
+				HTTP::redirect('manage/chainmaps/list');
+			}
+			else
+			{
+				View::share('errors', $validator->errors());
+			}
 		}
 		
 		$resp = view('manage.chainmaps.add_edit_form', [
 												'mode' => 'edit',
-												'chainmap' => $chainmap,
-												'errors' => $errors
+												'chainmap' => $chainmap
 											]);
 		
 		$this->response->body($resp);
@@ -238,7 +256,7 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 			HTTP::redirect('manage/chainmaps');
 		}
 
-		if ( !empty($_POST)  )
+		if ($this->request->method() == "POST") 
 		{
 			try
 			{
@@ -263,8 +281,10 @@ class Controller_Manage_Chainmaps extends Controller_Manage
 				}
 				
 				Auth::$user->group->save();
-				Auth::$user->group->recacheChainmaps();
+				
 				$chainmap->delete();
+				
+				Auth::$user->group->recacheChainmaps();
 
 				HTTP::redirect('manage/chainmaps/list');
 			}

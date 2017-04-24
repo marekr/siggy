@@ -2,6 +2,7 @@
 <html lang="en">
  <head>
     <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title }}</title>
 
@@ -11,6 +12,7 @@
     <link href="{{ URL::base(TRUE, TRUE) }}css/manage.css" rel="stylesheet">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="{{ URL::base(TRUE, TRUE) }}bootstrap3/js/bootstrap.min.js"></script>
+    <script src="{{ URL::base(TRUE, TRUE) }}bootstrap3/js/bootstrap-checkbox.min.js"></script>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -181,6 +183,10 @@
 				@yield('content')
 			</div>
 		</div>
-   </div>
+	</div>
+
+<script type='text/javascript'>
+$('input[type="checkbox"].yesno').checkboxpicker();
+</script>
 </body>
 </html>

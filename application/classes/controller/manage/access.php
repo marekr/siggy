@@ -175,15 +175,18 @@ class Controller_Manage_Access extends Controller_Manage
 		if ($this->request->method() == "POST") 
 		{
 			$update = array(
-						'can_view_logs' => isset( $_POST['can_view_logs'] ) ? intval( $_POST['can_view_logs'] ) : 0,
-						'can_manage_group_members' => isset( $_POST['can_manage_group_members'] ) ? intval( $_POST['can_manage_group_members'] ) : 0,
-						'can_manage_settings' => isset( $_POST['can_manage_settings'] ) ? intval( $_POST['can_manage_settings'] ) : 0,
-						'can_view_financial' => isset( $_POST['can_view_financial'] ) ? intval( $_POST['can_view_financial'] ) : 0,
-						'can_manage_access' => isset( $_POST['can_manage_access'] ) ? intval( $_POST['can_manage_access'] ) : 0,
+						'can_view_logs' => intval( $_POST['can_view_logs'] ?? 0 ),
+						'can_manage_group_members' => intval( $_POST['can_manage_group_members'] ?? 0 ),
+						'can_manage_settings' => intval( $_POST['can_manage_settings'] ?? 0),
+						'can_view_financial' => intval( $_POST['can_view_financial'] ?? 0),
+						'can_manage_access' => intval( $_POST['can_manage_access'] ?? 0),
 						'updated_at' => Carbon::now()->toDateTimeString()
 					);
 			
-			DB::table('users_group_acl')->where( 'user_id', '=', $id )->where('group_id','=',Auth::$user->groupID)->update( $update );
+			DB::table('users_group_acl')
+				->where( 'user_id', '=', $id )
+				->where('group_id','=',Auth::$user->group->id)
+				->update( $update );
 			
 			
 			Message::add('success', 'User access edited succesfully');

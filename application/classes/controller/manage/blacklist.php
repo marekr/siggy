@@ -1,5 +1,7 @@
 <?php
 
+use Siggy\View;
+
 class Controller_Manage_Blacklist extends Controller_Manage
 {
 	public $template = 'template/manage';
@@ -56,22 +58,25 @@ class Controller_Manage_Blacklist extends Controller_Manage
 	public function action_add()
 	{
 		$errors = [];
-		$data = ['reason' => '', 
-				'character_name' => ''];
 
 		if ($this->request->method() == "POST") 
 		{
+			$data = [
+					'reason' => $_POST['reason'] ?? '', 
+					'character_name' => $_POST['character_name']
+					];
+
+			$validator = Validator::make($data, [
+				'character_name' => 'required',
+			]);
+
 			$charSearchResults = array();
-			if( empty($_POST['character_name']) )
-			{
-				$errors['character_name'] = "EVE character is required.";
-			}
-			else
+			if(!$validator->fails())
 			{
 				$charSearchResults = Character::searchEVEAPI( $_POST['character_name'], true );
 				if( $charSearchResults == null )
 				{
-					$errors['character_name'] = "EVE character not found";
+					$validator->errors()->add('character_name', 'EVE character not found');
 				}
 				else
 				{
@@ -81,13 +86,13 @@ class Controller_Manage_Blacklist extends Controller_Manage
 						
 					if( $char != null )
 					{
-						$errors['character_name'] = "The character is already blacklisted";
+						$validator->errors()->add('character_name', 'The character is already blacklisted');
 					}
 				}
 			}
 				
 		
-			if( count($errors) == 0 )
+			if( count($validator->errors()) == 0 )
 			{
 				$save = [
 							'reason' => $_POST['reason'],
@@ -100,12 +105,14 @@ class Controller_Manage_Blacklist extends Controller_Manage
 				Message::add('success', 'Character added to blacklist succesfully');
 				HTTP::redirect('manage/blacklist/list');
 			}
+			else
+			{
+				View::share('errors', $validator->errors());
+			}
 		}
-
+		
 		$resp = view('manage.blacklist.form', [
-												'errors' => $errors,
-												'mode' => 'add',
-												'data' => $data
+												'mode' => 'add'
 											]);
 		
 		$this->response->body($resp);

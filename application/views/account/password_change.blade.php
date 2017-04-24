@@ -3,13 +3,13 @@
 @section('content')
 	<h3>Change Password</h3>
 	<div class="well">
-		<form action='<?php echo URL::base(TRUE, TRUE);?>account/changePassword' method='POST'>
+		{!! Form::open(['url' => 'account/changePassword']) !!}
 			<fieldset>
 				<p>You can change your password as many times as you wish. Please be smart about your choice of new password!</p>
 				<p>Minimum password length is 8</p>
-				<?php echo formRenderer::password('Password', 'current_password', '', '', $errors); ?>
-				<?php echo formRenderer::password('New Password', 'password', '', '', $errors); ?>
-				<?php echo formRenderer::password('Confirm New Password', 'password_confirm', '', '', $errors); ?>
+					{!! Form::bsPassword('current_password', 'Current Password') !!}
+					{!! Form::bsPassword('password', 'New Password') !!}
+					{!! Form::bsPassword('password_confirmation', 'Confirm New Password') !!}
 
 				<div class="form-group">
 					<div class="controls">
@@ -18,7 +18,7 @@
 					</div>
 				</div>
 			</fieldset>
-		</form>
+		{!! Form::close() !!}
 	</div>
 @endsection
 

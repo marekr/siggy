@@ -19,24 +19,23 @@
 				</ul>
 			</div>
 			@endif
-			<form method="POST" action="{{URL::base(TRUE, TRUE)}}pages/createGroup/2">
+			{!! Form::open(['url' => 'pages/createGroup/2']) !!}
 				<fieldset>
 					<legend>General Info</legend>
-					<?php echo formRenderer::input('Group Name', 'groupName', '', '', $errors); ?>
-					<?php echo formRenderer::input('Group Ticker', 'groupTicker', '', '', $errors); ?>
+					{!! Form::bsText('name', 'Name') !!}
+					{!! Form::bsText('ticker', 'Ticker') !!}
 				</fieldset>
 				<fieldset>
 				<legend>Basic Settings</legend>
-					<?php echo formRenderer::yesNo("Group password required?", 'group_password_required', '', 'If yes, siggy will prompt for a password from all users, this is highly recommended.', $errors); ?>
+					{!! Form::yesNo('group_password_required', 'Group password required?', 'If yes, siggy will prompt for a password from all users, this is highly recommended.') !!}
 
-				
-					<?php echo formRenderer::password('Group Password', 'group_password', '', '', $errors); ?>
-					<?php echo formRenderer::password('Confirm Group Password', 'confirm_group_password', '', '', $errors); ?>
+					{!! Form::bsPassword('group_password', 'Group Password') !!}
+					{!! Form::bsPassword('confirm_group_password', 'Confirm Current Password') !!}
 				</fieldset>
 				<div class="form-actions">
 					<button type="submit" class="btn btn-primary">Create Group</button>
 				</div>
-			</form>
+			{!! Form::close() !!}
 		</div>
 	</div>
 </div>

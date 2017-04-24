@@ -1,5 +1,7 @@
 <?php
 
+use Siggy\View;
+
 class Controller_Manage_Settings extends Controller_Manage
 {
 	/*
@@ -39,29 +41,39 @@ class Controller_Manage_Settings extends Controller_Manage
 		if ($this->request->method() == "POST") 
 		{
 			$save = [
-				'jump_log_enabled' => intval($_POST['jumpLogEnabled']),
-				'jump_log_record_names' => intval($_POST['jumpLogRecordNames']),
-				'jump_log_record_time' => intval($_POST['jumpLogRecordTime']),
-				'jump_log_display_ship_type' => intval($_POST['jumpLogDisplayShipType']),
-				'always_broadcast' => intval($_POST['alwaysBroadcast']),
-				'chain_map_show_actives_ships' => intval($_POST['chain_map_show_actives_ships']),
-				'allow_map_height_expand' => intval($_POST['allow_map_height_expand']),
-				'chainmap_always_show_class' => intval($_POST['chainmap_always_show_class']),
-				'chainmap_max_characters_shown' => intval($_POST['chainmap_max_characters_shown']),
+				'jump_log_enabled' => intval($_POST['jump_log_enabled']  ?? 0),
+				'jump_log_record_names' => intval($_POST['jump_log_record_names'] ?? 0),
+				'jump_log_record_time' => intval($_POST['jump_log_record_time'] ?? 0),
+				'jump_log_display_ship_type' => intval($_POST['jump_log_display_ship_type'] ?? 0),
+				'always_broadcast' => intval($_POST['always_broadcast'] ?? 0),
+				'chain_map_show_actives_ships' => intval($_POST['chain_map_show_actives_ships'] ?? 0),
+				'allow_map_height_expand' => intval($_POST['allow_map_height_expand'] ?? 0),
+				'chainmap_always_show_class' => intval($_POST['chainmap_always_show_class'] ?? 0),
+				'chainmap_max_characters_shown' => intval($_POST['chainmap_max_characters_shown'] ?? 10),
 			];
 
-			$group->fill($save);
-			$group->save();
-			
-			Message::add('success', ___('Chain map settings saved.'));
-			
-			HTTP::redirect('manage/settings/chain_map');
-			return;
+			$validator = Validator::make($save, [
+				'chainmap_max_characters_shown' => 'required|integer|max:100|min:0',
+			]);
+
+
+			if(!$validator->fails())
+			{
+				$group->fill($save);
+				$group->save();
+				
+				Message::add('success', ___('Chain map settings saved.'));
+				
+				HTTP::redirect('manage/settings/chain_map');
+				return;
+			}
+			else
+			{
+				View::share('errors', $validator->errors());
+			}
 		}
 		
-		$resp = view('manage.settings.chain_map', [
-												'errors' => $errors
-											]);
+		$resp = view('manage.settings.chain_map');
 		
 		$this->response->body($resp);
 	}
@@ -70,91 +82,102 @@ class Controller_Manage_Settings extends Controller_Manage
 	{
 		$group = Auth::$user->group;
 
-		$errors = [];
-
 		if ($this->request->method() == "POST") 
 		{
 			$save = [
-				'stats_enabled' => intval($_POST['statsEnabled']),
-				'record_jumps' => intval($_POST['recordJumps']),
-				'stats_sig_add_points' => $this->___get_point_multiplier($_POST['stats_sig_add_points']),
-				'stats_sig_update_points' => $this->___get_point_multiplier($_POST['stats_sig_update_points']),
-				'stats_wh_map_points' => $this->___get_point_multiplier($_POST['stats_wh_map_points']),
-				'stats_pos_add_points' => $this->___get_point_multiplier($_POST['stats_pos_add_points']),
-				'stats_pos_update_points' => $this->___get_point_multiplier($_POST['stats_pos_update_points'])
+				'stats_enabled' => intval($_POST['stats_enabled'] ?? 0),
+				'record_jumps' => intval($_POST['record_jumps'] ?? 0),
+				'stats_sig_add_points' => $_POST['stats_sig_add_points'],
+				'stats_sig_update_points' => $_POST['stats_sig_update_points'],
+				'stats_wh_map_points' => $_POST['stats_wh_map_points'],
+				'stats_pos_add_points' => $_POST['stats_pos_add_points'],
+				'stats_pos_update_points' => $_POST['stats_pos_update_points']
 			];
+
+			$validator = Validator::make($save, [
+				'stats_enabled' => 'required|boolean',
+				'record_jumps' => 'required|boolean',
+				'stats_sig_add_points' => 'required|integer|max:1000|min:0',
+				'stats_sig_update_points' => 'required|integer|max:1000|min:0',
+				'stats_wh_map_points' => 'required|integer|max:1000|min:0',
+				'stats_pos_add_points' => 'required|integer|max:1000|min:0',
+				'stats_pos_update_points' => 'required|integer|max:1000|min:0',
+			]);
+
+			if(!$validator->fails())
+			{
+				$group->fill($save);
+				$group->save();
+					
+				Message::add('success', ___('Chain map settings saved.'));
 				
-			$group->fill($save);
-			$group->save();
-				
-			Message::add('success', ___('Chain map settings saved.'));
-			
-			HTTP::redirect('manage/settings/statistics');
-			return;
+				HTTP::redirect('manage/settings/statistics');
+				return;
+			}
+			else
+			{
+				View::share('errors', $validator->errors());
+			}
 		}
 
-		$resp = view('manage.settings.statistics', [
-												'errors' => $errors
-											]);
+		$resp = view('manage.settings.statistics');
 		
 		$this->response->body($resp);
-	}
-	
-	private function ___get_point_multiplier($value)
-	{
-		//cast it as a float
-		$value = (double)$value;
-		
-		if( $value > 1000 )
-		{
-			$value = 1000;
-		}
-		else if( $value < 0 )
-		{
-			$value = 0;
-		}
-		
-		return (double)$value;
 	}
    
 	public function action_general()
 	{
 		$group = Auth::$user->group;
-
-		$errors = [];
 					
 		if ($this->request->method() == "POST") 
 		{
 			$save = [
-				'name' => $_POST['groupName'],
-				'ticker' => $_POST['groupTicker'],
-				'password_required' => intval($_POST['group_password_required']),
-				'show_sig_size_col' => intval($_POST['showSigSizeCol']),
-				'default_activity' => !empty($_POST['default_activity']) ? $_POST['default_activity'] : null
+				'name' => $_POST['name'],
+				'ticker' => $_POST['ticker'],
+				'password_required' => intval($_POST['password_required'] ?? 0),
+				'show_sig_size_col' => intval($_POST['show_sig_size_col'] ?? 0),
+				'default_activity' => $_POST['default_activity'] ?? null,
+				'password' => $_POST['password'],
+				'password_confirmation' => $_POST['password_confirmation']
 			];
-			
-			if( !empty($_POST['password']) && !empty($_POST['password_confirm']) )
+
+			$validator = Validator::make($save, [
+				'name' => 'required|alpha_dash|min:3',
+				'ticker' => 'required|min:3',
+				'password_required' => 'required|boolean',
+				'show_sig_size_col' => 'required|boolean',
+				'default_activity' => 'nullable|string',
+				'password' => 'nullable|confirmed',
+				'password_confirmation' => 'required_with:password'
+			]);
+
+
+			if(!$validator->fails())
 			{
-				if( $_POST['password'] == $_POST['password_confirm'] )
+				if( !empty($save['password']) &&
+					!empty($save['password_confirmation']) )
 				{
-					$save['password'] = sha1($_POST['password'].$group->password_salt);
+					$save['password'] = sha1($save['password'].$group->password_salt);
 				}
 				else
 				{
-					Message::add( 'error', ___('Error: The password was not saved because it did not match between the two fields.') );
+					unset($save['password']);
 				}
-			}
-			$group->fill($save);
-			$group->save();
 				
-			Message::add('success', ___('Settings saved.'));;
-			HTTP::redirect('manage/settings/general');
-			return;
+				$group->fill($save);
+				$group->save();
+					
+				Message::add('success', ___('Settings saved.'));;
+				HTTP::redirect('manage/settings/general');
+				return;
+			}
+			else
+			{
+				View::share('errors', $validator->errors());
+			}
 		}
 
-		$resp = view('manage.settings.general', [
-												'errors' => $errors
-											]);
+		$resp = view('manage.settings.general');
 		
 		$this->response->body($resp);
 	}

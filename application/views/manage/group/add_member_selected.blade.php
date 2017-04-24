@@ -17,23 +17,23 @@ $type = array('corp' => 'Corp', 'char' => 'Character');
 <form class="form-horizontal" action="<?php echo URL::base(TRUE,TRUE).'manage/group/addMember/2'; ?>" method="post">
 	<h3>Add Group Member</h3>
 	<input type="hidden" name="act" value="doAdd" />
-	<input type="hidden" name="eveID" value="<?php echo $eveID; ?>" />
-	<input type="hidden" name="accessName" value="<?php echo $accessName; ?>" />
-	<input type="hidden" name="memberType" value="<?php echo $memberType; ?>" />
+	<input type="hidden" name="eveID" value="{{$eveID}}" />
+	<input type="hidden" name="accessName" value="{{$accessName}}" />
+	<input type="hidden" name="memberType" value="{{$memberType}}" />
 
-	<?php if( $memberType == 'corp' ): ?>
+	@if( $memberType == 'corp' )
 	<p>
-		<img src="https://image.eveonline.com/Corporation/<?php echo $eveID; ?>_64.png" width="64" height="64" />&nbsp;&nbsp;<strong><?php echo $accessName; ?></strong>
+		<img src="https://image.eveonline.com/Corporation/{{$eveID}}_64.png" width="64" height="64" />&nbsp;&nbsp;<strong>{{$accessName}}</strong>
 	</p>
-	<?php else: ?>
+	@else
 	<p>
-		<img src="https://image.eveonline.com/Character/<?php echo $eveID; ?>_64.jpg" width="64" height="64" />&nbsp;&nbsp;<strong><?php echo $accessName; ?></strong>
+		<img src="https://image.eveonline.com/Character/{{$eveID}}_64.jpg" width="64" height="64" />&nbsp;&nbsp;<strong>{{$accessName}}</strong>
 	</p>
-	<?php endif; ?>
+	@endif
 
-	<?php if( count($chainmaps) > 0 ): ?>
-		<?php echo formRenderer::select('Chainmaps', 'chainmap_id', $select, 0, ''); ?>
-	<?php endif; ?>
+	@if( count($chainmaps) > 0 )
+		{!! Form::bsSelect('chainmap_id', 'Chainmaps', $select, '', 0) !!}
+	@endif
 	<br />
 	<div class="form-actions">
 		<button type="submit" class="btn btn-primary">Add member</button>

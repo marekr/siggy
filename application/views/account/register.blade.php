@@ -14,22 +14,21 @@
 					It is recommended you do not use the same same combination of username and password as your EVE account.
 				</p>
 
-				<form role="form" action='<?php echo URL::base(TRUE, TRUE);?>account/register'  method='POST'>
-					<fieldset>
-						<legend>Account Details</legend>
+				{!! Form::open(['url' => 'account/register']) !!}
+				<fieldset>
+					<legend>Account Details</legend>
+					{!! Form::bsText('username', 'Username') !!}
+					{!! Form::bsText('email', 'Email') !!}
+					{!! Form::bsPassword('password', 'Password') !!}
+					{!! Form::bsPassword('password_confirmation', 'Confirm Password') !!}
 
-						<?php echo formRenderer::input('Username', 'username', '', '', $errors); ?>
-						<?php echo formRenderer::input('Email', 'email', '', '', $errors); ?>
-						<?php echo formRenderer::password('Password', 'password', '', '', $errors); ?>
-						<?php echo formRenderer::password('Confirm Password', 'password_confirm', '', '', $errors); ?>
-
-						<div class="form-group">
-							<div class="controls">
-							<button type="submit" name="register" class="btn btn-primary">Register</button>
-							</div>
+					<div class="form-group">
+						<div class="controls">
+						<button type="submit" name="register" class="btn btn-primary">Register</button>
 						</div>
-					</fieldset>
-				</form>
+					</div>
+				</fieldset>
+				{!! Form::close() !!}
 		</div>
 	</div>
 </div>
