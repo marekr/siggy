@@ -14,7 +14,7 @@ class View
 	{
 		if(self::$blade == null)
 		{
-			self::$blade = new Blade(APPPATH.'views', APPPATH.'cache/blade');
+			self::$blade = new Blade(APPPATH.'views', DOCROOT.'storage/cache/blade');
 			self::$blade->container['view']->share('errors', new ViewErrorBag);
 		}
 

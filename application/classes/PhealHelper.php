@@ -16,7 +16,7 @@ class PhealHelper {
 		}
 		else
 		{
-			Config::getInstance()->cache = new \Pheal\Cache\FileStorage(__DIR__.'/../cache/api/');
+			Config::getInstance()->cache = new \Pheal\Cache\FileStorage(DOCROOT.'/storage/cache/pheal/');
 		}
 	}
 }
