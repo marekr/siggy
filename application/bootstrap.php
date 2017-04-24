@@ -153,32 +153,23 @@ Kohana::$config->attach(new Config_File);
  */
 Kohana::modules(array(
 	 'cache'      => MODPATH.'cache',      // Caching with multiple backends
-	// 'database'   => MODPATH.'database',   // Database access
 	 'restful_api' => MODPATH.'restful-api',        // Object Relationship Mapping
 	));
 
-$dbName = '';
 if( Kohana::$environment == Kohana::PRODUCTION)
 {
-	$dbName = 'production';
 	Kohana_Exception::$error_view = 'errors/general';
 }
-else
-{
-	$dbName = 'default';
-}
-//Database::$default = $dbName;
 
 
-$dbConfig = Kohana::$config->load('database')->$dbName;
 $db = new DB;
 
 $connConfig = [
-	'driver' => 'mysql',
-	'host' => $dbConfig['connection']['hostname'],
-	'database' => $dbConfig['connection']['database'],
-	'username' => $dbConfig['connection']['username'],
-	'password' => $dbConfig['connection']['password'],
+	'driver' => env('DB_CONNECTION'),
+	'host' => env('DB_HOST'),
+	'database' => env('DB_DATABASE'),
+	'username' => env('DB_USERNAME'),
+	'password' => env('DB_PASSWORD'),
 	'charset' => 'utf8',
 	'collation' => 'utf8_unicode_ci'
 ];
