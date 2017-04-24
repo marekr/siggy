@@ -16,7 +16,9 @@
 		"loduis/artisan": "~5.4",
 		"symfony/process": "^3.2",
 		"predis/predis": "^1.1",
-		"illuminate/validation": "^5.4"
+		"illuminate/validation": "^5.4",
+		"illuminate/routing": "^5.4",
+		"laravel/framework": "5.4.*"
 	},
 	"autoload": {
 		"files": [
