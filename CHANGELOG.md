@@ -3,9 +3,9 @@
 ## 2.45.0 - 2017-04-23
 ## Changes
 - Reworked all forms
--- New templating system
--- New yes/no checkboxes
--- Form validation added to multiple places it was previously lacking
+	- New templating system
+	- New yes/no checkboxes
+	- Form validation added to multiple places it was previously lacking
 
 ## 2.44.2 - 2017-04-20
 ### Fixes
