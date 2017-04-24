@@ -5,6 +5,7 @@ use Illuminate\Database\Capsule\Manager as DB;
 use Siggy\Structure;
 use Siggy\POS;
 use Siggy\ScribeCommandBus;
+use Siggy\Theme;
 
 class Controller_Siggy extends FrontController {
 
