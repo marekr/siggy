@@ -121,6 +121,7 @@ Cookie::$salt = 'y[$e.swbDs@|Gd(ndtUSy^';
 $initOptions = array(
   'base_url'   => 'https://siggy.borkedlabs.com',
   'index_file' => FALSE,
+  'cache_dir' => DOCROOT.'storage/cache',
   'profile'    => Kohana::$environment !== Kohana::PRODUCTION,
   'caching'    => Kohana::$environment === Kohana::PRODUCTION,
   //'errors' => ( Kohana::$environment === Kohana::PRODUCTION ? FALSE : TRUE )
