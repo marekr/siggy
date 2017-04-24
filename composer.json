@@ -7,17 +7,12 @@
 		"swiftmailer/swiftmailer": "@stable",
         "3rdpartyeve/phealng": "~2.0",
 		"guzzlehttp/guzzle": "^6.2",
-		"illuminate/database": "^5.4",
-		"illuminate/events": "^5.4",
 		"mpociot/laravel-composite-key": "^1.0",
 		"yadakhov/insert-on-duplicate-key": "^1.0",
 		"cebe/markdown": "~1.1.1",
-		"illuminate/view": "^5.4",
 		"loduis/artisan": "~5.4",
 		"symfony/process": "^3.2",
 		"predis/predis": "^1.1",
-		"illuminate/validation": "^5.4",
-		"illuminate/routing": "^5.4",
 		"laravel/framework": "5.4.*"
 	},
 	"autoload": {
