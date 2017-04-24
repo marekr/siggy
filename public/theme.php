@@ -3,7 +3,7 @@
 define('ROOT', realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR);
 //ALWAYS USE NUMERIC IDS FOR SECURITY
 
-require_once ROOT . '../application/vendor/lessphp/lessc.inc.php';
+require_once ROOT . '../vendor/lessphp/lessc.inc.php';
 
 $id = 0;
 if( isset( $_GET['id'] ) )

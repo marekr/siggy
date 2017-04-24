@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-require APPPATH . 'vendor/autoload.php';
+require DOCROOT . 'vendor/autoload.php';
 
 $dotenv = new Dotenv\Dotenv(DOCROOT);
 $dotenv->load();

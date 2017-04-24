@@ -1,6 +1,6 @@
 {
 	"config": {
-		"vendor-dir": "application/vendor"
+		"vendor-dir": "vendor"
 	},
     "require": {
         "nesbot/Carbon": "*",

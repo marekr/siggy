@@ -3,7 +3,7 @@
 /specific
 /junk
 /.htaccess
-/application/vendor
+/vendor
 *.compiled.js
 *.compiled.js.map
 /public/*.htaccess
