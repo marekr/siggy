@@ -1,5 +1,12 @@
 <?php
 
+namespace Siggy;
+
+use \Kohana;
+use \ZMQSocket;
+use \ZMQContext;
+use \ZMQ;
+
 class ScribeCommandBus {
 
 	public static $connected = false;

@@ -4,6 +4,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
+use Siggy\ScribeCommandBus;
 
 class User extends Model {
 	public $perms = null;
