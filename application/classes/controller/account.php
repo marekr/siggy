@@ -257,7 +257,7 @@ class Controller_Account extends FrontController {
 					$validator->errors()->add('email', 'Email is already in use.');
 				}
 
-				if( empty( $errors ) )
+				if( !count( $validator->errors() ) )
 				{
 					$session = Session::instance();
 
@@ -293,10 +293,8 @@ class Controller_Account extends FrontController {
 					}
 				}
 			}
-			else
-			{
-				View::share('errors', $validator->errors());
-			}
+
+			View::share('errors', $validator->errors());
 		}
 
 		$resp = view('account.register');

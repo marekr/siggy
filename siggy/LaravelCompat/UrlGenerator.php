@@ -11,6 +11,8 @@ use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Contracts\Routing\UrlGenerator as UrlGeneratorContract;
 
+use \URL;
+
 class UrlGenerator implements UrlGeneratorContract
 {
     use Macroable;
@@ -150,6 +152,7 @@ class UrlGenerator implements UrlGeneratorContract
      */
     public function to($path, $extra = [], $secure = null)
     {
+		return URL::site($path);
     }
 
     /**
