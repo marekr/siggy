@@ -11,6 +11,18 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [
+    'uses' => 'SiggyController@index', 
+    'as' => 'siggy'
+]);
+
+Route::get('/system/{system}', [
+    'uses' => 'SiggyController@index', 
+    'as' => 'siggy'
+]);
+
+Route::get('manage', [
+    'uses' => 'ManageController@admin',
+    'as' => 'manage',
+    'middleware' => 'admin'
+]);

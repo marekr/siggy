@@ -120,9 +120,9 @@ return [
     |
     */
 
-    'log' => env('APP_LOG', 'daily'),
-
-    'log_level' => env('APP_LOG_LEVEL', 'error'),
+    'log' => env('APP_LOG', 'single'),
+    
+    'log_level' => env('APP_LOG_LEVEL', 'debug'),
 
     /*
     |--------------------------------------------------------------------------
@@ -140,44 +140,37 @@ return [
         /*
          * Laravel Framework Service Providers...
          */
-        // Illuminate\Auth\AuthServiceProvider::class,
-        // Illuminate\Broadcasting\BroadcastServiceProvider::class,
-        // Illuminate\Bus\BusServiceProvider::class,
+   //     Illuminate\Auth\AuthServiceProvider::class,
+        Illuminate\Broadcasting\BroadcastServiceProvider::class,
+        Illuminate\Bus\BusServiceProvider::class,
         Illuminate\Cache\CacheServiceProvider::class,
-        // Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
-        // Illuminate\Cookie\CookieServiceProvider::class,
-        // Illuminate\Database\DatabaseServiceProvider::class,
-        // Illuminate\Encryption\EncryptionServiceProvider::class,
+        Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
+        Illuminate\Cookie\CookieServiceProvider::class,
+        Illuminate\Database\DatabaseServiceProvider::class,
+        Illuminate\Encryption\EncryptionServiceProvider::class,
         Illuminate\Filesystem\FilesystemServiceProvider::class,
-        // Illuminate\Foundation\Providers\FoundationServiceProvider::class,
-        // Illuminate\Hashing\HashServiceProvider::class,
-        // Illuminate\Mail\MailServiceProvider::class,
-        // Illuminate\Notifications\NotificationServiceProvider::class,
-        // Illuminate\Pagination\PaginationServiceProvider::class,
-        // Illuminate\Pipeline\PipelineServiceProvider::class,
-        // Illuminate\Queue\QueueServiceProvider::class,
-        // Illuminate\Redis\RedisServiceProvider::class,
-        // Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
-        // Illuminate\Session\SessionServiceProvider::class,
-        // Illuminate\Translation\TranslationServiceProvider::class,
-        // Illuminate\Validation\ValidationServiceProvider::class,
-        // Illuminate\View\ViewServiceProvider::class,
-
-        /*
-         * Package Service Providers...
-         */
-
-        //
-
+        Illuminate\Foundation\Providers\FoundationServiceProvider::class,
+        Illuminate\Hashing\HashServiceProvider::class,
+        Illuminate\Mail\MailServiceProvider::class,
+        Illuminate\Notifications\NotificationServiceProvider::class,
+        Illuminate\Pagination\PaginationServiceProvider::class,
+        Illuminate\Pipeline\PipelineServiceProvider::class,
+        Illuminate\Queue\QueueServiceProvider::class,
+        Illuminate\Redis\RedisServiceProvider::class,
+        Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
+        Illuminate\Session\SessionServiceProvider::class,
+        Illuminate\Translation\TranslationServiceProvider::class,
+        Illuminate\Validation\ValidationServiceProvider::class,
+        Illuminate\View\ViewServiceProvider::class,
+        
         /*
          * Application Service Providers...
          */
-
-        // App\Providers\AppServiceProvider::class,
-        // App\Providers\AuthServiceProvider::class,
+        App\Providers\AppServiceProvider::class,
+    //    App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
-        // App\Providers\EventServiceProvider::class,
-        // App\Providers\RouteServiceProvider::class,
+        App\Providers\EventServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
 
     ],
 
@@ -196,8 +189,9 @@ return [
 
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
-        'Auth' => Illuminate\Support\Facades\Auth::class,
+     //   'Auth' => Illuminate\Support\Facades\Auth::class,
         'Blade' => Illuminate\Support\Facades\Blade::class,
+        'Broadcast' => Illuminate\Support\Facades\Broadcast::class,
         'Bus' => Illuminate\Support\Facades\Bus::class,
         'Cache' => Illuminate\Support\Facades\Cache::class,
         'Config' => Illuminate\Support\Facades\Config::class,

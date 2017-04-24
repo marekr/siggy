@@ -10,7 +10,6 @@
 		"mpociot/laravel-composite-key": "^1.0",
 		"yadakhov/insert-on-duplicate-key": "^1.0",
 		"cebe/markdown": "~1.1.1",
-		"loduis/artisan": "~5.4",
 		"symfony/process": "^3.2",
 		"predis/predis": "^1.1",
 		"laravel/framework": "5.4.*"
@@ -21,6 +20,7 @@
 		],
 		"classmap": ["application/classes"],
 		"psr-4": {
+			"App\\": "app/",
 			"Siggy\\": "siggy/"
 		}
 	},
