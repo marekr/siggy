@@ -174,7 +174,7 @@ $connConfig = [
 	'collation' => 'utf8_unicode_ci'
 ];
 
-if( Kohana::$environment == Kohana::PRODUCTION)
+if( env('DB_PERSISTANT') )
 {
 	$connConfig['options']   = [
 			PDO::ATTR_PERSISTENT => true,
