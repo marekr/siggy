@@ -11,18 +11,229 @@
 |
 */
 
-Route::get('/', [
-    'uses' => 'SiggyController@index', 
-    'as' => 'siggy'
+
+
+Route::get('/pages/welcome', [
+    'uses' => 'PageController@welcome', 
+    'as' => 'welcome'
 ]);
 
-Route::get('/system/{system}', [
-    'uses' => 'SiggyController@index', 
-    'as' => 'siggy'
+Route::get('/pages/about', [
+    'uses' => 'PageController@about', 
+    'as' => 'about'
 ]);
 
-Route::get('manage', [
-    'uses' => 'ManageController@admin',
-    'as' => 'manage',
-    'middleware' => 'admin'
+Route::get('/pages/costs', [
+    'uses' => 'PageController@costs', 
+    'as' => 'costs'
 ]);
+
+Route::get('/changelog', [
+    'uses' => 'ChangelogController@index', 
+    'as' => 'changelog'
+]);
+
+Route::get('/account/login', [
+    'uses' => 'AccountController@getLogin', 
+    'as' => 'login'
+]);
+
+Route::post('/account/login', [
+    'uses' => 'AccountController@postLogin', 
+    'as' => 'login'
+]);
+
+Route::get('/account/sso/{id}', [
+    'uses' => 'AccountController@sso', 
+    'as' => 'sso'
+]);
+
+Route::post('/account/sso/{id}', [
+    'uses' => 'AccountController@sso', 
+    'as' => 'sso'
+]);
+
+Route::get('/account/register', [
+    'uses' => 'AccountController@getRegister', 
+    'as' => 'register'
+]);
+
+Route::post('/account/register', [
+    'uses' => 'AccountController@postRegister', 
+    'as' => 'register'
+]);
+
+	
+Route::get('/account/forgotPassword', [
+	'uses' => 'AccountController@getForgotPassword', 
+	'as' => 'forgotPassword'
+]);
+
+Route::post('/account/password_reset', 'AccountController@postForgotPassword');
+
+
+Route::get('/account/password_reset', [
+	'uses' => 'AccountController@getForgotPassword', 
+	'as' => 'forgotPassword'
+]);
+
+
+Route::post('/account/password_reset/{token}', 'AccountController@postCompletePasswordReset');
+
+Route::get('/account/password_reset/{token}', [
+	'uses' => 'AccountController@getCompletePasswordReset', 
+	'as' => 'completePasswordReset'
+]);
+
+
+Route::group(['middleware' => ['siggy.authenticated']], function () {
+	
+	Route::get('/', [
+		'uses' => 'SiggyController@index', 
+		'as' => 'siggy'
+	]);
+
+	Route::get('/system/{system}', [
+		'uses' => 'SiggyController@index', 
+		'as' => 'siggy'
+	]);
+
+	Route::get('/data/systems','DataController@systems');
+	Route::get('/data/sig_types','DataController@sigTypes');
+	Route::get('/data/structures','DataController@structures');
+	Route::get('/data/poses','DataController@poses');
+	Route::post('/update','SiggyController@update');
+	Route::post('siggy/siggy','SiggyController@siggy');
+	Route::post('siggy/save_system','SiggyController@saveSystem');
+	Route::post('siggy/notes_save','SiggyController@notesSave');
+	Route::post('siggy/save_character_settings','SiggyController@saveCharacterSettings');
+
+	Route::post('crest/waypoint','CrestController@waypoint');
+
+	Route::post('sig/add','SignatureController@add');
+	Route::post('sig/edit','SignatureController@edit');
+	Route::post('sig/remove','SignatureController@remove');
+	Route::post('sig/mass_add','SignatureController@mass_add');
+	Route::get('sig/scanned_systems','SignatureController@scanned_systems');
+
+	Route::post('pos/add','POSController@add');
+	Route::post('pos/edit','POSController@edit');
+	Route::post('pos/remove','POSController@remove');
+
+	Route::post('structure/add','StructureController@add');
+	Route::post('structure/edit','StructureController@edit');
+	Route::post('structure/remove','StructureController@remove');
+	Route::post('structure/vulnerabilities','StructureController@vulnerabilities');
+
+	Route::post('dscan/add','DScanController@add');
+	Route::get('dscan/view/{id}','DScanController@view');
+	Route::post('dscan/remove','DScanController@remove');
+
+	Route::get('chainmap/connections','ChainmapController@connections');
+	Route::post('chainmap/connection_delete','ChainmapController@connection_delete');
+	Route::post('chainmap/save','ChainmapController@save');
+	Route::post('chainmap/connection_edit','ChainmapController@connection_edit');
+	Route::post('chainmap/find_nearest_exits','ChainmapController@find_nearest_exits');
+	Route::post('chainmap/connection_add','ChainmapController@connection_add');
+	Route::post('chainmap/switch','ChainmapController@switch');
+	Route::get('chainmap/autocomplete_wh','ChainmapController@autocomplete_wh');
+	Route::get('chainmap/jump_log','ChainmapController@jump_log');
+
+	Route::get('thera/latest_exits','TheraController@latest_exits');
+	Route::post('thera/import_to_chainmap','TheraController@import_to_chainmap');
+
+	Route::get('search/everything','SearchController@everything');
+
+	Route::get('stats','StatsController@overview');
+	Route::get('stats/overview','StatsController@overview');
+	Route::get('stats/leaderboard','StatsController@leaderboard');
+
+	Route::get('stats/pos_adds/','StatsController@posAdds');
+	Route::get('stats/pos_updates/','StatsController@posUpdates');
+	Route::get('stats/wormholes/','StatsController@wormholes');
+	Route::get('stats/sig_adds/','StatsController@sigAdds');
+	Route::get('stats/sig_updates/','StatsController@sigUpdates');
+
+	Route::get('prometheus','PrometheusController@index');
+
+	Route::get('stats/overview','StatsController@overview');
+
+	Route::post('notifications/read','NotificationController@read');
+	Route::get('notifications/all','NotificationController@all');
+	Route::get('notifications/notifiers','NotificationController@notifiers');
+	Route::post('notifications/notifiers_add','NotificationController@notifiers_add');
+	Route::post('notifications/notifiers_delete','NotificationController@notifiers_delete');
+
+
+	Route::get('access/group_password','AccessController@getGroupPassword');
+	Route::post('access/group_password','AccessController@postGroupPassword');
+
+
+});
+
+
+Route::group(['middleware' => ['siggy.loggedin']], function () {
+
+	Route::get('/account/logout', [
+		'uses' => 'AccountController@getLogout', 
+		'as' => 'logout'
+	]);
+
+	Route::get('/account/characters', [
+		'uses' => 'AccountController@getCharacters', 
+		'as' => 'characters'
+	]);
+
+	Route::post('/account/characters', 'AccountController@postCharacters');
+
+	Route::get('/account/connected', [
+		'uses' => 'AccountController@getConnected', 
+		'as' => 'connected'
+	]);
+
+	Route::post('/account/disconnect', 'AccountController@postDisconnect');
+
+	Route::get('/account', 'AccountController@getOverview');
+	Route::get('/account/overview', 'AccountController@getOverview');
+	
+	Route::get('/account/changePassword', [
+		'uses' => 'AccountController@getChangePassword', 
+		'as' => 'changePassword'
+	]);
+
+	Route::post('/account/changePassword', 'AccountController@postChangePassword');
+	
+	Route::get('/group/create', [
+		'uses' => 'GroupController@getCreateIntro'
+	]);
+	
+	Route::get('/group/create/intro', [
+		'uses' => 'GroupController@getCreateIntro', 
+		'as' => 'createIntro'
+	]);
+
+	Route::get('/group/create/form', [
+		'uses' => 'GroupController@getCreateForm', 
+		'as' => 'createForm'
+	]);
+	Route::post('/group/create/form', 'GroupController@postCreateForm');
+
+	
+	Route::get('/group/create/completed', [
+		'uses' => 'GroupController@getCreateCompleted', 
+		'as' => 'createCompleted'
+	]);
+	
+
+	Route::get('access/groups','AccessController@getGroups');
+	Route::post('access/groups','AccessController@postGroups');
+	Route::get('access/blacklisted','AccessController@getBlacklisted');
+});
+
+Route::group(['namespace' => 'Manage','prefix' => 'manage'], function()
+{
+	Route::get('/', [
+		'uses' => 'ManageController@admin',
+		'as' => 'manage'
+	]);
+});

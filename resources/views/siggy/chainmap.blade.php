@@ -121,7 +121,7 @@
 							<div class="form-group">
 								<label>Connection Type
 									<select name="connection-editor-type" class='siggy-input'>
-										<option value="wormhole">{{___('Wormhole')}}</option>
+										<option value="wormhole">{{__('Wormhole')}}</option>
 										<option value="stargate">Stargate</option>
 										<option value="jumpbridge">Jumpbridge</option>
 										<option value="cyno">Cyno</option>

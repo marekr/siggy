@@ -12,7 +12,9 @@
 		"cebe/markdown": "~1.1.1",
 		"symfony/process": "^3.2",
 		"predis/predis": "^1.1",
-		"laravel/framework": "5.4.*"
+		"laravel/framework": "5.4.*",
+		"laravelcollective/html": "^5.4",
+		"lusitanian/oauth": "^0.8.10"
 	},
 	"autoload": {
 		"files": [

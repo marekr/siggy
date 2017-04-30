@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Support\Facades\DB;
 
 final class groupUtils {
 	static function deleteLinkedSigWormholes($groupID, $hashes)

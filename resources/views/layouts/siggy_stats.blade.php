@@ -4,15 +4,15 @@
 		<title>siggy: stats</title>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<link href="<?php echo URL::base(TRUE, TRUE);?>bootstrap3/css/bootstrap.min.css?<?php echo SIGGY_VERSION; ?>" rel="stylesheet">
-		@if( Kohana::$environment == Kohana::DEVELOPMENT )
-		<link type="text/css" href="{{ URL::base(TRUE, TRUE) }}theme.php?id={{ $settings->theme_id }}&{{ time() }}" id="theme-css" rel="stylesheet" media="screen" />
+		<link href="{{asset("bootstrap3/css/bootstrap.min.css?".SIGGY_VERSION)}}" rel="stylesheet">
+		@if( App::environment('local') )
+		<link type="text/css" href="{{url("theme.php?id={$settings->theme_id}&{ time() }")}}" id="theme-css" rel="stylesheet" media="screen" />
 		@else
-		<link type="text/css" href="{{ URL::base(TRUE, TRUE) }}theme.php?id={{ $settings->theme_id }}" id="theme-css" rel="stylesheet" media="screen" />
+		<link type="text/css" href="{{url("theme.php?id={$settings->theme_id }")}}" id="theme-css" rel="stylesheet" media="screen" />
 		@endif
-		<link href="{{ URL::base(TRUE, TRUE) }}font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet">
-		<link href="<?php echo URL::base(TRUE, TRUE);?>css/frontend.css?<?php echo SIGGY_VERSION; ?>" rel="stylesheet">
-		<link rel="icon" href="{{ URL::base(TRUE, TRUE) }}favicon.ico">
+		<link href="{{asset("font-awesome-4.2.0/css/font-awesome.min.css")}}" rel="stylesheet">
+		<link href="{{asset("css/frontend.css?".SIGGY_VERSION)}}" rel="stylesheet">
+		<link rel="icon" href="{{asset("favicon.ico")}}">
 
 		@include('layouts._javascript')
 		<meta name="csrf-token" content="{{ Auth::$session->csrf_token }}">
@@ -36,14 +36,14 @@
 					</a>
 					<ul class="dropdown-menu" role="menu">
 						<li><a target="_blank" href="http://wiki.siggy.borkedlabs.com">Guide</a></li>
-						<li><a target="_blank" href="{{ URL::base(TRUE, TRUE) }}changelog">Changelog</a></li>
+						<li><a target="_blank" href="{{ url("changelog") }}">Changelog</a></li>
 						<li><a target="_blank" href="http://wiki.siggy.borkedlabs.com/support/contact/">Contact</a></li>
 					</ul>
 				</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li>
-					<a href="<?php echo URL::base(TRUE,TRUE); ?>">Back to scanning!</a>
+					<a href="{{url('/')}}">Back to scanning!</a>
 				</li>
 				@if( count(Auth::$session->accessibleGroups()) > 1 )
 				<li class="dropdown">
@@ -54,7 +54,7 @@
 						@foreach( Auth::$session->accessibleGroups() as $g )
 							<li onClick="javascript:$(this).find('form').submit();">
 								<a>
-								<form action='{{ URL::base(TRUE, TRUE) }}access/groups' method='POST'>
+								<form action='{{ url('access/groups') }}' method='POST'>
 									<input type="hidden" name="_token" value="{{ Auth::$session->csrf_token }}" />
 									<input type='hidden' name='group_id' value='{{ $g->id }}' />
 									{{ $g->name }}
@@ -83,12 +83,12 @@
 					</a>
 					@if( Auth::loggedIn() )
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="{{ URL::base(TRUE, TRUE) }}account/characters">Switch Character</a></li>
+						<li><a href="{{url('account/characters')}}">Switch Character</a></li>
 						<li class="divider"></li>
-						<li><a href="{{ URL::base(TRUE, TRUE) }}account/connected">Connected Characters</a></li>
-						<li><a href="{{ URL::base(TRUE, TRUE) }}account/changePassword">Change Password</a></li>
+						<li><a href="{{url('account/connected')}}">Connected Characters</a></li>
+						<li><a href="{{url('account/changePassword')}}">Change Password</a></li>
 						<li class="divider"></li>
-						<li><a href="{{ URL::base(TRUE, TRUE) }}account/logout">Logout</a></li>
+						<li><a href="{{url('account/logout')}}">Logout</a></li>
 					</ul>
 					@endif
 				</li>

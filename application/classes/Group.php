@@ -1,8 +1,10 @@
 <?php
 
 use Carbon\Carbon;
-use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Eloquent\Model;
+
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class Group extends Model {
     /**
@@ -147,11 +149,9 @@ class Group extends Model {
 	{
 		if($this->chainMaps == null)
 		{
-			$cache = Cache::instance( CACHE_METHOD );
-
 			$cache_name = 'group-chainmaps-'.$this->id;
 
-			if( $data = $cache->get( $cache_name, FALSE ) )
+			if( $data = Cache::get( $cache_name, FALSE ) )
 			{
 				$this->chainMaps = $data;
 			}
@@ -260,10 +260,9 @@ class Group extends Model {
 			$c->access = $members;
 		}
 
-		$cache = Cache::instance( CACHE_METHOD );
 		$cache_name = 'group-chainmaps-'.$this->id;
 
-		$cache->set($cache_name, $chainmaps, 1800);
+		Cache::put($cache_name, $chainmaps, 1800);
 
 		return $chainmaps;
 	}

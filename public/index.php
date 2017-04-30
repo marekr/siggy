@@ -1,122 +1,60 @@
 <?php
-/**
- * The directory in which your application specific resources are located.
- * The application directory must contain the bootstrap.php file.
- *
- * @see  http://kohanaframework.org/guide/about.install#application
- */
-$application = 'application';
 
 /**
- * The directory in which your modules are located.
+ * Laravel - A PHP Framework For Web Artisans
  *
- * @see  http://kohanaframework.org/guide/about.install#modules
- */
-$modules = 'modules';
-
-/**
- * The directory in which the Kohana resources are located. The system
- * directory must contain the classes/kohana.php file.
- *
- * @see  http://kohanaframework.org/guide/about.install#system
- */
-$system = 'system';
-
-/**
- * The default extension of resource files. If you change this, all resources
- * must be renamed to use the new extension.
- *
- * @see  http://kohanaframework.org/guide/about.install#ext
- */
-define('EXT', '.php');
-
-/**
- * Set the PHP error reporting level. If you set this in php.ini, you remove this.
- * @see  http://php.net/error_reporting
- *
- * When developing your application, it is highly recommended to enable notices
- * and strict warnings. Enable them by using: E_ALL | E_STRICT
- *
- * In a production environment, it is safe to ignore notices and strict warnings.
- * Disable them by using: E_ALL ^ E_NOTICE
- *
- * When using a legacy application with PHP >= 5.3, it is recommended to disable
- * deprecated notices. Disable with: E_ALL & ~E_DEPRECATED
- */
-error_reporting(E_ALL | E_STRICT);
-
-/**
- * End of standard configuration! Changing any of the code below should only be
- * attempted by those with a working knowledge of Kohana internals.
- *
- * @see  http://kohanaframework.org/guide/using.configuration
+ * @package  Laravel
+ * @author   Taylor Otwell <taylor@laravel.com>
  */
 
-// Set the full path to the docroot
-define('DOCROOT', realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR);
+define('SIGGY_VERSION', file_get_contents('../VERSION'));
 
-// Make the application relative to the docroot, for symlink'd index.php
-if ( ! is_dir($application) AND is_dir(DOCROOT.$application))
-	$application = DOCROOT.$application;
+/*
+|--------------------------------------------------------------------------
+| Register The Auto Loader
+|--------------------------------------------------------------------------
+|
+| Composer provides a convenient, automatically generated class loader for
+| our application. We just need to utilize it! We'll simply require it
+| into the script here so that we don't have to worry about manual
+| loading any of our classes later on. It feels great to relax.
+|
+*/
 
-// Make the modules relative to the docroot, for symlink'd index.php
-if ( ! is_dir($modules) AND is_dir(DOCROOT.$modules))
-	$modules = DOCROOT.$modules;
+require __DIR__.'/../bootstrap/autoload.php';
 
-// Make the system relative to the docroot, for symlink'd index.php
-if ( ! is_dir($system) AND is_dir(DOCROOT.$system))
-	$system = DOCROOT.$system;
+/*
+|--------------------------------------------------------------------------
+| Turn On The Lights
+|--------------------------------------------------------------------------
+|
+| We need to illuminate PHP development, so let us turn on the lights.
+| This bootstraps the framework and gets it ready for use, then it
+| will load up this application so that we can run it and send
+| the responses back to the browser and delight our users.
+|
+*/
 
-// Define the absolute paths for configured directories
-define('APPPATH', realpath($application).DIRECTORY_SEPARATOR);
-define('MODPATH', realpath($modules).DIRECTORY_SEPARATOR);
-define('SYSPATH', realpath($system).DIRECTORY_SEPARATOR);
-define('STORAGEPATH', realpath(DOCROOT.DIRECTORY_SEPARATOR.'storage').DIRECTORY_SEPARATOR);
+$app = require_once __DIR__.'/../bootstrap/app.php';
 
-// Clean up the configuration vars
-unset($application, $modules, $system);
+/*
+|--------------------------------------------------------------------------
+| Run The Application
+|--------------------------------------------------------------------------
+|
+| Once we have the application, we can handle the incoming request
+| through the kernel, and send the associated response back to
+| the client's browser allowing them to enjoy the creative
+| and wonderful application we have prepared for them.
+|
+*/
 
-if (file_exists('install'.EXT))
-{
-	// Load the installation check
-	return include 'install'.EXT;
-}
+$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
-/**
- * Define the start time of the application, used for profiling.
- */
-if ( ! defined('KOHANA_START_TIME'))
-{
-	define('KOHANA_START_TIME', microtime(TRUE));
-}
+$response = $kernel->handle(
+    $request = Illuminate\Http\Request::capture()
+);
 
-/**
- * Define the memory usage at the start of the application, used for profiling.
- */
-if ( ! defined('KOHANA_START_MEMORY'))
-{
-	define('KOHANA_START_MEMORY', memory_get_usage());
-}
+$response->send();
 
-// Bootstrap the application
-require APPPATH.'bootstrap'.EXT;
-
-if (PHP_SAPI == 'cli') // Try and load minion
-{
-	class_exists('Minion_Task') OR die('Please enable the Minion module for CLI support.');
-	set_exception_handler(array('Minion_Exception', 'handler'));
-
-	Minion_Task::factory(Minion_CLI::options())->execute();
-}
-else
-{
-	/**
-	 * Execute the main request. A source of the URI can be passed, eg: $_SERVER['PATH_INFO'].
-	 * If no source is specified, the URI will be automatically detected.
-	 */
-	echo Request::factory(TRUE, array(), FALSE)
-		->execute()
-		->send_headers(TRUE)
-		->body();
-}
-
+$kernel->terminate($request, $response);

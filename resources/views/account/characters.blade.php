@@ -21,15 +21,15 @@
 			<?php foreach($selectableChars as $char): ?>
 
 			<li <?php echo ($char->id == $selectedCharID ? 'class="selected"' : ''); ?> onClick="javascript:$(this).find('form').submit();">
-				<form action='<?php echo URL::base(TRUE, TRUE);?>account/characters' method='POST'>
-					<input type='hidden' name='charID' value='<?php echo $char->id; ?>' />
+				<form action='{{url('account/characters')}}' method='POST'>
+					<input type='hidden' name='charID' value='{{$char->id}}' />
 
-					<input type='image' src='https://image.eveonline.com/Character/<?php echo $char->id; ?>_64.jpg' name='select' width='64' height='64' alt='<?php echo $char->name; ?>' />
-					<input type='image' src='https://image.eveonline.com/Corporation/<?php echo $char->corporation_id; ?>_64.png' name='select' width='64' height='64' alt='<?php echo $char->corporation->name; ?>' />
+					<input type='image' src='https://image.eveonline.com/Character/{{$char->id}}_64.jpg' name='select' width='64' height='64' alt='{{$char->name}}' />
+					<input type='image' src='https://image.eveonline.com/Corporation/{{$char->corporation_id}}_64.png' name='select' width='64' height='64' alt='{{$char->corporation->name}}' />
 					<div class='details'>
-						<b><?php echo $char->name; ?></b>
+						<b>{{$char->name}}</b>
 						<br />
-						<?php echo $char->corporation->name; ?>
+						{{$char->corporation->name}}
 					</div>
 				</form>
 			</li>
@@ -46,12 +46,12 @@
 		<ul id='character-select'>
 			<?php foreach($unselectableChars as $char): ?>
 			<li class='disabled'>
-					<img src='https://image.eveonline.com/Character/<?php echo $char->id; ?>_64.jpg' name='select' width='64' height='64' alt='<?php echo $char->name; ?>' />
-					<img src='https://image.eveonline.com/Corporation/<?php echo $char->corporation_id; ?>_64.png' name='select' width='64' height='64' alt='<?php echo $char->corporation->name; ?>' />
+					<input type='image' src='https://image.eveonline.com/Character/{{$char->id}}_64.jpg' name='select' width='64' height='64' alt='{{$char->name}}' />
+					<input type='image' src='https://image.eveonline.com/Corporation/{{$char->corporation_id}}_64.png' name='select' width='64' height='64' alt='{{$char->corporation->name}}' />
 					<div class='details'>
-						<b><?php echo $char->name; ?></b>
+						<b>{{$char->name}}</b>
 						<br />
-						<?php echo $char->corporation->name; ?>
+						{{$char->corporation->name}}
 					</div>
 				</form>
 			</li>

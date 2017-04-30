@@ -1,7 +1,8 @@
 <?php
 
 use Carbon\Carbon;
-use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -36,11 +37,9 @@ class Chainmap extends Model {
 
 	public function get_map_cache()
 	{
-		$cache = Cache::instance( CACHE_METHOD );
-
 		$cache_name = 'map_data_cache-'.$this->id;
 
-		if( $map_data = $cache->get( $cache_name, FALSE ) )
+		if( $map_data = Cache::get( $cache_name, FALSE ) )
 		{
 			return $map_data;
 		}
@@ -217,12 +216,11 @@ class Chainmap extends Model {
 
 	public function rebuild_map_data_cache()
 	{
-		$cache = Cache::instance( CACHE_METHOD );
 		$cache_name = 'map_data_cache-'.$this->id;
 
 		$map_data = $this->get_map_data();
 
-		$cache->set($cache_name, $map_data, 1800);
+		Cache::put($cache_name, $map_data, 1800);
 
 		return $map_data;
 	}

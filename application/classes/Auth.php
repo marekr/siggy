@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Support\Facades\DB;
 
 class AuthStatus {
 	const NOACCESS = 0;
@@ -178,8 +178,8 @@ class Auth {
 
 		self::$user = $tmp;
 
-		Cookie::set('userID', self::$user->id, $lifetime);
-		Cookie::set('passHash', self::$user->password, $lifetime);
+		Cookie::queue('userID', self::$user->id, $lifetime);
+		Cookie::queue('passHash', self::$user->password, $lifetime);
 
 		self::$session->reloadUserSession();
 
@@ -205,8 +205,8 @@ class Auth {
 				$lifetime = 60*60*24*365;	//1 year
 			}
 
-			Cookie::set('userID', self::$user->id, $lifetime);
-			Cookie::set('passHash', self::$user->password, $lifetime);
+			Cookie::queue('userID', self::$user->id, $lifetime);
+			Cookie::queue('passHash', self::$user->password, $lifetime);
 
 			self::$session->reloadUserSession();
 
@@ -223,8 +223,8 @@ class Auth {
 	{
 		self::$session->destroy();
 
-		Cookie::delete('userID');
-		Cookie::delete('passHash');
+		Cookie::queue(Cookie::forget('userID'));
+		Cookie::queue(Cookie::forget('passHash'));
 	}
 
 

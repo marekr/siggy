@@ -173,6 +173,11 @@ class User extends Model {
 	{
 		return self::whereRaw('LOWER(email) = ?', [strtolower($email)])->first();
 	}
+	
+	public static function findByResetToken(string $token)
+	{
+		return self::whereRaw('reset_token = ?', [$token])->first();
+	}
 
 	public function perms()
 	{

@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+
 
 class Notifier extends Model  {
 	public $timestamps = false;

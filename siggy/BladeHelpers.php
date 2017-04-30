@@ -3,6 +3,7 @@
 namespace Siggy;
 
 use \URL;
+use Illuminate\Support\Facades\Blade;
 
 class BladeHelpers
 {
@@ -26,7 +27,8 @@ class BladeHelpers
 		{
 			if(self::$config == null)
 			{
-				self::$config = require_once DOCROOT."config/assets.php";
+				$path = base_path("config/assets.php");
+				self::$config = include($path);
 			}
 
 			if(isset(self::$config['assets'][$name]))
@@ -35,7 +37,7 @@ class BladeHelpers
 				$ret = "";
 				foreach($asset['files'] as $file)
 				{
-					$url = \Siggy\Assets\Helpers::joinPaths(URL::base(TRUE),$asset['publicPath'],$file."?".$version);
+					$url = \Siggy\Assets\Helpers::joinPaths(url('/'),$asset['publicPath'],$file."?".$version);
 					
 					$ret .= "<script type=\"text/javascript\" src=\"{$url}\"></script>\n";
 				}
@@ -61,9 +63,9 @@ class BladeHelpers
 		return "<link href=\"{$url}\" rel=\"{$rel}\" type=\"text/css\" />";
 	}
 
-	public static function register($compiler)
+	public static function register()
 	{
-		$compiler->extend(function($view, $compiler)
+		Blade::extend(function($view)
 		{
 			$pattern = self::createBladeMatcher('siggy_asset_js');
 			return preg_replace($pattern, '$1<?php $var1 = \Siggy\BladeHelpers::assetJs$2; echo $var1; ?>', $view);

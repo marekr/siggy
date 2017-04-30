@@ -2,7 +2,6 @@
 
 namespace Siggy;
 
-use \Kohana;
 use \ZMQSocket;
 use \ZMQContext;
 use \ZMQ;
@@ -19,15 +18,7 @@ class ScribeCommandBus {
 			return;
 		}
 
-		$dsn = '';
-		if( Kohana::$environment == Kohana::PRODUCTION )
-		{
-			$dsn = Kohana::$config->load('scribe.production.connection_string');
-		}
-		else
-		{
-			$dsn = Kohana::$config->load('scribe.development.connection_string');
-		}
+		$dsn = config('scribe.connection_string');
 
 		self::$socket = new ZMQSocket(new ZMQContext(), ZMQ::SOCKET_PUSH, 'scribeCommandBus');
 
