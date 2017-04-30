@@ -1,6 +1,6 @@
 <?php
 
-require Kohana::find_file('vendor', 'OAuth\bootstrap');
+require DOCROOT.'\vendor\OAuth\bootstrap.php';
 use OAuth\OAuth2\Service\Eve;
 use OAuth\Common\Storage\Session as OSession;
 use OAuth\Common\Consumer\Credentials;
@@ -433,7 +433,7 @@ class Controller_Account extends FrontController {
 		$errors = [];
 		if( isset( $_REQUEST['reset_token'] ) )
 		{
-			$validator = Validator::make($_POST, [
+			$validator = Validator::make($_REQUEST, [
 				'reset_email' => 'required|email',
 				'reset_token' => 'required'
 			]);

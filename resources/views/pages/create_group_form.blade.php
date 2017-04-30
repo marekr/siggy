@@ -29,8 +29,8 @@
 				<legend>Basic Settings</legend>
 					{!! Form::yesNo('group_password_required', 'Group password required?', 'If yes, siggy will prompt for a password from all users, this is highly recommended.') !!}
 
-					{!! Form::bsPassword('group_password', 'Group Password') !!}
-					{!! Form::bsPassword('confirm_group_password', 'Confirm Current Password') !!}
+					{!! Form::bsPassword('password', 'Group Password') !!}
+					{!! Form::bsPassword('password_confirmation', 'Confirm Current Password') !!}
 				</fieldset>
 				<div class="form-actions">
 					<button type="submit" class="btn btn-primary">Create Group</button>

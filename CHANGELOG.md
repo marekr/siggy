@@ -1,5 +1,10 @@
 # siggy Changelog
 
+## 2.45.1 - 2017-04-29
+## Fixes
+- Group creation broke due to previous changes, fixed now
+- Password reset completion broke
+
 ## 2.45.0 - 2017-04-23
 ## Changes
 - Reworked all forms

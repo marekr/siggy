@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Capsule\Manager as DB;
 
+use Siggy\View;
+
 class Controller_Pages extends FrontController {
 	protected $noAutoAuthRedirects = true;
 
@@ -79,27 +81,28 @@ class Controller_Pages extends FrontController {
 		}
 		else if( $id == 2 )
 		{
-			$errors = array();
 			if ($this->request->method() == "POST")
 			{
-				$validator = Validation::factory($_POST)
-							->rule('groupName', 'not_empty')
-							->rule('groupTicker', 'not_empty')
-							->rule('confirm_group_password',  'matches', array(':validation', 'group_password', 'confirm_group_password'));
+				$save = [
+					'name' => $_POST['name'],
+					'ticker' => $_POST['ticker'],
+					'password_required' => $_POST['password_required'] ?? 0,
+					'password' => $_POST['password'],
+					'password_confirmation' => $_POST['password_confirmation']
+				];
 
-				if( intval($_POST['group_password_required']) == 1 )
-				{
-					$validator->rule('group_password', 'not_empty');
-				}
+				$validator = Validator::make($save, [
+						'name' => 'required|alpha_dash|min:3',
+						'ticker' => 'required|min:3',
+						'password_required' => 'required|boolean',
+						'password' => 'nullable|confirmed',
+						'password_confirmation' => 'required_with:password'
+				]);
 
-				if ( $validator->check() )
+
+				if(!$validator->fails())
 				{
-						$group = Group::createFancy( [ 'name' => $_POST['groupName'],
-															'ticker' => $_POST['groupTicker'],
-															'password' => $_POST['group_password'],
-															'password_required' => intval($_POST['group_password_required'])
-														]
-													);
+						$group = Group::createFancy($save);
 
 						if( $group != null )
 						{
@@ -127,15 +130,16 @@ class Controller_Pages extends FrontController {
 				}
 				else
 				{
-						$errors = $validator->errors('pages/createGroup');
+					$validator->errors()->add('name', 'Unknown error has occurred.');
 				}
+				
+				View::share('errors', $validator->errors());
 			}
 			
 			$resp = view('pages.create_group_form', [
 													'title' => 'siggy: create group',
 													'selectedTab' => 'createGroup',
-													'layoutMode' => 'blank',
-													'errors' => $errors
+													'layoutMode' => 'blank'
 												]);
 		}
 		else if ( $id == 3 )
