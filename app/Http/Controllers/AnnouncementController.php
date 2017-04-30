@@ -1,24 +1,21 @@
 <?php
 
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 use \Michelf\Markdown;
-use Illuminate\Database\Capsule\Manager as DB;
 
-class Controller_Announcements extends FrontController {
-	protected $noAutoAuthRedirects = true;
+class AnnouncementController extends BaseController {
 
-	function __construct(Kohana_Request $request, Kohana_Response $response)
-	{
-		parent::__construct($request, $response);
-	}
-
-	public function action_index()
+	public function list()
 	{
 		$resultCount = DB::selectOne("SELECT COUNT(*) as total
 									FROM announcements
 									WHERE datePublished != 0 and visibility = 'all'");
 
-
-		$pagination = new ZebraPagination2();
+		$pagination = new \ZebraPagination2();
 		$pagination->records($resultCount->total);
 		$pagination->records_per_page(5);
 
@@ -31,27 +28,22 @@ class Controller_Announcements extends FrontController {
 									ORDER BY datePublished DESC
 									LIMIT ".$offset.",5");
 		
-		$resp = view('announcements.index', [
+		return view('announcements.index', [
 												'announcements' => $results,
 												'pagination' => $paginationHTML,
 												'title' => "siggy: announcements",
 												'selectedTab' => 'announcements',
 												'layoutMode' => 'blank'
 											]);
-		$this->response->body($resp);
 	}
 
-	public function action_view()
+	public function view($id)
 	{
-		$this->profiler = NULL;
-
-		$id = (int)$_GET['id'];
-
 		$result = DB::selectOne("SELECT *
 									FROM announcements
 									WHERE datePublished != 0 and visibility = 'all'
 									AND id = ?",[$id]);
 
-		$this->response->json($result);
+		return response()->json($result);
 	}
 }

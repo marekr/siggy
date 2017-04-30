@@ -85,6 +85,12 @@ Route::get('/account/password_reset/{token}', [
 	'as' => 'completePasswordReset'
 ]);
 
+Route::get('/announcements', [
+	'uses' => 'AnnouncementController@list', 
+	'as' => 'announcements'
+]);
+
+Route::get('/announcements/view/{id}', 'AnnouncementController@view');
 
 Route::group(['middleware' => ['siggy.authenticated']], function () {
 	
