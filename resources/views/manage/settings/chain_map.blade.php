@@ -3,7 +3,7 @@
 						])
 
 @section('content')
-{!! Form::model($group, ['url' => 'manage/settings/chain_map', 'method' => 'post']) !!}
+{!! Form::model($group, ['url' => 'manage/settings/chainmap', 'method' => 'post']) !!}
 
 	<fieldset>
 		<legend>Basic</legend>

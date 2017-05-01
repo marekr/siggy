@@ -25,11 +25,6 @@ class AccountController extends Controller {
 
 	public function postLogin()
 	{
-		if( Auth::loggedIn() )
-		{
-			return redirect('/');
-		}
-		
 		$rememberMe = (isset($_POST['rememberMe']) ? TRUE : FALSE);
 		if( Auth::processLogin($_POST['username'], $_POST['password'], $rememberMe) === Auth::LOGIN_SUCCESS )
 		{

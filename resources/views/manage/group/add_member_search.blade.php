@@ -23,8 +23,7 @@
 				<td>{{$result->name}}</td>
 				<td>{{$result->id}}</td>
 				<td>
-					<form class="form-inline" action="<?php echo URL::base(TRUE,TRUE).'manage/group/addMember/2'; ?>" method="post">
-						<input type="hidden" name="act" value="doForm" />
+					<form class="form-inline" action="{{url('manage/group/members/add/details')}}" method="post">
 						<input type="hidden" name="eveID" value="{{$result->id}}" />
 						<input type="hidden" name="accessName" value="{{$result->name}}" />
 						<input type="hidden" name="memberType" value="{{$memberType}}" />
@@ -36,8 +35,7 @@
 				<td>{{$result->name}}</td>
 				<td>{{$result->id}}</td>
 				<td>
-					<form class="form-inline" action="<?php echo URL::base(TRUE,TRUE).'manage/group/addMember/2'; ?>" method="post">
-						<input type="hidden" name="act" value="doForm" />
+					<form class="form-inline" action="{{url('manage/group/members/add/details')}}" method="post">
 						<input type="hidden" name="eveID" value="{{$result->id}}" />
 						<input type="hidden" name="accessName" value="{{$result->name}}" />
 						<input type="hidden" name="memberType" value="{{$memberType}}" />
@@ -51,7 +49,7 @@
 	</table>
 	@endif
 
-{!! Form::open(['url' => 'manage/group/addMember/1'],['class'=>'form-horizontal']) !!}
+{!! Form::open(['url' => 'manage/group/members/add', 'class'=>'form-horizontal']) !!}
 	@if(count($results) > 0 )
 	<h3>Or search again</h3>
 	@else

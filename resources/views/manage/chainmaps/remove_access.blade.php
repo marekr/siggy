@@ -4,7 +4,7 @@
 
 @section('content')
 <h2>Confirm deletion</h2>
-<form action="<?php echo URL::base(true,true);?>manage/chainmaps/remove_access/<?php echo $id; ?>" method="POST">
+<form action="{{url('manage/chainmaps/access/remove/'.$id)}}" method="POST">
 	<input type="hidden" value="1" name="confirm" />
 	<p>
 		Are you sure you want to remove '<?php echo $member->accessName; ?>' from the group access?

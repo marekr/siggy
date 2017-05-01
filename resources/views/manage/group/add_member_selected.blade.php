@@ -14,9 +14,8 @@ $type = array('corp' => 'Corp', 'char' => 'Character');
 ?>
 
 
-<form class="form-horizontal" action="<?php echo URL::base(TRUE,TRUE).'manage/group/addMember/2'; ?>" method="post">
+<form class="form-horizontal" action="{{url('manage/group/members/add/finish')}}" method="post">
 	<h3>Add Group Member</h3>
-	<input type="hidden" name="act" value="doAdd" />
 	<input type="hidden" name="eveID" value="{{$eveID}}" />
 	<input type="hidden" name="accessName" value="{{$accessName}}" />
 	<input type="hidden" name="memberType" value="{{$memberType}}" />

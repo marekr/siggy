@@ -53,6 +53,7 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'siggy.authenticated' =>  \App\Http\Middleware\SiggyAuthenticatedAccess::class,
         'siggy.loggedin' =>  \App\Http\Middleware\SiggyLoggedIn::class,
+		'siggy.canmanage' => \App\Http\Middleware\SiggyCanManage::class,
         'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,

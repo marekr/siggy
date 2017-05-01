@@ -14,7 +14,8 @@
 		"predis/predis": "^1.1",
 		"laravel/framework": "5.4.*",
 		"laravelcollective/html": "^5.4",
-		"lusitanian/oauth": "^0.8.10"
+		"lusitanian/oauth": "^0.8.10",
+		"laracasts/flash": "^3.0"
 	},
 	"autoload": {
 		"files": [

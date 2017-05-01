@@ -236,10 +236,61 @@ Route::group(['middleware' => ['siggy.loggedin']], function () {
 	Route::get('access/blacklisted','AccessController@getBlacklisted');
 });
 
-Route::group(['namespace' => 'Manage','prefix' => 'manage'], function()
+Route::group(['namespace' => 'Manage','prefix' => 'manage','middleware' => ['siggy.canmanage']], function()
 {
 	Route::get('/', [
-		'uses' => 'ManageController@admin',
+		'uses' => 'DashboardController@index',
 		'as' => 'manage'
 	]);
+
+
+	Route::get('dashboard','DashboardController@index');
+
+	Route::get('settings/general','SettingsController@getGeneral');
+	Route::post('settings/general','SettingsController@postGeneral');
+	
+	Route::get('settings/chainmap','SettingsController@getChainmap');
+	Route::post('settings/chainmap','SettingsController@postChainmap');
+	
+	Route::get('settings/statistics','SettingsController@getStatistics');
+	Route::post('settings/statistics','SettingsController@postStatistics');
+	
+	Route::get('blacklist/list','BlacklistController@getList');
+	Route::get('blacklist/add','BlacklistController@getAdd');
+	Route::post('blacklist/add','BlacklistController@postAdd');
+	Route::get('blacklist/remove/{id}','BlacklistController@getRemove');
+	
+	Route::get('logs/activity','LogsController@getActivity');
+	Route::get('logs/sessions','LogsController@getSessions');
+	
+	Route::get('billing/overview','BillingController@getOverview');
+
+		
+	Route::get('access/configure','AccessController@getConfigure');
+	Route::get('access/add','AccessController@getAdd');
+	Route::post('access/add','AccessController@postAdd');
+	
+	Route::get('access/edit/{id}','AccessController@getEdit');
+	Route::post('access/edit/{id}','AccessController@postEdit');
+	
+	Route::get('access/remove/{id}','AccessController@getRemove');
+	
+	Route::get('chainmaps/list','ChainmapsController@getList');
+	Route::get('chainmaps/add','ChainmapsController@getAdd');
+	Route::post('chainmaps/add','ChainmapsController@postAdd');
+
+	Route::get('chainmaps/edit/{id}','ChainmapsController@getEdit');
+	Route::post('chainmaps/edit/{id}','ChainmapsController@postEdit');
+	
+	Route::get('chainmaps/remove/{id}','ChainmapsController@getRemove');
+	Route::post('chainmaps/remove/{id}','ChainmapsController@postRemove');
+	
+	Route::get('chainmaps/access/remove/{id}','ChainmapsController@getRemoveAccess');
+	Route::post('chainmaps/access/remove/{id}','ChainmapsController@postRemoveAccess');
+
+	Route::get('group/members','GroupMembersController@getList');
+	Route::get('group/members/add','GroupMembersController@getAdd');
+	Route::post('group/members/add','GroupMembersController@postAdd');
+	Route::post('group/members/add/details','GroupMembersController@postAddDetails');
+	Route::post('group/members/add/finish','GroupMembersController@postAddFinish');
 });

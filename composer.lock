@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "77f3b48d801a27cb722e2a463cb1834d",
-    "content-hash": "ed746e344f5d2ac544b18855fa4e7dbc",
+    "hash": "ce86646ee45fba89cf80e5e5c42efd41",
+    "content-hash": "b5dd8116337e43586ab59147d4210dda",
     "packages": [
         {
             "name": "3rdpartyeve/phealng",
@@ -406,6 +406,50 @@
                 "url"
             ],
             "time": "2017-03-20 17:10:46"
+        },
+        {
+            "name": "laracasts/flash",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laracasts/flash.git",
+                "reference": "1c7658652e10791d934a37bc0f6f0bd5ce5ac73f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laracasts/flash/zipball/1c7658652e10791d934a37bc0f6f0bd5ce5ac73f",
+                "reference": "1c7658652e10791d934a37bc0f6f0bd5ce5ac73f",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "dev-master",
+                "phpunit/phpunit": "^6.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Laracasts\\Flash": "src/"
+                },
+                "files": [
+                    "src/Laracasts/Flash/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeffrey Way",
+                    "email": "jeffrey@laracasts.com"
+                }
+            ],
+            "description": "Easy flash notifications",
+            "time": "2017-04-26 16:55:22"
         },
         {
             "name": "laravel/framework",
