@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Server Error</title>
+    <title>siggy {{$error_code}}</title>
 
     <!-- Le styles -->
-    <link href="<?php echo URL::base(TRUE, TRUE);?>bootstrap3/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?php echo URL::base(TRUE, TRUE);?>css/frontend.css" rel="stylesheet">
+    <link href="{{asset('bootstrap3/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{asset('css/frontend.css')}}" rel="stylesheet">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="<?php echo URL::base(TRUE, TRUE);?>bootstrap3/js/bootstrap.min.js"></script>
+    <script src="{{asset('bootstrap3/js/bootstrap.min.js')}}"></script>
 
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -21,7 +21,7 @@
     <![endif]-->
 
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="<?php echo URL::base(TRUE, TRUE);?>favicon.ico">
+    <link rel="shortcut icon" href="{{asset('favicon.ico')}}">
 	<script type="text/javascript">
 	$(document).ready(function() {
 		$('.dropdown-toggle').dropdown()
@@ -36,17 +36,14 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="<?php echo URL::base(TRUE, TRUE);?>">siggy</a>
+			<a class="navbar-brand" href="{{url('/')}}">siggy</a>
 		</div>
 	</div>
 	<div class="container">
 		<div class="row">
-			<h1>The wormhole has collapsed!</h1>
-			<p>
-			Sorry but an server error has occurred. Please try again, if problem persists, contact <b>Jack Tronic</b> ingame for support.
-			</p>
-
-			<a href="<?php echo URL::base(TRUE, TRUE);?>" class="btn btn-primary">Back to siggy's home</a>
+			<h1>HTTP Error {{$error_code}}</h1>
+			<p>Sorry, but the page you were looking for was not found or the server encountered a error</p>
+			<a href="{{url('/')}}" class="btn btn-primary">Back to siggy's home</a>
 		</div>
 	</div>
 </body>
