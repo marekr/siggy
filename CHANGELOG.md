@@ -1,5 +1,12 @@
 # siggy Changelog
 
+## 3.0.0 - 2017-05-??
+## Changes
+- Migrated to new backend framework
+	- RIP Kohana 2009 - 2017
+- Several URLs were rewritten in structure
+- Forgot password now asks you to enter a new password at the end instead of emailing you a random password
+
 ## 2.45.0 - 2017-04-23
 ## Changes
 - Reworked all forms
