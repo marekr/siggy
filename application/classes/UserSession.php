@@ -44,8 +44,8 @@ class UserSession {
 			{
 				if( !Auth::autoLogin($memberID, $passHash) )
 				{
-					Cookie::delete('userID');
-					Cookie::delete('passHash');
+					Cookie::forget('userID');
+					Cookie::forget('passHash');
 				}
 			}
 
