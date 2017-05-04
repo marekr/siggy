@@ -173,8 +173,8 @@ class GroupMembersController extends BaseController
 		$member = GroupMember::find($id);
 		if( $member->groupID != Auth::$user->groupID )
 		{
-			Message::add('error', ___('Error: You do not have permission to remove that group member.'));
-			HTTP::redirect('manage/group/members');
+			flash('Error: You do not have permission to remove that group member.')->error();
+			return redirect('manage/group/members');
 		}
 
 		if ($this->request->method() == HTTP_Request::POST)
@@ -183,7 +183,7 @@ class GroupMembersController extends BaseController
 			Auth::$user->group->save();
 			Auth::$user->group->recacheMembers();
 
-			HTTP::redirect('manage/group/members');
+			return redirect('manage/group/members');
 		}
 		
 		$resp = view('manage.group.delete_form', [

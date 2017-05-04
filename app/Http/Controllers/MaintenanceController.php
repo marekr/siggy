@@ -27,7 +27,7 @@ class MaintenanceController extends Controller {
 												], 503);
 		}
 		else {
-			HTTP::redirect('/');
+			return redirect('/');
 		}
 	}
 

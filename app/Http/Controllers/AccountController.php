@@ -23,7 +23,7 @@ use \Email;
 
 class AccountController extends Controller {
 
-	public function postLogin()
+	public function postLogin(Request $request)
 	{
 		$rememberMe = (isset($_POST['rememberMe']) ? TRUE : FALSE);
 		if( Auth::processLogin($_POST['username'], $_POST['password'], $rememberMe) === Auth::LOGIN_SUCCESS )
@@ -57,8 +57,7 @@ class AccountController extends Controller {
 		if($invalidLogin)
 		{
 			return redirect()->back()
-				->withInput($request->only($this->username(), 'remember'))
-				->withErrors($errors);
+				->withInput($request->only('username', 'remember'));
 		}
 	}
 
@@ -242,7 +241,7 @@ class AccountController extends Controller {
 
 		Auth::$user->removeSSOCharacter($charId);
 
-	//	Message::add('success', ___('The character has been disconnected from your siggy account. You must remove the character permissions on the EVE Online website if you want to ensure siggy no longer has permission to access the character (not required)'));
+		flash('The character has been disconnected from your siggy account. You must remove the character permissions on the EVE Online website if you want to ensure siggy no longer has permission to access the character (not required)')->success();
 
 		return redirect('account/connected');
 	}
@@ -331,7 +330,7 @@ class AccountController extends Controller {
 				{
 					if( !is_array($result) )
 					{
-						Message::add('danger', ___('Error getting SSO data.'));
+						flash('Error getting SSO data.')->error();
 						return redirect('/account/connected');
 					}
 
@@ -341,7 +340,7 @@ class AccountController extends Controller {
 
 					if( $userID == Auth::$user->id )
 					{
-						Message::add('info', ___('The character\'s connection has been updated successfully.'));
+						flash('The character\'s connection has been updated successfully.')->success();
 
 						Auth::$user->updateSSOCharacter($result['CharacterID'],
 															$token->getAccessToken(),
@@ -353,7 +352,7 @@ class AccountController extends Controller {
 					}
 					else if ( $userID == null )
 					{
-						Message::add('success', ___('The character has been successfully connected to your siggy account.'));
+						flash('The character has been successfully connected to your siggy account.')->success();
 						Auth::$user->addSSOCharacter($result['CharacterOwnerHash'], 
 													$result['CharacterID'], 
 													$token->getAccessToken(), 
@@ -365,7 +364,7 @@ class AccountController extends Controller {
 					}
 					else
 					{
-						Message::add('danger', ___('The character is connected to a different account. You must disconnect it first if you want to connect it to this one.'));
+						flash('The character is connected to a different account. You must disconnect it first if you want to connect it to this one.')->error();
 						return redirect('/account/connected');
 					}
 				}
@@ -393,14 +392,14 @@ class AccountController extends Controller {
 					}
 					else
 					{
-						$session->set('sso_login', true);
-						$session->set('sso_character_owner_hash', $result['CharacterOwnerHash']);
-						$session->set('sso_character_id', $result['CharacterID']);
-						$session->set('sso_access_token', $token->getAccessToken());
-						$session->set('sso_refresh_token', $token->getRefreshToken());
-						$session->set('sso_scopes', $dbScopes);
+						$session->put('sso_login', true);
+						$session->put('sso_character_owner_hash', $result['CharacterOwnerHash']);
+						$session->put('sso_character_id', $result['CharacterID']);
+						$session->put('sso_access_token', $token->getAccessToken());
+						$session->put('sso_refresh_token', $token->getRefreshToken());
+						$session->put('sso_scopes', $dbScopes);
 
-						$session->set('sso_token_eol', $expiration);
+						$session->put('sso_token_eol', $expiration);
 						
 						return redirect('/account/sso/complete');
 					}
@@ -488,6 +487,12 @@ class AccountController extends Controller {
 		}
 	}
 
+	public function getSSOComplete()
+	{
+		return view('account.sso_complete', [ 
+										 'invalidLogin' => false
+										]);
+	}
 
 	public function getCompletePasswordReset($token, Request $request)
 	{

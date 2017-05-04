@@ -43,6 +43,8 @@ Route::post('/account/login', [
     'as' => 'login'
 ]);
 
+Route::get('/account/sso/complete', 'AccountController@getSSOComplete');
+
 Route::get('/account/sso/{id}', [
     'uses' => 'AccountController@sso', 
     'as' => 'sso'
@@ -196,6 +198,8 @@ Route::group(['middleware' => ['siggy.loggedin']], function () {
 		'uses' => 'AccountController@getConnected', 
 		'as' => 'connected'
 	]);
+
+	Route::get('/account/connect', 'AccountController@getConnect');
 
 	Route::post('/account/disconnect', 'AccountController@postDisconnect');
 

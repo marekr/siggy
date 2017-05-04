@@ -25,7 +25,7 @@ class AccessController extends BaseController
 	{
 		if( !isset( $_POST['group'] ) )
 		{
-			HTTP::redirect('manage');
+			return redirect('manage');
 		}
 		
 		$group = intval($_POST['group']);
@@ -34,15 +34,15 @@ class AccessController extends BaseController
 			!( Auth::$user->perms()[ $group ]['canManage'] == 1)
 		) 
 		{
-			HTTP::redirect('manage/access/denied');
+			return redirect('manage/access/denied');
 		}
 		else
 		{
 			Auth::$user->groupID = intval($_POST['group']);
 			Auth::$user->save();
 		}
-      
-		HTTP::redirect('/manage');
+
+		return redirect('/manage');
 	}
 	
 	public function getConfigure()

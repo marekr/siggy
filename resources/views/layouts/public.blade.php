@@ -73,11 +73,7 @@
 		</div>
 	</div>
 	@if( $layoutMode == 'blank' )
-		@if (session()->has('flash_notification.message'))
-			<div class="row">
-				{!! session('flash_notification.message') !!}
-			</div>
-		@endif
+		@include('flash::message')
 		@yield('content')
 	@elseif( $layoutMode == 'leftMenu' )
 
@@ -87,11 +83,7 @@
 					@yield('left_menu')
 				</div>
 				<div class=" col-lg-9">
-					@if (session()->has('flash_notification.message'))
-						<div class="row">
-							{!! session('flash_notification.message') !!}
-						</div>
-					@endif
+					@include('flash::message')
 					@yield('content')
 				</div>
 			</div>

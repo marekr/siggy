@@ -159,14 +159,14 @@ class ChainmapsController extends BaseController
 		$chainmap = Chainmap::find($id, Auth::$user->groupID);
 		if( $chainmap == null )
 		{
-			Message::add('error', ___('Error: You do not have permission to remove that chainmap.'));
-			HTTP::redirect('manage/chainmaps');
+			flash('Error: You do not have permission to remove that chainmap.')->error();
+			return redirect('manage/chainmaps');
 		}
 
 		if( $chainmap->chainmap_type == 'default' )
 		{
-			Message::add('error', ___('Error: You cannot delete your default chain map'));
-			HTTP::redirect('manage/chainmaps');
+			flash('Error: You cannot delete your default chain map')->error();
+			return redirect('manage/chainmaps');
 		}
 		
 		return view('manage.chainmaps.delete', [
@@ -226,15 +226,15 @@ class ChainmapsController extends BaseController
 		$cm = Chainmap::find($chainmap_id, Auth::$user->groupID);
 		if( $cm == null )
 		{
-			Message::add('error', ___('Error: You do not have permission for that chainmap.'));
-			HTTP::redirect('manage/chainmaps');
+			flash('Error: You do not have permission for that chainmap.')->error();
+			return redirect('manage/chainmaps');
 		}
 
 		$member = GroupMember::find($groupMemberID);
 		if( $member == null || $member->groupID != Auth::$user->group->id )
 		{
-			Message::add('error', ___('Error: The group member does not exist.'));
-			HTTP::redirect('manage/group/members');
+			flash('Error: The group member does not exist.')->error();
+			return redirect('manage/group/members');
 		}
 		
 		return view('manage.chainmaps.remove_access', [

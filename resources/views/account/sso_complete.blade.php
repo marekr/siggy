@@ -44,7 +44,7 @@
 					</div>
 					<hr />
 					<h4>Login</h4>
-					<form role='form' action='<?php echo URL::base(TRUE, TRUE);?>account/login' method='POST'>
+					<form role='form' action='{{url('account/login')}}' method='POST'>
 						
 						<?php if( $invalidLogin == true ): ?>
 						<div class="alert alert-danger">
@@ -82,7 +82,7 @@
 							</fieldset>
 					</form>
 
-					<span class='help-block text-centered'>Lost or forgot password? <a href='<?php echo URL::base(TRUE, TRUE);?>account/forgotPassword'>Click here</a></span>
+					<span class='help-block text-centered'>Lost or forgot password? <a href='{{url('account/forgotPassword')}}'>Click here</a></span>
 
 					<div class="login-or">
 							<hr class="hr-or">
@@ -90,7 +90,7 @@
 					</div>
 
 					<div class="text-center">
-						<a href="<?php echo URL::base(TRUE, TRUE);?>account/register" class="btn btn-lg btn-primary">Create a siggy account</a>
+						<a href="{{url('account/register')}}" class="btn btn-lg btn-primary">Create a siggy account</a>
 					</div>
 				</div>
 			</div>
