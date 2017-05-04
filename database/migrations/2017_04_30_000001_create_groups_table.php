@@ -47,10 +47,11 @@ class CreateGroupsTable extends Migration
             $table->tinyInteger('chainmap_always_show_class')->default('0');
             $table->tinyInteger('chainmap_max_characters_shown')->default('5');
             $table->string('default_activity', 16)->nullable()->default(NULL);
+            $table->dateTime('created_at')->nullable()->default(NULL);
+            $table->dateTime('updated_at')->nullable()->default(NULL);
             $table->dateTime('last_billing_charge_at')->nullable()->default(NULL);
             # Indexes
             $table->index('payment_code');
-            $table->nullableTimestamps();
         });
     }
 

@@ -19,13 +19,14 @@ class CreateStructuresTable extends Migration
             $table->integer('group_id')->unsigned();
             $table->bigInteger('system_id')->unsigned();
             $table->bigInteger('creator_character_id')->unsigned();
+			$table->dateTime('created_at')->nullable()->default(NULL);
+			$table->dateTime('updated_at')->nullable()->default(NULL);
             $table->integer('type_id');
             $table->text('notes')->nullable()->default(NULL);
             $table->bigInteger('corporation_id')->nullable()->default(NULL)->unsigned();
             $table->string('corporation_name', 255)->nullable()->default(NULL);
             # Indexes
             $table->index(['group_id','system_id']);
-            $table->timestamps();
         });
     }
 

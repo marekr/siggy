@@ -19,6 +19,8 @@ class CreateSessionsTable extends Migration
             $table->bigInteger('character_id')->default('0')->unsigned();
             $table->integer('group_id')->unsigned()->default('0');
             $table->integer('chainmap_id')->unsigned()->default('0');
+			$table->dateTime('created_at')->nullable()->default(NULL);
+			$table->dateTime('updated_at')->nullable()->default(NULL);
             $table->enum('type', ['guest', 'user'])->default('user');
             $table->integer('user_id')->default('0');
             $table->string('ip_address', 45)->nullable();
@@ -29,7 +31,6 @@ class CreateSessionsTable extends Migration
             $table->index('user_id');
             $table->index(['user_id','updated_at']);
             $table->index('updated_at');
-            $table->nullableTimestamps();
         });
     }
 

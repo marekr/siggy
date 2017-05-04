@@ -29,6 +29,8 @@ class CreateUsersTable extends Migration
             $table->string('ip_address', 45)->nullable();
             $table->tinyInteger('admin')->default('0');
             $table->bigInteger('char_id')->default('0')->unsigned();
+			$table->dateTime('created_at')->nullable()->default(NULL);
+			$table->dateTime('updated_at')->nullable()->default(NULL);
             $table->integer('theme_id')->default('0');
             $table->tinyInteger('combine_scan_intel')->default('0');
             $table->string('language', 5)->default('en');
@@ -36,7 +38,6 @@ class CreateUsersTable extends Migration
             # Indexes
             $table->unique('username');
             $table->unique('email');
-            $table->nullableTimestamps();
         });
     }
 

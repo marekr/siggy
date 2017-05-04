@@ -21,9 +21,10 @@ class CreateNotifiersTable extends Migration
             $table->string('type', 255);
             $table->enum('scope', ['personal', 'group']);
             $table->text('data');
+			$table->integer('created_at')->nullable()->default(NULL);
+			$table->integer('updated_at')->nullable()->default(NULL);
             # Indexes
             $table->index(['group_id','character_id']);
-            $table->timestamps();
         });
     }
 

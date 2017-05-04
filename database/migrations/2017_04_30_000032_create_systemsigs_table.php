@@ -22,13 +22,14 @@ class CreateSystemsigsTable extends Migration
             $table->integer('siteID')->default('0');
             $table->string('description', 512)->default('');
             $table->string('sigSize', 5)->default('');
+			$table->dateTime('created_at')->nullable()->default(NULL);
+			$table->dateTime('updated_at')->nullable()->default(NULL);
             $table->integer('groupID')->default('0');
             $table->string('creator', 255)->default('');
             $table->string('lastUpdater', 255)->default('');
             # Indexes
             $table->index(['systemID','groupID']);
             $table->index(['groupID','type']);
-            $table->timestamps();
         });
     }
 

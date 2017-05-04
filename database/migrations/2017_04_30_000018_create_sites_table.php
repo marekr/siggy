@@ -15,7 +15,7 @@ class CreateSitesTable extends Migration
     public function up()
     {
         Schema::create('sites', function (Blueprint $table) {
-            $table->integer('id')->unsigned();
+            $table->increments('id')->unsigned();
             $table->enum('type', ['anomaly', 'radar', 'relic', 'data', 'gas', 'ore']);
             $table->string('name', 255);
             $table->text('description')->nullable()->default(NULL);

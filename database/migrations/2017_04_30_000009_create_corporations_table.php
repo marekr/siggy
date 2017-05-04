@@ -20,10 +20,11 @@ class CreateCorporationsTable extends Migration
             $table->string('ticker', 10)->default('');
             $table->text('description')->nullable()->default(NULL);
             $table->integer('member_count')->default('0');
+			$table->dateTime('created_at')->nullable()->default(NULL);
+			$table->dateTime('updated_at')->nullable()->default(NULL);
             $table->dateTime('last_sync_successful_at')->nullable()->default(NULL);
             $table->dateTime('last_sync_attempt_at')->nullable()->default(NULL);
             # Indexes
-            $table->nullableTimestamps();
 			$table->primary('id');
         });
     }

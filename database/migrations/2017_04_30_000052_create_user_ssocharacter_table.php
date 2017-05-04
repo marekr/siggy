@@ -22,6 +22,8 @@ class CreateUserSsocharacterTable extends Migration
             $table->string('access_token', 255)->nullable()->default(NULL);
             $table->dateTime('access_token_expiration')->nullable()->default(NULL);
             $table->string('refresh_token', 255)->nullable()->default(NULL);
+			$table->dateTime('created_at')->nullable()->default(NULL);
+			$table->dateTime('updated_at')->nullable()->default(NULL);
             $table->tinyInteger('valid')->nullable()->default('0');
             $table->tinyInteger('always_track_location')->nullable()->default('1');
             $table->tinyInteger('scope_character_location_read')->nullable()->default('0');
@@ -33,7 +35,6 @@ class CreateUserSsocharacterTable extends Migration
             # Indexes
             $table->unique('character_owner_hash');
             $table->index(['user_id','character_id']);
-            $table->nullableTimestamps();
         });
     }
 
