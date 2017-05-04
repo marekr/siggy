@@ -15,7 +15,8 @@
 		"laravel/framework": "5.4.*",
 		"laravelcollective/html": "^5.4",
 		"lusitanian/oauth": "^0.8.10",
-		"laracasts/flash": "^3.0"
+		"laracasts/flash": "^3.0",
+		"fideloper/proxy": "^3.3"
 	},
 	"autoload": {
 		"files": [

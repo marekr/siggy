@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ce86646ee45fba89cf80e5e5c42efd41",
-    "content-hash": "b5dd8116337e43586ab59147d4210dda",
+    "hash": "da3929e4c3fbe3664c320dfb16b62ed6",
+    "content-hash": "0e086b3b7aa9bfd6550d6e3cf6361ba6",
     "packages": [
         {
             "name": "3rdpartyeve/phealng",
@@ -228,6 +228,57 @@
                 "parser"
             ],
             "time": "2017-03-29 16:04:15"
+        },
+        {
+            "name": "fideloper/proxy",
+            "version": "3.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fideloper/TrustedProxy.git",
+                "reference": "4ac60dbd4bcd6636bf231ea0fd87c40ece4bdce0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fideloper/TrustedProxy/zipball/4ac60dbd4bcd6636bf231ea0fd87c40ece4bdce0",
+                "reference": "4ac60dbd4bcd6636bf231ea0fd87c40ece4bdce0",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "~5.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "illuminate/http": "~5.0",
+                "mockery/mockery": "~0.9.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Fideloper\\Proxy\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Fidao",
+                    "email": "fideloper@gmail.com"
+                }
+            ],
+            "description": "Set trusted proxies for Laravel",
+            "keywords": [
+                "load balancing",
+                "proxy",
+                "trusted proxy"
+            ],
+            "time": "2017-03-23 23:17:29"
         },
         {
             "name": "guzzlehttp/guzzle",
