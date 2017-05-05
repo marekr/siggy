@@ -22,7 +22,8 @@ class Kernel extends ConsoleKernel
 		\Siggy\Console\Commands\BillingPaymentsCommand::class,
 		\Siggy\Console\Commands\NotificationsClearCommand::class,
 		\Siggy\Console\Commands\CorporationsUpdateCommand::class,
-		\Siggy\Console\Commands\RedisCleanupCommand::class
+		\Siggy\Console\Commands\RedisCleanupCommand::class,
+		\Siggy\Console\Commands\EveDbUpdate::class
     ];
 
     /**
