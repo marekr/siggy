@@ -620,11 +620,11 @@ class ChainmapController extends Controller {
 													wt.origin_id, 
 													wt.destination_id, 
 													wt.jumped_at, 
-														s.shipName, 
+														s.name as shipName, 
 														s.mass, 
-														s.shipClass
+														s.class as shipClass
 													FROM wormhole_jumps wt
-													LEFT JOIN ships as s ON s.shipID = wt.ship_id
+													LEFT JOIN ships as s ON s.id = wt.ship_id
 													JOIN characters c ON (c.id = wt.character_id)
 													WHERE wt.group_id = :groupID AND wt.wormhole_hash = :hash
 													ORDER BY wt.jumped_at DESC",[

@@ -460,7 +460,7 @@ class SiggyController extends BaseController {
 		}
 
 		$kspaceJump = DB::selectOne("SELECT `fromSolarSystemID`, `toSolarSystemID`
-													FROM eve_mapsolarsystemjumps
+													FROM eve_map_solar_system_jumps
 													WHERE (fromSolarSystemID=? AND toSolarSystemID=?) OR
 														 (fromSolarSystemID=? AND toSolarSystemID=?)",[$origin, $dest, $dest, $origin]);
 		if( $kspaceJump != null )
@@ -708,8 +708,8 @@ class SiggyController extends BaseController {
 				if( is_array($this->mapData['systemIDs']) && count($this->mapData['systemIDs'])	 > 0 )
 				{
 					$activesData = array();
-					$activesData = DB::select("SELECT c.name as charName, ct.currentSystemID, s.shipName FROM chartracker ct
-																LEFT JOIN ships s ON (ct.shipType=s.shipID)
+					$activesData = DB::select("SELECT c.name as charName, ct.currentSystemID, s.name as shipName FROM chartracker ct
+																LEFT JOIN ships s ON (ct.shipType=s.id)
 																LEFT JOIN characters c ON(c.id=ct.charID)
 																WHERE ct.groupID = :groupID AND ct.chainmap_id = :chainmap AND ct.broadcast=1 AND
 																	ct.currentSystemID IN(".implode(',',$this->mapData['systemIDs']).") AND ct.lastBeep >= :lastBeep",

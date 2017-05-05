@@ -88,7 +88,7 @@ class Chainmap extends Model {
 			/* Include all the group tracked jumps from all chainmaps since this is important not to trap oneself out */
 			$jumpTotal  = DB::selectOne("SELECT COALESCE(SUM(s.mass),0) as total
 														FROM wormhole_jumps wt
-														LEFT JOIN ships as s ON s.shipID = wt.ship_id
+														LEFT JOIN ships as s ON s.id = wt.ship_id
 														WHERE wt.group_id = :groupID AND wt.wormhole_hash = :hash",
 														[
 															'groupID' => $this->group_id,
