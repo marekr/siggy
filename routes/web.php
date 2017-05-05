@@ -12,6 +12,10 @@
 */
 
 
+Route::get('/maintenance', [
+    'uses' => 'MaintenanceController@getIndex', 
+    'as' => 'maintenance'
+]);
 
 Route::get('/pages/welcome', [
     'uses' => 'PageController@welcome', 

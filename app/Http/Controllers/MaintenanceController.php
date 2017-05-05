@@ -7,24 +7,24 @@ use Carbon\Carbon;
 
 class MaintenanceController extends Controller {
 
-	public function index()
+	public function getIndex()
 	{
-		if ($this->isDownForMaintenance()) {
+		if (app()->isDownForMaintenance()) {
 			$data = json_decode(file_get_contents(storage_path('/framework/down')), true);
 			
-			response()->headers('Retry-After',$data['retry']);
-
-			$changelog = file_get_contents(DOCROOT.'changelog.md');
+			$changelog = file_get_contents(base_path('changelog.md'));
 
 			$parser = new \cebe\markdown\GithubMarkdown();
 			$parser->html5 = true;
 			$changelog = $parser->parse($changelog);
 
-			return response()->view('errors.maintenance', [
+			return response()
+						->view('errors.maintenance', [
 													'message' => $data['message'],
 													'wentDownAt' => Carbon::createFromTimestamp($data['time']),
 													'changelog' => $changelog
-												], 503);
+												], 503)
+						->header('Retry-After',$data['retry']);
 		}
 		else {
 			return redirect('/');
