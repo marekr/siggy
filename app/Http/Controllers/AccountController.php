@@ -151,16 +151,12 @@ class AccountController extends Controller {
 		}
 	}
 
-	public function getCharacters()
+	private function getSelectableCharacters() : array
 	{
-		$charID =  Auth::$user->char_id;
-		$ssoChars = Auth::$user->ssoCharacters;
-		if( !count($ssoChars) )
-		{
-			return redirect('/account/connected');
-		}
+		$list = [];
 
-		$chars = [];
+		$ssoChars = Auth::$user->ssoCharacters;
+
 		$selectableChars = [];
 		$unselectableChars = [];
 
@@ -187,10 +183,26 @@ class AccountController extends Controller {
 			}
 		}
 
-		
+		return [
+			'selectable' => $selectableChars,
+			'unselectable' => $unselectableChars
+		];
+	}
+
+	public function getCharacters()
+	{
+		$charID =  Auth::$user->char_id;
+		$ssoChars = Auth::$user->ssoCharacters;
+		if( !count($ssoChars) )
+		{
+			return redirect('/account/connected');
+		}
+
+		$chars = $this->getSelectableCharacters();
+
 		return view('account.characters', [
-													'selectableChars' => $selectableChars,
-													'unselectableChars' => $unselectableChars,
+													'selectableChars' => $chars['selectable'],
+													'unselectableChars' =>  $chars['unselectable'],
 													'selectedCharID' => $charID
 												]);
 	}
@@ -200,9 +212,13 @@ class AccountController extends Controller {
 		return view('account.overview', [ 'user' =>  Auth::$user ]);
 	}
 	
-	public function postCharacters()
+	public function postCharacters(Request $request)
 	{
-		$charID = intval($_POST['charID']);
+		$charID = $request->input('charID');
+
+		$chars = $this->getSelectableCharacters();
+		$selectableChars = $chars['selectable'];
+		
 		if( $charID && isset( $selectableChars[ $charID ] ) )
 		{
 			Auth::$user->char_id = $charID;

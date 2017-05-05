@@ -35,22 +35,20 @@ class DataController extends Controller {
 
 	public function sigTypes()
 	{
-		$output = array();
-
+		$output = [];
 		$wormholeTypes = DB::select("SELECT * FROM statics");
 
-		$types = array();
+		$types = [];
 		foreach($wormholeTypes as &$row)
 		{
-			$type[ $row->id ] = $row;
+			$types[ $row->id ] = $row;
 		}
-
-		$output['wormhole_types'] = $type;
+		$output['wormhole_types'] = $types;
 
 		$whStaticMap = DB::select("SELECT * FROM wormhole_class_map
 												ORDER BY position ASC");
 
-		$outWormholes = array();
+		$outWormholes = [];
 		foreach($whStaticMap as $entry)
 		{
 			$outWormholes[ $entry->system_class ][] = array('static_id' => (int)$entry->static_id, 'position' => (int)$entry->position);

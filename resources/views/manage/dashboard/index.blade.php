@@ -10,7 +10,7 @@
 	<p>
 	Looks like you didn't add any group members yet, if you want to be able to use siggy you must do so.
 	</p>
-	<?php echo Html::anchor('manage/group/members', ___('Manage Group Members'),array('class' => 'btn btn-primary btn-xs')); ?>
+	<a href="{{url('manage/group/members')}}" class='btn btn-primary btn-xs'>Manage Group Members</a>
 </div>
 @endif
 
@@ -23,7 +23,7 @@
 	This is optional and you may ignore this warning.
 	</p>
 	<br />
-	<?php echo Html::anchor('manage/settings/general', ___('Edit Settings'),array('class' => 'btn btn-primary btn-xs')); ?>
+	<a href="{{url('manage/settings/general')}}" class='btn btn-primary btn-xs'>Edit Settings</a>
 </div>
 @endif
 
@@ -31,9 +31,9 @@
 
 @foreach($news as $n)
 <div class="well">
-	<p class="pull-right"><small> <?php echo date("Y-m-d g:m", $n->datePublished); ?></small></p>
-	<h4><?php echo $n->title; ?></h4>
-	<p><?php echo $n->content; ?></p>
+	<p class="pull-right"><small> {{ date("Y-m-d g:m", $n->datePublished) }}</small></p>
+	<h4>{{ $n->title }}</h4>
+	<p>{{ $n->content }}</p>
 </div>
 @endforeach
 
