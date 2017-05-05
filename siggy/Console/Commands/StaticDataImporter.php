@@ -85,6 +85,10 @@ class StaticDataImporter extends Command
 				'table' => 'wormhole_class_map',
 				'file' => 'staticdata/wormhole_class_map.csv'
 			],
+			[
+				'table' => 'systemeffects',
+				'file' => 'staticdata/systemeffects.csv'
+			],
 		];
 
 		foreach($files as $file)

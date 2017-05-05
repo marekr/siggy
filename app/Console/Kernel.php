@@ -25,6 +25,7 @@ class Kernel extends ConsoleKernel
 		\Siggy\Console\Commands\RedisCleanupCommand::class,
 		\Siggy\Console\Commands\EveDbUpdate::class,
 		\Siggy\Console\Commands\EveShips::class,
+		\Siggy\Console\Commands\EveSystems::class,
 		\Siggy\Console\Commands\StaticDataImporter::class,
     ];
 
