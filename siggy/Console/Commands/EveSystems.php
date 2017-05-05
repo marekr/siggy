@@ -55,11 +55,11 @@ class EveSystems extends Command
 				$insert = [
 					'id' => $system->solarSystemID,
 					'name' => $system->solarSystemName,
-					'region_id' => $system->regionID,
+					'region' => $system->regionID,
 
 					'truesec' => $system->security,
 					'sec' => round($system->security,1),
-					'constellation_id' => $system->constellationID,
+					'constellation' => $system->constellationID,
 					'radius' => (($system->radius/1000)/149598000),
 					'class' => 9,
 					'x' => $system->x,

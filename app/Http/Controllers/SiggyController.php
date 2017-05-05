@@ -20,6 +20,7 @@ use \miscUtils;
 use \Signature;
 use \Chainmap;
 use \WormholeSignature;
+use \System;
 
 class SiggyController extends BaseController {
 
@@ -328,9 +329,9 @@ class SiggyController extends BaseController {
 													COALESCE(sa.inUse,0) as inUse,
 													COALESCE(sa.activity,0) as activity
 													FROM solarsystems ss
-													INNER JOIN systemeffects se ON ss.effect = se.id
-													INNER JOIN regions r ON ss.region = r.regionID
-													INNER JOIN constellations c ON ss.constellation = c.constellationID
+													LEFT JOIN systemeffects se ON ss.effect = se.id
+													INNER JOIN eve_map_regions r ON ss.region = r.regionID
+													INNER JOIN eve_map_constellations c ON ss.constellation = c.constellationID
 													LEFT OUTER JOIN activesystems sa ON (ss.id = sa.systemID  AND sa.groupID = :group AND sa.chainmap_id=:chainmap)
 													WHERE ss.id=:id",
 													[
@@ -338,7 +339,6 @@ class SiggyController extends BaseController {
 														'group' => Auth::$session->group->id,
 														'chainmap' => Auth::$session->accessData['active_chain_map'] 
 													]);
-
 		if( $systemData == null )
 		{
 			return FALSE;
