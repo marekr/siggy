@@ -17,7 +17,7 @@ class AccessController extends BaseController
 	public $actionAcl = [
         'getConfigure' => ['can_manage_access'],
         'getRemove' => ['can_manage_access'],
-        'getAdd' => ['can_manage_access']
+        'getAdd' => ['can_manage_access'],
 	];
 
 	public function postSet()
