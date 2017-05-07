@@ -301,4 +301,7 @@ Route::group(['namespace' => 'Manage','prefix' => 'manage','middleware' => ['sig
 	Route::post('group/members/add','GroupMembersController@postAdd');
 	Route::post('group/members/add/details','GroupMembersController@postAddDetails');
 	Route::post('group/members/add/finish','GroupMembersController@postAddFinish');
+
+	
+	Route::post('access/set','AccessController@postSet');
 });

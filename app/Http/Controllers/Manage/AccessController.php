@@ -20,7 +20,7 @@ class AccessController extends BaseController
         'getAdd' => ['can_manage_access']
 	];
 
-	public function action_set()
+	public function postSet()
 	{
 		if( !isset( $_POST['group'] ) )
 		{

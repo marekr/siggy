@@ -66,7 +66,7 @@
 				<ul class="dropdown-menu dropdown-user">
 					<li>
 						@if( count($avaliableGroups) > 1 )
-						<form action='{{ url('manage/admin/changeGroup') }}' method='post' style="padding: 6px;">
+						<form action='{{ url('manage/access/set') }}' method='post' style="padding: 6px;">
 							<select name='group' class="form-control input-sm " onchange='submit();'>
 							<?php
 								$selected = Auth::$user->group->id; ?>

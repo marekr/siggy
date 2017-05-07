@@ -37,7 +37,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="<?php echo URL::base(TRUE, TRUE);?>">siggy</a>
+			<a class="navbar-brand" href="{{url('/')}}">siggy</a>
 		</div>
 	</div>
 	<div class="container">

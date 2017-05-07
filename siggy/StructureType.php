@@ -3,7 +3,7 @@
 namespace Siggy;
 
 use Carbon\Carbon;
-use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class StructureType extends Model {

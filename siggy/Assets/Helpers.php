@@ -7,7 +7,7 @@ class Helpers
 {
 	public static function baseUrl()
 	{
-		return self::joinPaths(URL::base(TRUE), "assets/");
+		return self::joinPaths(url('/'), "assets/");
 	}
 
 	public static function jsAssetUrl(string $name, string $version): string
