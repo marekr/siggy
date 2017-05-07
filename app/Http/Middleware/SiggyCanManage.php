@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
+use App\Http\Controllers\Manage\BaseController;
 
 use Closure;
 use \Auth;
@@ -11,6 +12,42 @@ use \AuthStatus;
 
 class SiggyCanManage
 {
+	
+	protected function hasAccess( BaseController $controller, string $action )
+	{
+		if( Auth::$user->admin )
+		{
+			return TRUE;
+		}
+
+		if( !isset( Auth::$user->perms()[ Auth::$user->groupID ] ) )
+		{
+			return FALSE;
+		}
+		
+		if( isset( $controller->actionAcl[ $action ] ) )
+		{
+			$perms = Auth::$user->perms()[ Auth::$user->groupID ]->toArray();
+			foreach( $perms as $k => $v )
+			{
+				if( $v == 1 )
+				{
+					if( in_array( $k, $controller->actionAcl[ $action ] ) )
+					{
+						return TRUE;
+					}
+				}
+			}
+		}
+		else
+		{
+			//unprotected
+			return TRUE;
+		}
+
+		return FALSE;
+	}
+
     /**
      * Handle an incoming request.
      *
@@ -28,11 +65,32 @@ class SiggyCanManage
 		$groupID = Auth::$user->groupID;
 		$groups = array_keys(Auth::$user->perms());
 
+		if( !count($groups) )
+		{
+			return redirect('/');
+		}
 
-		View::share('avaliableGroups',$this->getAvaliableGroups());
+		if( !in_array($groupID, $groups) )
+		{
+			Auth::$user->groupID = $groups[0];
+			Auth::$user->save();
+		}
 
 		list($controller, $action) = explode('@',  $request->route()->getActionName());
 		$controller = str_replace('App\Http\Controllers\Manage\\', '', $controller);
+
+
+		View::share('avaliableGroups',$this->getAvaliableGroups());
+		
+		$controller = $request->route()->getController();
+		if ( ($controller->authRequired == 'admin' && Auth::$user->isAdmin() === FALSE )
+			|| ($controller->authRequired == 'gadmin'
+			&& !$this->hasAccess( $controller, $action )
+			) )
+		{
+			return redirect('/');
+		}
+
 		View::share('controllerName', $controller);
 		View::share('actionName', $action);
 		
@@ -47,7 +105,6 @@ class SiggyCanManage
 	{
 		$baseSQL = "SELECT g.id, g.name FROM groups g";
 
-
 		//if NOT AN ADMIN
 		if( !Auth::$user->isAdmin() )
 		{
@@ -56,7 +113,6 @@ class SiggyCanManage
 		}
 
 		$baseSQL .= " ORDER BY g.name ASC";
-
 
 		$groups = DB::select($baseSQL);
 

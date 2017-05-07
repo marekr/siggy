@@ -12,11 +12,14 @@ use \Group;
 
 class SettingsController extends BaseController
 {
-	public $secure_actions = array(
-		'general' => array('can_manage_settings'),
-		'chain_map' => array('can_manage_settings'),
-		'statistics' => array('can_manage_settings')
-	);
+	public $actionAcl = [
+		'getGeneral' => ['can_manage_settings'],
+		'postGeneral' => ['can_manage_settings'],
+		'getChainmap' => ['can_manage_settings'],
+		'postChainmap' => ['can_manage_settings'],
+		'getStatistics' => ['can_manage_settings'],
+		'postStatistics' => ['can_manage_settings'],
+	];
 	
 	public function getChainmap()
 	{

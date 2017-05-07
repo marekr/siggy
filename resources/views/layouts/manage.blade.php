@@ -11,7 +11,7 @@
     <link href="{{ asset('font-awesome-4.2.0/css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/manage.css') }}" rel="stylesheet">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="{{ asset('bootstrap3/js/bootstrap.min.js') }}'"></script>
+    <script src="{{ asset('bootstrap3/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('bootstrap3/js/bootstrap-checkbox.min.js') }}"></script>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->

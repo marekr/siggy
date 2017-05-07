@@ -14,12 +14,11 @@ use \Group;
 
 class AccessController extends BaseController
 {
-	public $secure_actions = array(
-        // user actions
-        'members' => array('can_manage_access'),
-        'edit' => array('can_manage_access'),
-        'remove' => array('can_manage_access')
-	);
+	public $actionAcl = [
+        'getConfigure' => ['can_manage_access'],
+        'getRemove' => ['can_manage_access'],
+        'getAdd' => ['can_manage_access']
+	];
 
 	public function action_set()
 	{

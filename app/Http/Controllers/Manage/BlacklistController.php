@@ -14,12 +14,12 @@ use \Group;
 
 class BlacklistController extends BaseController
 {
-	public $secure_actions = array(
-        // user actions
-        'members' => array('can_manage_access'),
-        'edit' => array('can_manage_access'),
-        'remove' => array('can_manage_access')
-	);
+	public $actionAcl = [
+		'getList' => ['can_manage_group_members'],
+		'getAdd' => ['can_manage_group_members'],
+		'postAdd' => ['can_manage_group_members'],
+		'getRemove' => ['can_manage_group_members']
+	];
 
 	public function getList()
 	{

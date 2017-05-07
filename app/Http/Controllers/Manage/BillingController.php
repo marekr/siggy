@@ -9,12 +9,9 @@ use \Group;
 
 class BillingController extends BaseController
 {
-   /*
-	* Controls access for separate actions
-    */
-	public $secure_actions = array(
-		'overview' => array('can_view_financial')
-	);
+	public $actionAcl = [
+		'getOverview' => ['can_view_financial']
+	];
 
 	public function getOverview()
 	{

@@ -16,15 +16,12 @@ use \Corporation;
 
 class GroupMembersController extends BaseController
 {
-	/*
-	 * Controls access for separate actions
-	 */
-	public $secure_actions = array(
-		'members' => array('can_manage_group_members'),
-		'addMember' => array('can_manage_group_members'),
-		'editMember' => array('can_manage_group_members'),
-		'removeMember' => array('can_manage_group_members'),
-	);
+	public $actionAcl = [
+		'members' => ['can_manage_group_members'],
+		'addMember' => ['can_manage_group_members'],
+		'editMember' => ['can_manage_group_members'],
+		'removeMember' => ['can_manage_group_members'],
+	];
 
 	public function getList()
 	{

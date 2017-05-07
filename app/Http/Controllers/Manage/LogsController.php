@@ -12,13 +12,10 @@ use \Group;
 
 class LogsController extends BaseController
 {
-	/*
-	* Controls access for separate actions
-	*/
-	public $secure_actions = array(
-		'sessions' => array('can_view_logs'),
-		'activity' => array('can_view_logs')
-	);
+	public $actionAcl = [
+		'getSessions' => ['can_view_logs'],
+		'getActivity' => ['can_view_logs']
+	];
 	
 	public function getSessions()
 	{

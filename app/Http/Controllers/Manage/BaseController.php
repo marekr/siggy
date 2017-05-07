@@ -8,6 +8,9 @@ use \Auth;
 
 class BaseController extends Controller {
 
+	public $authRequired = 'gadmin';
+	public $actionAcl = [];
+
 	public function __construct()
 	{
 		/*
