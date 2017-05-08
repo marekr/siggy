@@ -130,15 +130,6 @@ final class miscUtils {
 		}
 	}
 
-	static function hash_array_to_string($arr)
-	{
-		foreach( $arr as $k => $v )
-		{
-			$arr[$k] = Database::instance()->escape($v);
-		}
-		return implode(',', $arr);
-	}
-
 	static function getDBCacheItem( $key )
 	{
 		$cache = DB::selectOne("SELECT * FROM cache_store WHERE cacheKey = ?", [$key]);
