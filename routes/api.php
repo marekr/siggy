@@ -18,7 +18,8 @@ $api = app('Dingo\Api\Routing\Router');
 // Publicly accessible routes
 $api->version('v1', ['middleware' => 'api.auth'], function ($api) {
 	$api->group(['prefix' => 'v1'], function($api){
-		
+		$api->get('/group', 'App\Http\Controllers\Api\v1\GroupController@getGroup');
+
 		$api->get('/chainmaps', 'App\Http\Controllers\Api\v1\ChainmapsController@getList');
 		$api->get('/chainmaps/{id}', 'App\Http\Controllers\Api\v1\ChainmapsController@getChainmap');
 		

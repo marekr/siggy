@@ -8,11 +8,12 @@ use Dingo\Api\Auth\Provider\Authorization;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
+use Carbon\Carbon;
 use Siggy\ApiKey;
 
 class CustomApiAuthenticationProvider extends Authorization
 {
-	public const MAX_AUTH_TIME = 60*5;
+	public const MAX_AUTH_TIME = 5;
     public function authenticate(Request $request, Route $route)
     {
         $this->validateAuthorizationHeader($request);
@@ -38,17 +39,22 @@ class CustomApiAuthenticationProvider extends Authorization
 		}
 
 		$split = explode(':', $authorization);
-		if (count($split) != 3)
+		if (count($split) != 2)
 		{
 			throw new UnauthorizedHttpException('HMAC', 'Invalid signature');
 		}
 
 		$keyId = $split[0];
-		$timestamp = $split[1];
-		$secretHash = base64_decode($split[2]);
+		$secretHash = base64_decode($split[1]);
+
+		$timestamp = $request->header('x-siggy-date', '');
+		if(empty($timestamp))
+		{
+			$timestamp = $request->headers('Date');
+		}
 
 		// Validate timestamp.
-		if (time() > ($timestamp + (60 * self::MAX_AUTH_TIME))) {
+		if( Carbon::parse($timestamp)->diffInMinutes(Carbon::now()) > self::MAX_AUTH_TIME) {
 			throw new UnauthorizedHttpException('HMAC', 'Invalid signature');
 		}
 
@@ -58,10 +64,18 @@ class CustomApiAuthenticationProvider extends Authorization
 			throw new UnauthorizedHttpException('HMAC', 'Invalid signature');
 		}
 
+		$contentType = '';
+		if($request->method() != "GET")
+		{
+			$contentType = $request->getContentType();
+		}
+
 		$stringToSign = $request->method() . "\n".
 						$request->path() . "\n".
 						$timestamp . "\n".
-						base64_encode($request->getContent());
+						$contentType . "\n".
+						base64_encode(hash('sha256', $request->getContent(), true));
+						
 		$checkHash = hash_hmac('sha256', $stringToSign, $apiKey->secret, true);
 
 		if ($secretHash !== $checkHash) {

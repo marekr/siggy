@@ -1,7 +1,7 @@
 <?php
 
 
-function request( $verb, $base, $path )
+function request( $verb, $base, $path, $content = '' )
 {
 	global $apiID, $apiSecret;
 	$params     = array(
@@ -11,15 +11,18 @@ function request( $verb, $base, $path )
 		'connection'    => 'keep-alive',
 	);
 
-	$timestamp = time();
+	$timestamp = date('c');
 	$stringToSign = $verb . "\n".
 					$path . "\n".
-					$timestamp . "\n";
-					print md5($stringToSign);
+					$timestamp . "\n".
+					"\n".
+					base64_encode(hash('sha256', $content, true));
+					
 	$hash = base64_encode(hash_hmac('sha256', $stringToSign, $apiSecret, true));
-	$authorization = $apiID.":".$timestamp.":".$hash;
+	$authorization = $apiID.":".$hash;
 
 	$params['Authorization'] = 'siggy-HMAC-SHA256 Credential='.$authorization;
+	$params['x-siggy-date'] = $timestamp;
 
 	$ch     = curl_init();
 
