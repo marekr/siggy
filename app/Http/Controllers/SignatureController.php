@@ -356,8 +356,8 @@ class SignatureController extends BaseController {
 													LIMIT 1)
 													as last_scan
 												FROM solarsystems ss
-												INNER JOIN regions r ON(r.regionID=ss.region)
-												INNER JOIN constellations c ON(c.constellationID=ss.constellation)
+												INNER JOIN eve_map_regions r ON(r.regionID=ss.region)
+												INNER JOIN eve_map_constellations c ON(c.constellationID=ss.constellation)
 												WHERE ss.id IN (
 													SELECT s.systemID FROM	 systemsigs s
 													WHERE s.sig !='POS' AND s.groupID=?

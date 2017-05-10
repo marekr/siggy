@@ -184,7 +184,7 @@ class Chainmap extends Model {
 															(SELECT SUM(npcKills) FROM apihourlymapdata WHERE systemID=ss.id AND hourStamp >= :kill_cutoff2) as npcs_kills_in_last_2_hours
 															FROM solarsystems ss
 															LEFT OUTER JOIN activesystems sa ON (ss.id = sa.systemID AND sa.groupID=:group AND sa.chainmap_id=:chainmap)
-															INNER JOIN regions r ON(r.regionID=ss.region)
+															INNER JOIN eve_map_regions r ON(r.regionID=ss.region)
 															WHERE ss.id IN(".$systemsToPoll.")  ORDER BY ss.id ASC",[
 																'group' => $this->group_id,
 																'chainmap' => $this->id,

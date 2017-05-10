@@ -14,7 +14,7 @@ class DataController extends Controller {
 	{
 		$systems = DB::select("SELECT ss.id, ss.name, r.regionName as region_name, ss.sec, ss.sysClass as class
 													FROM solarsystems ss
-													LEFT JOIN regions r ON(ss.region = r.regionID)");
+													LEFT JOIN eve_map_regions r ON(ss.region = r.regionID)");
 
 		return response()->json($systems);
 	}

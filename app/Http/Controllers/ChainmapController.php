@@ -580,11 +580,11 @@ class ChainmapController extends Controller {
 		$customsystems = DB::select('SELECT solarsystems.id, 
 											solarsystems.name,
 											activesystems.displayName as display_name,
-											regions.regionName as region_name,
+											r.regionName as region_name,
 											solarsystems.sysClass as class
 										FROM activesystems
 										LEFT JOIN solarsystems ON(activesystems.systemID=solarsystems.id)
-										LEFT JOIN regions ON(solarsystems.region=regions.regionID)
+										LEFT JOIN eve_map_regions r ON(solarsystems.region=r.regionID)
 										WHERE displayName like :query
 										AND groupID=:group
 										AND chainmap_id=:chainmap',

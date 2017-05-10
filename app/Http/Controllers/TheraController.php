@@ -84,7 +84,7 @@ class TheraController extends Controller {
 													s.region as region_id,
 													r.regionName as region_name, s.sec
 													FROM solarsystems  s
-													INNER JOIN regions r ON(s.region=r.regionID)
+													INNER JOIN eve_map_regions r ON(s.region=r.regionID)
 													WHERE s.id=?',[$rawExit->wormholeDestinationSolarSystemId]);
 
 			if( isset( $system->sys_class) && $system->sys_class == 7 || $system->sys_class == 8|| $system->sys_class == 9 )
