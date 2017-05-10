@@ -1,11 +1,11 @@
 <?php
 
 
-function request( $verb, $url )
+function request( $verb, $base, $path )
 {
 	global $apiID, $apiSecret;
 	$params     = array(
-		'host'          => 'siggy.borkedlabs.com',
+		'host'          => 'dev.siggy.borkedlabs.com',
 		'content-type'  => 'application/json',
 		'user-agent'    => 'apitest',
 		'connection'    => 'keep-alive',
@@ -13,8 +13,9 @@ function request( $verb, $url )
 
 	$timestamp = time();
 	$stringToSign = $verb . "\n".
-					$timestamp;
-
+					$path . "\n".
+					$timestamp . "\n";
+					print md5($stringToSign);
 	$hash = base64_encode(hash_hmac('sha256', $stringToSign, $apiSecret, true));
 	$authorization = $apiID.":".$timestamp.":".$hash;
 
@@ -28,7 +29,7 @@ function request( $verb, $url )
 		$curl_headers[] = $p . ": " . $k;
 	}
 	
-	curl_setopt($ch, CURLOPT_URL,$url);
+	curl_setopt($ch, CURLOPT_URL,$base.$path);
 	curl_setopt($ch, CURLOPT_HTTPHEADER, $curl_headers);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 	curl_setopt($ch, CURLOPT_TCP_NODELAY, true);
@@ -53,8 +54,8 @@ function url()
 {
   return sprintf(
 		"%s://%s/",
-		'https',
-		"siggy.borkedlabs.com"
+		'http',
+		"dev.siggy.borkedlabs.com"
   );
 }
 /*

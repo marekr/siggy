@@ -176,6 +176,8 @@ return [
 
 		Laracasts\Flash\FlashServiceProvider::class,
 		Fideloper\Proxy\TrustedProxyServiceProvider::class,
+
+		Dingo\Api\Provider\LaravelServiceProvider::class,
     ],
 
     /*
