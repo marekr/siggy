@@ -117,6 +117,9 @@
 							<li>
 								<a href="{{url('manage/access/configure')}}">Admin Access</a>
 							</li>
+							<li>
+								<a href="{{url('manage/apikeys/list')}}">Api Keys</a>
+							</li>
 							@endif
 						</ul>
 						<!-- /.nav-second-level -->

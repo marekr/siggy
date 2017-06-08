@@ -18,13 +18,13 @@ class CustomApiAuthenticationProvider extends Authorization
     {
         $this->validateAuthorizationHeader($request);
 
-		return $this->validateSignature($request);
+		return $this->validateSignature($request, $route);
 		
         // If the authorization header passed validation we can continue to authenticate.
         // If authentication then fails we must throw the UnauthorizedHttpException.
     }
 
-	public function validateSignature(Request $request)
+	public function validateSignature(Request $request, Route $route)
 	{
 		$prefix = 'siggy-HMAC-SHA256 Credential=';
 		$authorization = $request->header('authorization');
@@ -82,11 +82,29 @@ class CustomApiAuthenticationProvider extends Authorization
 			throw new UnauthorizedHttpException('HMAC', 'Invalid signature');
 		}
 
+		$this->validateAnyRouteScopes($apiKey, $route);
+
 		return $apiKey;
 	}
 
-    public function getAuthorizationMethod()
-    {
-        return strtolower('siggy-HMAC-SHA256');
-    }
+	protected function validateAnyRouteScopes(ApiKey $token, Route $route)
+	{
+		$scopes = $route->scopes();
+		if (empty($scopes)) {
+			return true;
+		}
+
+		foreach ($scopes as $scope) {
+			if ($token->can($scope)) {
+				return true;
+			}
+		}
+
+		throw new UnauthorizedHttpException('Api key does not have the required scope.');
+	}
+
+	public function getAuthorizationMethod()
+	{
+		return strtolower('siggy-HMAC-SHA256');
+	}
 }

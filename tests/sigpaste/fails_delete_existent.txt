@@ -1,0 +1,6 @@
+QLR-142	Cosmic Signature			0%	23,26 AU
+WPO-556	Cosmic Signature			0%	18,86 AU
+KGR-010	Cosmic Signature			0%	17,93 AU
+LMT-823	Cosmic Signature			0%	21,68 AU
+IWH-128	Cosmic Signature			0%	20,25 AU
+UPG-652	Cosmic Signature			0%	17,22 AU

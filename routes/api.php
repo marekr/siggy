@@ -20,8 +20,15 @@ $api->version('v1', ['middleware' => 'api.auth'], function ($api) {
 	$api->group(['prefix' => 'v1'], function($api){
 		$api->get('/group', 'App\Http\Controllers\Api\v1\GroupController@getGroup');
 
-		$api->get('/chainmaps', 'App\Http\Controllers\Api\v1\ChainmapsController@getList');
-		$api->get('/chainmaps/{id}', 'App\Http\Controllers\Api\v1\ChainmapsController@getChainmap');
+		$api->get('/chainmaps', [
+            'uses'   => 'App\Http\Controllers\Api\v1\ChainmapsController@getList',
+            'scopes' => 'chainmaps_read',
+        ]); 
+		
+		$api->get('/chainmaps/{id}', [
+            'uses'   => 'App\Http\Controllers\Api\v1\ChainmapsController@getChainmap',
+            'scopes' => 'chainmaps_read',
+        ]); 
 		
 		$api->get('/systems/{id}', 'App\Http\Controllers\Api\v1\SystemsController@getSystem');
 	});

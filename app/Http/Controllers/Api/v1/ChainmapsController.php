@@ -6,8 +6,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Api\BaseController;
 use \Group;
 use \Chainmap;
+use Dingo\Api\Routing\Helpers;
 
 class ChainmapsController extends BaseController {
+
+    use Helpers;
 
 	public function getList(Request $request) {
 		

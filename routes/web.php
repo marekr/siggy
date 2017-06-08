@@ -268,6 +268,11 @@ Route::group(['namespace' => 'Manage','prefix' => 'manage','middleware' => ['sig
 	Route::post('blacklist/add','BlacklistController@postAdd');
 	Route::get('blacklist/remove/{id}','BlacklistController@getRemove');
 	
+	Route::get('apikeys/list','ApiKeyController@getList');
+	Route::get('apikeys/add','ApiKeyController@getAdd');
+	Route::post('apikeys/add','ApiKeyController@postAdd');
+	Route::post('apikeys/remove/{id}','ApiKeyController@postRemove');
+
 	Route::get('logs/activity','LogsController@getActivity');
 	Route::get('logs/sessions','LogsController@getSessions');
 	

@@ -120,6 +120,11 @@ class Group extends Model {
 		return $results;
 	}
 
+	public function apiKeys()
+	{
+		return $this->hasMany('Siggy\ApiKey');
+	}
+
 	public function groupMembers(): array
 	{
 		if($this->groupMembers == null)

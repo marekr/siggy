@@ -14,11 +14,12 @@ class NewApiKeySystem extends Migration
     public function up()
     {
 		Schema::create('apikeys', function (Blueprint $table) {
-			$table->string('id',16);
+			$table->string('id',16)->primary();
 			$table->string('secret',32);
+			$table->string('name');
 			$table->integer('group_id')->unsigned();
+			$table->text('scopes')->nullable();
 			# Indexes
-			$table->primary('id');
 			$table->index('group_id');
 			$table->timestamps();
 		});
