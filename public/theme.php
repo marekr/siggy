@@ -5,7 +5,7 @@ define('ROOT', realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR);
 
 require_once ROOT . '../vendor/lessphp/lessc.inc.php';
 
-$id = 0;
+$id = 1;
 if( isset( $_GET['id'] ) )
 {
     $id = intval($_GET['id']);
@@ -45,7 +45,7 @@ foreach( $themeFiles as $fileName )
     }
     else
     {
-        $cssBuffer .= file_get_contents(ROOT . 'themes/0/' . $fileName);
+        $cssBuffer .= file_get_contents(ROOT . 'themes/1/' . $fileName);
     }
 }
 

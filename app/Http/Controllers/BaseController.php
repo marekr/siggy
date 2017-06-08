@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\App;
 use \Auth;
 use \stdClass;
 
@@ -24,7 +25,7 @@ class BaseController extends Controller {
 
 			if( Auth::$user->language != 'en' )
 			{
-				i18n::lang(Auth::$user->language);
+				App::setLocale(Auth::$user->language);
 			}
 
 			return $settings;

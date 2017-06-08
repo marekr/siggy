@@ -1,24 +1,24 @@
+@page-background: #111111 url(images/green_bg.jpg) no-repeat center top fixed;
 
 
-@page-background: #DEA8E5 url(images/hello-kitty.jpg) no-repeat center top fixed;
+@primary-background: #0D6509;
+@alt-primary-background: #0C9A00;
+
+@header-background: #0F2C04;
+@header-sub-background: #262626;
+@footer-background: #353535;
+
+@chain-map-background: #2d2d2d;
 
 
-@primary-background: #F0C2E3;
-@alt-primary-background: #FFADE1;
-
-@header-background: #7A0E4F;
-@header-sub-background: #F0C2E3;
-
-@chain-map-background: transparent;
-
-@box-button-background: #C75CE2;
+@box-button-background: #494242;
 
 
 @primary-font-color: #fff;
 
-@border-wrap-color: #89A8D2;
+@border-wrap-color: #090909;
 
-@main-menu-border-top: #FFF4FC;
-@main-menu-border-bottom: #FF39C7;
+@main-menu-border-top: #373737;
+@main-menu-border-bottom: #090909;
 
 @menu-hover: #428bca;
