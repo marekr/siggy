@@ -10,6 +10,10 @@
 - Several URLs were rewritten in structure
 - Forgot password now asks you to enter a new password at the end instead of emailing you a random password
 - Ability to disable wormhole to signature link has been added by request
+- New API system allowing export of siggy data, work in progress however and will be fleshed out
+
+## Fixes
+- Notifier form for system and resident found types no longer shows a default "undefined" text
 
 ## 2.45.0 - 2017-04-23
 ## Changes
