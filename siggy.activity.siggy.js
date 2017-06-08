@@ -450,60 +450,63 @@ siggy2.Activity.siggy.prototype.updateSystemInfo = function (systemData)
 	$('#system-effect > p').qtip('destroy');
 	$('#system-effect').empty();
 
-
-	var effectTitle = $("<p>").text(systemData.effectTitle);
-	var effect = $('#system-effect').append(effectTitle);
-
-	if( systemData.effectTitle != 'None' )
+	
+	if(systemData.effectTitle != null)
 	{
-		var effData = [];
-		if( systemData.effectTitle == 'Black Hole' )
-		{
-			effData = blackHoleEffects[systemData.sysClass];
-		}
-		else if(systemData.effectTitle == 'Wolf-Rayet Star')
-		{
-			effData = wolfRayetEffects[systemData.sysClass];
-		}
-		else if(systemData.effectTitle == 'Red Giant')
-		{
-			effData = redGiantEffects[systemData.sysClass];
-		}
-		else if(systemData.effectTitle == 'Cataclysmic Variable')
-		{
-			effData = catacylsmicEffects[systemData.sysClass];
-		}
-		else if(systemData.effectTitle == 'Magnetar')
-		{
-			effData = magnetarEffects[systemData.sysClass];
-		}
-		else if(systemData.effectTitle == 'Pulsar')
-		{
-			effData = pulsarEffects[systemData.sysClass];
-		}
+		var effectTitle = $("<p>").text(systemData.effectTitle);
+		var effect = $('#system-effect').append(effectTitle);
 
-		if( typeof(effData) == 'undefined' )
+		if( systemData.effectTitle != 'None' )
 		{
-			effData = [];
-		}
-
-		var tooltip = this.templateEffectTooltip({
-			sysClass: systemData.sysClass,
-			effects: effData
-		});
-
-		effect.append(tooltip);
-
-		effectTitle.qtip({
-			content: {
-				text: $("#system-effects") // Use the "div" element next to this for the content
-			},
-			position: {
-				target: 'mouse',
-				adjust: { x: 5, y: 5 },
-				viewport: $(window)
+			var effData = [];
+			if( systemData.effectTitle == 'Black Hole' )
+			{
+				effData = blackHoleEffects[systemData.sysClass];
 			}
-		});
+			else if(systemData.effectTitle == 'Wolf-Rayet Star')
+			{
+				effData = wolfRayetEffects[systemData.sysClass];
+			}
+			else if(systemData.effectTitle == 'Red Giant')
+			{
+				effData = redGiantEffects[systemData.sysClass];
+			}
+			else if(systemData.effectTitle == 'Cataclysmic Variable')
+			{
+				effData = catacylsmicEffects[systemData.sysClass];
+			}
+			else if(systemData.effectTitle == 'Magnetar')
+			{
+				effData = magnetarEffects[systemData.sysClass];
+			}
+			else if(systemData.effectTitle == 'Pulsar')
+			{
+				effData = pulsarEffects[systemData.sysClass];
+			}
+
+			if( typeof(effData) == 'undefined' )
+			{
+				effData = [];
+			}
+
+			var tooltip = this.templateEffectTooltip({
+				sysClass: systemData.sysClass,
+				effects: effData
+			});
+
+			effect.append(tooltip);
+
+			effectTitle.qtip({
+				content: {
+					text: $("#system-effects") // Use the "div" element next to this for the content
+				},
+				position: {
+					target: 'mouse',
+					adjust: { x: 5, y: 5 },
+					viewport: $(window)
+				}
+			});
+		}
 	}
 
 	$('#static-info').empty();
