@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Carbon\Carbon;
 use Pheal\Pheal;
 use \PhealHelper;
-use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Support\Facades\DB;
 use \miscUtils;
 use \Group;
 

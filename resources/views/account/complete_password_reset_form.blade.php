@@ -6,14 +6,14 @@
     <div class="row">
 		<div class="well">
 			<h2>Complete Password Reset</h2>
-			<p>Please enter your account's email address and the reset token provided in the email sent to you.</p>
+			<p>Please enter the new password for your account</p>
 			
-			{!! Form::open(['url' => 'account/completePasswordReset']) !!}
-				{!! Form::bsText('reset_email', 'Account Email') !!}
-				{!! Form::bsText('reset_token', 'Reset Token') !!}
+			{!! Form::open(['url' => 'account/password_reset/'.$token]) !!}
+				{!! Form::bsPassword('password', 'New Password') !!}
+				{!! Form::bsPassword('password_confirmation', 'Confirm New Password') !!}
 			
 				<div class="form-group">
-					<button type="submit" name='proceed' class="btn btn-primary">Proceed with Reset</button>
+					<button type="submit" name='proceed' class="btn btn-primary">Save</button>
 				</div>
 			{!! Form::close() !!}
 		</div>

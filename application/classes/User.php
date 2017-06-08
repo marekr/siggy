@@ -1,7 +1,7 @@
 <?php
 
 use Carbon\Carbon;
-use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use Siggy\ScribeCommandBus;
@@ -172,6 +172,11 @@ class User extends Model {
 	public static function findByEmail(string $email)
 	{
 		return self::whereRaw('LOWER(email) = ?', [strtolower($email)])->first();
+	}
+	
+	public static function findByResetToken(string $token)
+	{
+		return self::whereRaw('reset_token = ?', [$token])->first();
 	}
 
 	public function perms()

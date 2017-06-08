@@ -25,7 +25,7 @@
 {!! Form::yesNo('can_manage_group_members', 'Can manage group members?') !!}
 {!! Form::yesNo('can_manage_settings', 'Can manage settings?') !!}
 {!! Form::yesNo('can_view_financial', 'Can view financial info?') !!}
-{!! Form::yesNo('can_manage_access', 'Can view logs?') !!}
+{!! Form::yesNo('can_manage_access', 'Can manage access?') !!}
 <div class="form-actions">
 	@if($mode == 'edit')
 	<button type="submit" class="btn btn-primary">Edit member</button>

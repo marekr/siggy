@@ -11,7 +11,7 @@
 			</ul>
 	</p>
 
-	<?php echo Html::anchor('account/connect', ___('<i class="glyphicon glyphicon-plus"></i>&nbsp;Connect new character'), array('class' => 'btn btn-primary pull-right') ); ?>
+	<a href="{{url('account/connect')}}" clas="btn btn-primary pull-right"><i class="glyphicon glyphicon-plus"></i>&nbsp;Connect new character</a>
 	<br clear='all' />
 	<br />
 	<table class="table table-striped">
@@ -22,7 +22,7 @@
 			<th width="40%">Status</th>
 			<th width="10%">Actions</th>
 		</tr>
-		<?php foreach( $characters as $character ): ?>
+		@foreach( $characters as $character )
 		<?php if(!isset($character_data[$character->character_id])) continue; ?>
 		<tr>
 			<td><?php echo $character_data[$character->character_id]->id; ?></td>
@@ -45,15 +45,15 @@
 			</td>
 			<td><?php echo $character->valid ? 'Ok' : 'Invalid' ?></td>
 			<td>
-				<form action="<?php echo URL::base(TRUE, TRUE);?>account/disconnect" method="post">
+				<form action="{{url('account/disconnect')}}" method="post">
 					<input type="hidden" name="_token" value="<?php echo Auth::$session->csrf_token;?>" />
 					<input type="hidden" name="character_id" value="<?php echo $character_data[$character->character_id]->id; ?>" />
 					<button class='btn btn-danger btn-xs' type="submit"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Disconnect</button>
-					<?php echo Html::anchor('account/connect', ___('<i class="glyphicon glyphicon-plus"></i>&nbsp;Reconnect character'), array('class' => 'btn btn-primary btn-xs') ); ?>
+					<a href="{{url('account/connect')}}" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-plus"></i>&nbsp;Reconnect character</a>
 				</form>
 			</td>
 		</tr>
-		<?php endforeach; ?>
+		@endforeach
 	</table>
 @endsection
 

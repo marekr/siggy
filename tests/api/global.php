@@ -1,24 +1,28 @@
 <?php
 
 
-function request( $verb, $url )
+function request( $verb, $base, $path, $content = '' )
 {
 	global $apiID, $apiSecret;
 	$params     = array(
-		'host'          => 'siggy.borkedlabs.com',
+		'host'          => 'dev.siggy.borkedlabs.com',
 		'content-type'  => 'application/json',
 		'user-agent'    => 'apitest',
 		'connection'    => 'keep-alive',
 	);
 
-	$timestamp = time();
+	$timestamp = date('c');
 	$stringToSign = $verb . "\n".
-					$timestamp;
-
+					$path . "\n".
+					$timestamp . "\n".
+					"\n".
+					base64_encode(hash('sha256', $content, true));
+					
 	$hash = base64_encode(hash_hmac('sha256', $stringToSign, $apiSecret, true));
-	$authorization = $apiID.":".$timestamp.":".$hash;
+	$authorization = $apiID.":".$hash;
 
 	$params['Authorization'] = 'siggy-HMAC-SHA256 Credential='.$authorization;
+	$params['x-siggy-date'] = $timestamp;
 
 	$ch     = curl_init();
 
@@ -28,7 +32,7 @@ function request( $verb, $url )
 		$curl_headers[] = $p . ": " . $k;
 	}
 	
-	curl_setopt($ch, CURLOPT_URL,$url);
+	curl_setopt($ch, CURLOPT_URL,$base.$path);
 	curl_setopt($ch, CURLOPT_HTTPHEADER, $curl_headers);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 	curl_setopt($ch, CURLOPT_TCP_NODELAY, true);
@@ -53,8 +57,8 @@ function url()
 {
   return sprintf(
 		"%s://%s/",
-		'https',
-		"siggy.borkedlabs.com"
+		'http',
+		"dev.siggy.borkedlabs.com"
   );
 }
 /*

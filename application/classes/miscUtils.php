@@ -2,7 +2,7 @@
 
 use Pheal\Pheal;
 use Carbon\Carbon;
-use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Support\Facades\DB;
 
 final class miscUtils {
 
@@ -59,34 +59,34 @@ final class miscUtils {
 					continue;
 				}
 
-				$regex = "/^(".___('Wormhole')."|".___('Data Site')."|".___('Gas Site')."|".___('Relic Site')."|".___('Ore Site')."|".___('Combat Site').")$/";
+				$regex = "/^(".__('Wormhole')."|".__('Data Site')."|".__('Gas Site')."|".__('Relic Site')."|".__('Ore Site')."|".__('Combat Site').")$/";
 
 				preg_match($regex, $item, $matches );
 				if( count($matches) == 2 )
 				{
 					switch( $matches[1] )
 					{
-						case ___('Wormhole'):
+						case __('Wormhole'):
 							$sigData['type'] = 'wh';
 							$sigData['siteID'] = 0;
 							break;
-						case ___('Data Site'):
+						case __('Data Site'):
 							$sigData['type'] = 'data';
 							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+1], $sigData['type'] );
 							break;
-						case ___('Gas Site'):
+						case __('Gas Site'):
 							$sigData['type'] = 'gas';
 							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+1], $sigData['type'] );
 							break;
-						case ___('Relic Site'):
+						case __('Relic Site'):
 							$sigData['type'] = 'relic';
 							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+1], $sigData['type'] );
 							break;
-						case ___('Ore Site'):
+						case __('Ore Site'):
 							$sigData['type'] = 'ore';
 							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+1], $sigData['type'] );
 							break;
-						case ___('Combat Site'):
+						case __('Combat Site'):
 							$sigData['type'] = 'anomaly';
 							$sigData['siteID'] = self::siteIDLookupByName( $data[$k+1], $sigData['type'] );
 							break;
@@ -109,7 +109,7 @@ final class miscUtils {
 
 		foreach( $sites as $site )
 		{
-			if( ___($site->name) == $name )
+			if( __($site->name) == $name )
 			{
 				return $site->id;
 			}
@@ -128,15 +128,6 @@ final class miscUtils {
 		{
 			return false;
 		}
-	}
-
-	static function hash_array_to_string($arr)
-	{
-		foreach( $arr as $k => $v )
-		{
-			$arr[$k] = Database::instance()->escape($v);
-		}
-		return implode(',', $arr);
 	}
 
 	static function getDBCacheItem( $key )

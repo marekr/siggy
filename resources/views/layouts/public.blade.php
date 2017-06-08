@@ -7,11 +7,11 @@
     <title><?php echo $title; ?></title>
 
     <!-- Le styles -->
-    <link href="<?php echo URL::base(TRUE, TRUE);?>bootstrap3/css/bootstrap.min.css?<?php echo SIGGY_VERSION; ?>" rel="stylesheet">
-    <link href="<?php echo URL::base(TRUE, TRUE);?>css/frontend.css?<?php echo SIGGY_VERSION; ?>" rel="stylesheet">
+    <link href="{{asset('bootstrap3/css/bootstrap.min.css?'.SIGGY_VERSION)}}" rel="stylesheet">
+    <link href="{{asset('css/frontend.css?'.SIGGY_VERSION)}}" rel="stylesheet">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="<?php echo URL::base(TRUE, TRUE);?>bootstrap3/js/bootstrap.min.js"></script>
-    <script src="{{ URL::base(TRUE, TRUE) }}bootstrap3/js/bootstrap-checkbox.min.js"></script>
+    <script src="{{asset('bootstrap3/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('bootstrap3/js/bootstrap-checkbox.min.js')}}"></script>
 
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -22,7 +22,7 @@
     <![endif]-->
 
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="<?php echo URL::base(TRUE, TRUE);?>favicon.ico">
+    <link rel="shortcut icon" href="{{asset('favicon.ico')}}'">
 
 	<script type="text/javascript">
 	$(document).ready(function() {
@@ -38,46 +38,42 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="<?php echo URL::base(TRUE, TRUE);?>"><img alt="Brand" width="24" src="<?php echo URL::base(TRUE, TRUE);?>images/siggy.png">siggy</a>
+			<a class="navbar-brand" href="{{url('/')}}"><img alt="Brand" width="24" src="{{asset('images/siggy.png')}}">siggy</a>
 		</div>
 		<div class="navbar-collapse collapse navbar-responsive-collapse">
 			<ul class="nav navbar-nav">
-				<li <?php echo ($selectedTab == 'home' ? 'class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>">Home</a></li>
+				<li <?php echo ($selectedTab == 'home' ? 'class="active"' : ''); ?>><a href="{{url('/')}}">Home</a></li>
 
 				<li><a href="http://wiki.siggy.borkedlabs.com">Guide</a></li>
-				<li<?php echo ($selectedTab == 'about' ? ' class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>pages/about">About</a></li>
-				<li<?php echo ($selectedTab == 'announcements' ? ' class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>announcements">Announcements</a></li>
-				<li<?php echo ($selectedTab == 'changelog' ? ' class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>changelog">Changelog</a></li>
+				<li<?php echo ($selectedTab == 'about' ? ' class="active"' : ''); ?>><a href="{{url('pages/about')}}">About</a></li>
+				<li<?php echo ($selectedTab == 'announcements' ? ' class="active"' : ''); ?>><a href="{{url('announcements')}}">Announcements</a></li>
+				<li<?php echo ($selectedTab == 'changelog' ? ' class="active"' : ''); ?>><a href="{{url('changelog')}}">Changelog</a></li>
 				<li><a href="http://wiki.siggy.borkedlabs.com/support/contact/">Support</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<?php if( Auth::loggedIn() ): ?>
 
 					<?php if( count(Auth::$user->perms()) > 0 ): ?>
-				<li <?php echo ($selectedTab == 'admin' ? 'class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>manage">Admin</a></li>
+				<li <?php echo ($selectedTab == 'admin' ? 'class="active"' : ''); ?>><a href="{{url('manage')}}">Admin</a></li>
 					<?php endif; ?>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Logged in as <?php echo Auth::$user->username; ?><b class="caret"></b></a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/overview">Account</a></li>
+						<li><a href="{{url('account/overview')}}">Account</a></li>
 						<li class="divider"></li>
-						<li><a href="<?php echo URL::base(TRUE, TRUE);?>account/logout">Logout</a></li>
+						<li><a href="{{url('account/logout')}}">Logout</a></li>
 					</ul>
 				</li>
 				<?php else: ?>
-				<li  <?php echo ($selectedTab == 'register' ? 'class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>account/register">Register</a></li>
-				<li  <?php echo ($selectedTab == 'login' ? 'class="active"' : ''); ?>><a href="<?php echo URL::base(TRUE, TRUE);?>account/login">Login</a></li>
+				<li  <?php echo ($selectedTab == 'register' ? 'class="active"' : ''); ?>><a href="{{url('account/register')}}">Register</a></li>
+				<li  <?php echo ($selectedTab == 'login' ? 'class="active"' : ''); ?>><a href="{{url('account/login')}}">Login</a></li>
 				<?php endif; ?>
 				<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
 			</ul>
 		</div>
 	</div>
 	@if( $layoutMode == 'blank' )
-		@if(Message::count() > 0)
-			<div class="row">
-				{{Message::output()}}
-			</div>
-		@endif
+		@include('flash::message')
 		@yield('content')
 	@elseif( $layoutMode == 'leftMenu' )
 
@@ -87,11 +83,7 @@
 					@yield('left_menu')
 				</div>
 				<div class=" col-lg-9">
-					@if(Message::count() > 0)
-						<div class="row">
-							<?php echo Message::output(); ?>
-						</div>
-					@endif
+					@include('flash::message')
 					@yield('content')
 				</div>
 			</div>
@@ -112,7 +104,7 @@
 	</div>
 	
 <script type='text/javascript'>
-$('input[type="checkbox"].yesno').checkboxpicker();
+	$('input[type="checkbox"].yesno').checkboxpicker();
 </script>
 </body>
 </html>

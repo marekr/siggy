@@ -1,11 +1,9 @@
 #!/usr/bin/env php
 <?php
 
-define('LARAVEL_START', microtime(true));
-
 /*
 |--------------------------------------------------------------------------
-| Register The Composer Auto Loader
+| Register The Auto Loader
 |--------------------------------------------------------------------------
 |
 | Composer provides a convenient, automatically generated class loader
@@ -15,51 +13,9 @@ define('LARAVEL_START', microtime(true));
 |
 */
 
-require_once __DIR__.'/vendor/autoload.php';
+require __DIR__.'/bootstrap/autoload.php';
 
-/*
-	Database Setup
-	Horrible spot but yea
- */
-define('CACHE_METHOD', env('PHEAL_CACHE'));
-use Illuminate\Database\Capsule\Manager as DB;
-$dotenv = new Dotenv\Dotenv(__DIR__);
-$dotenv->load();
-
-$db = new DB;
-
-$connConfig = [
-	'driver' => 'mysql',
-	'host' => getenv('DB_HOST'),
-	'database' => getenv('DB_DATABASE'),
-	'username' => getenv('DB_USERNAME'),
-	'password' => getenv('DB_PASSWORD'),
-	'charset' => 'utf8',
-	'collation' => 'utf8_unicode_ci'
-];
-
-if( getenv('DB_PERSISTANT') )
-{
-	$connConfig['options']   = [
-			PDO::ATTR_PERSISTENT => true,
-	];
-}
-
-$db->addConnection($connConfig);
-
-use Illuminate\Events\Dispatcher;
-use Illuminate\Container\Container;
-$db->setEventDispatcher(new Dispatcher(new Container));
-$db->bootEloquent();
-$db->setAsGlobal();
-
-/*
-|--------------------------------------------------------------------------
-| Get the current basePath
-|--------------------------------------------------------------------------
-*/
-
-$basePath = getcwd();
+$app = require_once __DIR__.'/bootstrap/app.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -72,4 +28,24 @@ $basePath = getcwd();
 |
 */
 
-exit(Illuminate\Foundation\Console::run($basePath));
+$kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
+
+$status = $kernel->handle(
+    $input = new Symfony\Component\Console\Input\ArgvInput,
+    new Symfony\Component\Console\Output\ConsoleOutput
+);
+
+/*
+|--------------------------------------------------------------------------
+| Shutdown The Application
+|--------------------------------------------------------------------------
+|
+| Once Artisan has finished running. We will fire off the shutdown events
+| so that any final work may be done by the application before we shut
+| down the process. This is the last thing to happen to the request.
+|
+*/
+
+$kernel->terminate($input, $status);
+
+exit($status);

@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Support\Facades\DB;
 
 class Pathfinder {
 
@@ -15,7 +15,7 @@ class Pathfinder {
 
 		if( !($this->jumps = $cache->get( $cacheName, FALSE ) ) )
 		{
-			$data = DB::table('eve_mapsolarsystemjumps')
+			$data = DB::table('eve_map_solar_system_jumps')
 					->orderBy('fromSolarSystemID', 'ASC')
 					->get()
 					->all();

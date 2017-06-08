@@ -1,4 +1,4 @@
-@if( Kohana::$environment == Kohana::DEVELOPMENT )
+@if( App::environment('local') )
 @siggy_asset_js('thirdparty.js', time(), true)
 @siggy_asset_js('siggy.js', time(), true)
 @else

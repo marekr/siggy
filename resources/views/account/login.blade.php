@@ -40,14 +40,14 @@
 				  <div class="row">
 					<div class="text-center">
 					  
-					<a href="<?php echo URL::base(TRUE, TRUE); ?>account/sso/eve"><img src='<?php echo URL::base(TRUE, TRUE); ?>images/eve/EVE_SSO_Login_Buttons_Large_White.png' /></a>
+					<a href="{{url('account/sso/eve')}}"><img src='{{asset('images/eve/EVE_SSO_Login_Buttons_Large_White.png')}}' /></a>
 					</div>
 				  </div>
 				  <div class="login-or">
 					<hr class="hr-or">
 					<span class="span-or">or</span>
-				  </div>
-					<form role='form' action='<?php echo URL::base(TRUE, TRUE);?>account/login' method='POST'>
+					</div>
+					{!! Form::open(['url' => 'account/login']) !!}
 						<input type="hidden" name="bounce" value="<?php echo $bounce; ?>" />
 						
 						<?php if( $invalidLogin == true ): ?>
@@ -62,7 +62,7 @@
 												<span class="input-group-addon">
 													<i class="glyphicon glyphicon-user"></i>
 												</span> 
-												<input class="form-control"  placeholder="Username"<?php if( isset($username) ): ?> value='<?php echo $username; ?>'<?php endif;?> name="username" type="text" autofocus >
+												<input class="form-control"  placeholder="Username"<?php if( isset($username) ): ?> value='<?php echo $username; ?>'<?php endif;?> name="username" type="text" autofocus>
 											</div>
 										</div>
 										<div class="form-group">
@@ -84,9 +84,9 @@
 									</div>
 								</div>
 							</fieldset>
-					</form>
+					{!! Form::close() !!}
 
-					<span class='help-block text-centered'>Lost or forgot password? <a href='<?php echo URL::base(TRUE, TRUE);?>account/forgotPassword'>Click here</a></span>
+					<span class='help-block text-centered'>Lost or forgot password? <a href='{{url('account/password_reset')}}'>Click here</a></span>
 				</div>
 			</div>
 		</div>

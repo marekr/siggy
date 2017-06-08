@@ -1,7 +1,7 @@
 <?php
 
 use Carbon\Carbon;
-use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Support\Facades\DB;
 
 class UserSession {
 
@@ -44,8 +44,8 @@ class UserSession {
 			{
 				if( !Auth::autoLogin($memberID, $passHash) )
 				{
-					Cookie::delete('userID');
-					Cookie::delete('passHash');
+					Cookie::forget('userID');
+					Cookie::forget('passHash');
 				}
 			}
 
@@ -104,18 +104,18 @@ class UserSession {
 	{
 		DB::table('sessions')->where('id', '=', $this->id)->delete();
 
-		Cookie::delete('sessionID');
+		Cookie::queue(Cookie::forget('sessionID'));
 	}
 
 	private function __generateSessionID(): string
 	{
-		$sessionID = md5(uniqid(microtime()) . Request::$client_ip . Request::$user_agent);
+		$sessionID = md5(uniqid(microtime()) . Request::ip() . Request::header('User-Agent'));
 		return $sessionID;
 	}
 
 	private function __generateCSRF(): string
 	{
-		$sessionID = sha1(uniqid(microtime()) . Request::$client_ip . Request::$user_agent);
+		$sessionID = sha1(uniqid(microtime()) . Request::ip() . Request::header('User-Agent'));
 		return $sessionID;
 	}
 
@@ -158,8 +158,8 @@ class UserSession {
 		$insert = array( 'id' => $this->id,
 					'character_id' => $this->character_id,
 					'created_at' => Carbon::now()->toDateTimeString(),
-					'ip_address' => Request::$client_ip,
-					'user_agent' => Request::$user_agent,
+					'ip_address' => Request::ip(),
+					'user_agent' => Request::header('User-Agent'),
 					'csrf_token' => $this->__generateCSRF(),
 					'type' => 'guest',
 					'user_id' => ( isset(Auth::$user->id) ? Auth::$user->id : 0 ),
@@ -169,7 +169,7 @@ class UserSession {
 
 		DB::table('sessions')->insert($insert);
 
-		Cookie::set('sessionID', $this->id);
+		Cookie::queue('sessionID', $this->id);
 
 		return TRUE;
 	}
@@ -357,7 +357,7 @@ class UserSession {
 			$desired_id = $this->_getDefaultChainMapID($chainmaps);
 			if( $desired_id )
 			{
-				Cookie::set('chainmaps',$desired_id);
+				Cookie::queue('chainmaps',$desired_id);
 			}
 
 			return $desired_id;

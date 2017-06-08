@@ -1,4 +1,4 @@
 <?php
 
-$apiID = 1035;
-$apiSecret = 'REvxca6AG6McUR6f5Bm7JZKbYWSA8FP4aKkZYLqFQ2EnssKm';
+$apiID = 'NLeBUElCZou1xDKw';
+$apiSecret = 'Ktvwp5uWDzRC7SmmIXEHYVe4tKkwHw9y';

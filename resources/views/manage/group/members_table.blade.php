@@ -1,3 +1,5 @@
+
+<h2 class="tableHeader">{{$table['chainmap']['chainmap_name']}}</h2>
 <table class="table table-striped" width="100%">
 	<thead>
 		<tr>
@@ -8,29 +10,29 @@
 		</tr>
 	</thead>
 	<tbody>
-	<?php if( count($members) > 0 ): ?>
-		<?php foreach( $members as $m ): ?>
+	@if( count($table['members']) > 0 )
+		@foreach($table['members'] as $m )
 		<tr>
-			<td><?php echo ucfirst($m->memberType) ?></td>
-			<td><?php echo $m->eveID ?></td>
+			<td>{{ ucfirst($m->memberType) }}</td>
+			<td>{{ $m->eveID }}</td>
 			<td>
-				<?php if( $m->memberType == 'corp' ): ?>
-				<img src="https://image.eveonline.com/Corporation/<?php echo $m->eveID; ?>_32.png" width="32" height="32" />
-				<?php else: ?>
-				<img src="https://image.eveonline.com/Character/<?php echo $m->eveID; ?>_32.jpg" width="32" height="32" />
-				<?php endif; ?>
+				@if( $m->memberType == 'corp' )
+				<img src="https://image.eveonline.com/Corporation/{{ $m->eveID }}_32.png" width="32" height="32" />
+				@else
+				<img src="https://image.eveonline.com/Character/{{ $m->eveID }}_32.jpg" width="32" height="32" />
+				@endif
 				&nbsp;&nbsp;
-				<?php echo $m->accessName ?>
+				{{ $m->accessName }}
 			</td>
 			<td>
-				<?php echo Html::anchor('manage/chainmaps/remove_access/'.$chainmap_id.'-'.$m->id, ___('<i class="fa fa-trash"></i>&nbsp;Remove'), array('class' =>'btn btn-xs btn-danger')); ?>
+				<a href="{{url('manage/chainmaps/access/remove/'.$table['chainmap']['chainmap_id'].'-'.$m->id)}}" class='btn btn-default btn-xs'><i class="fa fa-trash"></i>&nbsp;Remove</a>
 			</td>
 		</tr>
-		<?php endforeach ?>
-	<?php else: ?>
+		@endforeach
+	@else
 		<tr>
 			<td colspan="4">No members</td>
 		</tr>
-	<?php endif; ?>
+	@endif
 	</tbody>
 </table>

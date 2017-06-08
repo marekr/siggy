@@ -1,7 +1,7 @@
 <?php
 
 use Carbon\Carbon;
-use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class System extends Model {
@@ -32,7 +32,7 @@ class System extends Model {
 
 	public static function get($id, $groupID, $mode = 'advanced')
 	{
-		$systemData = DB::select(Database::SELECT, "SELECT
+		$systemData = collect(DB::selectOne("SELECT
 			ss.id,
 			ss.name,
 			ss.belts,
@@ -49,41 +49,22 @@ class System extends Model {
 			r.regionName as region_name,
 			c.constellationName as constellation_name
 													FROM solarsystems ss
-													INNER JOIN systemeffects se ON ss.effect = se.id
-													INNER JOIN regions r ON ss.region = r.regionID
-													INNER JOIN constellations c ON ss.constellation = c.constellationID
-													WHERE ss.id=:id")
-									->param(':id', $id )
-									->execute()
-									->current();
+													LEFT JOIN systemeffects se ON ss.effect = se.id
+													INNER JOIN eve_map_regions r ON ss.region = r.regionID
+													INNER JOIN eve_map_constellations c ON ss.constellation = c.constellationID
+													WHERE ss.id=?", [$id]))->toArray();
 
-		if( !$systemData['id'] )
+		if( !isset($systemData['id']) )
 		{
 			return FALSE;
 		}
-
-
-		$systemData['radius'] = (float)$systemData['radius'];
-		$systemData['true_sec'] = (float)$systemData['true_sec'];
-		$systemData['sec'] = (float)$systemData['sec'];
-		$systemData['system_class'] = (int)$systemData['system_class'];
-		$systemData['planets'] = (int)$systemData['planets'];
-		$systemData['moons'] = (int)$systemData['moons'];
-		$systemData['belts'] = (int)$systemData['belts'];
-		$systemData['constellation_id'] = (int)$systemData['constellation_id'];
-		$systemData['region_id'] = (int)$systemData['region_id'];
-		$systemData['effect_id'] = (int)$systemData['effect_id'];
-		$systemData['id'] = (int)$systemData['id'];
 
 		if( $mode != 'basic' )
 		{
 			$systemData['statics'] = array();
 
-			$staticData = DB::query(Database::SELECT, "SELECT sm.static_id as id FROM staticmap sm
-														WHERE sm.system_id=:id")
-										->param(':id', $systemData['id'])
-										->execute()
-										->as_array();
+			$staticData = DB::select("SELECT sm.static_id as id FROM staticmap sm
+														WHERE sm.system_id=?", [$systemData['id']]);
 
 			if( count( $staticData ) > 0 )
 			{
@@ -92,20 +73,19 @@ class System extends Model {
 
 			$end = miscUtils::getHourStamp();
 			$start = miscUtils::getHourStamp(-24);
-			$apiData = DB::query(Database::SELECT, "SELECT hourStamp, jumps, kills, npcKills FROM apihourlymapdata WHERE systemID=:system AND hourStamp >= :start AND hourStamp <= :end ORDER BY hourStamp asc LIMIT 0,24")
-										->param(':system', $systemData['id'])
-										->param(':start', $start)
-										->param(':end', $end)
-										->execute()
-										->as_array('hourStamp');
+			$apiData = collect(DB::select("SELECT hourStamp, jumps, kills, npcKills 
+													FROM apihourlymapdata 
+													WHERE systemID=? AND hourStamp >= ?
+													AND hourStamp <= ?
+													ORDER BY hourStamp asc LIMIT 0,24", [$systemData['id'], $start, $end]))->keyBy('hourStamp')->all();
 
-			$trackedJumps = DB::query(Database::SELECT, "SELECT hourStamp, jumps FROM jumpstracker WHERE systemID=:system AND groupID=:group AND hourStamp >= :start AND hourStamp <= :end ORDER BY hourStamp asc LIMIT 0,24")
-										->param(':system', $systemData['id'])
-										->param(':group', $groupID)
-										->param(':start', $start)
-										->param(':end', $end)
-										->execute()->as_array('hourStamp');
-
+			$trackedJumps = collect(DB::select("SELECT hourStamp, jumps FROM jumpstracker 
+			WHERE systemID=?
+			AND groupID=? AND hourStamp >= ? 
+			AND hourStamp <= ?
+			ORDER BY hourStamp asc 
+			LIMIT 0,24",[$systemData['id'], $groupID, $start, $end]))->keyBy('hourStamp')->all();
+		
 			$systemData['stats'] = array();
 			for($i = 23; $i >= 0; $i--)
 			{

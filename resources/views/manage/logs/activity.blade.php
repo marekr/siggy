@@ -6,7 +6,7 @@
 <h3>Activity Logs</h3>
 
 <div class="well">
-	<form class="form-inline" action="<?php echo URL::base(true,true); ?>manage/logs/activity" method="get">
+	<form class="form-inline" action="{{url('manage/logs/activity')}}" method="get">
 		<legend>Filter Options</legend>
 		<label class="checkbox">Type
 

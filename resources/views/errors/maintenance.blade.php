@@ -7,10 +7,10 @@
     <title>siggy - Maintenance</title>
 
     <!-- Le styles -->
-    <link href="<?php echo URL::base(TRUE, TRUE);?>bootstrap3/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?php echo URL::base(TRUE, TRUE);?>css/frontend.css" rel="stylesheet">
+    <link href="{{asset('bootstrap3/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{asset('css/frontend.css')}}" rel="stylesheet">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="<?php echo URL::base(TRUE, TRUE);?>bootstrap3/js/bootstrap.min.js"></script>
+    <script src="{{asset('bootstrap3/js/bootstrap.min.js')}}"></script>
 
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -21,7 +21,7 @@
     <![endif]-->
 
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="<?php echo URL::base(TRUE, TRUE);?>favicon.ico">
+    <link rel="shortcut icon" href="{{asset('favicon.ico')}}">
 	<script type="text/javascript">
 	$(document).ready(function() {
 		$('.dropdown-toggle').dropdown()

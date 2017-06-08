@@ -13,6 +13,23 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+$api = app('Dingo\Api\Routing\Router');
+
+// Publicly accessible routes
+$api->version('v1', ['middleware' => 'api.auth'], function ($api) {
+	$api->group(['prefix' => 'v1'], function($api){
+		$api->get('/group', 'App\Http\Controllers\Api\v1\GroupController@getGroup');
+
+		$api->get('/chainmaps', [
+            'uses'   => 'App\Http\Controllers\Api\v1\ChainmapsController@getList',
+            'scopes' => 'chainmaps_read',
+        ]); 
+		
+		$api->get('/chainmaps/{id}', [
+            'uses'   => 'App\Http\Controllers\Api\v1\ChainmapsController@getChainmap',
+            'scopes' => 'chainmaps_read',
+        ]); 
+		
+		$api->get('/systems/{id}', 'App\Http\Controllers\Api\v1\SystemsController@getSystem');
+	});
 });

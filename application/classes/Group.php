@@ -1,8 +1,10 @@
 <?php
 
 use Carbon\Carbon;
-use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Eloquent\Model;
+
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class Group extends Model {
     /**
@@ -36,6 +38,7 @@ class Group extends Model {
 							'chainmap_always_show_class',
 							'chainmap_max_characters_shown',
 							'last_billing_charge_at',
+							'enable_wh_sig_link',
 							'payment_code'
 							];
 
@@ -118,6 +121,11 @@ class Group extends Model {
 		return $results;
 	}
 
+	public function apiKeys()
+	{
+		return $this->hasMany('Siggy\ApiKey');
+	}
+
 	public function groupMembers(): array
 	{
 		if($this->groupMembers == null)
@@ -147,11 +155,9 @@ class Group extends Model {
 	{
 		if($this->chainMaps == null)
 		{
-			$cache = Cache::instance( CACHE_METHOD );
-
 			$cache_name = 'group-chainmaps-'.$this->id;
 
-			if( $data = $cache->get( $cache_name, FALSE ) )
+			if( $data = Cache::get( $cache_name, FALSE ) )
 			{
 				$this->chainMaps = $data;
 			}
@@ -260,10 +266,9 @@ class Group extends Model {
 			$c->access = $members;
 		}
 
-		$cache = Cache::instance( CACHE_METHOD );
 		$cache_name = 'group-chainmaps-'.$this->id;
 
-		$cache->set($cache_name, $chainmaps, 1800);
+		Cache::put($cache_name, $chainmaps, 1800);
 
 		return $chainmaps;
 	}

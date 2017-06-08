@@ -1,5 +1,20 @@
 # siggy Changelog
 
+## 3.0.0 - 2017-06-08
+## Changes
+- Migrated to new framework
+	- RIP Kohana 2009 - 2017
+	- 90% of code is migrated, other 10% is in a transitional state
+	- Database now maintained via migrations, they weren't a common framework thing when siggy started...death to sql files!
+- Full CSRF token deployment
+- Several URLs were rewritten in structure
+- Forgot password now asks you to enter a new password at the end instead of emailing you a random password
+- Ability to disable wormhole to signature link has been added by request
+- New API system allowing export of siggy data, work in progress however and will be fleshed out
+
+## Fixes
+- Notifier form for system and resident found types no longer shows a default "undefined" text
+
 ## 2.45.1 - 2017-04-29
 ## Fixes
 - Group creation broke due to previous changes, fixed now

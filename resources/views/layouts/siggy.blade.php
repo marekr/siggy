@@ -4,13 +4,13 @@
 		<title>siggy</title>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		@if( Kohana::$environment == Kohana::DEVELOPMENT )
-		<link type="text/css" href="{{ URL::base(TRUE, TRUE) }}theme.php?id={{ $settings->theme_id }}&{{ time() }}" id="theme-css" rel="stylesheet" media="screen" />
+		@if( App::environment('local') )
+		<link type="text/css" href="{{ url('theme.php?id='. $settings->theme_id.'&'.time()) }}" id="theme-css" rel="stylesheet" media="screen" />
 		@else
-		<link type="text/css" href="{{ URL::base(TRUE, TRUE) }}theme.php?id={{ $settings->theme_id }}" id="theme-css" rel="stylesheet" media="screen" />
+		<link type="text/css" href="{{ url('theme.php?id='.$settings->theme_id)}}" id="theme-css" rel="stylesheet" media="screen" />
 		@endif
-		<link href="{{ URL::base(TRUE, TRUE) }}font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet">
-		<link rel="icon" href="{{ URL::base(TRUE, TRUE) }}favicon.ico">
+		<link href="{{asset('font-awesome-4.2.0/css/font-awesome.min.css')}}" rel="stylesheet">
+		<link rel="icon" href="{{asset('favicon.ico')}}">
 
 		@include('layouts._javascript')
 		<meta name="csrf-token" content="{{ Auth::$session->csrf_token }}">
@@ -35,10 +35,10 @@
 						<li role="separator" class="divider"></li>
 
 						<li><a id="global-notes-button"><span class="glyphicon glyphicon-folder-close"></span> Notes</a></li>
-						<li><a target="_blank" href="{{ URL::base(TRUE, TRUE) }}stats"><span class="glyphicon glyphicon-list"></span> Stats</a></li>
+						<li><a target="_blank" href="{{ url('stats') }}"><span class="glyphicon glyphicon-list"></span> Stats</a></li>
 						<li id="settings-button"><a><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
 						@if( count(Auth::$user->perms()) > 0 )
-						<li><a href="{{ URL::base(TRUE, TRUE) }}manage"><span class="glyphicon glyphicon-home"></span> Admin</a></li>
+						<li><a href="{{ url('manage') }}"><span class="glyphicon glyphicon-home"></span> Admin</a></li>
 						@endif
 					</ul>
 				</li>
@@ -49,7 +49,7 @@
 					</a>
 					@if( count(Auth::$user->perms()) > 0 )
 					<ul class="dropdown-menu siggy-main-navbar" role="menu">
-						<li><a href="{{ URL::base(TRUE, TRUE) }}manage"><span class="glyphicon glyphicon-home"></span> Admin</a></li>
+						<li><a href="{{ url('manage') }}"><span class="glyphicon glyphicon-home"></span> Admin</a></li>
 					</ul>
 					@endif
 				</li>
@@ -59,7 +59,7 @@
 					</a>
 					<ul class="dropdown-menu" role="menu">
 						<li><a target="_blank" href="http://wiki.siggy.borkedlabs.com">Guide</a></li>
-						<li><a target="_blank" href="{{ URL::base(TRUE, TRUE) }}changelog">Changelog</a></li>
+						<li><a target="_blank" href="{{ url('changelog') }}">Changelog</a></li>
 						<li><a target="_blank" href="http://wiki.siggy.borkedlabs.com/support/contact/">Contact</a></li>
 					</ul>
 				</li>
@@ -75,7 +75,7 @@
 							@foreach( Auth::$session->accessibleGroups() as $g )
 								<li onClick="javascript:$(this).find('form').submit();">
 									<a>
-									<form action='{{ URL::base(TRUE, TRUE) }}access/groups' method='POST'>
+									<form action='{{ url('access/groups') }}' method='POST'>
 										<input type="hidden" name="_token" value="{{ Auth::$session->csrf_token }}" />
 										<input type='hidden' name='group_id' value='{{ $g->id }}' />
 										{{ $g->name }}
@@ -121,12 +121,12 @@
 					</a>
 					@if( Auth::loggedIn() )
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="{{ URL::base(TRUE, TRUE) }}account/characters">Switch Character</a></li>
+						<li><a href="{{url('account/characters')}}">Switch Character</a></li>
 						<li class="divider"></li>
-						<li><a href="{{ URL::base(TRUE, TRUE) }}account/connected">Connected Characters</a></li>
-						<li><a href="{{ URL::base(TRUE, TRUE) }}account/changePassword">Change Password</a></li>
+						<li><a href="{{url('account/connected')}}">Connected Characters</a></li>
+						<li><a href="{{url('account/changePassword')}}">Change Password</a></li>
 						<li class="divider"></li>
-						<li><a href="{{ URL::base(TRUE, TRUE) }}account/logout">Logout</a></li>
+						<li><a href="{{url('account/logout')}}">Logout</a></li>
 					</ul>
 					@endif
 				</li>

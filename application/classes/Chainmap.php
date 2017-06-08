@@ -1,7 +1,8 @@
 <?php
 
 use Carbon\Carbon;
-use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -36,11 +37,9 @@ class Chainmap extends Model {
 
 	public function get_map_cache()
 	{
-		$cache = Cache::instance( CACHE_METHOD );
-
 		$cache_name = 'map_data_cache-'.$this->id;
 
-		if( $map_data = $cache->get( $cache_name, FALSE ) )
+		if( $map_data = Cache::get( $cache_name, FALSE ) )
 		{
 			return $map_data;
 		}
@@ -89,7 +88,7 @@ class Chainmap extends Model {
 			/* Include all the group tracked jumps from all chainmaps since this is important not to trap oneself out */
 			$jumpTotal  = DB::selectOne("SELECT COALESCE(SUM(s.mass),0) as total
 														FROM wormhole_jumps wt
-														LEFT JOIN ships as s ON s.shipID = wt.ship_id
+														LEFT JOIN ships as s ON s.id = wt.ship_id
 														WHERE wt.group_id = :groupID AND wt.wormhole_hash = :hash",
 														[
 															'groupID' => $this->group_id,
@@ -185,7 +184,7 @@ class Chainmap extends Model {
 															(SELECT SUM(npcKills) FROM apihourlymapdata WHERE systemID=ss.id AND hourStamp >= :kill_cutoff2) as npcs_kills_in_last_2_hours
 															FROM solarsystems ss
 															LEFT OUTER JOIN activesystems sa ON (ss.id = sa.systemID AND sa.groupID=:group AND sa.chainmap_id=:chainmap)
-															INNER JOIN regions r ON(r.regionID=ss.region)
+															INNER JOIN eve_map_regions r ON(r.regionID=ss.region)
 															WHERE ss.id IN(".$systemsToPoll.")  ORDER BY ss.id ASC",[
 																'group' => $this->group_id,
 																'chainmap' => $this->id,
@@ -217,12 +216,11 @@ class Chainmap extends Model {
 
 	public function rebuild_map_data_cache()
 	{
-		$cache = Cache::instance( CACHE_METHOD );
 		$cache_name = 'map_data_cache-'.$this->id;
 
 		$map_data = $this->get_map_data();
 
-		$cache->set($cache_name, $map_data, 1800);
+		Cache::put($cache_name, $map_data, 1800);
 
 		return $map_data;
 	}
