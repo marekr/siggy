@@ -44,7 +44,8 @@ Route::get('/account/login', [
 
 Route::post('/account/login', [
     'uses' => 'AccountController@postLogin', 
-    'as' => 'login'
+    'as' => 'login',
+	'middleware' => ['csrf']
 ]);
 
 Route::get('/account/sso/complete', 'AccountController@getSSOComplete');
@@ -66,16 +67,17 @@ Route::get('/account/register', [
 
 Route::post('/account/register', [
     'uses' => 'AccountController@postRegister', 
-    'as' => 'register'
+    'as' => 'register',
+	'middleware' => ['csrf']
 ]);
 
-	
-Route::get('/account/forgotPassword', [
-	'uses' => 'AccountController@getForgotPassword', 
-	'as' => 'forgotPassword'
-]);
 
-Route::post('/account/password_reset', 'AccountController@postForgotPassword');
+Route::post('/account/password_reset', 
+	[
+		'uses' => 'AccountController@postForgotPassword',
+		'middleware' => ['csrf']
+	]
+	);
 
 
 Route::get('/account/password_reset', [
@@ -179,12 +181,10 @@ Route::group(['middleware' => ['siggy.app','siggy.authenticated']], function () 
 
 	Route::get('access/group_password','AccessController@getGroupPassword');
 	Route::post('access/group_password','AccessController@postGroupPassword');
-
-
 });
 
 
-Route::group(['middleware' => ['siggy.app']], function () {
+Route::group(['middleware' => ['siggy.app-pages']], function () {
 
 	Route::get('/account/logout', [
 		'uses' => 'AccountController@getLogout', 

@@ -46,7 +46,7 @@
 			<td><?php echo $character->valid ? 'Ok' : 'Invalid' ?></td>
 			<td>
 				<form action="{{url('account/disconnect')}}" method="post">
-					<input type="hidden" name="_token" value="<?php echo Auth::$session->csrf_token;?>" />
+					{{ csrf_field() }}
 					<input type="hidden" name="character_id" value="<?php echo $character_data[$character->character_id]->id; ?>" />
 					<button class='btn btn-danger btn-xs' type="submit"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Disconnect</button>
 					<a href="{{url('account/connect')}}" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-plus"></i>&nbsp;Reconnect character</a>

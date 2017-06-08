@@ -38,7 +38,12 @@ class Kernel extends HttpKernel
 			\App\Http\Middleware\SiggyLoggedIn::class,
   			\App\Http\Middleware\VerifySiggyCsrfToken::class,
 		],
+		'siggy.app-pages' => [
+			\App\Http\Middleware\SiggyLoggedIn::class,
+  			\App\Http\Middleware\VerifyCsrfToken::class,
+		],
 		'siggy.manage' => [
+			\App\Http\Middleware\SiggyLoggedIn::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
 			\App\Http\Middleware\SiggyCanManage::class,
 		],
@@ -57,6 +62,7 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'siggy.authenticated' =>  \App\Http\Middleware\SiggyAuthenticatedAccess::class,
+        'csrf' =>  \App\Http\Middleware\VerifyCsrfToken::class,
         'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,

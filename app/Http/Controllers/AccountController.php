@@ -497,7 +497,7 @@ class AccountController extends Controller {
 		}
 		else
 		{
-            return redirect('account/forgotPassword')
+            return redirect('account/password_reset')
                         ->withErrors($validator)
                         ->withInput();
 		}

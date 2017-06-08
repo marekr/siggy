@@ -22,6 +22,7 @@
 
 			<li <?php echo ($char->id == $selectedCharID ? 'class="selected"' : ''); ?> onClick="javascript:$(this).find('form').submit();">
 				<form action='{{url('account/characters')}}' method='POST'>
+					{{ csrf_field() }}
 					<input type='hidden' name='charID' value='{{$char->id}}' />
 
 					<input type='image' src='https://image.eveonline.com/Character/{{$char->id}}_64.jpg' name='select' width='64' height='64' alt='{{$char->name}}' />
