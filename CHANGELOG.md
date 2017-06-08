@@ -1,6 +1,6 @@
 # siggy Changelog
 
-## 3.0.0 - 2017-05-??
+## 3.0.0 - 2017-06-08
 ## Changes
 - Migrated to new framework
 	- RIP Kohana 2009 - 2017
