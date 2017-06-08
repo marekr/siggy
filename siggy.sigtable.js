@@ -18,6 +18,7 @@ siggy2.SigTable = function( core, map, options )
 
 	this.defaults = {
 		showSigSizeCol: false,
+		enableWhSigLink: true,
 		baseUrl:''
 	};
 
@@ -567,14 +568,18 @@ siggy2.SigTable.prototype.addSigRow = function (sigData, flashSig)
 	sigData.sysClass = this.systemClass;
 
 	sigData.showWormhole = false;
-	if(sigData.type == 'wh' && typeof(sigData.chainmap_wormholes) != "undefined")
-	{
-		var cid = $this.siggyMain.activities.siggy.chainMapID;
-		if(typeof(sigData.chainmap_wormholes[cid]) != "undefined")
-		{
-			sigData.showWormhole = true;
 
-			sigData.chainmap_wormhole = sigData.chainmap_wormholes[cid];
+	if(this.settings.enableWhSigLink)
+	{
+		if(sigData.type == 'wh' && typeof(sigData.chainmap_wormholes) != "undefined")
+		{
+			var cid = $this.siggyMain.activities.siggy.chainMapID;
+			if(typeof(sigData.chainmap_wormholes[cid]) != "undefined")
+			{
+				sigData.showWormhole = true;
+
+				sigData.chainmap_wormhole = sigData.chainmap_wormholes[cid];
+			}
 		}
 	}
 
@@ -746,10 +751,17 @@ siggy2.SigTable.prototype.editSigForm = function (id)
 
 	if( sigData.type == 'wh' )
 	{
-		siteSelect.css('width','50%');
-		var whSelect = this.generateMappedWormholeSelect(sigData);
-		descEle.append(whSelect)
-		whSelect.css('width','50%');
+		if(this.settings.enableWhSigLink)
+		{
+			siteSelect.css('width','50%');
+			var whSelect = this.generateMappedWormholeSelect(sigData);
+			descEle.append(whSelect)
+			whSelect.css('width','50%');
+		}
+		else
+		{
+			siteSelect.css('width','100%');
+		}
 	}
 
 	descEle.append($('<br />'))
@@ -767,6 +779,7 @@ siggy2.SigTable.prototype.generateMappedWormholeSelect = function( sigData )
 {
 	var cid = this.siggyMain.activities.siggy.chainMapID;
 	var selected = 'none';
+	
 	if(typeof(sigData.chainmap_wormholes) != "undefined" &&
 		typeof(sigData.chainmap_wormholes[cid]) != "undefined")
 	{
@@ -875,9 +888,12 @@ siggy2.SigTable.prototype.editTypeSelectChange = function (id)
 
 	$("#sig-" + id + " td.desc select[name=chainmap-wh]").remove();
 
-	if(newType == 'wh')
+	if(this.settings.enableWhSigLink)
 	{
-		$("#sig-" + id + " td.desc select").after(this.generateMappedWormholeSelect(this.sigData[id]).css('width','50%'));
+		if(newType == 'wh')
+		{
+			$("#sig-" + id + " td.desc select").after(this.generateMappedWormholeSelect(this.sigData[id]).css('width','50%'));
+		}
 	}
 }
 
@@ -996,7 +1012,10 @@ siggy2.SigTable.prototype.editSiteChanged = function (id)
 	{
 		$("#sig-" + id + " td.desc select[name=chainmap-wh]").remove();
 
-		$("#sig-" + id + " td.desc select[name=site]").after(this.generateMappedWormholeSelect(this.sigData[id]).css('width','50%'));
+		if(this.settings.enableWhSigLink)
+		{
+			$("#sig-" + id + " td.desc select[name=site]").after(this.generateMappedWormholeSelect(this.sigData[id]).css('width','50%'));
+		}
 	}
 }
 

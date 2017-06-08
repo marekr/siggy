@@ -53,7 +53,8 @@ siggy2.Core = function( options )
 			jumpTrackerEnabled: true
 	    },
 		sigtable: {
-			showSigSizeCol: false
+			showSigSizeCol: false,
+			enableWhSigLink: true
 		},
 		globalnotes: {
 		},
@@ -67,7 +68,6 @@ siggy2.Core = function( options )
 		sessionID: '',
 		negativeBalance: false
 	};
-
 	this.settings = $.extend(true, {}, this.defaults, options);
 
 	this.defaultDisplayStates = {
@@ -410,6 +410,7 @@ siggy2.Core.prototype.setupCollaspible = function(baseID, displayState, onShow)
 
 			if( typeof(onShow) == 'function' )
 				onShow.call();
+
 			$this.displayStates[displayState] = true;
 			$this.saveDisplayState();
 		}
