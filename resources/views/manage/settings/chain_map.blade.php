@@ -18,6 +18,8 @@
 		
 		{!! Form::bsText('chainmap_max_characters_shown', 'Max characters shown') !!}
 
+		{!! Form::yesNo('enable_wh_sig_link', 'Allow linking wormholes on map to signatures?','Linking wormholes on the map to signatures allows the deletion of wormholes when signatures are deleted and vice-versa. This however affects all maps.') !!}
+		
 	</fieldset>
 	<fieldset>
 		<legend>Jump Log</legend>	

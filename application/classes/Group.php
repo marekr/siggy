@@ -38,6 +38,7 @@ class Group extends Model {
 							'chainmap_always_show_class',
 							'chainmap_max_characters_shown',
 							'last_billing_charge_at',
+							'enable_wh_sig_link',
 							'payment_code'
 							];
 

@@ -2,10 +2,14 @@
 
 ## 3.0.0 - 2017-05-??
 ## Changes
-- Migrated to new backend framework
+- Migrated to new framework
 	- RIP Kohana 2009 - 2017
+	- 90% of code is migrated, other 10% is in a transitional state
+	- Database now maintained via migrations, they weren't a common framework thing when siggy started...death to sql files!
+- Full CSRF token deployment
 - Several URLs were rewritten in structure
 - Forgot password now asks you to enter a new password at the end instead of emailing you a random password
+- Ability to disable wormhole to signature link has been added by request
 
 ## 2.45.0 - 2017-04-23
 ## Changes

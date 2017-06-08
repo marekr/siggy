@@ -40,6 +40,7 @@ class SettingsController extends BaseController
 			'allow_map_height_expand' => intval($_POST['allow_map_height_expand'] ?? 0),
 			'chainmap_always_show_class' => intval($_POST['chainmap_always_show_class'] ?? 0),
 			'chainmap_max_characters_shown' => intval($_POST['chainmap_max_characters_shown'] ?? 10),
+			'enable_wh_sig_link' => intval($_POST['enable_wh_sig_link']  ?? false),
 		];
 
 		$validator = Validator::make($save, [

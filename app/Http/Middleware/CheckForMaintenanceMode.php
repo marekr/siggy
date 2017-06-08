@@ -42,7 +42,7 @@ class CheckForMaintenanceMode {
         if ( $this->app->isDownForMaintenance() &&
 				$request->route()->getActionName() != 'App\Http\Controllers\MaintenanceController@getIndex' )
         {
-            return $this->siggyRedirect('maintenance');
+            return $this->siggyRedirect($request->ajax(), 'maintenance');
         }
 
         return $next($request);

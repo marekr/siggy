@@ -98,7 +98,7 @@ Route::get('/announcements', [
 
 Route::get('/announcements/view/{id}', 'AnnouncementController@view');
 
-Route::group(['middleware' => ['siggy.authenticated']], function () {
+Route::group(['middleware' => ['siggy.app','siggy.authenticated']], function () {
 	
 	Route::get('/', [
 		'uses' => 'SiggyController@index', 
@@ -184,7 +184,7 @@ Route::group(['middleware' => ['siggy.authenticated']], function () {
 });
 
 
-Route::group(['middleware' => ['siggy.loggedin']], function () {
+Route::group(['middleware' => ['siggy.app']], function () {
 
 	Route::get('/account/logout', [
 		'uses' => 'AccountController@getLogout', 
@@ -244,7 +244,7 @@ Route::group(['middleware' => ['siggy.loggedin']], function () {
 	Route::get('access/blacklisted','AccessController@getBlacklisted');
 });
 
-Route::group(['namespace' => 'Manage','prefix' => 'manage','middleware' => ['siggy.canmanage']], function()
+Route::group(['namespace' => 'Manage','prefix' => 'manage','middleware' => ['siggy.manage']], function()
 {
 	Route::get('/', [
 		'uses' => 'DashboardController@index',

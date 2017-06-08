@@ -432,7 +432,8 @@
 					defaultActivity: '<?php echo $settings->default_activity; ?>'
 				},
 				sigtable: {
-					showSigSizeCol: <?php echo ( $group->show_sig_size_col ? 'true' : 'false' ); ?>
+					showSigSizeCol: <?php echo ( $group->show_sig_size_col ? 'true' : 'false' ); ?>,
+					enableWhSigLink: <?php echo ( $group->enable_wh_sig_link ? 'true' : 'false'); ?>,
 				},
 				map: {
 					jumpTrackerEnabled: <?php echo ( $group->jump_log_enabled ? 'true' : 'false' ); ?>,

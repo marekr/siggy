@@ -26,17 +26,22 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-       		 \App\Http\Middleware\CheckForMaintenanceMode::class,
+			\App\Http\Middleware\CheckForMaintenanceMode::class,
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \App\Http\Middleware\AuthenticateSession::class,
-            // \Illuminate\Session\Middleware\AuthenticateSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-  //          \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
-
+		'siggy.app' => [
+			\App\Http\Middleware\SiggyLoggedIn::class,
+  			\App\Http\Middleware\VerifySiggyCsrfToken::class,
+		],
+		'siggy.manage' => [
+            \App\Http\Middleware\VerifyCsrfToken::class,
+			\App\Http\Middleware\SiggyCanManage::class,
+		],
         'api' => [
             'throttle:60,1',
             'bindings',
@@ -52,8 +57,6 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'siggy.authenticated' =>  \App\Http\Middleware\SiggyAuthenticatedAccess::class,
-        'siggy.loggedin' =>  \App\Http\Middleware\SiggyLoggedIn::class,
-		'siggy.canmanage' => \App\Http\Middleware\SiggyCanManage::class,
         'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,

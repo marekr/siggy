@@ -12,7 +12,6 @@ use \AuthStatus;
 
 class SiggyCanManage
 {
-	
 	protected function hasAccess( BaseController $controller, string $action )
 	{
 		if( Auth::$user->admin )
