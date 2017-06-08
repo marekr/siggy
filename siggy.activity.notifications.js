@@ -187,7 +187,9 @@ siggy2.Activity.Notifications.prototype.openNotifierForm = function(notifier)
 		],
 		notifier: {
 			type: notifier,
-			num_jumps: '0'
+			num_jumps: '0',
+			resident_name: '',
+			system_name: ''
 		}
 	};
 
