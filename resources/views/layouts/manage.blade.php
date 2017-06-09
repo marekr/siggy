@@ -67,6 +67,7 @@
 					<li>
 						@if( count($avaliableGroups) > 1 )
 						<form action='{{ url('manage/access/set') }}' method='post' style="padding: 6px;">
+							{{ csrf_field() }}
 							<select name='group' class="form-control input-sm " onchange='submit();'>
 							<?php
 								$selected = Auth::$user->group->id; ?>
