@@ -40,8 +40,7 @@ class ChainmapsController extends BaseController {
 		}
 		catch(Exception $e)
 		{
-			$this->_error($e);
-			return;
+			return $this->response->errorInternal();
 		}
 
 		if($chainmap == null)
