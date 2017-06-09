@@ -31,17 +31,22 @@ class ChainmapsController extends BaseController {
 	}
 	
 	public function getChainmap($id, Request $request) {
-		$group = Group::find(1);
+		$group = Group::find($this->user()->group_id);
 		$chainmap = null;
 		
 		try
 		{
-			$chainmap = Chainmap::find($id, 1);
+			$chainmap = Chainmap::find($id, $this->user()->group_id);
 		}
 		catch(Exception $e)
 		{
 			$this->_error($e);
 			return;
+		}
+
+		if($chainmap == null)
+		{
+			return $this->response->errorNotFound();
 		}
 
 		$data = $chainmap->get_map_cache();
