@@ -12,12 +12,21 @@ function request( $verb, $base, $path, $content = '' )
 	);
 
 	$timestamp = date('c');
+	
+	$content_hash = "";
+	$content_type = "";
+	if($verb != "GET")
+	{
+		$content_hash = base64_encode(hash('sha256', $content, true));
+		$content_type = "";
+	}
+	
 	$stringToSign = $verb . "\n".
 					$path . "\n".
 					$timestamp . "\n".
-					"\n".
-					base64_encode(hash('sha256', $content, true));
-					
+					$content_type . "\n".
+					$content_hash;
+
 	$hash = base64_encode(hash_hmac('sha256', $stringToSign, $apiSecret, true));
 	$authorization = $apiID.":".$hash;
 

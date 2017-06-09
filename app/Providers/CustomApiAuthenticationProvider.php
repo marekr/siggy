@@ -65,16 +65,18 @@ class CustomApiAuthenticationProvider extends Authorization
 		}
 
 		$contentType = '';
+		$contentHash = '';
 		if($request->method() != "GET")
 		{
 			$contentType = $request->getContentType();
+			$contentHash = base64_encode(hash('sha256', $request->getContent(), true));
 		}
 
 		$stringToSign = $request->method() . "\n".
 						$request->path() . "\n".
 						$timestamp . "\n".
 						$contentType . "\n".
-						base64_encode(hash('sha256', $request->getContent(), true));
+						$contentHash;
 						
 		$checkHash = hash_hmac('sha256', $stringToSign, $apiKey->secret, true);
 

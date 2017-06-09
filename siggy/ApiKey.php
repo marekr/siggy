@@ -68,7 +68,7 @@ class ApiKey extends Model
 		if(empty(self::$avaliableScopes))
 		{
 			self::$avaliableScopes = [
-				new ApiKeyScope('chainsmaps_read','Read chainmaps'),
+				new ApiKeyScope('chainmaps_read','Read chainmaps'),
 				new ApiKeyScope('systems_read', 'Read systems'),
 				new ApiKeyScope('group_read', 'Read group'),
 			];
