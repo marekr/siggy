@@ -49,7 +49,7 @@ class EveSystems extends Command
 							
 		$systems = DB::table('eve_map_solar_systems')
 						->orderBy('solarSystemID', 'ASC')
-						->chunk(20, function($systems){
+						->chunk(20, function($systems) use($classMap) {
 			foreach($systems as $system)
 			{
 				$insert = [
@@ -61,21 +61,21 @@ class EveSystems extends Command
 					'sec' => round($system->security,1),
 					'constellation' => $system->constellationID,
 					'radius' => (($system->radius/1000)/149598000),
-					'class' => 9,
+					'sysClass' => 9,
 					'x' => $system->x,
 					'y' => $system->y,
 					'z' => $system->z
 				];
-
+				
 				if( isset( $classMap[ $system->regionID ] ) )
 				{
-					$insert['class'] = $classMap[ $system->regionID ]->wormholeClassID;
+					$insert['sysClass'] = $classMap[ $system->regionID ]->wormholeClassID;
 				}
 
 				//system class maps override region
 				if( isset( $classMap[ $system->solarSystemID ] ) )
 				{
-					$insert['class'] = $classMap[ $system->solarSystemID ]->wormholeClassID;
+					$insert['sysClass'] = $classMap[ $system->solarSystemID ]->wormholeClassID;
 				}
 
 				$insert['planets'] = DB::table('eve_map_denormalize')
