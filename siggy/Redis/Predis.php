@@ -13,10 +13,10 @@ class Predis {
 		if(self::$client == null)
 		{
 			self::$client = new \Predis\Client([
-				'scheme' => env('REDIS_SCHEME'),
-				'host' => env('REDIS_HOST'),
-				'port' => env('REDIS_PORT'),
-				'persistent' => env('REDIS_PERSISTENT')
+				'scheme' => config('database.redis.default.scheme'),
+				'host' => config('database.redis.default.host'),
+				'port' => config('database.redis.default.port'),
+				'persistent' => config('database.redis.default.persistent')
 				]);
 
 			try {

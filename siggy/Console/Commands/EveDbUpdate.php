@@ -112,10 +112,13 @@ class EveDbUpdate extends Command
             }
             
             $this->info("importing {$file['source']}");
+
+			$dbConnectionBase = 'database.connections.'.config('database.default');
+
             $command = sprintf("mysql -u %s -p%s %s < %s",
-                                env('DB_USERNAME'),
-                                env('DB_PASSWORD'),
-                                env('DB_DATABASE'),
+                                config("{$dbConnectionBase}.username"),
+                                config("{$dbConnectionBase}.password"),
+                                config("{$dbConnectionBase}.database"),
                                 $postFilePath);
 
             $process = new Process($command);

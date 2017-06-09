@@ -10,15 +10,16 @@ class PhealHelper {
 		Config::getInstance()->http_ssl_verifypeer = false;
 		Config::getInstance()->http_user_agent = 'siggy mark.roszko@gmail.com';
 		
-		if(env('PHEAL_CACHE') == 'memcache')
+		$type = config('pheal.cache.type');
+		if($type == 'memcache')
 		{
 			Config::getInstance()->cache = new \Pheal\Cache\MemcacheStorage( array('host' => 'localhost', 'port' => 11211) );
 		}
-		else if(env('PHEAL_CACHE') == 'predis')
+		else if($type == 'predis')
 		{
-			Config::getInstance()->cache = new \Pheal\Cache\PredisStorage( ['host' => env('REDIS_HOST'), 
-																			'port' => env('REDIS_PORT'), 
-																			'persistent' => env('REDIS_PERSISTENT')] );
+			Config::getInstance()->cache = new \Pheal\Cache\PredisStorage( ['host' => config('database.redis.default.host'), 
+																			'port' => config('database.redis.default.port'), 
+																			'persistent' => config('database.redis.default.persistent')] );
 		}
 		else
 		{

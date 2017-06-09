@@ -307,8 +307,8 @@ class AccountController extends Controller {
 
 
 			$credentials = new Credentials(
-				env('EVE_SSO_KEY'),
-				env('EVE_SSO_SECRET'),
+				config('sso.credentials.key'),
+				config('sso.credentials.secret'),
 				url('account/sso/eve')
 			);
 
