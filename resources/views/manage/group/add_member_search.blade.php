@@ -24,6 +24,7 @@
 				<td>{{$result->id}}</td>
 				<td>
 					<form class="form-inline" action="{{url('manage/group/members/add/details')}}" method="post">
+						{{ csrf_field() }}
 						<input type="hidden" name="eveID" value="{{$result->id}}" />
 						<input type="hidden" name="accessName" value="{{$result->name}}" />
 						<input type="hidden" name="memberType" value="{{$memberType}}" />
@@ -36,6 +37,7 @@
 				<td>{{$result->id}}</td>
 				<td>
 					<form class="form-inline" action="{{url('manage/group/members/add/details')}}" method="post">
+						{{ csrf_field() }}
 						<input type="hidden" name="eveID" value="{{$result->id}}" />
 						<input type="hidden" name="accessName" value="{{$result->name}}" />
 						<input type="hidden" name="memberType" value="{{$memberType}}" />

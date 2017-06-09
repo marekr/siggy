@@ -16,6 +16,7 @@ $type = array('corp' => 'Corp', 'char' => 'Character');
 
 <form class="form-horizontal" action="{{url('manage/group/members/add/finish')}}" method="post">
 	<h3>Add Group Member</h3>
+	{{ csrf_field() }}
 	<input type="hidden" name="eveID" value="{{$eveID}}" />
 	<input type="hidden" name="accessName" value="{{$accessName}}" />
 	<input type="hidden" name="memberType" value="{{$memberType}}" />
