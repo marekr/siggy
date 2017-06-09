@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class Pathfinder {
 
@@ -13,7 +14,7 @@ class Pathfinder {
 		$cache = Cache::instance( CACHE_METHOD );
 		$cacheName = 'pathfinder_jumps_cache';
 
-		if( !($this->jumps = $cache->get( $cacheName, FALSE ) ) )
+		if( !($this->jumps = Cache::get( $cacheName, FALSE ) ) )
 		{
 			$data = DB::table('eve_map_solar_system_jumps')
 					->orderBy('fromSolarSystemID', 'ASC')
@@ -30,7 +31,7 @@ class Pathfinder {
 				$this->jumps[$j->fromSolarSystemID][] = $j->toSolarSystemID;
 			}
 
-			$cache->set($cacheName, $this->jumps);
+			Cache::put($cacheName, $this->jumps);
 		}
 	}
 
