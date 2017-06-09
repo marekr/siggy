@@ -33,6 +33,20 @@ class DataController extends Controller {
 		return response()->json($poses);
 	}
 
+	public function locale($locale = 'en')
+	{
+		$path = resource_path() . DIRECTORY_SEPARATOR . 'lang';
+
+		$json = '';
+		if( file_exists("{$path}/{$locale}.json") )
+		{
+			$json = file_get_contents("{$path}/{$locale}.json");
+		}
+
+		return response($json)
+                  ->header('Content-Type', 'application/json; charset=utf-8');
+	}
+
 	public function sigTypes()
 	{
 		$output = [];

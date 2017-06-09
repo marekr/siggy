@@ -116,6 +116,7 @@ Route::group(['middleware' => ['siggy.app','siggy.authenticated']], function () 
 	Route::get('/data/sig_types','DataController@sigTypes');
 	Route::get('/data/structures','DataController@structures');
 	Route::get('/data/poses','DataController@poses');
+	Route::get('/data/locale/{locale}','DataController@locale');
 	Route::post('/update','SiggyController@update');
 	Route::post('siggy/siggy','SiggyController@siggy');
 	Route::post('siggy/save_system','SiggyController@saveSystem');
