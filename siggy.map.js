@@ -943,12 +943,12 @@ siggy2.Map.prototype.draw = function()
 		delete this.mapConnections[i];
 	}
 
-    $('#chain-map').empty();
+	$('#chain-map').empty();
 
-    for( var i in this.systems )
-    {
-        //local variable assignment
-        var systemData = this.systems[i];
+	for( var i in this.systems )
+	{
+		//local variable assignment
+		var systemData = this.systems[i];
 
 		var newTypeBlob = $(this.blobTemplate({system: {
 															id: systemData.systemID,
@@ -961,7 +961,7 @@ siggy2.Map.prototype.draw = function()
 															showClass: ( this.settings.alwaysShowClass || systemData.sysClass >= 7 || ( systemData.sysClass < 7 && systemData.displayName == "") ),
 															rally: systemData.rally,
 															hazard: true,
-															effect: parseInt(systemData.effect)
+															effect: parseInt(systemData.effect || 0)
 														}
 												})
 							);
