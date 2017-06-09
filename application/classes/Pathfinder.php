@@ -11,7 +11,6 @@ class Pathfinder {
 	{
 		$this->jumps = array();
 
-		$cache = Cache::instance( CACHE_METHOD );
 		$cacheName = 'pathfinder_jumps_cache';
 
 		if( !($this->jumps = Cache::get( $cacheName, FALSE ) ) )
