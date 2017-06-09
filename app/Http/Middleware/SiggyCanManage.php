@@ -69,7 +69,7 @@ class SiggyCanManage
 			return redirect('/');
 		}
 
-		if( !in_array($groupID, $groups) )
+		if( !in_array($groupID, $groups) && !Auth::$user->admin )
 		{
 			Auth::$user->groupID = $groups[0];
 			Auth::$user->save();
