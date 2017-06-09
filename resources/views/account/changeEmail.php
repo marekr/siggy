@@ -1,4 +1,4 @@
-	<form class="form-horizontal"  action='<?php echo URL::base(TRUE, TRUE);?>account/changePassword' method='POST'>
+	{!! Form::open(['url' => 'account/changePassword']) !!}
 		<legend>Change Email Address</legend>
 		<p>You must reenter your current password to change your email address. A confirmation mail will be sent to the new email address before the change is accepted.</p>
 		<div class="control-group">
@@ -23,5 +23,5 @@
 		  <button type="submit" class="btn btn-primary">Save changes</button>
 		  <button type="button" class="btn">Cancel</button>
 		</div>
-	</form>
+	{!! Form::close() !!}
 

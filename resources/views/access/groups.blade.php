@@ -8,8 +8,7 @@
 		@if(count($groups))
 			@foreach($groups as $group)
 			<li onClick="javascript:$(this).find('form').submit();">
-				<form action='{{url('access/groups')}}' method='POST'>
-					<input type="hidden" name="_token" value="{{Auth::$session->csrf_token}}" />
+				{!! Form::open(['url' => 'access/groups']) !!}
 					<input type='hidden' name='group_id' value='{{$group->id}}' />
 					@if($group->password_required)
 						<i class="fa fa-lock" aria-hidden="true"></i>
@@ -17,7 +16,7 @@
 					<div class="details">
 						<b>{{$group->name}}</b>
 					</div>
-				</form>
+				{!! Form::close() !!}
 			</li>
 			@endforeach
 		@else

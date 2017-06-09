@@ -44,13 +44,13 @@
 					</div>
 					<hr />
 					<h4>Login</h4>
-					<form role='form' action='{{url('account/login')}}' method='POST'>
+					{!! Form::open(['url' => 'account/login']) !!}
 						
-						<?php if( $invalidLogin == true ): ?>
+						@if( $invalidLogin == true )
 						<div class="alert alert-danger">
 							You have entered invalid login details.
 						</div>
-						<?php endif; ?>
+						@endif
 								<div class="row">
 									<div class="col-sm-12 col-md-10  col-md-offset-1 ">
 										<div class="form-group">
@@ -80,7 +80,7 @@
 									</div>
 								</div>
 							</fieldset>
-					</form>
+					{!! Form::close() !!}
 
 					<span class='help-block text-centered'>Lost or forgot password? <a href='{{url('account/forgotPassword')}}'>Click here</a></span>
 
