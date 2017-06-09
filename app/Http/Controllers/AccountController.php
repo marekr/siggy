@@ -515,7 +515,7 @@ class AccountController extends Controller {
 		$user = User::findByResetToken($token);
 		if($user == null)
 		{
-			return redirect('account/forgotPassword');
+			return redirect('account/password_reset');
 		}
 		
 		return view('account.complete_password_reset_form', ['token' => $token]);
@@ -527,7 +527,7 @@ class AccountController extends Controller {
 		$user = User::findByResetToken($token);
 		if($user == null)
 		{
-			return redirect('account/forgotPassword');
+			return redirect('account/password_reset');
 		}
 
 		$validator = Validator::make($request->all(), [
