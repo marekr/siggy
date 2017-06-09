@@ -38,7 +38,7 @@ class DScanController extends Controller {
 			/* check the cache first, else query */
 			if( !isset($this->dscan_item_cache[ $entry[1] ] ) )
 			{
-				$itemData = DB::selectOne('SELECT typeID FROM invtypes
+				$itemData = DB::selectOne('SELECT typeID FROM eve_inv_types
 										WHERE typeName LIKE ?', [$entry[1]]);
 
 				if( isset($itemData->typeID) )
@@ -129,8 +129,8 @@ class DScanController extends Controller {
 
 		$recs = DB::select("SELECT r.record_name, i.typeName,g.groupID, g.groupName, r.item_distance
 										FROM dscan_records r
-										LEFT JOIN invtypes i ON(i.typeID = r.type_id)
-										LEFT JOIN invgroups g ON(g.groupID = i.groupID)
+										LEFT JOIN eve_inv_types i ON(i.typeID = r.type_id)
+										LEFT JOIN eve_inv_groups g ON(g.groupID = i.groupID)
 										WHERE r.dscan_id=:dscan_id
 										ORDER BY g.groupName ASC,i.typeName ASC",[
 											'dscan_id' => $id
