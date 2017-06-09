@@ -12,6 +12,7 @@ use \Auth;
 use \Chainmap;
 use \groupUtils;
 use \CharacterLocation;
+use \Pathfinder;
 
 class ChainmapController extends Controller {
 
