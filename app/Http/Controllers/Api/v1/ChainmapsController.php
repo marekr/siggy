@@ -14,7 +14,7 @@ class ChainmapsController extends BaseController {
 
 	public function getList(Request $request) {
 		
-		$group = Group::find($this->user()->group_id);
+		$group = $this->user()->group;
 		$output = [];
 
 		foreach($group->chainMaps() as $c)
@@ -31,7 +31,6 @@ class ChainmapsController extends BaseController {
 	}
 	
 	public function getChainmap($id, Request $request) {
-		$group = Group::find($this->user()->group_id);
 		$chainmap = null;
 		
 		try

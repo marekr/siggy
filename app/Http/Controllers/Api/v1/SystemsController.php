@@ -13,6 +13,12 @@ class SystemsController extends BaseController {
 		try
 		{
 			$system = System::get($id, $this->user()->group_id);
+
+			if($system == null)
+			{
+				return $this->response->errorNotFound();
+			}
+
 			return $this->response->array($system);
 		}
 		catch(Exception $e)
