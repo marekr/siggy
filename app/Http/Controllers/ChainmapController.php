@@ -77,7 +77,7 @@ class ChainmapController extends Controller {
 			$result[] = array('system_id' => $system->sys_id, 'system_name' => $system->name, 'number_jumps' => $path );
 		}
 
-		usort($result, array('ChainmapController','sortResults'));
+		usort($result, array('\App\Http\Controllers\ChainmapController','sortResults'));
 
 		return response()->json(['result' => $result]);
 	}
