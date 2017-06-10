@@ -11,7 +11,7 @@ class StandardResponse
 	public static function error(string $msg): array
 	{
 		$resp = [
-			'status' => $self::StatusError,
+			'status' => self::StatusError,
 			'error' => $msg
 		];
 
@@ -21,7 +21,7 @@ class StandardResponse
 	public static function errors(array $errs): array
 	{
 		$resp = [
-			'status' => $self::StatusErrors,
+			'status' => self::StatusErrors,
 			'errors' => $errs
 		];
 

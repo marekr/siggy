@@ -10,6 +10,7 @@ use SimpleCrest\Endpoint;
 use Siggy\ESI\Client as ESIClient;
 
 use \Auth;
+use Siggy\StandardResponse;
 
 class CrestController extends Controller {
 
@@ -19,10 +20,11 @@ class CrestController extends Controller {
 		$waypoint = ((bool)$req['waypoint'] != true);
 		$systemId = (int)$req['system_id'];
 
+		$success = false;
 		$sso = Auth::$user->getActiveSSOCharacter();
 		if( $sso == null )
 		{
-			return;
+			return response()->json(StandardResponse::error("Something went horribly wrong, your sso token doesn't exist???"));
 		}
 
 		if($sso->scope_character_navigation_write)
@@ -39,15 +41,24 @@ class CrestController extends Controller {
 			];
 
 			$resp = $waypoints->post($body,$sso->character_id);
+
+			if($resp->getStatusCode() == 200)
+			{
+				$success = true;
+			}
 		}
 		else if($sso->scope_esi_ui_write_waypoint)
 		{
 			$client = new ESIClient($sso->access_token);
-			$client->postUiAutopilotWaypointV2($systemId, $waypoint, false);
+			$success = $client->postUiAutopilotWaypointV2($systemId, $waypoint, false);
 		}
 
-		$output = [];
-		return response()->json($output);
+		if(!$success)
+		{
+			return response()->json(StandardResponse::error('Failed setting waypoint'));
+		}
+
+		return response()->json(StandardResponse::ok());
 	}
 
 }

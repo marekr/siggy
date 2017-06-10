@@ -52,8 +52,7 @@ class POSController extends Controller {
 
 		if( $pos == null )
 		{
-			$this->response->json(StandardResponse::error('POS not found'));
-			return;
+			return response()->json(StandardResponse::error('POS not found'));
 		}
 
 		$data = [

@@ -183,11 +183,9 @@ class GroupMembersController extends BaseController
 			return redirect('manage/group/members');
 		}
 		
-		$resp = view('manage.group.delete_form', [
+		return view('manage.group.delete_form', [
 												'data' => $member->as_array(),
 												'id' => $id,
 											]);
-		
-		$this->response->body($resp);
 	}
 }
