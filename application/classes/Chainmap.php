@@ -316,7 +316,6 @@ class Chainmap extends Model {
 		catch( Exception $e )
 		{
 			//do nothing
-			throw new Exception("Failed to insert wormhole, probably a duplicate of paralle processing multiple people jumping :/");
 			return;
 		}
 
@@ -506,7 +505,15 @@ class Chainmap extends Model {
 		//if we didnt find a spot, just use the first one and call it a day
 		if( $sysPos == NULL )
 		{
-			$sysPOS = $spots[0];
+			if( isset($spots[0]) )
+			{
+				$sysPos = $spots[0];
+			}
+			else
+			{
+				$sysPos['x'] = 100;
+				$sysPos['y'] = 100;
+			}
 		}
 
 		$this->update_system($systemToBePlaced, array( 'x' => intval($sysPos['x']),
@@ -691,7 +698,7 @@ class Chainmap extends Model {
 				$newy = $cY + 85*$level*sin($spot_rotation);
 
 				//limited horizontal span
-				if( $newy < 780 && $newy > 0 && $newx > 0 )
+				if( $newy > 0 && $newx > 0 )
 				{
 					$ret[] = array('x' => $newx, 'y' => $newy);
 				}

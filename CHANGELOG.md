@@ -1,5 +1,10 @@
 # siggy Changelog
 
+## 3.0.1 - 2017-06-09
+## Fixes
+- Fixed dscan recorder not working
+- Fixed systems not mapping when the chainmap got big
+
 ## 3.0.0 - 2017-06-08
 ## Changes
 - Migrated to new framework
