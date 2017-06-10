@@ -1,5 +1,9 @@
 # siggy Changelog
 
+## 3.0.2 - 2017-06-09
+## Fixes
+- Fixed wormholes not mapping
+
 ## 3.0.1 - 2017-06-09
 ## Fixes
 - Fixed dscan recorder not working

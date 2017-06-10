@@ -447,8 +447,9 @@ class SiggyController extends BaseController {
 	{
 		$origin = $record->current_system_id;
 		$dest = $record->previous_system_id;
+		
 		//are we running with a chain map?
-		if( $this->chainmap == NULL )
+		if( $this->getChainmap() == NULL )
 		{
 			return;
 		}
@@ -482,18 +483,18 @@ class SiggyController extends BaseController {
 		if( $connection == null )
 		{
 			$notifierSystems = array();
-			if( !$this->chainmap->system_is_mapped($origin) )
+			if( !$this->getChainmap()->system_is_mapped($origin) )
 			{
 				$notifierSystems[] = $origin;
 			}
 
-			if( !$this->chainmap->system_is_mapped($dest) )
+			if( !$this->getChainmap()->system_is_mapped($dest) )
 			{
 				$notifierSystems[] = $origin;
 			}
 
 			//new wh
-			$this->chainmap->add_system_to_map($origin, $dest);
+			$this->getChainmap()->add_system_to_map($origin, $dest);
 
 			$this->doSystemMappedNotifications($notifierSystems);
 
