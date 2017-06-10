@@ -23,6 +23,8 @@ use \WormholeSignature;
 use \System;
 use \WormholeJump;
 use \Notifier;
+use \NotificationTypes;
+use \Pathfinder;
 
 class SiggyController extends BaseController {
 
