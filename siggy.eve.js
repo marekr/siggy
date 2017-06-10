@@ -50,15 +50,20 @@ siggy2.Eve.EveWho = function(name)
 }
 
 siggy2.Eve.addWaypointCall = function(data)
-{
-	$.ajax({
-		type: 'post',
-		url: this.baseUrl + 'crest/waypoint',
-		data: JSON.stringify(data),
-		contentType: 'application/json',
-		success: function (result)
-		{
-		},
-		dataType: 'json'
-	});
+{			
+	$.post(this.baseUrl + 'crest/waypoint', JSON.stringify(data))
+			.done(function(response)
+			{
+				if(response.status == "error")
+				{
+					siggy2.Dialogs.alertActionError(response.error);
+				}
+			})
+			.fail(function(jqXHR)
+			{
+				if(jqXHR.status >= 500)
+				{
+					siggy2.Dialogs.alertServerError("setting waypoint");
+				}
+			});
 }

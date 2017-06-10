@@ -219,6 +219,14 @@ siggy2.Dialogs.alertServerError = function(action)
 			})
 }
 
+siggy2.Dialogs.alertActionError = function(action)
+{
+	return siggy2.Dialogs.alert({ 
+					message: action, 
+					title:"Action Error"
+			})
+}
+
 siggy2.Dialog = function(ele)
 {
 	this.ele = $(ele);
