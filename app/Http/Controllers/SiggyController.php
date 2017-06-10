@@ -21,6 +21,7 @@ use \Signature;
 use \Chainmap;
 use \WormholeSignature;
 use \System;
+use \WormholeJump;
 
 class SiggyController extends BaseController {
 
