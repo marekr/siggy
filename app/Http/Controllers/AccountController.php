@@ -344,6 +344,9 @@ class AccountController extends Controller {
 
 				$result = json_decode($eveService->request('https://login.eveonline.com/oauth/verify'), true);
 
+				//force us to get some info about the character in the table
+				$charData = Character::find($result['CharacterID']);
+
 				if( $session->pull('sso_connect',false) && Auth::loggedIn() )	//if already logged in
 				{
 					if( !is_array($result) )
