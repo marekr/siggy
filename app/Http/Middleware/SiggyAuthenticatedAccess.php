@@ -29,7 +29,10 @@ class SiggyAuthenticatedAccess
      */
     public function handle($request, Closure $next)
     {
-		if( Auth::$authStatus == AuthStatus::GPASSWRONG )
+		list($controller, $action) = explode('@',  $request->route()->getActionName());
+		$controller = str_replace('App\Http\Controllers\\', '', $controller);
+
+		if( Auth::$authStatus == AuthStatus::GPASSWRONG && $controller != "AccessController" )
 		{
 			return $this->siggyRedirect($request->ajax(), '/access/group_password');
 		}
@@ -41,7 +44,7 @@ class SiggyAuthenticatedAccess
 		{
 			return $this->siggyRedirect($request->ajax(), '/access/groups');
 		}
-		elseif( Auth::$authStatus != AuthStatus::ACCEPTED )
+		elseif( Auth::$authStatus != AuthStatus::ACCEPTED && Auth::$authStatus != AuthStatus::GPASSWRONG)
 		{
 			if( Auth::loggedIn() )
 			{
