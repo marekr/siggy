@@ -76,7 +76,7 @@
 								<li onClick="javascript:$(this).find('form').submit();">
 									<a>
 									<form action='{{ url('access/groups') }}' method='POST'>
-										<input type="hidden" name="_token" value="{{ Auth::$session->csrf_token }}" />
+										{{ csrf_field() }}
 										<input type='hidden' name='group_id' value='{{ $g->id }}' />
 										{{ $g->name }}
 									</form>

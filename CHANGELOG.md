@@ -3,6 +3,7 @@
 ## 3.0.3 - 2017-06-09
 ## Fixes
 - Added error handling on setting EVE client waypoints
+- Fixed switching groups from the dropdown
 
 ## 3.0.2 - 2017-06-09
 ## Fixes
