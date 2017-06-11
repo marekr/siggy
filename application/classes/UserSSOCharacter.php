@@ -20,6 +20,7 @@ class UserSSOCharacter extends Model {
 			'scope_character_navigation_write',
 			'scope_esi_location_read_location',
 			'scope_esi_location_read_ship_type',
+			'scope_esi_location_read_online',
 			'scope_esi_ui_write_waypoint',
 			'scope_esi_ui_open_window',
 		];
@@ -39,7 +40,11 @@ class UserSSOCharacter extends Model {
 			],
 			[
 				'key' => 'scope_esi_location_read_ship_type',
-				'name' => 'ESI locationReadshipType'
+				'name' => 'ESI locationReadShipType'
+			],
+			[
+				'key' => 'scope_esi_location_read_online',
+				'name' => 'ESI locationReadOnline'
 			],
 			[
 				'key' => 'scope_esi_ui_write_waypoint',

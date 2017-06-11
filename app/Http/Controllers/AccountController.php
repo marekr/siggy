@@ -320,12 +320,14 @@ class AccountController extends Controller {
 																		\Siggy\OAuth2\Service\Eve::SCOPE_ESI_UI_WRITE_WAYPOINT,
 																		\Siggy\OAuth2\Service\Eve::SCOPE_ESI_LOCATION_READ_LOCATION,
 																		\Siggy\OAuth2\Service\Eve::SCOPE_ESI_LOCATION_READ_SHIP_TYPE,
+																		\Siggy\OAuth2\Service\Eve::SCOPE_ESI_LOCATION_READ_ONLINE,
 																		\Siggy\OAuth2\Service\Eve::SCOPE_ESI_UI_OPEN_WINDOW
 																	]);
 
 			$dbScopes = [
 				'scope_esi_location_read_location' => 1,
 				'scope_esi_location_read_ship_type' => 1,
+				'scope_esi_location_read_online' => 1,
 				'scope_esi_ui_write_waypoint' => 1,
 				'scope_esi_ui_open_window' => 1,
 				'scope_character_location_read' => 1,
