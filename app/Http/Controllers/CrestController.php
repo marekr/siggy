@@ -40,7 +40,14 @@ class CrestController extends Controller {
 				]
 			];
 
-			$resp = $waypoints->post($body,$sso->character_id);
+			try
+			{
+				$resp = $waypoints->post($body,$sso->character_id);
+			}
+			catch(\Exception $e)
+			{
+				$success = false;
+			}
 
 			if($resp->getStatusCode() == 200)
 			{
