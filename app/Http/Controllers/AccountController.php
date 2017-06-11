@@ -344,7 +344,7 @@ class AccountController extends Controller {
 
 				$result = json_decode($eveService->request('https://login.eveonline.com/oauth/verify'), true);
 
-				if( $session->pull('sso_connect',false) )
+				if( $session->pull('sso_connect',false) && Auth::loggedIn() )	//if already logged in
 				{
 					if( !is_array($result) )
 					{

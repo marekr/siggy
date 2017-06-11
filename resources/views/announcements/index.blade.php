@@ -12,7 +12,7 @@
 				<h5><span>Posted</span> - <span>{{miscUtils::getDateTimeString($announce->datePublished)}}</span> </h5>
 			</div>
 			<div class="panel-body">
-				{{$announce->content}}
+				{!!$announce->content!!}
 			</div>
 		</div>
 	@endforeach
