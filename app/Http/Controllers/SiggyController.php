@@ -76,6 +76,17 @@ class SiggyController extends BaseController {
 			}
 		}
 
+		$reconnectRequired = [];
+		$ssoCharacters = Auth::$user->ssoCharacters;
+		foreach($ssoCharacters as $character)
+		{
+			if(!$character->scope_esi_location_read_online ||
+				!$character->scope_esi_location_read_location)
+			{
+				$reconnectRequired[] = $character;
+			}
+		}
+
 		//load header tools
 		$themes = Theme::allByGroup(Auth::$session->group->id);
 
@@ -84,7 +95,8 @@ class SiggyController extends BaseController {
 												'themes' => Theme::allByGroup(Auth::$session->group->id),
 												'settings' => $this->loadSettings(),
 												'systemData' => $sysData,
-												'requested' => $requested
+												'requested' => $requested,
+												'reconnectRequired' => $reconnectRequired
 											]);
 	}
 	

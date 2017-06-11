@@ -16,6 +16,28 @@
 	</div>
 	<?php endif; ?>
 
+	@if(count($reconnectRequired) > 0)
+	<div class="box" style="width:100%;background-color:rgb(179, 52, 52)">
+		<div class='box-header'>Please reconnect your characters</div>
+		<div class='box-content'>
+			One or more of your connected characters has to be reconnected. This is due to switching to ESI for ship info and location.
+			If you had previously connected your character and it gave the ESI scopes, you must reconnect for siggy to now gain the new "online" status scope.
+
+			Affected characters:
+			<ul>
+			@foreach($reconnectRequired as $ssoChar)
+				<li>{{$ssoChar->character->name}}</li>
+			@endforeach
+			</ul>
+
+			If you fail to reconnect your characters, they will eventually stop appearing on the map.
+			<br />
+			Please go to the Connected Characters page and click the "Reconnect characters" button on each character for siggy new permissions for each character.<br />
+			<a href="{{url('account/connected')}}" class="btn btn-primary">Go to Connected Characters</a>
+		</div>
+	</div>
+	@endif
+
 	<div class="box" style="width:100%;display:none;" id="no-chain-map-warning">
 		<div class='box-header'>No chain-maps configured</div>
 		<div class='box-content'>

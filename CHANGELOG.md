@@ -1,6 +1,11 @@
 # siggy Changelog
 
-## 3.0.3 - 2017-06-09
+## 3.0.4 - 2017-06-11
+## Changes
+- Add request for ESI "online" status scope
+- Add display of ship types from ESI
+
+## 3.0.3 - 2017-06-10
 ## Fixes
 - Added error handling on setting EVE client waypoints
 - Fixed switching groups from the dropdown
