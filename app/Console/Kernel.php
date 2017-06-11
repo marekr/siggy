@@ -27,6 +27,8 @@ class Kernel extends ConsoleKernel
 		\Siggy\Console\Commands\EveShips::class,
 		\Siggy\Console\Commands\EveSystems::class,
 		\Siggy\Console\Commands\StaticDataImporter::class,
+		\Siggy\Console\Commands\CharInfoCommand::class,
+		\Siggy\Console\Commands\ESICorpSearchCommand::class,
     ];
 
     /**
