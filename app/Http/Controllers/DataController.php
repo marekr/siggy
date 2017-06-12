@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 use Siggy\StructureType;
 use Siggy\POSType;
+use Siggy\Ship;
 
 class DataController extends Controller {
 
@@ -31,6 +32,13 @@ class DataController extends Controller {
 		$poses = POSType::all()->keyBy('id');
 
 		return response()->json($poses);
+	}
+
+	public function ships()
+	{
+		$ships = Ship::all()->keyBy('id');
+
+		return response()->json($ships);
 	}
 
 	public function locale($locale = 'en')
