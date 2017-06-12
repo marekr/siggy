@@ -298,6 +298,7 @@ siggy2.StaticData = {
 	wormholeTypes: [],
 	sites: [],
 	maps: {},
+	ships: {},
 	baseListWormholes: {
 		0: "Unstable Wormhole",
 		1: "K162 (from Unknown)",
@@ -350,6 +351,14 @@ siggy2.StaticData.load = function(baseUrl, core)
 	}).then(function(result){
 		
 		$this.posTypes = result;
+
+		return jQuery.ajax({
+			url: baseUrl + 'data/ships?' + time(),
+			dataType: 'json'
+		});
+	}).then(function(result){
+		
+		$this.ships = result;
 
 		return jQuery.ajax({
 			url: baseUrl + 'data/systems?' + time(),
