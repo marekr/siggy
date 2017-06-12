@@ -40,6 +40,7 @@ class CrestController extends Controller {
 				]
 			];
 
+			$resp = null;
 			try
 			{
 				$resp = $waypoints->post($body,$sso->character_id);
@@ -49,7 +50,7 @@ class CrestController extends Controller {
 				$success = false;
 			}
 
-			if($resp->getStatusCode() == 200)
+			if($resp != null && $resp->getStatusCode() == 200)
 			{
 				$success = true;
 			}
