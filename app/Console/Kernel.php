@@ -49,7 +49,7 @@ class Kernel extends ConsoleKernel
 		$schedule->command('billing:charge')
 		          ->daily();
 		$schedule->command('eve:systemstats')
-		          ->hourlyAt(01);
+		          ->everyThirtyMinutes();
 		$schedule->command('signatures:clear')
 		          ->dailyAt('01:00');
 		$schedule->command('corps:update')
