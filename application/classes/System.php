@@ -71,34 +71,16 @@ class System extends Model {
 				$systemData['statics'] = $staticData;
 			}
 
-			$end = miscUtils::getHourStamp();
-			$start = miscUtils::getHourStamp(-24);
-			$apiData = collect(DB::select("SELECT hourStamp, jumps, kills, npcKills 
-													FROM apihourlymapdata 
-													WHERE systemID=? AND hourStamp >= ?
-													AND hourStamp <= ?
-													ORDER BY hourStamp asc LIMIT 0,24", [$systemData['id'], $start, $end]))->keyBy('hourStamp')->all();
+			$jumps = \Siggy\SolarSystemJump::where('system_id', '=', $systemData['id'])
+												->where('date_start', '>=', Carbon::now()->subDay())->get(['date_start', 'ship_jumps']);
+			$kills = \Siggy\SolarSystemKill::where('system_id', '=', $systemData['id'])
+												->where('date_start', '>=', Carbon::now()->subDay())->get(['date_start', 'ship_kills','npc_kills','pod_kills']);
 
-			$trackedJumps = collect(DB::select("SELECT hourStamp, jumps FROM jumpstracker 
-			WHERE systemID=?
-			AND groupID=? AND hourStamp >= ? 
-			AND hourStamp <= ?
-			ORDER BY hourStamp asc 
-			LIMIT 0,24",[$systemData['id'], $groupID, $start, $end]))->keyBy('hourStamp')->all();
-		
-			$systemData['stats'] = array();
-			for($i = 23; $i >= 0; $i--)
-			{
-				$hourStamp = miscUtils::getHourStamp($i*-1);
-				$apiJumps = ( isset($apiData[ $hourStamp ]) ? $apiData[ $hourStamp ]['jumps'] : 0);
-				$apiKills = ( isset($apiData[ $hourStamp ]) ? $apiData[ $hourStamp ]['kills'] : 0);
-				$apiNPC = ( isset($apiData[ $hourStamp ]) ? $apiData[ $hourStamp ]['npcKills'] : 0);
-				$siggyJumps = ( isset($trackedJumps[ $hourStamp ]) ? $trackedJumps[ $hourStamp ]['jumps'] : 0);
-				$systemData['stats'][] = array( $hourStamp*1000, $apiJumps, $apiKills, $apiNPC, $siggyJumps);
-			}
+			$systemData['stats'] = [
+					'jumps' => $jumps,
+					'kills' => $kills
+			];
 		}
-	//	$systemData['poses'] = $this->getPOSes( $systemData['id'] );
-	//	$systemData['dscans'] = $this->getDScans( $systemData['id'] );
 
 		return $systemData;
 	}

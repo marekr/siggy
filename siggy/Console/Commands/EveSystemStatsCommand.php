@@ -5,8 +5,9 @@ namespace Siggy\Console\Commands;
 use Illuminate\Console\Command;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use \PhealHelper;
-use Pheal\Pheal;
+use Siggy\SolarSystemJump;
+use Siggy\SolarSystemKill;
+use Siggy\ESI\Client as ESIClient;
 
 class EveSystemStatsCommand extends Command
 {
@@ -22,7 +23,7 @@ class EveSystemStatsCommand extends Command
 	 *
 	 * @var string
 	 */
-	protected $description = 'Charge groups';
+	protected $description = 'Update system statistics';
 
 	/**
 	 * Create a new command instance.
@@ -41,65 +42,61 @@ class EveSystemStatsCommand extends Command
 	 */
 	public function handle()
 	{
-		$cutoff = time()-(3600*24*2);
+		$client = new ESIClient();
+		SolarSystemJump::where('date_end','<=', Carbon::now()->subDay(1))->delete();
 
-		DB::table('apihourlymapdata')
-			->where('hourStamp', '<=', $cutoff)
-			->delete();
-		DB::table('jumpstracker')
-			->where('hourStamp', '<=', $cutoff)
-			->delete();
-
-		$systems = DB::table('solarsystems')->orderBy('id')->get()->all();
-		foreach($systems as &$system)
+		$this->info('Updating jumps...');
+		$jumps = $client->getUniverseSystemJumpsV1();
+		try
 		{
-			$system->jumps = 0;
-			$system->kills = 0;
-			$system->npcKills = 0;
-			$system->podKills = 0;
-		}
-
-		PhealHelper::configure();
-		$pheal = new Pheal('','');
-		$pheal->scope = 'map';
-
-		$jumpsData = $pheal->Jumps();
-		foreach($jumpsData->solarSystems as $ss )
-		{
-			if( isset( $systems[ $ss->solarSystemID ] ) )
+			if($jumps != null)
 			{
-				$systems[ $ss->solarSystemID ]->jumps = $ss->shipJumps;
+				foreach($jumps['records'] as $entry)
+				{
+					SolarSystemJump::create([
+						'system_id' => $entry->system_id,
+						'ship_jumps' => $entry->ship_jumps,
+						'date_start' => $jumps['dateStart'],
+						'date_end' => $jumps['dateEnd'],
+					]);
+				}
 			}
 		}
-
-		$killsData = $pheal->Kills();
-		foreach($killsData->solarSystems as $ss )
+		catch(\Exception $e)
 		{
-			if( isset( $systems[ $ss->solarSystemID ] ) )
-			{
-				$systems[ $ss->solarSystemID ]->kills = $ss->shipKills;
-				$systems[ $ss->solarSystemID ]->npcKills = $ss->factionKills;
-				$systems[ $ss->solarSystemID ]->podKills = $ss->podKills;
-			}
+			$this->info('Error updating jumps, most likely duplicate records, skipping');
+		}
+		finally
+		{
+			unset($jumps);
 		}
 
-
-		date_default_timezone_set('UTC');
-		$requestDateInfo = getdate( time() - 3600 );
-		$time = gmmktime($requestDateInfo['hours'],0,0,$requestDateInfo['mon'],$requestDateInfo['mday'],$requestDateInfo['year']);
-
-		foreach($systems as $system)
+		$this->info('Updating kills...');
+		$kills = $client->getUniverseSystemKillsV1();
+		try
 		{
-			DB::insert('INSERT INTO apihourlymapdata (`systemID`,`hourStamp`, `jumps`, `kills`, `npcKills`, `podKills`) 
-				VALUES(:systemID, :hourStamp, :jumps, :kills, :npcKills, :podKills) ON DUPLICATE KEY UPDATE systemID=systemID',[
-					'systemID' => $system->id,
-					'hourStamp' => $time,
-					'jumps' => $system->jumps,
-					'kills' => $system->kills,
-					'npcKills' => $system->npcKills,
-					'podKills' => $system->podKills
-				]);
-
+			if($kills != null)
+			{
+				foreach($kills['records'] as $entry)
+				{
+					SolarSystemKill::create([
+						'system_id' => $entry->system_id,
+						'ship_kills' => $entry->ship_kills,
+						'pod_kills' => $entry->pod_kills,
+						'npc_kills' => $entry->npc_kills,
+						'date_start' => $kills['dateStart'],
+						'date_end' => $kills['dateEnd'],
+					]);
+				}
+			}
+		}
+		catch(\Exception $e)
+		{
+			$this->info('Error updating kills, most likely duplicate records, skipping');
+		}
+		finally
+		{
+			unset($kills);
 		}
 
 		$this->info('Updated system stats');

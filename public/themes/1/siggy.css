@@ -382,38 +382,6 @@ label.no {
     text-align:center;
 }
 
-.system-stats-graph
-{
-	display:inline-block;
-}
-
-.system-stats-graph h4
-{
-}
-
-.system-stats-graph > div
-{
-	width:250px;
-	height:160px;
-}
-
-.system-stats-legend-box
-{
-	border: 1px solid #fff;
-	width:16px;
-	height:10px;
-	display:inline-block;
-}
-
-.system-stats-legend-siggy
-{
-	background-color:#AFD8F8;
-}
-
-.system-stats-legend-api
-{
-	background-color:#EDC240;
-}
 
 /* end stats*/
 

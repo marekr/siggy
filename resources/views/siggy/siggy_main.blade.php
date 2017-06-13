@@ -248,25 +248,9 @@
 	            <div id='system-stats' class="sub-display-group">
 	                <div class='sub-display-group-header hover'>Statistics<i class="expand-collapse-indicator fa fa-caret-down pull-right fa-lg"></i></div>
 	                <div class='sub-display-group-content'>
-	                    <div class="system-stats-graph">
-	                        <h4>Jumps</h4>
-	                        <div id='jumps'></div>
-	                    </div>
-	                    <div class="system-stats-graph" >
-	                        <h4>NPC Kills</h4>
-	                        <div id='npcKills'></div>
-	                    </div>
-	                    <div class="system-stats-graph">
-	                        <h4>Ship Kills</h4>
-	                        <div id='shipKills'></div>
-	                    </div>
-	                    <div>
-	                        <div class='system-stats-legend-box system-stats-legend-siggy'></div>
-	                        <span>siggy</span>
-
-	                        <div class='system-stats-legend-box system-stats-legend-api'></div>
-	                        <span>API</span>
-	                    </div>
+						<div style="width:100%;height:400px;">
+							<canvas id="stats-canvas"></canvas>
+						</div>
 	                </div>
 	            </div>
 	            <!-- end stats -->

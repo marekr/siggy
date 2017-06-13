@@ -29,6 +29,7 @@ class Kernel extends ConsoleKernel
 		\Siggy\Console\Commands\StaticDataImporter::class,
 		\Siggy\Console\Commands\CharInfoCommand::class,
 		\Siggy\Console\Commands\ESICorpSearchCommand::class,
+		\Siggy\Console\Commands\ESIUniverseCommand::class,
     ];
 
     /**

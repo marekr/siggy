@@ -2,6 +2,7 @@
 
 namespace Siggy\ESI;
 
+use Carbon\Carbon;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\BadResponseException;
 use Siggy\Redis\RedisTtlCounter;
@@ -130,6 +131,47 @@ class Client
 		return json_decode($resp);
 	}
 
+	public function getUniverseSystemJumpsV1(): ?array
+	{
+		$response = $this->request('GET', "/v1/universe/system_jumps/");
+		
+		if( $response == null ||
+			$response->getStatusCode() != 200)
+		{
+			return null;
+		}
+		
+		$hourEnd = Carbon::parse($response->getHeader('Last-Modified')[0]);
+
+		$resp = [
+			'dateStart' => $hourEnd->copy()->subHour(),
+			'dateEnd' => $hourEnd,
+			'records' =>  json_decode($response->getBody())
+		];
+
+		return $resp;
+	}
+
+	public function getUniverseSystemKillsV1(): ?array
+	{
+		$response = $this->request('GET', "/v1/universe/system_kills/");
+		
+		if( $response == null ||
+			$response->getStatusCode() != 200)
+		{
+			return null;
+		}
+		
+		$hourEnd = Carbon::parse($response->getHeader('Last-Modified')[0]);
+
+		$resp = [
+			'dateStart' => $hourEnd->copy()->subHour(),
+			'dateEnd' => $hourEnd,
+			'records' =>  json_decode($response->getBody())
+		];
+
+		return $resp;
+	}
 	
 	public function getSearchV1(string $search, array $categories, string $language = 'en-us', $strict = false): ?\stdClass
 	{

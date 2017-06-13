@@ -166,7 +166,7 @@ class Chainmap extends Model {
 		{
 			$systemsToPoll = implode(',', $systemsToPoll);
 
-			$killCutoff = time()-(3600*1);	//minus 2 hours
+			$killCutoff = Carbon::now()->subHours(2);
 
 			$chainMapSystems = DB::select("SELECT ss.name,
 															ss.id as systemID,
@@ -180,8 +180,8 @@ class Chainmap extends Model {
 															ss.sysClass,
 															ss.effect,
 															r.regionName as region_name,
-															(SELECT SUM(kills) FROM apihourlymapdata WHERE systemID=ss.id AND hourStamp >= :kill_cutoff1) as kills_in_last_2_hours,
-															(SELECT SUM(npcKills) FROM apihourlymapdata WHERE systemID=ss.id AND hourStamp >= :kill_cutoff2) as npcs_kills_in_last_2_hours
+															(SELECT SUM(ship_kills) FROM solarsystem_kills WHERE system_id=ss.id AND date_start >= :kill_cutoff1) as kills_in_last_2_hours,
+															(SELECT SUM(npc_kills) FROM solarsystem_kills WHERE system_id=ss.id AND date_start >= :kill_cutoff2) as npcs_kills_in_last_2_hours
 															FROM solarsystems ss
 															LEFT OUTER JOIN activesystems sa ON (ss.id = sa.systemID AND sa.groupID=:group AND sa.chainmap_id=:chainmap)
 															INNER JOIN eve_map_regions r ON(r.regionID=ss.region)
@@ -191,6 +191,7 @@ class Chainmap extends Model {
 																'kill_cutoff1' =>$killCutoff,
 																'kill_cutoff2' =>$killCutoff,
 															]);
+
 			$chainMapSystems = new Collection($chainMapSystems);
 			$chainMapSystems = $chainMapSystems->keyBy('systemID')->all();
 

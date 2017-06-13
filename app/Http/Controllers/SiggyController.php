@@ -372,15 +372,17 @@ class SiggyController extends BaseController {
 
 		$end = miscUtils::getHourStamp();
 		$start = miscUtils::getHourStamp(-24);
-		$apiData = DB::select("SELECT hourStamp, jumps, kills, npcKills 
-												FROM apihourlymapdata 
-												WHERE systemID=:system AND hourStamp >= :start AND hourStamp <= :end 
-												ORDER BY hourStamp asc LIMIT 0,24",[
-													'system' => $systemData->id,
-													'start' => $start,
-													'end' => $end
-												]);
 
+		$jumps = \Siggy\SolarSystemJump::where('system_id', '=', $systemData->id)
+											->where('date_start', '>=', Carbon::now()->subDay())->get(['date_start', 'ship_jumps']);
+		$kills = \Siggy\SolarSystemKill::where('system_id', '=', $systemData->id)
+											->where('date_start', '>=', Carbon::now()->subDay())->get(['date_start', 'ship_kills','npc_kills','pod_kills']);
+
+		$systemData->stats = [
+				'jumps' => $jumps,
+				'kills' => $kills
+		];
+												/*
 		$trackedJumps = DB::select("SELECT hourStamp, jumps 
 													FROM jumpstracker 
 													WHERE systemID=:system AND groupID=:group AND hourStamp >= :start 
@@ -391,19 +393,8 @@ class SiggyController extends BaseController {
 														'group' => Auth::$session->group->id,
 														'start' => $start,
 														'end' => $end
-													]);
+													]);*/
 								//	->execute()->as_array('hourStamp');
-
-		$systemData->stats = [];
-		for($i = 23; $i >= 0; $i--)
-		{
-			$hourStamp = miscUtils::getHourStamp($i*-1);
-			$apiJumps = ( isset($apiData[ $hourStamp ]) ? $apiData[ $hourStamp ]['jumps'] : 0);
-			$apiKills = ( isset($apiData[ $hourStamp ]) ? $apiData[ $hourStamp ]['kills'] : 0);
-			$apiNPC = ( isset($apiData[ $hourStamp ]) ? $apiData[ $hourStamp ]['npcKills'] : 0);
-			$siggyJumps = ( isset($trackedJumps[ $hourStamp ]) ? $trackedJumps[ $hourStamp ]['jumps'] : 0);
-			$systemData->stats[] = array( $hourStamp*1000, $apiJumps, $apiKills, $apiNPC, $siggyJumps);
-		}
 
 		$hubJumps = DB::select("SELECT ss.id as system_id, pr.num_jumps,ss.name as destination_name 
 												FROM precomputedroutes pr

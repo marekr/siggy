@@ -59,6 +59,7 @@ return [
 				'jquery/jquery.simplePagination.js',
 				'jquery/jquery.idle.js',
 				'jquery/jquery.jsPlumb-1.6.4.js',
+				'vendor/Chart-2.6.0.bundle.js',
 				'vendor/handlebars-v4.0.5.js',
 				'vendor/handlebars.form-helpers.js',
 				'vendor/handlebars.helpers.js',
