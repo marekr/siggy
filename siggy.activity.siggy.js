@@ -5,6 +5,16 @@
 
 siggy2.Activity = siggy2.Activity || {};
 
+window.chartColors = {
+	red: 'rgb(255, 99, 132)',
+	orange: 'rgb(255, 159, 64)',
+	yellow: 'rgb(255, 205, 86)',
+	green: 'rgb(75, 192, 192)',
+	blue: 'rgb(54, 162, 235)',
+	purple: 'rgb(153, 102, 255)',
+	grey: 'rgb(201, 203, 207)'
+};
+
 siggy2.Activity.siggy = function(core)
 {
 	var $this = this;
@@ -75,6 +85,124 @@ siggy2.Activity.siggy = function(core)
 	this.initializeTabs();
 	this.initializeCollaspibles();
 
+	this.configureStatsChart();
+}
+
+siggy2.Activity.siggy.prototype.configureStatsChart = function()
+{
+	var timeFormat = 'HH:mm';
+	var color = Chart.helpers.color;
+
+	var legendFontColor = '#fff';
+	var axesFontColor = '#fff';
+	var gridLinesColor = '#adadad';
+	var ticksFontColor = '#fff';
+	var labelFontColor = '#fff';
+
+	this.statsChartConfig = {
+		type: 'line',
+		data: {
+			datasets: [{
+				label: "Jumps",
+				backgroundColor: color(window.chartColors.green).alpha(0.7).rgbString(),
+				borderColor: window.chartColors.green,
+				fill: true,
+				yAxisID: 'y-axis-jumps',
+				data: [],
+			},{
+				label: "NPC Kills",
+				backgroundColor: color(window.chartColors.blue).alpha(0.7).rgbString(),
+				borderColor: window.chartColors.blue,
+				fill: true,
+				yAxisID: 'y-axis-kills',
+				data: [],
+			},{
+				label: "Ship Kills",
+				backgroundColor: color(window.chartColors.grey).alpha(0.7).rgbString(),
+				borderColor: window.chartColors.grey,
+				fill: true,
+				yAxisID: 'y-axis-kills',
+				data: [],
+			},{
+				label: "Pod Kills",
+				backgroundColor: color(window.chartColors.red).alpha(0.7).rgbString(),
+				borderColor: window.chartColors.red,
+				fill: true,
+				yAxisID: 'y-axis-kills',
+				data: [],
+			}]
+		},
+		options: {
+			responsive: true,
+			maintainAspectRatio: false,
+			title:{
+				text: "Stats"
+			},
+			legend: {
+				labels: {
+					fontColor: legendFontColor
+				}
+			},
+			scales: {
+				xAxes: [{
+					type: "time",
+					display: true,
+					time: {
+						unit: 'hour',
+						displayFormats: {
+							hour: 'HH:mm'
+						}
+					},
+					scaleLabel: {
+						display: true,
+						labelString: 'Time',
+						fontColor: labelFontColor
+					},
+					gridLines:{
+						color: gridLinesColor
+					},
+					ticks: {
+						fontColor: ticksFontColor
+					}
+				}, ],
+				yAxes: [{
+					id: 'y-axis-jumps',
+               	 	stacked: true,
+					scaleLabel: {
+						display: true,
+						labelString: 'Jumps',
+						fontColor: labelFontColor
+					},
+					gridLines:{
+						color: gridLinesColor,
+						drawOnChartArea: false
+					},
+					ticks: {
+						fontColor: ticksFontColor
+					}
+				},{
+					id: 'y-axis-kills',
+               	 	stacked: true,
+					scaleLabel: {
+						display: true,
+						labelString: 'Kills',
+						fontColor: labelFontColor
+					},
+					gridLines:{
+						color: gridLinesColor,
+						drawOnChartArea: true
+					},
+					ticks: {
+						fontColor: ticksFontColor
+					}
+				}],
+			},
+		}
+	};
+
+
+	var ctx = document.getElementById("stats-canvas").getContext("2d");
+	this.statsChart = new Chart(ctx, this.statsChartConfig);
 }
 
 
@@ -575,15 +703,8 @@ siggy2.Activity.siggy.prototype.updateSystemInfo = function (systemData)
 
 	if( typeof(systemData.stats) != 'undefined' )
 	{
-		if( systemData.stats.length > 0 )
-		{
-			this.systemStats = systemData.stats;
-			this.renderStats();
-		}
-		else
-		{
-			this.systemStats = [];
-		}
+		this.systemStats = systemData.stats;
+		this.renderStats();
 	}
 	
 	this.intelposes.updatePOSList( systemData.poses );
@@ -591,50 +712,47 @@ siggy2.Activity.siggy.prototype.updateSystemInfo = function (systemData)
 	this.intelstructures.update( systemData.structures );
 }
 
+
 siggy2.Activity.siggy.prototype.renderStats = function()
 {
-	var options = {
-		lines: { show: true },
-		points: { show: false },
-		xaxis: { mode: 'time',minTickSize: [1, 'hour'], ticks: 13, labelAngle: 45, color: '#fff' },
-		yaxis: {color: '#fff', tickDecimals: 0}
-	};
-
-
 	var jumps = [];
-	var sjumps = [];
-	var kills = [];
+	var shipKills = [];
+	var podKills = [];
 	var npcKills = [];
-	for( var i = 0; i < this.systemStats.length; i++ )
+	for( var i = 0; i < this.systemStats.jumps.length; i++ )
 	{
-		jumps.push([parseInt(this.systemStats[i][0]), parseInt(this.systemStats[i][1]) ] );
-		sjumps.push([parseInt(this.systemStats[i][0]), parseInt(this.systemStats[i][4]) ] );
-		kills.push([parseInt(this.systemStats[i][0]), parseInt(this.systemStats[i][2]) ] );
-		npcKills.push([parseInt(this.systemStats[i][0]), parseInt(this.systemStats[i][3]) ] );
+		var entry = this.systemStats.jumps[i];
+		jumps.push({
+			x: entry.date_start, 
+			y: entry.ship_jumps
+		});
 	}
-
-
-	$.plot( $('#jumps'),  [
-	 {
-		data: jumps,
-		lines: { show: true, fill: true }
-	},
+	
+	for( var i = 0; i < this.systemStats.kills.length; i++ )
 	{
-		data: sjumps,
-		lines: { show: true, fill: true }
-	}], options);
-
-	$.plot( $('#shipKills'),  [
-	{
-		data: kills,
-		lines: { show: true, fill: true }
-	}],options);
-
-	$.plot( $('#npcKills'),  [
-	{
-		data: npcKills,
-		lines: { show: true, fill: true }
-	}],options);
+		var entry = this.systemStats.kills[i];
+		npcKills.push({
+			x: entry.date_start, 
+			y: entry.npc_kills
+		});
+		
+		shipKills.push({
+			x: entry.date_start, 
+			y: entry.ship_kills
+		});
+		
+		podKills.push({
+			x: entry.date_start, 
+			y: entry.pod_kills
+		});
+	}
+	
+	this.statsChartConfig.data.datasets[0].data = jumps;
+	this.statsChartConfig.data.datasets[1].data = npcKills;
+	this.statsChartConfig.data.datasets[2].data = shipKills;
+	this.statsChartConfig.data.datasets[3].data = podKills;
+	
+	this.statsChart.update();
 }
 
 siggy2.Activity.siggy.prototype.setBearTab = function( bearClass )
