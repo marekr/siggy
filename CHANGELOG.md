@@ -1,5 +1,9 @@
 # siggy Changelog
 
+## 3.1.0 - 2017-06-14
+## Changes
+- Reimplemented system statistics
+
 ## 3.0.4 - 2017-06-11
 ## Changes
 - Add request for ESI "online" status scope
