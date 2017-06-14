@@ -14,6 +14,8 @@ $( function()
 	$(function(){
 		$(document).on('click','input[type=text].select-on-focus',function(){ this.select(); });
 	});
+	
+	moment.tz.setDefault("UTC");
 });
 
 

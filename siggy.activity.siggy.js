@@ -151,7 +151,7 @@ siggy2.Activity.siggy.prototype.configureStatsChart = function()
 						unit: 'hour',
 						displayFormats: {
 							hour: 'HH:mm'
-						}
+						}             
 					},
 					scaleLabel: {
 						display: true,
@@ -751,6 +751,9 @@ siggy2.Activity.siggy.prototype.renderStats = function()
 	this.statsChartConfig.data.datasets[1].data = npcKills;
 	this.statsChartConfig.data.datasets[2].data = shipKills;
 	this.statsChartConfig.data.datasets[3].data = podKills;
+	
+	this.statsChartConfig.options.scales.xAxes[0].time.min = moment.utc().subtract(1, 'day');
+	this.statsChartConfig.options.scales.xAxes[0].time.max = moment.utc();
 	
 	this.statsChart.update();
 }
