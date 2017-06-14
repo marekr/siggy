@@ -52,14 +52,12 @@ return [
 				'jquery/jquery.blockUI.js',
 				'jquery/jquery.color.js',
 				'jquery/jquery.tablesorter.js',
-				'jquery/jquery.flot.js',
 				'jquery/jquery.ui.position.js',
 				'jquery/jquery.contextMenu.js',
 				'jquery/jquery.hotkeys.js',
 				'jquery/jquery.simplePagination.js',
 				'jquery/jquery.idle.js',
 				'jquery/jquery.jsPlumb-1.6.4.js',
-				'vendor/Chart-2.6.0.bundle.js',
 				'vendor/handlebars-v4.0.5.js',
 				'vendor/handlebars.form-helpers.js',
 				'vendor/handlebars.helpers.js',
@@ -67,6 +65,8 @@ return [
 				'tab.js',
 				'typeahead.bundle.js',
 				'vendor/moment.js',
+				'vendor/moment-timezone.js',
+				'vendor/Chart-2.6.0.js',
 				'vendor/validate.js'
 			]
 		],
