@@ -150,30 +150,6 @@ class SiggyController extends BaseController {
 				{
 					if($record->current_system_id != $record->previous_system_id)
 					{
-						if( Auth::$session->group->record_jumps )
-						{
-							$hourStamp = miscUtils::getHourStamp();
-
-
-							DB::insert('INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`)
-															VALUES(:systemID, :groupID, :hourStamp, 1)
-															ON DUPLICATE KEY UPDATE jumps=jumps+1',
-															[
-																'hourStamp' => $hourStamp,
-																'systemID' => $record->current_system_id,
-																'groupID' => Auth::$session->group->id
-															]);
-
-							DB::insert('INSERT INTO jumpstracker (`systemID`, `groupID`, `hourStamp`, `jumps`)
-															VALUES(:systemID, :groupID, :hourStamp, 1)
-															ON DUPLICATE KEY UPDATE jumps=jumps+1',
-															[
-																'hourStamp' => $hourStamp,
-																'systemID' => $record->previous_system_id,
-																'groupID' => Auth::$session->group->id
-															]);
-						}
-
 						try
 						{
 							$this->__wormholeJump($record);
@@ -382,19 +358,6 @@ class SiggyController extends BaseController {
 				'jumps' => $jumps,
 				'kills' => $kills
 		];
-												/*
-		$trackedJumps = DB::select("SELECT hourStamp, jumps 
-													FROM jumpstracker 
-													WHERE systemID=:system AND groupID=:group AND hourStamp >= :start 
-													AND hourStamp <= :end 
-													ORDER BY hourStamp asc LIMIT 0,24",
-													[
-														'system' => $systemData->id,
-														'group' => Auth::$session->group->id,
-														'start' => $start,
-														'end' => $end
-													]);*/
-								//	->execute()->as_array('hourStamp');
 
 		$hubJumps = DB::select("SELECT ss.id as system_id, pr.num_jumps,ss.name as destination_name 
 												FROM precomputedroutes pr

@@ -1,18 +1,27 @@
-
 <?php
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateJumpstrackerTable extends Migration
+class DropJumpsTracker extends Migration
 {
     /**
      * Run the migrations.
-     * @table jumpstracker
      *
      * @return void
      */
     public function up()
+    {
+        Schema::drop('jumpstracker');
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
     {
         Schema::create('jumpstracker', function (Blueprint $table) {
             $table->integer('systemID')->unsigned()->default('0');
@@ -22,15 +31,5 @@ class CreateJumpstrackerTable extends Migration
             # Indexes
 			$table->primary(['systemID','groupID','hourStamp']);
         });
-    }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-     public function down()
-     {
-        Schema::drop('jumpstracker');
     }
 }
