@@ -81,7 +81,7 @@ class EveSystemStatsCommand extends Command
 				{
 					SolarSystemKill::create([
 						'system_id' => $entry->system_id,
-						'ship_kills' => $entry->ship_kills,
+						'ship_kills' => $entry->ship_kills - $entry->npc_kills, // bug fix for v1 endpoint
 						'pod_kills' => $entry->pod_kills,
 						'npc_kills' => $entry->npc_kills,
 						'date_start' => $kills['dateStart'],
