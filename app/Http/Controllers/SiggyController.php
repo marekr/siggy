@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 use Carbon\Carbon;
 use Siggy\Structure;
@@ -14,7 +15,7 @@ use Siggy\ScribeCommandBus;
 use Siggy\Theme;
 use \stdClass;
 use \Auth;
-use \CharacterLocation;
+use Siggy\CharacterLocation;
 use \CharacterLocationHistory;
 use \miscUtils;
 use \Signature;

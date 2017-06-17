@@ -11,7 +11,7 @@ use Siggy\StandardResponse;
 use \Auth;
 use \Chainmap;
 use \groupUtils;
-use \CharacterLocation;
+use Siggy\CharacterLocation;
 use \Pathfinder;
 
 class ChainmapController extends Controller {

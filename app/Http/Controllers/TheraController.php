@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 use \Auth;
-use \CharacterLocation;
+use Siggy\CharacterLocation;
 use \Pathfinder;
 use \Chainmap;
 
