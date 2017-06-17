@@ -1,5 +1,9 @@
 # siggy Changelog
 
+## 3.2.0 - 2017-06-14
+## Changes
+- Character locations now tracked in redis
+
 ## 3.1.0 - 2017-06-14
 ## Changes
 - Reimplemented system statistics
