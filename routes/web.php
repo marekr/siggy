@@ -276,7 +276,7 @@ Route::group(['namespace' => 'Manage','prefix' => 'manage','middleware' => ['sig
 	Route::post('apikeys/remove/{id}','ApiKeyController@postRemove');
 
 	Route::get('logs/activity','LogsController@getActivity');
-	Route::get('logs/sessions','LogsController@getSessions');
+	Route::get('logs/characters','LogsController@getCharacters');
 	
 	Route::get('billing/overview','BillingController@getOverview');
 

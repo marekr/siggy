@@ -151,7 +151,7 @@
 								<a href="{{url('manage/logs/activity')}}">Usage Logs</a>
 							</li>
 							<li>
-								<a href="{{url('manage/logs/sessions')}}">Active Sessions</a>
+								<a href="{{url('manage/logs/characters')}}">Active Characters</a>
 							</li>
 						</ul>
 						<!-- /.nav-second-level -->

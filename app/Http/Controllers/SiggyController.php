@@ -105,6 +105,8 @@ class SiggyController extends BaseController {
 	{
 		$update = ['location' => [ 'id' => 0] ];
 
+		ScribeCommandBus::RefreshSession(Auth::$session->user_id, Auth::$session->character_id);
+
 		$ssoCharacters = Auth::$user->ssoCharacters;
 		foreach($ssoCharacters as $character)
 		{

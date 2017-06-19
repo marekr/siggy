@@ -20,7 +20,7 @@ class ScribeCommandBus {
 
 		$dsn = config('scribe.connection_string');
 
-		self::$socket = new ZMQSocket(new ZMQContext(), ZMQ::SOCKET_PUSH, 'scribeCommandBus');
+		self::$socket = new ZMQSocket(new ZMQContext(1, true), ZMQ::SOCKET_PUSH, 'scribeCommandBus');
 
 		/* Get list of connected endpoints */
 		$endpoints = self::$socket->getEndpoints();
@@ -31,6 +31,27 @@ class ScribeCommandBus {
 		}
 		
 		self::$connected = true;
+	}
+
+	public static function RefreshSession(int $userId, int $characterId): void
+	{
+		self::Connect();
+
+		if(!self::$connected)
+		{
+			return;
+		}
+
+		$payload = [
+			'type' => 'update_session',
+			'parameters' => [
+				'user_id' => $userId,
+				'character_id' => $characterId,
+			]
+		];
+
+		/* Send and receive */
+		self::$socket->send(json_encode($payload));
 	}
 
 	public static function UnfreezeCharacter(string $characterOwnerHash): void

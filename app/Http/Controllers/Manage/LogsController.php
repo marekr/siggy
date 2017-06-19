@@ -9,6 +9,7 @@ use \ZebraPagination2;
 
 use \Auth;
 use \Group;
+use Carbon\Carbon;
 
 class LogsController extends BaseController
 {
@@ -17,31 +18,15 @@ class LogsController extends BaseController
 		'getActivity' => ['can_view_logs']
 	];
 	
-	public function getSessions()
+	public function getCharacters()
 	{
-		$sessions = [];
-		$sessions = DB::select("SELECT ss.*,cm.chainmap_name,c.name as character_name FROM sessions ss
-												LEFT JOIN chainmaps cm ON(cm.chainmap_id = ss.chainmap_id)
-												LEFT JOIN characters c ON(c.id=ss.character_id)
-												WHERE ss.group_id=? ORDER BY ss.updated_at DESC",[Auth::$user->group->id]);
-		
-		//lump the data by chars
-		$sessData = [];
-		foreach( $sessions as $sess )
-		{
-			$charID = $sess->character_id;
-			if( !isset($sessData[ $charID ] ) )
-			{
-				$sessData[ $charID ]['charID'] = $charID;
-				$sessData[ $charID ]['charName'] = $sess->character_name;
-				$sessData[ $charID ]['lastBeep'] = $sess->updated_at;
-			}
-			
-			$sessData[ $charID ]['data'][] = $sess;
-		}
+		$characters = DB::select("SELECT c.id,c.name,cg.last_group_access_at FROM character_group cg
+												LEFT JOIN characters c ON(c.id=cg.character_id)
+												WHERE cg.group_id=? AND cg.last_group_access_at >= ?
+												 ORDER BY cg.last_group_access_at DESC",[Auth::$user->group->id, Carbon::now()->subDay()]);
 
-		return view('manage.logs.sessions', [
-												'sessions' => $sessData,
+		return view('manage.logs.characters', [
+												'characters' => $characters,
 											]);
 	}
      
