@@ -5,6 +5,7 @@
 - Sessions centralized in one system rather than two
 - Sessions now stored in redis
 - User logins reworked to use a new cookie scheme
+- Manage page that used to show active sessions replaced with page that shows characters that were active in the last 24 hours, due to new session storage scheme
 
 ## 3.2.0 - 2017-06-14
 ## Changes

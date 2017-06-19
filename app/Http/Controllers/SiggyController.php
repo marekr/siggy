@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Cookie;
 
 use Carbon\Carbon;
 use Siggy\Structure;
@@ -90,6 +91,22 @@ class SiggyController extends BaseController {
 
 		//load header tools
 		$themes = Theme::allByGroup(Auth::$session->group->id);
+
+		//old cookie cleanup
+		if( Cookie::get('sessionID') !== null )
+		{
+			Cookie::queue(Cookie::forget('sessionID'));
+		}
+
+		if( Cookie::get('userID') !== null )
+		{
+			Cookie::queue(Cookie::forget('userID'));
+		}
+		
+		if( Cookie::get('passHash') !== null )
+		{
+			Cookie::queue(Cookie::forget('passHash'));
+		}
 
 		return view('siggy.siggy_main', [
 												'group' => Auth::$session->group,
