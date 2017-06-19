@@ -14,6 +14,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
+		\Fideloper\Proxy\TrustProxies::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
@@ -36,7 +37,7 @@ class Kernel extends HttpKernel
         ],
 		'siggy.app' => [
 			\App\Http\Middleware\SiggyLoggedIn::class,
-  			\App\Http\Middleware\VerifySiggyCsrfToken::class,
+  			\App\Http\Middleware\VerifyCsrfToken::class,
 		],
 		'siggy.app-pages' => [
 			\App\Http\Middleware\SiggyLoggedIn::class,

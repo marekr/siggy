@@ -25,7 +25,7 @@ class AccountController extends Controller {
 
 	public function postLogin(Request $request)
 	{
-		$rememberMe = (isset($_POST['rememberMe']) ? TRUE : FALSE);
+		$rememberMe = (isset($_POST['remember']) ? TRUE : FALSE);
 		if( Auth::processLogin($_POST['username'], $_POST['password'], $rememberMe) === Auth::LOGIN_SUCCESS )
 		{
 			$session = session();
@@ -435,7 +435,6 @@ class AccountController extends Controller {
 			}
 		}
 	}
-
 	
 	public function getChangePassword()
 	{

@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class UserSession {
 
@@ -13,8 +14,6 @@ class UserSession {
 	public $character_id = 0;
 	public $character_name = "";
 
-	public $csrf_token = "";
-
 	public $group = null;
 	public $accessData = array();
 
@@ -23,33 +22,28 @@ class UserSession {
 
 	public function __construct()
 	{
-		//try to find existing session
-		$this->id = Cookie::get('sessionID','');
-
 		//try to load the session data
 		//session data fetch failed? then recreate it, or create one if no id
-		if( !(!empty($this->id) && $this->__fetchSessionData())
-			|| empty($this->id))
+		if( !$this->reloadSessionData() )
 		{
-			//create a new session ID
-			$this->id = $this->__generateSessionID();
-
-			$userData = [];
-
 			//reauth the member
 			//remember me check
-			$memberID = Cookie::get('userID');
-			$passHash = Cookie::get('passHash');
-			if( $memberID && $passHash )
+			$recall = Cookie::get('remember','');
+			$recallBits = explode("|", $recall);
+			if(count($recallBits) == 2)
 			{
-				if( !Auth::autoLogin($memberID, $passHash) )
+				list($id, $token) = $recallBits;
+				
+				if( $id && $token )
 				{
-					Cookie::forget('userID');
-					Cookie::forget('passHash');
+					if( !Auth::autoLogin($id, $token) )
+					{
+						Cookie::queue(Cookie::forget('remember'));
+					}
 				}
 			}
 
-			$this->__generateSession();
+			$this->populateNewSession();
 			$this->reloadUserSession();
 			//reload user session will have reloaded the session data from db
 		}
@@ -63,36 +57,24 @@ class UserSession {
 		$this->group = Group::find($this->group_id);
 		$this->getAccessData();
 
-		$this->__updateSession();
+		$this->updateSession();
 	}
 
 
-	private function __fetchSessionData(): bool
+	private function reloadSessionData($two = false): bool
 	{
-		$session = DB::selectOne('SELECT s.*,c.name as character_name,c.corporation_id
-											FROM sessions s
-											LEFT JOIN characters c ON(c.id=s.character_id)
-												WHERE s.id=?',[$this->id]);
-
-		if($session != null)
+		if(session('init', false) == true && session('type', 'guest') == 'user')
 		{
-			$this->group_id = $session->group_id;
+			$this->group_id = session('group_id', -2);
 
-			///crappy error handling...
-			if(isset($session->character_name))
-			{
-				$this->character_name = $session->character_name;
-			}
+			$this->character_id = session('character_id');
+			$data = DB::selectOne('SELECT c.name as character_name,c.corporation_id
+											FROM characters c
+												WHERE c.id=?',[$this->character_id]);
+			$this->character_name = $data->character_name;
+			$this->corporation_id = $data->corporation_id;
 
-			if(isset($session->corporation_id))
-			{
-				$this->corporation_id = $session->corporation_id;
-			}
-
-			$this->character_id = $session->character_id;
-			$this->corporation_id = $session->corporation_id;
-			$this->user_id = $session->user_id;
-			$this->csrf_token = $session->csrf_token;
+			$this->user_id = session('user_id');
 
 			return TRUE;
 		}
@@ -102,9 +84,7 @@ class UserSession {
 
 	public function destroy()
 	{
-		DB::table('sessions')->where('id', '=', $this->id)->delete();
-
-		Cookie::queue(Cookie::forget('sessionID'));
+		session()->flush();
 	}
 
 	private function __generateSessionID(): string
@@ -121,20 +101,17 @@ class UserSession {
 
 	public function reloadUserSession()
 	{
-		if( empty($this->id) || !Auth::loggedIn() )
+		if( !Auth::loggedIn() )
 		{
 			return;
 		}
 
-		$update = array( 'user_id' => Auth::$user->id,
-						 'group_id' => Auth::$user->groupID,
-					//	 'chainmap_id' => Auth::$user->active_chain_map,
-                         'character_id' => Auth::$user->char_id
-						 );
-						 
-		DB::table('sessions')
-			->where('id', '=',  $this->id)
-			->update( $update );
+		$update = ['user_id' => Auth::$user->id,
+					'group_id' => Auth::$user->groupID,
+					'character_id' => Auth::$user->char_id,
+					'type' => 'user'
+				];
+		session($update);
 
 		if(!empty(Auth::$user->char_id) &&
 			!empty(Auth::$user->groupID) )
@@ -147,34 +124,31 @@ class UserSession {
 			$chargroup->updateGroupAccess();
 		}
 
-		$this->__fetchSessionData();
+		$this->reloadSessionData(true);
 
 		$this->getAccessData();
 	}
 
-	private function __generateSession(): bool
+	private function populateNewSession(): bool
 	{
 		// so we must update it too
-		$insert = array( 'id' => $this->id,
-					'character_id' => $this->character_id,
+		$insert = [ 
+					'character_id' => (isset(Auth::$user->character_id) ? Auth::$user->character_id : 0 ),
 					'created_at' => Carbon::now()->toDateTimeString(),
 					'ip_address' => Request::ip(),
 					'user_agent' => Request::header('User-Agent'),
-					'csrf_token' => $this->__generateCSRF(),
-					'type' => 'guest',
+					'type' => $this->determineSessionType(),
 					'user_id' => ( isset(Auth::$user->id) ? Auth::$user->id : 0 ),
 					'group_id' => ( isset(Auth::$user->groupID) ? Auth::$user->groupID : 0 ),
-				//	'chainmap_id' =>  ( isset(Auth::$user->data['active_chain_map']) ? Auth::$user->data['active_chain_map'] : 0 ),
-				  );
+					'init' => true
+				];
 
-		DB::table('sessions')->insert($insert);
-
-		Cookie::queue('sessionID', $this->id);
+		session($insert);
 
 		return TRUE;
 	}
 
-	private function __determineSessionType(): string
+	private function determineSessionType(): string
 	{
 		$type = 'guest';
 
@@ -186,26 +160,19 @@ class UserSession {
 		return $type;
 	}
 
-	private function __updateSession()
+	private function updateSession()
 	{
-		if( empty($this->id) )
-		{
-			return;
-		}
-
-		$type = $this->__determineSessionType();
+		$type = $this->determineSessionType();
 
 		/* Shitty fix, always update groupID because we don't on creaton have a valid one */
-		$update = array( 'updated_at' => Carbon::now()->toDateTimeString(),
+		$update = 	['updated_at' => Carbon::now()->toDateTimeString(),
 						 'group_id' => $this->group_id,
 						 'type' => $type,
 						 'chainmap_id' => ( isset($this->accessData['active_chain_map']) ? $this->accessData['active_chain_map'] : 0 )
-						);
+		];
 
 
-		DB::table('sessions')
-			->where('id', '=',  $this->id)
-			->update( $update );
+		session($update);
 	}
 
 	public function validateGroup(): bool
@@ -225,7 +192,7 @@ class UserSession {
 			$this->group = null;
 			$this->group_id = 0;
 
-			$this->__updateSession();
+			$this->updateSession();
 		}
 
 		return FALSE;

@@ -41,7 +41,7 @@
 			<p id="passError">You have entered an incorrect password!</p>
 			<?php endif; ?>
 			<form action='{{url('access/group_password')}}' method='POST' class="center-text">
-				<input type="hidden" name="_token" value="{{ Auth::$session->csrf_token }}" />
+				{{ csrf_field() }}
 				<input type='password' name='group_password' /><br /><br />
 				<input type='submit' value='Submit' style="padding:10px" />
 			</form>

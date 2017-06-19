@@ -4,6 +4,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Str;
 use Siggy\ScribeCommandBus;
 
 class User extends Model {
@@ -91,6 +92,7 @@ class User extends Model {
 		static::creating(function ($model)
 		{
 			$model->password = Auth::hash($model->password);
+			$model->remember_token = Str::random(60);
 			$model->active = TRUE;
 		});
 	}
@@ -179,6 +181,12 @@ class User extends Model {
 		return self::whereRaw('reset_token = ?', [$token])->first();
 	}
 
+	public static function retrieveByRememberToken(int $id, string $token)
+	{
+		return self::where('id', $id)->where('remember_token', $token)->whereNotNull('remember_token')->first();
+	}
+
+
 	public function perms()
 	{
 		if($this->perms == null)
@@ -194,7 +202,24 @@ class User extends Model {
 	public function updatePassword($newPass)
 	{
 		$this->password = Auth::hash($newPass);
+		$this->remember_token = Str::random(60);
 		$this->save();
+	}
+
+	public function cycleRememberToken()
+	{
+		$this->remember_token = Str::random(60);
+		$this->save();
+	}
+
+	public function getRememberToken(): string
+	{
+		if(empty($this->remember_token))
+		{
+			$this->cycleRememberToken();
+		}
+
+		return $this->remember_token;
 	}
 
 	public function isAdmin()

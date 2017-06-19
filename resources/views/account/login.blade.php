@@ -75,7 +75,7 @@
 										</div>
 										<div class="checkbox">
 											<label class="pull-right">
-												<input name="rememberMe" type="checkbox"> Remember me?
+												<input name="remember" type="checkbox"> Remember me?
 											</label>
 										</div>
 										<div class="form-group">

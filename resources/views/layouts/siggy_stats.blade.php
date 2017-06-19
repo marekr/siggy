@@ -15,7 +15,7 @@
 		<link rel="icon" href="{{asset("favicon.ico")}}">
 
 		@include('layouts._javascript')
-		<meta name="csrf-token" content="{{ Auth::$session->csrf_token }}">
+		<meta name="csrf-token" content="{{ csrf_token() }}">
 		<style text='text/css'>
 			table {
 				background-color: rgb(29, 21, 21);

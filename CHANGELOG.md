@@ -1,5 +1,11 @@
 # siggy Changelog
 
+## 3.3.0 - 2017-06-xx
+## Changes
+- Sessions centralized in one system rather than two
+- Sessions now stored in redis
+- User logins reworked to use a new cookie scheme
+
 ## 3.2.0 - 2017-06-14
 ## Changes
 - Character locations now tracked in redis

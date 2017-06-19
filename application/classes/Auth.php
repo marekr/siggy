@@ -92,24 +92,17 @@ class Auth {
 		return hash_hmac("sha256", $str, self::$hashKey);
 	}
 
-	public static function autoLogin(int $id, string $passHash)
+	public static function autoLogin(int $id, string $remember_token)
 	{
-		$tmp = User::find($id);
+		$tmp = User::retrieveByRememberToken($id, $remember_token);
 
 		if($tmp == null)
 		{
 			return FALSE;
 		}
-
-		if( $tmp->password == $passHash )
-		{
-			Auth::$user = $tmp;
-			return TRUE;
-		}
-		else
-		{
-			return FALSE;
-		}
+		
+		Auth::$user = $tmp;
+		return TRUE;
 	}
 
 	public static function loggedIn()
@@ -177,9 +170,8 @@ class Auth {
 		}
 
 		self::$user = $tmp;
-
-		Cookie::queue('userID', self::$user->id, $lifetime);
-		Cookie::queue('passHash', self::$user->password, $lifetime);
+		
+		Cookie::queue('remember', self::$user->id.'|'.self::$user->remember_token, $lifetime);
 
 		self::$session->reloadUserSession();
 
@@ -205,8 +197,10 @@ class Auth {
 				$lifetime = 60*60*24*365;	//1 year
 			}
 
-			Cookie::queue('userID', self::$user->id, $lifetime);
-			Cookie::queue('passHash', self::$user->password, $lifetime);
+			if( $rememberMe )
+			{
+				Cookie::queue('remember', self::$user->id.'|'.self::$user->remember_token, $lifetime);
+			}
 
 			self::$session->reloadUserSession();
 
@@ -221,10 +215,16 @@ class Auth {
 
 	public static function processLogout()
 	{
+		if(self::loggedIn())
+		{
+			self::$user->cycleRememberToken();
+		}
+
 		self::$session->destroy();
 
-		Cookie::queue(Cookie::forget('userID'));
-		Cookie::queue(Cookie::forget('passHash'));
+		Cookie::queue(Cookie::forget('remember'));
+
+		self::$user = null;
 	}
 
 
