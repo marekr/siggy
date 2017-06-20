@@ -212,29 +212,12 @@ class SiggyController extends BaseController {
 					{
 						$broadcast = 1;
 					}
-
-					DB::insert('INSERT INTO chartracker (`charID`, `currentSystemID`,`groupID`,`chainmap_id`,`lastBeep`, `broadcast`,`shipType`, `shipName`)
-												VALUES(:charID, :systemID, :groupID, :chainmap, :lastBeep, :broadcast, :shipType, :shipName)
-												ON DUPLICATE KEY UPDATE lastBeep = :lastBeep2,
-														currentSystemID = :systemID2,
-														broadcast = :broadcast2,
-														shipType = :shipType2,
-														shipName = :shipName2',
-										[
-											'charID' => $character->character_id,
-											'broadcast' => $broadcast,
-											'systemID' => (int)$currentLocation->system_id,
-											'groupID' => Auth::$session->group->id,
-											'shipType' => $currentLocation->ship_id,
-											'shipName' => '',
-											'chainmap' => Auth::$session->accessData['active_chain_map'],
-											'lastBeep' => time(),
-											'lastBeep2' => time(),
-											'systemID2' => (int)$currentLocation->system_id,
-											'broadcast2' => $broadcast,
-											'shipType2' => $currentLocation->ship_id,
-											'shipName2' => ''
-										]);
+					
+					Redis::pipeline(function($pipe) use($character) {
+						$value = $character->character_id . ":" .$character->character->name;
+						$pipe->zadd('siggy:actives:chainmaps#'.Auth::$session->accessData['active_chain_map'], [$value => time()]);
+						$pipe->expire('siggy:actives:chainmaps#'.Auth::$session->accessData['active_chain_map'], 60);
+					});
 				}
 			}
 		}
@@ -707,36 +690,31 @@ class SiggyController extends BaseController {
 				$update['chainMap']['cynos'] = [];
 				if( is_array($this->mapData['systemIDs']) && count($this->mapData['systemIDs'])	 > 0 )
 				{
-					$activesData = array();
-					$activesData = DB::select("SELECT c.name as charName, ct.currentSystemID, s.name as shipName FROM chartracker ct
-																LEFT JOIN ships s ON (ct.shipType=s.id)
-																LEFT JOIN characters c ON(c.id=ct.charID)
-																WHERE ct.groupID = :groupID AND ct.chainmap_id = :chainmap AND ct.broadcast=1 AND
-																	ct.currentSystemID IN(".implode(',',$this->mapData['systemIDs']).") AND ct.lastBeep >= :lastBeep",
-																[
-																	'lastBeep' => time()-60,
-																	'groupID' => Auth::$session->group->id,
-																	'chainmap' => Auth::$session->accessData['active_chain_map']
-																]);
+					$results = Redis::zrangebyscore('siggy:actives:chainmaps#'.Auth::$session->accessData['active_chain_map'], time()-60,"+inf");
 
-					if( is_array($activesData) && count($activesData) > 0 )
+					if( is_array($results) && count($results) > 0 )
 					{
-						$actives = [];
-						foreach( $activesData as $act )
+						$entries = [];
+						foreach($results as $result)
 						{
-							if( strlen( $act->charName) > 15 )
+							$split = explode(":",$result);
+							list($id, $name) = $split;	
+							$id = (int)$id;
+							$location = CharacterLocation::findWithinCutoff($id);
+							if( $location != null )
 							{
-								$act->charName = substr($act->charName, 0,12).'...';
+								$entries[$location->system_id][] = [
+									'character_id' => $id,
+									'character_name' => $name,
+									'ship_id' => $location->ship_id
+								];
 							}
-
-							if( $act->shipName == NULL )
-							{
-								$act->shipName = "";
-							}
-							$actives[ $act->currentSystemID ][] = array('name' => $act->charName, 'ship' => $act->shipName);
 						}
 
-						$update['chainMap']['actives'] = $actives;
+						if(count($entries) > 0)
+						{
+							$update['chainMap']['actives'] = $entries;
+						}
 					}
 				}
 
