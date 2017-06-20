@@ -57,6 +57,7 @@ class AccountController extends Controller {
 		if($invalidLogin)
 		{
 			return redirect()->back()
+				->withErrors(['Invalid login username or password'])
 				->withInput($request->only('username', 'remember'));
 		}
 	}

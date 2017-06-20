@@ -1,5 +1,12 @@
 # siggy Changelog
 
+## 3.4.0 - 2017-06-20
+## Changes
+- Characters on maps now tracked via Redis
+
+## Fixes
+- Fixed invalid password login not giving some kind of visible error message
+
 ## 3.3.0 - 2017-06-20
 ## Changes
 - Sessions centralized in one system rather than two
