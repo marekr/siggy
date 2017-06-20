@@ -1,6 +1,6 @@
 # siggy Changelog
 
-## 3.3.0 - 2017-06-xx
+## 3.3.0 - 2017-06-20
 ## Changes
 - Sessions centralized in one system rather than two
 - Sessions now stored in redis
