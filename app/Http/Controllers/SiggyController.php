@@ -122,7 +122,10 @@ class SiggyController extends BaseController {
 	{
 		$update = ['location' => [ 'id' => 0] ];
 
-		ScribeCommandBus::RefreshSession(Auth::$session->user_id, Auth::$session->character_id);
+		Redis::pipeline(function($pipe) {
+			$pipe->sadd('siggy:actives:user#'.Auth::$user->id, "active", Auth::$session->character_id);
+			$pipe->expire('siggy:actives:user#'.Auth::$user->id, 60);
+		});
 
 		$ssoCharacters = Auth::$user->ssoCharacters;
 		foreach($ssoCharacters as $character)

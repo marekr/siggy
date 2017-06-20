@@ -9,7 +9,7 @@ class CharacterLocation
 {
 	public static function findWithinCutoff(int $id, int $cutOffSeconds = 15)
 	{
-		$string = Redis::get('character-location-'.$id);
+		$string = Redis::get('siggy:location:character#'.$id);
 		if($string != null)
 		{
 			$data = json_decode($string);
