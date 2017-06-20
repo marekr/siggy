@@ -414,6 +414,14 @@ siggy2.StaticData.getSiteByID = function( id )
 		return null;
 }
 
+siggy2.StaticData.getShipByID = function( id )
+{
+	if( typeof( this.ships[ id ] ) != 'undefined' )
+		return this.ships[ id ];
+	else
+		return null;
+}
+
 siggy2.StaticData.getStructureTypeById = function( id )
 {
 	if( siggy2.isDefined(this.structureTypes[ id ]) )

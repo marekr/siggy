@@ -889,16 +889,23 @@ siggy2.Map.prototype.updateActives = function( activesData )
 
                 if( j < displayLen )
                 {
-                    text += actives[j].name + '<br \>';
+                    text += actives[j].character_name + '<br \>';
                 }
 
                 if( this.settings.showActivesShips )
                 {
-                    fullText += actives[j].name + " - " + actives[j].ship +'<br \>';
+					var ship = siggy2.StaticData.getShipByID(actives[j].ship_id);
+					var shipName = 'Unknown Ship';
+					if(ship != null)
+					{
+						shipName = ship.name;
+					}
+
+					fullText += ("{0} - {1} <br />").format(actives[j].character_name, shipName);
                 }
                 else
                 {
-                    fullText += actives[j].name + '<br \>';
+					fullText += ("{0}<br />").format(actives[j].character_name);
                 }
             }
 
