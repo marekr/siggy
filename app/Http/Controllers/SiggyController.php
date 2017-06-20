@@ -40,6 +40,12 @@ class SiggyController extends BaseController {
 		$sysData->name = 'Jita';
 
 		$activeChar = Auth::$user->getActiveSSOCharacter();
+
+		Redis::pipeline(function($pipe) {
+			$pipe->sadd('siggy:actives:user#'.Auth::$user->id, "active", Auth::$session->character_id);
+			$pipe->expire('siggy:actives:user#'.Auth::$user->id, 60);
+		});
+
 		ScribeCommandBus::UnfreezeCharacter($activeChar->character_owner_hash);
 
 
