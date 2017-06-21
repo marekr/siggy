@@ -715,7 +715,7 @@ class SiggyController extends BaseController {
 						{
 							array_walk($entries, function(&$value, $key){
 								usort($value, function($a, $b) {
-									return strcmp($a["character_name"], $b["character_name"]) ? 1 : -1;
+									return strcmp($a["character_name"], $b["character_name"])  > 0 ? 1 : -1;
 								});
 							});
 
