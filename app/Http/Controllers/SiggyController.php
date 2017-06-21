@@ -206,18 +206,21 @@ class SiggyController extends BaseController {
 
 					if( !Auth::$session->group->always_broadcast )
 					{
-						$broadcast = isset($_COOKIE['broadcast']) ? intval($_COOKIE['broadcast']) : 1;
+						$broadcast = isset($_COOKIE['broadcast']) ? intval($_COOKIE['broadcast']) : true;
 					}
 					else
 					{
-						$broadcast = 1;
+						$broadcast = true;
 					}
 					
-					Redis::pipeline(function($pipe) use($character) {
-						$value = $character->character_id . ":" .$character->character->name;
-						$pipe->zadd('siggy:actives:chainmaps#'.Auth::$session->accessData['active_chain_map'], [$value => time()]);
-						$pipe->expire('siggy:actives:chainmaps#'.Auth::$session->accessData['active_chain_map'], 60);
-					});
+					if($broadcast)
+					{
+						Redis::pipeline(function($pipe) use($character) {
+							$value = $character->character_id . ":" .$character->character->name;
+							$pipe->zadd('siggy:actives:chainmap#'.Auth::$session->accessData['active_chain_map'], [$value => time()]);
+							$pipe->expire('siggy:actives:chainmap#'.Auth::$session->accessData['active_chain_map'], 60);
+						});
+					}
 				}
 			}
 		}
@@ -690,7 +693,7 @@ class SiggyController extends BaseController {
 				$update['chainMap']['cynos'] = [];
 				if( is_array($this->mapData['systemIDs']) && count($this->mapData['systemIDs'])	 > 0 )
 				{
-					$results = Redis::zrangebyscore('siggy:actives:chainmaps#'.Auth::$session->accessData['active_chain_map'], time()-60,"+inf");
+					$results = Redis::zrangebyscore('siggy:actives:chainmap#'.Auth::$session->accessData['active_chain_map'], time()-60,"+inf");
 
 					if( is_array($results) && count($results) > 0 )
 					{
@@ -700,7 +703,7 @@ class SiggyController extends BaseController {
 							$split = explode(":",$result);
 							list($id, $name) = $split;	
 							$id = (int)$id;
-							$location = CharacterLocation::findWithinCutoff($id);
+							$location = CharacterLocation::findWithinCutoff($id, 60);
 							if( $location != null )
 							{
 								$entries[$location->system_id][] = [

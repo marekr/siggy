@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Redis;
 
 class CharacterLocation
 {
-	public static function findWithinCutoff(int $id, int $cutOffSeconds = 15)
+	public static function findWithinCutoff(int $id, int $cutOffSeconds = 20)
 	{
 		$string = Redis::get('siggy:location:character#'.$id);
 		if($string != null)
