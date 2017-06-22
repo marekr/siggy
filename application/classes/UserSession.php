@@ -67,12 +67,15 @@ class UserSession {
 		{
 			$this->group_id = session('group_id', -2);
 
-			$this->character_id = session('character_id');
-			$data = DB::selectOne('SELECT c.name as character_name,c.corporation_id
-											FROM characters c
-												WHERE c.id=?',[$this->character_id]);
-			$this->character_name = $data->character_name;
-			$this->corporation_id = $data->corporation_id;
+			$this->character_id = session('character_id',0);
+			if($this->character_id)
+			{
+				$data = DB::selectOne('SELECT c.name as character_name,c.corporation_id
+												FROM characters c
+													WHERE c.id=?',[$this->character_id]);
+				$this->character_name = $data->character_name;
+				$this->corporation_id = $data->corporation_id;
+			}
 
 			$this->user_id = session('user_id');
 
