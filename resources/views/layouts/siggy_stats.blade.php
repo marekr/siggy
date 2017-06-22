@@ -12,7 +12,7 @@
 		@endif
 		<link href="{{asset("font-awesome-4.2.0/css/font-awesome.min.css")}}" rel="stylesheet">
 		<link href="{{asset("css/frontend.css?".SIGGY_VERSION)}}" rel="stylesheet">
-		<link rel="icon" href="{{asset("favicon.ico")}}">
+		<link rel="shortcut icon" href="{{asset('favicon.ico')}}">
 
 		@include('layouts._javascript')
 		<meta name="csrf-token" content="{{ csrf_token() }}">

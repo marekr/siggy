@@ -22,7 +22,7 @@
     <![endif]-->
 
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="{{asset('favicon.ico')}}'">
+    <link rel="shortcut icon" href="{{asset('favicon.ico')}}">
 
 	<script type="text/javascript">
 	$(document).ready(function() {
