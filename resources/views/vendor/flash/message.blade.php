@@ -1,5 +1,5 @@
-@foreach ((array) session('flash_notification') as $message)
-    @if ($message['overlay'])
+@foreach (session('flash_notification', collect())->toArray() as $message)
+    @if (isset($message['overlay'] && $message['overlay'])
         @include('flash::modal', [
             'modalClass' => 'flash-modal',
             'title'      => $message['title'],
