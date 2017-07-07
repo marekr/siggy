@@ -1,5 +1,9 @@
 # siggy Changelog
 
+## 3.4.1 - 2017-07-07
+## Fixes
+- Added missing csrf tokens to remove chainmap and member pages, the pages should work now
+
 ## 3.4.0 - 2017-06-20
 ## Changes
 - Characters on maps now tracked via Redis

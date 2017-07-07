@@ -11,16 +11,16 @@ class POS extends Model {
 	public $timestamps = false;
 
 	protected $fillable = [
-			'location_planet',
-			'location_moon',
-			'owner',
-			'type_id',
-			'online',
-			'size',
-			'notes',
-			'group_id',
-			'added_date',
-			'system_id',
+		'location_planet',
+		'location_moon',
+		'owner',
+		'type_id',
+		'online',
+		'size',
+		'notes',
+		'group_id',
+		'added_date',
+		'system_id',
 	];
 
 	protected $hidden = [

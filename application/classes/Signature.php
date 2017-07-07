@@ -21,6 +21,10 @@ class Signature extends Model
 							'systemID'
 						];
 
+	protected $hidden = [
+		'groupID'
+	];
+
 	public $character = null;
 	public $chainmap_wormholes = [];
 

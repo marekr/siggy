@@ -21,6 +21,10 @@ class Chainmap extends Model {
 		'group_id'
 	];
 	
+	protected $hidden = [
+		'group_id'
+	];
+
 	public function getIdAttribute()
 	{
 		return $this->chainmap_id;
