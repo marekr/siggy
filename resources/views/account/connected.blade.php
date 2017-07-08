@@ -5,10 +5,10 @@
 		Connected Characters
 	</h3>
 	<p>
-			These are characters you connected to siggy via EVE SSO.
-			<ul>
-				<li>If the status of a character is "invalid", you must relogin via SSO on that character to allow siggy to regain access.</li>
-			</ul>
+		These are characters you connected to siggy via EVE SSO.
+		<ul>
+			<li>If the status of a character is "invalid", you must relogin via SSO on that character to allow siggy to regain access.</li>
+		</ul>
 	</p>
 
 	<a href="{{url('account/connect')}}" clas="btn btn-primary pull-right"><i class="glyphicon glyphicon-plus"></i>&nbsp;Connect new character</a>
@@ -23,13 +23,13 @@
 			<th width="10%">Actions</th>
 		</tr>
 		@foreach( $characters as $character )
-		<?php if(!isset($character_data[$character->character_id])) continue; ?>
+		@if(isset($character_data[$character->character_id]))
 		<tr>
 			<td><?php echo $character_data[$character->character_id]->id; ?></td>
 			<td><?php echo $character_data[$character->character_id]->name; ?></td>
 			<td>
 				<table>
-				<?php foreach($character->scopes() as $scope): ?>
+				@foreach($character->scopes() as $scope)
 					<tr>
 						<td><?php echo $scope['name']; ?></td>
 						<td>
@@ -40,19 +40,19 @@
 							<?php endif; ?>
 						</td>
 					</tr>
-				<?php endforeach; ?>
+				@endforeach
 				</table>
 			</td>
-			<td><?php echo $character->valid ? 'Ok' : 'Invalid' ?></td>
+			<td>{{ $character->valid ? 'Ok' : 'Invalid' }}</td>
 			<td>
-				<form action="{{url('account/disconnect')}}" method="post">
-					{{ csrf_field() }}
+				{!! Form::open(['url' => 'account/disconnect']) !!}
 					<input type="hidden" name="character_id" value="<?php echo $character_data[$character->character_id]->id; ?>" />
 					<button class='btn btn-danger btn-xs' type="submit"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Disconnect</button>
 					<a href="{{url('account/connect')}}" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-plus"></i>&nbsp;Reconnect character</a>
-				</form>
+				{!! Form::close() !!}
 			</td>
 		</tr>
+		@endif
 		@endforeach
 	</table>
 @endsection

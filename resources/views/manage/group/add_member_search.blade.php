@@ -23,26 +23,24 @@
 				<td>{{$result->name}}</td>
 				<td>{{$result->id}}</td>
 				<td>
-					<form class="form-inline" action="{{url('manage/group/members/add/details')}}" method="post">
-						{{ csrf_field() }}
+					{!! Form::open(['url' => 'manage/group/members/add/details','class'=> 'form-inline']) !!}
 						<input type="hidden" name="eveID" value="{{$result->id}}" />
 						<input type="hidden" name="accessName" value="{{$result->name}}" />
 						<input type="hidden" name="memberType" value="{{$memberType}}" />
 						<button type="submit" class="btn btn-primary">Select</button>
-					</form>
+					{!! Form::close() !!}
 				</td>
 				@else
 				<td><img src="https://image.eveonline.com/Character/{{$result->id}}_64.jpg" width="64" height="64" /></td>
 				<td>{{$result->name}}</td>
 				<td>{{$result->id}}</td>
 				<td>
-					<form class="form-inline" action="{{url('manage/group/members/add/details')}}" method="post">
-						{{ csrf_field() }}
+					{!! Form::open(['url' => 'manage/group/members/add/details','class'=> 'form-inline']) !!}
 						<input type="hidden" name="eveID" value="{{$result->id}}" />
 						<input type="hidden" name="accessName" value="{{$result->name}}" />
 						<input type="hidden" name="memberType" value="{{$memberType}}" />
 						<button type="submit" class="btn btn-primary">Select</button>
-					</form>
+					{!! Form::close() !!}
 				</td>
 				@endif
 			</tr>

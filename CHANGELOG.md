@@ -1,5 +1,10 @@
 # siggy Changelog
 
+## 3.4.x
+## Changes
+- Shift all form tags fully over to templating to avoid forgetting the csrf field....
+- Adjust group password box to look a tiny bit better
+
 ## 3.4.1 - 2017-07-07
 ## Fixes
 - Added missing csrf tokens to remove chainmap and member pages, the pages should work now

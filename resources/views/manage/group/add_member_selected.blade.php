@@ -14,9 +14,8 @@ $type = array('corp' => 'Corp', 'char' => 'Character');
 ?>
 
 
-<form class="form-horizontal" action="{{url('manage/group/members/add/finish')}}" method="post">
-	<h3>Add Group Member</h3>
-	{{ csrf_field() }}
+<h3>Add Group Member</h3>
+{!! Form::open(['url' => 'manage/group/members/add/finish','class'=>'form-horizontal']) !!}
 	<input type="hidden" name="eveID" value="{{$eveID}}" />
 	<input type="hidden" name="accessName" value="{{$accessName}}" />
 	<input type="hidden" name="memberType" value="{{$memberType}}" />
@@ -39,5 +38,5 @@ $type = array('corp' => 'Corp', 'char' => 'Character');
 		<button type="submit" class="btn btn-primary">Add member</button>
 		<button type="button" class="btn" onclick="history.go(-2);return false;">Cancel</button>
 	</div>
-</form>
+{!! Form::close() !!}
 @endsection

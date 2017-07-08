@@ -15,9 +15,9 @@
 		<div class='panel-heading'>
 			{{$key->name}}
 			<div class='pull-right'>
-				<form method='post' style='display:inline;' action='{{url('manage/apikeys/remove/'.$key->id)}}'>
+				{!! Form::open(['url' => 'manage/apikeys/remove/'.$key->id,'style'=>'display:inline;']) !!}
 					<button class='btn btn-xs btn-danger'><i class="fa fa-trash"></i>&nbsp;Remove</button>
-				</button>
+				{!! Form::close() !!}
 			</div>
 		</div>
 		<div class="panel-body">

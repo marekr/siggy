@@ -37,14 +37,17 @@
 			<p style='font-weight:bold'>
 			In order to continue, please enter your group's password below.</p>
 			<p>	This password should have been provided by your group in a bulletin, mail, etc.</p>
-			<?php if( $wrongPass == true ): ?>
+			@if( $wrongPass == true )
 			<p id="passError">You have entered an incorrect password!</p>
-			<?php endif; ?>
-			<form action='{{url('access/group_password')}}' method='POST' class="center-text">
-				{{ csrf_field() }}
-				<input type='password' name='group_password' /><br /><br />
-				<input type='submit' value='Submit' style="padding:10px" />
-			</form>
+			@endif
+			{!! Form::open(['url' => 'access/group_password','class'=>'center-text','autocomplete' => 'off']) !!}
+				<div class="form-group">
+					<input type='password' name='group_password' class='form-control' />
+				</div>
+				<div class="form-group text-right">
+					<button type='submit' class='btn btn-primary'  style='width:100%'>Submit</button>
+				</div>
+			{!! Form::close() !!}
 		</div>
 	</div>
 </div>

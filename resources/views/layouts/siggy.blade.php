@@ -75,11 +75,10 @@
 							@foreach( Auth::$session->accessibleGroups() as $g )
 								<li onClick="javascript:$(this).find('form').submit();">
 									<a>
-									<form action='{{ url('access/groups') }}' method='POST'>
-										{{ csrf_field() }}
+									{!! Form::open(['url' => 'access/groups']) !!}
 										<input type='hidden' name='group_id' value='{{ $g->id }}' />
 										{{ $g->name }}
-									</form>
+									{!! Form::close() !!}
 									</a>
 								</li>
 							@endforeach

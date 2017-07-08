@@ -6,21 +6,19 @@
 <h3>Activity Logs</h3>
 
 <div class="well">
-	<form class="form-inline" action="{{url('manage/logs/activity')}}" method="get">
+	{!! Form::open(['url' => 'manage/logs/activity','class'=>'form-inline','method' => 'get']) !!}
 		<legend>Filter Options</legend>
 		<label class="checkbox">Type
-
-			<?php echo Form::select('filter_type', array( 'all' => 'All', 'delwhs' => 'WH Deletions', 'sigdel' => 'Sig Delete', 'editsig' => 'Sig Edit', 'editmap' => 'Map Edit' ), $filterType); ?>
+			{!! Form::select('filter_type', array( 'all' => 'All', 'delwhs' => 'WH Deletions', 'sigdel' => 'Sig Delete', 'editsig' => 'Sig Edit', 'editmap' => 'Map Edit' ), $filterType) !!}
 		</label>
 		<label class="checkbox">Message Contains
-
-			<?php echo Form::input('search', (isset($_GET['search']) ? $_GET['search'] : '' ) ); ?>
+			{!! Form::input('search', (isset($_GET['search']) ? $_GET['search'] : '' ) ) !!}
 		</label>
 		<button type="submit" class="btn pull-right">Filter Results</button>
-	</form>
+	{!! Form::close() !!}
 </div>
 
-<?php echo $pagination; ?>
+{!! $pagination !!}
 <table class="table table-striped">
 	<thead>
 		<tr>
@@ -30,16 +28,16 @@
 		</tr>
 	</thead>
 	<tbody>
-	<?php if( count($logs) > 0 ): ?>
-	<?php foreach($logs as $log): ?>
-	<tr>
-		<td><?php echo date("d/m/y @ h:i:s",$log->entryTime); ?></td>
-		<td><?php echo $log->type; ?></td>
-		<td style="word-break: break-all; word-wrap: break-word;"><?php echo $log->message; ?></td>
-	</tr>
-	<?php endforeach; ?>
-	<?php endif; ?>
+	@if( count($logs) > 0 )
+		@foreach($logs as $log)
+		<tr>
+			<td>{{ date("d/m/y @ h:i:s",$log->entryTime) }}</td>
+			<td>{{ $log->type }}</td>
+			<td style="word-break: break-all; word-wrap: break-word;">{{ $log->message }}</td>
+		</tr>
+		@endforeach
+	@endif
 	</tbody>
 </table>
-<?php echo $pagination; ?>
+{!! $pagination !!}
 @endsection

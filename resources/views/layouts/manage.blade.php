@@ -66,8 +66,7 @@
 				<ul class="dropdown-menu dropdown-user">
 					<li>
 						@if( count($avaliableGroups) > 1 )
-						<form action='{{ url('manage/access/set') }}' method='post' style="padding: 6px;">
-							{{ csrf_field() }}
+						{!! Form::open(['url' => 'manage/access/set','style'=>'padding: 6px;']) !!}
 							<select name='group' class="form-control input-sm " onchange='submit();'>
 							<?php
 								$selected = Auth::$user->group->id; ?>
@@ -75,7 +74,7 @@
 								<option value="{{$m->id}}" <?php echo ( ($selected == $m->id) ? "selected='selected'" : ''); ?>>{{$m->name}}</option>
 							@endforeach
 							</select>
-						</form>
+						{!! Form::close() !!}
 						@endif
 					</li>
 					<li class="divider"></li>
