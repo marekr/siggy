@@ -5,13 +5,10 @@ namespace Siggy;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cookie;
 
+use Closure;
 use \User;
 
-class Auth {
-	const LOGIN_INVALID = 1;
-	const LOGIN_PASSFAIL = 2;
-	const LOGIN_SUCCESS = 3;
-
+class AuthManager {
 	private static $hashKey = "876D309BE9025C2F2A2C0532F9BAA0784F23139C31FF9BC515ED3FCFA10580DC";
 
 	public $session = null;
@@ -47,6 +44,21 @@ class Auth {
 	{
 		return $this->authStatus;
 	}
+
+
+    /**
+     * Register a custom driver creator Closure.
+     *
+     * @param  string  $driver
+     * @param  \Closure  $callback
+     * @return $this
+     */
+    public function extend($driver, Closure $callback)
+    {
+        $this->customCreators[$driver] = $callback;
+
+        return $this;
+    }
 
 	public function authenticate()
 	{

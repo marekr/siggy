@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-use Siggy\Auth;
+use Siggy\AuthManager;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -16,7 +16,7 @@ class AuthServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('auth', function ($app) {
-            return new Auth();
+            return new AuthManager();
         });
     }
 }
