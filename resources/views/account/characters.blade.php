@@ -20,7 +20,7 @@
 		<ul id='character-select'>
 			@foreach($selectableChars as $char)
 
-			<li {{ ($char->id == $selectedCharID ? 'class="selected"' : '') }} onClick="javascript:$(this).find('form').submit();">
+			<li {!! ($char->id == $selectedCharID ? 'class="selected"' : '') !!} onClick="javascript:$(this).find('form').submit();">
 				{!! Form::open(['url' => 'account/characters']) !!}
 					<input type='hidden' name='charID' value='{{$char->id}}' />
 

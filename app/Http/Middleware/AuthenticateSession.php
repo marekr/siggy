@@ -16,8 +16,8 @@ class AuthenticateSession
      */
     public function handle($request, Closure $next)
     {
-		Auth::initialize();
-		Auth::authenticate();
+	//	Auth::initialize();
+	//	Auth::authenticate();
 
         return $next($request);
     }

@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Facades\Auth;
+use App\Facades\SiggySession;
 
 class AccessController extends BaseController {
 
 	public function getGroupPassword()
 	{
-		if(Auth::session()->group == null)
+		if(SiggySession::getGroup() == null)
 		{
 			//kick them off where hopefully the frontpagecontroller pushes them to the right spot
 			return redirect('/');
@@ -18,9 +19,8 @@ class AccessController extends BaseController {
 
 		$wrongPass = false;
 
-		
 		return view('access.group_password', [
-												'group' => Auth::session()->group,
+												'group' => SiggySession::getGroup(),
 												'settings' => $this->loadSettings(),
 												'wrongPass' => $wrongPass
 											]);
@@ -30,12 +30,12 @@ class AccessController extends BaseController {
 	{
 		if( isset($_POST['group_password']) )
 		{
-			$pass = sha1($_POST['group_password'].Auth::session()->group->password_salt);
-			if( !empty(Auth::session()->group->password) )
+			$pass = sha1($_POST['group_password'].SiggySession::getGroup()->password_salt);
+			if( !empty(SiggySession::getGroup()->password) )
 			{
-				if( $pass === Auth::session()->group->password )
+				if( $pass === SiggySession::getGroup()->password )
 				{
-					Auth::user()->savePassword( Auth::session()->group->id, $pass );
+					Auth::user()->savePassword( SiggySession::getGroup()->id, $pass );
 					return redirect('/');
 				}
 				else
@@ -46,21 +46,21 @@ class AccessController extends BaseController {
 		}
 		
 		return redirect()->back()
-                    ->withInput();
+					->withInput();
 	}
 
 	public function getBlacklisted()
 	{
-		if(Auth::session()->group == null)
+		if(SiggySession::getGroup() == null)
 		{
 			//kick them off where hopefully the frontpagecontroller pushes them to the right spot
 			return redirect('/');
 		}
 
 		$reason = '';
-		foreach(Auth::session()->group->blacklistCharacters() as $char)
+		foreach(SiggySession::getGroup()->blacklistCharacters() as $char)
 		{
-			if($char->character_id == Auth::session()->character_id )
+			if($char->character_id == SiggySession::getCharacterId() )
 			{
 				$reason = $char->reason;
 				break;
@@ -69,19 +69,19 @@ class AccessController extends BaseController {
 
 		
 		return view('access.blacklisted', [
-												'group' => Auth::session()->group,
+												'group' => SiggySession::getGroup(),
 												'settings' => $this->loadSettings(),
 												'reason' => $reason,
-												'groupName' => Auth::session()->group->name
+												'groupName' => SiggySession::getGroup()->name
 											]);
 	}
 	
 	public function getGroups()
 	{
-		$groups = Auth::session()->accessibleGroups();
+		$groups = SiggySession::accessibleGroups();
 
 		return view('access.groups', [
-												'group' => Auth::session()->group,
+												'group' => SiggySession::getGroup(),
 												'settings' => $this->loadSettings(),
 												'groups' => $groups
 											]);
@@ -89,14 +89,14 @@ class AccessController extends BaseController {
 
 	public function postGroups()
 	{
-		$groups = Auth::session()->accessibleGroups();
+		$groups = SiggySession::accessibleGroups();
 
 		$selectedGroupId = intval($_POST['group_id']);
 		if( $selectedGroupId && isset( $groups[ $selectedGroupId ] ) )
 		{
 			Auth::user()->groupID = $selectedGroupId;
 			Auth::user()->save();
-			Auth::session()->reloadUserSession();
+			SiggySession::reloadUserSession();
 
 			return redirect('/');
 		}

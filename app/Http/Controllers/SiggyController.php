@@ -27,6 +27,7 @@ use \WormholeJump;
 use \Notifier;
 use \NotificationTypes;
 use \Pathfinder;
+use App\Facades\SiggySession;
 
 class SiggyController extends BaseController {
 
@@ -42,7 +43,7 @@ class SiggyController extends BaseController {
 		$activeChar = Auth::user()->getActiveSSOCharacter();
 
 		Redis::pipeline(function($pipe) {
-			$pipe->sadd('siggy:actives:user#'.Auth::user()->id, "active", Auth::session()->character_id);
+			$pipe->sadd('siggy:actives:user#'.Auth::user()->id, "active", SiggySession::getCharacterId());
 			$pipe->expire('siggy:actives:user#'.Auth::user()->id, 60);
 		});
 
@@ -96,7 +97,7 @@ class SiggyController extends BaseController {
 		}
 
 		//load header tools
-		$themes = Theme::allByGroup(Auth::session()->group->id);
+		$themes = Theme::allByGroup(SiggySession::getGroup()->id);
 
 		//old cookie cleanup
 		if( Cookie::get('sessionID') !== null )
@@ -115,8 +116,8 @@ class SiggyController extends BaseController {
 		}
 
 		return view('siggy.siggy_main', [
-												'group' => Auth::session()->group,
-												'themes' => Theme::allByGroup(Auth::session()->group->id),
+												'group' => SiggySession::getGroup(),
+												'themes' => Theme::allByGroup(SiggySession::getGroup()->id),
 												'settings' => $this->loadSettings(),
 												'systemData' => $sysData,
 												'requested' => $requested,
@@ -129,14 +130,14 @@ class SiggyController extends BaseController {
 		$update = ['location' => [ 'id' => 0] ];
 
 		Redis::pipeline(function($pipe) {
-			$pipe->sadd('siggy:actives:user#'.Auth::user()->id, "active", Auth::session()->character_id);
+			$pipe->sadd('siggy:actives:user#'.Auth::user()->id, "active", SiggySession::getCharacterId());
 			$pipe->expire('siggy:actives:user#'.Auth::user()->id, 60);
 		});
 
 		$ssoCharacters = Auth::user()->ssoCharacters;
 		foreach($ssoCharacters as $character)
 		{
-			if( $character->character_id != Auth::session()->character_id 
+			if( $character->character_id != SiggySession::getCharacterId() 
 				&& !$character->always_track_location )
 			{
 				continue;
@@ -153,7 +154,7 @@ class SiggyController extends BaseController {
 			$currentLocation = CharacterLocation::findWithinCutoff($character->character_id);
 
 
-			if($charData->canAccessMap(Auth::session()->group->id,Auth::session()->accessData['active_chain_map']))
+			if($charData->canAccessMap(SiggySession::getGroup()->id,SiggySession::getAccessData()['active_chain_map']))
 			{
 				$locationThreshold = $charData->location_processed_at;
 				$locationThresholdCutoff = Carbon::now()->subMinutes(1);
@@ -199,12 +200,12 @@ class SiggyController extends BaseController {
 			
 				if( $currentLocation != null )
 				{
-					if( $character->character_id == Auth::session()->character_id )
+					if( $character->character_id == SiggySession::getCharacterId() )
 					{
 						$update['location']['id'] = (int)$currentLocation->system_id;
 					}
 
-					if( !Auth::session()->group->always_broadcast )
+					if( !SiggySession::getGroup()->always_broadcast )
 					{
 						$broadcast = isset($_COOKIE['broadcast']) ? intval($_COOKIE['broadcast']) : true;
 					}
@@ -217,8 +218,8 @@ class SiggyController extends BaseController {
 					{
 						Redis::pipeline(function($pipe) use($character) {
 							$value = $character->character_id . ":" .$character->character->name;
-							$pipe->zadd('siggy:actives:chainmap#'.Auth::session()->accessData['active_chain_map'], [$value => time()]);
-							$pipe->expire('siggy:actives:chainmap#'.Auth::session()->accessData['active_chain_map'], 60);
+							$pipe->zadd('siggy:actives:chainmap#'.SiggySession::getAccessData()['active_chain_map'], [$value => time()]);
+							$pipe->expire('siggy:actives:chainmap#'.SiggySession::getAccessData()['active_chain_map'], 60);
 						});
 					}
 				}
@@ -226,12 +227,12 @@ class SiggyController extends BaseController {
 		}
 
 		$group_last_cache_time = isset($_POST['group_cache_time']) ? intval($_POST['group_cache_time']) : 0;
-		if( $group_last_cache_time < Auth::session()->group->cache_time )
+		if( $group_last_cache_time < SiggySession::getGroup()->cache_time )
 		{
 			$update['chainmaps_update'] = 1;
 
 			$chainmaps = array();
-			foreach( Auth::session()->accessibleChainMaps() as $c )
+			foreach( SiggySession::accessibleChainMaps() as $c )
 			{
 				$chainmaps[ $c->chainmap_id ] = ['id' => (int)$c->chainmap_id,
 														'name' => $c->chainmap_name];
@@ -240,16 +241,16 @@ class SiggyController extends BaseController {
 			$update['chainmaps'] = $chainmaps;
 
 			$update['global_notes_update'] = (int) 1;
-			$update['globalNotes'] = Auth::session()->group->notes;
+			$update['globalNotes'] = SiggySession::getGroup()->notes;
 		}
 
-		$update['group_cache_time'] = (int) Auth::session()->group->last_update;
+		$update['group_cache_time'] = (int) SiggySession::getGroup()->last_update;
 
 
 		$latestDisplayed = isset($_POST['newest_notification']) ? (int) $_POST['newest_notification']  : 0;
-		$returnLastRead = Notification::lastReadTimestamp( Auth::session()->group->id, Auth::session()->character_id );
+		$returnLastRead = Notification::lastReadTimestamp( SiggySession::getGroup()->id, SiggySession::getCharacterId() );
 
-		$notifications = Notification::latest($latestDisplayed, Auth::session()->group->id, Auth::session()->character_id);
+		$notifications = Notification::latest($latestDisplayed, SiggySession::getGroup()->id, SiggySession::getCharacterId());
 		$update['notifications'] = array('last_read' => $returnLastRead, 'items' => $notifications);
 
 
@@ -288,8 +289,8 @@ class SiggyController extends BaseController {
             $activeSystem = DB::selectOne('SELECT lastUpdate FROM activesystems WHERE systemID=:id AND groupID=:group AND chainmap_id=:chainmap',
 												[
 													'id' => $selectedSystemID,
-													'group' => Auth::session()->group->id,
-													'chainmap' => Auth::session()->accessData['active_chain_map']
+													'group' => SiggySession::getGroup()->id,
+													'chainmap' => SiggySession::getAccessData()['active_chain_map']
 												]);
 								
 			$recordedLastUpdate = ($activeSystem != null) ? $activeSystem->lastUpdate: time();
@@ -298,7 +299,7 @@ class SiggyController extends BaseController {
 			{
 				$additional = '';
 
-				$update['sigData'] = Signature::findByGroupSystem(Auth::session()->group->id,$selectedSystemID);
+				$update['sigData'] = Signature::findByGroupSystem(SiggySession::getGroup()->id,$selectedSystemID);
 
 				 foreach($update['sigData'] as &$sig)
 				 {
@@ -317,7 +318,7 @@ class SiggyController extends BaseController {
 				$update['sigUpdate'] = (int) 1;
 			}
 
-			$update['chainmap_id'] = Auth::session()->accessData['active_chain_map'];
+			$update['chainmap_id'] = SiggySession::getAccessData()['active_chain_map'];
 
 			$update['lastUpdate'] = (int)$recordedLastUpdate;
 		}
@@ -343,8 +344,8 @@ class SiggyController extends BaseController {
 													WHERE ss.id=:id",
 													[
 														'id' => $id,
-														'group' => Auth::session()->group->id,
-														'chainmap' => Auth::session()->accessData['active_chain_map'] 
+														'group' => SiggySession::getGroup()->id,
+														'chainmap' => SiggySession::getAccessData()['active_chain_map'] 
 													]);
 		if( $systemData == null )
 		{
@@ -386,7 +387,7 @@ class SiggyController extends BaseController {
 
 		$systemData->dscans = $this->getDScans( $systemData->id );
 
-		$systemData->structures = Structure::findAllByGroupSystem( Auth::session()->group->id, $systemData->id );
+		$systemData->structures = Structure::findAllByGroupSystem( SiggySession::getGroup()->id, $systemData->id );
 
 		return $systemData;
 	}
@@ -399,7 +400,7 @@ class SiggyController extends BaseController {
 												WHERE p.group_id=:group_id AND p.system_id=:system_id
 												ORDER BY p.location_planet ASC, p.location_moon ASC",
 												[
-													'group_id' => Auth::session()->group->id,
+													'group_id' => SiggySession::getGroup()->id,
 													'system_id' => $systemID
 												]);
 
@@ -412,7 +413,7 @@ class SiggyController extends BaseController {
 												FROM dscan
 												WHERE group_id=:group_id AND system_id=:system_id",
 												[
-													'group_id' => Auth::session()->group->id,
+													'group_id' => SiggySession::getGroup()->id,
 													'system_id' => $systemID
 												]);
 
@@ -461,8 +462,8 @@ class SiggyController extends BaseController {
 										WHERE hash=:hash AND group_id=:group AND chainmap_id=:chainmap",
 										[
 											'hash' => $whHash,
-											'group' => Auth::session()->group->id,
-											'chainmap' => Auth::session()->accessData['active_chain_map']
+											'group' => SiggySession::getGroup()->id,
+											'chainmap' => SiggySession::getAccessData()['active_chain_map']
 										]);
 
 		if( $connection == null )
@@ -484,29 +485,29 @@ class SiggyController extends BaseController {
 			$this->doSystemMappedNotifications($notifierSystems);
 
 
-			Auth::session()->group->incrementStat('wormholes', Auth::session()->accessData);
+			SiggySession::getGroup()->incrementStat('wormholes', SiggySession::getAccessData());
 		}
 		else
 		{
 			//existing wh
 			DB::table('wormholes')
 				->where('hash', '=', $whHash)
-				->where('group_id', '=', Auth::session()->group->id)
-				->where('chainmap_id', '=', Auth::session()->accessData['active_chain_map'])
+				->where('group_id', '=', SiggySession::getGroup()->id)
+				->where('chainmap_id', '=', SiggySession::getAccessData()['active_chain_map'])
 				->update(['last_jump' => time()]);
 		}
 
 		//TODO fix me......this is a more involved one
 		
-		if( Auth::session()->group->jump_log_enabled )
+		if( SiggySession::getGroup()->jump_log_enabled )
 		{
-			$charID = ( Auth::session()->group->jump_log_record_names ? Auth::session()->character_id : 0 );
+			$charID = ( SiggySession::getGroup()->jump_log_record_names ? SiggySession::getCharacterId() : 0 );
 
 			$data = [
 				'wormhole_hash' => $whHash,
 				'destination_id' => $dest,
 				'origin_id' => $origin,
-				'group_id' => Auth::session()->group->id,
+				'group_id' => SiggySession::getGroup()->id,
 				'ship_id' => $record->ship_id,
 				'character_id' => $charID
 			];
@@ -517,7 +518,7 @@ class SiggyController extends BaseController {
 
 	private function doSystemMappedNotifications($systems)
 	{
-		foreach( Notifier::allByGroupCharacter(Auth::session()->group->id, Auth::session()->character_id) as $notifier )
+		foreach( Notifier::allByGroupCharacter(SiggySession::getGroup()->id, SiggySession::getCharacterId()) as $notifier )
 		{
 			if( $notifier->type == NotificationTypes::SystemMappedByName )
 			{
@@ -535,7 +536,7 @@ class SiggyController extends BaseController {
 		$data = $notifier->data;
 		foreach($systems as $k => $system)
 		{
-			$q = POS::with('system')->where('group_id',Auth::session()->group->id)
+			$q = POS::with('system')->where('group_id',SiggySession::getGroup()->id)
 				->where('system_id', $system)
 				->where('owner','LIKE',$data->resident_name);
 
@@ -553,8 +554,8 @@ class SiggyController extends BaseController {
 														$pos->system->id,
 														$pos->system->name,
 														$data->resident_name,
-														Auth::session()->character_name,
-														Auth::session()->character_id,
+														SiggySession::getCharacterName(),
+														SiggySession::getCharacterId(),
 														0);
 			}
 		}
@@ -570,8 +571,8 @@ class SiggyController extends BaseController {
 													$notifier,
 													$data->system_id,
 													$data->system_name,
-													Auth::session()->character_name,
-													Auth::session()->character_id,
+													SiggySession::getCharacterName(),
+													SiggySession::getCharacterId(),
 													0
 												);
 		}
@@ -599,8 +600,8 @@ class SiggyController extends BaseController {
 															$notifier,
 															$data->system_id,
 															$data->system_name,
-															Auth::session()->character_name,
-															Auth::session()->character_id,
+															SiggySession::getCharacterName(),
+															SiggySession::getCharacterId(),
 															$path['distance'],
 															$system,
 															miscUtils::systemNameByID($system)
@@ -635,7 +636,7 @@ class SiggyController extends BaseController {
 			$charID = $characterID;
 		}
 
-		Notification::createFancy(Auth::session()->group->id, $charID, $notifier->type, $eventData);
+		Notification::createFancy(SiggySession::getGroup()->id, $charID, $notifier->type, $eventData);
 	}
 
 	public function createSystemResidentNotification($notifier,
@@ -659,7 +660,7 @@ class SiggyController extends BaseController {
 				$charID = $characterID;
 			}
 
-			Notification::createFancy(Auth::session()->group->id, $charID, $notifier->type, $eventData);
+			Notification::createFancy(SiggySession::getGroup()->id, $charID, $notifier->type, $eventData);
 		}
 
 
@@ -667,9 +668,9 @@ class SiggyController extends BaseController {
 	{
 		if($this->chainmap == null)
 		{
-			if( Auth::session()->accessData['active_chain_map'] )
+			if( SiggySession::getAccessData()['active_chain_map'] )
 			{
-				$this->chainmap = Chainmap::find(Auth::session()->accessData['active_chain_map'],Auth::session()->group->id);
+				$this->chainmap = Chainmap::find(SiggySession::getAccessData()['active_chain_map'],SiggySession::getGroup()->id);
 			}
 		}
 
@@ -693,7 +694,7 @@ class SiggyController extends BaseController {
 				$update['chainMap']['cynos'] = [];
 				if( is_array($this->mapData['systemIDs']) && count($this->mapData['systemIDs'])	 > 0 )
 				{
-					$results = Redis::zrangebyscore('siggy:actives:chainmap#'.Auth::session()->accessData['active_chain_map'], time()-60,"+inf");
+					$results = Redis::zrangebyscore('siggy:actives:chainmap#'.SiggySession::getAccessData()['active_chain_map'], time()-60,"+inf");
 
 					if( is_array($results) && count($results) > 0 )
 					{
@@ -753,7 +754,7 @@ class SiggyController extends BaseController {
 		$update = array();
 
 		$system_data = $this->getSystemData($id);
-		$log_message = sprintf('%s edited system %s; ', Auth::session()->character_name, $system_data->name );
+		$log_message = sprintf('%s edited system %s; ', SiggySession::getCharacterName(), $system_data->name );
 
 		if( isset($_POST['label']) )
 		{
@@ -786,7 +787,7 @@ class SiggyController extends BaseController {
 
 		$this->getChainmap()->update_system($_POST['systemID'], $update);
 
-		Auth::session()->group->logAction('editsystem', $log_message );
+		SiggySession::getGroup()->logAction('editsystem', $log_message );
 
 		$this->getChainmap()->rebuild_map_data_cache();
 
@@ -797,8 +798,8 @@ class SiggyController extends BaseController {
 	{
 		$notes = htmlspecialchars($_POST['notes']);
 
-		Auth::session()->group->notes = $notes;
-		Auth::session()->group->save();
+		SiggySession::getGroup()->notes = $notes;
+		SiggySession::getGroup()->save();
 
 		return response()->json(time());
 	}
@@ -812,7 +813,7 @@ class SiggyController extends BaseController {
 		$language = $settingsData['language'];
 		$activity = !empty($settingsData['default_activity']) ? $settingsData['default_activity'] : null;
 
-		$theme = Theme::findByGroup(Auth::session()->group->id, $themeID);
+		$theme = Theme::findByGroup(SiggySession::getGroup()->id, $themeID);
 
 		if( $theme != null )
 		{

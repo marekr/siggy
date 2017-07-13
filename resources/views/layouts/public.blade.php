@@ -51,7 +51,7 @@
 				<li><a href="http://wiki.siggy.borkedlabs.com/support/contact/">Support</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<?php if( Auth::loggedIn() ): ?>
+				<?php if( Auth::check() ): ?>
 
 					<?php if( count(Auth::user()->perms()) > 0 ): ?>
 				<li <?php echo ($selectedTab == 'admin' ? 'class="active"' : ''); ?>><a href="{{url('manage')}}">Admin</a></li>

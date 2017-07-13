@@ -29,7 +29,7 @@ class SiggyLoggedIn
      */
     public function handle($request, Closure $next)
     {
-		if( !Auth::loggedIn() )
+		if( !Auth::check() )
 		{
 			return $this->siggyRedirect($request->ajax(), '/account/login');
 		}

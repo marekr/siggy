@@ -10,6 +10,7 @@ use SimpleCrest\Endpoint;
 use Siggy\ESI\Client as ESIClient;
 
 use App\Facades\Auth;
+use App\Facades\SiggySession;
 use Siggy\StandardResponse;
 
 class CrestController extends Controller {

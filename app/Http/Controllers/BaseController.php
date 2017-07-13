@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\App;
 use App\Facades\Auth;
+use App\Facades\SiggySession;
 use \stdClass;
 
 class BaseController extends Controller {
@@ -15,7 +16,7 @@ class BaseController extends Controller {
 
 	protected function loadSettings()
 	{
-		if( Auth::loggedIn() )
+		if( Auth::check() )
 		{
 			$settings = new stdClass;
 			$settings->theme_id = Auth::user()->theme_id;

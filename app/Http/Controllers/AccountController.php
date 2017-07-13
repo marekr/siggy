@@ -20,13 +20,14 @@ use \GroupMember;
 
 use \User;
 use \Email;
+use App\Facades\SiggySession;
 
 class AccountController extends Controller {
 
 	public function postLogin(Request $request)
 	{
-		$rememberMe = (isset($_POST['remember']) ? TRUE : FALSE);
-		if( Auth::processLogin($_POST['username'], $_POST['password'], $rememberMe) === true )
+		$rememberMe = $request->input('remember', false);
+		if( Auth::attempt(['username' => $request->input('username'), 'password' => $request->input('password')], $rememberMe) === true )
 		{
 			$session = session();
 
@@ -64,7 +65,7 @@ class AccountController extends Controller {
 
 	public function getLogin()
 	{
-		if( Auth::loggedIn() )
+		if( Auth::check() )
 		{
 			return redirect('/');
 		}
@@ -87,24 +88,11 @@ class AccountController extends Controller {
 	public function postRegister(Request $request)
 	{
 		$validator = Validator::make($request->all(), [
-			'username' => 'required',
-			'email' => 'required|email',
+			'username' => 'required|unique:users',
+			'email' => 'required|email|unique:users',
 			'password' => 'required|min:8|confirmed',
 			'password_confirmation' => 'required',
 		]);
-
-		if(!$validator->fails())
-		{
-			if( Auth::usernameExists( $request->input('username') ) )
-			{
-				$validator->errors()->add('username', 'Username is already in use.');
-			}
-
-			if( Auth::emailExists( $request->input('email') ) )
-			{
-				$validator->errors()->add('email', 'Email is already in use.');
-			}
-		}
 		
 		if( count( $validator->errors() ) )
 		{
@@ -112,19 +100,18 @@ class AccountController extends Controller {
 				$request, $validator
 			);
 		}
-
 	
 		$session = session();
 
-		$userData = array('username' => $request->input('username'),
+		$userData = ['username' => $request->input('username'),
 							'password' => $request->input('password'),
 							'email' => $request->input('email'),
 							'active' => 1
-							);
+							];
 
-		if( User::create( $userData ) )
+		if( User::create( $userData ) != null )
 		{
-			Auth::processLogin($userData['username'], $userData['password']);
+			Auth::attempt(['username' => $userData['username'], 'password' => $userData['password']]);
 
 			if( $session->pull('sso_login',false) )
 			{
@@ -225,7 +212,7 @@ class AccountController extends Controller {
 			Auth::user()->char_id = $charID;
 
 			Auth::user()->save();
-			Auth::session()->reloadUserSession();
+			SiggySession::reloadUserSession();
 
 			return redirect('/');
 		}
@@ -266,10 +253,9 @@ class AccountController extends Controller {
 	public function getLogout()
 	{
 		// Sign out the user
-		Auth::processLogout();
+		Auth::logout();
 		
-		$session = session();
-		$session->flush();
+		SiggySession::destroy();
 
 		return redirect('/');
 	}
@@ -341,14 +327,22 @@ class AccountController extends Controller {
 				$state = isset($_GET['state']) ? $_GET['state'] : null;
 
 				// This was a callback request from reddit, get the token
-				$token = $eveService->requestAccessToken($_GET['code'], $state);
+				try
+				{
+					$token = $eveService->requestAccessToken($_GET['code'], $state);
+				}
+				catch(\OAuth\Common\Http\Exception\TokenResponseException $e)
+				{
+					return redirect('account/login')
+						->withErrors(['Error getting OAuth token from EVE, please try again.']);
+				}
 
 				$result = json_decode($eveService->request('https://login.eveonline.com/oauth/verify'), true);
 
 				//force us to get some info about the character in the table
 				$charData = Character::find($result['CharacterID']);
 
-				if( $session->pull('sso_connect',false) && Auth::loggedIn() )	//if already logged in
+				if( $session->pull('sso_connect',false) && Auth::check() )	//if already logged in
 				{
 					if( !is_array($result) )
 					{
@@ -358,9 +352,10 @@ class AccountController extends Controller {
 
 					$expiration = Carbon::createFromTimeStampUTC($token->getEndOfLife())->toDateTimeString();
 
-					$userID = Auth::characterOwnerHashTied( $result['CharacterOwnerHash'] );
+					$user = User::findUserByCharacterOwnerHash( $result['CharacterOwnerHash'] );
 
-					if( $userID == Auth::user()->id )
+					if( $user != null && 
+						$user->id == Auth::user()->id )
 					{
 						flash('The character\'s connection has been updated successfully.')->success();
 
@@ -372,7 +367,7 @@ class AccountController extends Controller {
 
 						return redirect('/account/connected');
 					}
-					else if ( $userID == null )
+					else if ( $user == null )
 					{
 						flash('The character has been successfully connected to your siggy account.')->success();
 						Auth::user()->addSSOCharacter($result['CharacterOwnerHash'], 
@@ -400,11 +395,12 @@ class AccountController extends Controller {
 
 					$expiration = Carbon::createFromTimeStampUTC($token->getEndOfLife())->toDateTimeString();
 
-					if( $userID = Auth::characterOwnerHashTied( $result['CharacterOwnerHash'] ) )
+					$user = User::findUserByCharacterOwnerHash( $result['CharacterOwnerHash'] );
+					if( $user != null )
 					{
-						$status = Auth::forceLogin($userID);
+						$status = Auth::login($user);
 
-						Auth::user()->updateSSOCharacter($result['CharacterID'],
+						$user->updateSSOCharacter($result['CharacterID'],
 														$token->getAccessToken(),
 														$token->getRefreshToken(),
 														$expiration,
@@ -452,7 +448,7 @@ class AccountController extends Controller {
 
 		if(!$validator->fails())
 		{
-			if( Auth::hash($_POST['current_password']) != Auth::user()->password )
+			if( \Siggy\SiggyUserProvider::hash($_POST['current_password']) != Auth::user()->password )
 			{
 				$validator->errors()->add('current_password', 'This is not current password.');
 			}
@@ -489,7 +485,7 @@ class AccountController extends Controller {
 			if ( $user != null )
 			{
 				// send an email with the account reset token
-				$user->reset_token = md5($user->email . Auth::generatePassword(32));
+				$user->reset_token = md5($user->email . \Illuminate\Support\Str::random(32));
 				$user->save();
 
 				$message = new \App\Mail\ForgotPassword($user);

@@ -1,7 +1,8 @@
 # siggy Changelog
 
-## 3.4.x
+## 3.5.x
 ## Changes
+- Fully separate session and user auth, relic of siggy's age where it was an intertwined mess of hacks
 - Shift all form tags fully over to templating to avoid forgetting the csrf field....
 - Adjust group password box to look a tiny bit better
 

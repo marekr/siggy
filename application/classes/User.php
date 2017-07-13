@@ -8,8 +8,18 @@ use Illuminate\Support\Str;
 use Siggy\ScribeCommandBus;
 
 use App\Facades\Auth;
+use App\Facades\SiggySession;
+use Laravel\Passport\HasApiTokens;
 
-class User extends Model {
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+use Siggy\SiggyUserProvider;
+
+class User extends Authenticatable {
+    use Notifiable;
+    use HasApiTokens;
+
 	public $perms = null;
 	public $timestamps = true;
 
@@ -23,11 +33,19 @@ class User extends Model {
 		'theme_id',
 		'combine_scan_intel',
 		'language',
-		'default_activity'
+		'default_activity',
+		'char_id',
+		'remember_token',
+		'groupID',
 	];
 
+	/**
+		* The attributes that should be hidden for arrays.
+		*
+		* @var array
+		*/
 	protected $hidden = [
-		'password'
+		'password', 'remember_token',
 	];
 
 	public function group()
@@ -76,11 +94,11 @@ class User extends Model {
 		}
 
 		/* update the corp id */
-		if( $character->corporation_id != Auth::session()->corporation_id )
+		if( $character->corporation_id != SiggySession::getCorporationId() )
 		{
 			if( $this->id == Auth::user()->id )
 			{
-				Auth::session()->reloadUserSession();
+				SiggySession::reloadUserSession();
 			}
 		}
 
@@ -93,7 +111,7 @@ class User extends Model {
 		
 		static::creating(function ($model)
 		{
-			$model->password = Auth::hash($model->password);
+			$model->password = SiggyUserProvider::hash($model->password);
 			$model->remember_token = Str::random(60);
 			$model->active = TRUE;
 		});
@@ -126,6 +144,11 @@ class User extends Model {
 	public function updateSSOCharacter(int $characterId, string $token, ?string $refreshToken, $expiration, array $scopes = [])
 	{
 		$char = $this->ssoCharacters()->where('character_id', $characterId)->first();
+		if($char == null)
+		{
+			throw new ErrorException("Trying to update sso character data when it isnt attached to the user");
+		}
+
 		$data = [
 			'access_token' => $token,
 			'access_token_expiration' => $expiration,
@@ -203,7 +226,7 @@ class User extends Model {
 
 	public function updatePassword($newPass)
 	{
-		$this->password = Auth::hash($newPass);
+		$this->password = SiggyUserProvider::hash($newPass);
 		$this->remember_token = Str::random(60);
 		$this->save();
 	}
@@ -237,5 +260,11 @@ class User extends Model {
 		}
 
 		return FALSE;
+	}
+
+	public static function findUserByCharacterOwnerHash(string $hash): ?User
+	{
+		$user = self::select('users.*')->join('user_ssocharacter','user_ssocharacter.user_id','users.id')->where('user_ssocharacter.character_owner_hash','=',$hash)->first();
+		return $user;
 	}
 }

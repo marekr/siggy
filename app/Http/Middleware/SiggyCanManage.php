@@ -56,7 +56,7 @@ class SiggyCanManage
      */
     public function handle($request, Closure $next)
     {
-		if( !Auth::loggedIn() )
+		if( !Auth::check() )
 		{
 			return redirect('/');
 		}

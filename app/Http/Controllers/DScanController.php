@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use \miscUtils;
 use App\Facades\Auth;
+use App\Facades\SiggySession;
 
 
 class DScanController extends Controller {
@@ -66,10 +67,10 @@ class DScanController extends Controller {
 			$data = array(
 				'dscan_date' => time(),
 				'system_id' => intval($request->input('system_id')),
-				'group_id' => Auth::session()->group->id,
+				'group_id' => SiggySession::getGroup()->id,
 				'dscan_title' => htmlentities($request->input('dscan_title')),
 				'dscan_id' => $id,
-				'dscan_added_by' => Auth::session()->character_name
+				'dscan_added_by' => SiggySession::getCharacterName()
 			);
 
 			$dscanID = DB::table('dscan')->insert($data);
@@ -118,7 +119,7 @@ class DScanController extends Controller {
 										FROM dscan d
 										LEFT JOIN solarsystems ss ON (ss.id=d.system_id)
 										WHERE d.dscan_id=:dscan_id AND d.group_id=:group_id",[
-											'group_id' => Auth::session()->group->id,
+											'group_id' => SiggySession::getGroup()->id,
 											'dscan_id' => $id
 										]);
 
@@ -182,7 +183,7 @@ class DScanController extends Controller {
 		$dscan = DB::selectOne("SELECT dscan_id, dscan_title, dscan_date
 										FROM dscan
 										WHERE dscan_id=:dscan_id AND group_id=:group_id",[
-											'group_id' => Auth::session()->group->id,
+											'group_id' => SiggySession::getGroup()->id,
 											'dscan_id' => $id
 										]);
 

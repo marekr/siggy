@@ -36,32 +36,8 @@ class UserSession {
 		//session data fetch failed? then recreate it, or create one if no id
 		if( !$this->reloadSessionData() )
 		{
-			//reauth the member
-			//remember me check
-			$recall = Cookie::get('remember','');
-			$recallBits = explode("|", $recall);
-			if(count($recallBits) == 2)
-			{
-				list($id, $token) = $recallBits;
-				
-				if( $id && $token )
-				{
-					if( !Auth::autoLogin($id, $token) )
-					{
-						Cookie::queue(Cookie::forget('remember'));
-					}
-				}
-			}
-
 			$this->populateNewSession();
 			$this->reloadUserSession();
-			//reload user session will have reloaded the session data from db
-		}
-
-		// finally load user ID
-		if( $this->user_id != 0 )
-		{
-			Auth::setUser(User::find( $this->user_id ));
 		}
 
 		$this->group = Group::find($this->group_id);
@@ -114,7 +90,7 @@ class UserSession {
 
 	public function reloadUserSession()
 	{
-		if( !Auth::loggedIn() )
+		if( !Auth::check() )
 		{
 			return;
 		}
@@ -165,7 +141,7 @@ class UserSession {
 	{
 		$type = 'guest';
 
-		if( Auth::loggedIn() )
+		if( Auth::check() )
 		{
 			$type = 'user';
 		}
@@ -190,12 +166,12 @@ class UserSession {
 
 	public function validateGroup(): bool
 	{
-		if( Auth::session()->group->findGroupMember(GroupMember::TypeChar, $this->character_id) != null )
+		if( $this->group->findGroupMember(GroupMember::TypeChar, $this->character_id) != null )
 		{
 			return TRUE;
 		}
 		
-		if( Auth::session()->group->findGroupMember(GroupMember::TypeCorp, $this->corporation_id) != null )
+		if( $this->group->findGroupMember(GroupMember::TypeCorp, $this->corporation_id) != null )
 		{
 			return TRUE;
 		}
@@ -211,7 +187,7 @@ class UserSession {
 		return FALSE;
 	}
 
-	public function getAccessData()
+	public function getAccessData(): array
 	{
 		/* Result array */
 		$accessData = [];
@@ -223,6 +199,8 @@ class UserSession {
 		}
 
 		$this->accessData = $accessData;
+
+		return $accessData;
 	}
 
 
@@ -310,6 +288,26 @@ class UserSession {
 		}
 
 		return 0;
+	}
+
+	public function getCorporationId(): int
+	{
+		return $this->corporation_id;
+	}
+
+	public function getCharacterId(): int
+	{
+		return $this->character_id;
+	}
+
+	public function getGroup(): Group
+	{
+		return $this->group;
+	}
+
+	public function getCharacterName(): string
+	{
+		return $this->character_name;
 	}
 
 	private function _getChainMapID(array $chainmaps): int

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 use Siggy\StandardResponse;
 use App\Facades\Auth;
+use App\Facades\SiggySession;
 use \Signature;
 use \Chainmap;
 use \Notifier;
@@ -26,9 +27,9 @@ class SignatureController extends BaseController {
 	{
 		if($this->chainmap == null)
 		{
-			if( Auth::session()->accessData['active_chain_map'] )
+			if( SiggySession::getAccessData()['active_chain_map'] )
 			{
-				$this->chainmap = Chainmap::find(Auth::session()->accessData['active_chain_map'],Auth::session()->group->id);
+				$this->chainmap = Chainmap::find(SiggySession::getAccessData()['active_chain_map'],SiggySession::getGroup()->id);
 			}
 		}
 
@@ -49,8 +50,8 @@ class SignatureController extends BaseController {
 				'created_at' => Carbon::now()->toDateTimeString(),
 				'siteID' => intval($sigData['siteID']),
 				'type' => $sigData['type'],
-				'groupID' => Auth::session()->group->id,
-				'creator' => Auth::session()->character_name,
+				'groupID' => SiggySession::getGroup()->id,
+				'creator' => SiggySession::getCharacterName(),
 				'sigSize' => ( isset($sigData['sigSize']) && is_numeric( $sigData['sigSize'] ) ? $sigData['sigSize'] : '' )
 			];
 
@@ -60,7 +61,7 @@ class SignatureController extends BaseController {
 																'lastActive' => time() )
 										);
 										
-			Auth::session()->group->incrementStat('adds', Auth::session()->accessData);
+			SiggySession::getGroup()->incrementStat('adds', SiggySession::getAccessData());
 
 			$this->notifierCheck($sig);
 
@@ -70,7 +71,7 @@ class SignatureController extends BaseController {
 
 	private function notifierCheck(Signature $sigData)
 	{
-		foreach( Notifier::allByGroupCharacter(Auth::session()->group->id, Auth::session()->character_id) as $notifier )
+		foreach( Notifier::allByGroupCharacter(SiggySession::getGroup()->id, SiggySession::getCharacterId()) as $notifier )
 		{
 			if( $notifier->type == NotificationTypes::SiteFound )
 			{
@@ -81,18 +82,18 @@ class SignatureController extends BaseController {
 										'system_id' => $sigData->systemID,
 										'system_name' => miscUtils::systemNameByID($sigData->systemID),
 										'site_id' => $sigData->siteID,
-										'discoverer_name' => Auth::session()->character_name,
-										'discoverer_id' => Auth::session()->character_id,
+										'discoverer_name' => SiggySession::getCharacterName(),
+										'discoverer_id' => SiggySession::getCharacterId(),
 										'signature' => $sigData->sig
 										);
 
 					$charID = 0;
 					if( $notifier->scope == 'personal' )
 					{
-						$charID = Auth::session()->character_id;
+						$charID = SiggySession::getCharacterId();
 					}
 
-					Notification::createFancy(Auth::session()->group->id, $charID, $notifier->type, $eventData);
+					Notification::createFancy(SiggySession::getGroup()->id, $charID, $notifier->type, $eventData);
 				}
 			}
 		}
@@ -123,7 +124,7 @@ class SignatureController extends BaseController {
 				}
 
 				DB::table('systemsigs')
-					->where('groupID', Auth::session()->group->id)
+					->where('groupID', SiggySession::getGroup()->id)
 					->where('systemID', $systemID)
 					->whereNotIn('sig',$sigList)
 					->delete();
@@ -135,7 +136,7 @@ class SignatureController extends BaseController {
 				$doingUpdate = FALSE;
 				foreach( $sigs as $sig )
 				{
-					$sigData = Signature::findByGroupSystemSig(Auth::session()->group->id, $systemID, $sig['sig']);
+					$sigData = Signature::findByGroupSystemSig(SiggySession::getGroup()->id, $systemID, $sig['sig']);
 					if( $sigData != null )
 					{
 						if(  $sig['type'] != 'none' || $sig['siteID'] != 0 )
@@ -145,7 +146,7 @@ class SignatureController extends BaseController {
 										'updated_at' => Carbon::now()->toDateTimeString(),
 										'siteID' => ( $sig['siteID'] != 0 ) ? $sig['siteID'] : $sigData->siteID,
 										'type' => $sig['type'],
-										'lastUpdater' => Auth::session()->character_name
+										'lastUpdater' => SiggySession::getCharacterName()
 									];
 							$sigData->fill($update);
 							$sigData->save();
@@ -160,9 +161,9 @@ class SignatureController extends BaseController {
 								'created_at' => Carbon::now()->toDateTimeString(),
 								'siteID' => intval($sig['siteID']),
 								'type' => $sig['type'],
-								'groupID' => Auth::session()->group->id,
+								'groupID' => SiggySession::getGroup()->id,
 								'sigSize' => "",	//need to return this value for JS to fail gracefully
-								'creator' => Auth::session()->character_name
+								'creator' => SiggySession::getCharacterName()
 							];
 
 						$sig = Signature::create($insert);
@@ -171,7 +172,7 @@ class SignatureController extends BaseController {
 
 						if( $insert['type'] != 'none' )
 						{
-							Auth::session()->group->incrementStat('adds', Auth::session()->accessData);
+							SiggySession::getGroup()->incrementStat('adds', SiggySession::getAccessData());
 						}
 					}
 				}
@@ -204,16 +205,16 @@ class SignatureController extends BaseController {
 			$update['siteID'] = isset($sigData['siteID']) ? intval($sigData['siteID']) : 0;
 			$update['type'] = $sigData['type'];
 
-			if( Auth::session()->group->show_sig_size_col )
+			if( SiggySession::getGroup()->show_sig_size_col )
 			{
 				$update['sigSize'] = ( is_numeric( $sigData['sigSize'] ) ? $sigData['sigSize'] : ''  );
 			}
 
-			$update['lastUpdater'] = Auth::session()->character_name;
+			$update['lastUpdater'] = SiggySession::getCharacterName();
 
 			$id = intval($sigData['id']);
 
-			$sig = Signature::findByGroup(Auth::session()->group->id,$id);
+			$sig = Signature::findByGroup(SiggySession::getGroup()->id,$id);
 			if($sig == null)
 			{
 				return response()->json('0');
@@ -246,7 +247,7 @@ class SignatureController extends BaseController {
 				}
 			}
 
-			Auth::session()->group->incrementStat('updates', Auth::session()->accessData);
+			SiggySession::getGroup()->incrementStat('updates', SiggySession::getAccessData());
 
 			return response()->json('1');
 		}
@@ -258,8 +259,8 @@ class SignatureController extends BaseController {
 
 		if( isset($request['system_id']) )
 		{
-			$chainmapID = Auth::session()->accessData['active_chain_map'];
-			$chainmap = Chainmap::find($chainmapID,Auth::session()->group->id);
+			$chainmapID = SiggySession::getAccessData()['active_chain_map'];
+			$chainmap = Chainmap::find($chainmapID,SiggySession::getGroup()->id);
 			foreach($request['sigs'] as $sig)
 			{
 				if(empty($sig['wh_destination']))
@@ -271,7 +272,7 @@ class SignatureController extends BaseController {
 					continue;
 				
 				//permission check
-				$sigEntry = Signature::findByGroup(Auth::session()->group->id, $sig['id']);
+				$sigEntry = Signature::findByGroup(SiggySession::getGroup()->id, $sig['id']);
 
 				if( $sigEntry == null )
 					continue;
@@ -310,7 +311,7 @@ class SignatureController extends BaseController {
 		{
 			$id = intval($_POST['id']);
 
-			$sigData = Signature::findByGroupWithSystem(Auth::session()->group->id, $id);
+			$sigData = Signature::findByGroupWithSystem(SiggySession::getGroup()->id, $id);
 			if($sigData == null)
 			{
 				return response()->json('0');
@@ -329,16 +330,16 @@ class SignatureController extends BaseController {
 			}
 			$wormholeHashes = array_unique($wormholeHashes);
 
-			groupUtils::deleteLinkedSigWormholes(Auth::session()->group->id, $wormholeHashes);
+			groupUtils::deleteLinkedSigWormholes(SiggySession::getGroup()->id, $wormholeHashes);
 
-			$message = sprintf('%s deleted sig "%s" from system "%s"', Auth::session()->character_name, $sigData->sig, $sigData->system->name);
+			$message = sprintf('%s deleted sig "%s" from system "%s"', SiggySession::getCharacterName(), $sigData->sig, $sigData->system->name);
 
 			if( $sigData->type != 'none' )
 			{
 				$message .= '" which was of type '.strtoupper($sigData->type);
 			}
 
-			Auth::session()->group->logAction('delsig', $message);
+			SiggySession::getGroup()->logAction('delsig', $message);
 			return response()->json('1');
 		}
 	}
@@ -364,8 +365,8 @@ class SignatureController extends BaseController {
 													GROUP BY s.systemID
 												)",
 												[
-													Auth::session()->group->id,
-													Auth::session()->group->id
+													SiggySession::getGroup()->id,
+													SiggySession::getGroup()->id
 												]);
 
 		return response()->json($data);

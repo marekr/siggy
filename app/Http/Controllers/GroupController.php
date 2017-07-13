@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 use App\Facades\Auth;
+use App\Facades\SiggySession;
 use \Group;
 
 class GroupController extends Controller {
@@ -57,7 +58,7 @@ class GroupController extends Controller {
 				Auth::user()->groupID = $group->id;
 				Auth::user()->save();
 
-				Auth::session()->reloadUserSession();
+				SiggySession::reloadUserSession();
 
 				return redirect('group/create/completed');
 			}

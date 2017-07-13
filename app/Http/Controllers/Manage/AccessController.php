@@ -11,6 +11,7 @@ use Carbon\Carbon;
 
 use App\Facades\Auth;
 use \Group;
+use \User;
 
 class AccessController extends BaseController
 {
@@ -99,26 +100,21 @@ class AccessController extends BaseController
 	public function postAdd(Request $request)
 	{
 		$validator = Validator::make($_POST, [
-			'username' => 'required',
+			'username' => 'required|exists:users',
 		]);
 
 		if($validator->passes())
 		{
-			$userID = Auth::usernameExists( $_POST['username'] );
-			if( !$userID )
-			{
-				$validator->errors()->add('username', 'User not found');
-			}
-		
 			if( count($validator->errors()) == 0 )
 			{
+				$user = User::where('username','=',$request->input('username'))->first();
 				$save = array(
 							'can_view_logs' => isset( $_POST['can_view_logs'] ) ? intval( $_POST['can_view_logs'] ) : 0,
 							'can_manage_group_members' => isset( $_POST['can_manage_group_members'] ) ? intval( $_POST['can_manage_group_members'] ) : 0,
 							'can_manage_settings' => isset( $_POST['can_manage_settings'] ) ? intval( $_POST['can_manage_settings'] ) : 0,
 							'can_view_financial' => isset( $_POST['can_view_financial'] ) ? intval( $_POST['can_view_financial'] ) : 0,
 							'can_manage_access' => isset( $_POST['can_manage_access'] ) ? intval( $_POST['can_manage_access'] ) : 0,
-							'user_id' => $userID,
+							'user_id' => $user->id,
 							'group_id' => Auth::user()->groupID,
 							'created_at' => Carbon::now()->toDateTimeString()
 						);

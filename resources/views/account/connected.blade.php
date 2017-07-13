@@ -11,7 +11,7 @@
 		</ul>
 	</p>
 
-	<a href="{{url('account/connect')}}" clas="btn btn-primary pull-right"><i class="glyphicon glyphicon-plus"></i>&nbsp;Connect new character</a>
+	<a href="{{url('account/connect')}}" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-plus"></i>&nbsp;Connect new character</a>
 	<br clear='all' />
 	<br />
 	<table class="table table-striped">

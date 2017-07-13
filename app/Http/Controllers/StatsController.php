@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Facades\Auth;
+use App\Facades\SiggySession;
 use Siggy\DatePager;
 use \ZebraPagination2;
 
@@ -18,11 +19,11 @@ class StatsController extends BaseController {
 		$dateRange = $datep->getTimestamps();
 
 		//short names for vars for multipliers
-		$wormhole = (double)Auth::session()->group->stats_wh_map_points;
-		$sig_add = (double)Auth::session()->group->stats_sig_add_points;
-		$sig_update = (double)Auth::session()->group->stats_sig_update_points;
-		$pos_add= (double)Auth::session()->group->stats_pos_add_points;
-		$pos_update = (double)Auth::session()->group->stats_pos_update_points;
+		$wormhole = (double)SiggySession::getGroup()->stats_wh_map_points;
+		$sig_add = (double)SiggySession::getGroup()->stats_sig_add_points;
+		$sig_update = (double)SiggySession::getGroup()->stats_sig_update_points;
+		$pos_add= (double)SiggySession::getGroup()->stats_pos_add_points;
+		$pos_update = (double)SiggySession::getGroup()->stats_pos_update_points;
 
 		$number_per_page = 25;
 
@@ -36,7 +37,7 @@ class StatsController extends BaseController {
 												HAVING score > 0
 												ORDER BY score DESC
 											) u",[
-												'group' => Auth::session()->group->id,
+												'group' => SiggySession::getGroup()->id,
 												'start' => $dateRange['start'],
 												'end' => $dateRange['end']
 											]);
@@ -62,17 +63,17 @@ class StatsController extends BaseController {
 											ORDER BY score DESC
 											LIMIT ".$offset.",".$number_per_page."
 											",[
-												'group' => Auth::session()->group->id,
+												'group' => SiggySession::getGroup()->id,
 												'start' => $dateRange['start'],
 												'end' => $dateRange['end']
 											]);
 
 		return view('stats.leaderboard', [
-											'wormhole' => (double)Auth::session()->group->stats_wh_map_points,
-											'sig_add' => (double)Auth::session()->group->stats_sig_add_points,
-											'sig_update' => (double)Auth::session()->group->stats_sig_update_points,
-											'pos_add' => (double)Auth::session()->group->stats_pos_add_points,
-											'pos_update' => (double)Auth::session()->group->stats_pos_update_points,
+											'wormhole' => (double)SiggySession::getGroup()->stats_wh_map_points,
+											'sig_add' => (double)SiggySession::getGroup()->stats_sig_add_points,
+											'sig_update' => (double)SiggySession::getGroup()->stats_sig_update_points,
+											'pos_add' => (double)SiggySession::getGroup()->stats_pos_add_points,
+											'pos_update' => (double)SiggySession::getGroup()->stats_pos_update_points,
 											'results' => $results,
 											'rank_offset' => $offset,
 											'pagination' => $paginationHTML,
@@ -85,7 +86,7 @@ class StatsController extends BaseController {
 											'stats_mode' => $datep->mode,
 											'sub_page' => 'leaderboard',
 											'settings' => $this->loadSettings(),
-											'group' => Auth::session()->group,
+											'group' => SiggySession::getGroup(),
 										]);
 	}
 
@@ -138,7 +139,7 @@ class StatsController extends BaseController {
 													GROUP BY charID
 													ORDER BY value DESC
 											) u",[
-												'group' => Auth::session()->group->id,
+												'group' => SiggySession::getGroup()->id,
 												'start' => $dateRange['start'],
 												'end' => $dateRange['end']
 											]);
@@ -155,17 +156,17 @@ class StatsController extends BaseController {
 													GROUP BY charID
 													ORDER BY value DESC
 													LIMIT ".$offset.",50",[
-												'group' => Auth::session()->group->id,
+												'group' => SiggySession::getGroup()->id,
 												'start' => $dateRange['start'],
 												'end' => $dateRange['end']
 											]);
 
 		return view('stats.specific_stat', [
-											'wormhole' => (double)Auth::session()->group->stats_wh_map_points,
-											'sig_add' => (double)Auth::session()->group->stats_sig_add_points,
-											'sig_update' => (double)Auth::session()->group->stats_sig_update_points,
-											'pos_add' => (double)Auth::session()->group->stats_pos_add_points,
-											'pos_update' => (double)Auth::session()->group->stats_pos_update_points,
+											'wormhole' => (double)SiggySession::getGroup()->stats_wh_map_points,
+											'sig_add' => (double)SiggySession::getGroup()->stats_sig_add_points,
+											'sig_update' => (double)SiggySession::getGroup()->stats_sig_update_points,
+											'pos_add' => (double)SiggySession::getGroup()->stats_pos_add_points,
+											'pos_update' => (double)SiggySession::getGroup()->stats_pos_update_points,
 											'results' => $results,
 											'rank_offset' => $offset,
 											'pagination' => $paginationHTML,
@@ -179,7 +180,7 @@ class StatsController extends BaseController {
 												'stats_mode' => $datep->mode,
 												'sub_page' => $key,
 												'settings' => $this->loadSettings(),
-												'group' => Auth::session()->group,
+												'group' => SiggySession::getGroup(),
 										]);
 	}
 
@@ -229,7 +230,7 @@ class StatsController extends BaseController {
 												'stats_mode' => $datep->mode,
 												'sub_page' => 'overview',
 												'settings' => $this->loadSettings(),
-												'group' => Auth::session()->group,
+												'group' => SiggySession::getGroup(),
 											]);
 	}
 
@@ -244,7 +245,7 @@ class StatsController extends BaseController {
 													WHERE groupID=:group AND dayStamp >= :start AND dayStamp < :end AND ".$key." != 0
 													GROUP BY charID
 													ORDER BY value DESC LIMIT 0,10",[
-												'group' => Auth::session()->group->id,
+												'group' => SiggySession::getGroup()->id,
 												'start' => $start,
 												'end' => $end
 											]);

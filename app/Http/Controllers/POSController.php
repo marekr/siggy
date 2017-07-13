@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Siggy\StandardResponse;
 use Siggy\POS;
 use App\Facades\Auth;
+use App\Facades\SiggySession;
 
 class POSController extends Controller {
 
@@ -22,7 +23,7 @@ class POSController extends Controller {
 			'online' => intval($postData['online']),
 			'size' => $postData['size'],
 			'notes' => htmlspecialchars($postData['notes']),
-			'group_id' => Auth::session()->group->id,
+			'group_id' => SiggySession::getGroup()->id,
 			'added_date' => time(),
 			'system_id' => intval($postData['system_id'])
 		];
@@ -39,7 +40,7 @@ class POSController extends Controller {
 
 		POS::create($data);
 
-		Auth::session()->group->incrementStat('pos_adds', Auth::session()->accessData);
+		SiggySession::getGroup()->incrementStat('pos_adds', SiggySession::getAccessData());
 
 		return response()->json(true);
 	}
@@ -48,7 +49,7 @@ class POSController extends Controller {
 	{
 		$postData = json_decode($request->getContent(), true);
 
-		$pos = POS::findWithSystemByGroup(Auth::session()->group->id, $postData['id']);
+		$pos = POS::findWithSystemByGroup(SiggySession::getGroup()->id, $postData['id']);
 
 		if( $pos == null )
 		{
@@ -73,10 +74,10 @@ class POSController extends Controller {
 		$pos->fill($data);
 		$pos->save();
 
-		Auth::session()->group->incrementStat('pos_updates', Auth::session()->accessData);
+		SiggySession::getGroup()->incrementStat('pos_updates', SiggySession::getAccessData());
 
-		$log_message = sprintf("%s edited POS in system %s", Auth::session()->character_name, $pos->system->name);
-		Auth::session()->group->logAction('editpos', $log_message);
+		$log_message = sprintf("%s edited POS in system %s", SiggySession::getCharacterName(), $pos->system->name);
+		SiggySession::getGroup()->logAction('editpos', $log_message);
 
 		return response()->json(StandardResponse::ok($pos));
 	}
@@ -85,7 +86,7 @@ class POSController extends Controller {
 	{
 		$postData = json_decode($request->getContent(), true);
 
-		$pos = POS::findWithSystemByGroup(Auth::session()->group->id, $postData['id']);
+		$pos = POS::findWithSystemByGroup(SiggySession::getGroup()->id, $postData['id']);
 
 		if( $pos == null )
 		{
@@ -94,8 +95,8 @@ class POSController extends Controller {
 
 		$pos->delete();
 
-		$log_message = sprintf("%s deleted POS from system %s", Auth::session()->character_name, $pos->system->name);
-		Auth::session()->group->logAction('delpos', $log_message);
+		$log_message = sprintf("%s deleted POS from system %s", SiggySession::getCharacterName(), $pos->system->name);
+		SiggySession::getGroup()->logAction('delpos', $log_message);
 		
 		return response()->json(StandardResponse::ok());
 	}

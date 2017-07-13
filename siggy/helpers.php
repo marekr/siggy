@@ -13,3 +13,16 @@ function rglob($pattern, $flags = 0) {
     }
     return $files;
 }
+
+if (! function_exists('siggysession')) {
+    /**
+     * Gets reference to siggysession singleton
+     * @return SiggySession
+     */
+    function siggysession()
+    {
+        if (is_null($key)) {
+            return app('siggysession');
+        }
+    }
+}

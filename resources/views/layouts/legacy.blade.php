@@ -27,7 +27,7 @@
               <li <?php echo ($selectedTab == 'home' ? 'class="active"' : ''); ?>><a href="{{url('/')}}">Home</a></li>
             </ul>
             
-            <?php if( Auth::loggedIn() ): ?>
+            <?php if( Auth::check() ): ?>
             <p class="navbar-text pull-right">
               Logged in as <a href="#" class="navbar-link"><?php echo Auth::user()->username; ?></a> <a href="{{url('account/logout')}}'" />Logout</a>
             </p>

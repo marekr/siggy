@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Facades\Auth;
+use App\Facades\SiggySession;
 use Siggy\POS;
 
 class SearchController extends Controller {
@@ -16,7 +17,7 @@ class SearchController extends Controller {
 
 		$query = "%".$request->input('query')."%";
 		$poses = POS::with('system')
-			->where('group_id',Auth::session()->group->id)
+			->where('group_id',SiggySession::getGroup()->id)
 			->where('owner', 'LIKE', $query)
 			->get()
 			->all();
@@ -35,7 +36,7 @@ class SearchController extends Controller {
 												INNER JOIN  solarsystems s ON(ss.systemID=s.id)
 												WHERE ss.groupID = :groupID AND ss.description LIKE :query
 												",[
-													'groupID' => Auth::session()->group->id,
+													'groupID' => SiggySession::getGroup()->id,
 													'query' => $query
 												]);
 
