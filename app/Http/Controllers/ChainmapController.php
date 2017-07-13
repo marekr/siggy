@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cookie;
 
 use Siggy\StandardResponse;
-use \Auth;
+use App\Facades\Auth;
 use \Chainmap;
 use \groupUtils;
 use Siggy\CharacterLocation;
@@ -22,8 +22,8 @@ class ChainmapController extends Controller {
 	{
 		if($this->chainmap == null)
 		{
-			$chainmapID = (isset($_REQUEST['chainmap']) ? (int)$_REQUEST['chainmap'] : Auth::$session->accessData['active_chain_map'] );
-			$this->chainmap = Chainmap::find($chainmapID,Auth::$session->group->id);
+			$chainmapID = (isset($_REQUEST['chainmap']) ? (int)$_REQUEST['chainmap'] : Auth::session()->accessData['active_chain_map'] );
+			$this->chainmap = Chainmap::find($chainmapID,Auth::session()->group->id);
 		}
 
 		return $this->chainmap;
@@ -36,7 +36,7 @@ class ChainmapController extends Controller {
 
 		$targetID = 0;
 
-		$currentLocation = CharacterLocation::findWithinCutoff(Auth::$session->character_id);
+		$currentLocation = CharacterLocation::findWithinCutoff(Auth::session()->character_id);
 		if( $targetCurrentSys && $currentLocation != null )
 		{
 			$targetID = $currentLocation->system_id;
@@ -61,8 +61,8 @@ class ChainmapController extends Controller {
 											LEFT JOIN solarsystems ss ON (ss.id = w.from_system_id)
 											WHERE w.from_system_id < 31000000 AND w.group_id=:group2 AND w.chainmap_id=:chainmap2)",
 											[
-												'group1' => Auth::$session->group->id,
-												'group2' => Auth::$session->group->id,
+												'group1' => Auth::session()->group->id,
+												'group2' => Auth::session()->group->id,
 												'chainmap1' => $this->getChainmap()->id,
 												'chainmap2' => $this->getChainmap()->id,
 											]);
@@ -108,7 +108,7 @@ class ChainmapController extends Controller {
 					$system['x'] = 0;
 				}
 
-				if( !Auth::$session->group->allow_map_height_expand && $system['y'] > 400 )
+				if( !Auth::session()->group->allow_map_height_expand && $system['y'] > 400 )
 				{
 					$system['y'] = 380;
 				}
@@ -116,7 +116,7 @@ class ChainmapController extends Controller {
 				$this->getChainmap()->update_system($system['id'], array('x' => $system['x'], 'y' => $system['y']));
 			}
 
-			Auth::$session->group->logAction('editmap', Auth::$session->character_name. " edited the map");
+			Auth::session()->group->logAction('editmap', Auth::session()->character_name. " edited the map");
 
 			$this->getChainmap()->rebuild_map_data_cache();
 		}
@@ -146,7 +146,7 @@ class ChainmapController extends Controller {
 
 		if( is_array($cynoHashes) && count($cynoHashes) > 0 )
 		{
-			$log_message = Auth::$session->character_name.' performed a mass delete of the following cynos: ';
+			$log_message = Auth::session()->character_name.' performed a mass delete of the following cynos: ';
 
 			$cynoHashes = $this->_hash_array_to_string($cynoHashes);
 
@@ -155,8 +155,8 @@ class ChainmapController extends Controller {
 														INNER JOIN solarsystems sto ON sto.id = s.to_system_id
 														INNER JOIN solarsystems sfrom ON sfrom.id = s.from_system_id
 														WHERE s.hash IN('.$cynoHashes.') AND s.group_id=:groupID AND s.chainmap_id=:chainmap',[
-															'groupID' => Auth::$session->group->id,
-															'chainmap' => Auth::$session->accessData['active_chain_map']
+															'groupID' => Auth::session()->group->id,
+															'chainmap' => Auth::session()->accessData['active_chain_map']
 														]);
 
 			foreach( $stargates as $sg )
@@ -170,18 +170,18 @@ class ChainmapController extends Controller {
 
 			DB::delete('DELETE FROM chainmap_cynos WHERE hash IN('.$cynoHashes.') AND group_id=:groupID AND chainmap_id=:chainmap',
 						[
-							'groupID' => Auth::$session->group->id,
-							'chainmap' => Auth::$session->accessData['active_chain_map']
+							'groupID' => Auth::session()->group->id,
+							'chainmap' => Auth::session()->accessData['active_chain_map']
 						]);
 
 			$log_message .= ' from the chainmap "'. $this->getChainmap()->chainmap_name.'"';
 			
-			Auth::$session->group->logAction('delwhs', $log_message );
+			Auth::session()->group->logAction('delwhs', $log_message );
 		}
 
 		if( is_array($jumpbridgeHashes) && count($jumpbridgeHashes) > 0 )
 		{
-			$log_message = Auth::$session->character_name.' performed a mass delete of the following jumpbridges: ';
+			$log_message = Auth::session()->character_name.' performed a mass delete of the following jumpbridges: ';
 
 			$jumpbridgeHashes = $this->_hash_array_to_string($jumpbridgeHashes);
 
@@ -190,8 +190,8 @@ class ChainmapController extends Controller {
 														INNER JOIN solarsystems sto ON sto.id = s.to_system_id
 														INNER JOIN solarsystems sfrom ON sfrom.id = s.from_system_id
 														WHERE s.hash IN('.$jumpbridgeHashes.') AND s.group_id=:groupID AND s.chainmap_id=:chainmap',[
-															'groupID' => Auth::$session->group->id,
-															'chainmap' => Auth::$session->accessData['active_chain_map']
+															'groupID' => Auth::session()->group->id,
+															'chainmap' => Auth::session()->accessData['active_chain_map']
 														]);
 
 			foreach( $stargates as $sg )
@@ -205,17 +205,17 @@ class ChainmapController extends Controller {
 
 			DB::delete('DELETE FROM chainmap_jumpbridges WHERE hash IN('.$jumpbridgeHashes.') AND group_id=:groupID AND chainmap_id=:chainmap',
 						[
-							'groupID' => Auth::$session->group->id,
-							'chainmap' => Auth::$session->accessData['active_chain_map']
+							'groupID' => Auth::session()->group->id,
+							'chainmap' => Auth::session()->accessData['active_chain_map']
 						]);
 
 			$log_message .= ' from the chainmap "'. $this->getChainmap()->chainmap_name.'"';
-			Auth::$session->group->logAction('delwhs', $log_message );
+			Auth::session()->group->logAction('delwhs', $log_message );
 		}
 
 		if( is_array($stargateHashes) && count($stargateHashes) > 0 )
 		{
-			$log_message = Auth::$session->character_name.' performed a mass delete of the following stargates: ';
+			$log_message = Auth::session()->character_name.' performed a mass delete of the following stargates: ';
 
 			$stargateHashes = $this->_hash_array_to_string($stargateHashes);
 
@@ -224,8 +224,8 @@ class ChainmapController extends Controller {
 														INNER JOIN solarsystems sto ON sto.id = s.to_system_id
 														INNER JOIN solarsystems sfrom ON sfrom.id = s.from_system_id
 														WHERE s.hash IN('.$stargateHashes.') AND s.group_id=:groupID AND s.chainmap_id=:chainmap',[
-															'groupID' => Auth::$session->group->id,
-															'chainmap' => Auth::$session->accessData['active_chain_map']
+															'groupID' => Auth::session()->group->id,
+															'chainmap' => Auth::session()->accessData['active_chain_map']
 														]);
 
 			foreach( $stargates as $sg )
@@ -239,12 +239,12 @@ class ChainmapController extends Controller {
 
 			DB::delete('DELETE FROM chainmap_stargates WHERE hash IN('.$stargateHashes.') AND group_id=:groupID AND chainmap_id=:chainmap',
 						[
-							'groupID' => Auth::$session->group->id,
-							'chainmap' => Auth::$session->accessData['active_chain_map']
+							'groupID' => Auth::session()->group->id,
+							'chainmap' => Auth::session()->accessData['active_chain_map']
 						]);
 
 			$log_message .= ' from the chainmap "'. $this->getChainmap()->chainmap_name.'"';
-			Auth::$session->group->logAction('delwhs', $log_message );
+			Auth::session()->group->logAction('delwhs', $log_message );
 		}
 
 
@@ -254,7 +254,7 @@ class ChainmapController extends Controller {
 			$systemIDs = array_merge( $systemIDs, $tmp );
 			$systemIDs = array_unique( $systemIDs );
 
-			groupUtils::deleteLinkedSigWormholes(Auth::$session->group->id, $wormholeHashes);
+			groupUtils::deleteLinkedSigWormholes(Auth::session()->group->id, $wormholeHashes);
 		}
 
 		if(!empty($systemIDs))
@@ -288,8 +288,8 @@ class ChainmapController extends Controller {
 		$wormhole = DB::selectOne('SELECT * FROM wormholes WHERE hash=:hash AND group_id=:groupID AND chainmap_id=:chainmap',
 											[
 												'hash' => $hash,
-												'groupID' => Auth::$session->group->id,
-												'chainmap' => Auth::$session->accessData['active_chain_map']
+												'groupID' => Auth::session()->group->id,
+												'chainmap' => Auth::session()->accessData['active_chain_map']
 											]);
 
 		if( $wormhole == null )
@@ -332,8 +332,8 @@ class ChainmapController extends Controller {
 		{
 			DB::table('wormholes')
 					->where('hash', '=', $hash)
-					->where('group_id', '=', Auth::$session->group->id)
-					->where('chainmap_id', '=', Auth::$session->accessData['active_chain_map'])
+					->where('group_id', '=', Auth::session()->group->id)
+					->where('chainmap_id', '=', Auth::session()->accessData['active_chain_map'])
 					->update( $update );
 
 			$this->getChainmap()->rebuild_map_data_cache();
@@ -377,7 +377,7 @@ class ChainmapController extends Controller {
 			$errors[] = "You cannot link a system to itself!";
 		}
 
-		$currentLocation = CharacterLocation::findWithinCutoff(Auth::$session->character_id);
+		$currentLocation = CharacterLocation::findWithinCutoff(Auth::session()->character_id);
 		$fromSysID = 0;
 		if( $fromSysCurrent )
 		{
@@ -452,8 +452,8 @@ class ChainmapController extends Controller {
 
 			$connection = DB::selectOne("SELECT `hash` FROM wormholes WHERE hash=:hash AND group_id=:group AND chainmap_id=:chainmap",[
 								'hash' => $whHash,
-								'group' => Auth::$session->group->id,
-								'chainmap' => Auth::$session->accessData['active_chain_map']
+								'group' => Auth::session()->group->id,
+								'chainmap' => Auth::session()->accessData['active_chain_map']
 								]);
 			if( $connection != null )
 			{
@@ -470,9 +470,9 @@ class ChainmapController extends Controller {
 
 			$this->getChainmap()->add_system_to_map($fromSysID, $toSysID, $eol, $mass, $whTypeID);
 
-			$message = Auth::$session->character_name.' added wormhole manually between system IDs' . $fromSysID . ' and ' . $toSysID;
+			$message = Auth::session()->character_name.' added wormhole manually between system IDs' . $fromSysID . ' and ' . $toSysID;
 
-			Auth::$session->group->logAction('addwh', $message );
+			Auth::session()->group->logAction('addwh', $message );
 		}
 		else if( $type == 'stargate' )
 		{
@@ -510,7 +510,7 @@ class ChainmapController extends Controller {
 		$desired_chainmap = intval($_POST['chainmap_id']);
 		$selected_id = 0;
 		$default_id = 0;
-		foreach(Auth::$session->accessibleChainMaps() as $c)
+		foreach(Auth::session()->accessibleChainMaps() as $c)
 		{
 			if( $c->chainmap_id == $desired_chainmap )
 			{
@@ -592,8 +592,8 @@ class ChainmapController extends Controller {
 										AND chainmap_id=:chainmap',
 										[
 											'query' => $q.'%',
-											'group' => Auth::$session->group->id,
-											'chainmap' => Auth::$session->accessData['active_chain_map']
+											'group' => Auth::session()->group->id,
+											'chainmap' => Auth::session()->accessData['active_chain_map']
 										]);
 
 		foreach($customsystems as $system)
@@ -630,7 +630,7 @@ class ChainmapController extends Controller {
 													JOIN characters c ON (c.id = wt.character_id)
 													WHERE wt.group_id = :groupID AND wt.wormhole_hash = :hash
 													ORDER BY wt.jumped_at DESC",[
-														'groupID' => Auth::$session->group->id,
+														'groupID' => Auth::session()->group->id,
 														'hash' => $hash
 													]);
 

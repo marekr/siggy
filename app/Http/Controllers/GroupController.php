@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
-use \Auth;
+use App\Facades\Auth;
 use \Group;
 
 class GroupController extends Controller {
@@ -44,7 +44,7 @@ class GroupController extends Controller {
 			$group = Group::createFancy($save);
 			if( $group != null )
 			{
-				$insert = ['user_id' => Auth::$user->id, 
+				$insert = ['user_id' => Auth::user()->id, 
 							'group_id' => $group->id, 
 							'can_manage_access' => 1, 
 							'can_view_financial' => 1, 
@@ -54,10 +54,10 @@ class GroupController extends Controller {
 							];
 				DB::table('users_group_acl')->insert($insert);
 
-				Auth::$user->groupID = $group->id;
-				Auth::$user->save();
+				Auth::user()->groupID = $group->id;
+				Auth::user()->save();
 
-				Auth::$session->reloadUserSession();
+				Auth::session()->reloadUserSession();
 
 				return redirect('group/create/completed');
 			}

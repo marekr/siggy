@@ -9,7 +9,7 @@ use OpenCrest\OpenCrest;
 use SimpleCrest\Endpoint;
 use Siggy\ESI\Client as ESIClient;
 
-use \Auth;
+use App\Facades\Auth;
 use Siggy\StandardResponse;
 
 class CrestController extends Controller {
@@ -21,7 +21,7 @@ class CrestController extends Controller {
 		$systemId = (int)$req['system_id'];
 
 		$success = false;
-		$sso = Auth::$user->getActiveSSOCharacter();
+		$sso = Auth::user()->getActiveSSOCharacter();
 		if( $sso == null )
 		{
 			return response()->json(StandardResponse::error("Something went horribly wrong, your sso token doesn't exist???"));

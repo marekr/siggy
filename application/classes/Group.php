@@ -221,8 +221,8 @@ class Group extends Model {
 												VALUES(:charID, :charName, :groupID, :chainmap, :dayStamp, 1)
 												ON DUPLICATE KEY UPDATE '.$duplicate_update_string,
 							[
-								'charID' => Auth::$session->character_id,
-								'charName' => Auth::$session->character_name,
+								'charID' => Auth::session()->character_id,
+								'charName' => Auth::session()->character_name,
 								'groupID' => $this->id ,
 								'chainmap' => $acccessData['active_chain_map'] ,
 								'dayStamp' => miscUtils::getDayStamp()

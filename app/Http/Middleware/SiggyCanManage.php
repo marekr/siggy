@@ -7,26 +7,26 @@ use Illuminate\Support\Facades\View;
 use App\Http\Controllers\Manage\BaseController;
 
 use Closure;
-use \Auth;
+use App\Facades\Auth;
 use \AuthStatus;
 
 class SiggyCanManage
 {
 	protected function hasAccess( BaseController $controller, string $action )
 	{
-		if( Auth::$user->admin )
+		if( Auth::user()->admin )
 		{
 			return TRUE;
 		}
 
-		if( !isset( Auth::$user->perms()[ Auth::$user->groupID ] ) )
+		if( !isset( Auth::user()->perms()[ Auth::user()->groupID ] ) )
 		{
 			return FALSE;
 		}
 		
 		if( isset( $controller->actionAcl[ $action ] ) )
 		{
-			$perms = Auth::$user->perms()[ Auth::$user->groupID ]->toArray();
+			$perms = Auth::user()->perms()[ Auth::user()->groupID ]->toArray();
 			foreach( $perms as $k => $v )
 			{
 				if( $v == 1 )
@@ -61,18 +61,18 @@ class SiggyCanManage
 			return redirect('/');
 		}
 
-		$groupID = Auth::$user->groupID;
-		$groups = array_keys(Auth::$user->perms());
+		$groupID = Auth::user()->groupID;
+		$groups = array_keys(Auth::user()->perms());
 
 		if( !count($groups) )
 		{
 			return redirect('/');
 		}
 
-		if( !in_array($groupID, $groups) && !Auth::$user->admin )
+		if( !in_array($groupID, $groups) && !Auth::user()->admin )
 		{
-			Auth::$user->groupID = $groups[0];
-			Auth::$user->save();
+			Auth::user()->groupID = $groups[0];
+			Auth::user()->save();
 		}
 
 		list($controller, $action) = explode('@',  $request->route()->getActionName());
@@ -82,7 +82,7 @@ class SiggyCanManage
 		View::share('avaliableGroups',$this->getAvaliableGroups());
 		
 		$controller = $request->route()->getController();
-		if ( ($controller->authRequired == 'admin' && Auth::$user->isAdmin() === FALSE )
+		if ( ($controller->authRequired == 'admin' && Auth::user()->isAdmin() === FALSE )
 			|| ($controller->authRequired == 'gadmin'
 			&& !$this->hasAccess( $controller, $action )
 			) )
@@ -93,9 +93,9 @@ class SiggyCanManage
 		View::share('controllerName', $controller);
 		View::share('actionName', $action);
 		
-		View::share('perms', isset(Auth::$user->perms()[ Auth::$user->groupID ]) ? Auth::$user->perms()[ Auth::$user->groupID ] : []);
-		View::share('user', Auth::$user);
-		View::share('group', Auth::$user->group);
+		View::share('perms', isset(Auth::user()->perms()[ Auth::user()->groupID ]) ? Auth::user()->perms()[ Auth::user()->groupID ] : []);
+		View::share('user', Auth::user());
+		View::share('group', Auth::user()->group);
 
 		return $next($request);
 	}
@@ -105,10 +105,10 @@ class SiggyCanManage
 		$baseSQL = "SELECT g.id, g.name FROM groups g";
 
 		//if NOT AN ADMIN
-		if( !Auth::$user->isAdmin() )
+		if( !Auth::user()->isAdmin() )
 		{
 			$baseSQL .= " JOIN users_group_acl a ON (g.id = a.group_ID)
-							WHERE a.user_id = ".intval( Auth::$user->id );
+							WHERE a.user_id = ".intval( Auth::user()->id );
 		}
 
 		$baseSQL .= " ORDER BY g.name ASC";

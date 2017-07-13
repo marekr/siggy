@@ -53,11 +53,11 @@
 			<ul class="nav navbar-nav navbar-right">
 				<?php if( Auth::loggedIn() ): ?>
 
-					<?php if( count(Auth::$user->perms()) > 0 ): ?>
+					<?php if( count(Auth::user()->perms()) > 0 ): ?>
 				<li <?php echo ($selectedTab == 'admin' ? 'class="active"' : ''); ?>><a href="{{url('manage')}}">Admin</a></li>
 					<?php endif; ?>
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Logged in as <?php echo Auth::$user->username; ?><b class="caret"></b></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Logged in as <?php echo Auth::user()->username; ?><b class="caret"></b></a>
 					<ul class="dropdown-menu" role="menu">
 						<li><a href="{{url('account/overview')}}">Account</a></li>
 						<li class="divider"></li>

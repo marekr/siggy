@@ -1,8 +1,18 @@
 <?php
 
+namespace Siggy;
+
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Request;
+
+use App\Facades\Auth;
+use \User;
+use \Group;
+use \GroupMember;
+use \CharacterGroup;
 
 class UserSession {
 
@@ -51,12 +61,11 @@ class UserSession {
 		// finally load user ID
 		if( $this->user_id != 0 )
 		{
-			Auth::$user = User::find( $this->user_id );
+			Auth::setUser(User::find( $this->user_id ));
 		}
 
 		$this->group = Group::find($this->group_id);
 		$this->getAccessData();
-
 		$this->updateSession();
 	}
 
@@ -110,20 +119,20 @@ class UserSession {
 			return;
 		}
 
-		$update = ['user_id' => Auth::$user->id,
-					'group_id' => Auth::$user->groupID,
-					'character_id' => Auth::$user->char_id,
+		$update = ['user_id' => Auth::user()->id,
+					'group_id' => Auth::user()->groupID,
+					'character_id' => Auth::user()->char_id,
 					'type' => 'user'
 				];
 		session($update);
 
-		if(!empty(Auth::$user->char_id) &&
-			!empty(Auth::$user->groupID) )
+		if(!empty(Auth::user()->char_id) &&
+			!empty(Auth::user()->groupID) )
 		{
-			$chargroup = CharacterGroup::find(Auth::$user->char_id,Auth::$user->groupID);
+			$chargroup = CharacterGroup::find(Auth::user()->char_id,Auth::user()->groupID);
 			if($chargroup == null)
 			{
-				$chargroup = CharacterGroup::create(['character_id' => Auth::$user->char_id,'group_id' => Auth::$user->groupID]);
+				$chargroup = CharacterGroup::create(['character_id' => Auth::user()->char_id,'group_id' => Auth::user()->groupID]);
 			}
 			$chargroup->updateGroupAccess();
 		}
@@ -137,13 +146,13 @@ class UserSession {
 	{
 		// so we must update it too
 		$insert = [ 
-					'character_id' => (isset(Auth::$user->character_id) ? Auth::$user->character_id : 0 ),
+					'character_id' => (isset(Auth::user()->character_id) ? Auth::user()->character_id : 0 ),
 					'created_at' => Carbon::now()->toDateTimeString(),
 					'ip_address' => Request::ip(),
 					'user_agent' => Request::header('User-Agent'),
 					'type' => $this->determineSessionType(),
-					'user_id' => ( isset(Auth::$user->id) ? Auth::$user->id : 0 ),
-					'group_id' => ( isset(Auth::$user->groupID) ? Auth::$user->groupID : 0 ),
+					'user_id' => ( isset(Auth::user()->id) ? Auth::user()->id : 0 ),
+					'group_id' => ( isset(Auth::user()->groupID) ? Auth::user()->groupID : 0 ),
 					'init' => true
 				];
 
@@ -181,12 +190,12 @@ class UserSession {
 
 	public function validateGroup(): bool
 	{
-		if( Auth::$session->group->findGroupMember(GroupMember::TypeChar, $this->character_id) != null )
+		if( Auth::session()->group->findGroupMember(GroupMember::TypeChar, $this->character_id) != null )
 		{
 			return TRUE;
 		}
 		
-		if( Auth::$session->group->findGroupMember(GroupMember::TypeCorp, $this->corporation_id) != null )
+		if( Auth::session()->group->findGroupMember(GroupMember::TypeCorp, $this->corporation_id) != null )
 		{
 			return TRUE;
 		}

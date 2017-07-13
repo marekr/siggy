@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 use Carbon\Carbon;
 
-use \Auth;
+use App\Facades\Auth;
 use \Group;
 
 class AccessController extends BaseController
@@ -29,16 +29,16 @@ class AccessController extends BaseController
 		
 		$group = intval($_POST['group']);
 		
-		if( !Auth::$user->isAdmin()  && !isset( Auth::$user->perms()[ $group ] ) &&
-			!( Auth::$user->perms()[ $group ]['canManage'] == 1)
+		if( !Auth::user()->isAdmin()  && !isset( Auth::user()->perms()[ $group ] ) &&
+			!( Auth::user()->perms()[ $group ]['canManage'] == 1)
 		) 
 		{
 			return redirect('manage/access/denied');
 		}
 		else
 		{
-			Auth::$user->groupID = intval($_POST['group']);
-			Auth::$user->save();
+			Auth::user()->groupID = intval($_POST['group']);
+			Auth::user()->save();
 		}
 
 		return redirect('/manage');
@@ -48,7 +48,7 @@ class AccessController extends BaseController
 	{
 		$users = DB::select("SELECT u.username,ua.* FROM users u
 							JOIN users_group_acl ua ON(u.id = ua.user_id)
-							WHERE ua.group_id = :groupID",['groupID' => Auth::$user->groupID]);
+							WHERE ua.group_id = :groupID",['groupID' => Auth::user()->groupID]);
 		
 		return view('manage.access.configure', [
 												'users' => $users,
@@ -59,7 +59,7 @@ class AccessController extends BaseController
     {
 		$count = DB::selectOne("SELECT COUNT(ua.user_id) as total FROM users u
 							JOIN users_group_acl ua ON(u.id = ua.user_id)
-							WHERE ua.group_id = :groupID",['groupID' => Auth::$user->groupID]);
+							WHERE ua.group_id = :groupID",['groupID' => Auth::user()->groupID]);
 							
 							
 		if( $count->total <= 1 )
@@ -70,7 +70,7 @@ class AccessController extends BaseController
 		
 		DB::table('users_group_acl')
 			->where('user_id', '=', $id)
-			->where('group_id','=', Auth::$user->groupID)
+			->where('group_id','=', Auth::user()->groupID)
 			->delete();
 
 		flash('User access removed succesfully')->success();
@@ -119,7 +119,7 @@ class AccessController extends BaseController
 							'can_view_financial' => isset( $_POST['can_view_financial'] ) ? intval( $_POST['can_view_financial'] ) : 0,
 							'can_manage_access' => isset( $_POST['can_manage_access'] ) ? intval( $_POST['can_manage_access'] ) : 0,
 							'user_id' => $userID,
-							'group_id' => Auth::$user->groupID,
+							'group_id' => Auth::user()->groupID,
 							'created_at' => Carbon::now()->toDateTimeString()
 						);
 				
@@ -143,7 +143,7 @@ class AccessController extends BaseController
 								WHERE ua.user_id = :id AND ua.group_id = :groupID",
 								[
 									'id' => $id,
-									'groupID' => Auth::$user->group->id
+									'groupID' => Auth::user()->group->id
 								]);
 							
 		if( $data == null )
@@ -166,7 +166,7 @@ class AccessController extends BaseController
 								WHERE ua.user_id = :id AND ua.group_id = :groupID",
 								[
 									'id' => $id,
-									'groupID' => Auth::$user->group->id
+									'groupID' => Auth::user()->group->id
 								]);
 
 		if( $data == null )
@@ -186,7 +186,7 @@ class AccessController extends BaseController
 
 		DB::table('users_group_acl')
 			->where( 'user_id', '=', $id )
-			->where('group_id','=',Auth::$user->group->id)
+			->where('group_id','=',Auth::user()->group->id)
 			->update( $update );
 
 		flash('User access edited succesfully')->success();

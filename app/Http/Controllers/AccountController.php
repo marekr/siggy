@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use \Auth;
+use App\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -26,13 +26,13 @@ class AccountController extends Controller {
 	public function postLogin(Request $request)
 	{
 		$rememberMe = (isset($_POST['remember']) ? TRUE : FALSE);
-		if( Auth::processLogin($_POST['username'], $_POST['password'], $rememberMe) === Auth::LOGIN_SUCCESS )
+		if( Auth::processLogin($_POST['username'], $_POST['password'], $rememberMe) === true )
 		{
 			$session = session();
 
 			if( $session->pull('sso_login',false) )
 			{
-				Auth::$user->addSSOCharacter($session->pull('sso_character_owner_hash'), 
+				Auth::user()->addSSOCharacter($session->pull('sso_character_owner_hash'), 
 											$session->pull('sso_character_id'), 
 											$session->pull('sso_access_token'), 
 											$session->pull('sso_token_eol'), 
@@ -128,7 +128,7 @@ class AccountController extends Controller {
 
 			if( $session->pull('sso_login',false) )
 			{
-				Auth::$user->addSSOCharacter($session->pull('sso_character_owner_hash'),
+				Auth::user()->addSSOCharacter($session->pull('sso_character_owner_hash'),
 					$session->pull('sso_character_id'),
 					$session->pull('sso_access_token'),
 					$session->pull('sso_token_eol'),
@@ -156,7 +156,7 @@ class AccountController extends Controller {
 	{
 		$list = [];
 
-		$ssoChars = Auth::$user->ssoCharacters;
+		$ssoChars = Auth::user()->ssoCharacters;
 
 		$selectableChars = [];
 		$unselectableChars = [];
@@ -192,8 +192,8 @@ class AccountController extends Controller {
 
 	public function getCharacters()
 	{
-		$charID =  Auth::$user->char_id;
-		$ssoChars = Auth::$user->ssoCharacters;
+		$charID =  Auth::user()->char_id;
+		$ssoChars = Auth::user()->ssoCharacters;
 		if( !count($ssoChars) )
 		{
 			return redirect('/account/connected');
@@ -210,7 +210,7 @@ class AccountController extends Controller {
 	
 	public function getOverview()
 	{
-		return view('account.overview', [ 'user' =>  Auth::$user ]);
+		return view('account.overview', [ 'user' =>  Auth::user() ]);
 	}
 	
 	public function postCharacters(Request $request)
@@ -222,10 +222,10 @@ class AccountController extends Controller {
 		
 		if( $charID && isset( $selectableChars[ $charID ] ) )
 		{
-			Auth::$user->char_id = $charID;
+			Auth::user()->char_id = $charID;
 
-			Auth::$user->save();
-			Auth::$session->reloadUserSession();
+			Auth::user()->save();
+			Auth::session()->reloadUserSession();
 
 			return redirect('/');
 		}
@@ -233,8 +233,8 @@ class AccountController extends Controller {
 	
 	public function getConnected()
 	{
-		$charID =  Auth::$user->char_id;
-		$ssoChars = Auth::$user->ssoCharacters;
+		$charID =  Auth::user()->char_id;
+		$ssoChars = Auth::user()->ssoCharacters;
 
 		$charData = [];
 		foreach($ssoChars as $ssoChar)
@@ -256,7 +256,7 @@ class AccountController extends Controller {
 	{
 		$charId = (int)$request->input('character_id');
 
-		Auth::$user->removeSSOCharacter($charId);
+		Auth::user()->removeSSOCharacter($charId);
 
 		flash('The character has been disconnected from your siggy account. You must remove the character permissions on the EVE Online website if you want to ensure siggy no longer has permission to access the character (not required)')->success();
 
@@ -360,11 +360,11 @@ class AccountController extends Controller {
 
 					$userID = Auth::characterOwnerHashTied( $result['CharacterOwnerHash'] );
 
-					if( $userID == Auth::$user->id )
+					if( $userID == Auth::user()->id )
 					{
 						flash('The character\'s connection has been updated successfully.')->success();
 
-						Auth::$user->updateSSOCharacter($result['CharacterID'],
+						Auth::user()->updateSSOCharacter($result['CharacterID'],
 															$token->getAccessToken(),
 															$token->getRefreshToken(),
 															$expiration,
@@ -375,7 +375,7 @@ class AccountController extends Controller {
 					else if ( $userID == null )
 					{
 						flash('The character has been successfully connected to your siggy account.')->success();
-						Auth::$user->addSSOCharacter($result['CharacterOwnerHash'], 
+						Auth::user()->addSSOCharacter($result['CharacterOwnerHash'], 
 													$result['CharacterID'], 
 													$token->getAccessToken(), 
 													$expiration, 
@@ -404,7 +404,7 @@ class AccountController extends Controller {
 					{
 						$status = Auth::forceLogin($userID);
 
-						Auth::$user->updateSSOCharacter($result['CharacterID'],
+						Auth::user()->updateSSOCharacter($result['CharacterID'],
 														$token->getAccessToken(),
 														$token->getRefreshToken(),
 														$expiration,
@@ -452,7 +452,7 @@ class AccountController extends Controller {
 
 		if(!$validator->fails())
 		{
-			if( Auth::hash($_POST['current_password']) != Auth::$user->password )
+			if( Auth::hash($_POST['current_password']) != Auth::user()->password )
 			{
 				$validator->errors()->add('current_password', 'This is not current password.');
 			}
@@ -460,7 +460,7 @@ class AccountController extends Controller {
 
 		if( !count($validator->errors()) )
 		{
-			Auth::$user->updatePassword($_POST['password']);
+			Auth::user()->updatePassword($_POST['password']);
 			return redirect('account/overview');
 		}
 		else

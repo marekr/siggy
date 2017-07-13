@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-use \Auth;
+use App\Facades\Auth;
 use \Chainmap;
 use \Group;
 use \GroupMember;
@@ -25,7 +25,7 @@ class GroupMembersController extends BaseController
 
 	public function getList()
 	{
-		$chainmaps = Chainmap::where('group_id', Auth::$user->group->id)
+		$chainmaps = Chainmap::where('group_id', Auth::user()->group->id)
 						->get()
 						->keyBy('chainmap_id')
 						->all();
@@ -55,7 +55,7 @@ class GroupMembersController extends BaseController
 		}
 
 		//see if member exists?
-		$member = GroupMember::findByGroupAndType(Auth::$user->groupID, $_POST['memberType'], (int)$_POST['eveID']);
+		$member = GroupMember::findByGroupAndType(Auth::user()->groupID, $_POST['memberType'], (int)$_POST['eveID']);
 
 		$chainmaps = array();
 		if( $member != null )
@@ -67,14 +67,14 @@ class GroupMembersController extends BaseController
 															WHERE group_id=:group2 AND groupmember_id=:member
 														)
 														",[
-															'group1' => Auth::$user->group->id,
-															'group2' => Auth::$user->group->id,
+															'group1' => Auth::user()->group->id,
+															'group2' => Auth::user()->group->id,
 															'member' => $member->id
 														]);
 		}
 		else
 		{
-			$chainmaps = Chainmap::where('group_id', Auth::$user->group->id)->get()->all();
+			$chainmaps = Chainmap::where('group_id', Auth::user()->group->id)->get()->all();
 		}
 
 		if( $chainmaps == null)
@@ -93,14 +93,14 @@ class GroupMembersController extends BaseController
 	
 	public function postAddFinish()
 	{
-		$member = GroupMember::findByGroupAndType(Auth::$user->groupID, $_POST['memberType'], (int)$_POST['eveID']);
+		$member = GroupMember::findByGroupAndType(Auth::user()->groupID, $_POST['memberType'], (int)$_POST['eveID']);
 
 		if( $member == null )
 		{
 			$data = [
 				'eveID' => $_POST['eveID'],
 				'accessName' => $_POST['accessName'],
-				'groupID' => Auth::$user->groupID,
+				'groupID' => Auth::user()->groupID,
 				'memberType' => $_POST['memberType'],
 			];						
 
@@ -109,15 +109,15 @@ class GroupMembersController extends BaseController
 
 		if( isset( $_POST['chainmap_id'] ) && intval($_POST['chainmap_id']) > 0)
 		{
-			$insert['group_id'] = Auth::$user->groupID;
+			$insert['group_id'] = Auth::user()->groupID;
 			$insert['chainmap_id'] = intval($_POST['chainmap_id']);
 			$insert['groupmember_id'] = $member->id;
 			DB::table('chainmaps_access')->insert($insert);
 		}
 
-		Auth::$user->group->save();
-		Auth::$user->group->recacheChainmaps();
-		Auth::$user->group->recacheMembers();
+		Auth::user()->group->save();
+		Auth::user()->group->recacheChainmaps();
+		Auth::user()->group->recacheMembers();
 
 		flash('Group member added')->success();
 		return redirect('manage/group/members');
@@ -168,7 +168,7 @@ class GroupMembersController extends BaseController
 		$id = intval($this->request->param('id'));
 
 		$member = GroupMember::find($id);
-		if( $member->groupID != Auth::$user->groupID )
+		if( $member->groupID != Auth::user()->groupID )
 		{
 			flash('Error: You do not have permission to remove that group member.')->error();
 			return redirect('manage/group/members');
@@ -177,8 +177,8 @@ class GroupMembersController extends BaseController
 		if ($this->request->method() == HTTP_Request::POST)
 		{
 			//trigger last_update value to change
-			Auth::$user->group->save();
-			Auth::$user->group->recacheMembers();
+			Auth::user()->group->save();
+			Auth::user()->group->recacheMembers();
 
 			return redirect('manage/group/members');
 		}

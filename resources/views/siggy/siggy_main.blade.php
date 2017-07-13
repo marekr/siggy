@@ -429,7 +429,7 @@
 				negativeBalance: {{ $group->isk_balance < 0 ? 'true' : 'false' }},
 
 				defaultActivity:  '<?php echo $group->default_activity; ?>',
-				sessionID: '<?php echo Auth::$session->id; ?>',
+				sessionID: '<?php echo Auth::session()->id; ?>',
 				charsettings: {
 					themeID: <?php echo $settings->theme_id; ?>,
 					combineScanIntel: <?php echo $settings->combine_scan_intel; ?>,

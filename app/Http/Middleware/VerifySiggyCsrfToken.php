@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\Cookie;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
 
-use \Auth;
+use App\Facades\Auth;
 
 class VerifySiggyCsrfToken extends BaseVerifier
 {
@@ -20,9 +20,9 @@ class VerifySiggyCsrfToken extends BaseVerifier
 	{
         $token = $this->getTokenFromRequest($request);
 		
-        return is_string(Auth::$session->csrf_token) &&
+        return is_string(Auth::session()->csrf_token) &&
                is_string($token) &&
-               hash_equals(Auth::$session->csrf_token, $token);
+               hash_equals(Auth::session()->csrf_token, $token);
 	}
 
     /**
@@ -37,7 +37,7 @@ class VerifySiggyCsrfToken extends BaseVerifier
         $config = config('session');
         $response->headers->setCookie(
             new Cookie(
-                'XSRF-TOKEN', Auth::$session->csrf_token, Carbon::now()->getTimestamp() + 60 * $config['lifetime'],
+                'XSRF-TOKEN', Auth::session()->csrf_token, Carbon::now()->getTimestamp() + 60 * $config['lifetime'],
                 $config['path'], $config['domain'], $config['secure'], false
             )
         );

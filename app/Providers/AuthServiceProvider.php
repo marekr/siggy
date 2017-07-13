@@ -2,29 +2,21 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\ServiceProvider;
+
+use Siggy\Auth;
 
 class AuthServiceProvider extends ServiceProvider
 {
     /**
-     * The policy mappings for the application.
-     *
-     * @var array
-     */
-    protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
-    ];
-
-    /**
-     * Register any authentication / authorization services.
+     * Register bindings in the container.
      *
      * @return void
      */
-    public function boot()
+    public function register()
     {
-        $this->registerPolicies();
-
-        //
+        $this->app->singleton('auth', function ($app) {
+            return new Auth();
+        });
     }
 }

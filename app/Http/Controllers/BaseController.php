@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\App;
-use \Auth;
+use App\Facades\Auth;
 use \stdClass;
 
 class BaseController extends Controller {
@@ -18,14 +18,14 @@ class BaseController extends Controller {
 		if( Auth::loggedIn() )
 		{
 			$settings = new stdClass;
-			$settings->theme_id = Auth::$user->theme_id;
-			$settings->combine_scan_intel = Auth::$user->combine_scan_intel;
-			$settings->language = Auth::$user->language;
-			$settings->default_activity = Auth::$user->default_activity;
+			$settings->theme_id = Auth::user()->theme_id;
+			$settings->combine_scan_intel = Auth::user()->combine_scan_intel;
+			$settings->language = Auth::user()->language;
+			$settings->default_activity = Auth::user()->default_activity;
 
-			if( Auth::$user->language != 'en' )
+			if( Auth::user()->language != 'en' )
 			{
-				App::setLocale(Auth::$user->language);
+				App::setLocale(Auth::user()->language);
 			}
 
 			return $settings;

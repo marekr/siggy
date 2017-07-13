@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use \ZebraPagination2;
 
-use \Auth;
+use App\Facades\Auth;
 use \Group;
 use Carbon\Carbon;
 
@@ -23,7 +23,7 @@ class LogsController extends BaseController
 		$characters = DB::select("SELECT c.id,c.name,cg.last_group_access_at FROM character_group cg
 												LEFT JOIN characters c ON(c.id=cg.character_id)
 												WHERE cg.group_id=? AND cg.last_group_access_at >= ?
-												 ORDER BY cg.last_group_access_at DESC",[Auth::$user->group->id, Carbon::now()->subDay()]);
+												 ORDER BY cg.last_group_access_at DESC",[Auth::user()->group->id, Carbon::now()->subDay()]);
 
 		return view('manage.logs.characters', [
 												'characters' => $characters,
@@ -65,7 +65,7 @@ class LogsController extends BaseController
 		}
 
 
-		$logsTotal = DB::selectOne("SELECT COUNT(*) as total FROM logs WHERE groupID=? " . $extraSQL . " ORDER BY logID DESC",[Auth::$user->group->id]);
+		$logsTotal = DB::selectOne("SELECT COUNT(*) as total FROM logs WHERE groupID=? " . $extraSQL . " ORDER BY logID DESC",[Auth::user()->group->id]);
 
 		$logsTotal = $logsTotal->total;
 
@@ -79,7 +79,7 @@ class LogsController extends BaseController
 		$offset = $pagination->next_page_offset();		
 		  
 		$logs = [];
-		$logs = DB::select("SELECT * FROM logs WHERE groupID=? " . $extraSQL . " ORDER BY logID DESC LIMIT ".$offset.",20",[Auth::$user->group->id]);
+		$logs = DB::select("SELECT * FROM logs WHERE groupID=? " . $extraSQL . " ORDER BY logID DESC LIMIT ".$offset.",20",[Auth::user()->group->id]);
 
 		return view('manage.logs.activity', [
 												'logs' => $logs,

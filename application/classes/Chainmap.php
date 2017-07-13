@@ -273,8 +273,8 @@ class Chainmap extends Model {
 							[
 								'system1' => $system,
 								'system2' => $system,
-								'group' => Auth::$session->group->id,
-								'chainmap' => Auth::$session->accessData['active_chain_map']
+								'group' => Auth::session()->group->id,
+								'chainmap' => Auth::session()->accessData['active_chain_map']
 							]);
 
 		if( isset($exists->hash)  )
@@ -289,8 +289,8 @@ class Chainmap extends Model {
 	{
 		DB::delete('DELETE FROM wormholes WHERE (to_system_id = :system1 OR from_system_id = :system2) AND group_id=:groupID AND chainmap_id=:chainmap',
 		[
-			'groupID' => Auth::$session->group->id,
-			'chainmap' => Auth::$session->accessData['active_chain_map'],
+			'groupID' => Auth::session()->group->id,
+			'chainmap' => Auth::session()->accessData['active_chain_map'],
 			'system1' => $system,
 			'system2' => $system
 		]);
@@ -631,7 +631,7 @@ class Chainmap extends Model {
 
 	public function delete_wormholes($wormholeHashes)
 	{
-		$log_message = Auth::$session->character_name.' performed a mass delete of the following wormholes: ';
+		$log_message = Auth::session()->character_name.' performed a mass delete of the following wormholes: ';
 
 		$wormholeHashes = $this->_hash_array_to_string($wormholeHashes);
 

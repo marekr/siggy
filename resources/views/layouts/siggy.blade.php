@@ -37,7 +37,7 @@
 						<li><a id="global-notes-button"><span class="glyphicon glyphicon-folder-close"></span> Notes</a></li>
 						<li><a target="_blank" href="{{ url('stats') }}"><span class="glyphicon glyphicon-list"></span> Stats</a></li>
 						<li id="settings-button"><a><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
-						@if( count(Auth::$user->perms()) > 0 )
+						@if( count(Auth::user()->perms()) > 0 )
 						<li><a href="{{ url('manage') }}"><span class="glyphicon glyphicon-home"></span> Admin</a></li>
 						@endif
 					</ul>
@@ -47,7 +47,7 @@
 					<a href="#" class="dropdown-toggle siggy-navbar-brand" data-toggle="dropdown" role="button" aria-expanded="false">
 						<span>siggy</span>
 					</a>
-					@if( count(Auth::$user->perms()) > 0 )
+					@if( count(Auth::user()->perms()) > 0 )
 					<ul class="dropdown-menu siggy-main-navbar" role="menu">
 						<li><a href="{{ url('manage') }}"><span class="glyphicon glyphicon-home"></span> Admin</a></li>
 					</ul>
@@ -66,13 +66,13 @@
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				@if( $group != null )
-					@if( count(Auth::$session->accessibleGroups()) > 1 )
+					@if( count(Auth::session()->accessibleGroups()) > 1 )
 					<li class="dropdown">
 						<a data-toggle="dropdown" href="#">
 							{{ substr($group->name,0,10) }}&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-down"></i>
 						</a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-							@foreach( Auth::$session->accessibleGroups() as $g )
+							@foreach( Auth::session()->accessibleGroups() as $g )
 								<li onClick="javascript:$(this).find('form').submit();">
 									<a>
 									{!! Form::open(['url' => 'access/groups']) !!}
@@ -111,9 +111,9 @@
 
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-						 <img class="navbar-eve-image" src="https://image.eveonline.com/Corporation/{{ Auth::$session->corporation_id }}_64.png" height="32px"/>
-						 <img class="navbar-eve-image" src="https://image.eveonline.com/Character/{{ Auth::$session->character_id }}_64.jpg" height="32px"/>
-						{{ Auth::$session->character_name }}
+						 <img class="navbar-eve-image" src="https://image.eveonline.com/Corporation/{{ Auth::session()->corporation_id }}_64.png" height="32px"/>
+						 <img class="navbar-eve-image" src="https://image.eveonline.com/Character/{{ Auth::session()->character_id }}_64.jpg" height="32px"/>
+						{{ Auth::session()->character_name }}
 						@if( Auth::loggedIn() )
 						<i class="fa fa-caret-down"></i>
 						@endif

@@ -45,13 +45,13 @@
 				<li>
 					<a href="{{url('/')}}">Back to scanning!</a>
 				</li>
-				@if( count(Auth::$session->accessibleGroups()) > 1 )
+				@if( count(Auth::session()->accessibleGroups()) > 1 )
 				<li class="dropdown">
 					<a data-toggle="dropdown" href="#">
 						{{ substr($group->name,0,10) }}&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-down"></i>
 					</a>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-						@foreach( Auth::$session->accessibleGroups() as $g )
+						@foreach( Auth::session()->accessibleGroups() as $g )
 							<li onClick="javascript:$(this).find('form').submit();">
 								<a>
 								{!! Form::open(['url' => 'access/groups']) !!}
@@ -73,9 +73,9 @@
 
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-						 <img class="navbar-eve-image" src="https://image.eveonline.com/Corporation/{{ Auth::$session->corporation_id }}_64.png" height="32px"/>
-						 <img class="navbar-eve-image" src="https://image.eveonline.com/Character/{{ Auth::$session->character_id }}_64.jpg" height="32px"/>
-						{{ Auth::$session->character_name }}
+						 <img class="navbar-eve-image" src="https://image.eveonline.com/Corporation/{{ Auth::session()->corporation_id }}_64.png" height="32px"/>
+						 <img class="navbar-eve-image" src="https://image.eveonline.com/Character/{{ Auth::session()->character_id }}_64.jpg" height="32px"/>
+						{{ Auth::session()->character_name }}
 						@if( Auth::loggedIn() )
 						<i class="fa fa-caret-down"></i>
 						@endif

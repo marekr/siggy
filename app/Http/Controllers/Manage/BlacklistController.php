@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 use \Character;
 use \GroupBlacklistCharacter;
-use \Auth;
+use App\Facades\Auth;
 use \Group;
 
 class BlacklistController extends BaseController
@@ -23,7 +23,7 @@ class BlacklistController extends BaseController
 
 	public function getList()
 	{
-		$chars = Auth::$user->group->blacklistCharacters();
+		$chars = Auth::user()->group->blacklistCharacters();
 		
 		return view('manage.blacklist.list', [
 												'chars' => $chars
@@ -32,7 +32,7 @@ class BlacklistController extends BaseController
 
 	public function getRemove($id)
 	{
-		$entry = GroupBlackListCharacter::findByGroup(Auth::$user->groupID, $id);
+		$entry = GroupBlackListCharacter::findByGroup(Auth::user()->groupID, $id);
 
 		if($entry != null)
 		{
@@ -73,7 +73,7 @@ class BlacklistController extends BaseController
 			{
 				$charSearchResults = current($charSearchResults);
 				
-				$char = GroupBlacklistCharacter::findByGroupAndChar(Auth::$user->groupID, $charSearchResults->id);
+				$char = GroupBlacklistCharacter::findByGroupAndChar(Auth::user()->groupID, $charSearchResults->id);
 					
 				if( $char != null )
 				{
@@ -88,7 +88,7 @@ class BlacklistController extends BaseController
 			$save = [
 						'reason' => $_POST['reason'],
 						'character_id' => $charSearchResults->id,
-						'group_id' => Auth::$user->groupID
+						'group_id' => Auth::user()->groupID
 			];
 
 			GroupBlacklistCharacter::create($save);

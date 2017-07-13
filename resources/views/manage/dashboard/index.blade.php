@@ -4,7 +4,7 @@
 
 @section('content')
 
-@if( !$member_count && (Auth::$user->admin || $perms['can_manage_group_members'] || $perms['can_manage_access']) )
+@if( !$member_count && (Auth::user()->admin || $perms['can_manage_group_members'] || $perms['can_manage_access']) )
 <h3>Complete your setup!</h3>
 <div class="well">
 	<p>

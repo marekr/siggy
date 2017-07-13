@@ -61,7 +61,7 @@
 			</li>
 			<li class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-					<i class="fa fa-user fa-fw"></i> {{ Auth::$user->username }} <i class="fa fa-caret-down"></i>
+					<i class="fa fa-user fa-fw"></i> {{ Auth::user()->username }} <i class="fa fa-caret-down"></i>
 				</a>
 				<ul class="dropdown-menu dropdown-user">
 					<li>
@@ -69,7 +69,7 @@
 						{!! Form::open(['url' => 'manage/access/set','style'=>'padding: 6px;']) !!}
 							<select name='group' class="form-control input-sm " onchange='submit();'>
 							<?php
-								$selected = Auth::$user->group->id; ?>
+								$selected = Auth::user()->group->id; ?>
 							@foreach( $avaliableGroups as $m )
 								<option value="{{$m->id}}" <?php echo ( ($selected == $m->id) ? "selected='selected'" : ''); ?>>{{$m->name}}</option>
 							@endforeach
@@ -92,7 +92,7 @@
 					<li>
 						<a href="{{url('manage/dashboard')}}"><i class="fa fa-sitemap fa-fw"></i>Admin Dashboard</a>
 					</li>
-					@if( Auth::$user->admin || $perms->can_manage_group_members || $perms->can_manage_access )
+					@if( Auth::user()->admin || $perms->can_manage_group_members || $perms->can_manage_access )
 					<li class="active <?php echo ($controllerName == "Group"?" active" : "") ?>">
 						<a href="#"><i class="fa fa-chain fa-fw"></i> Chainmaps<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
@@ -105,7 +105,7 @@
 					<li class="active <?php echo ($controllerName == "Group"?" active" : "") ?>">
 						<a href="#"><i class="fa fa-key fa-fw"></i> Access<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
-							@if( Auth::$user->admin || $perms->can_manage_group_members )
+							@if( Auth::user()->admin || $perms->can_manage_group_members )
 							<li>
 								<a href="{{url('manage/group/members')}}">Group Members</a>
 							</li>
@@ -113,7 +113,7 @@
 								<a href="{{url('manage/blacklist/list')}}">Character Blacklist</a>
 							</li>
 							@endif
-							@if( Auth::$user->admin || $perms->can_manage_access )
+							@if( Auth::user()->admin || $perms->can_manage_access )
 							<li>
 								<a href="{{url('manage/access/configure')}}">Admin Access</a>
 							</li>
@@ -125,7 +125,7 @@
 						<!-- /.nav-second-level -->
 					</li>
 					@endif
-					@if( Auth::$user->admin || $perms->can_manage_settings )
+					@if( Auth::user()->admin || $perms->can_manage_settings )
 					<li class="active <?php echo ($controllerName == "Settings"?" active" : "") ?>">
 						<a href="#"><i class="fa fa-wrench fa-fw"></i>Settings<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
@@ -142,7 +142,7 @@
 						<!-- /.nav-second-level -->
 					</li>
 					@endif
-					@if( Auth::$user->admin || $perms->can_view_logs )
+					@if( Auth::user()->admin || $perms->can_view_logs )
 					<li class="active <?php echo ($controllerName == "Logs"?" active" : "") ?>">
 						<a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Activity<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
@@ -156,7 +156,7 @@
 						<!-- /.nav-second-level -->
 					</li>
 					@endif
-					@if( Auth::$user->admin || $perms->can_view_financial )
+					@if( Auth::user()->admin || $perms->can_view_financial )
 					<li class="active <?php echo ($controllerName == "Billing"?" active" : "") ?>">
 						<a href="#"><i class="fa fa-university fa-fw"></i>Financial<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">

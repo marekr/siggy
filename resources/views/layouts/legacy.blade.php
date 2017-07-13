@@ -29,7 +29,7 @@
             
             <?php if( Auth::loggedIn() ): ?>
             <p class="navbar-text pull-right">
-              Logged in as <a href="#" class="navbar-link"><?php echo Auth::$user->username; ?></a> <a href="{{url('account/logout')}}'" />Logout</a>
+              Logged in as <a href="#" class="navbar-link"><?php echo Auth::user()->username; ?></a> <a href="{{url('account/logout')}}'" />Logout</a>
             </p>
             <?php endif; ?>
           </div>

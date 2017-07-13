@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 use Siggy\ScribeCommandBus;
 
+use App\Facades\Auth;
+
 class User extends Model {
 	public $perms = null;
 	public $timestamps = true;
@@ -74,11 +76,11 @@ class User extends Model {
 		}
 
 		/* update the corp id */
-		if( $character->corporation_id != Auth::$session->corporation_id )
+		if( $character->corporation_id != Auth::session()->corporation_id )
 		{
-			if( $this->id == Auth::$user->id )
+			if( $this->id == Auth::user()->id )
 			{
-				Auth::$session->reloadUserSession();
+				Auth::session()->reloadUserSession();
 			}
 		}
 

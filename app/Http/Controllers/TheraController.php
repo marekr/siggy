@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
-use \Auth;
+use App\Facades\Auth;
 use Siggy\CharacterLocation;
 use \Pathfinder;
 use \Chainmap;
@@ -31,7 +31,7 @@ class TheraController extends Controller {
 			}
 		}
 
-		$currentLocation = CharacterLocation::findWithinCutoff(Auth::$session->character_id);
+		$currentLocation = CharacterLocation::findWithinCutoff(Auth::session()->character_id);
 		if( $currentLocation != null )
 		{
 			$pather = new Pathfinder();
@@ -138,7 +138,7 @@ class TheraController extends Controller {
 		$chainmap = null;
 		if( isset($_POST['chainmap']) )
 		{
-			$chainmap = Chainmap::find(intval($_POST['chainmap']),Auth::$session->group->id);
+			$chainmap = Chainmap::find(intval($_POST['chainmap']),Auth::session()->group->id);
 		}
 
 		if( $chainmap == null )

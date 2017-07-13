@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Manage;
 
 
 use App\Http\Controllers\Controller;
-use \Auth;
+use App\Facades\Auth;
 
 class BaseController extends Controller {
 

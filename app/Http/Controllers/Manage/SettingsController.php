@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-use \Auth;
+use App\Facades\Auth;
 use \Group;
 
 class SettingsController extends BaseController
@@ -28,7 +28,7 @@ class SettingsController extends BaseController
 
 	public function postChainmap()
 	{
-		$group = Auth::$user->group;
+		$group = Auth::user()->group;
 					
 		$save = [
 			'jump_log_enabled' => intval($_POST['jump_log_enabled']  ?? 0),
@@ -71,7 +71,7 @@ class SettingsController extends BaseController
 
 	public function postStatistics()
 	{
-		$group = Auth::$user->group;
+		$group = Auth::user()->group;
 
 		$save = [
 			'stats_enabled' => intval($_POST['stats_enabled'] ?? 0),
@@ -117,7 +117,7 @@ class SettingsController extends BaseController
 
 	public function postGeneral(Request $request)
 	{
-		$group = Auth::$user->group;
+		$group = Auth::user()->group;
 
 		$save = [
 			'name' => $_POST['name'],

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use \Auth;
+use App\Facades\Auth;
 use \CharacterGroup;
 use \Notifier;
 use \NotificationTypes;
@@ -15,10 +15,10 @@ class NotificationController extends Controller {
 
 	public function read()
 	{
-		$characterGroup = CharacterGroup::find(Auth::$session->character_id, Auth::$session->group->id);
+		$characterGroup = CharacterGroup::find(Auth::session()->character_id, Auth::session()->group->id);
 		if($characterGroup == null)
 		{
-			$characterGroup = CharacterGroup::create(['character_id' => Auth::$session->character_id, 'group_id' => Auth::$session->group->id]);
+			$characterGroup = CharacterGroup::create(['character_id' => Auth::session()->character_id, 'group_id' => Auth::session()->group->id]);
 		}
 
 		$characterGroup->last_notification_read = time();
@@ -27,7 +27,7 @@ class NotificationController extends Controller {
 
 	public function notifiers()
 	{
-		$data = Notifier::allByGroupCharacter(Auth::$session->group->id, Auth::$session->character_id);
+		$data = Notifier::allByGroupCharacter(Auth::session()->group->id, Auth::session()->character_id);
 
 		return response()->json($data);
 	}
@@ -42,9 +42,9 @@ class NotificationController extends Controller {
 
 		$numberPerPage = 50;
 		$offset = $numberPerPage*($page-1);
-		$data = Notification::latest(0, Auth::$session->group->id, Auth::$session->character_id, $offset, $numberPerPage);
+		$data = Notification::latest(0, Auth::session()->group->id, Auth::session()->character_id, $offset, $numberPerPage);
 
-		$totalPages = ceil(Notification::total(0, Auth::$session->group->id, Auth::$session->character_id) / $numberPerPage);
+		$totalPages = ceil(Notification::total(0, Auth::session()->group->id, Auth::session()->character_id) / $numberPerPage);
 		$response = array(
 			'items' => $data,
 			'total_pages' => $totalPages
@@ -91,7 +91,7 @@ class NotificationController extends Controller {
 			$data['include_offline'] = (isset($data['include_offline']) && $data['include_offline']) ? true : false;
 		}
 
-		$notifier = Notifier::createFancy($type, $scope, Auth::$session->group->id, Auth::$session->character_id, $data);
+		$notifier = Notifier::createFancy($type, $scope, Auth::session()->group->id, Auth::session()->character_id, $data);
 	}
 
 	public function notifiers_delete(Request $request)
@@ -103,6 +103,6 @@ class NotificationController extends Controller {
 			return response()->json(['error' => 1, 'error_message' => 'ID missing']);
 		}
 
-		Notifier::deleteByIdGroupCharacter( $id, Auth::$session->group->id, Auth::$session->character_id );
+		Notifier::deleteByIdGroupCharacter( $id, Auth::session()->group->id, Auth::session()->character_id );
 	}
 }

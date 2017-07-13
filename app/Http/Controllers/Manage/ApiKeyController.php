@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-use \Auth;
+use App\Facades\Auth;
 use Siggy\ApiKey;
 use \Group;
 
@@ -22,7 +22,7 @@ class ApiKeyController extends BaseController
 
 	public function getList()
 	{
-		$keys = Auth::$user->group->apiKeys;
+		$keys = Auth::user()->group->apiKeys;
 		return view('manage.apikeys.list', [
 												'keys' => $keys
 											]);
@@ -30,7 +30,7 @@ class ApiKeyController extends BaseController
 
 	public function postRemove($id)
 	{
-		$entry = Auth::$user->group->apiKeys()->where('id',$id);
+		$entry = Auth::user()->group->apiKeys()->where('id',$id);
 
 		if($entry != null)
 		{
@@ -71,7 +71,7 @@ class ApiKeyController extends BaseController
 				}
 			}
 
-			$data['group_id'] = Auth::$user->group->id;
+			$data['group_id'] = Auth::user()->group->id;
 			$key = ApiKey::create($data);
 			return redirect('manage/apikeys/list');
 		}

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Manage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-use \Auth;
+use App\Facades\Auth;
 use \Group;
 use \Chainmap;
 use \GroupMember;
@@ -15,7 +15,7 @@ class ChainmapsController extends BaseController
 {
 	public function getList()
 	{
-		$group = Auth::$user->group;
+		$group = Auth::user()->group;
 		$chainmaps = $group->chainMaps();
 
 		return view('manage.chainmaps.list', [
@@ -25,7 +25,7 @@ class ChainmapsController extends BaseController
 
 	public function getAdd()
 	{
-		$group = Auth::$user->group;
+		$group = Auth::user()->group;
 
 		return view('manage.chainmaps.add_edit_form', [
 												'mode' => 'add'
@@ -34,11 +34,11 @@ class ChainmapsController extends BaseController
 
 	public function postAdd()
 	{
-		$group = Auth::$user->group;
+		$group = Auth::user()->group;
 
 		$new = [
 			'chainmap_name' => $_POST['chainmap_name'],
-			'group_id' => Auth::$user->groupID,
+			'group_id' => Auth::user()->groupID,
 			'chainmap_type' => 'fixed',
 			'chainmap_skip_purge_home_sigs' => intval($_POST['chainmap_skip_purge_home_sigs'] ?? 0),
 		];
@@ -54,8 +54,8 @@ class ChainmapsController extends BaseController
 			$chainmap = Chainmap::create($new);
 			$chainmap->rebuild_map_data_cache();
 
-			Auth::$user->group->save();
-			Auth::$user->group->recacheChainmaps();
+			Auth::user()->group->save();
+			Auth::user()->group->recacheChainmaps();
 
 			return redirect('manage/chainmaps/list');
 		}
@@ -105,7 +105,7 @@ class ChainmapsController extends BaseController
 
 	public function getEdit($id)
 	{
-		$chainmap = Chainmap::find($id, Auth::$user->groupID);
+		$chainmap = Chainmap::find($id, Auth::user()->groupID);
 		if( $chainmap == null )
 		{
 			flash('Error: You do not have permission to edit that chainmap.')->error();
@@ -120,7 +120,7 @@ class ChainmapsController extends BaseController
 
 	public function postEdit($id)
 	{
-		$chainmap = Chainmap::find($id, Auth::$user->groupID);
+		$chainmap = Chainmap::find($id, Auth::user()->groupID);
 		if( $chainmap == null )
 		{
 			flash('Error: You do not have permission to edit that chainmap.')->error();
@@ -143,8 +143,8 @@ class ChainmapsController extends BaseController
 			$chainmap->save();
 
 			$chainmap->rebuild_map_data_cache();
-			Auth::$user->group->save();
-			Auth::$user->group->recacheChainmaps();
+			Auth::user()->group->save();
+			Auth::user()->group->recacheChainmaps();
 
 			return redirect('manage/chainmaps/list');
 		}
@@ -157,7 +157,7 @@ class ChainmapsController extends BaseController
 
 	public function getRemove($id)
 	{
-		$chainmap = Chainmap::find($id, Auth::$user->groupID);
+		$chainmap = Chainmap::find($id, Auth::user()->groupID);
 		if( $chainmap == null )
 		{
 			flash('Error: You do not have permission to remove that chainmap.')->error();
@@ -178,7 +178,7 @@ class ChainmapsController extends BaseController
 
 	public function postRemove($id)
 	{
-		$chainmap = Chainmap::find($id, Auth::$user->groupID);
+		$chainmap = Chainmap::find($id, Auth::user()->groupID);
 		if( $chainmap == null )
 		{
 			flash('Error: You do not have permission to remove that chainmap.')->error();
@@ -194,7 +194,7 @@ class ChainmapsController extends BaseController
 		DB::table('chainmaps_access')->where('chainmap_id', '=', $chainmap->chainmap_id)->delete();
 		DB::table('activesystems')->where('chainmap_id', '=', $chainmap->chainmap_id)->delete();
 		
-		$groupmembers = GroupMember::findByGroup(Auth::$user->group->id);
+		$groupmembers = GroupMember::findByGroup(Auth::user()->group->id);
 		if( count($groupmembers) > 0 )
 		{
 			foreach($groupmembers as $member)
@@ -211,11 +211,11 @@ class ChainmapsController extends BaseController
 			}
 		}
 		
-		Auth::$user->group->save();
+		Auth::user()->group->save();
 		
 		$chainmap->delete();
 		
-		Auth::$user->group->recacheChainmaps();
+		Auth::user()->group->recacheChainmaps();
 
 		return redirect('manage/chainmaps/list');
 	}
@@ -224,7 +224,7 @@ class ChainmapsController extends BaseController
 	{
 		list($chainmap_id, $groupMemberID) = explode('-', $id);
 
-		$cm = Chainmap::find($chainmap_id, Auth::$user->groupID);
+		$cm = Chainmap::find($chainmap_id, Auth::user()->groupID);
 		if( $cm == null )
 		{
 			flash('Error: You do not have permission for that chainmap.')->error();
@@ -232,7 +232,7 @@ class ChainmapsController extends BaseController
 		}
 
 		$member = GroupMember::find($groupMemberID);
-		if( $member == null || $member->groupID != Auth::$user->group->id )
+		if( $member == null || $member->groupID != Auth::user()->group->id )
 		{
 			flash('Error: The group member does not exist.')->error();
 			return redirect('manage/group/members');
@@ -248,7 +248,7 @@ class ChainmapsController extends BaseController
 	{
 		list($chainmap_id, $groupMemberID) = explode('-', $id);
 
-		$cm = Chainmap::find($chainmap_id, Auth::$user->groupID);
+		$cm = Chainmap::find($chainmap_id, Auth::user()->groupID);
 		if( $cm == null )
 		{
 			flash('Error: You do not have permission for that chainmap.')->error();
@@ -256,7 +256,7 @@ class ChainmapsController extends BaseController
 		}
 
 		$member = GroupMember::find($groupMemberID);
-		if( $member == null || $member->groupID != Auth::$user->group->id )
+		if( $member == null || $member->groupID != Auth::user()->group->id )
 		{
 			flash('Error: The group member does not exist.')->error();
 			return redirect('manage/group/members');
@@ -265,7 +265,7 @@ class ChainmapsController extends BaseController
 		DB::delete('DELETE FROM chainmaps_access
 										WHERE group_id=:group_id AND chainmap_id=:chainmap
 										AND groupmember_id=:member_id',[
-											'group_id' => Auth::$user->group->id,
+											'group_id' => Auth::user()->group->id,
 											'chainmap' => $chainmap_id,
 											'member_id' => $groupMemberID
 										]);
@@ -283,8 +283,8 @@ class ChainmapsController extends BaseController
 		}
 
 		//trigger last_update value to change
-		Auth::$user->group->save();
-		Auth::$user->group->recacheChainmaps();
+		Auth::user()->group->save();
+		Auth::user()->group->recacheChainmaps();
 
 		return redirect('manage/group/members');
 	}

@@ -3,8 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use \Auth;
-use \AuthStatus;
+use App\Facades\Auth;
+use Siggy\AuthStatus;
 
 class SiggyAuthenticatedAccess
 {
@@ -32,25 +32,25 @@ class SiggyAuthenticatedAccess
 		list($controller, $action) = explode('@',  $request->route()->getActionName());
 		$controller = str_replace('App\Http\Controllers\\', '', $controller);
 
-		if( Auth::$authStatus == AuthStatus::GPASSWRONG && $controller != "AccessController" )
+		if( Auth::getAuthStatus() == AuthStatus::GPASSWRONG && $controller != "AccessController" )
 		{
 			return $this->siggyRedirect($request->ajax(), '/access/group_password');
 		}
-		elseif( Auth::$authStatus == AuthStatus::BLACKLISTED )
+		elseif( Auth::getAuthStatus() == AuthStatus::BLACKLISTED )
 		{
 			return $this->siggyRedirect($request->ajax(), '/access/blacklisted');
 		}
-		elseif( Auth::$authStatus == AuthStatus::GROUP_SELECT_REQUIRED )
+		elseif( Auth::getAuthStatus() == AuthStatus::GROUP_SELECT_REQUIRED )
 		{
 			return $this->siggyRedirect($request->ajax(), '/access/groups');
 		}
-		elseif( Auth::$authStatus != AuthStatus::ACCEPTED && Auth::$authStatus != AuthStatus::GPASSWRONG)
+		elseif( Auth::getAuthStatus() != AuthStatus::ACCEPTED && Auth::getAuthStatus() != AuthStatus::GPASSWRONG)
 		{
 			if( Auth::loggedIn() )
 			{
 				return $this->siggyRedirect($request->ajax(), '/account/characters');
 			}
-			else if( \Auth::$authStatus == AuthStatus::GUEST )
+			else if( \Auth::getAuthStatus() == AuthStatus::GUEST )
 			{
 				return $this->siggyRedirect($request->ajax(), '/pages/welcome');
 			}
