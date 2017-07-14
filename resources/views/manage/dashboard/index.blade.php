@@ -33,7 +33,7 @@
 <div class="well">
 	<p class="pull-right"><small> {{ date("Y-m-d g:m", $n->datePublished) }}</small></p>
 	<h4>{{ $n->title }}</h4>
-	<p>{{ $n->content }}</p>
+	<p>{!! $n->content !!}</p>
 </div>
 @endforeach
 
