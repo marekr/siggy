@@ -178,7 +178,7 @@ return [
 		Fideloper\Proxy\TrustedProxyServiceProvider::class,
 
 		Dingo\Api\Provider\LaravelServiceProvider::class,
-	//	Laravel\Passport\PassportServiceProvider::class,
+		Laravel\Passport\PassportServiceProvider::class,
 
 		App\Providers\SiggySessionServiceProvider::class,
     ],

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
+use Laravel\Passport\Passport;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -24,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
 		\Form::component('bsTextarea', 'components.form.textarea', ['key', 'title', 'description' => '', 'value' => null, 'attributes' => []]);
 		\Form::component('yesNo', 'components.form.yesno', ['key', 'title', 'description' => '', 'value' => null, 'attributes' => []]);
 		\Form::component('actionButtons', 'components.form.actionButtons', []);
+		
+    	Passport::routes();
     }
 
     /**
@@ -33,6 +36,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+		Passport::ignoreMigrations();
     }
 }
