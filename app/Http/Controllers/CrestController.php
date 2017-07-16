@@ -28,7 +28,12 @@ class CrestController extends Controller {
 			return response()->json(StandardResponse::error("Something went horribly wrong, your sso token doesn't exist???"));
 		}
 
-		if($sso->scope_character_navigation_write)
+		if($sso->scope_esi_ui_write_waypoint)
+		{
+			$client = new ESIClient($sso->access_token);
+			$success = $client->postUiAutopilotWaypointV2($systemId, $waypoint, false);
+		}
+		else if($sso->scope_character_navigation_write)
 		{
 			$waypoints = new Endpoint(Endpoint::APIVersionThree,"/characters/{id}/ui/autopilot/waypoints/", true, $sso->access_token);
 
@@ -55,11 +60,6 @@ class CrestController extends Controller {
 			{
 				$success = true;
 			}
-		}
-		else if($sso->scope_esi_ui_write_waypoint)
-		{
-			$client = new ESIClient($sso->access_token);
-			$success = $client->postUiAutopilotWaypointV2($systemId, $waypoint, false);
 		}
 
 		if(!$success)

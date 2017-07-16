@@ -1,6 +1,9 @@
 # siggy Changelog
 
-## 4.0.1 - 2017-07-17
+## 4.1.0 - 2017-07-17
+## Changes
+- Priortize ESI over CREST for waypoint/destination sets
+
 ## Fixes
 - Add back the focusing of the input area on the mass sig adder
 - Add padding to compensate for the focus outline on input boxes. This makes the cursor visible now when its at the beginning of a line
