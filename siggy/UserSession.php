@@ -300,7 +300,7 @@ class UserSession {
 		return $this->character_id;
 	}
 
-	public function getGroup(): Group
+	public function getGroup(): ?Group
 	{
 		return $this->group;
 	}
