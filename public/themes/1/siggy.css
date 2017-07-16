@@ -32,7 +32,7 @@ body
 .siggy-input[type=password],
 .siggy-input
 {
-    height: 20px;
+    height: 23px;
     width: 100%;
 }
 
@@ -369,7 +369,7 @@ label.no {
 {
 	width: 400px;
 	margin-left:10px;
-	height:18px;
+	height:24px;
 	overflow:hidden;
 	resize: none;
 	vertical-align: top;
@@ -478,6 +478,12 @@ ul.errors
 }
 
 
+input,
+select,
+textarea
+{
+	padding: 3px;
+}
 
 input:focus,
 select:focus,

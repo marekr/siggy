@@ -6,10 +6,10 @@
 			This tool can add and update signatures.
 		</p>
 		<form action='post'>
-			<textarea name="blob" rows="12" style="width:100%;font-size:11px;"></textarea>
+			<textarea name="blob" rows="12" style="width:100%;font-size:11px;" class="dialog-focus-me"></textarea>
 			<div class="form-group">
 				<label for="delete_nonexistent_sigs">Delete nonexistent sigs</label>
-				<input name='delete_nonexistent_sigs' type='checkbox' value='1' />
+				<input name='delete_nonexistent_sigs' id='delete_nonexistent_sigs' type='checkbox' value='1' />
 			</div>
 		</form>
 	</div>

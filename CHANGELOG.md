@@ -1,5 +1,10 @@
 # siggy Changelog
 
+## 3.5.0 - 2017-07-17
+## Fixes
+- Add back the focusing of the input area on the mass sig adder
+- Add padding to compensate for the focus outline on input boxes. This makes the cursor visible now when its at the beginning of a line
+
 ## 3.5.0 - 2017-07-16
 ## Changes
 - Full restructure of auth system, separate of auth from session, this removes one of the remaining relics of siggy's past where it was an intertwined mess of hacks made to support IGB in weird ways over its evolution
