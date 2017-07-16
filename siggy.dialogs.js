@@ -45,6 +45,7 @@ siggy2.Dialogs.build = function(dialogData, buttons)
 	
 	dialog.one("shown.dialog", function(){
 		dialog.find('.btn-focus-me').focus();
+		dialog.find('.dialog-focus-me').focus();
 	});
 
 	dialog.one("hide.dialog", function(){
