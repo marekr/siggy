@@ -1166,7 +1166,7 @@ siggy2.Map.prototype.openSystemEdit = function( sysID )
 
 	var label = this.systems[ sysID ].displayName == '' ? this.systems[ sysID ].name : this.systems[ sysID ].displayName;
 
-	$('#system-editor input[name=label]').val( label );
+	$('#system-editor input[name=label]').val( unescape_html_entities(label) );
 	$('#system-editor input[name=label]').select();
 	$('#system-editor select[name=activity]').val(this.systems[ sysID ].activity);
 }

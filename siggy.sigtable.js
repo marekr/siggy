@@ -766,7 +766,7 @@ siggy2.SigTable.prototype.editSigForm = function (id)
 
 	descEle.append($('<br />'))
 
-	descEle.append( $('<input>').val(sigData.description)
+	descEle.append( $('<input>').val(unescape_html_entities(sigData.description))
 								.keypress( function(e) { if(e.which == 13){ $this.editSig(id)  } } )
 								.css('width', '100%')
 					);

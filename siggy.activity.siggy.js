@@ -529,7 +529,7 @@ siggy2.Activity.siggy.prototype.handleChainMapSelect = function(id)
 siggy2.Activity.siggy.prototype.updateSystemOptionsForm = function (systemData)
 {
 	$('#system-options table th').text('System Options for '+systemData.name);
-	$('#system-options input[name=label]').val(systemData.displayName);
+	$('#system-options input[name=label]').val(unescape_html_entities(systemData.displayName));
 	$('#system-options select[name=activity]').val(systemData.activity);
 }
 

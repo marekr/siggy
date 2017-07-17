@@ -53,7 +53,7 @@ globalnotes.prototype.initialize = function()
 	{
 		$(this).hide();
 		$('#global-notes-content').hide();
-		$('#global-notes-edit-box').val($this.globalNotes).show();
+		$('#global-notes-edit-box').val(unescape_html_entities($this.globalNotes)).show();
 		$('#global-notes-save').show();
 		$('#global-notes-cancel').show();
 	});

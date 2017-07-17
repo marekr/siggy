@@ -374,3 +374,8 @@ function guid() {
 	return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
 	s4() + '-' + s4() + s4() + s4();
 }
+
+function unescape_html_entities(str)
+{
+	return $('<textarea />').html(str).text();
+}
