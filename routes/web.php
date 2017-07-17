@@ -100,6 +100,9 @@ Route::get('/announcements', [
 
 Route::get('/announcements/view/{id}', 'AnnouncementController@view');
 
+
+Route::get('prometheus','PrometheusController@index');
+
 Route::group(['middleware' => ['siggy.app','siggy.authenticated']], function () {
 	
 	Route::get('/', [
@@ -169,8 +172,6 @@ Route::group(['middleware' => ['siggy.app','siggy.authenticated']], function () 
 	Route::get('stats/wormholes/','StatsController@wormholes');
 	Route::get('stats/sig_adds/','StatsController@sigAdds');
 	Route::get('stats/sig_updates/','StatsController@sigUpdates');
-
-	Route::get('prometheus','PrometheusController@index');
 
 	Route::get('stats/overview','StatsController@overview');
 

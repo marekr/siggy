@@ -1,5 +1,11 @@
 # siggy Changelog
 
+## 4.1.1 - 2017-07-17
+## Fixes
+- Unescape html entities where possible for editing
+- Prometheus data export route was accidentally put behind auth middleware
+
+
 ## 4.1.0 - 2017-07-17
 ## Changes
 - Priortize ESI over CREST for waypoint/destination sets
