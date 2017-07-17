@@ -82,6 +82,11 @@ class Character extends Model {
 				$char->save();
 			}
 
+			if($char->corporation == null)
+			{
+				$char->corporation = Corporation::find($char->corporation_id);
+			}
+
 			return $char;
 		}
 		else 
@@ -101,6 +106,11 @@ class Character extends Model {
 
 			$res = self::create($insert);
 			
+			if($res->corporation == null)
+			{
+				$res->corporation = Corporation::find($res->corporation_id);
+			}
+
 			return $res;
 		}
 	}
