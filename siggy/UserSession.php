@@ -13,6 +13,7 @@ use \User;
 use \Group;
 use \GroupMember;
 use \CharacterGroup;
+use Siggy\Redis\RedisTtlCounter;
 
 class UserSession {
 
@@ -116,6 +117,10 @@ class UserSession {
 		$this->reloadSessionData(true);
 
 		$this->getAccessData();
+
+		
+		$ttlcUsers = new RedisTtlCounter('ttlc:users:daily', 86400);
+		$ttlcUsers->add(Auth::user()->id);
 	}
 
 	private function populateNewSession(): bool
