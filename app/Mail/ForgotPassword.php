@@ -34,7 +34,7 @@ class ForgotPassword extends Mailable
      */
     public function build()
     {
-		$this->subject('siggy: Account password reset');
+		$this->subject('Account password reset');
         return $this->view('emails.account.forgot_password');
     }
 }

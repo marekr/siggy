@@ -1,4 +1,4 @@
-@extends('layouts.public',['layoutMode' => 'leftMenu', 'title' => 'siggy: connected accounts', 'selectedTab'=>'account'])
+@extends('layouts.public',['layoutMode' => 'leftMenu', 'title' => 'connected accounts', 'selectedTab'=>'account'])
 
 @section('content')
 	<h3>

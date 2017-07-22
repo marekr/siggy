@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?php echo $title; ?></title>
+    <title>{{ config('app.name') }}: {{ $title }}</title>
 
     <!-- Le styles -->
     <link href="{{asset('bootstrap3/css/bootstrap.min.css?'.SIGGY_VERSION)}}" rel="stylesheet">

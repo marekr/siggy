@@ -1,5 +1,5 @@
 @extends('layouts.public',[
-							'title' => 'siggy: about',
+							'title' => 'about',
 							'selectedTab' => 'about',
 							'layoutMode' => 'blank'
 						])

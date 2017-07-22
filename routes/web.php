@@ -103,7 +103,7 @@ Route::get('/announcements/view/{id}', 'AnnouncementController@view');
 
 Route::get('prometheus','PrometheusController@index');
 
-Route::group(['middleware' => ['siggy.app','siggy.authenticated']], function () {
+Route::group(['middleware' => ['web','siggy.app']], function () {
 	
 	Route::get('/', [
 		'uses' => 'SiggyController@index', 

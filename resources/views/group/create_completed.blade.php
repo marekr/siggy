@@ -1,5 +1,5 @@
 @extends('layouts.public',[
-							'title' => 'siggy: create group',
+							'title' => 'create group',
 							'selectedTab' => 'createGroup',
 							'layoutMode' => 'blank'
 						])

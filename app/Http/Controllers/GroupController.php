@@ -16,7 +16,7 @@ class GroupController extends Controller {
 	public function getCreateForm()
 	{
 		return view('group.create_form', [
-												'title' => 'siggy: create group',
+												'title' => 'create group',
 												'selectedTab' => 'createGroup',
 												'layoutMode' => 'blank'
 											]);
@@ -76,7 +76,7 @@ class GroupController extends Controller {
 	public function getCreateCompleted()
 	{
 		return view('group.create_completed', [
-												'title' => 'siggy: create group',
+												'title' => 'create group',
 												'selectedTab' => 'createGroup',
 												'layoutMode' => 'blank'
 											]);
@@ -85,7 +85,7 @@ class GroupController extends Controller {
 	public function getCreateIntro()
 	{
 		return view('group.create_intro', [
-													'title' => 'siggy: create group',
+													'title' => 'create group',
 													'selectedTab' => 'createGroup',
 													'layoutMode' => 'blank'
 												]);

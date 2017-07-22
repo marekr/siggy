@@ -15,6 +15,7 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
 		\Fideloper\Proxy\TrustProxies::class,
+		\App\Http\Middleware\CheckForMaintenanceMode::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
@@ -27,25 +28,23 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-			\App\Http\Middleware\CheckForMaintenanceMode::class,
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
-            \App\Http\Middleware\AuthenticateSession::class,
+            \Illuminate\Session\Middleware\AuthenticateSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+  			\App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 		'siggy.app' => [
 			\App\Http\Middleware\SiggyLoggedIn::class,
-  			\App\Http\Middleware\VerifyCsrfToken::class,
+			\App\Http\Middleware\SiggyAuthenticatedAccess::class,
 		],
 		'siggy.app-pages' => [
 			\App\Http\Middleware\SiggyLoggedIn::class,
-  			\App\Http\Middleware\VerifyCsrfToken::class,
 		],
 		'siggy.manage' => [
 			\App\Http\Middleware\SiggyLoggedIn::class,
-            \App\Http\Middleware\VerifyCsrfToken::class,
 			\App\Http\Middleware\SiggyCanManage::class,
 		],
         'api' => [
@@ -62,7 +61,6 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'siggy.authenticated' =>  \App\Http\Middleware\SiggyAuthenticatedAccess::class,
         'csrf' =>  \App\Http\Middleware\VerifyCsrfToken::class,
         'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,

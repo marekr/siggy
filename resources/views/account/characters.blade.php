@@ -1,4 +1,4 @@
-@extends('layouts.public',['layoutMode' => 'leftMenu', 'title' => 'siggy: characters', 'selectedTab'=>'account'])
+@extends('layouts.public',['layoutMode' => 'leftMenu', 'title' => 'characters', 'selectedTab'=>'account'])
 
 @section('content')
 <h3>Character Select</h3>

@@ -1,5 +1,5 @@
 @extends('layouts.public',[
-							'title' => 'siggy: no group access',
+							'title' => 'no group access',
 							'selectedTab' => 'about',
 							'layoutMode' => 'blank'
 						])

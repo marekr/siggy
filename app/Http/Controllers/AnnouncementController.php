@@ -31,7 +31,7 @@ class AnnouncementController extends BaseController {
 		return view('announcements.index', [
 												'announcements' => $results,
 												'pagination' => $paginationHTML,
-												'title' => "siggy: announcements",
+												'title' => "announcements",
 												'selectedTab' => 'announcements',
 												'layoutMode' => 'blank'
 											]);

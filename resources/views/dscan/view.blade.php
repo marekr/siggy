@@ -1,5 +1,5 @@
 @extends('layouts.legacy',[
-							'title' => 'siggy: dscan',
+							'title' => 'dscan',
 							'selectedTab' => 'dscan'
 						])
 

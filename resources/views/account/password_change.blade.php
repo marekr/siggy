@@ -1,4 +1,4 @@
-@extends('layouts.public',['layoutMode' => 'leftMenu', 'title' => 'siggy: change password', 'selectedTab'=>'account'])
+@extends('layouts.public',['layoutMode' => 'leftMenu', 'title' => 'change password', 'selectedTab'=>'account'])
 
 @section('content')
 	<h3>Change Password</h3>

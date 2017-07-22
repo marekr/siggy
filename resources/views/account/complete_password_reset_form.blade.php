@@ -1,5 +1,5 @@
 
-@extends('layouts.public',['layoutMode' => 'blank', 'title' => 'siggy: complete password reset', 'selectedTab'=>'login'])
+@extends('layouts.public',['layoutMode' => 'blank', 'title' => 'complete password reset', 'selectedTab'=>'login'])
 
 @section('content')
 <div class="container">

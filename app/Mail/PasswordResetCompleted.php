@@ -30,7 +30,7 @@ class PasswordResetCompleted extends Mailable
      */
     public function build()
     {
-		$this->subject('siggy: Password successfully reset');
+		$this->subject('Password successfully reset');
         return $this->view('emails.account.password_reset_complete');
     }
 }

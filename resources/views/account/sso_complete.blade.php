@@ -1,5 +1,5 @@
 
-@extends('layouts.public',['layoutMode' => 'blank', 'title' => 'siggy: complete sso', 'selectedTab'=>'login'])
+@extends('layouts.public',['layoutMode' => 'blank', 'title' => 'complete sso', 'selectedTab'=>'login'])
 
 @section('content')
 <style type='text/css'>

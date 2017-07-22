@@ -77,7 +77,7 @@ class StatsController extends BaseController {
 											'results' => $results,
 											'rank_offset' => $offset,
 											'pagination' => $paginationHTML,
-											'title' => 'siggy: leaderboard',
+											'title' => 'leaderboard',
 											'selectedTab' => 'stats',
 											'layoutMode' => 'blank',
 											'previous_date' => $datep->getPreviousDate(),
@@ -171,7 +171,7 @@ class StatsController extends BaseController {
 											'rank_offset' => $offset,
 											'pagination' => $paginationHTML,
 
-											'title' => 'siggy: leaderboard',
+											'title' => 'leaderboard',
 												'selectedTab' => 'stats',
 												'layoutMode' => 'blank',
 												'previous_date' => $datep->getPreviousDate(),
