@@ -48,8 +48,6 @@
 					<span class="span-or">or</span>
 					</div>
 					{!! Form::open(['url' => 'account/login']) !!}
-						<input type="hidden" name="bounce" value="{{ $bounce }}" />
-					
 						@if($errors->any())
 						<div class="alert alert-danger">
 						{{$errors->first()}}

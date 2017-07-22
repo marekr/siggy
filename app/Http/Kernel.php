@@ -37,14 +37,14 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 		'siggy.app' => [
-			\App\Http\Middleware\SiggyLoggedIn::class,
+			\Illuminate\Auth\Middleware\Authenticate::class,
 			\App\Http\Middleware\SiggyAuthenticatedAccess::class,
 		],
 		'siggy.app-pages' => [
-			\App\Http\Middleware\SiggyLoggedIn::class,
+			\Illuminate\Auth\Middleware\Authenticate::class,
 		],
 		'siggy.manage' => [
-			\App\Http\Middleware\SiggyLoggedIn::class,
+			\Illuminate\Auth\Middleware\Authenticate::class,
 			\App\Http\Middleware\SiggyCanManage::class,
 		],
         'api' => [

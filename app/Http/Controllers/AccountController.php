@@ -8,6 +8,7 @@ use App\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
 
 
 use OAuth\OAuth2\Service\Eve;
@@ -23,13 +24,35 @@ use \Email;
 use App\Facades\SiggySession;
 
 class AccountController extends Controller {
+	use ThrottlesLogins;
+
+	/**
+	* Laravel method used by abstractions such as ThrottlesLogins to get the username/email key
+	*/
+	public function username(): string
+	{
+		return "username";
+	}
 
 	public function postLogin(Request $request)
 	{
-		$rememberMe = $request->input('remember', false);
-		if( Auth::attempt(['username' => $request->input('username'), 'password' => $request->input('password')], $rememberMe) === true )
+        $this->validate($request, [
+            'username' => 'required', 'password' => 'required',
+        ]);
+
+		if ($this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
+            return $this->sendLockoutResponse($request);
+        }
+
+		if( Auth::attempt(['username' => $request->input('username'), 
+							'password' => $request->input('password')], 
+							$request->has('remember')) === true )
 		{
-			$session = session();
+			
+			$request->session()->regenerate();
+			$this->clearLoginAttempts($request);
+			$session = $request->session();
 
 			if( $session->pull('sso_login',false) )
 			{
@@ -41,41 +64,24 @@ class AccountController extends Controller {
 											$session->pull('sso_scopes'));
 			}
 
-			if( isset($_REQUEST['bounce'] ) )
-			{
-				return redirect(url($_REQUEST['bounce']));
-			}
-			else
-			{
-				return redirect('/');
-			}
+			return redirect()->intended('/');
 		}
-		else
-		{
-			$invalidLogin = true;
-		}
-
-		if($invalidLogin)
-		{
-			return redirect()->back()
-				->withErrors(['Invalid login username or password'])
-				->withInput($request->only('username', 'remember'));
-		}
+		
+		$this->incrementLoginAttempts($request);
+	
+		return redirect()->back()
+			->withErrors(['Invalid login username or password'])
+			->withInput($request->only('username', 'remember'));
 	}
 
-	public function getLogin()
+	public function getLogin(Request $request)
 	{
 		if( Auth::check() )
 		{
 			return redirect('/');
 		}
-		
-		$invalidLogin = false;
-		return view('account.login', [ 
-										'bounce' => isset($_REQUEST['bounce']) ? $_REQUEST['bounce'] : '',
-										 'username' => isset($_POST['username']) ? $_POST['username'] : '',
-										 'invalidLogin' => $invalidLogin
-										]);
+
+		return view('account.login', $request->only('username', 'remember'));
 	}
 
 	
