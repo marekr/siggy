@@ -326,10 +326,13 @@ class AccountController extends Controller {
 				// retrieve the CSRF state parameter
 				$state = isset($_GET['state']) ? $_GET['state'] : null;
 
+				$token = null;
+				$result = null;
 				// This was a callback request from reddit, get the token
 				try
 				{
 					$token = $eveService->requestAccessToken($_GET['code'], $state);
+					$result = json_decode($eveService->request('https://login.eveonline.com/oauth/verify'), true);
 				}
 				catch(\OAuth\Common\Http\Exception\TokenResponseException $e)
 				{
@@ -337,7 +340,6 @@ class AccountController extends Controller {
 						->withErrors(['Error getting OAuth token from EVE, please try again.']);
 				}
 
-				$result = json_decode($eveService->request('https://login.eveonline.com/oauth/verify'), true);
 
 				//force us to get some info about the character in the table
 				$charData = Character::find($result['CharacterID']);

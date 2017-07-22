@@ -1,8 +1,10 @@
 # siggy Changelog
 
-## 4.x.x - 2017-07-17
+## 4.1.2 - 2017-07-22
 ## Changes
 - Add user statistics to prometheus metrics
+- Fix up some middleware mapping to routes
+- Try and catch an oauth exception better
 
 ## 4.1.1 - 2017-07-17
 ## Fixes
