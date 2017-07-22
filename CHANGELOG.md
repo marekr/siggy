@@ -1,5 +1,13 @@
 # siggy Changelog
 
+## 4.1.3 - 2017-07-22
+## Changes
+- Add login attempt throttling
+
+## Fixes
+- Try and fix the remember function
+- Fix case where CSRF tokens will expire awkwardly while using siggy
+
 ## 4.1.2 - 2017-07-22
 ## Changes
 - Add user statistics to prometheus metrics
