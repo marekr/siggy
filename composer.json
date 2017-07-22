@@ -17,7 +17,8 @@
 		"fideloper/proxy": "^3.3",
 		"doctrine/dbal": "^2.5",
 		"dingo/api": "1.0.x@dev",
-		"laravel/passport": "^3.0"
+		"laravel/passport": "^3.0",
+		"cweagans/composer-patches": "~1.0"
 	},
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -59,5 +60,8 @@
 		"preferred-install": "dist",
 		"sort-packages": true,
 		"optimize-autoloader": true
+	},
+	"extra": {
+		"patches-file": "composer.patches.json"
 	}
 }

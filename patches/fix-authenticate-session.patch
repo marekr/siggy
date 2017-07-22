@@ -1,0 +1,103 @@
+From 6ca154f2b6713da598082cdaf7a1a042fc3e648a Mon Sep 17 00:00:00 2001
+From: Mohamed Said <themohamedsaid@gmail.com>
+Date: Fri, 30 Jun 2017 18:08:28 +0200
+Subject: [PATCH]           attempt to fix the AuthenticateSession middleware
+ issue with rememberMe
+
+---
+ src/Illuminate/Auth/Recaller.php                   | 22 ++++++++++++++++------
+ src/Illuminate/Auth/SessionGuard.php               |  2 +-
+ .../Session/Middleware/AuthenticateSession.php     |  8 ++++++--
+ 3 files changed, 23 insertions(+), 9 deletions(-)
+
+diff --git a/src/Illuminate/Auth/Recaller.php b/src/Illuminate/Auth/Recaller.php
+index 6d1253d1582..4545a3bcf25 100644
+--- a/src/Illuminate/Auth/Recaller.php
++++ b/src/Illuminate/Auth/Recaller.php
+@@ -31,7 +31,7 @@ public function __construct($recaller)
+      */
+     public function id()
+     {
+-        return explode('|', $this->recaller, 2)[0];
++        return explode('|', $this->recaller, 3)[0];
+     }
+ 
+     /**
+@@ -41,7 +41,17 @@ public function id()
+      */
+     public function token()
+     {
+-        return explode('|', $this->recaller, 2)[1];
++        return explode('|', $this->recaller, 3)[1];
++    }
++
++    /**
++     * Get the password from the recaller.
++     *
++     * @return string
++     */
++    public function hash()
++    {
++        return explode('|', $this->recaller, 3)[2];
+     }
+ 
+     /**
+@@ -51,7 +61,7 @@ public function token()
+      */
+     public function valid()
+     {
+-        return $this->properString() && $this->hasBothSegments();
++        return $this->properString() && $this->hasAllSegments();
+     }
+ 
+     /**
+@@ -65,14 +75,14 @@ protected function properString()
+     }
+ 
+     /**
+-     * Determine if the recaller has both segments.
++     * Determine if the recaller has all segments.
+      *
+      * @return bool
+      */
+-    protected function hasBothSegments()
++    protected function hasAllSegments()
+     {
+         $segments = explode('|', $this->recaller);
+ 
+-        return count($segments) == 2 && trim($segments[0]) !== '' && trim($segments[1]) !== '';
++        return count($segments) == 3 && trim($segments[0]) !== '' && trim($segments[1]) !== '';
+     }
+ }
+diff --git a/src/Illuminate/Auth/SessionGuard.php b/src/Illuminate/Auth/SessionGuard.php
+index 21c5c32dab7..c538434e8f3 100644
+--- a/src/Illuminate/Auth/SessionGuard.php
++++ b/src/Illuminate/Auth/SessionGuard.php
+@@ -461,7 +461,7 @@ protected function ensureRememberTokenIsSet(AuthenticatableContract $user)
+     protected function queueRecallerCookie(AuthenticatableContract $user)
+     {
+         $this->getCookieJar()->queue($this->createRecaller(
+-            $user->getAuthIdentifier().'|'.$user->getRememberToken()
++            $user->getAuthIdentifier().'|'.$user->getRememberToken().'|'.$user->getAuthPassword()
+         ));
+     }
+ 
+diff --git a/src/Illuminate/Session/Middleware/AuthenticateSession.php b/src/Illuminate/Session/Middleware/AuthenticateSession.php
+index d93c38cffb0..bdc4eb426f9 100644
+--- a/src/Illuminate/Session/Middleware/AuthenticateSession.php
++++ b/src/Illuminate/Session/Middleware/AuthenticateSession.php
+@@ -39,8 +39,12 @@ public function handle($request, Closure $next)
+             return $next($request);
+         }
+ 
+-        if (! $request->session()->has('password_hash') && $this->auth->viaRemember()) {
+-            $this->logout($request);
++        if ($this->auth->viaRemember()) {
++            $passwordHash = explode('|', $request->cookies->get($this->auth->getRecallerName()))[2];
++
++            if ($passwordHash != $request->user()->getAuthPassword()) {
++                $this->logout($request);
++            }
+         }
+ 
+         if (! $request->session()->has('password_hash')) {
