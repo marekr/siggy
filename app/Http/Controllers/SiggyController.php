@@ -33,8 +33,11 @@ class SiggyController extends BaseController {
 
 	public $chainmap = null;
 	
-	public function index($systemName = null)
+	public function index(Request $request, $systemName = null)
 	{
+		// regenerate the session so we have a csrf token that wont expire immediately
+		$request->session()->regenerate();
+
 		// set default
 		$sysData = new stdClass();
 		$sysData->id = 30000142;
