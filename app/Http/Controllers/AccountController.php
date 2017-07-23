@@ -406,7 +406,7 @@ class AccountController extends Controller {
 					$user = User::findUserByCharacterOwnerHash( $result['CharacterOwnerHash'] );
 					if( $user != null )
 					{
-						$status = Auth::login($user);
+						$status = Auth::login($user, true);	//login and remember
 
 						$user->updateSSOCharacter($result['CharacterID'],
 														$token->getAccessToken(),

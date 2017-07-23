@@ -1,8 +1,8 @@
-From 6ca154f2b6713da598082cdaf7a1a042fc3e648a Mon Sep 17 00:00:00 2001
+From 77df6c5a1bdd78b3781ac750fdf115a5f7fac943 Mon Sep 17 00:00:00 2001
 From: Mohamed Said <themohamedsaid@gmail.com>
 Date: Fri, 30 Jun 2017 18:08:28 +0200
-Subject: [PATCH]           attempt to fix the AuthenticateSession middleware
- issue with rememberMe
+Subject: [PATCH] attempt to fix the AuthenticateSession middleware issue with
+ rememberMe
 
 ---
  src/Illuminate/Auth/Recaller.php                   | 22 ++++++++++++++++------
@@ -11,10 +11,10 @@ Subject: [PATCH]           attempt to fix the AuthenticateSession middleware
  3 files changed, 23 insertions(+), 9 deletions(-)
 
 diff --git a/src/Illuminate/Auth/Recaller.php b/src/Illuminate/Auth/Recaller.php
-index 6d1253d1582..4545a3bcf25 100644
+index 6d1253d..4545a3b 100644
 --- a/src/Illuminate/Auth/Recaller.php
 +++ b/src/Illuminate/Auth/Recaller.php
-@@ -31,7 +31,7 @@ public function __construct($recaller)
+@@ -31,7 +31,7 @@ class Recaller
       */
      public function id()
      {
@@ -23,7 +23,7 @@ index 6d1253d1582..4545a3bcf25 100644
      }
  
      /**
-@@ -41,7 +41,17 @@ public function id()
+@@ -41,7 +41,17 @@ class Recaller
       */
      public function token()
      {
@@ -42,7 +42,7 @@ index 6d1253d1582..4545a3bcf25 100644
      }
  
      /**
-@@ -51,7 +61,7 @@ public function token()
+@@ -51,7 +61,7 @@ class Recaller
       */
      public function valid()
      {
@@ -51,7 +51,7 @@ index 6d1253d1582..4545a3bcf25 100644
      }
  
      /**
-@@ -65,14 +75,14 @@ protected function properString()
+@@ -65,14 +75,14 @@ class Recaller
      }
  
      /**
@@ -70,10 +70,10 @@ index 6d1253d1582..4545a3bcf25 100644
      }
  }
 diff --git a/src/Illuminate/Auth/SessionGuard.php b/src/Illuminate/Auth/SessionGuard.php
-index 21c5c32dab7..c538434e8f3 100644
+index 39d7166..3cd52cf 100644
 --- a/src/Illuminate/Auth/SessionGuard.php
 +++ b/src/Illuminate/Auth/SessionGuard.php
-@@ -461,7 +461,7 @@ protected function ensureRememberTokenIsSet(AuthenticatableContract $user)
+@@ -461,7 +461,7 @@ class SessionGuard implements StatefulGuard, SupportsBasicAuth
      protected function queueRecallerCookie(AuthenticatableContract $user)
      {
          $this->getCookieJar()->queue($this->createRecaller(
@@ -83,10 +83,10 @@ index 21c5c32dab7..c538434e8f3 100644
      }
  
 diff --git a/src/Illuminate/Session/Middleware/AuthenticateSession.php b/src/Illuminate/Session/Middleware/AuthenticateSession.php
-index d93c38cffb0..bdc4eb426f9 100644
+index d93c38c..bdc4eb4 100644
 --- a/src/Illuminate/Session/Middleware/AuthenticateSession.php
 +++ b/src/Illuminate/Session/Middleware/AuthenticateSession.php
-@@ -39,8 +39,12 @@ public function handle($request, Closure $next)
+@@ -39,8 +39,12 @@ class AuthenticateSession
              return $next($request);
          }
  
@@ -101,3 +101,6 @@ index d93c38cffb0..bdc4eb426f9 100644
          }
  
          if (! $request->session()->has('password_hash')) {
+-- 
+2.6.1.windows.1
+
