@@ -11,7 +11,7 @@ Subject: [PATCH] attempt to fix the AuthenticateSession middleware issue with
  3 files changed, 23 insertions(+), 9 deletions(-)
 
 diff --git a/src/Illuminate/Auth/Recaller.php b/src/Illuminate/Auth/Recaller.php
-index 6d1253d..4545a3b 100644
+index 6d1253d15..4545a3bcf 100644
 --- a/src/Illuminate/Auth/Recaller.php
 +++ b/src/Illuminate/Auth/Recaller.php
 @@ -31,7 +31,7 @@ class Recaller
@@ -70,7 +70,7 @@ index 6d1253d..4545a3b 100644
      }
  }
 diff --git a/src/Illuminate/Auth/SessionGuard.php b/src/Illuminate/Auth/SessionGuard.php
-index 39d7166..3cd52cf 100644
+index 39d71669f..3cd52cfb6 100644
 --- a/src/Illuminate/Auth/SessionGuard.php
 +++ b/src/Illuminate/Auth/SessionGuard.php
 @@ -461,7 +461,7 @@ class SessionGuard implements StatefulGuard, SupportsBasicAuth
@@ -83,7 +83,7 @@ index 39d7166..3cd52cf 100644
      }
  
 diff --git a/src/Illuminate/Session/Middleware/AuthenticateSession.php b/src/Illuminate/Session/Middleware/AuthenticateSession.php
-index d93c38c..bdc4eb4 100644
+index d93c38cff..bdc4eb426 100644
 --- a/src/Illuminate/Session/Middleware/AuthenticateSession.php
 +++ b/src/Illuminate/Session/Middleware/AuthenticateSession.php
 @@ -39,8 +39,12 @@ class AuthenticateSession
@@ -102,5 +102,5 @@ index d93c38c..bdc4eb4 100644
  
          if (! $request->session()->has('password_hash')) {
 -- 
-2.6.1.windows.1
+2.13.3.windows.1
 
