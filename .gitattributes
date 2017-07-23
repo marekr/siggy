@@ -1,5 +1,5 @@
 * text=auto
-*.patch text=false
+*.patch -text
 *.css linguist-vendored
 *.scss linguist-vendored
 *.js linguist-vendored
