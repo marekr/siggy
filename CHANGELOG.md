@@ -1,5 +1,9 @@
 # siggy Changelog
 
+## 4.1.4 - 2017-07-23
+## Fixes
+- Catch case where session data for eve sso was being stored in the wrong place causing errors when authenticating eve sso responses half the time
+
 ## 4.1.3 - 2017-07-22
 ## Changes
 - Add login attempt throttling

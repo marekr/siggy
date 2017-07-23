@@ -12,7 +12,7 @@ use Illuminate\Foundation\Auth\ThrottlesLogins;
 
 
 use OAuth\OAuth2\Service\Eve;
-use OAuth\Common\Storage\Session as OSession;
+use Siggy\OAuth2\Storage\LaravelSession as OLaravelSession;
 use OAuth\Common\Consumer\Credentials;
 use OAuth\ServiceFactory;
 use Carbon\Carbon;
@@ -277,8 +277,8 @@ class AccountController extends Controller {
 	
 	public function sso($id, Request $request)
 	{
-		$session = session();
-
+		$session = $request->session();
+		
 		$sso_type = $id;
 
 		if( $sso_type == 'eve' )
@@ -287,7 +287,7 @@ class AccountController extends Controller {
 			/** @var $serviceFactory \OAuth\ServiceFactory An OAuth service factory. */
 			$serviceFactory = new ServiceFactory();
 			// Session storage
-			$storage = new OSession();
+			$storage = new OLaravelSession($session);
 
 			$serviceFactory->registerService('Eve', \Siggy\OAuth2\Service\Eve::class);
 
