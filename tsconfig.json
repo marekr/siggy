@@ -15,7 +15,7 @@
     "types": [
       "webpack-env"
     ],
-    "rootDirs": [ "src" ],
+    "rootDirs": [ "frontend" ],
     "allowJs": true
   },
   "exclude": [
