@@ -15,7 +15,8 @@
     <script type='text/javascript' src='{{url('js/thirdparty.compiled.js?13')}}'></script>
 
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="{{asset('favicon.ico')}}">
+	@include('layouts._iconglue')
+
 </head>
 <body data-spy="scroll">
     <div class="navbar navbar-inverse navbar-fixed-top">

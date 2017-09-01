@@ -10,8 +10,8 @@
 		<link type="text/css" href="{{ url('theme.php?id='.$settings->theme_id)}}" id="theme-css" rel="stylesheet" media="screen" />
 		@endif
 		<link href="{{asset('font-awesome-4.2.0/css/font-awesome.min.css')}}" rel="stylesheet">
-		<link rel="icon" href="{{asset('favicon.ico')}}">
 
+		@include('layouts._iconglue')
 		@include('layouts._javascript')
 		<meta name="csrf-token" content="{{ csrf_token() }}">
 	</head>

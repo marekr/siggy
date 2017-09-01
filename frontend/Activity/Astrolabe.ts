@@ -7,6 +7,7 @@ import $ from 'jquery';
 import * as Handlebars from '../vendor/handlebars';
 import Activity from './Activity';
 import { StaticData } from '../StaticData';
+import Helpers from '../Helpers';
 
 export class Astrolabe extends Activity {
 
@@ -88,7 +89,7 @@ export class Astrolabe extends Activity {
 				var html = $this.waypointHTML({
 												name: datums[0].name,
 												id: datums[0].id,
-												guid: guid(),
+												guid: Helpers.guid(),
 												sec_filter: secFilter,
 												use_wormholes: useWormholes
 											});

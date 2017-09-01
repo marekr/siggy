@@ -21,8 +21,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="{{asset('favicon.ico')}}">
+	@include('layouts._iconglue')
 
 	<script type="text/javascript">
 	$(document).ready(function() {

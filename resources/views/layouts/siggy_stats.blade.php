@@ -14,6 +14,8 @@
 		<link href="{{asset("css/frontend.css?".SIGGY_VERSION)}}" rel="stylesheet">
 		<link rel="shortcut icon" href="{{asset('favicon.ico')}}">
 
+		@include('layouts._iconglue')
+
 		@include('layouts._javascript')
 		<meta name="csrf-token" content="{{ csrf_token() }}">
 		<style text='text/css'>
