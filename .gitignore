@@ -3,9 +3,11 @@
 /public/storage
 /storage/*.key
 /vendor
+/node_modules
 /.idea
 /.vagrant
 *.compiled.js
 *.compiled.js.map
 /public/*.htaccess
 .env
+/build

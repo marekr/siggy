@@ -15,7 +15,7 @@
  * Might be useful, when you want to pass some other data to your handler
  */
 
-(function(jQuery) {
+(function (jQuery) {
 
   jQuery.hotkeys = {
     version: "0.8",
@@ -190,4 +190,4 @@
     };
   });
 
-})(this.jQuery);
+})(jQuery);

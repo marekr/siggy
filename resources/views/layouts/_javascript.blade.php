@@ -1,6 +1,6 @@
 @if( App::environment('local') )
-@siggy_asset_js('thirdparty.js', time(), true)
-@siggy_asset_js('siggy.js', time(), true)
+<script src="http://dev.siggy.borkedlabs.com:8083/vendor.js" type="text/javascript" ></script>
+<script src="http://dev.siggy.borkedlabs.com:8083/siggy.js" type="text/javascript" ></script>
 @else
 @siggy_asset_js('thirdparty.js', SIGGY_VERSION)
 @siggy_asset_js('siggy.js', SIGGY_VERSION)

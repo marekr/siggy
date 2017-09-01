@@ -1,0 +1,58 @@
+{
+  "name": "siggy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "innodb_large_prefix=1\r innodb_file_format=barracuda",
+  "main": "siggy.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-vendor": "webpack --config webpack.config.vendor.js",
+    "build-vendor-prod": "cross-env NODE_ENV=production npm run build-vendor",
+    "build": "webpack --config webpack.config.js",
+    "serve": "webpack-dev-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/mroszko/siggy.git"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "homepage": "https://bitbucket.org/mroszko/siggy#readme",
+  "dependencies": {
+    "chart.js": "^2.6.0",
+    "corejs-typeahead": "^1.1.1",
+    "handlebars": "^4.0.5",
+    "handlebars-form-helpers": "^0.1.3",
+    "install": "^0.10.1",
+    "jquery": "^1.12.4",
+    "json-loader": "^0.5.7",
+    "locutus": "^2.0.9",
+    "moment": "^2.18.1",
+    "moment-timezone": "^0.5.13",
+    "npm": "^5.3.0",
+    "qtip2": "^3.0.3",
+    "typeahead.js": "^0.11.1",
+    "validate.js": "^0.11.1"
+  },
+  "devDependencies": {
+    "@types/locutus": "0.0.5",
+    "@types/webpack-env": "^1.13.0",
+    "awesome-typescript-loader": "^3.2.3",
+    "cross-env": "^5.0.5",
+    "expose-loader": "^0.7.3",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "imports-loader": "^0.7.1",
+    "node-noop": "^1.0.0",
+    "script-loader": "^0.7.0",
+    "typescript": "^2.4.2",
+    "uglifyjs-webpack-plugin": "^1.0.0-beta.2",
+    "webpack": "^3.5.5",
+    "webpack-dev-server": "^2.7.1",
+    "webpack-env": "^0.8.0",
+    "webpack-merge": "^4.1.0"
+  }
+}

@@ -390,7 +390,7 @@
 	@include('siggy/handlebars/pos_table_row')
 
 		
-	<script type='text/javascript' src='{{asset('js/vendor/please-wait.js?'.time()) }}'></script>
+	<script type='text/javascript' src='{{asset('js/please-wait.js?'.time()) }}'></script>
 	
 	<script type="text/javascript">
 		var loadingMessages = [
@@ -411,7 +411,7 @@
 		});
 	</script>
 	<script type='text/javascript'>
-		$(document).ready(function() {
+		document.addEventListener("DOMContentLoaded", function(event) { 
 			if(typeof(Raven) != "undefined")
 			{
 				Raven.config('https://d5d9885188804b098cd2545ab085a47f@sentry.io/136864',{
@@ -452,8 +452,8 @@
 				}
 			};
 
-			var siggy = new siggy2.Core( options );
-			siggy.initialize();
+			var main = new Siggy.Siggy( options );
+			main.initialize();
 		} );
 	</script>
 </div>
