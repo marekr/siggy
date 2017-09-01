@@ -1,3 +1,0 @@
-[submodule "public/js"]
-	path = public/js
-	url = ssh://git@git.borkedlabs.com:1991/borkedlabs/siggy3-js.git
