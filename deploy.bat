@@ -2,11 +2,10 @@ php artisan down
 git fetch --all
 git checkout --force origin/master
 
-git submodule sync
-git submodule update --init --recursive
-
 call composer install --no-dev
 php artisan migrate
+
+call npm install
 php artisan assets:compile
 
 php artisan optimize
