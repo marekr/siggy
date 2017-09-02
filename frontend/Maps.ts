@@ -1,5 +1,5 @@
 
-import { $, jQuery } from 'jquery';
+import $ from 'jquery';
 
 export class Maps {
 
