@@ -7,6 +7,14 @@ import $ from 'jquery';
 import { StaticData } from './StaticData';
 import time from 'locutus/php/datetime/time';
 
+
+export enum NotifierType {
+	SystemMapped = 'system_mapped',
+	SystemResidentFound = 'system_resident_found',
+	SiteFound = 'site_found',
+	SiggyAnnouncement = 'siggy_announcement'
+}
+
 export default class Notifications
 {
 	private core;
@@ -54,7 +62,7 @@ export default class Notifications
 		var $this = this;
 		var type = $(ele).data('type');
 
-		if( type == 'siggy_announcement' )
+		if( type == NotifierType.SiggyAnnouncement )
 		{
 			$.ajax({
 				url: $this.core.settings.baseUrl + 'announcements/view',
@@ -129,7 +137,7 @@ export default class Notifications
 
 	public static getNotificationString(type, data)
 	{
-		if( type == 'system_mapped' )
+		if( type == NotifierType.SystemMapped )
 		{
 			if(typeof(data.number_jumps) != 'undefined' && data.number_jumps > 0)
 			{
@@ -140,16 +148,16 @@ export default class Notifications
 				return window._('<b>{0}</b> found system <b>{1}</b>').format(data.character_name, data.system_name);
 			}
 		}
-		else if( type == 'system_resident_found' )
+		else if( type == NotifierType.SystemResidentFound )
 		{
 			return window._('<b>{0}</b> found residents <b>{1}</b> in system <b>{2}</b>').format(data.discoverer_name, data.resident_name, data.system_name);
 		}
-		else if( type == 'site_found' )
+		else if( type == NotifierType.SiteFound )
 		{
 			var name = StaticData.getSiteNameByID(data.site_id);
 			return window._('<b>{0}</b> found {1} in system {2} as signature {3}').format(data.discoverer_name, window._(name), data.system_name, data.signature);
 		}
-		else if( type == 'siggy_announcement' )
+		else if( type == NotifierType.SiggyAnnouncement )
 		{
 			return window._('<b>siggy</b> <a class="notification-link" data-type="siggy_announcement" data-id="{1}">{0}</a>').format(data.announcement_title, data.announcement_id);
 		}
@@ -157,7 +165,7 @@ export default class Notifications
 
 	public static getNotifierString(type: string, data)
 	{
-		if( type == 'system_mapped' )
+		if( type == NotifierType.SystemMapped )
 		{
 			if(typeof(data.num_jumps) != 'undefined' && data.num_jumps > 0)
 			{
@@ -168,11 +176,11 @@ export default class Notifications
 				return window._('Trigger when system <b>{0}</b> mapped via jump.').format(data.system_name);
 			}
 		}
-		else if( type == 'system_resident_found' )
+		else if( type == NotifierType.SystemResidentFound )
 		{
 			return window._('Trigger when POS belonging to <b>{0}</b> is present in a newly mapped system.').format(data.resident_name);
 		}
-		else if( type == 'site_found' )
+		else if( type == NotifierType.SiteFound )
 		{
 			var name = StaticData.getSiteNameByID(data.site_id);
 			return window._('Trigger when site <b>{0}</b> is added as a signature.').format(window._(name));

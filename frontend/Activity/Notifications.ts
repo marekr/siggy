@@ -10,14 +10,8 @@ import * as Handlebars from '../vendor/handlebars';
 import Activity from './Activity';
 import { StaticData } from '../StaticData';
 import Helpers from '../Helpers';
+import { NotifierType } from '../Notifications';
 
-
-
-enum NotifierTypes {
-	SystemMapped = "system_mapped",
-	SystemResidentFound = "system_resident_found",
-	SiteFound = "site_found"
-}
 
 export class Notifications extends Activity {
 	
@@ -68,15 +62,15 @@ export class Notifications extends Activity {
 		var typeOptions = [
 			{
 				selector: '#notifier_add_system_mapped',
-				key: NotifierTypes.SystemMapped
+				key: NotifierType.SystemMapped
 			},
 			{
 				selector: '#notifier_add_system_resident_found',
-				key: NotifierTypes.SystemResidentFound
+				key: NotifierType.SystemResidentFound
 			},
 			{
 				selector: '#notifier_add_site_found',
-				key: NotifierTypes.SiteFound
+				key: NotifierType.SiteFound
 			}
 		]
 
@@ -162,15 +156,15 @@ export class Notifications extends Activity {
 		});
 	}
 
-	public getNotifierTitle(notifier: NotifierTypes)
+	public getNotifierTitle(notifier: NotifierType)
 	{
 		switch( notifier )
 		{
-			case NotifierTypes.SystemMapped:
+			case NotifierType.SystemMapped:
 				return 'System Mapped';
-			case NotifierTypes.SystemResidentFound:
+			case NotifierType.SystemResidentFound:
 				return 'Resident Found';
-			case NotifierTypes.SiteFound:
+			case NotifierType.SiteFound:
 				return 'Site found';
 		}
 	}
@@ -179,17 +173,17 @@ export class Notifications extends Activity {
 	{
 		switch( notifier )
 		{
-			case NotifierTypes.SystemMapped:
+			case NotifierType.SystemMapped:
 				return this.notifierFormSystemMapped;
-			case NotifierTypes.SystemResidentFound:
+			case NotifierType.SystemResidentFound:
 				return this.notifierFormResidentFound;
-			case NotifierTypes.SiteFound:
+			case NotifierType.SiteFound:
 				return this.notifierFormSiteFound;
 		}
 	}
 
 
-	public openNotifierForm(notifier: NotifierTypes)
+	public openNotifierForm(notifier: NotifierType)
 	{
 		$('.notifier-system-typeahead').typeahead('destroy');
 		$('#notifier-form div.form-content').empty();
@@ -215,7 +209,7 @@ export class Notifications extends Activity {
 			}
 		};
 
-		if( notifier == NotifierTypes.SiteFound )
+		if( notifier == NotifierType.SiteFound )
 		{
 			data.sites = StaticData.getFullSiteListHandleBarDropdown();
 		}
