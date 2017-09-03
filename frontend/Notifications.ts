@@ -1,6 +1,6 @@
-/*
+/**
  * @license Proprietary
- * @copyright Copyright (c) 2015 borkedLabs - All Rights Reserved
+ * @copyright Copyright (c) 2014 borkedLabs - All Rights Reserved
  */
 
 import $ from 'jquery';

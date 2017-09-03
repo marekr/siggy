@@ -1,7 +1,7 @@
-/*
-* @license Proprietary
-* @copyright Copyright (c) 2014 borkedLabs - All Rights Reserved
-*/
+/**
+ * @license Proprietary
+ * @copyright Copyright (c) 2014 borkedLabs - All Rights Reserved
+ */
 
 import $ from 'jquery';
 import * as moment from 'moment';

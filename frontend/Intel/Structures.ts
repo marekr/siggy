@@ -1,8 +1,7 @@
-/*
+/**
  * @license Proprietary
- * @copyright Copyright (c) 2017 borkedLabs - All Rights Reserved
+ * @copyright Copyright (c) 2014 borkedLabs - All Rights Reserved
  */
-
  
 import $ from 'jquery';
 import * as Handlebars from '../vendor/handlebars';

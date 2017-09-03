@@ -1,3 +1,7 @@
+/**
+ * @license Proprietary
+ * @copyright Copyright (c) 2014 borkedLabs - All Rights Reserved
+ */
 
 import * as moment from 'moment';
 import './vendor/handlebars.helpers.js';
