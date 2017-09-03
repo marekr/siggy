@@ -73,7 +73,7 @@ export default class POSes
 		this.templateTableRow = Handlebars.compile( $('#template-pos-table-row').html() );
 	}
 
-	public initialize = function()
+	public initialize()
 	{
 		var $this = this;
 		$('#system-intel-poses tbody').empty();
@@ -96,7 +96,7 @@ export default class POSes
 		});
 		}
 
-	public getPOSStatus = function( online )
+	public getPOSStatus( online )
 	{
 		online = parseInt(online);
 		if( online )
@@ -109,7 +109,7 @@ export default class POSes
 		}
 	}
 
-	public getPOSStatusClass = function( online )
+	public getPOSStatusClass( online )
 	{
 		online = parseInt(online);
 		if( online )
@@ -122,7 +122,7 @@ export default class POSes
 		}
 	}
 
-	public updatePOSList = function( data )
+	public updatePOSList( data )
 	{
 		var $this = this;
 
@@ -173,12 +173,12 @@ export default class POSes
 		$("#pos-summary").html( summary );
 	}
 
-	public addForm = function()
+	public addForm()
 	{
 		this.setupForm('add');
 	}
 
-	public saveFormCallback = function(dialog)
+	public saveFormCallback(dialog)
 	{
 		var $this = this;
 		var formData = $('#dialog-pos form').serializeObject();
@@ -228,7 +228,7 @@ export default class POSes
 			});
 	}
 
-	public setupForm = function(mode, id)
+	public setupForm(mode, id?)
 	{
 		var $this = this;
 
@@ -276,12 +276,12 @@ export default class POSes
 		dlg.show();
 	}
 
-	public editForm = function(id)
+	public editForm(id)
 	{
 		this.setupForm('edit', id);
 	}
 
-	public remove = function(id)
+	public remove(id)
 	{
 		var $this = this;
 
@@ -294,8 +294,7 @@ export default class POSes
 					{
 						$('#pos-'+id).remove();
 
-						$this.forceUpdate = true;
-						$this.core.updateNow();
+						$(document).trigger('siggy.updateRequested', true );
 					})
 					.fail(function(jqXHR)
 					{

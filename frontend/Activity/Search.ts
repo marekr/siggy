@@ -35,7 +35,7 @@ export class Search extends Activity {
 		});
 	}
 
-	public search = function()
+	public search()
 	{
 		var $this = this;
 		$.ajax({

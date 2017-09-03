@@ -95,7 +95,7 @@ export default class Structures
 		});
 	}
 
-	public dockableClass = function( online )
+	public dockableClass( online )
 	{
 		online = parseInt(online);
 		if( online )
@@ -108,7 +108,7 @@ export default class Structures
 		}
 	}
 
-	public update = function( data )
+	public update( data )
 	{
 		var $this = this;
 
@@ -145,17 +145,17 @@ export default class Structures
 		$("#structure-summary").html( summary );
 	}
 
-	public addForm = function()
+	public addForm()
 	{
 		this.setupForm('add');
 	}
 
-	public editForm = function(id)
+	public editForm(id)
 	{
 		this.setupForm('edit', id);
 	}
 
-	public saveFormCallback = function(dialog)
+	public saveFormCallback(dialog)
 	{
 		var $this = this;
 		var formData = $('#dialog-structure form').serializeObject();
@@ -203,7 +203,7 @@ export default class Structures
 			});
 	}
 
-	public setupForm = function(mode, id)
+	public setupForm(mode, id?)
 	{
 		var $this = this;
 
@@ -249,7 +249,7 @@ export default class Structures
 		dlg.show();
 	}
 
-	public remove = function(id)
+	public remove(id: number)
 	{
 		var $this = this;
 
@@ -262,8 +262,7 @@ export default class Structures
 					{
 						$('#structure-'+id).remove();
 
-						$this.forceUpdate = true;
-						$this.core.updateNow();
+						$(document).trigger('siggy.updateRequested', true );
 					})
 					.fail(function(jqXHR)
 					{

@@ -16,8 +16,8 @@
 					{{ sigTypeToText type }}
 				</p>
 			</td>
-			<td class='desc'>
-
+			<td class='description'>
+				
 				{{ siteIDToText sysClass type siteID }}
 				{{#if showWormhole}}
 					{{ whHashToDestination chainmap_wormhole }}

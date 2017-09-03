@@ -155,7 +155,7 @@ export default class Notifications
 		}
 	}
 
-	public static getNotifierString = function(type, data)
+	public static getNotifierString(type: string, data)
 	{
 		if( type == 'system_mapped' )
 		{

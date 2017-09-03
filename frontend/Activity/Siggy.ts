@@ -491,7 +491,7 @@ export class Siggy extends Activity {
 		}, 10000, this);
 	}
 
-	public updateChainMaps = function(data)
+	public updateChainMaps(data)
 	{
 		var list = $('#chainmap-dropdown');
 		var $this = this;
@@ -807,7 +807,7 @@ export class Siggy extends Activity {
 	}
 
 
-	public initializeTabs = function()
+	public initializeTabs()
 	{
 		var $this = this;
 

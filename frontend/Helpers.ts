@@ -326,7 +326,7 @@ export default class Helpers {
 		return $('<textarea />').html(str).text();
 	}
 
-	public static keyExists(obj: object, key: string): boolean {
+	public static keyExists(obj: object, key: string | number): boolean {
 		return key in obj;
 	}
 	

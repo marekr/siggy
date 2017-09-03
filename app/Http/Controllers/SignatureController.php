@@ -46,7 +46,7 @@ class SignatureController extends BaseController {
 			$insert = [
 				'systemID' => intval($sigData['systemID']),
 				'sig' => strtoupper($sigData['sig']),
-				'description' => htmlspecialchars($sigData['desc']),
+				'description' => htmlspecialchars($sigData['description']),
 				'created_at' => Carbon::now()->toDateTimeString(),
 				'siteID' => intval($sigData['siteID']),
 				'type' => $sigData['type'],
@@ -197,9 +197,9 @@ class SignatureController extends BaseController {
 		if( !empty($sigData) && isset($sigData['id']) )
 		{
 			$update['sig'] = strtoupper($sigData['sig']);
-			if(isset($sigData['desc']))
+			if(isset($sigData['description']))
 			{
-				$update['description'] = htmlspecialchars($sigData['desc']);
+				$update['description'] = htmlspecialchars($sigData['description']);
 			}
 			$update['updated_at'] = Carbon::now()->toDateTimeString();
 			$update['siteID'] = isset($sigData['siteID']) ? intval($sigData['siteID']) : 0;

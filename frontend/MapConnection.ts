@@ -63,7 +63,7 @@ export default class MapConnection {
 		this.selected = false;
 	}
 
-	public refresh = function()
+	public refresh()
 	{
 		if( !this.selected )
 		{
@@ -81,7 +81,7 @@ export default class MapConnection {
 		}
 	}
 
-	public getDefaultPaintStyle = function()
+	public getDefaultPaintStyle()
 	{
 		if( this.settings.type == 'wormhole' )
 		{
@@ -125,7 +125,7 @@ export default class MapConnection {
 		}
 	}
 
-	public create = function()
+	public create()
 	{
 		var $this = this;
 		var connectionOptions = { source: 'map-system-'+this.settings.from,

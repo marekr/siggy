@@ -14,13 +14,15 @@ import { Dialogs } from './Dialogs';
 import Helpers from './Helpers';
 import { StaticData } from './StaticData';
 import Timer from './Timer';
+import { Sig, SigArray, System } from './Models';
+
 
 /**
 * @constructor
 */
 export default class SigTable
 {
-	private sigData: object = {};
+	private sigData: SigArray = { };
 	private sigClocks: object = {};
 	private eolClocks: object = {};
 	private siggyMain = null;
@@ -64,7 +66,7 @@ export default class SigTable
 					sorter: false
 				},
 				1: {
-					sortInitialOrder: 'desc'
+					sortInitialOrder: 'description'
 				},
 				5: {
 					sorter: false
@@ -246,12 +248,12 @@ export default class SigTable
 		$( document ).on('keypress', '#sig-add-box select[name=site]', this.addBoxEnterHandler);
 	}
 
-	public sigAddHandler = function()
+	public sigAddHandler()
 	{
 		var $this = this;
 		var sigEle = $('#sig-add-box input[name=sig]');
 		var typeEle = $('#sig-add-box select[name=type]');
-		var descEle = $('#sig-add-box input[name=desc]');
+		var descEle = $('#sig-add-box input[name=description]');
 		var siteEle = $('#sig-add-box select[name=site]');
 
 		if (sigEle.val().length != 3)
@@ -270,7 +272,7 @@ export default class SigTable
 			systemID: $this.systemID,
 			sig: sigEle.val(),
 			type: type,
-			desc: descEle.val(),
+			description: descEle.val(),
 			siteID: siteEle.val(),
 			sigSize: 0
 		};
@@ -289,7 +291,7 @@ export default class SigTable
 				success: function (newSig) {
 							for (var i in newSig)
 							{
-								$this.addSigRow(newSig[i]);
+								$this.addSigRow(newSig[i], false);
 							}
 							$.extend($this.sigData, newSig);
 							$('#sig-table').trigger('update');
@@ -314,7 +316,7 @@ export default class SigTable
 			});
 	}
 
-	public massAddHandler = function(systemID, data, dialog = null)
+	public massAddHandler(systemID: number, data, dialog = null)
 	{
 		var $this = this;
 
@@ -335,7 +337,7 @@ export default class SigTable
 				{
 					for (var i in response.result)
 					{
-						$this.addSigRow(response.result[i]);
+						$this.addSigRow(response.result[i], false);
 					}
 
 					$.extend($this.sigData, response.result);
@@ -355,7 +357,7 @@ export default class SigTable
 			});
 	}
 
-	public addBoxEnterHandler = function(e)
+	public addBoxEnterHandler(e)
 	{
 		if(e.which == 13)
 		{
@@ -363,7 +365,7 @@ export default class SigTable
 		}
 	}
 
-	public clear = function()
+	public clear()
 	{
 		this.sigData = {};
 
@@ -381,13 +383,13 @@ export default class SigTable
 
 		$('td.moreinfo img').qtip('destroy');
 		$('td.age span').qtip('destroy');
-		$('td.desc').qtip('destroy');
+		$('td.description').qtip('destroy');
 
 		$("#sig-table tbody").empty();
 		this.editingSig = false;
 	}
 
-	public updateSigFiltering = function()
+	public updateSigFiltering()
 	{
 		for (var type in this.sigFilters)
 		{
@@ -404,7 +406,7 @@ export default class SigTable
 		}
 	}
 
-	public convertType = function(type)
+	public convertType(type: string)
 	{
 		//unknown null case, either way this should surpress it
 		if (type == 'wh')
@@ -423,7 +425,7 @@ export default class SigTable
 			return "";
 	}
 
-	public whHashToDestination = function (hash)
+	public whHashToDestination(hash: string)
 	{
 		if(typeof(this.map.wormholes[hash]) == "undefined")
 		{
@@ -445,7 +447,7 @@ export default class SigTable
 		return this.systemToDestinationString(system);
 	}
 
-	public systemToDestinationString = function (system)
+	public systemToDestinationString(system: System)
 	{
 		var displayName = "";
 		if( typeof( this.map.systems[system.id] ) != "undefined" )
@@ -454,7 +456,7 @@ export default class SigTable
 		return window._('to {0} ({1}) - {2}').format(displayName, system.region_name, Helpers.systemClassMediumText(system.class));
 	}
 
-	public convertSiteID = function (whClass, type, siteID)
+	public convertSiteID(whClass, type, siteID)
 	{
 		if( siteID == 0 )
 			return "";
@@ -464,7 +466,7 @@ export default class SigTable
 			return window._(StaticData.getSiteNameByID(siteID));
 	}
 
-	public updateSigs = function (sigData, flashSigs)
+	public updateSigs(sigData: SigArray, flashSigs: boolean)
 	{
 		for (var i in this.sigData)
 		{
@@ -474,7 +476,7 @@ export default class SigTable
 				if (!this.sigData[i].editing)
 				{
 					this.sigData[i] = sigData[i];
-					this.updateSigRow(this.sigData[i], flashSigs);
+					this.updateSigRow(this.sigData[i]);
 				}
 			}
 			else
@@ -484,7 +486,7 @@ export default class SigTable
 					continue;
 				}
 
-				this.removeSigRow(this.sigData[i]);
+				this.removeSigRow(this.sigData[i].id);
 				delete this.sigData[i];
 			}
 		}
@@ -507,13 +509,13 @@ export default class SigTable
 		this.updateSigTotal();
 	}
 
-	public updateSigTotal = function()
+	public updateSigTotal()
 	{
 		$('#number-sigs').text(	$('#sig-table tr.sig:visible').length );
 		$('#total-sigs').text(	$('#sig-table tr.sig').length );
 	}
 
-	public removeSig = function (id)
+	public removeSig(id: number)
 	{
 		var sigData = this.sigData[ id ];
 
@@ -522,10 +524,7 @@ export default class SigTable
 			return;
 		}
 
-		this.removeSigRow(
-		{
-			id: id
-		});
+		this.removeSigRow(id);
 		$('#sig-table').trigger('update');
 		this.updateSigTotal();
 
@@ -535,13 +534,13 @@ export default class SigTable
 		});
 	}
 
-	public setupSiteSelectForNewSystem = function(systemClass)
+	public setupSiteSelectForNewSystem(systemClass)
 	{
 		$('#sig-add-box select[name=type]').val(0);
 		this.updateSiteSelect('#sig-add-box select[name=site]',systemClass, 0, 0);
 	}
 
-	public updateSiteSelect = function( ele, whClass, type, siteID )
+	public updateSiteSelect( ele, whClass, type, siteID )
 	{
 		var elem = $( ele );
 		/* use common select generator method and just swap contents */
@@ -552,22 +551,22 @@ export default class SigTable
 		return newSel;
 	}
  
-	public removeSigRow = function (sigData)
+	public removeSigRow(id: number)
 	{
-		if(this.sigClocks[sigData.id] != undefined )
+		if(this.sigClocks[id] != undefined )
 		{
-			this.sigClocks[sigData.id].destroy();
-			delete this.sigClocks[sigData.id];
+			this.sigClocks[id].destroy();
+			delete this.sigClocks[id];
 		}
 
-		$('#sig-' + sigData.id + ' td.moreinfo img').qtip('destroy');
-		$('#sig-' + sigData.id + ' td.age span').qtip('destroy');
-		$('#sig-' + sigData.id + ' td.desc').qtip('destroy');
+		$('#sig-' + id + ' td.moreinfo img').qtip('destroy');
+		$('#sig-' + id + ' td.age span').qtip('destroy');
+		$('#sig-' + id + ' td.description').qtip('destroy');
 
-		$('#sig-' + sigData.id).remove();
+		$('#sig-' + id).remove();
 	}
 
-	public setupHandlebars = function()
+	public setupHandlebars()
 	{
 		var $this = this;
 
@@ -584,7 +583,7 @@ export default class SigTable
 		});
 	}
 
-	public addSigRow = function (sigData, flashSig)
+	public addSigRow(sigData: Sig, flashSig: Boolean)
 	{
 		var $this = this;
 		sigData.showSigSizeCol = this.settings.showSigSizeCol;
@@ -607,7 +606,6 @@ export default class SigTable
 		}
 
 		sigData.sysClass = this.systemClass;
-
 		var row = this.templateSigRow(sigData);
 		$("#sig-table tbody").append( row );
 
@@ -619,7 +617,7 @@ export default class SigTable
 		}
 	}
 
-	public sigRowMagic = function(sigData)
+	public sigRowMagic(sigData: Sig)
 	{
 		if( Helpers.keyExists(this.sigClocks,sigData.id) )
 			this.sigClocks[sigData.id].destroy();
@@ -659,7 +657,7 @@ export default class SigTable
 			}
 		});
 
-		$('#sig-' + sigData.id + ' td.desc').qtip('destroy');
+		$('#sig-' + sigData.id + ' td.description').qtip('destroy');
 
 		var desc_tooltip = '';
 		if( sigData.type == 'wh' )
@@ -682,7 +680,7 @@ export default class SigTable
 
 		if( desc_tooltip != '' )
 		{
-			$('#sig-' + sigData.id + ' td.desc').qtip({
+			$('#sig-' + sigData.id + ' td.description').qtip({
 				content: {
 					text: desc_tooltip
 				},
@@ -695,7 +693,7 @@ export default class SigTable
 		}
 	}
 
-	public editSigForm = function (id)
+	public editSigForm(id: number)
 	{
 		if (this.editingSig)
 		{
@@ -705,7 +703,7 @@ export default class SigTable
 		var sigData = this.sigData[id];
 
 		/*disable the tooltip or it will be annoying */
-		$('#sig-' + id + ' td.desc').qtip('disable');
+		$('#sig-' + id + ' td.description').qtip('disable');
 
 		sigData.editing = true;
 		this.editingSig = true;
@@ -762,7 +760,7 @@ export default class SigTable
 													}));
 
 
-		var descEle = $('#sig-' + id + ' td.desc');
+		var descEle = $('#sig-' + id + ' td.description');
 		descEle.empty();
 
 		var siteSelect = this.generateSiteSelect(this.systemClass, sigData.type, sigData.siteID);
@@ -788,7 +786,6 @@ export default class SigTable
 		}
 
 		descEle.append($('<br />'))
-
 		descEle.append( $('<input>').val(Helpers.unescape_html_entities(sigData.description))
 									.keypress( function(e) { if(e.which == 13){ $this.editSig(id)  } } )
 									.css('width', '100%')
@@ -798,7 +795,7 @@ export default class SigTable
 		sigInput.focus();
 	}
 
-	public generateMappedWormholeSelect = function( sigData )
+	public generateMappedWormholeSelect( sigData: Sig )
 	{
 		var cid = this.siggyMain.activities.siggy.chainMapID;
 		var selected = 'none';
@@ -809,7 +806,7 @@ export default class SigTable
 			selected = sigData.chainmap_wormholes[cid];
 		}
 
-		var siteEle = $("#sig-" + sigData.id + " td.desc select[name=site]");
+		var siteEle = $("#sig-" + sigData.id + " td.description select[name=site]");
 		var wormholeType = parseInt(siteEle.val());
 
 		var whs = { none : '--' };
@@ -899,28 +896,28 @@ export default class SigTable
 		return this.generateSelect(whs, selected).attr('name', 'chainmap-wh');;
 	}
 
-	public editTypeSelectChange = function (id)
+	public editTypeSelectChange(id: number)
 	{
 		var newType = $("#sig-" + id + " td.type select").val();
 
 		var $this = this;
-		var siteSelect = this.updateSiteSelect( '#sig-' + id + ' td.desc select', this.systemClass, newType, 0 );
+		var siteSelect = this.updateSiteSelect( '#sig-' + id + ' td.description select', this.systemClass, newType, 0 );
 		siteSelect.change( function() {
 			$this.editSiteChanged(id);
 		});
 
-		$("#sig-" + id + " td.desc select[name=chainmap-wh]").remove();
+		$("#sig-" + id + " td.description select[name=chainmap-wh]").remove();
 
 		if(this.settings.enableWhSigLink)
 		{
 			if(newType == 'wh')
 			{
-				$("#sig-" + id + " td.desc select").after(this.generateMappedWormholeSelect(this.sigData[id]).css('width','50%'));
+				$("#sig-" + id + " td.description select").after(this.generateMappedWormholeSelect(this.sigData[id]).css('width','50%'));
 			}
 		}
 	}
 
-	public editSig = function (id)
+	public editSig(id: number)
 	{
 		var $this = this;
 		var sigEle = $("#sig-" + id + " td.sig input");
@@ -932,9 +929,9 @@ export default class SigTable
 		}
 
 		var typeEle = $("#sig-" + id + " td.type select");
-		var descEle = $("#sig-" + id + " td.desc input");
-		var siteEle = $("#sig-" + id + " td.desc select");
-		var whChainmapEle = $("#sig-" + id + " td.desc select[name=chainmap-wh]");
+		var descEle = $("#sig-" + id + " td.description input");
+		var siteEle = $("#sig-" + id + " td.description select");
+		var whChainmapEle = $("#sig-" + id + " td.description select[name=chainmap-wh]");
 
 		if (sigEle.val().length != 3)
 		{
@@ -975,7 +972,7 @@ export default class SigTable
 			id: id,
 			sig: sigObj.sig,
 			type: sigObj.type,
-			desc: sigObj.description,
+			description: sigObj.description,
 			siteID: sigObj.siteID,
 			systemID: this.systemID,
 			chainmap_wormhole: cmWh,
@@ -1028,17 +1025,17 @@ export default class SigTable
 
 	}
 
-	public editSiteChanged = function (id)
+	public editSiteChanged(id: number)
 	{
 		var newType = $("#sig-" + id + " td.type select").val();
 
 		if(newType == 'wh')
 		{
-			$("#sig-" + id + " td.desc select[name=chainmap-wh]").remove();
+			$("#sig-" + id + " td.description select[name=chainmap-wh]").remove();
 
 			if(this.settings.enableWhSigLink)
 			{
-				$("#sig-" + id + " td.desc select[name=site]").after(this.generateMappedWormholeSelect(this.sigData[id]).css('width','50%'));
+				$("#sig-" + id + " td.description select[name=site]").after(this.generateMappedWormholeSelect(this.sigData[id]).css('width','50%'));
 			}
 		}
 	}
@@ -1098,7 +1095,7 @@ export default class SigTable
 		return newSelect;
 	}
 
-	public updateSigRow(sigData, flashSig)
+	public updateSigRow(sigData: Sig)
 	{
 		var $this = this;
 		var baseID = '#sig-' + sigData.id;

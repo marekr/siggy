@@ -20,13 +20,14 @@ export default class GlobalNotes {
 	private editingGlobalNotes = false;
 
 	public siggyMain = null;
+	private lastGlobalNotesUpdate: boolean = false;
 
 	constructor(options)
 	{
 		this.settings = $.extend(this.defaults, options);
 	}
 
-	public initialize = function()
+	public initialize()
 	{
 		var $this = this;
 
@@ -98,7 +99,7 @@ export default class GlobalNotes {
 		});
 	}
 
-	public blinkNotes = function()
+	public blinkNotes()
 	{
 		if( this._blinkNotesInterval != null )
 		{
@@ -112,7 +113,7 @@ export default class GlobalNotes {
 		}, 4000 );
 	}
 
-	public stopBlinkingNotes = function()
+	public stopBlinkingNotes()
 	{
 		if( this._blinkNotesInterval != null )
 		{
@@ -121,7 +122,7 @@ export default class GlobalNotes {
 		}
 	}
 
-	public update = function(data)
+	public update(data)
 	{
 		if (!this.editingGlobalNotes)
 		{

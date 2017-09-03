@@ -137,7 +137,7 @@ export default class Map {
 		});
 	}
 
-	public showMessage = function(what)
+	public showMessage(what: string)
 	{
 		if( what == 'loading' )
 		{
@@ -161,7 +161,7 @@ export default class Map {
 		}
 	}
 
-	public hideMessage = function(what)
+	public hideMessage(what: string)
 	{
 		if( what == 'loading' )
 		{
@@ -177,7 +177,7 @@ export default class Map {
 		}
 	}
 
-	public updateMessagePositions = function()
+	public updateMessagePositions()
 	{
 
 		if( this.loadingMessage.is(':visible') )
@@ -198,7 +198,7 @@ export default class Map {
 		}
 	}
 
-	public centerButtons = function()
+	public centerButtons()
 	{
 		var bottomOffset = 30;
 		if( this.buttonsContainer != null )
@@ -210,7 +210,7 @@ export default class Map {
 		}
 	}
 
-	public initialize = function()
+	public initialize()
 	{
 		var that = this;
 
@@ -409,7 +409,7 @@ export default class Map {
 	}
 
 
-	public initializeExitFinder = function()
+	public initializeExitFinder()
 	{
 		var $this = this;
 
@@ -470,7 +470,7 @@ export default class Map {
 
 	}
 
-	public populateExitData = function(data)
+	public populateExitData(data)
 	{
 		if( typeof(data.result) != "undefined" )
 		{
@@ -493,7 +493,7 @@ export default class Map {
 		}
 	}
 
-	public initializeConnectionContextMenu = function()
+	public initializeConnectionContextMenu()
 	{
 		var $this = this;
 		$(document).contextMenu({
@@ -527,7 +527,7 @@ export default class Map {
 	}
 
 
-	public initializeSystemBlobContextMenu = function()
+	public initializeSystemBlobContextMenu()
 	{
 		var $this = this;
 		$(document).contextMenu({
@@ -581,7 +581,7 @@ export default class Map {
 	}
 
 
-	public systemContextMenuHandler = function(action, system)
+	public systemContextMenuHandler(action: string, system)
 	{
 		var $this = this;
 
@@ -636,7 +636,7 @@ export default class Map {
 	}
 
 
-	public startMapEdit = function()
+	public startMapEdit()
 	{
 		this.editing = true;
 		$('#chain-map-edit-save').show();
@@ -654,7 +654,7 @@ export default class Map {
 		this.showMessage('editing');
 	}
 
-	public initializeHotkeys = function()
+	public initializeHotkeys()
 	{
 		var $this = this;
 
@@ -665,7 +665,7 @@ export default class Map {
 		this.core.hotkeyhelper.registerHotkey('Ctrl+M', 'Jump to map');
 	}
 
-	public setSelectedSystem = function( systemID )
+	public setSelectedSystem( systemID: number )
 	{
 		if( this.selectedSystemID != systemID )
 		{
@@ -677,7 +677,7 @@ export default class Map {
 		}
 	}
 
-	public mapHide = function()
+	public mapHide()
 	{
 		$('#chain-map-inner').hide();
 		$('#chain-map-ec').text('Click to show');
@@ -687,7 +687,7 @@ export default class Map {
 		$('#chain-map-tabs i.expand-collapse-indicator').removeClass('fa-caret-down').addClass('fa-caret-up');
 	}
 
-	public mapShow = function()
+	public mapShow()
 	{
 		$('#chain-map-inner').show();
 		$('#chain-map-ec').text('Click to hide');
@@ -696,7 +696,7 @@ export default class Map {
 		$('#chain-map-tabs i.expand-collapse-indicator').removeClass('fa-caret-up').addClass('fa-caret-down');
 	}
 
-	public registerEvents = function()
+	public registerEvents()
 	{
 		var $this = this;
 
@@ -789,11 +789,11 @@ export default class Map {
 		});
 	}
 
-	public processConnectionDelete = function(hashes, chainMapID)
+	public processConnectionDelete(hashes = null, chainMapID: number = null)
 	{
 		var $this = this;
 
-		if( typeof(hashes) == 'undefined' )
+		if( hashes != null )
 			hashes = this.getSelectedHashes();
 
 		hashes = $.extend({
@@ -813,7 +813,7 @@ export default class Map {
 				cyno_hashes: hashes.cynos
 			};
 
-			if( typeof(chainMapID) == 'undefined' )
+			if( chainMapID != null )
 				postData.chainmap = chainMapID;
 
 			$.ajax({
@@ -832,7 +832,7 @@ export default class Map {
 		}
 	}
 
-	public getSelectedHashes = function()
+	public getSelectedHashes()
 	{
 		var hashes = {	wormholes: [],
 						stargates: [],
@@ -872,7 +872,7 @@ export default class Map {
 	}
 
 
-	public update = function(timestamp, systems, wormholes, stargates, jumpbridges, cynos)
+	public update(timestamp, systems, wormholes, stargates, jumpbridges, cynos)
 	{
 		if( this.editing || this.massDelete )
 		{
@@ -891,7 +891,7 @@ export default class Map {
 		this.hideMessage('loading');
 	}
 
-	public updateActives = function( activesData )
+	public updateActives( activesData )
 	{
 		if(  typeof( activesData ) == 'undefined' )
 		{
@@ -969,7 +969,7 @@ export default class Map {
 		}
 	}
 
-	public draw = function()
+	public draw()
 	{
 		var that = this;
 		var $this = this;
@@ -1176,7 +1176,7 @@ export default class Map {
 		}
 	}
 
-	public openSystemEdit = function( sysID )
+	public openSystemEdit( sysID: number )
 	{
 		this.editingSystem = sysID;
 
@@ -1208,7 +1208,7 @@ export default class Map {
 		$('#system-editor select[name=activity]').val(this.systems[ sysID ].activity);
 	}
 
-	public getActivityColor = function(activity)
+	public getActivityColor(activity)
 	{
 		var color = '';
 
@@ -1237,7 +1237,7 @@ export default class Map {
 	}
 
 
-	public setupEditor = function()
+	public setupEditor()
 	{
 		var that = this;
 		$('#connection-editor-disconnect').click( function() {
@@ -1347,7 +1347,7 @@ export default class Map {
 	}
 
 
-	public displayEditorErrors = function(errors)
+	public displayEditorErrors(errors)
 	{
 		var errorsUL = $('#connection-editor ul.errors');
 		errorsUL.empty();
@@ -1360,7 +1360,7 @@ export default class Map {
 	}
 
 
-	public setupSystemEditor = function()
+	public setupSystemEditor()
 	{
 		var that = this;
 		$('#system-editor-cancel').click( function() {
@@ -1381,7 +1381,7 @@ export default class Map {
 		});
 	}
 
-	public systemEditorSave = function()
+	public systemEditorSave()
 	{
 		var that = this;
 		var label = $('#system-editor input[name=label]').val();
@@ -1401,7 +1401,7 @@ export default class Map {
 		$('#chain-map-container').unblock();
 	}
 
-	public updateJumpLog( hash )
+	public updateJumpLog( hash: string )
 	{
 			var $this = this;
 			var logList = $('#jumpLogList');

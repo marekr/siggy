@@ -79,7 +79,7 @@ export class ScannedSystems extends Activity {
 			});
 	}
 
-	public updateTable = function( systems )
+	public updateTable( systems )
 	{
 		var $this = this;
 

@@ -321,7 +321,7 @@ export class StaticData {
 	private static structureTypes: any = {};
 	private static posTypes: any = {};
 
-	public static load = function(baseUrl, core)
+	public static load(baseUrl, core)
 	{
 		var $this = this;
 

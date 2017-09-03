@@ -132,7 +132,7 @@ export default class DScan
 		}
 	}
 
-	public removeDScan = function(dscanID)
+	public removeDScan(dscanID)
 	{
 		var $this = this;
 		Dialogs.confirm({

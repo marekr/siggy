@@ -51,7 +51,7 @@ export class Thera extends Activity {
 		this.setupDialogImport();
 	}
 
-	public setupDialogImport = function()
+	public setupDialogImport()
 	{
 		var $this = this;
 		$('#dialog-import-thera button[type=submit]').click( function(e) {
@@ -72,7 +72,7 @@ export class Thera extends Activity {
 		});
 	}
 
-	public dialogImport = function()
+	public dialogImport()
 	{
 		this.core.openBox('#dialog-import-thera');
 

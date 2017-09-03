@@ -153,7 +153,7 @@ export class Notifications extends Activity {
 		});
 	}
 
-	public getNotifierTitle = function(notifier)
+	public getNotifierTitle(notifier)
 	{
 		switch( notifier )
 		{
@@ -166,7 +166,7 @@ export class Notifications extends Activity {
 		}
 	}
 
-	public getNotifierTemplate = function(notifier)
+	public getNotifierTemplate(notifier)
 	{
 		switch( notifier )
 		{
@@ -180,7 +180,7 @@ export class Notifications extends Activity {
 	}
 
 
-	public openNotifierForm = function(notifier)
+	public openNotifierForm(notifier)
 	{
 		$('.notifier-system-typeahead').typeahead('destroy');
 		$('#notifier-form div.form-content').empty();
@@ -224,7 +224,7 @@ export class Notifications extends Activity {
 		Helpers.setupSystemTypeAhead('.notifier-system-typeahead');
 	}
 
-	public update = function()
+	public update()
 	{
 		var $this = this;
 		clearTimeout(this._updateTimeout);
@@ -248,7 +248,7 @@ export class Notifications extends Activity {
 			});
 	}
 
-	public updateTable = function( data )
+	public updateTable( data )
 	{
 		var $this = this;
 		this.historyTable.empty();
@@ -266,7 +266,7 @@ export class Notifications extends Activity {
 	}
 
 
-	public updateNotifiers = function()
+	public updateNotifiers()
 	{
 		var $this = this;
 		clearTimeout(this._updateTimeoutNotifiers);
@@ -289,7 +289,7 @@ export class Notifications extends Activity {
 			});
 	}
 
-	public updateNotifiersTable = function( items )
+	public updateNotifiersTable( items )
 	{
 		var $this = this;
 		this.notifierTable.empty();
