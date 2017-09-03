@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Console\Config;
 
 use Siggy\Assets\Helpers;
-use Siggy\Assets\ClosureJarCompiler;
+use Siggy\Assets\WebpackInvoker;
 
 define('VERSION', file_get_contents('VERSION'));
 
@@ -65,6 +65,23 @@ class AssetsCompileCommand extends Command
 				@rmdir($file);
 			}
 		}
+		
+		$cache = [];
+		foreach($this->config['webpacks'] as $webpack)
+		{
+			$invoker = new WebpackInvoker($webpack['config'],'',base_path('/node_modules/.bin/webpack'));
+			$assetName = Helpers::jsAssetFilename($webpack['output_filename'],VERSION);
+			$invoker->setOutputPath($this->config['outputPath']);
+			$invoker->setOutputFileName($assetName);
+			print $invoker->compile();
+			
+			$filePath = Helpers::joinPaths($this->config['outputPath'], $assetName);
+			$cache[ $webpack['output_filename'] ] = $filePath;
+		}
+
+		file_put_contents(Helpers::joinPaths($this->config['outputPath'],'assets.json'), json_encode($cache));
+		return;
+
 
 		$cache = [];
 		$compiledOutput = '';

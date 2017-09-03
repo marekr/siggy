@@ -68,7 +68,7 @@ module.exports = {
     output: {
 		publicPath: ASSET_PATH,
 		path: path.join(__dirname, 'public','assets'),
-        filename: 'vendor.js',
+		filename: 'vendor.js',
         library: '[name]_[hash]',
 
         // Bundle absolute resource paths in the source-map,

@@ -4,6 +4,8 @@ namespace Siggy;
 
 use \URL;
 use Illuminate\Support\Facades\Blade;
+use \App;
+use \Siggy\Assets\Helpers as AssetHelpers;
 
 class BladeHelpers
 {
@@ -15,38 +17,28 @@ class BladeHelpers
 	 * @param $version
 	 * @return bool|string
 	 */
-	public static function assetJs(string $name, string $version = "", bool $unbundled = false): string
+	public static function assetJs(string $name, bool $unbundled = false): string
 	{
-		if(!$unbundled)
+		if( App::environment('production') )
 		{
-			$url = \Siggy\Assets\Helpers::jsAssetUrl($name, $version);
+			$url = AssetHelpers::jsAssetUrl($name, SIGGY_VERSION);
 			
 			return "<script type=\"text/javascript\" src=\"{$url}\"></script>\n";
 		}
 		else
 		{
-			if(self::$config == null)
+			$webpack = env('WEBPACK_ADDRESS','');
+			if( $webpack != '')
 			{
-				$path = base_path("config/assets.php");
-				self::$config = include($path);
+				$url = AssetHelpers::joinPaths($webpack,$name);
+			}
+			else
+			{
+				$url = AssetHelpers::joinPaths(AssetHelpers::baseUrl(),$name."?".SIGGY_VERSION);
 			}
 
-			if(isset(self::$config['assets'][$name]))
-			{
-				$asset = self::$config['assets'][$name];
-				$ret = "";
-				foreach($asset['files'] as $file)
-				{
-					$url = \Siggy\Assets\Helpers::joinPaths(url('/'),$asset['publicPath'],$file."?".$version);
-					
-					$ret .= "<script type=\"text/javascript\" src=\"{$url}\"></script>\n";
-				}
-				
-				return $ret;
-			}
+			return "<script type=\"text/javascript\" src=\"{$url}\"></script>\n";
 		}
-
-		return "";
 	}
 
 	/**
