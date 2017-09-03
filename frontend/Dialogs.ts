@@ -15,7 +15,7 @@ export class Dialogs {
 		this.templateBaseDialog = Handlebars.compile( $("#template-dialog-base").html() );
 	}
 	
-	public static getOptions(defaults, options)
+	public static getOptions(defaults: any, options: any)
 	{
 		var commonOptions = {
 			message: '',

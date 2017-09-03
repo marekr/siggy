@@ -40,6 +40,7 @@ import GlobalNotes from './GlobalNotes';
 import HotkeyHelper from './HotkeyHelper';
 import { StaticData } from './StaticData';
 import { Maps } from './Maps';
+import Navigo from 'navigo';
 
 
 $( function()
@@ -68,6 +69,8 @@ export class Siggy {
 	private groupCacheTime = 0;
 
 	private _updateTimeout = null;
+
+	private router: Navigo;
 
 
 	private readonly defaults = {
@@ -143,6 +146,8 @@ export class Siggy {
 	constructor(options: any)
 	{
 		this.settings = $.extend(true, {}, this.defaults, options);
+
+		this.router = new Navigo(this.settings.baseUrl, true, '#');
 
 		Eve.Initialize(this.settings.baseUrl);
 		Dialogs.init();
@@ -296,13 +301,33 @@ export class Siggy {
 		{
 			defaultActivity = this.settings.charsettings.defaultActivity;
 		}
-
-		if(window.location.hash)
-		{
-			defaultActivity = window.location.hash.slice(1);;
-		}
-
-		this.loadActivity(defaultActivity);
+		
+		var $this = this;
+		this.router
+		.on({
+				'siggy': function () {
+					$this.loadActivity('siggy'); 
+				},
+				'system/:id': function (params) {
+					$this.loadActivity('siggy', {systemID: params.id}); 
+				},
+				'thera': function () {
+					$this.loadActivity('thera'); 
+				},
+				'scannedsystems': function () {
+					$this.loadActivity('scannedsystems'); 
+				},
+				'notifications': function () {
+					$this.loadActivity('notifications'); 
+				},
+				'search': function () {
+					$this.loadActivity('search'); 
+				},
+				'*': function(){
+					$this.loadActivity(defaultActivity);
+				}
+			})
+		.resolve();
 	}
 
 	public update()
@@ -381,7 +406,7 @@ export class Siggy {
 		});
 	}
 
-	public loadActivity (activity, args: any = {})
+	public loadActivity (activity:string, args: any = {})
 	{
 		var $this = this;
 
@@ -399,7 +424,7 @@ export class Siggy {
 
 		$this.activity = activity;
 
-
+		$('title').text( $this.activities[$this.activity].title + " | siggy" );
 		$this.activities[$this.activity].start( args );
 
 
@@ -486,7 +511,7 @@ export class Siggy {
 		return time;
 	}
 
-	public displayFatalError(message)
+	public displayFatalError(message: string)
 	{
 		Dialogs.alert({ 
 				message: message, 

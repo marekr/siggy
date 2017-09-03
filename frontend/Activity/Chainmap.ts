@@ -11,7 +11,9 @@ import { Maps } from '../Maps';
 
 export class Chainmap extends Activity {
 
-	public key = 'chainmap';
+	public key:string = 'chainmap';
+	public title:string = 'Chainmap';
+
 	private _updateTimeout = null;
 	private updateRate = 10000;
 

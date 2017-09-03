@@ -11,7 +11,9 @@ import Helpers from '../Helpers';
 
 export class Astrolabe extends Activity {
 
-	public key = 'astrolabe';
+	public key:string = 'astrolabe';
+	public title:string = 'Astrolabe';
+	
 	private routeTableRow = null;
 	private waypointHTML = null;
 	private input = null;

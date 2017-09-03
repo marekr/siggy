@@ -11,9 +11,18 @@ import Activity from './Activity';
 import { StaticData } from '../StaticData';
 import Helpers from '../Helpers';
 
+
+
+enum NotifierTypes {
+	SystemMapped = "system_mapped",
+	SystemResidentFound = "system_resident_found",
+	SiteFound = "site_found"
+}
+
 export class Notifications extends Activity {
 	
-	public key = 'notifications';
+	public key: string = 'notifications';
+	public title: string = 'Notifications';
 	private _updateTimeout = null;
 	private _updateTimeoutNotifiers = null;
 	private updateRate = 60000;
@@ -59,15 +68,15 @@ export class Notifications extends Activity {
 		var typeOptions = [
 			{
 				selector: '#notifier_add_system_mapped',
-				key: 'system_mapped'
+				key: NotifierTypes.SystemMapped
 			},
 			{
 				selector: '#notifier_add_system_resident_found',
-				key: 'system_resident_found'
+				key: NotifierTypes.SystemResidentFound
 			},
 			{
 				selector: '#notifier_add_site_found',
-				key: 'site_found'
+				key: NotifierTypes.SiteFound
 			}
 		]
 
@@ -139,7 +148,7 @@ export class Notifications extends Activity {
 		});
 	}
 
-	public notifierDelete(id)
+	public notifierDelete(id: number)
 	{
 		var $this = this;
 		var data = {
@@ -153,34 +162,34 @@ export class Notifications extends Activity {
 		});
 	}
 
-	public getNotifierTitle(notifier)
+	public getNotifierTitle(notifier: NotifierTypes)
 	{
 		switch( notifier )
 		{
-			case 'system_mapped':
+			case NotifierTypes.SystemMapped:
 				return 'System Mapped';
-			case 'system_resident_found':
+			case NotifierTypes.SystemResidentFound:
 				return 'Resident Found';
-			case 'site_found':
+			case NotifierTypes.SiteFound:
 				return 'Site found';
 		}
 	}
 
-	public getNotifierTemplate(notifier)
+	public getNotifierTemplate(notifier: string)
 	{
 		switch( notifier )
 		{
-			case 'system_mapped':
+			case NotifierTypes.SystemMapped:
 				return this.notifierFormSystemMapped;
-			case 'system_resident_found':
+			case NotifierTypes.SystemResidentFound:
 				return this.notifierFormResidentFound;
-			case 'site_found':
+			case NotifierTypes.SiteFound:
 				return this.notifierFormSiteFound;
 		}
 	}
 
 
-	public openNotifierForm(notifier)
+	public openNotifierForm(notifier: NotifierTypes)
 	{
 		$('.notifier-system-typeahead').typeahead('destroy');
 		$('#notifier-form div.form-content').empty();
@@ -206,7 +215,7 @@ export class Notifications extends Activity {
 			}
 		};
 
-		if( notifier == 'site_found' )
+		if( notifier == NotifierTypes.SiteFound )
 		{
 			data.sites = StaticData.getFullSiteListHandleBarDropdown();
 		}

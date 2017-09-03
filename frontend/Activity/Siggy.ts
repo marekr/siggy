@@ -30,6 +30,9 @@ const chartColors = {
 
 export class Siggy extends Activity {
 
+	public key:string = 'siggy';
+	public title:string = 'Scan';
+
 	private forceUpdate = true;
 	private systemID = 0;
 	private systemClass = 9;
@@ -44,7 +47,6 @@ export class Siggy extends Activity {
 
 	private _updateTimeout = null;
 
-	public key = 'siggy';
 
 	private sigtable: SigTable = null;
 	private inteldscan: DScan = null;

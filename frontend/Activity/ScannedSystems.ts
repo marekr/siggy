@@ -9,7 +9,9 @@ import Activity from './Activity';
 
 export class ScannedSystems extends Activity {
 
-	public key = 'scanned-systems';
+	public key:string = 'scanned-systems';
+	public title:string = 'Scanned Systems';
+	
 	private _updateTimeout = null;
 	private sigClocks = {};
 	private eolClocks = {};

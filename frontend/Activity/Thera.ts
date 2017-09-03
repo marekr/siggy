@@ -13,7 +13,9 @@ import { Maps } from '../Maps';
 
 export class Thera extends Activity {
 
-	public key = 'thera';
+	public key:string = 'thera';
+	public title:string = 'Thera';
+
 	private _updateTimeout = null;
 	private sigClocks = {};
 	private eolClocks = {};

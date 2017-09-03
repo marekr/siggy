@@ -6,6 +6,7 @@
 export default abstract class Activity {
 
 	public abstract key: string;
+	public abstract title: string;
 	protected core;
 
 	constructor(core) {

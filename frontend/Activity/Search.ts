@@ -8,7 +8,8 @@ import * as Handlebars from '../vendor/handlebars';
 import Activity from './Activity';
 
 export class Search extends Activity {
-	public key = 'search';
+	public key:string = 'search';
+	public title:string = 'Search';
 
 	private templateResultPOS = null;
 	private templateResultLegacyPOS = null;
