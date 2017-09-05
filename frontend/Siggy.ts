@@ -433,7 +433,7 @@ export class Siggy {
 
 		$('.activity-menu-option').show();
 		$('.activity-menu-option').each( function() {
-			if( $(this).data('activity') == activity )
+			if( $(this).attr('href') == activity )
 			{
 
 				$('#current-activity').text( $(this).text() );
