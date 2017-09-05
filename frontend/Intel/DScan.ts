@@ -6,10 +6,11 @@
 import $ from 'jquery';
 import { Dialogs } from '../Dialogs';
 import Helpers from '../Helpers';
+import { Siggy as SiggyCore } from '../Siggy';
 
 export default class DScan
 {
-	public siggyMain = null;
+	private core: SiggyCore = null;
 	private defaults = {
 		baseUrl: ''
 	};
@@ -20,10 +21,10 @@ export default class DScan
 
 	public settings: any;
 
-	constructor(options) {
+	constructor(core: SiggyCore, options) {
 	
 		this.settings = $.extend(this.defaults, options);
-	
+		this.core = core;
 	}
 		
 	public initialize()
@@ -32,7 +33,7 @@ export default class DScan
 
 		$('#system-intel-add-dscan').click( function() {
 			//$this.openPOSForm();
-			$this.siggyMain.openBox('#dscan-form');
+			$this.core.openBox('#dscan-form');
 			$this.setupDScanForm('add');
 			return false;
 		} );

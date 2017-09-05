@@ -6,6 +6,7 @@
 import $ from 'jquery';
 import { StaticData } from './StaticData';
 import time from 'locutus/php/datetime/time';
+import { Siggy as SiggyCore } from './Siggy';
 
 
 export enum NotifierType {
@@ -17,12 +18,12 @@ export enum NotifierType {
 
 export default class Notifications
 {
-	private core;
+	private core: SiggyCore;
 	private counter;
 	private lastRead: number;
 	public newestTimestamp: number;
 		
-	constructor (core) {
+	constructor (core: SiggyCore) {
 		this.core = core;
 		this.counter = $('#notification-count');
 

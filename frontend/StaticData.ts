@@ -8,6 +8,7 @@ import * as Handlebars from './vendor/handlebars';
 import Bloodhound from 'corejs-typeahead';
 import Helpers from './Helpers';
 import time from 'locutus/php/datetime/time';
+import { Siggy as SiggyCore } from './Siggy';
 
 export const blackHoleEffects = {
 	1: [
@@ -321,7 +322,7 @@ export class StaticData {
 	private static structureTypes: any = {};
 	private static posTypes: any = {};
 
-	public static load(baseUrl, core)
+	public static load(baseUrl, core: SiggyCore)
 	{
 		var $this = this;
 

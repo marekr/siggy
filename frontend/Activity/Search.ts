@@ -6,6 +6,7 @@
 import $ from 'jquery';
 import * as Handlebars from '../vendor/handlebars';
 import Activity from './Activity';
+import { Siggy as SiggyCore } from '../Siggy';
 
 export class Search extends Activity {
 	public key:string = 'search';
@@ -17,7 +18,7 @@ export class Search extends Activity {
 	private input = null;
 	private results = null;
 
-	constructor (core) 
+	constructor (core: SiggyCore) 
 	{
 		super(core);
 		

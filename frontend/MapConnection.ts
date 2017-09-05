@@ -5,6 +5,7 @@
 
 import $ from 'jquery';
 import Helpers from './Helpers';
+import Map from './Map';
 
 import number_format from 'locutus/php/strings/number_format';
 var jsPlumb: any;
@@ -38,7 +39,7 @@ export default class MapConnection {
 
 	private jsPlumb = null;
 	private settings: any;
-	public map = null;
+	public map: Map = null;
 	private label: string = '';
 	private connection = null;
 	private selected:boolean = false;

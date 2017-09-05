@@ -5,6 +5,7 @@
 
 import $ from 'jquery';
 import Helpers from './Helpers';
+import { Siggy as SiggyCore } from './Siggy';
 
 export default class GlobalNotes {
 
@@ -19,11 +20,12 @@ export default class GlobalNotes {
 	private globalNotes = '';
 	private editingGlobalNotes = false;
 
-	public siggyMain = null;
+	private core: SiggyCore = null;
 	private lastGlobalNotesUpdate: boolean = false;
 
-	constructor(options)
+	constructor(core: SiggyCore, options)
 	{
+		this.core = core;
 		this.settings = $.extend(this.defaults, options);
 	}
 
@@ -135,7 +137,7 @@ export default class GlobalNotes {
 				}
 				else
 				{
-					nlu = this.siggyMain.groupCacheTime;
+					nlu = this.core.groupCacheTime;
 				}
 
 				if( !this.globalNotesEle.is(':visible') && data.group_cache_time > nlu && nlu != 0 )

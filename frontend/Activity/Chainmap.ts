@@ -8,6 +8,7 @@ import * as Handlebars from '../vendor/handlebars';
 import Activity from './Activity';
 import { Dialogs } from '../Dialogs';
 import { Maps } from '../Maps';
+import { Siggy as SiggyCore } from '../Siggy';
 
 export class Chainmap extends Activity {
 
@@ -22,7 +23,7 @@ export class Chainmap extends Activity {
 	private table = null;
 	private templateTableRow = null;
 
-	constructor(core) {
+	constructor(core: SiggyCore) {
 		super(core);
 		this.core = core;
 		var $this = this;

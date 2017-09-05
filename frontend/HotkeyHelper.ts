@@ -4,16 +4,21 @@
  */
 
 import $ from 'jquery';
+import { Siggy as SiggyCore } from './Siggy';
 
 export default class HotkeyHelper {
 	
-	public siggyMain;
+	private core: SiggyCore;
+
+	constructor(core: SiggyCore) {
+		this.core = core;
+	}
 
 	public initialize() {
 		var $this = this;
 		$('#hotkey-button').click( function()
 		{
-			$this.siggyMain.openBox("#hotkey-helper");
+			$this.core.openBox("#hotkey-helper");
 		});
 		
 		this.initializeHotkeys();
@@ -24,7 +29,7 @@ export default class HotkeyHelper {
 	{
 		var $this = this;
 		$(document).on('keydown', null, 'ctrl+/', function(){
-			$this.siggyMain.openBox("#hotkey-helper");
+			$this.core.openBox("#hotkey-helper");
 		});
 	}
 

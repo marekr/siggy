@@ -5,9 +5,10 @@
 
 import $ from 'jquery';
 import Helpers from './Helpers';
+import { Siggy as SiggyCore } from './Siggy';
 
 export default class CharacterSettings {
-	private core;
+	private core: SiggyCore;
 	public settings: any;
 	
 	private readonly defaults = {
@@ -18,7 +19,7 @@ export default class CharacterSettings {
 		language: 'en',
 		defaultActivity: 'siggy'
 	};
-	constructor(core, options)
+	constructor(core: SiggyCore, options)
 	{
 		this.core = core;
 
@@ -58,7 +59,7 @@ export default class CharacterSettings {
 			return false;
 		});
 
-		$this.performSettingsRefresh();
+		$this.performSettingsRefresh(false);
 	}
 
 	public initForm()
@@ -89,7 +90,7 @@ export default class CharacterSettings {
 				dataType: 'json'
 			})
 			.always(function(){
-				$this.performSettingsRefresh();
+				$this.performSettingsRefresh(true);
 				$.unblockUI();
 			});
 	}
@@ -110,7 +111,7 @@ export default class CharacterSettings {
 		$this.save(data);
 	}
 
-	public performSettingsRefresh()
+	public performSettingsRefresh(refresh: boolean)
 	{
 		var $this = this;
 
@@ -147,7 +148,9 @@ export default class CharacterSettings {
 		}
 
 		//force a update to refresh
-		$this.core.forceUpdate = 1;
+		if(refresh){
+			$(document).trigger('siggy.updateRequested', true );
+		}
 		//do not call updateNow as on page load this will cause quirkyness/race condition with another update call
 	}
 

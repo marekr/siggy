@@ -14,13 +14,14 @@ import Eve from './Eve';
 import MapConnection from './MapConnection';
 import { Maps } from './Maps';
 import Helpers from './Helpers';
+import { Siggy as SiggyCore } from './Siggy';
 
 import round from 'locutus/php/math/round';
 
 var jsPlumb: any;
 
 export default class Map {
-	private core = null;
+	private core: SiggyCore = null;
 	private readonly defaults = {
 		jumpTrackerEnabled: true,
 		jumpTrackerShowNames: true,
@@ -52,7 +53,7 @@ export default class Map {
 	private updated: boolean = false;
 
 	//map editing
-	private editing = false;
+	public editing = false;
 	private massDelete = false;
 
 	//wheditor
@@ -62,7 +63,7 @@ export default class Map {
 
 	public lastUpdate = 0;
 
-	private massSelect = false;
+	public massSelect = false;
 	private selectionInProgress = false;
 	private selectedSystemID = 0;
 
@@ -78,7 +79,7 @@ export default class Map {
 	private templateJumpLogEntry = null;
 	
 
-	constructor (core, options) {
+	constructor (core: SiggyCore, options) {
 		var $this = this;
 
 		this.core = core;
@@ -658,7 +659,7 @@ export default class Map {
 			$(document).scrollTop( 0 );
 		});
 
-		this.core.hotkeyhelper.registerHotkey('Ctrl+M', 'Jump to map');
+		this.core.HotkeyHelper.registerHotkey('Ctrl+M', 'Jump to map');
 	}
 
 	public setSelectedSystem( systemID: number )
@@ -1520,11 +1521,6 @@ export default class Map {
 		toSysInput.val('');
 		toSysInput.prop('disabled',false);
 
-		if( !this.core.igb )
-		{
-			fromCurrentInput.parent().hide();
-			toCurrentInput.parent().hide();
-		}
 
 		$('#connection-editor select[name=mass]').val(0);
 		$('#connection-editor input[name=eol]').filter('[value=0]').prop('checked', true);

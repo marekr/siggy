@@ -10,6 +10,7 @@ import Activity from './Activity';
 import { StaticData } from '../StaticData';
 import Timer from '../Timer';
 import { Maps } from '../Maps';
+import { Siggy as SiggyCore } from '../Siggy';
 
 export class Thera extends Activity {
 
@@ -24,7 +25,7 @@ export class Thera extends Activity {
 	private templateRow = null;
 	private table = null;
 
-	constructor(core) {
+	constructor(core: SiggyCore) {
 		super(core);
 		var $this = this;
 

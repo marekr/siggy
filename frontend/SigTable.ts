@@ -15,6 +15,7 @@ import Helpers from './Helpers';
 import { StaticData } from './StaticData';
 import Timer from './Timer';
 import { Sig, SigArray, System } from './Models';
+import { Siggy as SiggyCore } from './Siggy';
 
 
 /**
@@ -25,7 +26,7 @@ export default class SigTable
 	private sigData: SigArray = { };
 	private sigClocks: object = {};
 	private eolClocks: object = {};
-	private siggyMain = null;
+	private siggyMain: SiggyCore = null;
 	public systemID: number = 0;
 	public systemClass: number = 0;
 	private editingSig: boolean = false;
@@ -41,7 +42,7 @@ export default class SigTable
 	public settings: any = null;
 	private templateSigRow = null;
 
-	constructor( core, map, options ) {
+	constructor( core: SiggyCore, map, options ) {
 
 		this.map = map;
 		this.siggyMain = core;
@@ -167,8 +168,8 @@ export default class SigTable
 			$("#sig-add-box textarea[name=mass_sigs]").focus();
 		});
 
-		this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+Q', 'Jump to signatue table');
-		this.siggyMain.hotkeyhelper.registerHotkey('Ctrl+B', 'Focus on signature adder');
+		this.siggyMain.HotkeyHelper.registerHotkey('Ctrl+Q', 'Jump to signatue table');
+		this.siggyMain.HotkeyHelper.registerHotkey('Ctrl+B', 'Focus on signature adder');
 	}
 
 

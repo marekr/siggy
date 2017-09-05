@@ -6,6 +6,7 @@
 import $ from 'jquery';
 import * as Handlebars from '../vendor/handlebars';
 import Activity from './Activity';
+import { Siggy as SiggyCore } from '../Siggy';
 
 export class ScannedSystems extends Activity {
 
@@ -20,7 +21,7 @@ export class ScannedSystems extends Activity {
 	private templateRow = null;
 	private table = null;
 
-	constructor(core)
+	constructor(core: SiggyCore)
 	{
 		super(core);
 		var $this = this;

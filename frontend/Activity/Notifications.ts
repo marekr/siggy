@@ -11,6 +11,7 @@ import Activity from './Activity';
 import { StaticData } from '../StaticData';
 import Helpers from '../Helpers';
 import { NotifierType } from '../Notifications';
+import { Siggy as SiggyCore } from '../Siggy';
 
 
 export class Notifications extends Activity {
@@ -35,7 +36,7 @@ export class Notifications extends Activity {
 	private notifierFormResidentFound  = null;
 	private notifierFormSiteFound  = null;
 
-	constructor(core) {
+	constructor(core: SiggyCore) {
 		super(core);
 		var $this = this;
 

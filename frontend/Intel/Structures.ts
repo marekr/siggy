@@ -12,10 +12,11 @@ import StructureVulnerability from '../Dialogs/StructureVulnerability';
 import validate from 'validate.js';
 import array_unique from 'locutus/php/array/array_unique';
 import implode from 'locutus/php/strings/implode';
+import { Siggy as SiggyCore } from '../Siggy';
 
 export default class Structures
 {
-	private core;
+	private core: SiggyCore;
 	private readonly defaults = {
 		baseUrl: ''
 	};
@@ -48,7 +49,7 @@ export default class Structures
 	private templateForm = null;
 	private templateTableRow = null;
 
-	constructor(core, options) {
+	constructor(core: SiggyCore, options) {
 		this.core = core;
 
 		this.settings = $.extend(true, {}, this.defaults, options);

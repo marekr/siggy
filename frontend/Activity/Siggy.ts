@@ -17,6 +17,7 @@ import Structures from '../Intel/Structures';
 import Helpers from '../Helpers';
 import Map from '../Map';
 import { Maps } from '../Maps';
+import { Siggy as SiggyCore } from '../Siggy';
 
 const chartColors = {
 	red: 'rgb(255, 99, 132)',
@@ -59,7 +60,7 @@ export class Siggy extends Activity {
 
 	private groupCacheTime: number = 0;
 
-	constructor(core) {
+	constructor(core: SiggyCore) {
 		super(core);
 
 		var $this = this;
@@ -291,8 +292,7 @@ export class Siggy extends Activity {
 
 	public initModules()
 	{
-		this.inteldscan = new DScan(this.core.settings.intel.dscan);
-		this.inteldscan.siggyMain = this.core;
+		this.inteldscan = new DScan(this.core, this.core.settings.intel.dscan);
 		this.inteldscan.settings.baseUrl = this.core.settings.baseUrl;
 
 		this.intelposes = new POSes(this.core, {baseUrl: this.core.settings.baseUrl});
@@ -367,14 +367,14 @@ export class Siggy extends Activity {
 
 	public update()
 	{
-		if(this.core.inactive)
+		if(this.core.Inactive)
 		{
 			return;
 		}
 
 		if( !this.freezeSystem && this.core.settings.igb )
 		{
-			this.systemID = this.core.location.id;
+			this.systemID = this.core.Location.id;
 		}
 
 		if( typeof(this.systemID) == 'undefined' || this.systemID == 0 )
@@ -404,7 +404,7 @@ export class Siggy extends Activity {
 			method: 'post',
 			timeout: 10000,
 			beforeSend : function(xhr, opts){
-				if($this.core.fatalError == true)
+				if($this.core.FatalError == true)
 				{
 					xhr.abort();
 				}

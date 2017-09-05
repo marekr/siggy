@@ -8,6 +8,7 @@ import * as Handlebars from '../vendor/handlebars';
 import Activity from './Activity';
 import { StaticData } from '../StaticData';
 import Helpers from '../Helpers';
+import { Siggy as SiggyCore } from '../Siggy';
 
 export class Astrolabe extends Activity {
 
@@ -21,7 +22,7 @@ export class Astrolabe extends Activity {
 	private waypointCache: any;
 	private totalJumps: number;
 
-	constructor(core)
+	constructor(core: SiggyCore)
 	{
 		super(core);
 		var $this = this;

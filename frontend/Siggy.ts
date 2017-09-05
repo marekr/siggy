@@ -63,10 +63,10 @@ $( function()
 * @constructor
 */
 export class Siggy {
-	private inactive = false;
-	private fatalError = false;
+	public Inactive = false;
+	public FatalError = false;
 	private ajaxErrors = 0;
-	private groupCacheTime = 0;
+	public groupCacheTime = 0;
 
 	private _updateTimeout = null;
 
@@ -127,21 +127,21 @@ export class Siggy {
 		}
 	}
 
-	private settings: any;
-	private location = {
+	public settings: any;
+	public Location = {
 		id: 0,
 		name: ''
 	};
 
-	private displayStates: any;
+	public displayStates: any;
 
 	private charactersettings: CharacterSettings;
 	private globalnotes: GlobalNotes;
-	private hotkeyhelper: HotkeyHelper;
+	public HotkeyHelper: HotkeyHelper;
 	private notifications: Notifications;
 
 	private activity: string = '';
-	private activities: any;
+	public activities: any;
 
 	constructor(options: any)
 	{
@@ -173,13 +173,11 @@ export class Siggy {
 		this.charactersettings = new CharacterSettings(this, this.settings.charsettings);
 		this.charactersettings.settings.baseUrl = this.settings.baseUrl;
 
-		this.globalnotes = new GlobalNotes(this.settings.globalnotes);
-		this.globalnotes.siggyMain = this;
+		this.globalnotes = new GlobalNotes(this, this.settings.globalnotes);
 		this.globalnotes.settings.baseUrl = this.settings.baseUrl;
 
-		this.hotkeyhelper = new HotkeyHelper();
-		this.hotkeyhelper.siggyMain = this;
-		this.hotkeyhelper.initialize();
+		this.HotkeyHelper = new HotkeyHelper(this);
+		this.HotkeyHelper.initialize();
 
 		this.notifications = new Notifications(this);
 
@@ -259,9 +257,9 @@ export class Siggy {
 
 		$(document).idle({
 			onIdle: function(){
-				if(!$this.inactive)
+				if(!$this.Inactive)
 				{
-					$this.inactive = true;
+					$this.Inactive = true;
 					
 					Dialogs.alert({ 
 							message: "siggy session timed out due to one hour of inactivity", 
@@ -335,14 +333,14 @@ export class Siggy {
 
 	public update()
 	{
-		if(this.inactive)
+		if(this.Inactive)
 		{
 			return;
 		}
 
 		var $this = this;
 		var request = {
-			last_location_id: $this.location.id,
+			last_location_id: $this.Location.id,
 			group_cache_time: $this.groupCacheTime,
 			newest_notification: $this.notifications.newestTimestamp
 		};
@@ -356,7 +354,7 @@ export class Siggy {
 			method: 'post',
 			timeout: 10000,	//ten second timeout
 			beforeSend : function(xhr, opts){
-				if($this.fatalError == true)
+				if($this.FatalError == true)
 				{
 					xhr.abort();
 				}
@@ -371,12 +369,12 @@ export class Siggy {
 
 				if( parseInt( data.location.id ) != 0 )
 				{
-					var old = $this.location.id;
-					$this.location.id = data.location.id;
+					var old = $this.Location.id;
+					$this.Location.id = data.location.id;
 
-					if( old != $this.location.id )
+					if( old != $this.Location.id )
 					{
-						$(document).trigger('siggy.locationChanged', [old, $this.location.id] );
+						$(document).trigger('siggy.locationChanged', [old, $this.Location.id] );
 					}
 				}
 
@@ -453,7 +451,7 @@ export class Siggy {
 		$(ele).children('.expand-collapse-indicator').removeClass('fa-caret-up').addClass('fa-caret-down');
 	}
 
-	public setupCollaspible(baseID, displayState, onShow)
+	public setupCollaspible(baseID, displayState, onShow?)
 	{
 		var $this = this;
 		var content = $(baseID + ' div.sub-display-group-content');
@@ -535,7 +533,7 @@ export class Siggy {
 			if( that.ajaxErrors >= 5 )
 			{
 				that.displayFatalError('Communication error. ');
-				that.fatalError = true;
+				that.FatalError = true;
 			}
 		} );
 
