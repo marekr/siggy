@@ -29,9 +29,9 @@ const chartColors = {
 	grey: 'rgb(201, 203, 207)'
 };
 
-export class Siggy extends Activity {
+export class Scan extends Activity {
 
-	public key:string = 'siggy';
+	public key:string = 'scan';
 	public title:string = 'Scan';
 
 	private forceUpdate = true;

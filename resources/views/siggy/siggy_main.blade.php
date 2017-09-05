@@ -1,7 +1,7 @@
 @extends('layouts.siggy')
 
 @section('content')
-<div id="activity-siggy" class="wrapper" style="display:none">
+<div id="activity-scan" class="wrapper" style="display:none">
 	<?php
 	if(isset($_SERVER['HTTP_X_SSL_PROTOCOL']) && trim($_SERVER['HTTP_X_SSL_PROTOCOL']) == 'SSLv3' ): ?>
 	<div class="box" style="width:100%;background-color:rgb(179, 52, 52)">

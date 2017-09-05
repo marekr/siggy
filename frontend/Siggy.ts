@@ -29,7 +29,7 @@ import Eve from './Eve';
 import { Dialogs } from './Dialogs';
 import Helpers from './Helpers';
 import Notifications from './Notifications';
-import { Siggy as SiggyActivity } from './activity/Siggy';
+import { Scan as ScanActivity } from './activity/Scan';
 import { Chainmap as ChainmapActivity } from './activity/Chainmap';
 import { Thera as TheraActivity } from './activity/Thera';
 import { ScannedSystems as ScannedSystemsActivity } from './activity/ScannedSystems';
@@ -185,7 +185,7 @@ export class Siggy {
 		this.activity = '';
 		this.activities = { thera: new TheraActivity(this),
 							search: new SearchActivity(this),
-							siggy: new SiggyActivity(this),
+							scan: new ScanActivity(this),
 							scannedsystems: new ScannedSystemsActivity(this),
 							notifications: new NotificationsActivity(this),
 						//	astrolabe: new siggy2.Activity.Astrolabe(this),
@@ -289,7 +289,7 @@ export class Siggy {
 
 		this.updateNow();
 
-		var defaultActivity = 'siggy';
+		var defaultActivity = 'scan';
 		if( this.settings.defaultActivity != '' )
 		{
 			defaultActivity = this.settings.defaultActivity;
@@ -303,11 +303,11 @@ export class Siggy {
 		var $this = this;
 		this.router
 		.on({
-				'siggy': function () {
-					$this.loadActivity('siggy'); 
+				'scan': function () {
+					$this.loadActivity('scan'); 
 				},
 				'system/:id': function (params) {
-					$this.loadActivity('siggy', {systemID: params.id}); 
+					$this.loadActivity('scan', {systemID: params.id}); 
 				},
 				'thera': function () {
 					$this.loadActivity('thera'); 
