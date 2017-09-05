@@ -303,26 +303,26 @@ export class Siggy {
 		var $this = this;
 		this.router
 		.on({
-				'scan': function () {
+				'/scan': function () {
 					$this.loadActivity('scan'); 
 				},
-				'system/:id': function (params) {
+				'/system/:id': function (params) {
 					$this.loadActivity('scan', {systemID: params.id}); 
 				},
-				'thera': function () {
+				'/thera': function () {
 					$this.loadActivity('thera'); 
 				},
-				'scannedsystems': function () {
+				'/scannedsystems': function () {
 					$this.loadActivity('scannedsystems'); 
 				},
-				'notifications': function () {
+				'/notifications': function () {
 					$this.loadActivity('notifications'); 
 				},
-				'search': function () {
+				'/search': function () {
 					$this.loadActivity('search'); 
 				},
-				'chainmap': function() {
-					$this.loadActivity('chainmap', {chainMapID: $this.activities.siggy.chainMapID});
+				'/chainmap': function() {
+					$this.loadActivity('chainmap', {chainMapID: $this.activities.scan.chainMapID});
 				},
 				'*': function(){
 					$this.loadActivity(defaultActivity);

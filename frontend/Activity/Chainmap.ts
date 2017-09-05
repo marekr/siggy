@@ -56,7 +56,7 @@ export class Chainmap extends Activity {
 					var hashes = {count: 1};
 					hashes[type] = [ $($row).data('hash') ];
 
-					$this.core.activities.siggy.map.processConnectionDelete(hashes, $this.chainMapID);
+					$this.core.activities.scan.map.processConnectionDelete(hashes, $this.chainMapID);
 
 					$($row).parent().parent().remove();
 				}

@@ -25,13 +25,13 @@
 					<span id="current-activity">scan</span> <span id="main_icon" class="glyphicon glyphicon-align-justify"></span> <i class="fa fa-caret-down"></i>
 					</a>
 					<ul class="dropdown-menu siggy-main-navbar" role="menu">
-						<li><a class="activity-menu-option" href="scan" data-navigo style="display:none"><span class="glyphicon glyphicon-list"></span> scan</a></li>
+						<li><a class="activity-menu-option" href="/scan" data-navigo style="display:none"><span class="glyphicon glyphicon-list"></span> scan</a></li>
 					<!--     <li><a class="activity-menu-option" data-activity="astrolabe"><span class="glyphicon glyphicon-map-marker"></span> Astrolabe</a></li> -->
-						<li><a class="activity-menu-option" href="scannedsystems" data-navigo style="display:none"><span class="glyphicon glyphicon-list"></span> Scanned Systems</a></li>
-						<li><a class="activity-menu-option" href="thera" data-navigo><span class="glyphicon glyphicon-magnet"></span> Thera</a></li>
+						<li><a class="activity-menu-option" href="/scannedsystems" data-navigo style="display:none"><span class="glyphicon glyphicon-list"></span> Scanned Systems</a></li>
+						<li><a class="activity-menu-option" href="/thera" data-navigo><span class="glyphicon glyphicon-magnet"></span> Thera</a></li>
 					<!--  	<li><a class="activity-menu-option" data-activity="homestead"><span class="glyphicon glyphicon-globe"></span> Homestead</a></li>-->
-						<li><a class="activity-menu-option" href="notifications" data-navigo><span class="glyphicon glyphicon-bell"></span> Notifications</a></li>
-						<li><a class="activity-menu-option" href="search" data-navigo><span class="glyphicon glyphicon-search"></span> Search</a></li>
+						<li><a class="activity-menu-option" href="/notifications" data-navigo><span class="glyphicon glyphicon-bell"></span> Notifications</a></li>
+						<li><a class="activity-menu-option" href="/search" data-navigo><span class="glyphicon glyphicon-search"></span> Search</a></li>
 						<li role="separator" class="divider"></li>
 
 						<li><a id="global-notes-button"><span class="glyphicon glyphicon-folder-close"></span> Notes</a></li>

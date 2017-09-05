@@ -42,7 +42,7 @@
 	<div class="form-group">
 		{!! Form::label('default_activity', "Default activity", ['class' => 'control-label']) !!}
 		<div class="controls">
-			{!! Form::select('default_activity', ['' => 'None', 'siggy' => 'Scan', 'thera' => 'Thera', 'scannedsystems' => 'Scanned Systems'], null, ['class' => 'form-control']) !!}
+			{!! Form::select('default_activity', ['' => 'None', 'scan' => 'Scan', 'thera' => 'Thera', 'scannedsystems' => 'Scanned Systems'], null, ['class' => 'form-control']) !!}
 			<span class="help-block with-errors">{{ $errors->first('default_activity', ':message') }}</span>
 		</div>
 	</div>

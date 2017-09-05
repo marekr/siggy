@@ -596,7 +596,7 @@ export default class SigTable
 		{
 			if(sigData.type == 'wh' && typeof(sigData.chainmap_wormholes) != "undefined")
 			{
-				var cid = $this.siggyMain.activities.siggy.chainMapID;
+				var cid = $this.siggyMain.activities.scan.chainMapID;
 				if(typeof(sigData.chainmap_wormholes[cid]) != "undefined")
 				{
 					sigData.showWormhole = true;
@@ -798,7 +798,7 @@ export default class SigTable
 
 	public generateMappedWormholeSelect( sigData: Sig )
 	{
-		var cid = this.siggyMain.activities.siggy.chainMapID;
+		var cid = this.siggyMain.activities.scan.chainMapID;
 		var selected = 'none';
 		
 		if(typeof(sigData.chainmap_wormholes) != "undefined" &&
@@ -958,7 +958,7 @@ export default class SigTable
 
 			cmWh = {
 				hash: hash,
-				chainmap_id: $this.siggyMain.activities.siggy.chainMapID
+				chainmap_id: $this.siggyMain.activities.scan.chainMapID
 			}
 
 			sigObj.chainmap_wormholes = {};
@@ -1107,7 +1107,7 @@ export default class SigTable
 		sigData.showWormhole = false;
 		if(sigData.type == 'wh' && typeof(sigData.chainmap_wormholes) != "undefined")
 		{
-			var cid = $this.siggyMain.activities.siggy.chainMapID;
+			var cid = $this.siggyMain.activities.scan.chainMapID;
 			if(typeof(sigData.chainmap_wormholes[cid]) != "undefined")
 			{
 				sigData.showWormhole = true;
