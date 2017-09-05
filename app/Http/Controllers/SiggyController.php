@@ -33,7 +33,7 @@ class SiggyController extends BaseController {
 
 	public $chainmap = null;
 	
-	public function index(Request $request, $systemName = null)
+	public function index(Request $request)
 	{
 		// regenerate the session so we have a csrf token that wont expire immediately
 		$request->session()->regenerate();
@@ -55,36 +55,15 @@ class SiggyController extends BaseController {
 
 		// did we have an url requested system?
 		$requested = false;
-		if( !empty($systemName) )
+
+		if( $this->getChainmap() != null )
 		{
-			$sysData = array();
+			$homeSystems = $this->getChainmap()->get_home_systems();
 
-			$systemName = preg_replace("/[^a-zA-Z0-9]/", "", $systemName);
-
-			$system = System::findByName($systemName);
-			if( $system != null )
+			if( count($homeSystems) > 0 )
 			{
-				$sysData = $this->getSystemData($system->id);
-			}
-
-			if( !empty($sysData) )
-			{
-				$requested = true;
-			}
-		}
-		else
-		{
-			$requested = false;
-
-			if( $this->getChainmap() != null )
-			{
-				$homeSystems = $this->getChainmap()->get_home_systems();
-
-				if( count($homeSystems) > 0 )
-				{
-					$sysData->id = $homeSystems[0];
-					$sysData->name = '';
-				}
+				$sysData->id = $homeSystems[0];
+				$sysData->name = '';
 			}
 		}
 

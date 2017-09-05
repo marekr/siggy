@@ -109,12 +109,6 @@ Route::group(['middleware' => ['web','siggy.app']], function () {
 		'uses' => 'SiggyController@index', 
 		'as' => 'siggy'
 	]);
-
-	Route::get('/system/{system}', [
-		'uses' => 'SiggyController@index', 
-		'as' => 'siggy'
-	]);
-
 	Route::get('/data/systems','DataController@systems');
 	Route::get('/data/sig_types','DataController@sigTypes');
 	Route::get('/data/structures','DataController@structures');
@@ -184,6 +178,10 @@ Route::group(['middleware' => ['web','siggy.app']], function () {
 
 	Route::get('access/group_password','AccessController@getGroupPassword');
 	Route::post('access/group_password','AccessController@postGroupPassword');
+
+	Route::get('{jsroute}', [
+		'uses' => 'SiggyController@index'
+	])->where('jsroute', '.*');
 });
 
 

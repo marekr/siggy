@@ -131,10 +131,6 @@ export default class Map {
 
 			$('#chain-map-container').unblock();
 		});
-
-		$('#chain-map-table-button').click(function(e) {
-			$this.core.loadActivity('chainmap', {chainMapID: $this.core.activities.siggy.chainMapID});
-		});
 	}
 
 	public showMessage(what: string)

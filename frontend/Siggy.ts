@@ -147,7 +147,7 @@ export class Siggy {
 	{
 		this.settings = $.extend(true, {}, this.defaults, options);
 
-		this.router = new Navigo(this.settings.baseUrl, true, '#');
+		this.router = new Navigo(this.settings.baseUrl, false, '#');
 
 		Eve.Initialize(this.settings.baseUrl);
 		Dialogs.init();
@@ -322,6 +322,9 @@ export class Siggy {
 				},
 				'search': function () {
 					$this.loadActivity('search'); 
+				},
+				'chainmap': function() {
+					$this.loadActivity('chainmap', {chainMapID: $this.activities.siggy.chainMapID});
 				},
 				'*': function(){
 					$this.loadActivity(defaultActivity);

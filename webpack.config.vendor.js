@@ -47,6 +47,7 @@ module.exports = {
 			'handlebars-form-helpers',
 			'corejs-typeahead',
 			'qtip2',
+			'navigo',
 			'./frontend/legacy/jquery.jsPlumb.js',
 			'./frontend/jquery/bootstrap.dropdown.js',
 			'./frontend/jquery/bootstrap.tab.js',
