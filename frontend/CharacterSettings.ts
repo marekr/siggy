@@ -154,30 +154,6 @@ export default class CharacterSettings {
 		//do not call updateNow as on page load this will cause quirkyness/race condition with another update call
 	}
 
-	public resetZoom()
-	{
-		this.settings.zoom = 1.0;
-		$("body").css("zoom", this.settings.zoom);
-
-		this.saveAll();
-	}
-
-	public zoomOut()
-	{
-		this.settings.zoom -= 0.05;
-		$("body").css("zoom", this.settings.zoom);
-
-		this.saveAll();
-	}
-
-	public zoomIn()
-	{
-		this.settings.zoom += 0.05;
-		$("body").css("zoom", this.settings.zoom);
-
-		this.saveAll();
-	}
-
 	public changeTheme(themeID)
 	{
 		$("#theme-css").attr('href', this.settings.baseUrl + "theme.php?id=" + themeID);

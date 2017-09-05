@@ -1,5 +1,13 @@
 # siggy Changelog
 
+## 5.0.0 - 2017-09-??
+## Major Changes
+- Now 100% more leftpad dependency. Ported over frontend javascript to fancy pancy Typescript + webpack system from legacy old school javascript world
+- New router handling changes between activities (i.e. Scan vs. Thera page) which adds the pages to the browser history and provides links to the pages
+
+## Fixes
+- Fix double data fetch on load of siggy page. Wooo yay Typescript.
+
 ## 4.1.4 - 2017-07-23
 ## Fixes
 - Catch case where session data for eve sso was being stored in the wrong place causing errors when authenticating eve sso responses half the time
