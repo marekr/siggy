@@ -16,9 +16,9 @@ export class Chainmap extends Activity {
 	public title:string = 'Chainmap';
 
 	private _updateTimeout = null;
-	private updateRate = 10000;
+	private updateRate: number = 10000;
 
-	private chainMapID = 0;
+	private chainMapID: number = 0;
 	
 	private table = null;
 	private templateTableRow = null;

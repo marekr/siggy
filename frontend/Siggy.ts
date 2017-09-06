@@ -63,14 +63,14 @@ $( function()
 * @constructor
 */
 export class Siggy {
-	public Inactive = false;
-	public FatalError = false;
-	private ajaxErrors = 0;
-	public groupCacheTime = 0;
+	public Inactive: boolean = false;
+	public FatalError: boolean = false;
+	private ajaxErrors: number = 0;
+	public groupCacheTime: number = 0;
 
 	private _updateTimeout = null;
 
-	private router: Navigo;
+	private router: Navigo = null;
 
 
 	private readonly defaults = {
@@ -135,10 +135,10 @@ export class Siggy {
 
 	public displayStates: any;
 
-	private charactersettings: CharacterSettings;
-	private globalnotes: GlobalNotes;
-	public HotkeyHelper: HotkeyHelper;
-	private notifications: Notifications;
+	private charactersettings: CharacterSettings = null;
+	private globalnotes: GlobalNotes = null;
+	public HotkeyHelper: HotkeyHelper = null;
+	private notifications: Notifications = null;
 
 	private activity: string = '';
 	public activities: any;

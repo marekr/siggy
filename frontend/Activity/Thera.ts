@@ -20,7 +20,7 @@ export class Thera extends Activity {
 	private _updateTimeout = null;
 	private sigClocks = {};
 	private eolClocks = {};
-	private updateRate = 30000;
+	private updateRate: number = 30000;
 
 	private templateRow = null;
 	private table = null;

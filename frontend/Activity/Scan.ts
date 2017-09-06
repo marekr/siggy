@@ -34,17 +34,17 @@ export class Scan extends Activity {
 	public key:string = 'scan';
 	public title:string = 'Scan';
 
-	private forceUpdate = true;
-	private systemID = 0;
-	private systemClass = 9;
-	private systemName = '';
+	private forceUpdate: boolean = true;
+	private systemID: number = 0;
+	private systemClass: number = 9;
+	private systemName: string = '';
 	private systemStats: any;
 	private map: Map = null;
-	private freezeSystem = false;
-	private lastUpdate = 0;
-	private updateInProgress = false;
+	private freezeSystem: boolean = false;
+	private lastUpdate: number = 0;
+	private updateInProgress: boolean = false;
 
-	private chainMapID = 0;
+	private chainMapID: number = 0;
 
 	private _updateTimeout = null;
 
