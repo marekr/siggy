@@ -11,7 +11,6 @@
 |
 */
 
-
 Route::get('/maintenance', [
     'uses' => 'MaintenanceController@getIndex', 
     'as' => 'maintenance'
@@ -77,7 +76,7 @@ Route::post('/account/password_reset',
 		'uses' => 'AccountController@postForgotPassword',
 		'middleware' => ['csrf']
 	]
-	);
+);
 
 
 Route::get('/account/password_reset', [
@@ -178,10 +177,6 @@ Route::group(['middleware' => ['web','siggy.app']], function () {
 
 	Route::get('access/group_password','AccessController@getGroupPassword');
 	Route::post('access/group_password','AccessController@postGroupPassword');
-
-	Route::get('{jsroute}', [
-		'uses' => 'SiggyController@index'
-	])->where('jsroute', '.*');
 });
 
 
@@ -310,4 +305,13 @@ Route::group(['namespace' => 'Manage','prefix' => 'manage','middleware' => ['sig
 
 	
 	Route::post('access/set','AccessController@postSet');
+});
+
+
+Route::group(['middleware' => ['web','siggy.app']], function () {
+	
+	Route::get('{jsroute}', [
+		'uses' => 'SiggyController@index'
+	])->where('jsroute', '.*');
+
 });
