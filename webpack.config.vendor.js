@@ -35,10 +35,10 @@ module.exports = {
 				test: /jquery\/.+\.(jsx|js)$/,
 				loader: 'imports?jQuery=jquery,$=jquery,this=>window'
 			}
-        ]
-    },
-    entry: {
-        vendor: [
+		]
+	},
+	entry: {
+		vendor: [
 			'jquery',
 			'moment',
 			'moment-timezone',

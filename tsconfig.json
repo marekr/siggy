@@ -6,7 +6,8 @@
     "jsx": "react",
     "experimentalDecorators": false,
     "sourceMap": true,
-    "skipDefaultLibCheck": true,
+	"skipDefaultLibCheck": true,
+	"allowSyntheticDefaultImports": true,
     "noEmit": false,
     "lib": [
       "es2015",

@@ -138,6 +138,7 @@
 		@include('siggy.activities.notifications')
 		@include('siggy.activities.astrolabe')
 		@include('siggy.activities.chainmap')
+		@include('siggy.activities.notes')
 		@yield('content')
 
 		@yield('alt_content')

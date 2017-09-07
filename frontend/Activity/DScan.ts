@@ -8,12 +8,14 @@ import * as Handlebars from '../vendor/handlebars';
 import Activity from './Activity';
 import { Siggy as SiggyCore } from '../Siggy';
 
-export class ScannedSystems extends Activity {
+export class DScan extends Activity {
 
-	public key:string = 'scanned-systems';
-	public title:string = 'Scanned Systems';
+	public key:string = 'dscan';
+	public title:string = 'dscan';
 	
 	private _updateTimeout = null;
+	private sigClocks = {};
+	private eolClocks = {};
 	private updateRate = 60000;
 
 	private templateRow = null;
@@ -26,21 +28,17 @@ export class ScannedSystems extends Activity {
 
 		this.templateRow = Handlebars.compile( $("#template-scanned-system-table-row").html() );
 
-		this.table = $('#scanned-systems-table tbody');
-
-
 		var tableSorterHeaders = {
 			0: {
 				sortInitialOrder: 'asc'
 			}
 		};
 
-		$('#scanned-systems-table').tablesorter(
-		{
-			headers: tableSorterHeaders
-		});
-
 		$('#scanned-systems-table').trigger("sorton", [ [[0,0]] ]);
+		
+		$('#scanned-systems-table').on('click','.scanned-system-view', function(e) {
+			$this.core.loadActivity('siggy', {systemID: $(this).data('id')});
+		});
 	}
 
 	public start(args): void
@@ -57,6 +55,7 @@ export class ScannedSystems extends Activity {
 
 	public update()
 	{
+		/*
 		var $this = this;
 		$.ajax({
 				url: this.core.settings.baseUrl + 'sig/scanned_systems',
@@ -67,7 +66,6 @@ export class ScannedSystems extends Activity {
 				success: function (data)
 				{
 					$this.updateTable(data);
-					$this.core.router.updatePageLinks();
 
 					$this._updateTimeout = setTimeout(function(thisObj)
 					{
@@ -75,10 +73,12 @@ export class ScannedSystems extends Activity {
 					}, $this.updateRate, $this);
 				}
 			});
+			*/
 	}
 
 	public updateTable( systems )
 	{
+		/*
 		var $this = this;
 
 		$('#scanned-systems-table tbody').empty();
@@ -91,6 +91,6 @@ export class ScannedSystems extends Activity {
 			this.table.append(row);
 		}
 
-		$('#scanned-systems-table').trigger('update');
+		$('#scanned-systems-table').trigger('update');*/
 	}
 }

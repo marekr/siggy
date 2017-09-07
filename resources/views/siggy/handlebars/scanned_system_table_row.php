@@ -37,7 +37,7 @@
 						{{/isIGB}}
 							<a onclick="javascript:siggy2.Eve.ShowSystemInfoById({{ system_id }})">Show Info</a>
 						</li>
-						<li><a target="_blank" href="http://evemaps.dotlan.net/system/{{system.name}}">DOTLAN</a></li>
+						<li><a target="_blank" href="http://evemaps.dotlan.net/system/{{system_name}}">DOTLAN</a></li>
 					</ul>
 				</div>
 			</td>
@@ -45,7 +45,7 @@
 				{{ last_scan }}
 			</td>
 			<td class='text-center'>
-				<button data-id='{{ id }}' class='scanned-system-view btn btn-primary'>View</button>
+				<a href="/system/{{ system_name }}" data-navigo class='btn btn-primary'>View</button>
 			</td>
 		</tr>
 	</script>

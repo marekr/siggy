@@ -58,7 +58,6 @@ module.exports = {
 			}
 		]
 	},
-
 	plugins: [
 		new webpack.DllReferencePlugin({
 			context: __dirname,

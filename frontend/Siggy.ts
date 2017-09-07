@@ -34,7 +34,9 @@ import { Chainmap as ChainmapActivity } from './activity/Chainmap';
 import { Thera as TheraActivity } from './activity/Thera';
 import { ScannedSystems as ScannedSystemsActivity } from './activity/ScannedSystems';
 import { Notifications as NotificationsActivity } from './activity/Notifications';
+import { Notes as NotesActivity } from './activity/Notes';
 import { Search as SearchActivity } from './activity/Search';
+import { DScan as DScanActivity } from './activity/DScan';
 import CharacterSettings from './CharacterSettings';
 import GlobalNotes from './GlobalNotes';
 import HotkeyHelper from './HotkeyHelper';
@@ -70,8 +72,7 @@ export class Siggy {
 
 	private _updateTimeout = null;
 
-	private router: Navigo = null;
-
+	public router: Navigo = null;
 
 	private readonly defaults = {
 		baseUrl: '',
@@ -190,6 +191,8 @@ export class Siggy {
 							notifications: new NotificationsActivity(this),
 						//	astrolabe: new siggy2.Activity.Astrolabe(this),
 							chainmap: new ChainmapActivity(this),
+							notes: new NotesActivity(this),
+							dscan: new DScanActivity(this)
 						//	homestead: new siggy2.Activity.Homestead(this)
 						};
 
@@ -306,8 +309,15 @@ export class Siggy {
 				'/scan': function () {
 					$this.loadActivity('scan'); 
 				},
-				'/system/:id': function (params) {
-					$this.loadActivity('scan', {systemID: params.id}); 
+				'/system/:name': function (params) {
+					let system = StaticData.getSystemByName(params.name);
+
+
+					if(system != null) {
+						$this.loadActivity('scan', {systemID: system.id}); 
+					} else {
+						$this.loadActivity('scan'); 
+					}
 				},
 				'/thera': function () {
 					$this.loadActivity('thera'); 
@@ -320,6 +330,9 @@ export class Siggy {
 				},
 				'/search': function () {
 					$this.loadActivity('search'); 
+				},
+				'/notes': function () {
+					$this.loadActivity('notes'); 
 				},
 				'/chainmap': function() {
 					$this.loadActivity('chainmap', {chainMapID: $this.activities.scan.chainMapID});

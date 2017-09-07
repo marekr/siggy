@@ -399,6 +399,18 @@ export class StaticData {
 
 		return null;
 	}
+	
+	public static getSystemByName( name:string )
+	{
+		for( var i = 0; i < this.systems.length; i++ )
+		{
+			if( this.systems[i].name == name )
+				return this.systems[i]
+		}
+
+		return null;
+	}
+
 
 	public static getSiteNameByID( id:number )
 	{
