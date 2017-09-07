@@ -13,6 +13,19 @@ export default class Eve {
 
 	public static Initialize(baseUrl) { 
 		this.baseUrl = baseUrl;
+		
+		var $this = this;
+		$(document).on('click','.eve-set-destination', function(e) {
+			$this.SetDestination($(this).data('system-id'));
+		});
+		
+		$(document).on('click','.eve-show-system-info-by-id', function(e) {
+			$this.ShowSystemInfoById($(this).data('system-id'));
+		});
+		
+		$(document).on('click','.eve-evewho', function(e) {
+			$this.EveWho($(this).data('character-name'));
+		});
 	}
 	
 	public static SetDestination(systemId)

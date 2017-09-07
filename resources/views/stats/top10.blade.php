@@ -7,7 +7,10 @@
 		<tr>
 			<td width='10%' class='center'><?php echo $pos; ?>.</td>
 			<td class='center' width='50%'>
-				<b><a href='javascript:siggy2.Eve.EveWho("{{urlencode($person->charName)}}")'>{{$person->charName}}</a></b><br />
+				<b>
+				<a class='eve-evewho' data-character-name='{{urlencode($person->charName)}}'>{{$person->charName}}</a>
+				</b>
+				<br />
 				<img src='https://image.eveonline.com/Character/{{$person->charID}}_32.jpg' />
 			</td>
 			<td class='center' width='40%' style='padding:10px;'>

@@ -110,7 +110,7 @@
 					{{else}}
 					<li class='disabled'>
 					{{/isIGB}}
-						<a onclick="javascript:CCPEVE.setDestination({{ system.id }})">Set Destination</a>
+						<a class='eve-set-destination' data-system-id='{{ system.id }}'>Set Destination</a>
 					</li>
 						{{#isIGB}}
 						<li>

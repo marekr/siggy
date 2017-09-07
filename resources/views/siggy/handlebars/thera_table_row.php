@@ -18,14 +18,14 @@
 					</button>
 					<ul class="dropdown-menu" role="menu">
 						<li>
-							<a onclick="javascript:siggy2.Eve.SetDestination({{ system.id }})">Set Destination</a>
+							<a class='eve-set-destination' data-system-id='{{ system.id }}'>Set Destination</a>
 						</li>
 						{{#isIGB}}
 						<li>
 						{{else}}
 						<li class='disabled'>
 						{{/isIGB}}
-							<a onclick="javascript:siggy2.Eve.ShowSystemInfoById({{ system.id }})">Show Info</a>
+							<a class='eve-show-system-info-by-id' data-system-id='{{ system.id }}'>Show Info</a>
 						</li>
 						<li><a target="_blank" href="http://evemaps.dotlan.net/system/{{system.name}}">DOTLAN</a></li>
 					</ul>

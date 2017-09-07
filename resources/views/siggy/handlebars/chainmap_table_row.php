@@ -7,14 +7,14 @@
 				</button>
 				<ul class="dropdown-menu" role="menu">
 					<li>
-						<a onclick="javascript:siggy2.Eve.SetDestination({{ toSystem.id }})">Set Destination</a>
+						<a class='eve-set-destination' data-system-id='{{ toSystem.id }}'>Set Destination</a>
 					</li>
 					{{#isIGB}}
 					<li>
 					{{else}}
 					<li class='disabled'>
 					{{/isIGB}}
-						<a onclick="javascript:siggy2.Eve.ShowSystemInfoById({{ toSystem.id }})">Show Info</a>
+						<a class='eve-show-system-info-by-id' data-system-id='{{ toSystem.id }}'>Show Info</a>
 					</li>
 					<li><a target="_blank" href="http://evemaps.dotlan.net/system/{{toSystem.name}}">DOTLAN</a></li>
 				</ul>
@@ -27,14 +27,14 @@
 				</button>
 				<ul class="dropdown-menu" role="menu">
 					<li>
-						<a onclick="javascript:siggy2.Eve.SetDestination({{ fromSystem.id }})">Set Destination</a>
+						<a class='eve-set-destination' data-system-id='{{ fromSystem.id }}'>Set Destination</a>
 					</li>
 					{{#isIGB}}
 					<li>
 					{{else}}
 					<li class='disabled'>
 					{{/isIGB}}
-						<a onclick="javascript:siggy2.Eve.ShowSystemInfoById({{ fromSystem.id }})">Show Info</a>
+						<a class='eve-show-system-info-by-id' data-system-id='{{ fromSystem.id }}'>Show Info</a>
 					</li>
 					<li><a target="_blank" href="http://evemaps.dotlan.net/system/{{fromSystem.name}}">DOTLAN</a></li>
 				</ul>

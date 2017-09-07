@@ -19,7 +19,10 @@
 			<tr>
 				<td><?php echo (++$rank_offset); ?></td>
 				<td class="center">
-					<b><a href='javascript:siggy2.Eve.EveWho("{{urlencode($result->charName)}}")'>{{$result->charName}}</a></b><br />
+					<b>
+						<a class='eve-evewho' data-character-name='{{urlencode($result->charName)}}'>{{$result->charName}}</a>
+					</b>
+					<br />
 					<img src='https://image.eveonline.com/Character/{{$result->charID}}_32.jpg' />
 				</td>
 				<td>{{$result->adds}}</td>
