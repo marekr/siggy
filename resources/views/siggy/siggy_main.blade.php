@@ -388,6 +388,7 @@
 	@include('siggy/handlebars/dialog_base')
 	@include('siggy/handlebars/structure_table_row')
 	@include('siggy/handlebars/pos_table_row')
+	@include('siggy/handlebars/dscan_table_row')
 
 		
 	<script type='text/javascript' src='{{asset('js/please-wait.js?'.time()) }}'></script>

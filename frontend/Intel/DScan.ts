@@ -4,8 +4,10 @@
  */
 
 import $ from 'jquery';
+import * as Handlebars from '../vendor/handlebars';
 import { Dialogs } from '../Dialogs';
 import Helpers from '../Helpers';
+import validate from 'validate.js';
 import { Siggy as SiggyCore } from '../Siggy';
 
 export default class DScan
@@ -16,15 +18,35 @@ export default class DScan
 	};
 
 	private dscans = {};
+	private templateForm = null;
+	private templateTableRow = null;
+
 	/* temp hack */
 	public systemID = 0;
 
 	public settings: any;
 
+	private readonly formConstraints = {
+		dscan_title: {
+			presence: true
+		},
+		blob: {
+			presence: true
+		}
+	};
+
+	private readonly formDefaults = {
+		dscan_title: '',
+		blob: ''
+	};
+
 	constructor(core: SiggyCore, options) {
 	
 		this.settings = $.extend(this.defaults, options);
 		this.core = core;
+		
+		this.templateForm = Handlebars.compile( $('#template-dialog-dscan').html() );
+		this.templateTableRow = Handlebars.compile( $('#template-dscan-table-row').html() );
 	}
 		
 	public initialize()
@@ -32,57 +54,113 @@ export default class DScan
 		var $this = this;
 
 		$('#system-intel-add-dscan').click( function() {
-			//$this.openPOSForm();
-			$this.core.openBox('#dscan-form');
-			$this.setupDScanForm('add');
+			$this.addForm();
+
 			return false;
 		} );
+		
+		$('#system-intel-dscans').on('click','.button-dscan-view ', function(e) {
+			let id = $(this).data('id');
+
+			let url = $this.settings.baseUrl + 'dscan/view/'+id;
+			var win = window.open(url, '_blank');
+			win.focus();
+		});
+		
+		$('#system-intel-dscans').on('click','.button-dscan-remove', function(e) {
+			var id = $(this).data('id');
+			
+			$this.remove(id);
+		});
 	}
 
-	public setupDScanForm(mode)
+	public addForm()
+	{
+		this.setupForm('add');
+	}
+
+	public setupForm(mode, id?: string)
 	{
 		var $this = this;
 
-		var title = $("#dscan-form input[name=dscan_title]");
-		var scan = $("#dscan-form textarea[name=blob]");
+		var data = {
+			model: $this.formDefaults,
+			errors: {}
+		};
 
-		var data: any = {};
+		var dlg = Dialogs.dialog({
+								title: "DScan",
+								content: $this.templateForm(data),
+								id: "dialog-dscan",
+								buttons:{
+									submit: {
+										text: "Save",
+										style: 'primary',
+										callback: function(dialog) {
+											$this.saveFormCallback(dialog);
+										}
+									},
+									cancel: {
+										text: "Cancel",
+										style: 'danger',
+										callback: function(dialog) {
+											dialog.hide();
+										}
+									},
+								}
+							});
+				
+		$(dlg).data('form-mode', mode);
+		$(dlg).data('model-id', id);
+		
+		dlg.show();
+	}
+
+	
+	public saveFormCallback(dialog)
+	{
+		var $this = this;
+		var formData = $('#dialog-dscan form').serializeObject();
+
+		var errors = validate(formData, this.formConstraints);
+
+		var data = {
+			model: formData,
+			errors: errors
+		};
+		
+		if(Helpers.isDefined(errors))
+		{
+			dialog.replaceContent($this.templateForm(data));
+			return;
+		}
+
+		var mode = $(dialog).data('form-mode');
+
 		var action = '';
 		if( mode == 'edit' )
 		{
+			var id = $(dialog).data('model-id');
+			formData.id = id;
 			action = $this.settings.baseUrl + 'dscan/edit';
 		}
 		else
 		{
-			data = {
-						dscan_title: '',
-						blob: ''
-					};
 			action = $this.settings.baseUrl + 'dscan/add';
 		}
 
-		title.val( data.dscan_title );
-		scan.val( data.blob );
+		formData.system_id = this.systemID;
 
-		$('#dscan-form button[name=submit]').off('click');
-		$('#dscan-form button[name=submit]').click( function() {
-			var data = {
-				dscan_title: title.val(),
-				blob: scan.val(),
-				system_id: $this.systemID
-			};
-
-			if( data.dscan_title != "" && data.blob != "" )
-			{
-				$.post(action, data, function ()
-				{
-					$(document).trigger('siggy.updateRequested', true );
-					$.unblockUI();
-				});
-			}
-
-			return false;
-		} );
+		$.post(action, JSON.stringify(formData))
+			.done(function(respData) {
+				$(document).trigger('siggy.updateRequested', true );
+				dialog.hide();
+			})
+			.fail(function(jqXHR) {
+				if(jqXHR.status >= 500) {			
+					Dialogs.alertServerError("saving the dscan");
+				}
+			});
 	}
 
 	public updateDScan( data )
@@ -96,31 +174,8 @@ export default class DScan
 		{
 			for(var i in data)
 			{
-				var dscan_id = data[i].dscan_id;
-				var row = $("<tr>").attr('id', 'dscan-'+dscan_id);
-
-				row.append( $("<td>").text( data[i].dscan_title ) );
-				row.append( $("<td>").text(Helpers.displayTimeStamp(data[i].dscan_date)) );
-				row.append( $("<td>").text( data[i].dscan_added_by ) );
-
-				(function(dscan_id){
-					var view = $("<a>").addClass("btn btn-default btn-xs")
-									.text("View")
-									.attr("href",$this.settings.baseUrl + 'dscan/view/'+dscan_id)
-									.attr("target","_blank");
-
-					var remove = $("<a>").addClass("btn btn-default btn-xs")
-										.text("Remove")
-										.click( function() {
-												$this.removeDScan( dscan_id );
-										}
-					);
-					row.append(
-								$("<td>").append(view)
-										.append(remove)
-							)
-					.addClass('center-text');
-				})(dscan_id);
+				var dscan = data[i];
+				var row = this.templateTableRow(dscan);
 
 				body.append(row);
 			}
@@ -133,16 +188,25 @@ export default class DScan
 		}
 	}
 
-	public removeDScan(dscanID)
+	public remove(id: string)
 	{
 		var $this = this;
 		Dialogs.confirm({
 			message: "Confirm deletion",
 			title: "Are you sure you want to delete the dscan entry?",
 			yesCallback: function() {
-				$.post($this.settings.baseUrl + 'dscan/remove', {dscan_id: dscanID}, function ()
+				$.post($this.settings.baseUrl + 'dscan/remove', {dscan_id: id}, function ()
 				{
-					$('#dscan-'+dscanID).remove();
+					$('#dscan-'+id).remove();
+
+					$(document).trigger('siggy.updateRequested', true );
+				})
+				.fail(function(jqXHR)
+				{
+					if(jqXHR.status >= 500)
+					{
+						Dialogs.alertServerError("removing the dscan");
+					}
 				});
 			}
 		});

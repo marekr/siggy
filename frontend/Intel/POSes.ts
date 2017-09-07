@@ -95,7 +95,7 @@ export default class POSes
 			
 			$this.remove(id);
 		});
-		}
+	}
 
 	public getPOSStatus( online )
 	{
@@ -277,12 +277,12 @@ export default class POSes
 		dlg.show();
 	}
 
-	public editForm(id)
+	public editForm(id: number)
 	{
 		this.setupForm('edit', id);
 	}
 
-	public remove(id)
+	public remove(id: number)
 	{
 		var $this = this;
 

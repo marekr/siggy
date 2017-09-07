@@ -1,20 +1,16 @@
-<div id="dscan-form" class="box" style="display:none;">
-	<div class='box-header'>DScan Results</div>
-	<div class='box-content'>
-		<p>This is for copy pasted dscan results from your scanner window. Simply select a entry, hit CTRL+A, then CTRL-C, then paste into the box below. </p>
+<script id="template-dialog-dscan" type="text/x-handlebars-template">
 		<form>
-			<label>
-				Title
-				<input type="text" value="" class="siggy-input" name="dscan_title" />
-			</label><br /><br />
-			<label>
-				Scan
-				<textarea name="blob" rows="12" style="width:100%;font-size:11px;"></textarea>
-			</label>
-			<div class="text-center form-actions">
-				<button name='submit' class="btn btn-primary" type="submit">Submit</button>
-				<button name='cancel' type="button" class="btn btn-default dialog-cancel">Cancel</button>
+			<div class="form-group {{#field_errors 'dscan_title' errors}}has-error{{/field_errors}}">
+				{{label_validation 'dscan_title' 'Title' errors class="control-label"}}
+				
+				{{input_validation 'dscan_title' model.dscan_title errors class="form-control"}}
+				{{field_errors 'dscan_title' errors class="help-block text-error"}}
+			</div>
+			<div class="form-group {{#field_errors 'blob' errors}}has-error{{/field_errors}}">
+				{{label_validation 'blob' 'Scan' errors class="control-label"}}
+
+				{{textarea_validation 'blob' model.blob errors class="form-control" rows="10"}}
+				{{field_errors 'blob' errors class="help-block text-error"}}
 			</div>
 		</form>
-	</div>
-</div>
+</script>

@@ -1,0 +1,27 @@
+20059	Amarr Control Tower Medium	Amarr Control Tower Medium	-
+20059	no	Amarr Control Tower Medium	-
+35832	Aralgrund - Safe instaundock	Astrahus	5,257,968 km
+35832	Aralgrund - HG Implants only	Astrahus	1,032 km
+35832	Aralgrund - "minerals"	Astrahus	1,161 km
+35826	Aralgrund - Shrimp Dick Surgery Clinic	Azbel	1,089 km
+12236	Gallente Control Tower	Gallente Control Tower	1,367 km
+12236	токсичный	Gallente Control Tower	-
+20063	Gallente Control Tower Medium	Gallente Control Tower Medium	-
+20063	Gallente Control Tower Medium	Gallente Control Tower Medium	-
+3870	Aralgrund V - Moon 2 - Aliastra Warehouse	Gallente Mining Station	5,259,677 km
+20065	Amarr Control Tower	Minmatar Control Tower Medium	-
+2496	Aralgrund IV - Freedom Extension Retail Center	Minmatar Hub	8.2 AU
+2501	Aralgrund I - Moon 1 - Freedom Extension Storage	Minmatar Station	7.5 AU
+2501	Aralgrund IV - Moon 1 - Freedom Extension Storage	Minmatar Station	8.2 AU
+35825	Aralgrund - 'beeps	Raitaru	2,267 km
+35825	Aralgrund - 'structure	Raitaru	2,217 km
+29633	Bogelek	Stargate (Minmatar System)	8.6 AU
+29633	Wiskeber	Stargate (Minmatar System)	5,067,014 km
+45039	Aralgrund - Star	Sun M0 (Orange radiant)	7.9 AU
+42660	Minmatar Mining Corporation Mammoth	♦ Mammoth	-
+42534	Minmatar Mining Corporation Retriever	♦ Retriever	-
+42534	Minmatar Mining Corporation Retriever	♦ Retriever	-
+42534	Minmatar Mining Corporation Retriever	♦ Retriever	-
+42534	Minmatar Mining Corporation Retriever	♦ Retriever	-
+42534	Minmatar Mining Corporation Retriever	♦ Retriever	-
+42534	Minmatar Mining Corporation Retriever	♦ Retriever	-

@@ -17,7 +17,8 @@ class DScanController extends Controller {
 
 	public function add(Request $request)
 	{
-		$blob = $request->input('blob');
+		$postData = json_decode($request->getContent(), true);
+		$blob = $postData['blob'];
 
 		$test = $this->parse_csv( $blob, "\t" );
 
@@ -66,9 +67,9 @@ class DScanController extends Controller {
 
 			$data = array(
 				'dscan_date' => time(),
-				'system_id' => intval($request->input('system_id')),
+				'system_id' => intval($postData['system_id']),
 				'group_id' => SiggySession::getGroup()->id,
-				'dscan_title' => htmlentities($request->input('dscan_title')),
+				'dscan_title' => htmlentities($postData['dscan_title']),
 				'dscan_id' => $id,
 				'dscan_added_by' => SiggySession::getCharacterName()
 			);
