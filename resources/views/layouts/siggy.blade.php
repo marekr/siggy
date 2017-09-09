@@ -99,7 +99,7 @@
 							<span id="notification-count"></span>
 						</a>
 						<ul id="notifications-menu" class="dropdown-menu" role="menu">
-							<li class='notification-dropdown-view-link'><a>View all notifications</a></li>
+							<li><a href='/notifications' data-navigo>View all notifications</a></li>
 						</ul>
 					</li>
 				@else

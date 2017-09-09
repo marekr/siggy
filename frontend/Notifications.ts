@@ -45,10 +45,6 @@ export default class Notifications
 			});
 		})
 
-		$('.notification-dropdown-view-link').click( function() {
-			$this.core.loadActivity('notifications');
-		})
-
 
 		$(document).on('click','.notification-link', function(e)
 		{

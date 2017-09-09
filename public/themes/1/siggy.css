@@ -1107,3 +1107,8 @@ label {
     border-color: #AAA;
     color: #111;
 }
+
+
+table a:not(.btn), .table a:not(.btn) {
+	text-decoration: none;
+}
