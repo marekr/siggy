@@ -27,7 +27,7 @@ export default class DScan
 	public settings: any;
 
 	private readonly formConstraints = {
-		dscan_title: {
+		title: {
 			presence: true
 		},
 		blob: {
@@ -36,7 +36,7 @@ export default class DScan
 	};
 
 	private readonly formDefaults = {
-		dscan_title: '',
+		title: '',
 		blob: ''
 	};
 
@@ -195,7 +195,7 @@ export default class DScan
 			message: "Confirm deletion",
 			title: "Are you sure you want to delete the dscan entry?",
 			yesCallback: function() {
-				$.post($this.settings.baseUrl + 'dscan/remove', {dscan_id: id}, function ()
+				$.post($this.settings.baseUrl + 'dscan/remove', {id: id}, function ()
 				{
 					$('#dscan-'+id).remove();
 

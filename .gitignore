@@ -11,3 +11,4 @@
 /public/*.htaccess
 .env
 /build
+/npm-debug.log

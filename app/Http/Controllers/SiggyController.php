@@ -374,7 +374,7 @@ class SiggyController extends BaseController {
 		return $systemData;
 	}
 
-	private function getPOSes( $systemID )
+	private function getPOSes( int $systemID )
 	{
 		$poses = DB::select("SELECT p.id, p.location_planet, p.location_moon, p.online, p.type_id, p.size,
 												p.added_date, p.owner, p.notes
@@ -389,15 +389,9 @@ class SiggyController extends BaseController {
 		return $poses;
 	}
 
-	private function getDScans( $systemID )
+	private function getDScans( int $systemID )
 	{
-		$dscans = DB::select("SELECT dscan_id, dscan_title, dscan_date
-												FROM dscan
-												WHERE group_id=:group_id AND system_id=:system_id",
-												[
-													'group_id' => SiggySession::getGroup()->id,
-													'system_id' => $systemID
-												]);
+		$dscans = \Siggy\DScan::getAllByGroupAndSystem(SiggySession::getGroup()->id, $systemID);
 
 		return $dscans;
 	}

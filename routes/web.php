@@ -138,8 +138,8 @@ Route::group(['middleware' => ['web','siggy.app']], function () {
 	Route::post('structure/vulnerabilities','StructureController@vulnerabilities');
 
 	Route::post('dscan/add','DScanController@add');
-	Route::get('dscan/view/{id}','DScanController@view');
 	Route::post('dscan/remove','DScanController@remove');
+	Route::get('dscan/json/{id}','DScanController@view');
 
 	Route::get('chainmap/connections','ChainmapController@connections');
 	Route::post('chainmap/connection_delete','ChainmapController@connection_delete');

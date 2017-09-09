@@ -319,6 +319,9 @@ export class Siggy {
 						$this.loadActivity('scan'); 
 					}
 				},
+				'/dscan/:id': function (params) {
+					$this.loadActivity('dscan', {dscanId: params.id});
+				},
 				'/thera': function () {
 					$this.loadActivity('thera'); 
 				},

@@ -1,10 +1,10 @@
 <script id="template-dialog-dscan" type="text/x-handlebars-template">
 		<form>
-			<div class="form-group {{#field_errors 'dscan_title' errors}}has-error{{/field_errors}}">
-				{{label_validation 'dscan_title' 'Title' errors class="control-label"}}
+			<div class="form-group {{#field_errors 'title' errors}}has-error{{/field_errors}}">
+				{{label_validation 'title' 'Title' errors class="control-label"}}
 				
-				{{input_validation 'dscan_title' model.dscan_title errors class="form-control"}}
-				{{field_errors 'dscan_title' errors class="help-block text-error"}}
+				{{input_validation 'title' model.title errors class="form-control"}}
+				{{field_errors 'title' errors class="help-block text-error"}}
 			</div>
 			<div class="form-group {{#field_errors 'blob' errors}}has-error{{/field_errors}}">
 				{{label_validation 'blob' 'Scan' errors class="control-label"}}

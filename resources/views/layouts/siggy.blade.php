@@ -4,6 +4,7 @@
 		<title>siggy</title>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<link href="{{asset("bootstrap3/css/bootstrap.min.css?".SIGGY_VERSION)}}" rel="stylesheet">
 		@if( App::environment('local') )
 		<link type="text/css" href="{{ url('theme.php?id='. $settings->theme_id.'&'.time()) }}" id="theme-css" rel="stylesheet" media="screen" />
 		@else
@@ -139,6 +140,7 @@
 		@include('siggy.activities.astrolabe')
 		@include('siggy.activities.chainmap')
 		@include('siggy.activities.notes')
+		@include('siggy.activities.dscan')
 		@yield('content')
 
 		@yield('alt_content')

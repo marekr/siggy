@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use \miscUtils;
 use App\Facades\Auth;
 use App\Facades\SiggySession;
+use Siggy\DScan;
+use Siggy\DScanRecord;
+use Siggy\StandardResponse;
 
 
 class DScanController extends Controller {
@@ -32,61 +35,67 @@ class DScanController extends Controller {
 			$typeID = 0;
 
 			/* skip entries with no names */
-			if( !isset( $entry[1] ) )
+			if( !isset( $entry[2] ) )
 			{
 				continue;
 			}
 
 			/* check the cache first, else query */
-			if( !isset($this->dscan_item_cache[ $entry[1] ] ) )
+			if( !isset($this->dscan_item_cache[ $entry[2] ] ) )
 			{
 				$itemData = DB::selectOne('SELECT typeID FROM eve_inv_types
-										WHERE typeName LIKE ?', [$entry[1]]);
+										WHERE typeName LIKE ?', [$entry[2]]);
 
 				if( isset($itemData->typeID) )
 				{
-					$typeID = $this->dscan_item_cache[ $entry[1] ] = $itemData->typeID;
+					$typeID = $this->dscan_item_cache[ $entry[2] ] = $itemData->typeID;
 				}
 			}
 			else
 			{
-				$typeID = $this->dscan_item_cache[ $entry[1] ];
+				$typeID = $this->dscan_item_cache[ $entry[2] ];
 			}
 
 			if( $typeID != 0  )
 			{
-				$this->output_array[] = array( 'type_id' => $typeID, 'name' => $entry[0], 'item_distance' => $entry[2] );
+				$this->output_array[] = array( 'type_id' => $typeID, 'name' => $entry[1], 'item_distance' => $entry[3] );
 			}
 
 		}
 
-
+		$dscan = null;
 		if( count( $this->output_array ) > 0 )
 		{
-			$id = miscUtils::generateString(14);
-
 			$data = array(
-				'dscan_date' => time(),
 				'system_id' => intval($postData['system_id']),
 				'group_id' => SiggySession::getGroup()->id,
-				'dscan_title' => htmlentities($postData['dscan_title']),
-				'dscan_id' => $id,
-				'dscan_added_by' => SiggySession::getCharacterName()
+				'title' => htmlentities($postData['title']),
+				'added_by' => SiggySession::getCharacterName()
 			);
 
-			$dscanID = DB::table('dscan')->insert($data);
-			//print_r($this->output_array);
+			$dscan = DScan::create($data);
+
+			$id = $dscan->id;
+
 			foreach( $this->output_array as $rec )
 			{
-				$insert = array('dscan_id' => $id,
+				$insert = [
+								'dscan_id' => $id,
 								 'type_id' => $rec['type_id'],
 								'record_name' => htmlentities($rec['name']),
-								'item_distance' => $rec['item_distance'] );
-				$posID = DB::table('dscan_records')->insert($insert);
+								'item_distance' => $rec['item_distance'] 
+							];
+
+				$record = DScanRecord::create($insert);
 			}
 		}
 
-		return response()->json([true]);
+		if($dscan != null) {
+			
+			return response()->json(StandardResponse::ok($dscan));
+		}
+
+		return response()->json(StandardResponse::error('DScan parsing failed'));
 	}
 
 	function parse_csv ($csv_string, $delimiter = ",", $skip_empty_lines = true, $trim_fields = true)
@@ -116,28 +125,14 @@ class DScanController extends Controller {
 
 	public function view($id, Request $request)
 	{
-		$dscan = DB::selectOne("SELECT d.dscan_id, d.dscan_title, d.dscan_date,dscan_added_by,ss.name as system_name
-										FROM dscan d
-										LEFT JOIN solarsystems ss ON (ss.id=d.system_id)
-										WHERE d.dscan_id=:dscan_id AND d.group_id=:group_id",[
-											'group_id' => SiggySession::getGroup()->id,
-											'dscan_id' => $id
-										]);
+		$dscan = DScan::findByGroup(SiggySession::getGroup()->id, $id);
 
 		if( $dscan == null )
 		{
-			return redirect('/');
+			return response()->json(StandardResponse::error('DScan not found'), 404);
 		}
 
-		$recs = DB::select("SELECT r.record_name, i.typeName,g.groupID, g.groupName, r.item_distance
-										FROM dscan_records r
-										LEFT JOIN eve_inv_types i ON(i.typeID = r.type_id)
-										LEFT JOIN eve_inv_groups g ON(g.groupID = i.groupID)
-										WHERE r.dscan_id=:dscan_id
-										ORDER BY g.groupName ASC,i.typeName ASC",[
-											'dscan_id' => $id
-										]);
-
+		$recs = $dscan->records;
 		$dscan_data = array();
 		$ongrid_data = array();
 		foreach($recs as $record)
@@ -171,31 +166,26 @@ class DScanController extends Controller {
 			$group['record_count'] = count($group['records']);
 		}
 		
-		return view('dscan.view', [
-												'dscan' => $dscan,
-												'all' => $dscan_data,
-												'ongrid' => $ongrid_data
-											]);
+		return response()->json([
+									'dscan' => $dscan,
+									'all' => $dscan_data,
+									'ongrid' => $ongrid_data
+								]);
 	}
 
-	public function remove()
+	public function remove(Request $request)
 	{
-		$id = $_POST['dscan_id'];
-		$dscan = DB::selectOne("SELECT dscan_id, dscan_title, dscan_date
-										FROM dscan
-										WHERE dscan_id=:dscan_id AND group_id=:group_id",[
-											'group_id' => SiggySession::getGroup()->id,
-											'dscan_id' => $id
-										]);
+		$id = $request->input('id');
+		$dscan = DScan::findByGroup(SiggySession::getGroup()->id, $id);
 
 		if( $dscan == null )
 		{
-			return response()->json(['error' => 1, 'error_message' => 'Invalid dscan']);
+			return response()->json(StandardResponse::error('DScan not found'));
 		}
 
-		DB::table('dscan')->where('dscan_id', '=', $id)->delete();
 		DB::table('dscan_records')->where('dscan_id', '=', $id)->delete();
+		$dscan->delete();
 		
-		return response()->json([true]);
+		return response()->json(StandardResponse::ok());
 	}
 }

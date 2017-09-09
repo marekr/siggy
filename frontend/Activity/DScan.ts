@@ -8,57 +8,48 @@ import * as Handlebars from '../vendor/handlebars';
 import Activity from './Activity';
 import { Siggy as SiggyCore } from '../Siggy';
 
+
+interface DScanStartArgs {
+	dscanId?: string
+}
+
 export class DScan extends Activity {
 
 	public key:string = 'dscan';
 	public title:string = 'dscan';
-	
-	private _updateTimeout = null;
-	private sigClocks = {};
-	private eolClocks = {};
-	private updateRate = 60000;
 
-	private templateRow = null;
 	private table = null;
+
+	private dscanId: string = '';
 
 	constructor(core: SiggyCore)
 	{
 		super(core);
 		var $this = this;
 
-		this.templateRow = Handlebars.compile( $("#template-scanned-system-table-row").html() );
 
-		var tableSorterHeaders = {
-			0: {
-				sortInitialOrder: 'asc'
-			}
-		};
-
-		$('#scanned-systems-table').trigger("sorton", [ [[0,0]] ]);
-		
-		$('#scanned-systems-table').on('click','.scanned-system-view', function(e) {
-			$this.core.loadActivity('siggy', {systemID: $(this).data('id')});
-		});
 	}
 
-	public start(args): void
+	public start(args: DScanStartArgs): void
 	{
+		if(args.dscanId != null) {
+			this.dscanId = args.dscanId;
+		}
+
 		$('#activity-' + this.key).show();
 		this.update();
 	}
 
 	public stop(): void
 	{
-		clearTimeout(this._updateTimeout);
 		$('#activity-' + this.key).hide();
 	}
 
 	public update()
 	{
-		/*
 		var $this = this;
 		$.ajax({
-				url: this.core.settings.baseUrl + 'sig/scanned_systems',
+				url: this.core.settings.baseUrl + 'dscan/json/'+this.dscanId,
 				dataType: 'json',
 				cache: false,
 				async: true,
@@ -66,14 +57,8 @@ export class DScan extends Activity {
 				success: function (data)
 				{
 					$this.updateTable(data);
-
-					$this._updateTimeout = setTimeout(function(thisObj)
-					{
-						thisObj.update()
-					}, $this.updateRate, $this);
 				}
 			});
-			*/
 	}
 
 	public updateTable( systems )

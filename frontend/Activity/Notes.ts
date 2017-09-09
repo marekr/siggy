@@ -14,8 +14,6 @@ export class Notes extends Activity {
 	public title:string = 'Notes';
 	
 	private _updateTimeout = null;
-	private sigClocks = {};
-	private eolClocks = {};
 	private updateRate = 60000;
 
 	private templateRow = null;
