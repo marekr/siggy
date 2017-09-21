@@ -82,7 +82,7 @@
 	                <tr>
 	                    <td class="title">True Sec</td>
 	                    <td class="content" id="truesec"></td>
-	                    <td class="title"><?php echo __('Constellation'); ?></td>
+	                    <td class="title">{{ __('Constellation') }}</td>
 	                    <td class="content" id="constellation"></td>
 	                </tr>
 	            </table>
@@ -226,7 +226,7 @@
 	        <div role="tabpanel" id="sigs" class="tab-pane active">
 	            <table id="system-table" cellspacing="1" class='siggy-table'>
 	                <tr>
-	                    <td class="title">Region / <?php echo __('Constellation'); ?></td>
+	                    <td class="title">Region / {{ __('Constellation') }}</td>
 	                    <td class="content" id="region"></td>
 	                    <td class="title">System Effect</td>
 	                    <td class="content" id="system-effect"></td>
@@ -269,7 +269,7 @@
 	                                <label>Sig ID</label>
 	                                <input type="text" class="siggy-input" name="sig" maxlength="3" placeholder="ABC" />
 	                            </div>
-	                            <?php if( $group->show_sig_size_col ): ?>
+	                            @if( $group->show_sig_size_col )
 	                            <div class="input-group"  style="width:100px;">
 	                                <label>Sig Size</label>
 	                                <select name="size" class="siggy-input">
@@ -283,7 +283,7 @@
 	                                    <option value="10">10</option>
 	                                </select>
 	                            </div>
-	                            <?php endif; ?>
+	                        	@endif
 	                            <div class="input-group"  style="width:100px;">
 	                                <label>Type</label>
 	                                <select name="type" class="siggy-input">
@@ -335,14 +335,14 @@
 	                    <tr>
 	                        <th width="2%">&nbsp;</th>
 	                        <th width="5%">Sig</th>
-	                        <?php if( $group->show_sig_size_col) :?>
+	                        @if( $group->show_sig_size_col)
 	                        <th width="3%">Size</th>
 	                        <th width="5%">Type</th>
 	                        <th width="74%">Name/Description</th>
-	                        <?php else: ?>
+	                        @else
 	                        <th width="5%">Type</th>
 	                        <th width="77%">Name/Description</th>
-	                        <?php endif; ?>
+	                        @endif
 	                        <th width="2%">&nbsp;</th>
 	                        <th width="7%">Age</th>
 	                        <th width="2%">&nbsp;</th>
