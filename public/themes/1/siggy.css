@@ -805,7 +805,7 @@ label {
 	font-size: 17px;
 	cursor:pointer;
 }
-.siggy-navbar-brand span.glyphicon
+.siggy-navbar-brand i.fa
 {
 	font-size:12px;
 }

@@ -49,7 +49,7 @@
 					</a>
 					@if( count(Auth::user()->perms()) > 0 )
 					<ul class="dropdown-menu siggy-main-navbar" role="menu">
-						<li><a href="{{ url('manage') }}"><span class="glyphicon glyphicon-home"></span> Admin</a></li>
+						<li><a href="{{ url('manage') }}"><i class="fa fa-home" aria-hidden="true"></i> Admin</a></li>
 					</ul>
 					@endif
 				</li>
