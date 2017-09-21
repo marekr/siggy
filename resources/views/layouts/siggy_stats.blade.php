@@ -10,7 +10,7 @@
 		@else
 		<link type="text/css" href="{{url("theme.php?id={$settings->theme_id }")}}" id="theme-css" rel="stylesheet" media="screen" />
 		@endif
-		<link href="{{asset("font-awesome-4.2.0/css/font-awesome.min.css")}}" rel="stylesheet">
+		<link href="{{asset("font-awesome-4.7.0/css/font-awesome.min.css")}}" rel="stylesheet">
 		<link href="{{asset("css/frontend.css?".SIGGY_VERSION)}}" rel="stylesheet">
 		<link rel="shortcut icon" href="{{asset('favicon.ico')}}">
 

@@ -11,7 +11,7 @@
 				{{ added_by }}
 			</td>
 			<td class='text-center'>
-				<button data-id='{{ id }}' class='button-dscan-view btn btn-xs btn-primary'>View</button>
+				<a data-navigo href='/dscan/{{ id }}' class='btn btn-xs btn-primary'>View</a>
 				<button data-id='{{ id }}' class='button-dscan-remove btn btn-xs btn-danger'>Remove</button>
 			</td>
 		</tr>

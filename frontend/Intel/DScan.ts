@@ -59,14 +59,6 @@ export default class DScan
 			return false;
 		} );
 		
-		$('#system-intel-dscans').on('click','.button-dscan-view ', function(e) {
-			let id = $(this).data('id');
-
-			let url = $this.settings.baseUrl + 'dscan/view/'+id;
-			var win = window.open(url, '_blank');
-			win.focus();
-		});
-		
 		$('#system-intel-dscans').on('click','.button-dscan-remove', function(e) {
 			var id = $(this).data('id');
 			
@@ -186,6 +178,8 @@ export default class DScan
 		{
 			$this.dscans = {};
 		}
+		
+		$this.core.router.updatePageLinks();
 	}
 
 	public remove(id: string)

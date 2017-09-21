@@ -10,7 +10,7 @@
 		@else
 		<link type="text/css" href="{{ url('theme.php?id='.$settings->theme_id)}}" id="theme-css" rel="stylesheet" media="screen" />
 		@endif
-		<link href="{{asset('font-awesome-4.2.0/css/font-awesome.min.css')}}" rel="stylesheet">
+		<link href="{{asset('font-awesome-4.7.0/css/font-awesome.min.css')}}" rel="stylesheet">
 
 		@include('layouts._iconglue')
 		@include('layouts._javascript')
@@ -23,23 +23,22 @@
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle siggy-navbar-brand" data-toggle="dropdown" role="button" aria-expanded="false">
 					<span>siggy</span>
-					<span id="current-activity">scan</span> <span id="main_icon" class="glyphicon glyphicon-align-justify"></span> <i class="fa fa-caret-down"></i>
+					<span id="current-activity">scan</span> <i class="fa fa-align-justify" aria-hidden="true"></i> <i class="fa fa-caret-down"></i>
 					</a>
 					<ul class="dropdown-menu siggy-main-navbar" role="menu">
-						<li><a class="activity-menu-option" href="/scan" data-navigo style="display:none"><span class="glyphicon glyphicon-list"></span> scan</a></li>
-					<!--     <li><a class="activity-menu-option" data-activity="astrolabe"><span class="glyphicon glyphicon-map-marker"></span> Astrolabe</a></li> -->
-						<li><a class="activity-menu-option" href="/scannedsystems" data-navigo style="display:none"><span class="glyphicon glyphicon-list"></span> Scanned Systems</a></li>
-						<li><a class="activity-menu-option" href="/thera" data-navigo><span class="glyphicon glyphicon-magnet"></span> Thera</a></li>
-					<!--  	<li><a class="activity-menu-option" data-activity="homestead"><span class="glyphicon glyphicon-globe"></span> Homestead</a></li>-->
-						<li><a class="activity-menu-option" href="/notifications" data-navigo><span class="glyphicon glyphicon-bell"></span> Notifications</a></li>
-						<li><a class="activity-menu-option" href="/search" data-navigo><span class="glyphicon glyphicon-search"></span> Search</a></li>
+						<li><a class="activity-menu-option" href="/scan" data-navigo style="display:none"><i class="fa fa-bolt" aria-hidden="true"></i> scan</a></li>
+						<li><a class="activity-menu-option" href="/scannedsystems" data-navigo style="display:none"><i class="fa fa-list" aria-hidden="true"></i> Scanned Systems</a></li>
+						<li><a class="activity-menu-option" href="/thera" data-navigo><i class="fa fa-magnet" aria-hidden="true"></i> Thera</a></li>
+						<li><a class="activity-menu-option" href="/notifications" data-navigo><i class="fa fa-bell" aria-hidden="true"></i> Notifications</a></li>
+						<li><a class="activity-menu-option" href="/search" data-navigo><i class="fa fa-search" aria-hidden="true"></i> Search</a></li>
+						<li><a class="activity-menu-option" href="/dscan" data-navigo style="display:none"><i class="fa fa-wifi" aria-hidden="true"></i> Dscan</a></li>
 						<li role="separator" class="divider"></li>
 
-						<li><a id="global-notes-button"><span class="glyphicon glyphicon-folder-close"></span> Notes</a></li>
-						<li><a target="_blank" href="{{ url('stats') }}"><span class="glyphicon glyphicon-list"></span> Stats</a></li>
-						<li id="settings-button"><a><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+						<li><a id="global-notes-button"><i class="fa fa-sticky-note" aria-hidden="true"></i> Notes</a></li>
+						<li><a target="_blank" href="{{ url('stats') }}"><i class="fa fa-star" aria-hidden="true"></i> Stats</a></li>
+						<li id="settings-button"><a><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
 						@if( count(Auth::user()->perms()) > 0 )
-						<li><a href="{{ url('manage') }}"><span class="glyphicon glyphicon-home"></span> Admin</a></li>
+						<li><a href="{{ url('manage') }}"><i class="fa fa-home" aria-hidden="true"></i> Admin</a></li>
 						@endif
 					</ul>
 				</li>

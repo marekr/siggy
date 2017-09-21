@@ -11,6 +11,7 @@ use App\Facades\SiggySession;
 use Siggy\DScan;
 use Siggy\DScanRecord;
 use Siggy\StandardResponse;
+use Siggy\DScanParser;
 
 
 class DScanController extends Controller {
@@ -23,55 +24,21 @@ class DScanController extends Controller {
 		$postData = json_decode($request->getContent(), true);
 		$blob = $postData['blob'];
 
-		$test = $this->parse_csv( $blob, "\t" );
+		$dscanItems = DScanParser::parse( $blob );
 
-		/*
-			Index 0 - custom name
-			Index 1 - real name
-			Index 2 - distance
-		*/
-		foreach($test as $entry)
-		{
-			$typeID = 0;
-
-			/* skip entries with no names */
-			if( !isset( $entry[2] ) )
-			{
-				continue;
-			}
-
-			/* check the cache first, else query */
-			if( !isset($this->dscan_item_cache[ $entry[2] ] ) )
-			{
-				$itemData = DB::selectOne('SELECT typeID FROM eve_inv_types
-										WHERE typeName LIKE ?', [$entry[2]]);
-
-				if( isset($itemData->typeID) )
-				{
-					$typeID = $this->dscan_item_cache[ $entry[2] ] = $itemData->typeID;
-				}
-			}
-			else
-			{
-				$typeID = $this->dscan_item_cache[ $entry[2] ];
-			}
-
-			if( $typeID != 0  )
-			{
-				$this->output_array[] = array( 'type_id' => $typeID, 'name' => $entry[1], 'item_distance' => $entry[3] );
-			}
-
+		if( $dscanItems == null ) {
+			return response()->json(StandardResponse::error('DScan parsing failed'));
 		}
 
 		$dscan = null;
 		if( count( $this->output_array ) > 0 )
 		{
-			$data = array(
+			$data = [
 				'system_id' => intval($postData['system_id']),
 				'group_id' => SiggySession::getGroup()->id,
 				'title' => htmlentities($postData['title']),
 				'added_by' => SiggySession::getCharacterName()
-			);
+			];
 
 			$dscan = DScan::create($data);
 
@@ -81,9 +48,9 @@ class DScanController extends Controller {
 			{
 				$insert = [
 								'dscan_id' => $id,
-								 'type_id' => $rec['type_id'],
-								'record_name' => htmlentities($rec['name']),
-								'item_distance' => $rec['item_distance'] 
+								'type_id' => $dscanItems['typeId'],
+								'record_name' => htmlentities($dscanItems['name']),
+								'item_distance' => $dscanItems['distance'] 
 							];
 
 				$record = DScanRecord::create($insert);
@@ -98,32 +65,7 @@ class DScanController extends Controller {
 		return response()->json(StandardResponse::error('DScan parsing failed'));
 	}
 
-	function parse_csv ($csv_string, $delimiter = ",", $skip_empty_lines = true, $trim_fields = true)
-	{
-		$enc = preg_replace('/(?<!")""/', '!!Q!!', $csv_string);
-		$enc = preg_replace_callback(
-			'/"(.*?)"/s',
-			function ($field) {
-				return urlencode(utf8_encode($field[1]));
-			},
-			$enc
-		);
-		$lines = preg_split($skip_empty_lines ? ($trim_fields ? '/( *\R)+/s' : '/\R+/s') : '/\R/s', $enc);
-		return array_map(
-			function ($line) use ($delimiter, $trim_fields) {
-				$fields = $trim_fields ? array_map('trim', explode($delimiter, $line)) : explode($delimiter, $line);
-				return array_map(
-					function ($field) {
-						return str_replace('!!Q!!', '"', utf8_decode(urldecode($field)));
-					},
-					$fields
-				);
-			},
-			$lines
-		);
-	}
-
-	public function view($id, Request $request)
+	public function view(string $id, Request $request)
 	{
 		$dscan = DScan::findByGroup(SiggySession::getGroup()->id, $id);
 
@@ -133,43 +75,53 @@ class DScanController extends Controller {
 		}
 
 		$recs = $dscan->records;
-		$dscan_data = array();
-		$ongrid_data = array();
+		$records = [];
 		foreach($recs as $record)
 		{
-			$dscan_data[ $record->groupID ]['group_name'] = $record->groupName;
-			$dscan_data[ $record->groupID ]['records'][] = array('record_name' => $record->record_name,
-																	'type_name' => $record->typeName);
+			$records[ $record->type->groupID ]['name'] = $record->type->group->groupName;
+			$records[ $record->type->groupID ]['id'] = $record->type->groupID;
 
-			$matches = array();
+			$matches = [];
 
-			if(preg_match("/^([-+]?[0-9]*\.?[0-9]+) (m|km)$/", $record->item_distance, $matches))
+			$record->on_grid = false;
+			if(preg_match("/^([0-9,]+) (m|km)$/", $record->item_distance, $matches))
 			{
-				if($matches[2] == 'm' || ($matches[2] == 'km' && $matches[1] <= 600))
+				$distance = (int)$matches[1];
+				$unit = $matches[2];
+				if($unit == 'm' || ($unit == 'km' && $distance <= 600))
 				{
-					$ongrid_data[ $record->groupID ]['group_name'] = $record->groupName;
-					$ongrid_data[ $record->groupID ]['records'][] = array('record_name' => $record->record_name,
-																		'type_name' => $record->typeName,
-																		'distance' => $record->item_distance);
+					$record->on_grid = true;
 				}
 			}
-		}
 
-		foreach($dscan_data as &$group)
-		{
-			$group['record_count'] = count($group['records']);
-		}
+			$records[ $record->type->groupID ]['is_ship'] = false;
+			//ship or capsule
+			if($record->type->group->categoryID == 6 || $record->type->groupID == 29) 
+			{
+				$records[ $record->type->groupID ]['is_ship'] = true;
+			}
 
+			$records[ $record->type->groupID ]['is_structure'] = false;
+			$structures = [15, //station
+							365, //towers
+							1657, //citadels
+							1404, //engineering complex
+							1012, //ihub
+			];
 
-		foreach($ongrid_data as &$group)
-		{
-			$group['record_count'] = count($group['records']);
+			if(in_array($record->type->groupID, $structures)) 
+			{
+				$records[ $record->type->groupID ]['is_structure'] = true;
+			}
+
+			$record->type_name = $record->type->typeName;
+
+			$records[ $record->type->groupID ]['records'][] = $record;
 		}
 		
 		return response()->json([
-									'dscan' => $dscan,
-									'all' => $dscan_data,
-									'ongrid' => $ongrid_data
+									'title' => $dscan->title,
+									'groups' => $records
 								]);
 	}
 

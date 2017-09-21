@@ -17,8 +17,7 @@ import "jquery/jquery.flash.js";
 import "jquery/jquery.serializeObject.js";
 import "jquery/jquery.simplePagination.js";
 import "qtip2";
-import "jquery/bootstrap.tab.js";
-import "jquery/bootstrap.dropdown.js";
+import "bootstrap";
 
 import "./Extensions/Object";
 import "./Extensions/String";

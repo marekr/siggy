@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 class DScanRecord extends Model {
 	public $table = 'dscan_records';
 
-	public $primaryKey = 'id';
 	public $incrementing = true;
 	public $timestamps = false;
 
@@ -22,7 +21,8 @@ class DScanRecord extends Model {
 	];
 
 	protected $hidden = [
-		'dscan_id'
+		'dscan_id',
+		'type'
 	];
 
 	public static function boot()
@@ -32,6 +32,11 @@ class DScanRecord extends Model {
 
 	public function dscan()
 	{
-		return $this->belongsTo('App\DScan', 'dscan_id');
+		return $this->belongsTo('Siggy\DScan', 'dscan_id');
+	}
+
+	public function type()
+	{
+		return $this->belongsTo('Siggy\EveInvType', 'type_id','typeID');
 	}
 }
