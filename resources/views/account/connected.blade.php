@@ -11,7 +11,9 @@
 		</ul>
 	</p>
 
-	<a href="{{url('account/connect')}}" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-plus"></i>&nbsp;Connect new character</a>
+	<a href="{{url('account/connect')}}" class="btn btn-primary pull-right">
+		<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Connect new character
+	</a>
 	<br clear='all' />
 	<br />
 	<table class="table table-striped">
@@ -25,19 +27,19 @@
 		@foreach( $characters as $character )
 		@if(isset($character_data[$character->character_id]))
 		<tr>
-			<td><?php echo $character_data[$character->character_id]->id; ?></td>
-			<td><?php echo $character_data[$character->character_id]->name; ?></td>
+			<td>{{$character_data[$character->character_id]->id}}</td>
+			<td>{{$character_data[$character->character_id]->name}}</td>
 			<td>
 				<table>
 				@foreach($character->scopes() as $scope)
 					<tr>
-						<td><?php echo $scope['name']; ?></td>
+						<td>{{$scope['name']}}</td>
 						<td>
-							<?php if ($scope['active']): ?>
-								<span class="glyphicon glyphicon-ok success" aria-hidden="true"></span>
-							<?php else: ?>
-								<span class="glyphicon glyphicon-remove danger" aria-hidden="true"></span>
-							<?php endif; ?>
+							@if ($scope['active'])
+								<i class="fa fa-check success" aria-hidden="true"></i>
+							@else
+								<i class="fa fa-times danger" aria-hidden="true"></i>
+							@endif
 						</td>
 					</tr>
 				@endforeach
@@ -47,8 +49,8 @@
 			<td>
 				{!! Form::open(['url' => 'account/disconnect']) !!}
 					<input type="hidden" name="character_id" value="<?php echo $character_data[$character->character_id]->id; ?>" />
-					<button class='btn btn-danger btn-xs' type="submit"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Disconnect</button>
-					<a href="{{url('account/connect')}}" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-plus"></i>&nbsp;Reconnect character</a>
+					<button class='btn btn-danger btn-xs' type="submit"><i class="fa fa-trash" aria-hidden="true"></i> Disconnect</button>
+					<a href="{{url('account/connect')}}" class="btn btn-primary btn-xs"><i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Reconnect character</a>
 				{!! Form::close() !!}
 			</td>
 		</tr>

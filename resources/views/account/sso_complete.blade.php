@@ -56,7 +56,7 @@
 								<div class="form-group">
 									<div class="input-group">
 										<span class="input-group-addon">
-											<i class="glyphicon glyphicon-user"></i>
+											<i class="fa fa-user" aria-hidden="true"></i>
 										</span> 
 										{{ Form::text('username',null, ['class' => 'form-control', 'placeholder' => 'Username', 'autofocus' => 'autofocus']) }}
 									</div>
@@ -64,7 +64,7 @@
 								<div class="form-group">
 									<div class="input-group">
 										<span class="input-group-addon">
-											<i class="glyphicon glyphicon-lock"></i>
+											<i class="fa fa-lock" aria-hidden="true"></i>
 										</span>
 										{{ Form::password('password',['class' => 'form-control', 'placeholder' => 'Password']) }}
 									</div>

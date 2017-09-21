@@ -1,14 +1,14 @@
 
 	<div class="form-group">
 		<button type="submit" class="btn btn-primary">
-			<span class="glyphicon glyphicon-ok-circle"></span> Save
+			<i class="fa fa-check-circle-o" aria-hidden="true"></i> Save
 		</button>
 
 		<button type="reset" class="btn btn-warning close_popup" onclick="history.go(-1);return false;">
-			<span class="glyphicon glyphicon-ban-circle"></span> Cancel
+			<i class="fa fa-ban" aria-hidden="true"></i> Cancel
 		</button>
 
 		<button type="reset" class="btn btn-default pull-right">
-			<span class="glyphicon glyphicon-remove-circle"></span> Reset
+			<i class="fa fa-eraser" aria-hidden="true"></i> Reset
 		</button>
 	</div>
