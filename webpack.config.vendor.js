@@ -12,10 +12,15 @@ module.exports = {
 	resolve: { extensions: [ '.js' ] },
 	module: {
 		rules: [
-			{ test: /\.(png|woff|woff2|eot|ttf|svg)(\?|$)/, use: 'url-loader?limit=100' },
+			{ 
+				test: /\.(png|woff|woff2|eot|ttf|svg)(\?|$)/, 
+				exclude: /vendor/,
+				use: 'url-loader?limit=100' 
+			},
 			{ test: /\.css(\?|$)/, use: extractCSS.extract({ use: 'css-loader' }) },
 			{
 				test: require.resolve('jquery'),
+				exclude: /vendor/,
 				use: [{
 					loader: 'expose-loader',
 					options: 'jQuery'
@@ -29,6 +34,7 @@ module.exports = {
 				include: [
 					path.join(__dirname, 'frontend','legacy')
 				],
+				exclude: /vendor/,
 				use: [
 					{
 						loader: 'babel-loader',

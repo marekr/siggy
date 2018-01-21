@@ -36,10 +36,15 @@ module.exports = {
 
 	module: {
 		rules: [
-			{ test: /\.(tsx?|jsx?)$/, include: /frontend/, use: 'awesome-typescript-loader' },
-			{ test: /\.(png|jpg|jpeg|gif|woff|woff2|eot|ttf|svg)(\?|$)/, use: 'url-loader?limit=100' },
+			{ test: /\.(tsx?|jsx?)$/, include: /frontend/, use: 'awesome-typescript-loader', exclude: /vendor/ },
+			{ 
+				test: /\.(png|jpg|jpeg|gif|woff|woff2|eot|ttf|svg)(\?|$)/,
+				exclude: /vendor/,
+				use: 'url-loader?limit=100' 
+			},
 			{
 				test: /\.(scss|css)$/,
+				exclude: /vendor/,
 				use: extractCSS.extract({
 					fallback: 'style-loader',
 					//resolve-url-loader may be chained before sass-loader if necessary
@@ -48,6 +53,7 @@ module.exports = {
 			},
 			{
 				test: require.resolve('jquery'),
+				exclude: /vendor/,
 				use: [{
 					loader: 'expose-loader',
 					options: 'jQuery'
