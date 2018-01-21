@@ -444,11 +444,10 @@ export class Siggy {
 		$this.activities[$this.activity].start( args );
 
 
-		$('.activity-menu-option').show();
+		$('.activity-menu-option:not([data-activity-hidden])').show();
 		$('.activity-menu-option').each( function() {
-			if( $(this).attr('href') == activity )
+			if( $(this).attr('href') == activity || $(this).data('activity-key') == activity )
 			{
-
 				$('#current-activity').text( $(this).text() );
 				$(this).hide();
 			}

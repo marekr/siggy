@@ -34,7 +34,7 @@
     "locutus": "^2.0.9",
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.13",
-    "navigo": "^5.3.1",
+    "navigo": "^7.0.0",
     "qtip2": "^3.0.3",
     "typeahead.js": "^0.11.1",
     "validate.js": "^0.12.0"

@@ -26,12 +26,12 @@
 					<span id="current-activity">scan</span> <i class="fa fa-align-justify" aria-hidden="true"></i> <i class="fa fa-caret-down"></i>
 					</a>
 					<ul class="dropdown-menu siggy-main-navbar" role="menu">
-						<li><a class="activity-menu-option" href="/scan" data-navigo style="display:none"><i class="fa fa-bolt" aria-hidden="true"></i> scan</a></li>
-						<li><a class="activity-menu-option" href="/scannedsystems" data-navigo style="display:none"><i class="fa fa-list" aria-hidden="true"></i> Scanned Systems</a></li>
-						<li><a class="activity-menu-option" href="/thera" data-navigo><i class="fa fa-magnet" aria-hidden="true"></i> Thera</a></li>
-						<li><a class="activity-menu-option" href="/notifications" data-navigo><i class="fa fa-bell" aria-hidden="true"></i> Notifications</a></li>
-						<li><a class="activity-menu-option" href="/search" data-navigo><i class="fa fa-search" aria-hidden="true"></i> Search</a></li>
-						<li><a class="activity-menu-option" href="/dscan" data-navigo style="display:none"><i class="fa fa-wifi" aria-hidden="true"></i> Dscan</a></li>
+						<li><a class="activity-menu-option" href="/scan" data-navigo style="display:none" data-activity-key='scan'><i class="fa fa-bolt" aria-hidden="true"></i> scan</a></li>
+						<li><a class="activity-menu-option" href="/scannedsystems" data-navigo data-activity-key='scannedsystems' style="display:none"><i class="fa fa-list" aria-hidden="true"></i> Scanned Systems</a></li>
+						<li><a class="activity-menu-option" href="/thera" data-navigo data-activity-key='thera'><i class="fa fa-magnet" aria-hidden="true"></i> Thera</a></li>
+						<li><a class="activity-menu-option" href="/notifications" data-navigo data-activity-key='notifications'><i class="fa fa-bell" aria-hidden="true"></i> Notifications</a></li>
+						<li><a class="activity-menu-option" href="/search" data-navigo data-activity-key='search'><i class="fa fa-search" aria-hidden="true"></i> Search</a></li>
+						<li><a class="activity-menu-option" href="/dscan" data-navigo data-activity-key='dscan' data-activity-hidden style="display:none"><i class="fa fa-wifi" aria-hidden="true"></i> DScan</a></li>
 						<li role="separator" class="divider"></li>
 
 						<li><a id="global-notes-button"><i class="fa fa-sticky-note" aria-hidden="true"></i> Notes</a></li>
