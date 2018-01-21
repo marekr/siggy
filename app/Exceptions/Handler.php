@@ -58,9 +58,14 @@ class Handler extends ExceptionHandler
     {
         if ($request->expectsJson()) {
 			return response()->json(['redirect' => url('account/login')]);
-            //return response()->json(['error' => 'Unauthenticated.'], 401);
-        }
+			//return response()->json(['error' => 'Unauthenticated.'], 401);
+		}
+		
+		//since siggy is / root, we want to kickoff to the welcome page instead of going to login
+		if($request->route()->getName() == 'siggy') {
+			return redirect()->guest(url('pages/welcome'));
+		}
 
-        return redirect()->guest(url('account/login'));
-    }
+		return redirect()->guest(url('account/login'));
+	}
 }

@@ -4,13 +4,14 @@
 ## Major Changes
 - Now 100% more leftpad dependency. Ported over frontend javascript to fancy pancy Typescript + webpack system from legacy old school javascript world
 - New router handling changes between activities (i.e. Scan vs. Thera page) which adds the pages to the browser history and provides links to the pages
-- DScan reimplemented and part of the main siggy application, url in browser can be shared with group members
+- DScan reimplemented and part of the main siggy application rather than a previous side page
 
 ## Changes
-- Dscan intel section moved to new system matching POSes and structures
+- Dscan intel section moved to fancy new page
 
 ## Fixes
-- Fix double data fetch on load of siggy page. Wooo yay Typescript.
+- Fix double data fetch on load of siggy page. Wooo yay Typescript
+- Fix welcome page not working
 
 ## 4.1.4 - 2017-07-23
 ## Fixes
