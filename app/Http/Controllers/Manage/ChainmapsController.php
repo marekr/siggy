@@ -9,7 +9,7 @@ use App\Facades\Auth;
 use \Group;
 use \Chainmap;
 use \GroupMember;
-use \System;
+use Siggy\System;
 
 class ChainmapsController extends BaseController
 {

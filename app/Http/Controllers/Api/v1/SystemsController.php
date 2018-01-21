@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\BaseController;
 use \Group;
-use \System;
+use Siggy\System;
 
 class SystemsController extends BaseController {
 

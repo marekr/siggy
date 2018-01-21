@@ -40,7 +40,7 @@ class DScan extends Model {
 
 	public function system()
 	{
-		return $this->belongsTo('System', 'system_id');
+		return $this->belongsTo('Siggy\System', 'system_id');
 	}
 
 	public function records()

@@ -29,7 +29,7 @@ class POS extends Model {
 
 	public function system()
 	{
-		return $this->belongsTo('System', 'system_id');
+		return $this->belongsTo('Siggy\System', 'system_id');
 	}
 
 	public static function findWithSystemByGroup(int $groupId, int $id)

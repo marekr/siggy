@@ -37,7 +37,7 @@ class Signature extends Model
 
 	public function system()
 	{
-		return $this->belongsTo('System', 'systemID');
+		return $this->belongsTo('Siggy\System', 'systemID');
 	}
 
 	public static function findByGroupSystem(int $groupId, int $system): array

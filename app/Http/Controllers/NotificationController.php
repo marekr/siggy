@@ -10,7 +10,7 @@ use \CharacterGroup;
 use \Notifier;
 use \NotificationTypes;
 use Siggy\Notification;
-use \System;
+use Siggy\System;
 
 class NotificationController extends Controller {
 

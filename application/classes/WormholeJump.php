@@ -35,12 +35,12 @@ class WormholeJump extends Model {
 	
 	public function origin()
 	{
-		return $this->belongsTo('System', 'origin_id');
+		return $this->belongsTo('Siggy\System', 'origin_id');
 	}
 
 	public function destination()
 	{
-		return $this->belongsTo('System', 'destination_id');
+		return $this->belongsTo('Siggy\System', 'destination_id');
 	}
 
 	public static function findWithSystemByGroup(int $groupId, int $id)

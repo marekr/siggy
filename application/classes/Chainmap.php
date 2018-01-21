@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
+use Siggy\ActiveSystem;
+
 class Chainmap extends Model {
 
 	public $timestamps = false;

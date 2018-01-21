@@ -22,7 +22,7 @@ use \miscUtils;
 use \Signature;
 use \Chainmap;
 use \WormholeSignature;
-use \System;
+use Siggy\System;
 use \WormholeJump;
 use \Notifier;
 use \NotificationTypes;

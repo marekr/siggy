@@ -23,7 +23,7 @@ class ChainmapController extends Controller {
 	{
 		if($this->chainmap == null)
 		{
-			$chainmapID = (isset($_REQUEST['chainmap']) ? (int)$_REQUEST['chainmap'] : SiggySession::getAccessData()['active_chain_map'] );
+			$chainmapID = (!empty($_REQUEST['chainmap']) ? (int)$_REQUEST['chainmap'] : SiggySession::getAccessData()['active_chain_map'] );
 			$this->chainmap = Chainmap::find($chainmapID,SiggySession::getGroup()->id);
 		}
 
