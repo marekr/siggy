@@ -23,6 +23,7 @@
   "license": "UNLICENSED",
   "homepage": "https://bitbucket.org/mroszko/siggy#readme",
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "chart.js": "^2.6.0",
     "corejs-typeahead": "^1.1.1",
     "handlebars": "^4.0.5",
@@ -34,30 +35,32 @@
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.13",
     "navigo": "^5.3.1",
-    "npm": "^5.3.0",
     "qtip2": "^3.0.3",
     "typeahead.js": "^0.11.1",
-    "validate.js": "^0.11.1"
+    "validate.js": "^0.12.0"
   },
   "devDependencies": {
     "@types/locutus": "0.0.5",
     "@types/webpack-env": "^1.13.0",
-    "awesome-typescript-loader": "^3.2.3",
+    "awesome-typescript-loader": "^3.4.1",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
     "cross-env": "^5.0.5",
-    "css-loader": "^0.28.7",
+    "css-loader": "^0.28.9",
     "expose-loader": "^0.7.3",
-    "extract-text-webpack-plugin": "^3.0.0",
+    "extract-text-webpack-plugin": "^3.0.2",
     "imports-loader": "^0.7.1",
     "node-noop": "^1.0.0",
     "node-sass": "^4.5.3",
     "sass-loader": "^6.0.6",
-    "script-loader": "^0.7.0",
-    "ts-loader": "^2.3.5",
+    "script-loader": "^0.7.2",
+    "ts-loader": "^2.3.7",
     "typescript": "^2.4.2",
     "uglifyjs-webpack-plugin": "^1.0.0-beta.2",
-    "webpack": "^3.5.5",
-    "webpack-dev-server": "^2.7.1",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.0",
     "webpack-env": "^0.8.0",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.1"
   }
 }

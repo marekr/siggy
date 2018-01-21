@@ -8,11 +8,11 @@ const extractCSS = new ExtractTextPlugin('vendor.css');
 const ASSET_PATH = process.env.ASSET_PATH || 'http://dev.siggy.borkedlabs.com:8083';
 
 module.exports = {
-    stats: { modules: false },
-    resolve: { extensions: [ '.js' ] },
-    module: {
-        rules: [
-            { test: /\.(png|woff|woff2|eot|ttf|svg)(\?|$)/, use: 'url-loader?limit=100' },
+	stats: { modules: false },
+	resolve: { extensions: [ '.js' ] },
+	module: {
+		rules: [
+			{ test: /\.(png|woff|woff2|eot|ttf|svg)(\?|$)/, use: 'url-loader?limit=100' },
 			{ test: /\.css(\?|$)/, use: extractCSS.extract({ use: 'css-loader' }) },
 			{
 				test: require.resolve('jquery'),
@@ -29,7 +29,19 @@ module.exports = {
 				include: [
 					path.join(__dirname, 'frontend','legacy')
 				],
-				use: [ 'script-loader' ]
+				use: [
+					{
+						loader: 'babel-loader',
+						options: {
+							"presets": [
+								["env", { "targets": "last 2 versions, ie 11", "modules": false  }]	//more or less supports ES5
+							]
+						}
+					},
+					{
+						loader: 'script-loader'	//we need script loader to execute jsPlumb in global context...sigh
+					}
+				]
 			},
 			{ 
 				test: /jquery\/.+\.(jsx|js)$/,
@@ -63,19 +75,19 @@ module.exports = {
 			'./frontend/vendor/handlebars.js',
 			'./frontend/vendor/handlebars.form-helpers.js',
 			'./frontend/vendor/handlebars.helpers.js'
-        ],
-    },
-    output: {
+		],
+	},
+	output: {
 		publicPath: ASSET_PATH,
 		path: path.join(__dirname, 'public','assets'),
 		filename: 'vendor.js',
-        library: '[name]_[hash]',
+		library: '[name]_[hash]',
 
-        // Bundle absolute resource paths in the source-map,
-        // so VSCode can match the source file.
-        devtoolModuleFilenameTemplate: '[absolute-resource-path]'
-    },
-    plugins: [
+		// Bundle absolute resource paths in the source-map,
+		// so VSCode can match the source file.
+		devtoolModuleFilenameTemplate: '[absolute-resource-path]'
+	},
+	plugins: [
 		new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, require.resolve('node-noop')), // Workaround for https://github.com/andris9/encoding/issues/16
 		new webpack.DefinePlugin({
 			'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
@@ -86,11 +98,11 @@ module.exports = {
 			jQuery: "jquery",
 			"window.jQuery": "jquery"
 		}),
-        new webpack.DllPlugin({
-            path: path.join(__dirname, 'public','assets', '[name]-manifest.json'),
-            name: '[name]_[hash]'
+		new webpack.DllPlugin({
+			path: path.join(__dirname, 'public','assets', '[name]-manifest.json'),
+			name: '[name]_[hash]'
 		})
-    ].concat(process.env.NODE_ENV === 'production' ? [ 
+	].concat(process.env.NODE_ENV === 'production' ? [ 
 		//production
 		new UglifyJsPlugin()
 	] : [ 

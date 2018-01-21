@@ -1,30 +1,39 @@
 {
-  "compilerOptions": {
-    "baseUrl": "src",
-    "moduleResolution": "node",
-    "target": "es2015",
-    "jsx": "react",
-    "experimentalDecorators": false,
-    "sourceMap": true,
-	"skipDefaultLibCheck": true,
-	"allowSyntheticDefaultImports": true,
-    "noEmit": false,
-    "lib": [
-      "es2015",
-      "dom"
-    ],
-    "types": [
-      "webpack-env"
-    ],
-    "rootDirs": [ "frontend" ],
-    "allowJs": true
-  },
-  "exclude": [
-    "bin",
-	"node_modules",
-	"dist",
-	"build",
-	"vendor",
-	"public"
-  ]
+	"compilerOptions": {
+		"baseUrl": "src",
+		"moduleResolution": "node",
+		"target": "es2015",
+		"jsx": "react",
+		"experimentalDecorators": false,
+		"sourceMap": true,
+		"skipDefaultLibCheck": true,
+		"allowSyntheticDefaultImports": true,
+		"noEmit": false,
+		"lib": [
+			"es2015",
+			"dom"
+		],
+		"types": [
+			"webpack-env"
+		],
+		"rootDirs": [ "frontend" ],
+		"allowJs": true
+	},
+	"awesomeTypescriptLoaderOptions": {
+		"useBabel": true,
+		"babelOptions": {
+			"babelrc": false, 
+			"presets": [
+				["env", { "targets": "last 2 versions, ie 11", "modules": false  }]	//more or less supports ES5
+			]
+		}
+	},
+	"exclude": [
+		"bin",
+		"node_modules",
+		"dist",
+		"build",
+		"vendor",
+		"public"
+	]
 }
