@@ -28,10 +28,10 @@ export default class DScan
 
 	private readonly formConstraints = {
 		title: {
-			presence: true
+			presence: {allowEmpty: false}
 		},
 		blob: {
-			presence: true
+			presence: {allowEmpty: false}
 		}
 	};
 

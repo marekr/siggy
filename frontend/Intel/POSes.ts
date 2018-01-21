@@ -42,24 +42,24 @@ export default class POSes
 	
 	private readonly formConstraints = {
 		location_planet: {
-			presence: true
+			presence: {allowEmpty: false}
 		},
 		location_moon: {
-			presence: true
+			presence: {allowEmpty: false}
 		},
 		owner: {
-			presence: true
+			presence: {allowEmpty: false}
 		},
 		type_id: {
-			presence: true,
+			presence: {allowEmpty: false},
 			numericality: true
 		},
 		online: {
-			presence: true,
+			presence: {allowEmpty: false},
 			numericality: true
 		},
 		size: {
-			presence: true
+			presence: {allowEmpty: false}
 		},
 		notes: {
 			presence: {allowEmpty: true}

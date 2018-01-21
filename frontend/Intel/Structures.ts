@@ -33,10 +33,10 @@ export default class Structures
 
 	private readonly formConstraints = {
 		corporation_name: {
-			presence: true
+			presence: {allowEmpty: false}
 		},
 		type_id: {
-			presence: true,
+			presence: {allowEmpty: false},
 			numericality: true
 		},
 		notes: {
