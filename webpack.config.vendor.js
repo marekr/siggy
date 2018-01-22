@@ -8,6 +8,13 @@ const extractCSS = new ExtractTextPlugin('vendor.css');
 const ASSET_PATH = process.env.ASSET_PATH || 'http://dev.siggy.borkedlabs.com:8083';
 
 module.exports = {
+	node: {
+		child_process: "empty",
+		dgram: "empty",
+		fs: "empty",
+		net: "empty",
+		tls: "empty"
+	},
 	stats: { modules: false },
 	resolve: { extensions: [ '.js' ] },
 	module: {
@@ -67,6 +74,11 @@ module.exports = {
 			'qtip2',
 			'navigo',
 			'bootstrap',
+			'locutus/php/array/array_unique',
+			'locutus/php/strings/implode',
+			'locutus/php/strings/number_format',
+			'locutus/php/datetime/time',
+			'locutus/php/math/round',
 			'./frontend/legacy/jquery.jsPlumb.js',
 			'./frontend/jquery/jquery-ui.js',
 			'./frontend/jquery/jquery.contextMenu.js',
