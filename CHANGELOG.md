@@ -1,6 +1,6 @@
 # siggy Changelog
 
-## 5.0.0 - 2017-09-??
+## 5.0.0 - 2018-01-22
 ## Major Changes
 - Now 100% more leftpad dependency. Ported over frontend javascript to fancy pancy Typescript + webpack system from legacy old school javascript world
 - New router handling changes between activities (i.e. Scan vs. Thera page) which adds the pages to the browser history and provides links to the pages
