@@ -905,7 +905,6 @@ export default class Map {
 			var fullActives = $("#fullactives"+sysID);
 			fullActives.empty();
 
-			activesData[sysID] = [ {character_name: 'test'}];
 			if( typeof(activesData[sysID]) != 'undefined' )
 			{
 				var actives = activesData[sysID];
