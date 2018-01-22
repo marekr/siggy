@@ -1,7 +1,7 @@
 	<script id="template-sig-table-row" type="text/x-handlebars-template">
 		<tr id='sig-{{ id }}' class='type-{{ type }} sig' data-sig-id='{{ id }}'>
 			<td class='text-center edit'>
-				<i class='icon icon-pencil icon-large'></i>
+				<i class='fa fa-pencil fa-lg icon-yellow'></i>
 			</td>
 			<td class='text-center sig'>
 				{{ sig }}
@@ -27,7 +27,7 @@
 				</p>
 			</td>
 			<td class='text-center moreinfo'>
-				<i class='icon icon-info-sign icon-large icon-yellow'></i>
+				<i class='fa fa-info-circle fa-lg icon-blue'></i>
 				<div id='creation-info-{{ id }}' class='tooltip'>
 					<b>Added by:</b> {{ creator }}
 					{{#if lastUpdater }}
@@ -44,7 +44,7 @@
 				</div>
 			</td>
 			<td class='text-center remove'>
-				<i class='icon icon-remove-sign icon-large icon-red'></i>
+				<i class='fa fa-times fa-lg icon-red'></i>
 			</td>
 		</tr>
 	</script>

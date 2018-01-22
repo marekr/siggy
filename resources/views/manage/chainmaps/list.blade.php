@@ -29,9 +29,9 @@
 			<td><?php echo $s->chainmap_name ?></td>
 			<td>---</td>
 			<td>
-				<a href="{{url('manage/chainmaps/edit/'.$s->chainmap_id)}}" class='btn btn-default btn-xs'><i class="icon-edit"></i>&nbsp;Edit</a>
+				<a href="{{url('manage/chainmaps/edit/'.$s->chainmap_id)}}" class='btn btn-default btn-xs'><i class="fa fa-pencil"></i>&nbsp;Edit</a>
 				@if( $s->chainmap_type != 'default' )
-				<a href="{{url('manage/chainmaps/remove/'.$s->chainmap_id)}}" class='btn btn-default btn-xs'><i class="icon-trash"></i>&nbsp;Remove</a>
+				<a href="{{url('manage/chainmaps/remove/'.$s->chainmap_id)}}" class='btn btn-default btn-xs'><i class="fa fa-trash"></i>&nbsp;Remove</a>
 				@endif
 			</td>
 		</tr>

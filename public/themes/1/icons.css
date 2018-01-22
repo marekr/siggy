@@ -12,27 +12,6 @@ i.icon
     top: 3px;
 }
 
-.icon-plus-sign
-{
-	background-image: url(images/icon_plus.png);
-}
-
-.icon-pencil
-{
-	background-image: url(images/icon_pencil.png);
-}
-
-.icon-info-sign
-{
-	background-image: url(images/icon_info.png);
-}
-
-.icon-remove-sign
-{
-	background-image: url(images/icon_remove.png);
-}
-
-
 .icon-yellow
 {
     color: #FFFF03;
@@ -43,7 +22,7 @@ i.icon
     color: red;
 }
 
-.icon-settings
+.icon-blue
 {
-	background-image: url(images/icon_settings.png);
+    color: lightblue;
 }
