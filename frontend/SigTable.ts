@@ -643,10 +643,15 @@ export default class SigTable
 			}
 		}
 
-		$('#sig-' + sigData.id + ' td.moreinfo i').qtip('destroy');
-		$('#sig-' + sigData.id + ' td.moreinfo i').qtip({
+		$('#sig-' + sigData.id + ' td.moreinfo').qtip('destroy');
+		$('#sig-' + sigData.id + ' td.moreinfo').qtip({
 			content: {
 				text: $('#creation-info-' + sigData.id) // Use the "div" element next to this for the content
+			},
+			position: {
+				target: 'mouse',
+				adjust: { x: 5, y: 5 },
+				viewport: $(window)
 			}
 		});
 

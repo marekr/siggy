@@ -17,7 +17,6 @@
 				</p>
 			</td>
 			<td class='description'>
-				
 				{{ siteIDToText sysClass type siteID }}
 				{{#if showWormhole}}
 					{{ whHashToDestination chainmap_wormhole }}
@@ -28,18 +27,19 @@
 			</td>
 			<td class='text-center moreinfo'>
 				<i class='fa fa-info-circle fa-lg icon-blue'></i>
-				<div id='creation-info-{{ id }}' class='tooltip'>
+				<div id='creation-info-{{ id }}' class='siggy-tooltip'>
 					<b>Added by:</b> {{ creator }}
 					{{#if lastUpdater }}
 						<br /><b>Updated by:</b> {{ lastUpdater }}
 						<br /><b>Updated at:</b> {{ updated_at }}
 					{{/if}}
+					<br />
 				</div>
 			</td>
 			<td class='text-center age'>
 				<span class='age-clock'>--</span>
 				<p class='eol-clock'></p>
-				<div id='age-timestamp-{{ id }}' class='tooltip'>
+				<div id='age-timestamp-{{ id }}' class='siggy-tooltip'>
 					{{ created_at }}
 				</div>
 			</td>

@@ -905,6 +905,7 @@ export default class Map {
 			var fullActives = $("#fullactives"+sysID);
 			fullActives.empty();
 
+			activesData[sysID] = [ {character_name: 'test'}];
 			if( typeof(activesData[sysID]) != 'undefined' )
 			{
 				var actives = activesData[sysID];
@@ -1038,7 +1039,7 @@ export default class Map {
 
 			$("#chain-map").append( newTypeBlob );
 
-			var tst = $("<div>").attr("id","fullactives"+systemData.systemID).addClass('tooltip').addClass('map-full-actives').text("");
+			var tst = $("<div>").attr("id","fullactives"+systemData.systemID).addClass('siggy-tooltip').addClass('map-full-actives').text("");
 			$("#chain-map-container").append(tst);
 
 			var res = newTypeBlob.qtip({

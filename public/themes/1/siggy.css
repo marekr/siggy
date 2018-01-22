@@ -569,9 +569,8 @@ ul.box-tabs li.active
     background-color: @primary-background;
 }
 
-/* "modal" box */
 
-.tooltip
+.siggy-tooltip
 {
   display: none;
   background-color: #262626;
@@ -579,6 +578,7 @@ ul.box-tabs li.active
 }
 
 
+/* "modal" box */
 .form-actions
 {
     background-color: @footer-background;
