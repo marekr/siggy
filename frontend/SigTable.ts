@@ -233,7 +233,6 @@ export default class SigTable
 			return false;
 		});
 
-
 		$('#sig-add-box select[name=type]').change(function ()
 		{
 			let newType = $(this).val();
@@ -254,7 +253,7 @@ export default class SigTable
 		var $this = this;
 		var sigEle = $('#sig-add-box input[name=sig]');
 		var typeEle = $('#sig-add-box select[name=type]');
-		var descEle = $('#sig-add-box input[name=description]');
+		var descEle = $('#sig-add-box input[name=desc]');
 		var siteEle = $('#sig-add-box select[name=site]');
 
 		if (sigEle.val().length != 3)
@@ -1017,7 +1016,7 @@ export default class SigTable
 
 		var controlEle = $("#sig-" + id + " td.edit");
 		controlEle.text('');
-		controlEle.append($('<i>').addClass('icon icon-pencil icon-large')
+		controlEle.append($('<i>').addClass('fa fa-pencil fa-lg')
 								.click(function (e)
 										{
 											$this.editSigForm(id)

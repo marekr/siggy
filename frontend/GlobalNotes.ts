@@ -27,13 +27,13 @@ export default class GlobalNotes {
 	{
 		this.core = core;
 		this.settings = $.extend(this.defaults, options);
+		this.globalNotesEle = $('#global-notes');
 	}
 
 	public initialize()
 	{
 		var $this = this;
 
-		$this.globalNotesEle = $('#global-notes');
 		$('#global-notes-button').click(function ()
 		{
 			$this.stopBlinkingNotes();

@@ -220,7 +220,7 @@ export class Siggy {
 		Dialogs.alert({
 			title: "Negative balance!",
 			message: "The balance for this siggy group has gone negative. Payment must be made according to the information \
-				in the management panel or service may be discontinued at any time. <br />Contact <b>Jack Tronic</b> if assitance is needed. <br /> <br /> \
+				in the management panel or service may be discontinued at any time. <br />Contact <b>Jack Tronic</b> if assistance is needed. <br /> <br /> \
 				If you have already paid and have waited a hour for processing, refresh the page and this message should stop appearing",
 			okCallback: function() {
 				setTimeout(	function(){ $this.balanceHarass(); }, (1000*60)*10);	//10 minutes for now
@@ -279,7 +279,20 @@ export class Siggy {
 		StaticData.load(this.settings.baseUrl, this);
 	}
 
+	/**
+	 * Continues initialization after static data load
+	 * Executes an update post before continuing as some activities may need chainmaps populated beforehand
+	 * @memberof Siggy
+	 */
 	public continueInitialize()
+	{
+		var $this = this;
+		$this.update().then(function(){
+			$this.continueInitialize2();
+		})
+	}
+
+	public continueInitialize2()
 	{
 		Helpers.setupSystemTypeAhead('.system-typeahead');
 
@@ -289,7 +302,7 @@ export class Siggy {
 
 		this.registerMainMenu();
 
-		this.updateNow();
+		this.queueUpdate();
 
 		var defaultActivity = 'scan';
 		if( this.settings.defaultActivity != '' )
@@ -348,8 +361,7 @@ export class Siggy {
 
 	public update()
 	{
-		if(this.Inactive)
-		{
+		if(this.Inactive) {
 			return;
 		}
 
@@ -360,7 +372,7 @@ export class Siggy {
 			newest_notification: $this.notifications.newestTimestamp
 		};
 
-		$.ajax({
+		return $.ajax({
 			url: $this.settings.baseUrl + 'update',
 			data: request,
 			dataType: 'json',
