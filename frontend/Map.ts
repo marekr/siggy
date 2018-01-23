@@ -790,7 +790,7 @@ export default class Map {
 	{
 		var $this = this;
 
-		if( hashes != null )
+		if( hashes == null )
 			hashes = this.getSelectedHashes();
 
 		hashes = $.extend({
