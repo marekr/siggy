@@ -1,5 +1,9 @@
 # siggy Changelog
 
+## 5.0.1 - 2018-01-22
+## Fixes
+- POSes were breaking systems from loading
+
 ## 5.0.0 - 2018-01-22
 ## Major Changes
 - Now 100% more leftpad dependency. Ported over frontend javascript to fancy pancy Typescript + webpack system from legacy old school javascript world

@@ -22,7 +22,7 @@ export default class POSes
 
 	public settings: any;
 
-	public poses: any;
+	public poses: any = {};
 	private templateForm = null;
 	private templateTableRow = null;
 
