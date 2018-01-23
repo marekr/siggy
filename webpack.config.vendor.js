@@ -122,7 +122,7 @@ module.exports = {
 		})
 	].concat(process.env.NODE_ENV === 'production' ? [ 
 		//production
-		new UglifyJsPlugin()
+		new UglifyJsPlugin({sourceMap: true})
 	] : [ 
 		//development
 	])

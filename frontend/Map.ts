@@ -20,6 +20,8 @@ import round from 'locutus/php/math/round';
 
 var jsPlumb: any;
 
+import "./Extensions/Window";
+
 export default class Map {
 	private core: SiggyCore = null;
 	private readonly defaults = {
@@ -347,7 +349,6 @@ export default class Map {
 			if ( that.selectionInProgress )
 			{
 				//ulgy hack to make the mass delete selection work for now
-
 				that.selectionInProgress = false;
 				$container.off('mousemove.map');
 
@@ -378,7 +379,7 @@ export default class Map {
 						w: internalconn.w
 					};
 
-					var inside = jsPlumb.Biltong.intersects( bb, compareBB );
+					var inside = window.Biltong.intersects( bb, compareBB );
 
 					if( inside )
 					{
