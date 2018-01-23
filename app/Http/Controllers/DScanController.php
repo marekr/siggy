@@ -16,9 +16,6 @@ use Siggy\DScanParser;
 
 class DScanController extends Controller {
 
-	protected $dscan_item_cache = array();
-	protected $output_array = array();
-
 	public function add(Request $request)
 	{
 		$postData = json_decode($request->getContent(), true);
@@ -31,7 +28,7 @@ class DScanController extends Controller {
 		}
 
 		$dscan = null;
-		if( count( $this->output_array ) > 0 )
+		if( count( $dscanItems ) > 0 )
 		{
 			$data = [
 				'system_id' => intval($postData['system_id']),
@@ -44,13 +41,13 @@ class DScanController extends Controller {
 
 			$id = $dscan->id;
 
-			foreach( $this->output_array as $rec )
+			foreach( $dscanItems as $rec )
 			{
 				$insert = [
 								'dscan_id' => $id,
-								'type_id' => $dscanItems['typeId'],
-								'record_name' => htmlentities($dscanItems['name']),
-								'item_distance' => $dscanItems['distance'] 
+								'type_id' => $rec['typeId'],
+								'record_name' => htmlentities($rec['name']),
+								'item_distance' => $rec['distance'] 
 							];
 
 				$record = DScanRecord::create($insert);
@@ -78,6 +75,9 @@ class DScanController extends Controller {
 		$records = [];
 		foreach($recs as $record)
 		{
+			if($record->type == null) {
+				continue;
+			}
 			$records[ $record->type->groupID ]['name'] = $record->type->group->groupName;
 			$records[ $record->type->groupID ]['id'] = $record->type->groupID;
 

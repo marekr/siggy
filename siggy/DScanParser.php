@@ -4,7 +4,7 @@ namespace Siggy;
 
 class DScanParser {
 
-	private static $pattern = '/(\d+)\t(.*)\t(.+)\t(-|[\d,]+ [a-z]{1,2})/i';
+	private static $pattern = '/(\d+)\t(.*)\t(.+)\t(-|[\d,\.]+ [a-z]{1,2})/i';
 
 	/**
 	* $dscanItem['typeId']
@@ -20,13 +20,17 @@ class DScanParser {
 		$list = [];
 
 		foreach($lines as $line) {
+			if(empty($line)) {
+				continue;
+			}
+
 			$matches = [];
 			preg_match(self::$pattern, $line, $matches);
 			
 			//correct # of matches
 			if(count($matches) == 5) {
 				$listItem = [];
-				list(,$listItem['typeId'], $listItem['name'], $listItem['typeName'], $listItem['distance']) = $info;
+				list(,$listItem['typeId'], $listItem['name'], $listItem['typeName'], $listItem['distance']) = $matches;
 				
 				$list[] = $listItem;
 			} else {

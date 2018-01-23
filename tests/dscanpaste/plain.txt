@@ -25,4 +25,3 @@
 42534	Minmatar Mining Corporation Retriever	♦ Retriever	-
 42534	Minmatar Mining Corporation Retriever	♦ Retriever	-
 42534	Minmatar Mining Corporation Retriever	♦ Retriever	-
-22430	42534	Minmatar	Sin	20 km
