@@ -302,8 +302,6 @@ export class Siggy {
 
 		this.registerMainMenu();
 
-		this.queueUpdate();
-
 		var defaultActivity = 'scan';
 		if( this.settings.defaultActivity != '' )
 		{
