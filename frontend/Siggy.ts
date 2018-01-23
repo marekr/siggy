@@ -313,6 +313,11 @@ export class Siggy {
 			defaultActivity = this.settings.charsettings.defaultActivity;
 		}
 		
+		//
+		if(defaultActivity == 'siggy') {
+			defaultActivity = 'scan';
+		}
+
 		var $this = this;
 		this.router
 		.on({

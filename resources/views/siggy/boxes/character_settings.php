@@ -25,7 +25,7 @@
 				Default Activity
 				<select name="default_activity" class="siggy-input">
 					<option value="">No Default</option>
-					<option value="siggy">Scan</option>
+					<option value="scan">Scan</option>
 					<option value="thera">Thera</option>
 					<option value="scannedsystems">Scanned Systems</option>
 				</select>
