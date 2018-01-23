@@ -1,5 +1,11 @@
 # siggy Changelog
 
+## 5.0.2 - 2018-01-23
+## Fixes
+- DScan parsing was broken...if anything was off-grid
+- Wormhole deletion now works again
+- Fixed a duplicated XHR call
+
 ## 5.0.1 - 2018-01-22
 ## Fixes
 - POSes were breaking systems from loading
