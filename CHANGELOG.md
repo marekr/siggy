@@ -1,5 +1,12 @@
 # siggy Changelog
 
+## 5.1.0 - 2018-01-23
+## Changes
+- Current location is now in the navigation bar, effect is also shown if available (and hoverable!)
+
+## Fixes
+- Effect tooltip now displays again when mouse hovers over the name
+
 ## 5.0.3 - 2018-01-23
 ## Fixes
 - Wormhole drag selection on map is no longer broken
