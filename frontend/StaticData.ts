@@ -9,6 +9,7 @@ import Bloodhound from 'corejs-typeahead';
 import Helpers from './Helpers';
 import time from 'locutus/php/datetime/time';
 import { Siggy as SiggyCore } from './Siggy';
+import { SystemEffectArray, System as SystemModel, SystemEffect, Site as SiteModel, Ship as ShipModel, ShipArray } from './Models';
 
 export const blackHoleEffects = {
 	1: [
@@ -298,14 +299,13 @@ export const pulsarEffects = {
 	]
 }
 
-
 export class StaticData {
 	
 	private static wormholeClassMap = [];
 	private static wormholeTypes = [];
-	private static sites = [];
+	private static sites: SiteModel[] = [];
 	private static maps = {};
-	private static ships = {};
+	private static ships: ShipArray = {};
 	private static baseListWormholes = {
 			0: "Unstable Wormhole",
 			1: "K162 (from Unknown)",
@@ -317,10 +317,14 @@ export class StaticData {
 		};
 	public static templateWormholeInfoTooltip = null;
 	public static templateSiteTooltip = null;
-	private static systems = [];
+	public static templateEffectTooltip = null;
+	private static systems: SystemModel[] = [];
 	public static systemTypeAhead = null;
 	private static structureTypes: any = {};
 	private static posTypes: any = {};
+	private static effects: SystemEffectArray = {
+
+	};
 
 	public static load(baseUrl, core: SiggyCore)
 	{
@@ -328,6 +332,7 @@ export class StaticData {
 
 		$this.templateWormholeInfoTooltip = Handlebars.compile( $("#template-statics-tooltip").html() );
 		$this.templateSiteTooltip = Handlebars.compile( $("#template-site-tooltip").html() );
+		$this.templateEffectTooltip = Handlebars.compile( $("#template-effect-tooltip").html() );
 
 		$.ajax({
 			url: baseUrl + 'data/sig_types',
@@ -368,7 +373,15 @@ export class StaticData {
 				dataType: 'json'
 			});
 		}).then(function(result){
+			
 			$this.systems = result;
+
+			return $.ajax({
+				url: baseUrl + 'data/effects?' + time(),
+				dataType: 'json'
+			});
+		}).then(function(result){
+			$this.effects = result;
 
 			
 			$this.systemTypeAhead = new Bloodhound({
@@ -389,7 +402,7 @@ export class StaticData {
 		})
 	}
 
-	public static getSystemByID( id:number )
+	public static getSystemByID( id:number ): SystemModel
 	{
 		for( var i = 0; i < this.systems.length; i++ )
 		{
@@ -400,7 +413,7 @@ export class StaticData {
 		return null;
 	}
 	
-	public static getSystemByName( name:string )
+	public static getSystemByName( name:string ): SystemModel
 	{
 		for( var i = 0; i < this.systems.length; i++ )
 		{
@@ -411,8 +424,15 @@ export class StaticData {
 		return null;
 	}
 
+	public static getEffectByID( id:number ): SystemEffect | null
+	{
+		if( typeof( this.effects[ id ] ) != 'undefined' )
+			return this.effects[ id ];
+		else
+			return null;
+	}
 
-	public static getSiteNameByID( id:number )
+	public static getSiteNameByID( id:number ): string
 	{
 		var site = this.getSiteByID(id);
 		if(  site != null )
@@ -421,7 +441,7 @@ export class StaticData {
 			return "";
 	}
 
-	public static getSiteByID ( id:number )
+	public static getSiteByID ( id:number ): SiteModel | null
 	{
 		if( typeof( this.sites[ id ] ) != 'undefined' )
 			return this.sites[ id ];
@@ -429,7 +449,7 @@ export class StaticData {
 			return null;
 	}
 
-	public static getShipByID( id:number )
+	public static getShipByID( id:number ) : ShipModel | null
 	{
 		if( typeof( this.ships[ id ] ) != 'undefined' )
 			return this.ships[ id ];
@@ -626,6 +646,48 @@ export class StaticData {
 		}
 
 		return result;
+	}
+
+	public static getEffectTooltip( system: SystemModel, effect: SystemEffect ) : any | null 
+	{
+		if( effect.effectTitle != 'None' )
+		{
+			var effData = [];
+			if( effect.effectTitle == 'Black Hole' )
+			{
+				effData = blackHoleEffects[system.class];
+			}
+			else if(effect.effectTitle == 'Wolf-Rayet Star')
+			{
+				effData = wolfRayetEffects[system.class];
+			}
+			else if(effect.effectTitle == 'Red Giant')
+			{
+				effData = redGiantEffects[system.class];
+			}
+			else if(effect.effectTitle == 'Cataclysmic Variable')
+			{
+				effData = catacylsmicEffects[system.class];
+			}
+			else if(effect.effectTitle == 'Magnetar')
+			{
+				effData = magnetarEffects[system.class];
+			}
+			else if(effect.effectTitle == 'Pulsar')
+			{
+				effData = pulsarEffects[system.class];
+			}
+			
+			var tooltip = this.templateEffectTooltip({
+				system: system,
+				effect: effect,
+				effect_details: effData
+			});
+
+			return tooltip;
+		}
+
+		return null;
 	}
 
 }

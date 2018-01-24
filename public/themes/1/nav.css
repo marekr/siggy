@@ -252,3 +252,29 @@
 .navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>li>a:focus {
 	color: inherit;
 }
+
+
+/* location marker */
+#header-location-container {
+	background-color: #383838;
+
+	/*for navbar collapsing more than anything or else it looks packed*/
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+#header-location-container p {
+	color: #ececec;
+}
+
+#header-location-icon.online {
+	color: limegreen;
+}
+
+#header-location-icon.offline {
+	color: gray;
+}
+
+#header-location-content span.effect {
+	font-weight: bold;
+}

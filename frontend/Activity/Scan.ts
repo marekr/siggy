@@ -54,7 +54,6 @@ export class Scan extends Activity {
 	private intelposes: POSes = null;
 	private intelstructures: Structures = null;
 
-	private templateEffectTooltip = null;
 	private statsChartConfig: any;
 	private statsChart : Chart = null;
 
@@ -72,7 +71,6 @@ export class Scan extends Activity {
 			this.freeze();
 		}
 
-		this.templateEffectTooltip = Handlebars.compile( $("#template-effect-tooltip").html() );
 
 		$(document).on('siggy.map.systemSelected', function(e, systemID) {
 			$this.freeze();
@@ -605,52 +603,17 @@ export class Scan extends Activity {
 		
 		if(systemData.effectTitle != null)
 		{
+			var system = StaticData.getSystemByID(systemData.id);
+			var systemEffect = StaticData.getEffectByID(systemData.effect_id);
+
 			var effectTitle = $("<p>").text(systemData.effectTitle);
 			var effect = $('#system-effect').append(effectTitle);
 
-			if( systemData.effectTitle != 'None' )
+			if( systemData.effect_id != 0 )
 			{
-				var effData = [];
-				if( systemData.effectTitle == 'Black Hole' )
-				{
-					effData = blackHoleEffects[systemData.sysClass];
-				}
-				else if(systemData.effectTitle == 'Wolf-Rayet Star')
-				{
-					effData = wolfRayetEffects[systemData.sysClass];
-				}
-				else if(systemData.effectTitle == 'Red Giant')
-				{
-					effData = redGiantEffects[systemData.sysClass];
-				}
-				else if(systemData.effectTitle == 'Cataclysmic Variable')
-				{
-					effData = catacylsmicEffects[systemData.sysClass];
-				}
-				else if(systemData.effectTitle == 'Magnetar')
-				{
-					effData = magnetarEffects[systemData.sysClass];
-				}
-				else if(systemData.effectTitle == 'Pulsar')
-				{
-					effData = pulsarEffects[systemData.sysClass];
-				}
-
-				if( typeof(effData) == 'undefined' )
-				{
-					effData = [];
-				}
-
-				var tooltip = this.templateEffectTooltip({
-					sysClass: systemData.sysClass,
-					effects: effData
-				});
-
-				effect.append(tooltip);
-
 				effectTitle.qtip({
 					content: {
-						text: $("#system-effects") // Use the "div" element next to this for the content
+						text: $(StaticData.getEffectTooltip(system, systemEffect))
 					},
 					position: {
 						target: 'mouse',

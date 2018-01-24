@@ -42,6 +42,7 @@ import HotkeyHelper from './HotkeyHelper';
 import { StaticData } from './StaticData';
 import { Maps } from './Maps';
 import Navigo from 'navigo';
+import { sys } from "typescript";
 
 
 $( function()
@@ -399,14 +400,60 @@ export class Siggy {
 
 				if( parseInt( data.location.id ) != 0 )
 				{
+					$('#header-location-icon').removeClass('offline');
+					$('#header-location-icon').addClass('online');
+
 					var old = $this.Location.id;
 					$this.Location.id = data.location.id;
 
 					if( old != $this.Location.id )
 					{
+						var system = StaticData.getSystemByID($this.Location.id);
+						if(system != null){ 
+							$('#header-location-content span.effect').qtip('destroy');
+
+							var effect = StaticData.getEffectByID(system.effect_id);
+			
+							let str = "";
+							if(effect != null) {
+								str += ("{0} - [{1}] - <span class='effect'>{2}</span>").format(system.name, 
+																								StaticData.systemClassToString(system.class), 
+																								effect.effectTitle);
+																								
+							} else {
+								str += ("{0} - [{1}]").format(system.name, StaticData.systemClassToString(system.class));
+							}
+							
+							$('#header-location-content').html(str);
+							
+							if( effect != null ) {
+								$('#header-location-content span.effect').qtip({
+										content: {
+											text: $(StaticData.getEffectTooltip(system, effect))
+										},
+										position: {
+											target: 'mouse',
+											adjust: { x: 5, y: 5 },
+											viewport: $(window)
+										}
+									});
+							}
+						}
+						
 						$(document).trigger('siggy.locationChanged', [old, $this.Location.id] );
 					}
 				}
+				else
+				{
+					$this.Location.id = 0;
+					
+					$('#header-location-icon').removeClass('online');
+					$('#header-location-icon').addClass('offline');
+					
+					$('#header-location-content').text("Offline");
+				}
+
+
 
 				if(data.chainmaps_update)
 				{

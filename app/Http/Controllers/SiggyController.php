@@ -317,7 +317,8 @@ class SiggyController extends BaseController {
 		$systemData = DB::selectOne("SELECT ss.*,se.effectTitle, r.regionName, c.constellationName,
 													COALESCE(sa.displayName,'') as displayName,
 													COALESCE(sa.inUse,0) as inUse,
-													COALESCE(sa.activity,0) as activity
+													COALESCE(sa.activity,0) as activity,
+													ss.effect as effect_id
 													FROM solarsystems ss
 													LEFT JOIN systemeffects se ON ss.effect = se.id
 													INNER JOIN eve_map_regions r ON ss.region = r.regionID

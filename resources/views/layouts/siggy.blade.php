@@ -66,6 +66,12 @@
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				@if( $group != null )
+					<li id="header-location-container">
+						<p class="navbar-text">
+							<i class="fa fa-map-marker fa-lg" aria-hidden="true" id="header-location-icon"></i> 
+							<span id="header-location-content">Banana (J100549) - [C5] - Black Hole</span>
+						</p>
+					</li>
 					@if( count(SiggySession::accessibleGroups()) > 1 )
 					<li class="dropdown">
 						<a data-toggle="dropdown" href="#">

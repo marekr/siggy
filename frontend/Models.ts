@@ -26,6 +26,7 @@ export interface System {
 	name: string;
 	region_name: string;
 	class: number;
+	effect_id: number;
 }
 
 export interface DScanRecord {
@@ -52,4 +53,31 @@ type DScanRecordGroupsType = {
 export interface DScan {
 	title: string;
 	groups: DScanRecordGroupsType;
+}
+
+export interface SystemEffect {
+	id: number;
+	effectTitle: string;
+}
+
+export interface SystemEffectArray {
+	[index: number]: SystemEffect;
+}
+
+export interface Site {
+	id: number;
+	name: string;
+	description: string;
+	type: string;
+}
+
+export interface Ship {
+	id: number;
+	name: string;
+	class: string;
+	mass: number;
+}
+
+export interface ShipArray {
+	[index: number]: Ship;
 }

@@ -113,6 +113,7 @@ Route::group(['middleware' => ['web','siggy.app']], function () {
 	Route::get('/data/structures','DataController@structures');
 	Route::get('/data/poses','DataController@poses');
 	Route::get('/data/ships','DataController@ships');
+	Route::get('/data/effects','DataController@effects');
 	Route::get('/data/locale/{locale}','DataController@locale');
 	Route::post('/update','SiggyController@update');
 	Route::post('siggy/siggy','SiggyController@siggy');

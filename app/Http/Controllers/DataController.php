@@ -13,7 +13,12 @@ class DataController extends Controller {
 
 	public function systems()
 	{
-		$systems = DB::select("SELECT ss.id, ss.name, r.regionName as region_name, ss.sec, ss.sysClass as class
+		$systems = DB::select("SELECT ss.id, 
+									ss.name, 
+									r.regionName as region_name, 
+									ss.sec, 
+									ss.sysClass as class,
+									ss.effect as effect_id
 													FROM solarsystems ss
 													LEFT JOIN eve_map_regions r ON(ss.region = r.regionID)");
 
@@ -39,6 +44,13 @@ class DataController extends Controller {
 		$ships = Ship::all()->keyBy('id');
 
 		return response()->json($ships);
+	}
+
+	public function effects()
+	{
+		$effects = \Siggy\SystemEffect::all()->keyBy('id');
+
+		return response()->json($effects);
 	}
 
 	public function locale($locale = 'en')
