@@ -9,7 +9,7 @@ import Bloodhound from 'corejs-typeahead';
 import Helpers from './Helpers';
 import time from 'locutus/php/datetime/time';
 import { Siggy as SiggyCore } from './Siggy';
-import { SystemEffectArray, System as SystemModel, SystemEffect, Site as SiteModel, Ship as ShipModel, ShipArray } from './Models';
+import { SystemEffectArray, System as SystemModel, SystemArray, SystemEffect, Site as SiteModel, Ship as ShipModel, ShipArray } from './Models';
 
 export const blackHoleEffects = {
 	1: [
@@ -318,7 +318,7 @@ export class StaticData {
 	public static templateWormholeInfoTooltip = null;
 	public static templateSiteTooltip = null;
 	public static templateEffectTooltip = null;
-	private static systems: SystemModel[] = [];
+	private static systems: SystemArray = {};
 	public static systemTypeAhead = null;
 	private static structureTypes: any = {};
 	private static posTypes: any = {};
@@ -404,21 +404,18 @@ export class StaticData {
 
 	public static getSystemByID( id:number ): SystemModel
 	{
-		for( var i = 0; i < this.systems.length; i++ )
-		{
-			if( this.systems[i].id == id )
-				return this.systems[i]
-		}
-
-		return null;
+		if( typeof( this.systems[ id ] ) != 'undefined' )
+			return this.systems[ id ];
+		else
+			return null;
 	}
 	
 	public static getSystemByName( name:string ): SystemModel
 	{
-		for( var i = 0; i < this.systems.length; i++ )
-		{
-			if( this.systems[i].name == name )
-				return this.systems[i]
+		for (let key of Object.keys(this.systems)) {  
+			let system = this.systems[key];
+			if( system.name == name )
+				return system;
 		}
 
 		return null;
@@ -565,7 +562,7 @@ export class StaticData {
 		return this.wormholeClassMap[ sysClass ];
 	}
 
-	public static systemClassToString( sysClass: number )
+	public static systemClassToString( sysClass: number ): string
 	{
 		if( sysClass == 7 )
 			return "Highsec";
@@ -577,6 +574,22 @@ export class StaticData {
 			return "Thera";
 		else
 			return "C"+sysClass;
+	}
+
+	public static systemClassToStringWithSec( system: SystemModel ): string
+	{
+		if ( system.class <= 6 )
+		{
+			return "C" + system.class;
+		}
+		else if( system.class <= 8 )
+		{
+			return system.sec;
+		}
+		else
+		{
+			return "0.0";
+		}
 	}
 
 	public static getWormholeFancyName( whInfo )

@@ -27,6 +27,19 @@ export interface System {
 	region_name: string;
 	class: number;
 	effect_id: number;
+	region_id: number;
+	constellation_id: number;
+	constellation_name: string;
+	sec: string;
+	planets: number;
+	moons: number;
+	radius: string;
+	belts: number;
+	truesec: number;
+}
+
+export interface SystemArray {
+	[index: number]: System;
 }
 
 export interface DScanRecord {

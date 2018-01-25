@@ -571,12 +571,14 @@ export class Scan extends Activity {
 
 	public updateSystemInfo(systemData)
 	{
+		let system = StaticData.getSystemByID(systemData.id);
 		//general info
-		$('#region').text(systemData.regionName + " / " + systemData.constellationName);
-		$('#constellation').text(systemData.constellationName);
-		$('#planetsmoons').text(systemData.planets + "/" + systemData.moons + "/" + systemData.belts);
-		$('#truesec').text(systemData.truesec);
-		$('#radius').text(systemData.radius + ' '+ window._('AU'));
+		$('#region').text(system.region_name + " / " + system.constellation_name);
+		$('#constellation').text(system.constellation_name);
+		
+		$('#planetsmoons').text(system.planets + "/" + system.moons + "/" + system.belts);
+		$('#truesec').text(system.truesec);
+		$('#radius').text(system.radius + ' '+ window._('AU'));
 
 		//HUB JUMPS
 		var hubJumpsStr = '';
@@ -601,10 +603,9 @@ export class Scan extends Activity {
 		$('#system-effect').empty();
 
 		
-		if(systemData.effectTitle != null)
+		if(system.effect_id != 0 && system.effect_id != null)
 		{
-			var system = StaticData.getSystemByID(systemData.id);
-			var systemEffect = StaticData.getEffectByID(systemData.effect_id);
+			var systemEffect = StaticData.getEffectByID(system.effect_id);
 
 			var effectTitle = $("<p>").text(systemData.effectTitle);
 			var effect = $('#system-effect').append(effectTitle);
@@ -632,11 +633,8 @@ export class Scan extends Activity {
 				var theStatic = StaticData.getWormholeByID(systemData.staticData[i].id);
 				if(theStatic != null)
 				{
-					var destBlurb = " (to "+StaticData.systemClassToString(theStatic.dest_class)+")";
+					var staticBit = $("<p>").text(("{0} (to {1})").format(theStatic.name, StaticData.systemClassToString(theStatic.dest_class)));
 
-					var staticBit = $("<p>").text(theStatic.name + destBlurb);
-
-					theStatic.destBlurb = destBlurb;
 					var staticTooltip = StaticData.templateWormholeInfoTooltip(theStatic);
 
 					$('#static-info').append(staticBit);
@@ -655,38 +653,25 @@ export class Scan extends Activity {
 			}
 		}
 
-		var sysName = systemData.name;
+		var sysName = system.name;
 
 		if ( systemData.displayName != '' )
 		{
-			sysName += " (" + systemData.displayName + ")";
+			sysName = ("{0} ({1})").format(system.name, systemData.displayName);
 		}
 
-		systemData.sysClass = parseInt(systemData.sysClass);
-
-		if ( systemData.sysClass <= 6 )
-		{
-			sysName += " - [C" + systemData.sysClass + "]";
-		}
-		else if( systemData.sysClass <= 8 )
-		{
-			sysName += " - ["+systemData.sec+"]";
-		}
-		else
-		{
-			sysName += " - [0.0]";
-		}
+		sysName = ("{0} - [{1}]").format(sysName, StaticData.systemClassToStringWithSec(system));
 		$('#system-name').html(sysName);
 
 
-		$('a.site-dotlan').attr('href', 'http://evemaps.dotlan.net/system/'+systemData.name);
-		$('a.site-wormholes').attr('href', 'http://wh.pasta.gg/'+systemData.name);
-		$('a.site-evekill').attr('href','http://eve-kill.net/?a=system_detail&sys_name='+systemData.name);
-		$('a.site-zkillboard').attr('href','https://zkillboard.com/system/'+systemData.id);
+		$('a.site-dotlan').attr('href', 'http://evemaps.dotlan.net/system/'+system.name);
+		$('a.site-wormholes').attr('href', 'http://wh.pasta.gg/'+system.name);
+		$('a.site-evekill').attr('href','http://eve-kill.net/?a=system_detail&sys_name='+system.name);
+		$('a.site-zkillboard').attr('href','https://zkillboard.com/system/'+system.id);
 
-		this.setSystemID(systemData.id);
-		this.setSystemClass(systemData.sysClass);
-		this.systemName = systemData.name;
+		this.setSystemID(system.id);
+		this.setSystemClass(system.class);
+		this.systemName = system.name;
 
 		if( typeof(systemData.stats) != 'undefined' )
 		{

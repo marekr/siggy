@@ -150,6 +150,10 @@ export default class Helpers {
 			return "UNKNOWN STRUCTURE";
 		});
 
+		Handlebars.registerHelper('systemClassToString', function(str) {
+			return StaticData.systemClassToString(str);
+		});
+
 		Handlebars.registerHelper('systemClassTextColor', function(sysClass) {
 			var classColor = '';
 			sysClass = parseInt(sysClass);

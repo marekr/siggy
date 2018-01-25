@@ -21,3 +21,11 @@ report-uri - reports csp error to sentry
 x-frame-Options
 ====
 Sameorigin so we can embed ourselves if we ever want to, protects agaisnt us being embedded elsewhere
+
+
+
+
+TURN ON GZIP FOR JSON
+====
+
+AddOutputFilterByType DEFLATE application/json

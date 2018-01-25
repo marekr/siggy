@@ -1,5 +1,5 @@
 <script id="template-statics-tooltip" type="text/x-handlebars-template">
-	<b>{{name}} {{destBlurb}}</b><br /><br />
+	<b>{{name}} (to {{systemClassToString dest_class}})</b><br /><br />
 	
 	<b>Mass:</b> {{ numberFormat mass }} kg<br />
 	<b>Max Jumpable Mass:</b> {{ numberFormat jump_mass }} kg<br />

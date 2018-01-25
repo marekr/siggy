@@ -9,19 +9,32 @@ use Siggy\StructureType;
 use Siggy\POSType;
 use Siggy\Ship;
 
+use \Cache;
+
 class DataController extends Controller {
 
 	public function systems()
 	{
-		$systems = DB::select("SELECT ss.id, 
-									ss.name, 
-									r.regionName as region_name, 
-									ss.sec, 
-									ss.sysClass as class,
-									ss.effect as effect_id
-													FROM solarsystems ss
-													LEFT JOIN eve_map_regions r ON(ss.region = r.regionID)");
-
+		$systems = Cache::tags('staticdata')->remember('systems', 60, function () {
+			return collect(DB::select("SELECT ss.id, 
+										ss.name, 
+										r.regionName as region_name, 
+										ss.constellation as constellation_id,
+										ss.region as region_id,
+										r.regionName as region_name,
+										c.constellationName as constellation_name,
+										ss.sec, 
+										ss.sysClass as class,
+										ss.planets,
+										ss.moons,
+										ss.radius,
+										ss.belts,
+										ss.truesec,
+										ss.effect as effect_id
+														FROM solarsystems ss
+														INNER JOIN eve_map_constellations c ON(ss.constellation = c.constellationID)
+														INNER JOIN eve_map_regions r ON(ss.region = r.regionID)"))->keyBy('id');
+		});
 		return response()->json($systems);
 	}
 
