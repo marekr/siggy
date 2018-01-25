@@ -92,6 +92,10 @@ export class Chainmap extends Activity {
 		$('#activity-' + this.key).show();
 	}
 
+	public load(args): void
+	{
+	}
+	
 	public stop(): void
 	{
 		clearTimeout(this._updateTimeout);

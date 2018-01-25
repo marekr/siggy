@@ -328,7 +328,6 @@ export class Siggy {
 				'/system/:name': function (params) {
 					let system = StaticData.getSystemByName(params.name);
 
-
 					if(system != null) {
 						$this.loadActivity('scan', {systemID: system.id}); 
 					} else {
@@ -489,12 +488,14 @@ export class Siggy {
 		var $this = this;
 
 
-		if( typeof( $this.activities[ activity ] ) == 'undefined' && activity != 'siggy' )
+		if( typeof( $this.activities[ activity ] ) == 'undefined' )
 			return;
 
-		if( $this.activity == activity )
-			return;
+		if( $this.activity == activity ) {
+			$this.activities[ activity ].load(args);
 
+			return;
+		}
 
 		if( $this.activity != '' )
 			$this.activities[$this.activity].stop();

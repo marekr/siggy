@@ -50,6 +50,10 @@ export class DScan extends Activity {
 		this.update();
 	}
 
+	public load(args): void
+	{
+	}
+	
 	public stop(): void {
 		$('#activity-' + this.key).hide();
 	}

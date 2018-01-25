@@ -1,3 +1,7 @@
+<IfModule mod_negotiation.c>
+	Options -MultiViews
+</IfModule>
+
 # Turn on URL rewriting
 RewriteEngine On
 
@@ -10,9 +14,18 @@ RewriteBase /
 	Deny From All
 </Files>
 
-# Allow any files or directories that exist to be displayed directly
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+# Protect application and system files from being viewed
+RewriteRule "^(.*/)?\.git/" - [F,L]
 
-#Rewrite all other URLs to index.php/URL
-RewriteRule .* index.php/$0 [PT,L]
+# Redirect Trailing Slashes If Not A Folder...
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+# Handle Front Controller...
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [L]
+
+# Handle Authorization Header
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

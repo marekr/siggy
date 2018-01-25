@@ -49,6 +49,10 @@ export class ScannedSystems extends Activity {
 		this.update();
 	}
 
+	public load(args): void
+	{
+	}
+	
 	public stop(): void
 	{
 		clearTimeout(this._updateTimeout);

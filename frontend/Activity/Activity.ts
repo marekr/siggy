@@ -18,4 +18,6 @@ export default abstract class Activity {
 	
 	public abstract start(args): void;
 	public abstract stop(args): void;
+	
+	public abstract load(args): void;
 }

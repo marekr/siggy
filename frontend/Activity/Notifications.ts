@@ -107,6 +107,10 @@ export class Notifications extends Activity {
 		this.updateNotifiers();
 	}
 
+	public load(args): void
+	{
+	}
+	
 	public stop(): void
 	{
 		clearTimeout(this._updateTimeout);

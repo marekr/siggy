@@ -74,6 +74,10 @@ export class Search extends Activity {
 		$('#activity-' + this.key).show();
 	}
 
+	public load(args): void
+	{
+	}
+	
 	public stop(): void
 	{
 		$('#activity-' + this.key).hide();

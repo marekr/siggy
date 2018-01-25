@@ -329,7 +329,6 @@ export class Scan extends Activity {
 	{
 		this.setSystemID(systemID);
 		this.forceUpdate = true;
-		clearTimeout(this._updateTimeout);
 
 		this.sigtable.clear();
 
@@ -355,6 +354,18 @@ export class Scan extends Activity {
 		$('#activity-' + this.key).show();
 		this.update();
 		this.map.draw();
+	}
+
+	public load(args): void
+	{
+		if( typeof(args) != 'undefined' )
+		{
+			if( typeof(args.systemID) != 'undefined' )
+			{
+				this.freeze();
+				this.switchSystem(args.systemID);
+			}
+		}
 	}
 
 	public stop(): void
