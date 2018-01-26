@@ -1,7 +1,4 @@
 {
 	"patches": {
-		"laravel/framework": {
-			"Laravel 5.4 AuthenticateSession Fix": "patches/fix-authenticate-session.patch"
-		}
 	}
 }

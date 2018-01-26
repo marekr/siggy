@@ -135,7 +135,7 @@ class Character extends Model {
 	
 	static function searchEVEAPI(string $name, bool $strict = false): ?array
 	{
-		$results = null;
+		$results = [];
 
 		$client = new ESIClient();
 		$result = $client->getSearchV1($name, ['character'], 'en-us', $strict);

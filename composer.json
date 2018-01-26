@@ -2,7 +2,7 @@
 	"require": {
 		"php": ">=7.1.0",
 		"nesbot/Carbon": "*",
-		"swiftmailer/swiftmailer": "@stable",
+		"swiftmailer/swiftmailer": "~6.0",
 		"3rdpartyeve/phealng": "~2.0",
 		"guzzlehttp/guzzle": "^6.2",
 		"mpociot/laravel-composite-key": "^1.0",
@@ -10,8 +10,8 @@
 		"cebe/markdown": "~1.1.1",
 		"symfony/process": "^3.2",
 		"predis/predis": "^1.1",
-		"laravel/framework": "5.4.*",
-		"laravelcollective/html": "^5.4",
+		"laravel/framework": "5.5.*",
+		"laravelcollective/html": "^5.5",
 		"lusitanian/oauth": "^0.8.10",
 		"laracasts/flash": "^3.0",
 		"fideloper/proxy": "^3.3",
@@ -23,7 +23,8 @@
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~5.7"
+        "phpunit/phpunit": "~6.0",
+		"filp/whoops": "~2.0"
     },
 	"autoload": {
 		"files": [
@@ -54,6 +55,10 @@
 		"post-update-cmd": [
 			"Illuminate\\Foundation\\ComposerScripts::postUpdate",
 			"php artisan optimize"
+		],
+		"post-autoload-dump": [
+			"Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+			"@php artisan package:discover"
 		]
 	},
 	"config": {

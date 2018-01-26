@@ -260,7 +260,7 @@ class SiggyController extends BaseController {
 			if( $forceUpdate )
 			{
 				$update['systemData'] = $this->getSystemData( $_POST['systemID'] );
-				if( count( $update['systemData'] ) > 0 )
+				if( !is_null($update['systemData']) )
 				{
 					$update['systemUpdate'] = (int) 1;
 				}
@@ -328,7 +328,7 @@ class SiggyController extends BaseController {
 													]);
 		if( $systemData == null )
 		{
-			return FALSE;
+			return null;
 		}
 
 		$systemData->staticData = array();

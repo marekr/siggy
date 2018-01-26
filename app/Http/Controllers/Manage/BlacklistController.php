@@ -65,7 +65,7 @@ class BlacklistController extends BaseController
 		if(!$validator->fails())
 		{
 			$charSearchResults = Character::searchEVEAPI( $_POST['character_name'], true );
-			if( $charSearchResults == null )
+			if( count($charSearchResults) == 0 )
 			{
 				$validator->errors()->add('character_name', 'EVE character not found');
 			}
