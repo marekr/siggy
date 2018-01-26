@@ -726,8 +726,8 @@ class SiggyController extends BaseController {
 
 		$update = array();
 
-		$system_data = $this->getSystemData($id);
-		$log_message = sprintf('%s edited system %s; ', SiggySession::getCharacterName(), $system_data->name );
+		$system = System::find($id);
+		$log_message = sprintf('%s edited system %s; ', SiggySession::getCharacterName(), $system->name );
 
 		if( isset($_POST['label']) )
 		{

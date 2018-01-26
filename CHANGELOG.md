@@ -1,5 +1,10 @@
 # siggy Changelog
 
+## 5.1.2 - 2018-01-xx
+## Changes
+- Fixed form validation on register page or else it would exception due to compatibility with backend framework
+- Fixed saving system names, broken due to previous change affecting solar system handling
+
 ## 5.1.1 - 2018-01-26
 ## Changes
 - Handling of system data in the frontend client streamlined and deduplicated

@@ -102,9 +102,9 @@ class AccountController extends Controller {
 		
 		if( count( $validator->errors() ) )
 		{
-			$this->throwValidationException(
-				$request, $validator
-			);
+			return redirect('account/register')
+				->withErrors($validator)
+				->withInput();
 		}
 	
 		$session = session();
@@ -139,9 +139,9 @@ class AccountController extends Controller {
 		{
 			$validator->errors()->add('username', 'Unknown error has occured.');
 			
-			$this->throwValidationException(
-				$request, $validator
-			);
+			return redirect('account/register')
+				->withErrors($validator)
+				->withInput();
 		}
 	}
 
