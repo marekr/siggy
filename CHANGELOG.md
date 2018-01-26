@@ -1,5 +1,10 @@
 # siggy Changelog
 
+## 5.1.1 - 2018-01-26
+## Changes
+- Handling of system data in the frontend client streamlined and deduplicated
+- Updated backend framework
+
 ## 5.1.0 - 2018-01-23
 ## Changes
 - Current location is now in the navigation bar, effect is also shown if available (and hoverable!)
