@@ -1,7 +1,10 @@
 # siggy Changelog
 
-## 5.1.2 - 2018-01-xx
-## Changes
+## 5.2.0 - 2018-01-28
+## Additions
+- Added swagger api definition to http://siggy.borkedlabs.com/api, nothing concrete or guranteed yet
+
+## Fixes
 - Fixed form validation on register page or else it would exception due to compatibility with backend framework
 - Fixed saving system names, broken due to previous change affecting solar system handling
 
