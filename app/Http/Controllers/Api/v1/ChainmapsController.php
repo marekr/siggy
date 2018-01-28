@@ -49,6 +49,8 @@ class ChainmapsController extends BaseController {
 
 		$data = $chainmap->get_map_cache();
 		
+		$output['id'] = $chainmap->chainmap_id;
+		$output['name'] = $chainmap->chainmap_name;
 		$output['wormholes'] = [];
 		foreach($data['wormholes'] as $w)
 		{

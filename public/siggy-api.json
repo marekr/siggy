@@ -1,0 +1,319 @@
+{
+	"openapi": "3.0.0",
+	"servers": [
+	  {
+		"url": "https://siggy.borkedlabs.com/api"
+	  }
+	],
+	"info": {
+	  "description": "siggy's API! Allows you to get some out of data from siggy. See the <a href='http://wiki.siggy.borkedlabs.com/api/authentication/'>authentication guide</a> on how to make requests.",
+	  "version": "1.0.0",
+	  "title": "siggy API"
+	},
+	"tags": [
+	  {
+		"name": "system",
+		"description": "Solar system related endpoints"
+	  },
+	  {
+		"name": "group",
+		"description": "Group related endpoints"
+	  }
+	],
+	"paths": {
+	  "/v1/group": {
+		"get": {
+		  "tags": [
+			"group"
+		  ],
+		  "operationId": "getGroup",
+		  "responses": {
+			"200": {
+			  "description": "Gets details about api key's group",
+			  "content": {
+				"application/json": {
+				  "schema": {
+					"$ref": "#/components/schemas/groupModel"
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  "/v1/systems/{system_id}": {
+		"get": {
+		  "tags": [
+			"system"
+		  ],
+		  "summary": "Get descriptive data about a solar system",
+		  "parameters": [
+			{
+			  "name": "system_id",
+			  "in": "path",
+			  "required": true,
+			  "description": "The EVE id of the solar system.",
+			  "schema": {
+				"type": "string"
+			  }
+			}
+		  ],
+		  "operationId": "getSystemById",
+		  "responses": {
+			"200": {
+			  "description": "Returns a list of data sets",
+			  "content": {
+				"application/json": {
+				  "schema": {
+					"$ref": "#/components/schemas/systemModel"
+				  },
+				  "example": {
+					"id": 10,
+					"name": "Pink Elephants",
+					"ticker": "PINKE",
+					"isk_balance": "1052502.00",
+					"payment_code": "siggy-c857128891ab"
+				  }
+				}
+			  }
+			},
+			"404": {
+			  "description": "System not found by id"
+			}
+		  }
+		}
+	  },
+	  "/v1/chainmaps": {
+		"get": {
+		  "tags": [
+			"chainmaps"
+		  ],
+		  "operationId": "getChainMaps",
+		  "responses": {
+			"200": {
+			  "description": "Gets list of all chainmaps in the group",
+			  "content": {
+				"application/json": {
+				  "schema": {
+					"type": "array",
+					"items": {
+					  "$ref": "#/components/schemas/chainMapModel"
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  "/v1/chainmaps/{chainmap_id}": {
+		"get": {
+		  "tags": [
+			"chainmaps"
+		  ],
+		  "summary": "Get descriptive data about a solar system",
+		  "parameters": [
+			{
+			  "name": "chainmap_id",
+			  "in": "path",
+			  "required": true,
+			  "description": "The id of the chainmap",
+			  "schema": {
+				"type": "string"
+			  }
+			}
+		  ],
+		  "operationId": "getSystemById",
+		  "responses": {
+			"200": {
+			  "description": "Returns a list of data sets",
+			  "content": {
+				"application/json": {
+				  "schema": {
+					"$ref": "#/components/schemas/chainMapModelDetailed"
+				  },
+				  "example": {
+					"id": 1,
+					"name": "Default",
+					"wormholes": [
+					  {
+						"hash": "0c53c8f331f77a9d4d4e939badf9f9f8",
+						"to_system_id": 30000012,
+						"from_system_id": 30000102,
+						"eol": 0,
+						"mass": 0,
+						"frigate_sized": false,
+						"created_at": "2017-06-14 03:45:15",
+						"updated_at": null,
+						"total_tracked_mass": 0
+					  },
+					  {
+						"hash": "54e90aa7e1cebd3e8024e0bfe167b644",
+						"to_system_id": 30000004,
+						"from_system_id": 30000032,
+						"eol": 0,
+						"mass": 1,
+						"frigate_sized": false,
+						"created_at": "2017-06-08 03:58:48",
+						"updated_at": "2017-06-08 05:11:15",
+						"total_tracked_mass": 0
+					  }
+					]
+				  }
+				}
+			  }
+			},
+			"404": {
+			  "description": "System not found by id"
+			}
+		  }
+		}
+	  }
+	},
+	"components": {
+	  "schemas": {
+		"wormholeModel": {
+		  "type": "object",
+		  "properties": {
+			"hash": {
+			  "type": "string"
+			},
+			"to_system_id": {
+			  "type": "integer"
+			},
+			"from_system_id": {
+			  "type": "integer"
+			},
+			"eol": {
+			  "type": "integer"
+			},
+			"frigate_sized": {
+			  "type": "boolean"
+			},
+			"created_at": {
+			  "type": "string"
+			},
+			"updated_at": {
+			  "type": "string"
+			},
+			"total_tracked_mass": {
+			  "type": "integer"
+			}
+		  }
+		},
+		"chainMapModelDetailed": {
+		  "type": "object",
+		  "properties": {
+			"id": {
+			  "type": "integer"
+			},
+			"name": {
+			  "type": "string"
+			},
+			"wormholes": {
+			  "type": "array",
+			  "items": {
+				"$ref": "#/components/schemas/wormholeModel"
+			  }
+			}
+		  }
+		},
+		"chainMapModel": {
+		  "type": "object",
+		  "properties": {
+			"id": {
+			  "type": "integer"
+			},
+			"name": {
+			  "type": "string"
+			}
+		  }
+		},
+		"groupModel": {
+		  "type": "object",
+		  "properties": {
+			"id": {
+			  "type": "integer"
+			},
+			"name": {
+			  "type": "string"
+			},
+			"ticker": {
+			  "type": "string"
+			},
+			"isk_balance": {
+			  "type": "number"
+			},
+			"payment_code": {
+			  "type": "string"
+			}
+		  }
+		},
+		"systemModel": {
+		  "type": "object",
+		  "properties": {
+			"id": {
+			  "type": "integer"
+			},
+			"name": {
+			  "type": "string"
+			},
+			"belts": {
+			  "type": "integer"
+			},
+			"moons": {
+			  "type": "integer"
+			},
+			"system_class": {
+			  "type": "integer"
+			},
+			"sec": {
+			  "type": "string"
+			},
+			"true_sec": {
+			  "type": "number",
+			  "format": "float"
+			},
+			"constellation_id": {
+			  "type": "number"
+			},
+			"region_id": {
+			  "type": "number"
+			},
+			"constellation_name": {
+			  "type": "string"
+			},
+			"region_name": {
+			  "type": "string"
+			},
+			"stats": {
+			  "type": "array",
+			  "items": {
+				"type": "object",
+				"properties": {
+				  "apiKey": {
+					"type": "string",
+					"description": "To be used as a dataset parameter value"
+				  },
+				  "apiVersionNumber": {
+					"type": "string",
+					"description": "To be used as a version parameter value"
+				  },
+				  "apiUrl": {
+					"type": "string",
+					"format": "uriref",
+					"description": "The URL describing the dataset's fields"
+				  },
+				  "apiDocumentationUrl": {
+					"type": "string",
+					"format": "uriref",
+					"description": "A URL to the API console for each API"
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  }
+	}
+  }

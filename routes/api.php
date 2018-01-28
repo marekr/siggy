@@ -18,18 +18,21 @@ $api = app('Dingo\Api\Routing\Router');
 // Publicly accessible routes
 $api->version('v1', ['middleware' => 'api.auth'], function ($api) {
 	$api->group(['prefix' => 'v1'], function($api){
-		$api->get('/group', 'App\Http\Controllers\Api\v1\GroupController@getGroup');
+		$api->get('/group', '\App\Http\Controllers\Api\v1\GroupController@getGroup');
 
 		$api->get('/chainmaps', [
-            'uses'   => 'App\Http\Controllers\Api\v1\ChainmapsController@getList',
+            'uses'   => '\App\Http\Controllers\Api\v1\ChainmapsController@getList',
             'scopes' => 'chainmaps_read',
         ]); 
 		
 		$api->get('/chainmaps/{id}', [
-            'uses'   => 'App\Http\Controllers\Api\v1\ChainmapsController@getChainmap',
+            'uses'   => '\App\Http\Controllers\Api\v1\ChainmapsController@getChainmap',
             'scopes' => 'chainmaps_read',
         ]); 
 		
-		$api->get('/systems/{id}', 'App\Http\Controllers\Api\v1\SystemsController@getSystem');
+		$api->get('/systems/{id}', '\App\Http\Controllers\Api\v1\SystemsController@getSystem');
 	});
 });
+
+
+Route::get('/','\App\Http\Controllers\Api\SwaggerController@index');

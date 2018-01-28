@@ -316,3 +316,4 @@ Route::group(['middleware' => ['web','siggy.app']], function () {
 	])->where('jsroute', '.*');
 
 });
+
