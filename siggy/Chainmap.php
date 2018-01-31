@@ -10,6 +10,7 @@ use Illuminate\Support\Collection;
 
 use Siggy\ActiveSystem;
 use App\Facades\SiggySession;
+use \Group;
 
 class Chainmap extends Model {
 
