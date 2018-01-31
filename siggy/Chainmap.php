@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 use Siggy\ActiveSystem;
+use App\Facades\SiggySession;
 
 class Chainmap extends Model {
 
