@@ -1,5 +1,7 @@
 <?php
 
+namespace Siggy;
+
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -11,15 +13,15 @@ use Siggy\ActiveSystem;
 class Chainmap extends Model {
 
 	public $timestamps = false;
-	protected $primaryKey = 'chainmap_id';
+	protected $primaryKey = 'id';
 
 	protected $fillable = [
-		'chainmap_name',
-		'chainmap_password',
-		'chainmap_homesystems',
-		'chainmap_homesystems_ids',
-		'chainmap_skip_purge_home_sigs',
-		'chainmap_type',
+		'name',
+		'homesystems',
+		'homesystems_ids',
+		'skip_purge_home_sigs',
+		'fixed',
+		'default',
 		'group_id'
 	];
 	
@@ -27,18 +29,22 @@ class Chainmap extends Model {
 		'group_id'
 	];
 
-	public function getIdAttribute()
-	{
-		return $this->chainmap_id;
-	}
-
 	public static function find(int $chainmapId, int $groupId)
 	{		
-		$map = self::where('chainmap_id',$chainmapId)
+		$map = self::where('id',$chainmapId)
 				->where('group_id', $groupId)
 				->first();
 
 		return $map;
+	}
+
+
+	public static function findAllByGroup(int $groupId)
+	{		
+		$maps = self::where('group_id', $groupId)
+					->get();
+
+		return $maps;
 	}
 
 	public function get_map_cache()
@@ -235,9 +241,9 @@ class Chainmap extends Model {
 	public function get_home_systems()
 	{
 		$homeSystems = array();
-		if( $this->chainmap_homesystems_ids != '' )
+		if( $this->homesystems_ids != '' )
 		{
-			$homeSystems = explode(',', $this->chainmap_homesystems_ids);
+			$homeSystems = explode(',', $this->homesystems_ids);
 		}
 
 		return $homeSystems;
@@ -675,7 +681,7 @@ class Chainmap extends Model {
 								'groupID' => $this->group_id
 							]);
 
-		$log_message .= ' from the chainmap "'. $this->chainmap_name.'"';
+		$log_message .= ' from the chainmap "'. $this->name.'"';
 
 		$group = Group::find($this->group_id);
 		$group->logAction('delwhs', $log_message );

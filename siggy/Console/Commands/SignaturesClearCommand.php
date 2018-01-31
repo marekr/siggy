@@ -47,18 +47,18 @@ class SignaturesClearCommand extends Command
 		foreach( $groups as $group )
 		{
 			$ignoreSys = '';
-			$chains = DB::select("SELECT chainmap_homesystems_ids FROM chainmaps
+			$chains = DB::select("SELECT homesystems_ids FROM chainmaps
 													WHERE group_id = ? AND
-													chainmap_skip_purge_home_sigs=1",[$group->id]);
+													skip_purge_home_sigs=1",[$group->id]);
 
 			if( $chains != null )
 			{
 				$ignoreSys = array();
 				foreach( $chains as $c )
 				{
-					if( !empty($c->chainmap_homesystems_ids) )
+					if( !empty($c->homesystems_ids) )
 					{
-						$ignoreSys[] = $c->chainmap_homesystems_ids;
+						$ignoreSys[] = $c->homesystems_ids;
 					}
 				}
 

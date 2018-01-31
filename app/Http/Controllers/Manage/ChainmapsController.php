@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Validator;
 
 use App\Facades\Auth;
 use \Group;
-use \Chainmap;
+use Siggy\Chainmap;
 use \GroupMember;
 use Siggy\System;
 
@@ -37,19 +37,19 @@ class ChainmapsController extends BaseController
 		$group = Auth::user()->group;
 
 		$new = [
-			'chainmap_name' => $_POST['chainmap_name'],
+			'name' => $_POST['name'],
 			'group_id' => Auth::user()->groupID,
-			'chainmap_type' => 'fixed',
-			'chainmap_skip_purge_home_sigs' => intval($_POST['chainmap_skip_purge_home_sigs'] ?? 0),
+			'fixed' => 1,
+			'skip_purge_home_sigs' => intval($_POST['skip_purge_home_sigs'] ?? 0),
 		];
 		
 		$validator = Validator::make($new, [
-			'chainmap_name' => 'required',
+			'name' => 'required',
 		]);
 		
 		if($validator->passes())
 		{
-			list($new['chainmap_homesystems_ids'], $new['chainmap_homesystems']) = $this->___process_home_system_input($_POST['chainmap_homesystems']);
+			list($new['homesystems_ids'], $new['homesystems']) = $this->___process_home_system_input($_POST['homesystems']);
 
 			$chainmap = Chainmap::create($new);
 			$chainmap->rebuild_map_data_cache();
@@ -128,17 +128,17 @@ class ChainmapsController extends BaseController
 		}
 		
 		$update = [
-			'chainmap_name' => $_POST['chainmap_name'],
-			'chainmap_skip_purge_home_sigs' => intval($_POST['chainmap_skip_purge_home_sigs'] ?? 0)
+			'name' => $_POST['name'],
+			'skip_purge_home_sigs' => intval($_POST['skip_purge_home_sigs'] ?? 0)
 		];
 
 		$validator = Validator::make($update, [
-			'chainmap_name' => 'required',
+			'name' => 'required',
 		]);
 
 		if($validator->passes())
 		{
-			list($update['chainmap_homesystems_ids'], $update['chainmap_homesystems']) = $this->___process_home_system_input($_POST['chainmap_homesystems']);
+			list($update['homesystems_ids'], $update['homesystems']) = $this->___process_home_system_input($_POST['homesystems']);
 			$chainmap->fill($update);
 			$chainmap->save();
 
@@ -164,7 +164,7 @@ class ChainmapsController extends BaseController
 			return redirect('manage/chainmaps');
 		}
 
-		if( $chainmap->chainmap_type == 'default' )
+		if( $chainmap->default )
 		{
 			flash('Error: You cannot delete your default chain map')->error();
 			return redirect('manage/chainmaps');
@@ -185,7 +185,7 @@ class ChainmapsController extends BaseController
 			return redirect('manage/chainmaps');
 		}
 
-		if( $chainmap->chainmap_type == 'default' )
+		if( $chainmap->default )
 		{
 			flash('Error: You cannot delete your default chain map')->error();
 			return redirect('manage/chainmaps');

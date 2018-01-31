@@ -10,7 +10,7 @@ use Siggy\StandardResponse;
 use App\Facades\Auth;
 use App\Facades\SiggySession;
 use \Signature;
-use \Chainmap;
+use Siggy\Chainmap;
 use \Notifier;
 use \NotificationTypes;
 use \WormholeSignature;

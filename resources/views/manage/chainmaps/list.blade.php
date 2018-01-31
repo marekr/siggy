@@ -26,12 +26,12 @@
 	<tbody>
 		@foreach( $chainmaps as $s )
 		<tr>
-			<td><?php echo $s->chainmap_name ?></td>
+			<td>{{ $s->name }}</td>
 			<td>---</td>
 			<td>
-				<a href="{{url('manage/chainmaps/edit/'.$s->chainmap_id)}}" class='btn btn-default btn-xs'><i class="fa fa-pencil"></i>&nbsp;Edit</a>
-				@if( $s->chainmap_type != 'default' )
-				<a href="{{url('manage/chainmaps/remove/'.$s->chainmap_id)}}" class='btn btn-default btn-xs'><i class="fa fa-trash"></i>&nbsp;Remove</a>
+				<a href="{{url('manage/chainmaps/edit/'.$s->id)}}" class='btn btn-default btn-xs'><i class="fa fa-pencil"></i>&nbsp;Edit</a>
+				@if( !$s->default )
+				<a href="{{url('manage/chainmaps/remove/'.$s->id)}}" class='btn btn-default btn-xs'><i class="fa fa-trash"></i>&nbsp;Remove</a>
 				@endif
 			</td>
 		</tr>

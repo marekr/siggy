@@ -11,7 +11,8 @@ use App\Facades\Auth;
 use App\Facades\SiggySession;
 use Siggy\CharacterLocation;
 use \Pathfinder;
-use \Chainmap;
+use Siggy\Chainmap;
+use Siggy\StandardResponse;
 
 class TheraController extends Controller {
 
@@ -122,6 +123,7 @@ class TheraController extends Controller {
 	
 	public function import_to_chainmap()
 	{
+		$postData = json_decode($request->getContent(), true);
 		$cache_name = 'thera-exits';
 
 		if( ($exits = Cache::get( $cache_name, FALSE )) == FALSE )
@@ -137,19 +139,19 @@ class TheraController extends Controller {
 		}
 
 		$chainmap = null;
-		if( isset($_POST['chainmap']) )
+		if( isset($postData['chainmap']) )
 		{
-			$chainmap = Chainmap::find(intval($_POST['chainmap']),SiggySession::getGroup()->id);
+			$chainmap = Chainmap::find(intval($postData['chainmap']),SiggySession::getGroup()->id);
 		}
 
 		if( $chainmap == null )
 		{
-			return;
+			return response()->json(StandardResponse::error('Chain map not found'), 400);
 		}
 
 		if( count($exits) > 0 )
 		{
-			if( isset($_POST['clean']) && intval($_POST['clean']) == 1 )
+			if( isset($postData['clean']) && intval($postData['clean']) == 1 )
 			{
 				$chainmap->delete_all_system_connections(31000005);
 			}
@@ -168,6 +170,8 @@ class TheraController extends Controller {
 				}
 			}
 		}
+
+		return response()->json(StandardResponse::ok(count($exits)));
 	}
 
 	private function fetch_thera_json()

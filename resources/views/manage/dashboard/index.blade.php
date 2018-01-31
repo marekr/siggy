@@ -19,7 +19,7 @@
 <h3>Security warning!</h3>
 <div class="alert alert-warning">
 	<p>
-	You don't have a group password set! It is highly encouraged you add one for your own security. People <i>may</i> use stolen API keys or spoof browser headers to otherwise pretend a legitimate user. 
+	You don't have a group password set! It is highly encouraged you add one for your own security.
 	This is optional and you may ignore this warning.
 	</p>
 	<br />

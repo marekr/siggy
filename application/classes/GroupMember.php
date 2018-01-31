@@ -21,6 +21,16 @@ class GroupMember extends Model {
 		'memberType'
 	];
 
+	public function character()
+	{
+		if( $this->character == null || $this->character->id != $this->eveID )
+		{
+			$this->character = Character::find($this->eveID);
+		}
+
+		return $this->character;
+	}
+
 	public function corporation()
 	{
 		if( $this->corporation == null || $this->corporation->id != $this->eveID )

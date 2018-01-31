@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\BaseController;
 use \Group;
-use \Chainmap;
+use Siggy\Chainmap;
 use Dingo\Api\Routing\Helpers;
 
 class ChainmapsController extends BaseController {
@@ -19,10 +19,10 @@ class ChainmapsController extends BaseController {
 
 		foreach($group->chainMaps() as $c)
 		{
-			$hs = explode(",", $c->chainmap_homesystems);
+			$hs = explode(",", $c->homesystems);
 			$output[] = [
-							'id' => (int)$c->chainmap_id,
-							'name' => $c->chainmap_name,
+							'id' => (int)$c->id,
+							'name' => $c->name,
 							'homesystems' => $hs
 						];
 		}
@@ -49,8 +49,8 @@ class ChainmapsController extends BaseController {
 
 		$data = $chainmap->get_map_cache();
 		
-		$output['id'] = $chainmap->chainmap_id;
-		$output['name'] = $chainmap->chainmap_name;
+		$output['id'] = $chainmap->id;
+		$output['name'] = $chainmap->name;
 		$output['wormholes'] = [];
 		foreach($data['wormholes'] as $w)
 		{

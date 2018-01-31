@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 use App\Facades\Auth;
-use \Chainmap;
+use Siggy\Chainmap;
 use \Group;
 use \GroupMember;
 use \Character;
@@ -25,9 +25,8 @@ class GroupMembersController extends BaseController
 
 	public function getList()
 	{
-		$chainmaps = Chainmap::where('group_id', Auth::user()->group->id)
-						->get()
-						->keyBy('chainmap_id')
+		$chainmaps = Chainmap::findAllByGroup(Auth::user()->group->id)
+						->keyBy('id')
 						->all();
 
 
@@ -35,10 +34,11 @@ class GroupMembersController extends BaseController
 		{
 			$members = DB::select("SELECT gm.* FROM groupmembers gm
 													LEFT JOIN chainmaps_access a ON(gm.id=a.groupmember_id)
-													WHERE chainmap_id=?",[$c->chainmap_id]);
+													WHERE chainmap_id=?",[$c->id]);
 
 			$table[] = ['members' => $members, 'chainmap' => $c];
 		}
+
 		
 		return view('manage.group.members', [
 												'chainmaps' => $chainmaps,
@@ -46,23 +46,23 @@ class GroupMembersController extends BaseController
 											]);
 	}
 
-	public function postAddDetails()
+	public function postAddDetails(Request $request)
 	{
-		if( empty($_POST['eveID']) || empty($_POST['accessName']) || empty($_POST['memberType']) )
+		if (!$request->has(['eveID', 'accessName', 'memberType']))
 		{
 			//bad request
 			return redirect('manage/group/add');
 		}
 
 		//see if member exists?
-		$member = GroupMember::findByGroupAndType(Auth::user()->groupID, $_POST['memberType'], (int)$_POST['eveID']);
+		$member = GroupMember::findByGroupAndType(Auth::user()->groupID, $request->input('memberType'), $request->input('eveID'));
 
 		$chainmaps = array();
 		if( $member != null )
 		{
 			$chainmaps = DB::select("SELECT * FROM chainmaps
 														WHERE group_id=:group1 AND
-														chainmap_id NOT IN(
+														id NOT IN(
 															SELECT chainmap_id FROM chainmaps_access
 															WHERE group_id=:group2 AND groupmember_id=:member
 														)
@@ -74,43 +74,43 @@ class GroupMembersController extends BaseController
 		}
 		else
 		{
-			$chainmaps = Chainmap::where('group_id', Auth::user()->group->id)->get()->all();
+			$chainmaps = Chainmap::findAllByGroup(Auth::user()->group->id)->all();
 		}
 
 		if( $chainmaps == null)
 		{
 			flash('This member already has access to all chain maps possible')->error();
-			return redirect('manage/group/add');
+			return redirect('manage/group/members/add');
 		}
 		
 		return view('manage.group.add_member_selected', [
 												'chainmaps' => $chainmaps,
-												'eveID' => intval($_POST['eveID']),
-												'accessName' => $_POST['accessName'],
-												'memberType' =>  $_POST['memberType'],
+												'eveID' => $request->input('eveID'),
+												'accessName' => $request->input('accessName'),
+												'memberType' =>  $request->input('memberType'),
 											]);
 	}
 	
-	public function postAddFinish()
+	public function postAddFinish(Request $request)
 	{
-		$member = GroupMember::findByGroupAndType(Auth::user()->groupID, $_POST['memberType'], (int)$_POST['eveID']);
+		$member = GroupMember::findByGroupAndType(Auth::user()->groupID, $request->input('memberType'), $request->input('eveID'));
 
 		if( $member == null )
 		{
 			$data = [
-				'eveID' => $_POST['eveID'],
-				'accessName' => $_POST['accessName'],
+				'eveID' => $request->input('eveID'),
+				'accessName' => $request->input('accessName'),
 				'groupID' => Auth::user()->groupID,
-				'memberType' => $_POST['memberType'],
-			];						
+				'memberType' => $request->input('memberType'),
+			];
 
 			$member = GroupMember::create($data);
 		}
 
-		if( isset( $_POST['chainmap_id'] ) && intval($_POST['chainmap_id']) > 0)
+		if( $request->has('chainmap_id') && intval($request->input('chainmap_id')) > 0)
 		{
 			$insert['group_id'] = Auth::user()->groupID;
-			$insert['chainmap_id'] = intval($_POST['chainmap_id']);
+			$insert['chainmap_id'] = $request->input('chainmap_id');
 			$insert['groupmember_id'] = $member->id;
 			DB::table('chainmaps_access')->insert($insert);
 		}
@@ -123,27 +123,27 @@ class GroupMembersController extends BaseController
 		return redirect('manage/group/members');
 	}
 
-	public function postAdd()
+	public function postAdd(Request $request)
 	{
-		$validator = Validator::make($_POST, [
+		$validator = Validator::make($request->all(), [
 			'searchName' => 'required',
 		]);
 
 		if( $validator->passes() )
 		{
-			if($_POST['memberType'] == 'char')
+			$searchName = $request->input('searchName');
+			if($request->input('memberType') == 'char')
 			{
-				$results = Character::searchEVEAPI($_POST['searchName'], false);
+				$results = Character::searchEVEAPI($searchName, false);
 			}
-
-			if($_POST['memberType'] == 'corp')
+			else if($request->input('memberType') == 'corp')
 			{
-				$results = Corporation::searchEVEAPI($_POST['searchName'], false);
+				$results = Corporation::searchEVEAPI($searchName, false);
 			}
 			
 			return view('manage.group.add_member_search', [
 													'results' => $results,
-													'memberType' => $_POST['memberType']
+													'memberType' => $request->input('memberType')
 												]);
 		}
 		
@@ -154,19 +154,14 @@ class GroupMembersController extends BaseController
 
 	public function getAdd(Request $request)
 	{
-		$id = intval(0);
-
-	
 		return view('manage.group.add_member_search', [
 												'results' => [],
 												'memberType' => 'char'
 											]);
 	}
 
-	public function getRemoveMember()
+	public function getRemoveMember(int $id)
 	{
-		$id = intval($this->request->param('id'));
-
 		$member = GroupMember::find($id);
 		if( $member->groupID != Auth::user()->groupID )
 		{

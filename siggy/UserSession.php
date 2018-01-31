@@ -257,7 +257,7 @@ class UserSession {
 				if( ($p->memberType == 'corp' && $p->eveID == $this->corporation_id)
 						|| ($p->memberType == 'char' && $p->eveID == $this->character_id) )
 				{
-					$accessibleChainmaps[$c->chainmap_id] = $c;
+					$accessibleChainmaps[$c->id] = $c;
 				}
 			}
 		}
@@ -271,10 +271,10 @@ class UserSession {
 		{
 			foreach($c->access as $p)
 			{
-				if( $c->chainmap_type == 'default' && ( ($p->memberType == 'corp' && $p->eveID == $this->corporation_id)
+				if( $c->default && ( ($p->memberType == 'corp' && $p->eveID == $this->corporation_id)
 														|| ($p->memberType == 'char' && $p->eveID == $this->character_id) ) )
 				{
-					return $c->chainmap_id;
+					return $c->id;
 				}
 			}
 		}
@@ -287,7 +287,7 @@ class UserSession {
 				if( ($p->memberType == 'corp' && $p->eveID == $this->corporation_id)
 						|| ($p->memberType == 'char' && $p->eveID == $this->character_id) )
 				{
-					return $c->chainmap_id;
+					return $c->id;
 				}
 			}
 		}

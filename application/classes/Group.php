@@ -92,13 +92,13 @@ class Group extends Model {
 		$group = self::create($insert);
 
 		$insert = ['group_id' => $group->id,
-						 'chainmap_type' => 'default',
-						 'chainmap_name' => 'Default',
-						 'chainmap_homesystems' => '',
-						 'chainmap_homesystems_ids' => ''
+						 'default' => 1,
+						 'name' => 'Default',
+						 'homesystems' => '',
+						 'homesystems_ids' => ''
 		];
 
-		DB::table('chainmaps')->insert($insert);
+		$map = \Siggy\Chainmap::create($insert);
 
 		return $group;
 	}
@@ -252,17 +252,13 @@ class Group extends Model {
 
 	public function recacheChainmaps()
 	{
-		$chainmaps = DB::table('chainmaps')
-						->where('group_id', $this->id)
-						->get()
-						->keyBy('chainmap_id')
-						->all();
-
+		$chainmaps = \Siggy\Chainmap::findAllByGroup($this->id)->keyBy('id')->all();
+		
 		foreach($chainmaps as &$c)
 		{
 			$members = DB::select("SELECT gm.memberType, gm.eveID 
 										FROM groupmembers gm
-								LEFT JOIN chainmaps_access a ON(gm.id=a.groupmember_id) WHERE chainmap_id=?",[$c->chainmap_id]);
+								LEFT JOIN chainmaps_access a ON(gm.id=a.groupmember_id) WHERE chainmap_id=?",[$c->id]);
 			$c->access = $members;
 		}
 

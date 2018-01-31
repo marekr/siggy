@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Cookie;
 use Siggy\StandardResponse;
 use App\Facades\Auth;
 use App\Facades\SiggySession;
-use \Chainmap;
+use Siggy\Chainmap;
 use \groupUtils;
 use Siggy\CharacterLocation;
 use \Pathfinder;
@@ -175,7 +175,7 @@ class ChainmapController extends Controller {
 							'chainmap' => SiggySession::getAccessData()['active_chain_map']
 						]);
 
-			$log_message .= ' from the chainmap "'. $this->getChainmap()->chainmap_name.'"';
+			$log_message .= ' from the chainmap "'. $this->getChainmap()->name.'"';
 			
 			SiggySession::getGroup()->logAction('delwhs', $log_message );
 		}
@@ -210,7 +210,7 @@ class ChainmapController extends Controller {
 							'chainmap' => SiggySession::getAccessData()['active_chain_map']
 						]);
 
-			$log_message .= ' from the chainmap "'. $this->getChainmap()->chainmap_name.'"';
+			$log_message .= ' from the chainmap "'. $this->getChainmap()->name.'"';
 			SiggySession::getGroup()->logAction('delwhs', $log_message );
 		}
 
@@ -244,7 +244,7 @@ class ChainmapController extends Controller {
 							'chainmap' => SiggySession::getAccessData()['active_chain_map']
 						]);
 
-			$log_message .= ' from the chainmap "'. $this->getChainmap()->chainmap_name.'"';
+			$log_message .= ' from the chainmap "'. $this->getChainmap()->name.'"';
 			SiggySession::getGroup()->logAction('delwhs', $log_message );
 		}
 
@@ -513,9 +513,9 @@ class ChainmapController extends Controller {
 		$default_id = 0;
 		foreach(SiggySession::accessibleChainMaps() as $c)
 		{
-			if( $c->chainmap_id == $desired_chainmap )
+			if( $c->id == $desired_chainmap )
 			{
-				$selected_id = $c->chainmap_id;
+				$selected_id = $c->id;
 			}
 		}
 

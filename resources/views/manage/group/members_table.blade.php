@@ -1,5 +1,5 @@
 
-<h2 class="tableHeader">{{$table['chainmap']['chainmap_name']}}</h2>
+<h2 class="tableHeader">{{$table['chainmap']['name']}}</h2>
 <table class="table table-striped" width="100%">
 	<thead>
 		<tr>
@@ -25,7 +25,7 @@
 				{{ $m->accessName }}
 			</td>
 			<td>
-				<a href="{{url('manage/chainmaps/access/remove/'.$table['chainmap']['chainmap_id'].'-'.$m->id)}}" class='btn btn-default btn-xs'><i class="fa fa-trash"></i>&nbsp;Remove</a>
+				<a href="{{url('manage/chainmaps/access/remove/'.$table['chainmap']['id'].'-'.$m->id)}}" class='btn btn-default btn-xs'><i class="fa fa-trash"></i>&nbsp;Remove</a>
 			</td>
 		</tr>
 		@endforeach

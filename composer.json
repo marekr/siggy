@@ -5,7 +5,7 @@
 		"cebe/markdown": "~1.1.1",
 		"cweagans/composer-patches": "~1.0",
 		"dingo/api": "2.0.0-alpha1",
-		"doctrine/dbal": "^2.5",
+		"doctrine/dbal": "^2.6",
 		"fideloper/proxy": "^3.3",
 		"guzzlehttp/guzzle": "^6.2",
 		"laracasts/flash": "^3.0",

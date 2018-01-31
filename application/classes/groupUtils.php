@@ -11,7 +11,7 @@ final class groupUtils {
 		}
 
 		$whsigs = DB::table('wormhole_signatures')
-            ->join('chainmaps', 'chainmaps.chainmap_id', '=', 'wormhole_signatures.chainmap_id')
+            ->join('chainmaps', 'chainmaps.id', '=', 'wormhole_signatures.chainmap_id')
 			->whereIn('wormhole_signatures.wormhole_hash',$hashes)
 			->where('chainmaps.group_id', $groupID)
 			->get()

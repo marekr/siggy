@@ -20,7 +20,6 @@ use Siggy\CharacterLocation;
 use \CharacterLocationHistory;
 use \miscUtils;
 use \Signature;
-use \Chainmap;
 use \WormholeSignature;
 use Siggy\System;
 use \WormholeJump;
@@ -28,6 +27,7 @@ use \Notifier;
 use \NotificationTypes;
 use \Pathfinder;
 use App\Facades\SiggySession;
+use Siggy\Chainmap;
 
 class SiggyController extends BaseController {
 
@@ -216,8 +216,8 @@ class SiggyController extends BaseController {
 			$chainmaps = array();
 			foreach( SiggySession::accessibleChainMaps() as $c )
 			{
-				$chainmaps[ $c->chainmap_id ] = ['id' => (int)$c->chainmap_id,
-														'name' => $c->chainmap_name];
+				$chainmaps[ $c->id ] = ['id' => (int)$c->id,
+														'name' => $c->name];
 			}
 
 			$update['chainmaps'] = $chainmaps;

@@ -11,6 +11,7 @@ import { StaticData } from '../StaticData';
 import Timer from '../Timer';
 import { Maps } from '../Maps';
 import { Siggy as SiggyCore } from '../Siggy';
+import { Dialogs } from '../Dialogs';
 
 export class Thera extends Activity {
 
@@ -65,10 +66,12 @@ export class Thera extends Activity {
 				'chainmap': $('#dialog-import-thera select[name=chainmap]').val()
 			};
 
-			$.post($this.core.settings.baseUrl + 'thera/import_to_chainmap', data,
-			function (ret)
-			{
+			$.post($this.core.settings.baseUrl + 'thera/import_to_chainmap', JSON.stringify(data))
+			.done(function(respData) {
 				$.unblockUI();
+			})
+			.fail(function(jqXHR) {
+				Dialogs.alertServerError("importing wormholes to chain map");
 			});
 
 			return false;
@@ -103,6 +106,7 @@ export class Thera extends Activity {
 	public update()
 	{
 		var $this = this;
+		
 		$.ajax({
 				url: this.core.settings.baseUrl + 'thera/latest_exits',
 				dataType: 'json',
