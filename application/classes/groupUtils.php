@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\DB;
 
+use Siggy\Chainmap;
+
 final class groupUtils {
 	static function deleteLinkedSigWormholes($groupID, $hashes)
 	{
