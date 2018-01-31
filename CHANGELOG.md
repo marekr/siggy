@@ -1,5 +1,10 @@
 # siggy Changelog
 
+## 5.2.1 - 2018-01-30
+## Fixes
+- Fixed various issues with siggy being able to fetch corporations from ESI. Turns out CCP doesn't do any pretty written deprecation notices and relies on noticing headers.......not even a HTTP 410 after the fact to more easily exception and alert
+- Backend cleanup of a table's usage
+
 ## 5.2.0 - 2018-01-28
 ## Additions
 - Added swagger api definition to http://siggy.borkedlabs.com/api, nothing concrete or guranteed yet
