@@ -47,6 +47,9 @@ class ESICorpSearchCommand extends Command
 		$result = Corporation::searchEVEAPI($name);
 
 		$this->info("results");
-		print_r($result);
+		foreach($result as $corp)
+		{
+			print $corp->name . " " . $corp->id . "\r\n";
+		}
 	}
 }

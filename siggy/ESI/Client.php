@@ -7,6 +7,8 @@ use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\BadResponseException;
 use Siggy\Redis\RedisTtlCounter;
 
+use Illuminate\Support\Facades\Log;
+
 class Client
 {
 	private $client = null;
@@ -84,16 +86,24 @@ class Client
 			$options['query'] = array_merge($options['query'],$queryBits);
 			$resp = $this->client->request($method, $route, $options);
 
+			if($resp->hasHeader('warning'))
+			{
+				Log::alert('warning header retrieved on route ' . $route . ' of: ' . $resp->getHeader('warning')[0]);
+			}
+
 			$this->incrementStatistic(true);
 		}
-		catch(BadResponseException $e)
+		catch(ClientException $e)
 		{
+			//4xx errors
+			//placeholder as we can error log here
 			$this->incrementStatistic(false);
-			//4xxand 5xx errors
 		}
-		catch (\Exception $e) 
+		catch(ServerException $e)
 		{
-			
+			//5xx errors
+			//placeholder as we can error log here
+			$this->incrementStatistic(false);
 		}
 		finally
 		{
@@ -101,10 +111,9 @@ class Client
 		}
 	}
 
-	public function getCorporationInformationV2(int $corporation_id): ?\stdClass
+	public function getCorporationInformationV4(int $corporation_id): ?\stdClass
 	{
-		$response = $this->request('GET', "/v2/corporations/{$corporation_id}/");
-		
+		$response = $this->request('GET', "/v4/corporations/{$corporation_id}/");
 		if( $response == null ||
 			$response->getStatusCode() != 200)
 		{
