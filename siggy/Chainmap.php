@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use Siggy\ActiveSystem;
 use App\Facades\SiggySession;
 use \Group;
+use \stdClass;
 
 class Chainmap extends Model {
 
