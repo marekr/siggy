@@ -60,7 +60,7 @@ class ApiKeyController extends BaseController
 
 		if($validator->passes())
 		{
-			$selectedScopes = $request->input('scopes');
+			$selectedScopes = $request->input('scopes', []);
 
 			$data['scopes'] = [];
 			foreach(ApiKey::avaliableScopes() as $scope)
