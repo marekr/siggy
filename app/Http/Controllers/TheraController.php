@@ -121,7 +121,7 @@ class TheraController extends Controller {
 		return $exits;
 	}
 	
-	public function import_to_chainmap()
+	public function import_to_chainmap(Request $request)
 	{
 		$postData = json_decode($request->getContent(), true);
 		$cache_name = 'thera-exits';
