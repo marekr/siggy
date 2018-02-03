@@ -319,6 +319,7 @@ export class StaticData {
 	public static templateSiteTooltip = null;
 	public static templateEffectTooltip = null;
 	private static systems: SystemArray = {};
+	private static systemsTypeaheadArray: any = [];
 	public static systemTypeAhead = null;
 	private static structureTypes: any = {};
 	private static posTypes: any = {};
@@ -376,6 +377,16 @@ export class StaticData {
 			
 			$this.systems = result;
 
+			for(let id in $this.systems) {
+				let system = $this.systems[id];	
+				$this.systemsTypeaheadArray.push(
+						{
+							id: system.id, 
+							name: system.name
+						}
+				);
+			}
+
 			return $.ajax({
 				url: baseUrl + 'data/effects?' + time(),
 				dataType: 'json'
@@ -383,19 +394,17 @@ export class StaticData {
 		}).then(function(result){
 			$this.effects = result;
 
-			
 			$this.systemTypeAhead = new Bloodhound({
 				datumTokenizer: function(d) {
 					return Bloodhound.tokenizers.whitespace(d.name);
 				},
 				queryTokenizer: Bloodhound.tokenizers.whitespace,
-				local: $this.systems,
+				local: $this.systemsTypeaheadArray,
 				remote: {
 					url: baseUrl+'chainmap/autocomplete_wh?q=%QUERY',
 					wildcard: '%QUERY'
 				}
 			});
-
 			
 			window.loading_screen.finish();
 			core.continueInitialize();
