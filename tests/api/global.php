@@ -1,7 +1,7 @@
 <?php
 
 
-function request( $verb, $base, $path, $content = '' )
+function request( $verb, $base, $path, $content = '', $timestamp = '' )
 {
 	global $apiID, $apiSecret;
 	$params     = array(
@@ -11,7 +11,9 @@ function request( $verb, $base, $path, $content = '' )
 		'connection'    => 'keep-alive',
 	);
 
-	$timestamp = date('c');
+	if($timestamp = '') {
+		$timestamp = date('c');
+	}
 	
 	$content_hash = "";
 	$content_type = "";
@@ -33,7 +35,7 @@ function request( $verb, $base, $path, $content = '' )
 	$params['Authorization'] = 'siggy-HMAC-SHA256 Credential='.$authorization;
 	$params['x-siggy-date'] = $timestamp;
 
-	$ch     = curl_init();
+	$ch  = curl_init();
 
 	$curl_headers = array();
 	foreach( $params as $p => $k )
@@ -64,11 +66,11 @@ function request( $verb, $base, $path, $content = '' )
 
 function url()
 {
-  return sprintf(
+	return sprintf(
 		"%s://%s/",
 		'http',
 		"dev.siggy.borkedlabs.com"
-  );
+	);
 }
 /*
 http://stackoverflow.com/questions/6054033/pretty-printing-json-with-php
