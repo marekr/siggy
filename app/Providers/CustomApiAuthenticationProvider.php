@@ -50,7 +50,7 @@ class CustomApiAuthenticationProvider extends Authorization
 		$timestamp = $request->header('x-siggy-date', '');
 		if(empty($timestamp))
 		{
-			$timestamp = $request->headers('Date');
+			$timestamp = $request->header('Date');
 		}
 
 		// Validate timestamp.
