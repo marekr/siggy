@@ -161,9 +161,9 @@ class Client
 		return $resp;
 	}
 
-	public function getUniverseSystemKillsV1(): ?array
+	public function getUniverseSystemKillsV2(): ?array
 	{
-		$response = $this->request('GET', "/v1/universe/system_kills/");
+		$response = $this->request('GET', "/v2/universe/system_kills/");
 		
 		if( $response == null ||
 			$response->getStatusCode() != 200)
@@ -182,9 +182,9 @@ class Client
 		return $resp;
 	}
 	
-	public function getSearchV1(string $search, array $categories, string $language = 'en-us', $strict = false): ?\stdClass
+	public function getSearchV2(string $search, array $categories, string $language = 'en-us', $strict = false): ?\stdClass
 	{
-		$response = $this->request('GET', "/v1/search/",[
+		$response = $this->request('GET', "/v2/search/",[
 			'search' => $search,
 			'categories' => implode(",",$categories),
 			'language' => $language,

@@ -138,7 +138,7 @@ class Character extends Model {
 		$results = [];
 
 		$client = new ESIClient();
-		$result = $client->getSearchV1($name, ['character'], 'en-us', $strict);
+		$result = $client->getSearchV2($name, ['character'], 'en-us', $strict);
 
 		if($result != null)
 		{	

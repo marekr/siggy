@@ -72,7 +72,7 @@ class EveSystemStatsCommand extends Command
 		}
 
 		$this->info('Updating kills...');
-		$kills = $client->getUniverseSystemKillsV1();
+		$kills = $client->getUniverseSystemKillsV2();
 		try
 		{
 			if($kills != null)
@@ -81,7 +81,7 @@ class EveSystemStatsCommand extends Command
 				{
 					SolarSystemKill::create([
 						'system_id' => $entry->system_id,
-						'ship_kills' => $entry->ship_kills - $entry->npc_kills, // bug fix for v1 endpoint
+						'ship_kills' => $entry->ship_kills,
 						'pod_kills' => $entry->pod_kills,
 						'npc_kills' => $entry->npc_kills,
 						'date_start' => $kills['dateStart'],

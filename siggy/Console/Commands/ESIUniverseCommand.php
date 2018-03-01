@@ -44,7 +44,7 @@ class ESIUniverseCommand extends Command
 	{
 		$client = new ESIClient();
 
-		print_r($client->getUniverseSystemKillsV1());	
+		print_r($client->getUniverseSystemKillsV2());	
 	}
 
 	/**
