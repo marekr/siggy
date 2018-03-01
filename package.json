@@ -36,11 +36,16 @@
     "moment-timezone": "^0.5.13",
     "navigo": "^7.0.0",
     "qtip2": "^3.0.3",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-fontawesome": "^1.6.1",
     "typeahead.js": "^0.11.1",
     "validate.js": "^0.12.0"
   },
   "devDependencies": {
     "@types/locutus": "0.0.5",
+    "@types/react": "^16.0.38",
+    "@types/react-dom": "^16.0.4",
     "@types/webpack-env": "^1.13.5",
     "awesome-typescript-loader": "^3.4.1",
     "babel-core": "^6.26.0",

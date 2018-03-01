@@ -1,6 +1,15 @@
 @extends('layouts.siggy')
 
 @section('content')
+@include('siggy.activities.search')
+@include('siggy.activities.thera')
+@include('siggy.activities.scanned_systems')
+@include('siggy.activities.notifications')
+@include('siggy.activities.astrolabe')
+@include('siggy.activities.chainmap')
+@include('siggy.activities.notes')
+@include('siggy.activities.dscan')
+@include('siggy.activities.timerboard')
 <div id="activity-scan" class="wrapper" style="display:none">
 	<?php
 	if(isset($_SERVER['HTTP_X_SSL_PROTOCOL']) && trim($_SERVER['HTTP_X_SSL_PROTOCOL']) == 'SSLv3' ): ?>

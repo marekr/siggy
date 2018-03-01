@@ -32,6 +32,7 @@
 						<li><a class="activity-menu-option" href="/notifications" data-navigo data-activity-key='notifications'><i class="fa fa-bell" aria-hidden="true"></i> Notifications</a></li>
 						<li><a class="activity-menu-option" href="/search" data-navigo data-activity-key='search'><i class="fa fa-search" aria-hidden="true"></i> Search</a></li>
 						<li><a class="activity-menu-option" href="/dscan" data-navigo data-activity-key='dscan' data-activity-hidden style="display:none"><i class="fa fa-wifi" aria-hidden="true"></i> DScan</a></li>
+						<li><a class="activity-menu-option" href="/timerboard" data-navigo data-activity-key='timerboard'><i class="fa fa-wifi" aria-hidden="true"></i> Timer Board</a></li>
 						<li role="separator" class="divider"></li>
 
 						<li><a id="global-notes-button"><i class="fa fa-sticky-note" aria-hidden="true"></i> Notes</a></li>
@@ -138,14 +139,6 @@
 				<li><a></a></li>
 			</ul>
 		</div>
-		@include('siggy.activities.search')
-		@include('siggy.activities.thera')
-		@include('siggy.activities.scanned_systems')
-		@include('siggy.activities.notifications')
-		@include('siggy.activities.astrolabe')
-		@include('siggy.activities.chainmap')
-		@include('siggy.activities.notes')
-		@include('siggy.activities.dscan')
 		@yield('content')
 
 		@yield('alt_content')

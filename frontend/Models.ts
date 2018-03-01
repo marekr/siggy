@@ -94,3 +94,10 @@ export interface Ship {
 export interface ShipArray {
 	[index: number]: Ship;
 }
+
+export interface Timer {
+	id: number;
+	system_id: number;
+	expires_at: string;
+	type: string;
+}

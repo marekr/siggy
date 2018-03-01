@@ -36,6 +36,7 @@ import { Notifications as NotificationsActivity } from './activity/Notifications
 import { Notes as NotesActivity } from './activity/Notes';
 import { Search as SearchActivity } from './activity/Search';
 import { DScan as DScanActivity } from './activity/DScan';
+import { TimerBoard as TimerBoardActivity } from './activity/TimerBoard';
 import CharacterSettings from './CharacterSettings';
 import GlobalNotes from './GlobalNotes';
 import HotkeyHelper from './HotkeyHelper';
@@ -192,7 +193,8 @@ export class Siggy {
 						//	astrolabe: new siggy2.Activity.Astrolabe(this),
 							chainmap: new ChainmapActivity(this),
 							notes: new NotesActivity(this),
-							dscan: new DScanActivity(this)
+							dscan: new DScanActivity(this),
+							timerboard: new TimerBoardActivity(this)
 						//	homestead: new siggy2.Activity.Homestead(this)
 						};
 
@@ -351,6 +353,9 @@ export class Siggy {
 				},
 				'/notes': function () {
 					$this.loadActivity('notes'); 
+				},
+				'/timerboard': function () {
+					$this.loadActivity('timerboard'); 
 				},
 				'/chainmap': function() {
 					$this.loadActivity('chainmap', {chainMapID: $this.activities.scan.chainMapID});
