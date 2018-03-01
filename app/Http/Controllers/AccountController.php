@@ -308,8 +308,6 @@ class AccountController extends Controller {
 			$eveService = $serviceFactory->createService('Eve', 
 															$credentials, 
 															$storage, [
-																		\Siggy\OAuth2\Service\Eve::SCOPE_CHARACTER_LOCATION_READ,
-																		\Siggy\OAuth2\Service\Eve::SCOPE_CHARACTER_NAVIGATION_WRITE,
 																		\Siggy\OAuth2\Service\Eve::SCOPE_ESI_UI_WRITE_WAYPOINT,
 																		\Siggy\OAuth2\Service\Eve::SCOPE_ESI_LOCATION_READ_LOCATION,
 																		\Siggy\OAuth2\Service\Eve::SCOPE_ESI_LOCATION_READ_SHIP_TYPE,
@@ -322,9 +320,7 @@ class AccountController extends Controller {
 				'scope_esi_location_read_ship_type' => 1,
 				'scope_esi_location_read_online' => 1,
 				'scope_esi_ui_write_waypoint' => 1,
-				'scope_esi_ui_open_window' => 1,
-				'scope_character_location_read' => 1,
-				'scope_character_navigation_write' => 1,
+				'scope_esi_ui_open_window' => 1
 			];
 
 			if ( !empty($_GET['code']) )

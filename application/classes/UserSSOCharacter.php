@@ -16,8 +16,6 @@ class UserSSOCharacter extends Model {
 			'access_token_expiration',
 			'refresh_token',
 			'valid',
-			'scope_character_location_read',
-			'scope_character_navigation_write',
 			'scope_esi_location_read_location',
 			'scope_esi_location_read_ship_type',
 			'scope_esi_location_read_online',
@@ -26,14 +24,6 @@ class UserSSOCharacter extends Model {
 		];
 
 	protected $avaliableScopes = [
-			[
-				'key' => 'scope_character_location_read',
-				'name' => 'CREST characterLocationRead'
-			],
-			[
-				'key' => 'scope_character_navigation_write',
-				'name' => 'CREST characterNavigationWrite'
-			],
 			[
 				'key' => 'scope_esi_location_read_location',
 				'name' => 'ESI locationReadLocation'
