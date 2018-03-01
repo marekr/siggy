@@ -58,7 +58,6 @@ class BillingPaymentsCommand extends Command
 		ini_set('max_execution_time', 0);
 		set_time_limit(0);
 
-		PhealHelper::configure();
 		$pheal = new Pheal( "3523432", "iBfWRWpwZ9I5l7Ynt2Y7ZlxiesY6b7vVhmpHlhzLDMdCFQnaTus4DBgOGxIfwu4M", "corp" );
 
 		$stoppingRef = (float)miscUtils::getDBCacheItem( 'lastProcessedJournalRefID' );
