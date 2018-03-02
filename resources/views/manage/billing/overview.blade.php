@@ -15,13 +15,13 @@ Please be warned, as this new method of billing phases in, you will be automatic
 <h4>Overview</h4>
 <dl class="dl-horizontal">
 	<dt>Account Balance</dt>
-	<dd><?php echo number_format($group->isk_balance); ?> isk</dd>
+	<dd>{{ number_format($group->isk_balance) }} isk</dd>
 	<dt>Member Count</dt>
-	<dd> <?php echo ($numUsers > 0) ? $numUsers : 'Pending'; ?></dd>
+	<dd>{{ ($numUsers > 0) ? $numUsers : 'Pending' }}</dd>
 	<dt>Daily cost*</dt>
-	<dd><?php echo number_format(miscUtils::computeCostPerDays($numUsers,1)); ?> isk</dd>
+	<dd>{{ number_format(miscUtils::computeCostPerDays($numUsers,1)) }} isk</dd>
 	<dt>Monthly cost*</dt>
-	<dd><?php echo number_format(miscUtils::computeCostPerDays($numUsers,30)); ?> isk</dd>
+	<dd>{{ number_format(miscUtils::computeCostPerDays($numUsers,30)) }} isk</dd>
 </dl>
 <span class="help-inline">* Projected costs on current member count. Ensure you have enough isk to cover daily costs at the minimum. You do not have to pay ahead any predefined amount of days.</span>
 
@@ -45,13 +45,13 @@ You <strong>must</strong> enter the following text as the reason:
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach( $charges as $c ): ?>
+		@foreach( $charges as $c )
 		<tr>
-			<td><?php echo miscUtils::getDateTimeString($c->date); ?></td>
-			<td>-<?php echo number_format($c->amount); ?></td>
-			<td><?php echo $c->message; ?></td>
+			<td>{{ $c->charged_at }}</td>
+			<td>-{{ number_format($c->amount,2 ) }}</td>
+			<td>{{ $c->message }}</td>
 		</tr>
-		<?php endforeach ?>
+		@endforeach
 	</tbody>
 </table>
 
@@ -62,18 +62,18 @@ You <strong>must</strong> enter the following text as the reason:
 			<th width="25%">Date Processed</th>
 			<th width="25%">Date Submitted</th>
 			<th width="25%">Amount (isk)</th>
-			<th width="25%">Payee</th>
+			<th width="25%">Payer</th>
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach( $payments as $p ): ?>
+		@foreach( $payments as $p )
 		<tr>
-			<td><?php echo miscUtils::getDateTimeString($p->paymentProcessedTime); ?></td>
-			<td><?php echo miscUtils::getDateTimeString($p->paymentTime); ?></td>
-			<td><?php echo number_format($p->paymentAmount); ?></td>
-			<td><?php echo $p->payeeName; ?></td>
+			<td>{{$p->processed_at}}</td>
+			<td>{{$p->paid_at}}</td>
+			<td>{{number_format($p->amount,2)}}</td>
+			<td>{{$p->payer_name}}</td>
 		</tr>
-		<?php endforeach ?>
+		@endforeach
 	</tbody>
 </table>
 @endsection

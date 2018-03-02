@@ -110,6 +110,27 @@ class Client
 			return $resp;
 		}
 	}
+	
+	public function getCorporationWalletDivisionJournal(int $corporation_id, int $division, ?int $fromId = null): ?\stdClass
+	{
+		$opts = [];
+		if($fromId != null) 
+		{
+			$opts['from_id'] = $fromId;
+		}
+
+		$response = $this->request('GET', "/v2/corporations/{$corporation_id}/wallets/{$division}/journal/",$opts);
+
+		if( $response == null ||
+			$response->getStatusCode() != 200)
+		{
+			return null;
+		}
+		
+		$resp = $response->getBody();
+
+		return json_decode($resp);
+	}
 
 	public function getCorporationInformationV4(int $corporation_id): ?\stdClass
 	{

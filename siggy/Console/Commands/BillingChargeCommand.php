@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use \Group;
 use \miscUtils;
+use Siggy\BillingCharge;
 
 class BillingChargeCommand extends Command
 {
@@ -62,22 +63,20 @@ class BillingChargeCommand extends Command
 					$message = "Daily usage cost - {$activeChars} characters";
 					$this->info($message);
 
-					$insert = array(
-										'amount' => $cost,
-										'date' => time(),
-										'groupID' => $group->id,
-										'memberCount' => $activeChars,
-										'message' => $message
-									);
-					$result = DB::table('billing_charges')->insert($insert);
+					$insert = [
+						'amount' => $cost,
+						'charged_at' => Carbon::now,
+						'group_id' => $group->id,
+						'member_count' => $activeChars,
+						'message' => $message
+					];
+					$result = BillingCharge::create($insert);
 
 					$group->applyISKCharge( $cost );
 					$group->last_billing_charge_at = Carbon::now();
 					$group->save();
 				}
 			});
-
-		
 
 		$this->info('Charged groups');
 	}

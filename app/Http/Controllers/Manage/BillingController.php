@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\DB;
 
 use App\Facades\Auth;
 use \Group;
+use Siggy\BillingPayment;
+use Siggy\BillingCharge;
 
 class BillingController extends BaseController
 {
@@ -17,11 +19,11 @@ class BillingController extends BaseController
 	{
 		$numUsers = Auth::user()->group->getCharacterUsageCount();
 		
-		$payments = array();
-		$payments = DB::select("SELECT * FROM billing_payments WHERE groupID=:group ORDER BY paymentID DESC LIMIT 0,10",['group' => Auth::user()->group->id]);
+		$payments = [];
+		$payments = BillingPayment::findAllByGroupOrdered(Auth::user()->group->id);
 		
-		$charges = array();
-		$charges = DB::select("SELECT * FROM billing_charges WHERE groupID=:group ORDER BY chargeID DESC LIMIT 0,10",['group' => Auth::user()->group->id]);
+		$charges = [];
+		$charges = BillingCharge::findAllByGroupOrdered(Auth::user()->group->id);
 
 
 		return view('manage.billing.overview', [
