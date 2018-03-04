@@ -11,6 +11,8 @@ use App\Facades\Auth;
 use App\Facades\SiggySession;
 use Siggy\StandardResponse;
 
+use Siggy\UserESITokenManager;
+
 class CrestController extends Controller {
 
 	public function waypoint(Request $request)
@@ -26,10 +28,17 @@ class CrestController extends Controller {
 			return response()->json(StandardResponse::error("Something went horribly wrong, your sso token doesn't exist???"));
 		}
 
+		$tokenManager = new UserESITokenManager();
 		if($sso->scope_esi_ui_write_waypoint)
 		{
-			$client = new ESIClient($sso->access_token);
-			$success = $client->postUiAutopilotWaypointV2($systemId, $waypoint, false);
+			$client = new ESIClient($tokenManager);
+
+			try {
+				$success = $client->postUiAutopilotWaypointV2($systemId, $waypoint, false);
+			}
+			catch(\Exception $e) {
+				$success = false;
+			}
 		}
 
 		if(!$success)

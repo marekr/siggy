@@ -9,6 +9,8 @@ use \miscUtils;
 use \Group;
 use Siggy\ESI\Client as ESIClient;
 use Siggy\BillingPayment;
+use Siggy\BackendESITokenManager;
+
 
 class BillingPaymentsCommand extends Command
 {
@@ -50,25 +52,25 @@ class BillingPaymentsCommand extends Command
 		ini_set('max_execution_time', 0);
 		set_time_limit(0);
 
-		
 		$corpId = config('backend.payment_corp_id');
 		$division = config('backend.payment_division');
-		$token = 'test';
-		$client = new ESIClient($token);
 
-		$largestProcessedWalletRefId = (float)miscUtils::getDBCacheItem( 'largestProcessedWalletRefId' );
-
-		$largestVisitedRef = 0;
-		$fromID = null;
+		$manager = new BackendESITokenManager();
+		$client = new ESIClient($manager);
 
 		$continueFetchingTransactions = true;
-		$i = 0;
-
 		$lastProcessedRefId = null;
 		do
 		{
-			$this->info("Fetching some wallet entries");
+			$this->info("Fetching some wallet entries, from {$lastProcessedRefId}");
+			
 			$transactions = $client->getCorporationWalletDivisionJournal($corpId, $division, $lastProcessedRefId);
+
+			if($transactions == null)
+			{
+				$this->info("no transactions returned");
+				break;
+			}
 
 			if(!count($transactions))
 			{
@@ -79,23 +81,18 @@ class BillingPaymentsCommand extends Command
 
 			foreach($transactions as $transaction)
 			{
-				//did we reach the end?
-				if($transaction->ref_id <= $largestProcessedWalletRefId)
+				//process and check if we should stop
+				if(!$this->processBillingTransaction($transaction))
 				{
 					$this->info("reached old transactions");
 					$continueFetchingTransactions = false;
 					break;
 				}
 
-				$this->processBillingTransaction($transaction);
-
-				$largestProcessedWalletRefId = max($largestProcessedWalletRefId, $transaction->ref_id);
 				//set this query parameter as we go, ultimately it shiould end up at the "end"
 				$lastProcessedRefId = $transaction->ref_id;
 			}
 		} while($continueFetchingTransactions);
-
-		miscUtils::storeDBCacheItem( 'largestProcessedWalletRefId', (string)$largestProcessedWalletRefId );
 	}
 	
 
@@ -117,11 +114,18 @@ class BillingPaymentsCommand extends Command
 		return $clear;
 	}
 
-	private function processBillingTransaction( $transaction )
+
+	private function processBillingTransaction( $transaction ): bool
 	{
 		$this->info("Processing payment {$transaction->ref_id}");
 		if( $transaction->ref_type == self::playerDonation || $transaction->ref_type == self::corpAccountWithdrawal)
 		{
+			if(!property_exists($transaction, 'reason')) {
+				$this->info("Missing reason {$transaction->ref_id}");
+				return true;
+			}
+
+			print_r($transaction);
 			$entryCode = trim(str_replace('DESC:','',$transaction->reason));
 			$entryCode = strtolower($this->superclean($entryCode));
 			if( !empty($entryCode) )
@@ -129,7 +133,7 @@ class BillingPaymentsCommand extends Command
 				preg_match('/^siggy-([a-zA-Z0-9]{14,})/', $entryCode, $matches);
 				if( count($matches) > 0 && isset($matches[1]) )
 				{
-					$res = Payment::where('ref_id', $transaction->ref_id);
+					$res = BillingPayment::where('ref_id', $transaction->ref_id)->first();
 					
 					if( $res == null )
 					{
@@ -166,15 +170,23 @@ class BillingPaymentsCommand extends Command
 						{
 							$this->info("group not found for payment of {$transaction->amount} with code {$transaction->reason}");
 						}
+
+						return true;
 					}
 					else
 					{
 						//processed already!
 						//do nothing
-						$this->info("Payment already processed,{$entryCode},{$res->eveRefID}");
+						$this->info("Payment already processed,{$entryCode},{$res->ref_id}");
+
+						//we reached a old payment, stop
+						return false;
 					}
 				}
 			}
 		}
+
+		//continue processing
+		return true;
 	}
 }

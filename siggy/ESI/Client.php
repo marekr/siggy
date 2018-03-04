@@ -4,8 +4,13 @@ namespace Siggy\ESI;
 
 use Carbon\Carbon;
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Exception\BadResponseException;
 use Siggy\Redis\RedisTtlCounter;
+use Siggy\ESI\ExpiredAuthorizationException;
+
+use Siggy\ESI\ITokenManager;
 
 use Illuminate\Support\Facades\Log;
 
@@ -14,11 +19,15 @@ class Client
 	private $client = null;
 	private $clientOptions = [];
 	private $accessToken = "";
+	private $accessTokenExpiration =  null;
+
 	public static $esiStatisticTtl = 300;
 
-	public function __construct($accessToken = '', $timeout = 10)
+	private $tokenManager = null;
+
+	public function __construct(ITokenManager $tokenManager = null, int $timeout = 10)
 	{
-		$this->accessToken = $accessToken;
+		$this->tokenManager = $tokenManager;
 
 		$options = [
 			'base_uri' => 'https://esi.tech.ccp.is/',
@@ -29,20 +38,67 @@ class Client
 			]
 		];
 
-		if($accessToken != null)
-		{
-			$options['headers']['Authorization'] = 'Bearer '.$accessToken;
+		$this->client = new GuzzleClient($options);
+	}
+
+	public function accessTokenExpired(): bool
+	{
+		if(time() >= $this->tokenManager->getAccessTokenExpirationTimestamp()) {
+			return true;
 		}
 
-		$this->client = new GuzzleClient($options);
+		return false;
+	}
 
+	public function refreshAccessToken(): ?OAuthTokenResponse {
+		$options =	[
+			'base_uri' => 'https://login.eveonline.com/',
+			'query' => [
+							'grant_type' => 'refresh_token',
+							'refresh_token' => $this->tokenManager->getRefreshToken()
+						]
+		];
+
+		try
+		{
+			$options['headers']['Authorization'] = 'Basic '.base64_encode($this->tokenManager->getAppClientId().':'.$this->tokenManager->getAppSecretKey());
+			$response = $this->client->request('POST', '/oauth/token', $options);
+
+			
+			if( $response == null)
+			{
+				return null;
+			}
+
+			$resp = json_decode($response->getBody());
+
+			return new OAuthTokenResponse($resp->access_token, $resp->expires_in, $resp->token_type, $resp->refresh_token);
+		}
+		catch(\Exception $e)
+		{
+			//error! o noes
+		}
+		
+		return null;
 	}
 
 	private function accessTokenRequired()
 	{
-		if(empty($this->accessToken))
+		if($this->tokenManager == null)
 		{
 			throw new \BadFunctionCallException("Missing access token");
+		}
+
+		if($this->accessTokenExpired() &&
+			$this->tokenManager->shouldAutoRefreshTokens())
+		{
+			$newToken = $this->refreshAccessToken();
+
+			$this->tokenManager->storeToken($newToken);
+		}
+		else
+		{
+			throw new ExpiredAuthorizationException();
 		}
 	}
 	
@@ -84,6 +140,13 @@ class Client
 			];
 
 			$options['query'] = array_merge($options['query'],$queryBits);
+			
+
+			if($this->tokenManager != null)
+			{
+				$options['headers']['Authorization'] = 'Bearer '.$this->tokenManager->getAccessToken();
+			}
+			
 			$resp = $this->client->request($method, $route, $options);
 
 			if($resp->hasHeader('warning'))
@@ -95,6 +158,15 @@ class Client
 		}
 		catch(ClientException $e)
 		{
+			$response = $e->getResponse();
+			$responseBodyAsString = $response->getBody()->getContents();
+			$responseJson = json_decode($responseBodyAsString);
+			
+			if(property_exists($responseJson, 'error')) {
+				if($responseJson->error == 'expired') {
+					throw new ExpiredAuthorizationException();
+				}
+			}
 			//4xx errors
 			//placeholder as we can error log here
 			$this->incrementStatistic(false);
@@ -105,14 +177,17 @@ class Client
 			//placeholder as we can error log here
 			$this->incrementStatistic(false);
 		}
-		finally
+		catch(\Exception $e)
 		{
-			return $resp;
 		}
+		
+		return $resp;
 	}
 	
-	public function getCorporationWalletDivisionJournal(int $corporation_id, int $division, ?int $fromId = null): ?\stdClass
+	public function getCorporationWalletDivisionJournal(int $corporation_id, int $division, ?int $fromId = null): ?array
 	{
+		$this->accessTokenRequired();
+
 		$opts = [];
 		if($fromId != null) 
 		{
@@ -120,7 +195,6 @@ class Client
 		}
 
 		$response = $this->request('GET', "/v2/corporations/{$corporation_id}/wallets/{$division}/journal/",$opts);
-
 		if( $response == null ||
 			$response->getStatusCode() != 200)
 		{

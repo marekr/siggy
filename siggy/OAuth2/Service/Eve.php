@@ -18,7 +18,8 @@ class Eve extends AbstractService
     const SCOPE_ESI_LOCATION_READ_LOCATION                = 'esi-location.read_location.v1';
     const SCOPE_ESI_LOCATION_READ_SHIP_TYPE                = 'esi-location.read_ship_type.v1';
     const SCOPE_ESI_LOCATION_READ_ONLINE                = 'esi-location.read_online.v1';
-    const SCOPE_ESI_UI_OPEN_WINDOW                = 'esi-ui.open_window.v1';
+	const SCOPE_ESI_UI_OPEN_WINDOW                = 'esi-ui.open_window.v1';
+	const SCOPE_ESI_CORPORATION_READ_WALLET		 = 'esi-wallet.read_corporation_wallets.v1';
     
     public function __construct(
         CredentialsInterface $credentials,

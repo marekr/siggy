@@ -183,6 +183,11 @@ Route::group(['middleware' => ['web','siggy.app']], function () {
 
 Route::group(['middleware' => ['siggy.app-pages']], function () {
 
+	Route::get('/backend/esi', [
+		'uses' => 'BackendController@esi', 
+		'as' => 'backendesi'
+	]);
+
 	Route::get('/account/logout', [
 		'uses' => 'AccountController@getLogout', 
 		'as' => 'logout'
