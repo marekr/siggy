@@ -1,5 +1,13 @@
 # siggy Changelog
 
+## 5.3.0 - 2018-03-04
+## Changes
+- Updated some esi routes used to latest
+- Removed last vestiges of CREST and XML api usage in anticipation of their removal by CCP
+
+## Fixes
+- Fixed effects for systems not showing
+
 ## 5.2.2 - 2018-02-03
 ## Fixes
 - Fixed some backend errors dealing with chainmaps
