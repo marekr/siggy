@@ -614,15 +614,15 @@ export class Scan extends Activity {
 		$('#system-effect').empty();
 
 		
-		if(system.effect_id != 0 && system.effect_id != null)
+		if(system.effect_id != null && system.effect_id != 0 )
 		{
 			var systemEffect = StaticData.getEffectByID(system.effect_id);
 
-			var effectTitle = $("<p>").text(systemData.effectTitle);
-			var effect = $('#system-effect').append(effectTitle);
-
-			if( systemData.effect_id != 0 )
+			if( systemEffect != null )
 			{
+				var effectTitle = $("<p>").text(systemEffect.effectTitle);
+				var effect = $('#system-effect').append(effectTitle);
+
 				effectTitle.qtip({
 					content: {
 						text: $(StaticData.getEffectTooltip(system, systemEffect))
