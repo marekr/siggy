@@ -65,7 +65,7 @@ class BillingChargeCommand extends Command
 
 					$insert = [
 						'amount' => $cost,
-						'charged_at' => Carbon::now,
+						'charged_at' => Carbon::now(),
 						'group_id' => $group->id,
 						'member_count' => $activeChars,
 						'message' => $message
