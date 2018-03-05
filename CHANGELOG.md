@@ -4,6 +4,7 @@
 ## Changes
 - Updated some esi routes used to latest
 - Removed last vestiges of CREST and XML api usage in anticipation of their removal by CCP
+- Billing payments and charges changed in the backend a bit
 
 ## Fixes
 - Fixed effects for systems not showing

@@ -89,16 +89,18 @@ class Client
 			throw new \BadFunctionCallException("Missing access token");
 		}
 
-		if($this->accessTokenExpired() &&
-			$this->tokenManager->shouldAutoRefreshTokens())
+		if($this->accessTokenExpired())
 		{
-			$newToken = $this->refreshAccessToken();
-
-			$this->tokenManager->storeToken($newToken);
-		}
-		else
-		{
-			throw new ExpiredAuthorizationException();
+			if($this->tokenManager->shouldAutoRefreshTokens())
+			{
+				$newToken = $this->refreshAccessToken();
+	
+				$this->tokenManager->storeToken($newToken);
+			}
+			else
+			{
+				throw new ExpiredAuthorizationException();
+			}
 		}
 	}
 	

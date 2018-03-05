@@ -169,6 +169,17 @@
 						<!-- /.nav-second-level -->
 					</li>
 					@endif
+					@if( Auth::user()->admin )
+					<li class="active">
+						<a href="#"><i class="fa fa-university fa-fw"></i>Backend<span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level">
+							<li>
+								<a href="{{url('manage/backend/esi')}}">Backend ESI</a>
+							</li>
+						</ul>
+						<!-- /.nav-second-level -->
+					</li>
+					@endif
 				</ul>
 				<!-- /#side-menu -->
 			</div>

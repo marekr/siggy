@@ -311,6 +311,9 @@ Route::group(['namespace' => 'Manage','prefix' => 'manage','middleware' => ['sig
 
 	
 	Route::post('access/set','AccessController@postSet');
+
+	
+	Route::get('backend/esi','BackendController@getESI');
 });
 
 

@@ -8,8 +8,11 @@ use Illuminate\Support\Facades\DB;
 use \miscUtils;
 use \Group;
 use Siggy\ESI\Client as ESIClient;
+use Siggy\ESI\ExpiredAuthorizationException;
 use Siggy\BillingPayment;
 use Siggy\BackendESITokenManager;
+use App\Mail\BackendESITokenBad;
+use Illuminate\Support\Facades\Mail;
 
 
 class BillingPaymentsCommand extends Command
@@ -64,7 +67,16 @@ class BillingPaymentsCommand extends Command
 		{
 			$this->info("Fetching some wallet entries, from {$lastProcessedRefId}");
 			
-			$transactions = $client->getCorporationWalletDivisionJournal($corpId, $division, $lastProcessedRefId);
+			$transactions = null;
+			try {
+				$transactions = $client->getCorporationWalletDivisionJournal($corpId, $division, $lastProcessedRefId);
+			}
+			catch(ExpiredAuthorizationException $e) {
+				$this->info("ESI fetch failed, mailing error");
+				Mail::to(config('backend.failure_email'))->send(new BackendESITokenBad());
+
+				break;
+			}
 
 			if($transactions == null)
 			{
