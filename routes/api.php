@@ -31,6 +31,8 @@ $api->version('v1', ['middleware' => 'api.auth'], function ($api) {
         ]); 
 		
 		$api->get('/systems/{id}', '\App\Http\Controllers\Api\v1\SystemsController@getSystem');
+		
+		$api->get('/timers', '\App\Http\Controllers\Api\v1\TimersController@getList');
 	});
 });
 

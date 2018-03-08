@@ -168,10 +168,60 @@
 			}
 		  }
 		}
+	  },
+	  "/v1/timers": {
+		"get": {
+		  "tags": [
+			"timers"
+		  ],
+		  "operationId": "getTimers",
+		  "responses": {
+			"200": {
+			  "description": "Gets list of all timers in the group",
+			  "content": {
+				"application/json": {
+				  "schema": {
+					"type": "array",
+					"items": {
+					  "$ref": "#/components/schemas/timerModel"
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		}
 	  }
 	},
 	"components": {
 	  "schemas": {
+		"timerModel": {
+		  "type": "object",
+		  "properties": {
+			"system_id": {
+			  "type": "integer"
+			},
+			"notes": {
+			  "type": "string"
+			},
+			"created_at": {
+			  "type": "string",
+			  "format": "date-time"
+			},
+			"updated_at": {
+			  "type": "string",
+			  "format": "date-time"
+			},
+			"start_at": {
+			  "type": "string",
+			  "format": "date-time"
+			},
+			"end_at": {
+			  "type": "string",
+			  "format": "date-time"
+			}
+		  }
+		},
 		"wormholeModel": {
 		  "type": "object",
 		  "properties": {

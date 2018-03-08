@@ -6,18 +6,22 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
-class BillingCharge extends Model {
-	public $table = 'billing_charges';
+class Timer extends Model {
+	public $table = 'timers';
 
 	public $incrementing = true;
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $fillable = [
-		'message',
-		'amount',
-		'charged_at',
-		'member_count',
-		'group_id'
+		'planet',
+		'moon',
+		'owner',
+		'system_id',
+		'group_id',
+		'start_at',
+		'end_at',
+		'type',
+		'notes'
 	];
 
 	protected $hidden = [
@@ -25,14 +29,15 @@ class BillingCharge extends Model {
 	];
 
 	protected $dates = [
-		'charged_at'
+		'start_at',
+		'end_at'
 	];
 
 	
 	public static function findAllByGroupOrdered(int $groupId): array
 	{
 		return self::where('group_id',$groupId)
-				->orderBy('charged_at','desc')
+				->orderBy('end_at','desc')
 				->get()
 				->all();
 	}
