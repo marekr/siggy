@@ -1,6 +1,6 @@
 
 <script id="template-chainmap-system-blob" type="text/x-handlebars-template">
-	<div class="map-system-blob" id="map-system-{{system.id}}" data-system-id="{{system.id}}" data-system-name="{{system.name}}" data-hasqtip="82" style="top: 100px; left: 15px;">
+	<div class="map-system-blob {{systemNameExtraClasses system}}" id="map-system-{{system.id}}" data-system-id="{{system.id}}" data-system-name="{{system.name}}" data-hasqtip="82" style="top: 100px; left: 15px;">
 		<div class="map-system-blob-title">
 
 			{{#if system.showClass}}

@@ -672,7 +672,7 @@ export class Scan extends Activity {
 		}
 
 		sysName = ("{0} - [{1}]").format(sysName, StaticData.systemClassToStringWithSec(system));
-		$('#system-name').html(sysName);
+		$('#system-name').html(sysName).addClass(Helpers.systemNameExtraClasses(system));
 
 
 		$('a.site-dotlan').attr('href', 'http://evemaps.dotlan.net/system/'+system.name);

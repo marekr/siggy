@@ -92,6 +92,13 @@ export default class Helpers {
 
 		return text;
 	}
+	
+	public static systemNameExtraClasses(system) {
+		var classes = '';
+
+
+		return classes;
+	}
 
 	public static setupHandlebars()
 	{
@@ -152,6 +159,10 @@ export default class Helpers {
 
 		Handlebars.registerHelper('systemClassToString', function(str) {
 			return StaticData.systemClassToString(str);
+		});
+
+		Handlebars.registerHelper('systemNameExtraClasses', function(system) {
+			return Helpers.systemNameExtraClasses(system);
 		});
 
 		Handlebars.registerHelper('systemClassTextColor', function(sysClass) {

@@ -1112,3 +1112,12 @@ label {
 table a:not(.btn), .table a:not(.btn) {
 	text-decoration: none;
 }
+
+@font-face {
+    font-family: "triglavian";
+    src: url("/fonts/eve/triglavian.ttf");
+}
+
+.triglavian {
+	font-family: "triglavian";
+}
