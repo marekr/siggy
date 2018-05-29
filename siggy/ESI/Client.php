@@ -299,6 +299,36 @@ class Client
 		return json_decode($resp);
 	}
 
+	public function getUniverseSystems(): ?array
+	{
+		$response = $this->request('GET', "/v1/universe/systems/");
+		
+		if( $response == null ||
+			$response->getStatusCode() != 200)
+		{
+			return null;
+		}
+		
+		$resp = $response->getBody();
+
+		return json_decode($resp);
+	}
+
+	public function getUniverseSystem(int $systemId): ?\stdClass
+	{
+		$response = $this->request('GET', "/v3/universe/systems/{$systemId}/");
+		
+		if( $response == null ||
+			$response->getStatusCode() != 200)
+		{
+			return null;
+		}
+		
+		$resp = $response->getBody();
+
+		return json_decode($resp);
+	}
+
 	
 	public function postUiAutopilotWaypointV2(int $destination_id, bool $clear_other_waypoints, bool $add_to_beginning): bool
 	{
