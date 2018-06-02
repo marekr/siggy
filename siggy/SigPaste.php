@@ -3,6 +3,7 @@
 namespace Siggy;
 
 use \DB;
+use Siggy\Site;
 
 class SigPaste {
 	
@@ -93,7 +94,7 @@ class SigPaste {
 
 	public static function siteIDLookupByName( string $name, string $type ): int
 	{
-		$sites = DB::select("SELECT * FROM sites WHERE type = ?", [$type]);
+		$sites = Site::where('type',$type)->all();
 
 		foreach( $sites as $site )
 		{

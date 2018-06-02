@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Siggy\StructureType;
 use Siggy\POSType;
 use Siggy\Ship;
+use Siggy\Site;
 
 use \Cache;
 
@@ -103,12 +104,11 @@ class DataController extends Controller {
 
 		$output['wormholes'] = $outWormholes;
 
-
-		$siteTypes = DB::select("SELECT * FROM sites");
+		$siteTypes = Site::all();
 
 		foreach($siteTypes as $site)
 		{
-			$output['sites'][$site->id] = array('id' => (int)$site->id, 'name' => $site->name, 'type' => $site->type, 'description' => $site->description);
+			$output['sites'][$site->id] = ['id' => (int)$site->id, 'name' => $site->name, 'type' => $site->type, 'description' => $site->description];
 		}
 
 
