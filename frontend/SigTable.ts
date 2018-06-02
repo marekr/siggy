@@ -217,14 +217,14 @@ export default class SigTable
 			if(e.which == 13)
 			{
 				$this.massAddHandler($this.systemID,$('#mass_sigs_quick_form').serializeObject());
-				$('#sig-add-box textarea[name=mass_sigs]').val('').blur();
+				$('#sig-add-box textarea[name=blob]').val('').blur();
 			}
 		}
 
-		$( document ).on('keypress', '#sig-add-box textarea[name=mass_sigs]', massSigEnter);
-		$('#sig-add-box textarea[name=mass_sigs]').click(function() {
+		$( document ).on('keypress', '#sig-add-box textarea[name=blob]', massSigEnter);
+		$('#mass_sigs_quick_form').click(function(e) {
 			//need this to fix event bubble on the collaspible
-			return false;
+			e.stopPropagation();
 		});
 
 		$('#sig-add-box form').submit(function ()

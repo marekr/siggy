@@ -264,11 +264,11 @@
 	            <div id="sig-add-box" class="sub-display-group">
 	                <div class='sub-display-group-header'>
 						<span>Signature Adder</span>
-	                    <a href="#" id="mass-add-sigs" class="btn btn-xs btn-default"><i class="fa fa-external-link" aria-hidden="true"></i></a>
 						<form id='mass_sigs_quick_form'>
-						<textarea name='mass_sigs' placeholder=" Paste scan results here + Press Enter " type='text' class="siggy-input"></textarea>
-						<input name='delete_nonexistent_sigs' id='delete_nonexistent_sigs' type='checkbox' value='1' />
-						<label for="delete_nonexistent_sigs">Delete nonexistent sigs</label>
+							<a href="#" id="mass-add-sigs" class="btn btn-xs btn-default"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+							<textarea name='blob' placeholder=" Paste scan results here + Press Enter " type='text' class="siggy-input"></textarea>
+							<input name='delete_nonexistent_sigs' id='delete_nonexistent_sigs' type='checkbox' value='1' />
+							<label for="delete_nonexistent_sigs">Delete nonexistent sigs</label>
 						</form>
 						<i class="expand-collapse-indicator fa fa-caret-down pull-right fa-lg"></i>
 					</div>

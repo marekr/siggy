@@ -17,6 +17,7 @@ use \WormholeSignature;
 use \groupUtils;
 use Siggy\Notification;
 use \miscUtils;
+use Siggy\SigPaste;
 
 
 class SignatureController extends BaseController {
@@ -108,7 +109,7 @@ class SignatureController extends BaseController {
 
 		if( isset($postData['system_id']) && isset($postData['blob']) && !empty($postData['blob']) )
 		{
-			$sigs = miscUtils::parseIngameSigExport( $postData['blob'] );
+			$sigs = SigPaste::parseIngameSigExport( $postData['blob'] );
 
 			$systemID = intval($postData['system_id']);
 
@@ -183,7 +184,6 @@ class SignatureController extends BaseController {
 				}
 
 				return response()->json(StandardResponse::ok($addedSigs));
-				return;
 			}
 		}
 
