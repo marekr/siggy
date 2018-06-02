@@ -62,8 +62,6 @@
             <div>
                 <span id="system-name"><?php echo !empty($systemName) ? $systemName : 'System'; ?></span>
                 <a href='#' target='_blank' class='site-icon site-dotlan click-me'><img src='{{asset('images/dotlan.png')}}' width='16' height='16'/></a>
-                <a href='#' target='_blank' class='site-icon site-wormholes click-me'><img src='{{asset('images/wormholes.png')}}' width='16' height='16'/></a>
-                <a href='#' target='_blank' class='site-icon site-evekill click-me'><img src='{{asset('images/evekill.png')}}' width='16' height='16'/></a>
                 <a href='#' target='_blank' class='site-icon site-zkillboard click-me'><img src='{{asset('images/wreck.png')}}' width='16' height='16'/></a>
             </div>
             <ul class='option-bar tabs' role='tablist'>
@@ -266,11 +264,15 @@
 	            <div id="sig-add-box" class="sub-display-group">
 	                <div class='sub-display-group-header'>
 						<span>Signature Adder</span>
+	                    <a href="#" id="mass-add-sigs" class="btn btn-xs btn-default"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+						<form id='mass_sigs_quick_form'>
 						<textarea name='mass_sigs' placeholder=" Paste scan results here + Press Enter " type='text' class="siggy-input"></textarea>
+						<input name='delete_nonexistent_sigs' id='delete_nonexistent_sigs' type='checkbox' value='1' />
+						<label for="delete_nonexistent_sigs">Delete nonexistent sigs</label>
+						</form>
 						<i class="expand-collapse-indicator fa fa-caret-down pull-right fa-lg"></i>
 					</div>
 	                <div class='sub-display-group-content'>
-	                    <a href="#" id="mass-add-sigs" class="btn btn-xs btn-default">Mass Sig Reader</a>
 	                    <div class="clear"></div>
 	                    <form>
 	                        <div style="float:left">

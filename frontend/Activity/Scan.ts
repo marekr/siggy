@@ -692,8 +692,6 @@ export class Scan extends Activity {
 
 
 		$('a.site-dotlan').attr('href', 'http://evemaps.dotlan.net/system/'+system.name);
-		$('a.site-wormholes').attr('href', 'http://wh.pasta.gg/'+system.name);
-		$('a.site-evekill').attr('href','http://eve-kill.net/?a=system_detail&sys_name='+system.name);
 		$('a.site-zkillboard').attr('href','https://zkillboard.com/system/'+system.id);
 
 		this.setSystemID(system.id);

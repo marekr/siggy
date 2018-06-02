@@ -216,7 +216,7 @@ export default class SigTable
 			//enter key
 			if(e.which == 13)
 			{
-				$this.massAddHandler($this.systemID,{blob: $('#sig-add-box textarea[name=mass_sigs]').val()});
+				$this.massAddHandler($this.systemID,$('#mass_sigs_quick_form').serializeObject());
 				$('#sig-add-box textarea[name=mass_sigs]').val('').blur();
 			}
 		}
