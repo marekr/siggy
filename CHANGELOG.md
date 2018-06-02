@@ -1,5 +1,13 @@
 # siggy Changelog
 
+## 5.4.0 - 2018-06-02
+- Stop auto mapping triglavian systems
+- Add fancy display of triglavian systems based on actual algorithim (dont ban me ccp plz)
+
+## 5.3.1 - 2018-05-31
+## Changes
+- Add Triglavian systems
+
 ## 5.3.0 - 2018-03-04
 ## Changes
 - Updated some esi routes used to latest
