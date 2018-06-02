@@ -393,13 +393,19 @@ class SiggyController extends BaseController {
 		return $dscans;
 	}
 
-	private function isWormholeSystemByName($name)
+	private function isWormholeSystemByName(string $name): bool
 	{
 		if( preg_match('/\bJ\d{6}\b/', $name) )
 		{
 			return TRUE;
 		}
+		
 		return FALSE;
+	}
+
+	private function _isAbyssalSystem(int $id): bool
+	{
+		return ($id >= 32000000 && $id < 33000000);
 	}
 
 	private function __wormholeJump(CharacterLocationHistory $record)
@@ -416,6 +422,12 @@ class SiggyController extends BaseController {
 		if( $origin == $dest )
 		{
 			//failure condition that happens sometimes, bad for the JS engine
+			return;
+		}
+
+		//dont ever map abyssal space
+		if( $this->_isAbyssalSystem($origin) || $this->_isAbyssalSystem($dest) )
+		{
 			return;
 		}
 
