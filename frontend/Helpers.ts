@@ -12,6 +12,44 @@ import * as Handlebars from './vendor/handlebars';
 import * as HandlebarsFormHelpers from './vendor/handlebars.form-helpers';
 
 import number_format from 'locutus/php/strings/number_format';
+import str_rot13 from 'locutus/php/strings/str_rot13';
+
+
+import MersenneTwister from 'MersenneTwister';
+import { sys } from 'typescript';
+
+
+const abyssalDevNames = ['Andre',
+			'Ben',
+			'Bergthor',
+			'Bergur',
+			'Carl',
+			'Chance',
+			'Chris',
+			'Euan',
+			'Freyr',
+			'Georg',
+			'Hafsteinn',
+			'Hinrik',
+			'Hooper',
+			'Huni',
+			'Javier',
+			'Jonathan',
+			'Kasper',
+			'Kristinn',
+			'Mark',
+			'Norbert',
+			'Olafur',
+			'Scott',
+			'Sergey',
+			'Skuli',
+			'Steve',
+			'Steven',
+			'Svanhvit',
+			'Tormod',
+			'Willem'
+];
+
 
 /**
  * Renders a ISO8601 date + time from a unix timestamp. Except instead of the T
@@ -92,10 +130,68 @@ export default class Helpers {
 
 		return text;
 	}
+
+	public static isAbyssalSystem(system): boolean {
+		return (system.id >= 32000000 && system.id < 33000000);
+	}
+
+	public static isAbyssalRegion(regionId): boolean {
+		return (regionId >= 12000001 && regionId <= 12000005);
+	}
+
+	public static abyssalManagledNameForId(id: number): string {
+
+		let charId = window._character_id;
+		let mt = new MersenneTwister(id + charId); // if no seed is defined, seed randomly
+		let idx = mt.int() % (abyssalDevNames.length + 1 - 0) + 0;
+
+		let devName = abyssalDevNames[idx];
+		
+
+		return str_rot13(devName);
+	}
 	
-	public static systemNameExtraClasses(system) {
+	public static systemNameConversion(system): string {
+		var name = system.name;
+
+		if(this.isAbyssalSystem(system))
+		{
+			name = this.abyssalManagledNameForId(system.id);
+		}
+
+		return name;
+	}
+
+	
+	public static regionNameConversion(regionName: string, regionId: number): string {
+		var name = regionName;
+
+		if(this.isAbyssalRegion(regionId))
+		{
+			name = this.abyssalManagledNameForId(regionId);
+		}
+
+		return name;
+	}
+	
+	public static constellationNameConversion(constellation): string {
+		var name = constellation.name;
+
+		if(this.isAbyssalSystem(constellation))
+		{
+			name = this.abyssalManagledNameForId(constellation.id);
+		}
+
+		return name;
+	}
+
+	public static systemNameExtraClasses(system): string {
 		var classes = '';
 
+		if(this.isAbyssalSystem(system))
+		{
+			classes += "triglavian";
+		}
 
 		return classes;
 	}
@@ -163,6 +259,10 @@ export default class Helpers {
 
 		Handlebars.registerHelper('systemNameExtraClasses', function(system) {
 			return Helpers.systemNameExtraClasses(system);
+		});
+		
+		Handlebars.registerHelper('systemNameConversion', function(system) {
+			return Helpers.systemNameConversion(system);
 		});
 
 		Handlebars.registerHelper('systemClassTextColor', function(sysClass) {

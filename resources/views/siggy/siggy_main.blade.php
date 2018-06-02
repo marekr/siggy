@@ -462,6 +462,8 @@
 				}
 			};
 
+			window._character_id = {{ SiggySession::getCharacterId() }};
+
 			var main = new Siggy.Siggy( options );
 			main.initialize();
 		} );

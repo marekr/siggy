@@ -584,7 +584,16 @@ export class Scan extends Activity {
 	{
 		let system = StaticData.getSystemByID(systemData.id);
 		//general info
-		$('#region').text(system.region_name + " / " + system.constellation_name);
+
+		$('#region').empty();
+		let regionHtml = $("<span>").text( Helpers.regionNameConversion(system.region_name, system.region_id) ).addClass(Helpers.systemNameExtraClasses(system));
+		$('#region').append(regionHtml);
+		if(!Helpers.isAbyssalRegion(system.region_id))
+		{
+			$('#region').append( " / " + system.constellation_name );
+		}
+		
+
 		$('#constellation').text(system.constellation_name);
 		
 		$('#planetsmoons').text(system.planets + "/" + system.moons + "/" + system.belts);
@@ -668,11 +677,18 @@ export class Scan extends Activity {
 
 		if ( systemData.displayName != '' )
 		{
-			sysName = ("{0} ({1})").format(system.name, systemData.displayName);
+			sysName = ("{0} ({1})").format(Helpers.systemNameConversion(system), systemData.displayName);
+		}
+		else
+		{
+			sysName = Helpers.systemNameConversion(system);
 		}
 
-		sysName = ("{0} - [{1}]").format(sysName, StaticData.systemClassToStringWithSec(system));
-		$('#system-name').html(sysName).addClass(Helpers.systemNameExtraClasses(system));
+
+		let sysNameHtml = $("<span>").html(sysName).addClass(Helpers.systemNameExtraClasses(system));
+		$('#system-name').empty();
+		$('#system-name').append(sysNameHtml);
+		$('#system-name').append((" - [{0}]").format(StaticData.systemClassToStringWithSec(system)));
 
 
 		$('a.site-dotlan').attr('href', 'http://evemaps.dotlan.net/system/'+system.name);

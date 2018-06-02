@@ -32,6 +32,7 @@
     "jquery": "^1.12.4",
     "json-loader": "^0.5.7",
     "locutus": "^2.0.9",
+    "mersennetwister": "^0.2.3",
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.13",
     "navigo": "^7.1.1",
