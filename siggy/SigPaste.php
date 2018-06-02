@@ -2,6 +2,8 @@
 
 namespace Siggy;
 
+use \DB;
+
 class SigPaste {
 	
 	public static function parseIngameSigExport( string $string ): array
