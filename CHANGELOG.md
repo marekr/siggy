@@ -1,5 +1,10 @@
 # siggy Changelog
 
+## 5.4.1 - 2018-06-02
+- Stop description box for sigs from moving when a type is selected
+- Add "Delete nonexistent" sigs checkbox next to the simple sig paste reader input
+- Move the "Mass Sig Reader" to a pop-out style button next to the signature adder text
+
 ## 5.4.0 - 2018-06-02
 - Stop auto mapping triglavian systems
 - Add fancy display of triglavian systems based on actual algorithim (dont ban me ccp plz)

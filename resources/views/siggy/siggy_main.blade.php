@@ -312,8 +312,9 @@
 	                                <select name="site" class="siggy-input">
 	                                </select>
 	                            </div>
-	                            <br />
-	                            <div class="input-group" style="width:236px;">
+							</div>
+							<div style="float:left;clear:both">
+	                            <div class="input-group" style="width:300px;">
 	                                <label>Description</label>
 	                                <input type="text" name="desc" class="siggy-input" />
 	                            </div>
