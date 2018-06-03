@@ -263,9 +263,8 @@
 	            <!-- end stats -->
 	            <div id="sig-add-box" class="sub-display-group">
 	                <div class='sub-display-group-header'>
-						<span>Signature Adder</span>
 						<form id='mass_sigs_quick_form'>
-							<a href="#" id="mass-add-sigs" class="btn btn-xs btn-default"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+							<a href="#" id="mass-add-sigs" class="btn btn-xs btn-default">Signature Adder <i class="fa fa-external-link" aria-hidden="true"></i></a>
 							<textarea name='blob' placeholder=" Paste scan results here + Press Enter " type='text' class="siggy-input"></textarea>
 							<input name='delete_nonexistent_sigs' id='delete_nonexistent_sigs' type='checkbox' value='1' />
 							<label for="delete_nonexistent_sigs">Delete nonexistent sigs</label>
@@ -312,6 +311,7 @@
 	                                <select name="site" class="siggy-input">
 	                                </select>
 	                            </div>
+	                        	<button name='add' class="btn btn-default" style="margin-top: 15px;line-height: 171%;" type="submit"><i class="fa fa-plus-circle"></i>  Add</button>
 							</div>
 							<div style="float:left;clear:both">
 	                            <div class="input-group" style="width:300px;">
@@ -319,7 +319,6 @@
 	                                <input type="text" name="desc" class="siggy-input" />
 	                            </div>
 	                        </div>
-	                        <button name='add' class="btn btn-default" style="margin-top: 15px;line-height: 171%;" type="submit"><i class="fa fa-plus-circle"></i>  Add</button>
 	                    </form>
 	                </div>
 	            </div>
