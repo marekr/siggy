@@ -29,10 +29,11 @@ class BillingCharge extends Model {
 	];
 
 	
-	public static function findAllByGroupOrdered(int $groupId): array
+	public static function findAllByGroupOrdered(int $groupId, int $limit = 5): array
 	{
 		return self::where('group_id',$groupId)
 				->orderBy('charged_at','desc')
+				->take($limit)
 				->get()
 				->all();
 	}

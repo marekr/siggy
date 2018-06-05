@@ -38,10 +38,11 @@ class BillingPayment extends Model {
 	protected $appends = ['payer_name'];
 
 	
-	public static function findAllByGroupOrdered(int $groupId): array
+	public static function findAllByGroupOrdered(int $groupId, int $limit = 5): array
 	{
 		return self::where('group_id',$groupId)
 				->orderBy('paid_at','desc')
+				->take($limit)
 				->get()
 				->all();
 	}
@@ -60,7 +61,7 @@ class BillingPayment extends Model {
 	{
 		//TODO, if the character or corp isnt in our db...this wont display the name properly
 		if($this->corporation != null) {
-			return $this->character->name;
+			return $this->corporation->name;
 		}
 
 		if($this->character != null) {
