@@ -401,8 +401,9 @@
 	@include('siggy/handlebars/pos_table_row')
 	@include('siggy/handlebars/dscan_table_row')
 
-		
-	<script type='text/javascript' src='{{asset('js/please-wait.js?'.time()) }}'></script>
+	<script type='text/javascript'>
+		{!! file_get_contents(public_path('js/please-wait.js')) !!}
+	</script>
 	
 	<script type="text/javascript">
 		var loadingMessages = [
@@ -423,51 +424,53 @@
 		});
 	</script>
 	<script type='text/javascript'>
-		document.addEventListener("DOMContentLoaded", function(event) { 
-			if(typeof(Raven) != "undefined")
-			{
-				Raven.config('https://d5d9885188804b098cd2545ab085a47f@sentry.io/136864',{
-					release: '{{SIGGY_VERSION}}'
-				}).install();
-			}
-
-			var options = {
-				baseUrl: '{{url('/').'/'}}',
-				initialSystemID: <?php echo ($systemData != null ? $systemData->id : 0); ?>,
-				igb: false,
-				<?php if($requested): ?>
-				freezeSystem: true,
-				<?php endif; ?>
-				negativeBalance: {{ $group->isk_balance < 0 ? 'true' : 'false' }},
-
-				defaultActivity:  '<?php echo $group->default_activity; ?>',
-				sessionID: '',
-				charsettings: {
-					themeID: <?php echo $settings->theme_id; ?>,
-					combineScanIntel: <?php echo $settings->combine_scan_intel; ?>,
-					zoom: 1,
-					language: '<?php echo $settings->language; ?>',
-					defaultActivity: '<?php echo $settings->default_activity; ?>'
-				},
-				sigtable: {
-					showSigSizeCol: <?php echo ( $group->show_sig_size_col ? 'true' : 'false' ); ?>,
-					enableWhSigLink: <?php echo ( $group->enable_wh_sig_link ? 'true' : 'false'); ?>,
-				},
-				map: {
-					jumpTrackerEnabled: <?php echo ( $group->jump_log_enabled ? 'true' : 'false' ); ?>,
-					jumpTrackerShowNames:  <?php echo ( $group->jump_log_record_names ? 'true' : 'false' ); ?>,
-					jumpTrackerShowTime:  <?php echo ( $group->jump_log_record_time ? 'true' : 'false' ); ?>,
-					showActivesShips:  <?php echo ( $group->chain_map_show_actives_ships ? 'true' : 'false' ); ?>,
-					allowMapHeightExpand: <?php echo $group->allow_map_height_expand ? 'true' : 'false'; ?>,
-					alwaysShowClass: <?php echo $group->chainmap_always_show_class ? 'true' : 'false'; ?>,
-					maxCharactersShownInSystem: <?php echo (int)($group->chainmap_max_characters_shown); ?>
+		document.addEventListener("readystatechange", function(event) { 
+			if (event.target.readyState === "complete") {
+				if(typeof(Raven) != "undefined")
+				{
+					Raven.config('https://d5d9885188804b098cd2545ab085a47f@sentry.io/136864',{
+						release: '{{SIGGY_VERSION}}'
+					}).install();
 				}
-			};
 
-			window._character_id = {{ SiggySession::getCharacterId() }};
+				var options = {
+					baseUrl: '{{url('/').'/'}}',
+					initialSystemID: <?php echo ($systemData != null ? $systemData->id : 0); ?>,
+					igb: false,
+					<?php if($requested): ?>
+					freezeSystem: true,
+					<?php endif; ?>
+					negativeBalance: {{ $group->isk_balance < 0 ? 'true' : 'false' }},
 
-			var main = new Siggy.Siggy( options );
-			main.initialize();
+					defaultActivity:  '<?php echo $group->default_activity; ?>',
+					sessionID: '',
+					charsettings: {
+						themeID: <?php echo $settings->theme_id; ?>,
+						combineScanIntel: <?php echo $settings->combine_scan_intel; ?>,
+						zoom: 1,
+						language: '<?php echo $settings->language; ?>',
+						defaultActivity: '<?php echo $settings->default_activity; ?>'
+					},
+					sigtable: {
+						showSigSizeCol: <?php echo ( $group->show_sig_size_col ? 'true' : 'false' ); ?>,
+						enableWhSigLink: <?php echo ( $group->enable_wh_sig_link ? 'true' : 'false'); ?>,
+					},
+					map: {
+						jumpTrackerEnabled: <?php echo ( $group->jump_log_enabled ? 'true' : 'false' ); ?>,
+						jumpTrackerShowNames:  <?php echo ( $group->jump_log_record_names ? 'true' : 'false' ); ?>,
+						jumpTrackerShowTime:  <?php echo ( $group->jump_log_record_time ? 'true' : 'false' ); ?>,
+						showActivesShips:  <?php echo ( $group->chain_map_show_actives_ships ? 'true' : 'false' ); ?>,
+						allowMapHeightExpand: <?php echo $group->allow_map_height_expand ? 'true' : 'false'; ?>,
+						alwaysShowClass: <?php echo $group->chainmap_always_show_class ? 'true' : 'false'; ?>,
+						maxCharactersShownInSystem: <?php echo (int)($group->chainmap_max_characters_shown); ?>
+					}
+				};
+
+				window._character_id = {{ SiggySession::getCharacterId() }};
+
+				var main = new Siggy.Siggy( options );
+				main.initialize();
+			}
 		} );
 	</script>
 </div>
