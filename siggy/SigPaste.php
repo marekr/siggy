@@ -94,7 +94,7 @@ class SigPaste {
 
 	public static function siteIDLookupByName( string $name, string $type ): int
 	{
-		$sites = Site::where('type',$type)->all();
+		$sites = Site::where('type',$type)->get()->all();
 
 		foreach( $sites as $site )
 		{
