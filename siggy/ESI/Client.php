@@ -94,6 +94,10 @@ class Client
 			if($this->tokenManager->shouldAutoRefreshTokens())
 			{
 				$newToken = $this->refreshAccessToken();
+				if($newToken == null)
+				{
+					throw new ExpiredAuthorizationException();
+				}
 	
 				$this->tokenManager->storeToken($newToken);
 			}
@@ -130,7 +134,7 @@ class Client
 		}
 	}
 
-	private function request($method, $route, array $queryBits = [], $datasource = "tranquility")
+	private function request(string $method, string $route, array $queryBits = [], string $datasource = "tranquility", ?string $etag = null)
 	{
 		$resp = null;
 		try
@@ -147,6 +151,11 @@ class Client
 			if($this->tokenManager != null)
 			{
 				$options['headers']['Authorization'] = 'Bearer '.$this->tokenManager->getAccessToken();
+			}
+
+			if($etag != null)
+			{
+				$options['headers']['ETag'] = $etag;
 			}
 			
 			$resp = $this->client->request($method, $route, $options);
@@ -186,17 +195,17 @@ class Client
 		return $resp;
 	}
 	
-	public function getCorporationWalletDivisionJournal(int $corporation_id, int $division, ?int $fromId = null): ?array
+	public function getCorporationWalletDivisionJournal(int $corporation_id, int $division, int $page = 1): ?array
 	{
 		$this->accessTokenRequired();
 
 		$opts = [];
-		if($fromId != null) 
+		if($page != null) 
 		{
-			$opts['from_id'] = $fromId;
+			$opts['page'] = $page;
 		}
 
-		$response = $this->request('GET', "/v2/corporations/{$corporation_id}/wallets/{$division}/journal/",$opts);
+		$response = $this->request('GET', "/v3/corporations/{$corporation_id}/wallets/{$division}/journal/",$opts);
 		if( $response == null ||
 			$response->getStatusCode() != 200)
 		{

@@ -63,13 +63,15 @@ class BillingPaymentsCommand extends Command
 
 		$continueFetchingTransactions = true;
 		$lastProcessedRefId = null;
+
+		$page = 1;
 		do
 		{
-			$this->info("Fetching some wallet entries, from {$lastProcessedRefId}");
+			$this->info("Fetching some wallet entries, last seen {$lastProcessedRefId}, now doing page {$page}");
 			
 			$transactions = null;
 			try {
-				$transactions = $client->getCorporationWalletDivisionJournal($corpId, $division, $lastProcessedRefId);
+				$transactions = $client->getCorporationWalletDivisionJournal($corpId, $division, $page);
 			}
 			catch(ExpiredAuthorizationException $e) {
 				$this->info("ESI fetch failed, mailing error");
@@ -78,14 +80,12 @@ class BillingPaymentsCommand extends Command
 				break;
 			}
 
-			if($transactions == null)
-			{
+			if($transactions == null) {
 				$this->info("no transactions returned");
 				break;
 			}
 
-			if(!count($transactions))
-			{
+			if(!count($transactions)) {
 				$this->info("exhausted wallet entries");
 				$continueFetchingTransactions = false;
 				break;
@@ -102,8 +102,10 @@ class BillingPaymentsCommand extends Command
 				}
 
 				//set this query parameter as we go, ultimately it shiould end up at the "end"
-				$lastProcessedRefId = $transaction->ref_id;
+				$lastProcessedRefId = $transaction->id;
 			}
+
+			$page += 1;	//increment expected page
 		} while($continueFetchingTransactions);
 	}
 	
@@ -126,18 +128,22 @@ class BillingPaymentsCommand extends Command
 		return $clear;
 	}
 
-
+	/**
+	 * Processes billing transaction from esi
+	 *
+	 * @param [type] $transaction
+	 * @return boolean True to continue processing, false if hit end of transactions (old transaction found)
+	 */
 	private function processBillingTransaction( $transaction ): bool
 	{
-		$this->info("Processing payment {$transaction->ref_id}");
+		$this->info("Processing payment {$transaction->id}");
 		if( $transaction->ref_type == self::playerDonation || $transaction->ref_type == self::corpAccountWithdrawal)
 		{
 			if(!property_exists($transaction, 'reason')) {
-				$this->info("Missing reason {$transaction->ref_id}");
+				$this->info("Missing reason {$transaction->id}");
 				return true;
 			}
 
-			print_r($transaction);
 			$entryCode = trim(str_replace('DESC:','',$transaction->reason));
 			$entryCode = strtolower($this->superclean($entryCode));
 			if( !empty($entryCode) )
@@ -145,7 +151,7 @@ class BillingPaymentsCommand extends Command
 				preg_match('/^siggy-([a-zA-Z0-9]{14,})/', $entryCode, $matches);
 				if( count($matches) > 0 && isset($matches[1]) )
 				{
-					$res = BillingPayment::where('ref_id', $transaction->ref_id)->first();
+					$res = BillingPayment::where('ref_id', $transaction->id)->first();
 					
 					if( $res == null )
 					{
@@ -155,7 +161,7 @@ class BillingPaymentsCommand extends Command
 						if( $group != null )
 						{
 							$insert = [ 'group_id' => $group->id,
-												'ref_id' => $transaction->ref_id,
+												'ref_id' => $transaction->id,
 												'paid_at' => Carbon::parse($transaction->date),
 												'processed_at' => Carbon::now(),
 												'amount' => (float)$transaction->amount
@@ -165,7 +171,7 @@ class BillingPaymentsCommand extends Command
 							{
 								$insert['payer_type'] = 'corp';
 								$insert['payer_corporation_id'] = $transaction->first_party_id;
-								$insert['payer_character_id'] = $transaction->extra_info->character_id;
+								$insert['payer_character_id'] = $transaction->context_id;
 							}
 							else
 							{
@@ -189,7 +195,7 @@ class BillingPaymentsCommand extends Command
 					{
 						//processed already!
 						//do nothing
-						$this->info("Payment already processed,{$entryCode},{$res->ref_id}");
+						$this->info("Payment already processed,{$entryCode},{$res->id}");
 
 						//we reached a old payment, stop
 						return false;
