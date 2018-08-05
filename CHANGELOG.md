@@ -1,5 +1,8 @@
 # siggy Changelog
 
+## 5.4.2 - 2018-09-05
+- Made change to improve initial ui loading that has become wonkier in newer browsers due to more async behavior on their part
+
 ## 5.4.1 - 2018-06-02
 - Stop description box for sigs from moving when a type is selected
 - Add "Delete nonexistent" sigs checkbox next to the simple sig paste reader input
