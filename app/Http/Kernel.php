@@ -39,6 +39,7 @@ class Kernel extends HttpKernel
 		'siggy.app' => [
 			\Illuminate\Auth\Middleware\Authenticate::class,
 			\App\Http\Middleware\SiggyAuthenticatedAccess::class,
+			\App\Http\Middleware\NoCache::class,
 		],
 		'siggy.app-pages' => [
 			\Illuminate\Auth\Middleware\Authenticate::class,
