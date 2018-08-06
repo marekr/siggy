@@ -1,6 +1,12 @@
 # siggy Changelog
 
+## 5.4.3 - 2018-09-06
+## Fixes
+- More aggressive HTTP headers to prevent page caching
+- Surpressed a JS error when map was updated at the same time a map state refresh was triggered
+
 ## 5.4.2 - 2018-09-05
+## Fixes
 - Made change to improve initial ui loading that has become wonkier in newer browsers due to more async behavior on their part
 
 ## 5.4.1 - 2018-06-02
@@ -9,8 +15,10 @@
 - Move the "Mass Sig Reader" to a pop-out style button next to the signature adder text
 
 ## 5.4.0 - 2018-06-02
-- Stop auto mapping triglavian systems
+## Changes
 - Add fancy display of triglavian systems based on actual algorithim (dont ban me ccp plz)
+## Fixes
+- Stop auto mapping triglavian systems
 
 ## 5.3.1 - 2018-05-31
 ## Changes
