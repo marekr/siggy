@@ -43,6 +43,7 @@ export default class MapConnection {
 	private label: string = '';
 	private connection = null;
 	private selected:boolean = false;
+	private destroyed: boolean = false;
 
 	constructor(plumb, options) {
 		this.jsPlumb = plumb;
@@ -66,6 +67,13 @@ export default class MapConnection {
 
 	public refresh()
 	{
+		if(this.destroyed)
+		{
+			//hmmm its possible due to stupidity
+			console.error("tried to alter destroyed connection, welp");
+			return;
+		}
+
 		if( !this.selected )
 		{
 			this.connection.setPaintStyle(this.getDefaultPaintStyle());
@@ -274,6 +282,7 @@ export default class MapConnection {
 
 	public destroy()
 	{
+		this.destroyed = true;
 		$(this.connection.canvas).qtip('destroy');
 		//remove data to avoid refs, normally jquery clears on remove()
 		//but we dont get to use remove()
