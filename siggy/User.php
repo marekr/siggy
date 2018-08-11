@@ -1,5 +1,7 @@
 <?php
 
+namespace Siggy;
+
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +17,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use Siggy\SiggyUserProvider;
+
+use \Character;
+use \UserGroupPermission;
 
 class User extends Authenticatable {
     use Notifiable;

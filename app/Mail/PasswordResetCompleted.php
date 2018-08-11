@@ -18,7 +18,7 @@ class PasswordResetCompleted extends Mailable
      *
      * @return void
      */
-    public function __construct(\User $user)
+    public function __construct(Siggy\User $user)
     {
         $this->user = $user;
     }

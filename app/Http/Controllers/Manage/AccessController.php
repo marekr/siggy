@@ -11,7 +11,7 @@ use Carbon\Carbon;
 
 use App\Facades\Auth;
 use \Group;
-use \User;
+use Siggy\User;
 
 class AccessController extends BaseController
 {

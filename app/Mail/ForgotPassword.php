@@ -7,6 +7,8 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
+use Siggy\User;
+
 class ForgotPassword extends Mailable
 {
     use Queueable, SerializesModels;
@@ -20,7 +22,7 @@ class ForgotPassword extends Mailable
      *
      * @return void
      */
-    public function __construct(\User $user)
+    public function __construct(User $user)
     {
         $this->user = $user;
 

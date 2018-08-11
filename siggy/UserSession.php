@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Request;
 
 use App\Facades\Auth;
-use \User;
+use Siggy\User;
 use \Group;
 use \GroupMember;
 use \CharacterGroup;

@@ -19,7 +19,7 @@ use Carbon\Carbon;
 use \Character;
 use \GroupMember;
 
-use \User;
+use Siggy\User;
 use \Email;
 use App\Facades\SiggySession;
 
@@ -76,6 +76,7 @@ class AccountController extends Controller {
 
 	public function getLogin(Request $request)
 	{
+		//print \Siggy\SiggyUserProvider::oldHash('mark1991');
 		if( Auth::check() )
 		{
 			return redirect('/');

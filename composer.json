@@ -1,6 +1,6 @@
 {
 	"require": {
-		"php": ">=7.1.0",
+		"php": ">=7.2.0",
 		"cebe/markdown": "~1.1.1",
 		"cweagans/composer-patches": "~1.0",
 		"dingo/api": "2.0.0-alpha1",

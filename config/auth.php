@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'siggy',
-            'model' => \User::class,
+            'model' => \Siggy\User::class,
         ],
 
         // 'users' => [
