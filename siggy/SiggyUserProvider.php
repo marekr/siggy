@@ -28,6 +28,11 @@ class SiggyUserProvider extends EloquentUserProvider
 				]);
 	}
 
+	public static function hash(string $str): string
+	{
+		return self::newHash(self::oldHash($str));
+	}
+
 	/**
 	 * Validate a user against the given credentials.
 	 *
