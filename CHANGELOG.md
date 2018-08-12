@@ -1,5 +1,9 @@
 # siggy Changelog
 
+## 5.5.1 - 2018-08-11
+## Fixes
+- Fix asset compilation that broke with the backend change. How I wish I was using docker sometimes.
+
 ## 5.5.0 - 2018-08-11
 ## Changes
 - Passwords are now hashed in a more modern way, with all old ones wrapped into the new hash
