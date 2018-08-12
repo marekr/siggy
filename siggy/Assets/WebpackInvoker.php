@@ -69,7 +69,8 @@ class WebpackInvoker
 
 		$env = ['NODE_ENV' => 'production'];
 		
-		$proc = new Process($args, null, $env);
+		$timeout = null; //to disable
+		$proc = new Process($args, null, $env, null, $timeout);
 		$proc->inheritEnvironmentVariables(true);
 		$code = $proc->run();
 
