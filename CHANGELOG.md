@@ -1,11 +1,16 @@
 # siggy Changelog
 
-## 5.4.3 - 2018-09-06
+## 5.5.0 - 2018-08-11
+## Changes
+- Passwords are now hashed in a more modern way, with all old ones wrapped into the new hash
+- Update backend framework
+
+## 5.4.3 - 2018-08-06
 ## Fixes
 - More aggressive HTTP headers to prevent page caching
 - Surpressed a JS error when map was updated at the same time a map state refresh was triggered
 
-## 5.4.2 - 2018-09-05
+## 5.4.2 - 2018-08-05
 ## Fixes
 - Made change to improve initial ui loading that has become wonkier in newer browsers due to more async behavior on their part
 
