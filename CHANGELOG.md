@@ -1,5 +1,10 @@
 # siggy Changelog
 
+## 5.5.2 - 2019-03-09
+## Fixes
+- Update copy of evedb ships and systems
+- Update dependencies
+
 ## 5.5.1 - 2018-08-11
 ## Fixes
 - Fix asset compilation that broke with the backend change. How I wish I was using docker sometimes.
