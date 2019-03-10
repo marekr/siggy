@@ -173,7 +173,7 @@ class Client
 			$responseBodyAsString = $response->getBody()->getContents();
 			$responseJson = json_decode($responseBodyAsString);
 			
-			if(property_exists($responseJson, 'error')) {
+			if($responseJson != null && property_exists($responseJson, 'error')) {
 				if($responseJson->error == 'expired') {
 					throw new ExpiredAuthorizationException();
 				}
@@ -195,7 +195,7 @@ class Client
 		return $resp;
 	}
 	
-	public function getCorporationWalletDivisionJournal(int $corporation_id, int $division, int $page = 1): ?array
+	public function getCorporationWalletDivisionJournalV4(int $corporation_id, int $division, int $page = 1): ?array
 	{
 		$this->accessTokenRequired();
 
@@ -205,7 +205,7 @@ class Client
 			$opts['page'] = $page;
 		}
 
-		$response = $this->request('GET', "/v3/corporations/{$corporation_id}/wallets/{$division}/journal/",$opts);
+		$response = $this->request('GET', "/v4/corporations/{$corporation_id}/wallets/{$division}/journal/",$opts);
 		if( $response == null ||
 			$response->getStatusCode() != 200)
 		{
@@ -323,9 +323,9 @@ class Client
 		return json_decode($resp);
 	}
 
-	public function getUniverseSystem(int $systemId): ?\stdClass
+	public function getUniverseSystemV4(int $systemId): ?\stdClass
 	{
-		$response = $this->request('GET', "/v3/universe/systems/{$systemId}/");
+		$response = $this->request('GET', "/v4/universe/systems/{$systemId}/");
 		
 		if( $response == null ||
 			$response->getStatusCode() != 200)

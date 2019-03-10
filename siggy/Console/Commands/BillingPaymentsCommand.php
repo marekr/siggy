@@ -71,7 +71,7 @@ class BillingPaymentsCommand extends Command
 			
 			$transactions = null;
 			try {
-				$transactions = $client->getCorporationWalletDivisionJournal($corpId, $division, $page);
+				$transactions = $client->getCorporationWalletDivisionJournalV4($corpId, $division, $page);
 			}
 			catch(ExpiredAuthorizationException $e) {
 				$this->info("ESI fetch failed, mailing error");
