@@ -30,7 +30,7 @@ return [
     ],
 
     'stripe' => [
-        'model' => Siggy\User::class,
+        'model' => \Siggy\User::class,
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
