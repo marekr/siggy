@@ -30,7 +30,7 @@ class Client
 		$this->tokenManager = $tokenManager;
 
 		$options = [
-			'base_uri' => 'https://esi.tech.ccp.is/',
+			'base_uri' => 'https://esi.evetech.net/',
 			'timeout'  => $timeout,
 			'headers' => [
 				'Accept'     => 'application/json',
