@@ -30,7 +30,7 @@ import Helpers from './Helpers';
 import Notifications from './Notifications';
 import { Scan as ScanActivity } from './Activity/Scan';
 import { Chainmap as ChainmapActivity } from './Activity/Chainmap';
-import { Thera as TheraActivity } from './activity/Thera';
+import { Thera as TheraActivity } from './Activity/Thera';
 import { ScannedSystems as ScannedSystemsActivity } from './Activity/ScannedSystems';
 import { Notifications as NotificationsActivity } from './Activity/Notifications';
 import { Notes as NotesActivity } from './Activity/Notes';
