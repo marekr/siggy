@@ -16,7 +16,7 @@ module.exports = {
 	stats: { modules: false },
 
 	entry: { 
-			'bundle': join(__dirname, 'frontend', 'siggy.ts'),
+			'bundle': join(__dirname, 'frontend', 'Siggy.ts'),
 			},
 	output: {
 		path: join(__dirname, 'public','assets'),

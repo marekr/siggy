@@ -15,7 +15,7 @@ import number_format from 'locutus/php/strings/number_format';
 import str_rot13 from 'locutus/php/strings/str_rot13';
 
 
-import MersenneTwister from 'MersenneTwister';
+import MersenneTwister from 'mersennetwister';
 import { sys } from 'typescript';
 
 
