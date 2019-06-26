@@ -20,9 +20,9 @@ RUN rm -rf /etc/nginx/sites-enabled/*
 
 RUN mkdir /etc/nginx/sites
 
-COPY ./.docker/app/nginx/conf/nginx.conf /etc/nginx/
-COPY ./.docker/app/nginx/conf/conf.d/ /etc/nginx/conf.d/
-COPY ./.docker/app/nginx/conf/sites/ /etc/nginx/sites/
+COPY ./.docker/nginx/conf/nginx.conf /etc/nginx/
+COPY ./.docker/nginx/conf/conf.d/ /etc/nginx/conf.d/
+COPY ./.docker/nginx/conf/sites/ /etc/nginx/sites/
 
 #################################################
 #PHP SETUP
@@ -76,11 +76,11 @@ RUN rm -rf /var/www \
 
 # overwrite default configs
 #COPY ./.docker/php/conf/php.ini /usr/local/etc/php/
-COPY ./.docker/app/php/conf/php-fpm.conf /usr/local/etc/php-fpm.conf
+COPY ./.docker/php/conf/php-fpm.conf /usr/local/etc/php-fpm.conf
 
 #clean out the php-fpm directory and drop a complete config instead of the partial mess
 RUN rm -rf /usr/local/etc/php-fpm.d/*
-COPY ./.docker/app/php/conf/www.conf /usr/local/etc/php-fpm.d/www.conf
+COPY ./.docker/php/conf/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 
 #################################################
@@ -93,7 +93,7 @@ RUN apt-get -y install cron
 RUN touch /var/log/cron.log
 
 #insert our cronjob
-COPY ./.docker/app/artisan.crontab /etc/cron.d/artisan.crontab
+COPY ./.docker/artisan.crontab /etc/cron.d/artisan.crontab
 RUN chmod 0644 /etc/cron.d/artisan.crontab
 
 # create php user
@@ -109,6 +109,14 @@ RUN passwd -l nginx
 #add nginx to php-app group
 RUN usermod -a -G php-app nginx
 
+#################################################
+# NodeJs setup
+#################################################
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
+	&& apt-get install -y nodejs
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+	&& echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
+	&& apt-get update && apt-get install yarn
 
 #################################################
 #App data files
@@ -122,9 +130,15 @@ RUN chown www-data:www-data -R /var/www/
 WORKDIR /var/www
 
 #################################################
+#App prebuild
+#################################################
+RUN yarn install --frozen-lockfile \
+	&& php artisan assets:compile
+
+#################################################
 #Entrypoint
 #################################################
-ADD ./.docker/app/entrypoint.sh /entrypoint.sh
+ADD ./.docker/entrypoint.sh /entrypoint.sh
 RUN chmod a+x /entrypoint.sh
 CMD /entrypoint.sh
 
