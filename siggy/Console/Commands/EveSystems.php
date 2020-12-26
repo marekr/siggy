@@ -39,6 +39,7 @@ class EveSystems extends Command
 	*/
 	public function handle()
 	{
+		$this->info('Emptying table');
 		DB::table('solarsystems')->truncate();
 
 		$classMap = DB::table('eve_map_location_wormhole_classes')
@@ -46,12 +47,13 @@ class EveSystems extends Command
 							->get()
 							->keyBy('locationID')
 							->all();
-							
+				
 		$systems = DB::table('eve_map_solar_systems')
 						->orderBy('solarSystemID', 'ASC')
 						->chunk(20, function($systems) use($classMap) {
 			foreach($systems as $system)
 			{
+				$this->info("Iterating system {$system->solarSystemID}");
 				$insert = [
 					'id' => $system->solarSystemID,
 					'name' => $system->solarSystemName,
