@@ -39,6 +39,7 @@ class EveShips extends Command
      */
     public function handle()
     {
+		$this->info('Emptying table');
         DB::table('ships')->truncate();
 		$ships = DB::select('SELECT t.*,
 												   g.groupName,
@@ -59,6 +60,7 @@ class EveShips extends Command
 
         foreach($ships as $ship)
         {
+			$this->info("Iterating ship {$ship->typeID}");
 			if( $ship->typeID == 29988 ) //proteus
 			{
 				$ship->mass = 15000000;
