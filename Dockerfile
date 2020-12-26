@@ -133,7 +133,8 @@ WORKDIR /var/www
 #App prebuild
 #################################################
 RUN yarn install --frozen-lockfile \
-	&& php artisan assets:compile
+	&& php artisan assets:compile \
+	&& yarn run clean
 
 #################################################
 #Entrypoint

@@ -13,7 +13,8 @@
     "build-vendor": "webpack --config webpack.config.vendor.js",
     "build-vendor-prod": "cross-env NODE_ENV=production npm run build-vendor",
     "build": "webpack --config webpack.config.js",
-    "serve": "webpack-dev-server"
+	"serve": "webpack-dev-server",
+	"clean": "rm -rf node_modules"
   },
   "repository": {
     "type": "git",
