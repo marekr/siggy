@@ -162,7 +162,11 @@ class Client
 
 			if($resp->hasHeader('warning'))
 			{
-				Log::alert('warning header retrieved on route ' . $route . ' of: ' . $resp->getHeader('warning')[0]);
+				$warning = $resp->getHeader('warning')[0];
+				if( !str_contains("199 -", $warning) )
+				{
+					Log::alert('warning header retrieved on route ' . $route . ' of: ' . $warning);
+				}
 			}
 
 			$this->incrementStatistic(true);
@@ -217,9 +221,9 @@ class Client
 		return json_decode($resp);
 	}
 
-	public function getCorporationInformationV4(int $corporation_id): ?\stdClass
+	public function getCorporationInformationV5(int $corporation_id): ?\stdClass
 	{
-		$response = $this->request('GET', "/v4/corporations/{$corporation_id}/");
+		$response = $this->request('GET', "/v5/corporations/{$corporation_id}/");
 		if( $response == null ||
 			$response->getStatusCode() != 200)
 		{

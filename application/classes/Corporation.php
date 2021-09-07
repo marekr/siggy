@@ -98,11 +98,11 @@ class Corporation extends Model {
 		$details = null;
 
 		$client = new ESIClient();
-		$result = $client->getCorporationInformationV4($id);
+		$result = $client->getCorporationInformationV5($id);
 		
 		if($result != null)
 		{
-			$details = ['member_count' => (int)$result -> member_count,
+			$details = ['member_count' => (int)$result->member_count,
 				'name' => $result->name,
 				'ticker' => $result->ticker,
 				'alliance_id' => property_exists($result, 'alliance_id') ? $result->alliance_id : 0
