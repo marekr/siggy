@@ -1,5 +1,10 @@
 # siggy Changelog
 
+## 5.5.3 - 2021-09-07
+## Fixes 
+- Update to latest SDE
+- Fix ESI route for corporation which finally changed to v5
+
 ## 5.5.2 - 2019-03-09
 ## Fixes
 - Update copy of evedb ships and systems
