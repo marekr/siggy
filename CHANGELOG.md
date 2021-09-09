@@ -1,5 +1,10 @@
 # siggy Changelog
 
+## 5.6.0 - 2021-09-09
+## Fixes 
+- Add recaptcha to register form
+- Update dependencies
+
 ## 5.5.3 - 2021-09-07
 ## Fixes 
 - Update to latest SDE
