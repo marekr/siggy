@@ -29,6 +29,7 @@
 		$('.dropdown-toggle').dropdown()
 	});
 	</script>
+        {!! htmlScriptTagJsApi(['lang' => 'en']) !!}
 </head>
 <body>
 	<div class="navbar navbar-default navbar-fixed-top">

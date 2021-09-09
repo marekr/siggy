@@ -21,7 +21,8 @@
 					{!! Form::bsText('email', 'Email') !!}
 					{!! Form::bsPassword('password', 'Password') !!}
 					{!! Form::bsPassword('password_confirmation', 'Confirm Password') !!}
-
+					
+					{!! htmlFormSnippet() !!}
 					<div class="form-group">
 						<div class="controls">
 						<button type="submit" name="register" class="btn btn-primary">Register</button>
