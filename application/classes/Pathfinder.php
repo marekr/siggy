@@ -30,7 +30,7 @@ class Pathfinder {
 				$this->jumps[$j->fromSolarSystemID][] = $j->toSolarSystemID;
 			}
 
-			Cache::put($cacheName, $this->jumps);
+			Cache::put($cacheName, $this->jumps, 1800);
 		}
 	}
 
