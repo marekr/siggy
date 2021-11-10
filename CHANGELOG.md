@@ -1,5 +1,9 @@
 # siggy Changelog
 
+## 5.7.0 - 2021-11-09
+## Changes
+- Update to CCP's deck chair rearrangement for oauth
+
 ## 5.6.0 - 2021-09-09
 ## Fixes 
 - Add recaptcha to register form
