@@ -28,7 +28,7 @@ class Eve extends AbstractService
         $scopes = array(),
         UriInterface $baseApiUri = null
     ) {
-        parent::__construct($credentials, $httpClient, $storage, $scopes, $baseApiUri);
+        parent::__construct($credentials, $httpClient, $storage, $scopes, $baseApiUri, true);
 
         if (null === $baseApiUri) {
             $this->baseApiUri = new Uri('https://login.eveonline.com');
@@ -41,7 +41,7 @@ class Eve extends AbstractService
      */
     public function getAuthorizationEndpoint()
     {
-        return new Uri($this->baseApiUri . '/oauth/authorize');
+        return new Uri($this->baseApiUri . '/v2/oauth/authorize');
     }
 
     /**
@@ -49,7 +49,7 @@ class Eve extends AbstractService
      */
     public function getAccessTokenEndpoint()
     {
-        return new Uri($this->baseApiUri . '/oauth/token');
+        return new Uri($this->baseApiUri . '/v2/oauth/token');
     }
 
     /**
