@@ -4,7 +4,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Yadakhov\InsertOnDuplicateKey;
-use Mpociot\HasCompositeKey\HasCompositeKey;
+use App\Traits\HasCompositeKey;
 
 class WormholeSignature extends Model {
 	use InsertOnDuplicateKey;
