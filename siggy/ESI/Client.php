@@ -235,9 +235,9 @@ class Client
 		return json_decode($resp);
 	}
 	
-	public function getCharacterInformationV4(int $character_id): ?\stdClass
+	public function getCharacterInformationV5(int $character_id): ?\stdClass
 	{
-		$response = $this->request('GET', "/v4/characters/{$character_id}/");
+		$response = $this->request('GET', "/v5/characters/{$character_id}/");
 		
 		if( $response == null ||
 			$response->getStatusCode() != 200)

@@ -120,7 +120,7 @@ class Character extends Model {
 		$details = null;
 
 		$client = new ESIClient();
-		$result = $client->getCharacterInformationV4($id);
+		$result = $client->getCharacterInformationV5($id);
 
 		if($result != null)
 		{
