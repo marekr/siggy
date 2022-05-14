@@ -5,6 +5,26 @@
 						])
 
 @section('content')
+
+@if(env('SIGGY_EOL'))
+<div class="alert alert-success" role="alert">
+  <h4 class="alert-heading">siggy is closing up shop!</h4>
+    <p>
+        It's been 12 years of service and I am sad to announce siggy will be shutdown.
+        Due to my lack of personal interest in EVE and having moved on over the years, I no longer have the time
+        to spend on siggy.
+    </p>
+    <p>
+        siggy has been open sourced at <a href="https://github.com/marekr/siggy">https://github.com/marekr/siggy</a>.
+        However, it requires some setup, development knowledge and fiddling to get it to work and it's not for novices.
+    </p>
+    <p>
+        As the developer, I thank all of the users that have used siggy and given me the isk.
+    </p>
+  </p>
+</div>
+@endif
+
 <div class="jumbotron">
 	<div class="container">
 		<h1><img alt="Brand" width="150" src="{{asset('images/siggy-blue.png')}}">siggy</h1>
