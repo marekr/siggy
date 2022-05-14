@@ -11,19 +11,6 @@
 @include('siggy.activities.dscan')
 @include('siggy.activities.timerboard')
 <div id="activity-scan" class="wrapper" style="display:none">
-	<?php
-	if(isset($_SERVER['HTTP_X_SSL_PROTOCOL']) && trim($_SERVER['HTTP_X_SSL_PROTOCOL']) == 'SSLv3' ): ?>
-	<div class="box" style="width:100%;background-color:rgb(179, 52, 52)">
-		<div class='box-header'>Security warning!</div>
-		<div class='box-content'>
-			You connected to siggy using SSLv3! This protocol is now insecure and being removed from browsers in the future. TLS is now the defacto standard for HTTPS connections. <br />
-			If you are getting this message in the EVE IGB or Internet Explorer, go to this guide on how to remove this message: <a href="http://wiki.siggy.borkedlabs.com/support:connection_reset">http://wiki.siggy.borkedlabs.com/support:connection_reset</a><br />
-			If you were getting a -101 connection reset error in the IGB, <b>THIS APPLIES TO YOU.</b> SSLv3 was re-enabled on the server temporarily
-			because users have broken computer configurations. (TLS should have been enabled on Windows as long ago as Windows XP). <br />
-			This message will go away once you connect to siggy using TLS.
-		</div>
-	</div>
-	<?php endif; ?>
 
 	@if(count($reconnectRequired) > 0)
 	<div class="box" style="width:100%;background-color:rgb(179, 52, 52)">
