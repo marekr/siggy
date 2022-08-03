@@ -1,0 +1,142 @@
+version: "2.1" # for health check conditions in depends_on
+
+volumes:
+  personadb_stor:
+  perconadb_log:
+  siggy_stor:
+
+networks:
+  default:
+    name: dev # The same network must be declared in traefik.yml > providers.[whatever].network
+
+services:
+  # reverse-proxy
+  traefik:
+    restart: always
+    container_name: traefik
+    image: traefik:v2.6
+    ports:
+      # Commonly used ports for incoming requests, regardless of microservice.
+      # Traefik will listen them and route requests to mapped ports of services, see `*.server.port` in labels.
+      # It is also possible to map ports directly in the concrete container.
+      - "${EXPOSE_IP:-127.0.0.1}:8080:8080" # Note: Traefik web GUI also here.
+      - "${EXPOSE_IP:-127.0.0.1}:80:80" # http
+      - "${EXPOSE_IP:-127.0.0.1}:443:443" # https
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - .docker/traefik.yml:/etc/traefik/traefik.yml:ro
+      - .docker/ssl/:/etc/traefik/ssl/
+    labels:
+      - traefik.http.routers.traefik.rule=Host(`traefik.dev.local`)
+      - traefik.http.routers.traefik.entrypoints=web,websecure
+      - traefik.http.services.traefik.loadbalancer.server.port=8080
+
+  # mySQL for siggy
+  perconadb:
+    platform: linux/x86_64 # Required for proper working on M1 CPU (Apple).
+    container_name: perconadb
+    restart: always
+    hostname: perconadb
+    image: percona:5.6
+    environment:
+      MYSQL_ROOT_PASSWORD: supersecretpassword
+      MYSQL_USER: siggyUser
+      MYSQL_PASSWORD: supersecretpassword
+      MYSQL_DATABASE: siggyDB
+    ports:
+      - "${EXPOSE_IP:-127.0.0.1}:3306:3306"
+    expose:
+      - 3306
+    networks:
+      default:
+        aliases:
+          - perconadb.dev.local
+    volumes:
+      - personadb_stor:/var/lib/mysql
+      - perconadb_log:/var/log/mysql
+
+  # redis for siggy
+  redis:
+    container_name: redis
+    restart: always
+    image: redis:latest
+    networks:
+      default:
+        aliases:
+          - redis.dev.local
+
+  # siggy nginx
+  siggy-nginx:
+    container_name: siggy-nginx
+    restart: unless-stopped
+    image: nginx:latest
+    volumes:
+      - .docker/nginx/conf/sites/app.conf:/etc/nginx/conf.d/default.conf
+      - .docker/nginx/conf/conf.d/gzip.conf:/etc/nginx/conf.d/gzip.conf
+      - siggy_stor:/var/www
+    networks:
+      default:
+        aliases:
+          - siggy.dev.local
+    depends_on:
+      siggy-app:
+        condition: service_started
+      traefik:
+        condition: service_started
+    labels:
+      - traefik.http.routers.siggy.rule=Host(`siggy.dev.local`)
+      - traefik.http.routers.siggy.entrypoints=web,websecure
+      - traefik.http.services.siggy.loadbalancer.server.port=80
+      - traefik.http.routers.siggy.service=siggy
+
+  # siggy app
+  siggy-app:
+    container_name: siggy-app
+    restart: unless-stopped
+    image: siggy:latest
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile.app
+    environment:
+        APP_NAME: siggy
+        APP_ENV: production
+        APP_KEY: base64:OAYhoAUS4mmioP3TpkX2ZG2huSKRxlDWfBGpflF4XsM=
+        APP_DEBUG: "true"
+        APP_TIMEZONE: "UTC"
+        
+        HASH_ID_SECRET: base64:Qr0C+wCSSDWSSgc8UhlrmCajNZPLwQGydsFg4QAr8Lc=
+        LOG_CHANNEL: stderr
+
+        API_PREFIX: api
+
+        DB_CONNECTION: mysql
+        DB_HOST: perconadb.dev.local
+        DB_PORT: 3306
+        DB_DATABASE: siggyDB
+        DB_USERNAME: siggyUser
+        DB_PASSWORD: supersecretpassword
+        DB_PERSISTANT: "true"
+
+        BROADCAST_DRIVER: redis
+        CACHE_DRIVER: redis
+        QUEUE_CONNECTION: redis
+        SESSION_DRIVER: redis
+        PHEAL_CACHE: redis
+        SESSION_LIFETIME: 120
+        REDIS_HOST: redis.dev.local
+        REDIS_PASSWORD: null
+        REDIS_PORT: 6379
+        REDIS_SCHEME: tcp
+        REDIS_PERSISTENT: "true"
+        REDIS_ASYNC: "true"
+
+        RECAPTCHA_SITE_KEY: 
+        RECAPTCHA_SECRET_KEY:
+    volumes:
+      - .env.sample:/var/www/.env:ro
+      - siggy_stor:/var/www
+    networks:
+      default:
+        aliases:
+          - siggy-app.dev.local
+    

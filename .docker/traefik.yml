@@ -1,0 +1,36 @@
+# Traefik config file, static part.
+# See https://doc.traefik.io/traefik/getting-started/configuration-overview/#the-static-configuration
+
+# Docker configuration, as Traefik provider
+providers:
+  docker:
+    network: dev # Same network name as in docker-compose > networks.default.name
+  file:
+    # Path leads to the Traefik container whereto binds this current file. A strange recursive logic.
+    filename: /etc/traefik/traefik.yml
+    watch: true
+
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+    http:
+      tls: {}
+
+tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /etc/traefik/ssl/server.crt
+        keyFile: /etc/traefik/ssl/server.key
+  certificates:
+    - certFile: /etc/traefik/ssl/server.crt
+      keyFile: /etc/traefik/ssl/server.key
+
+# Configuration for Traefik dashboard and API
+api:
+  insecure: true
+
+log:
+  level: INFO

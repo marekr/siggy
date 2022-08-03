@@ -17,11 +17,11 @@ class CreateUserSsocharacterTable extends Migration
         Schema::create('user_ssocharacter', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->string('character_owner_hash', 255)->nullable()->default(NULL);
+            $table->string('character_owner_hash', 100)->nullable()->default(NULL);
             $table->bigInteger('character_id')->nullable()->default(NULL);
-            $table->string('access_token', 255)->nullable()->default(NULL);
+            $table->string('access_token', 100)->nullable()->default(NULL);
             $table->dateTime('access_token_expiration')->nullable()->default(NULL);
-            $table->string('refresh_token', 255)->nullable()->default(NULL);
+            $table->string('refresh_token', 100)->nullable()->default(NULL);
 			$table->dateTime('created_at')->nullable()->default(NULL);
 			$table->dateTime('updated_at')->nullable()->default(NULL);
             $table->tinyInteger('valid')->nullable()->default('0');
