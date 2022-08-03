@@ -135,8 +135,41 @@ services:
     volumes:
       - .env.sample:/var/www/.env:ro
       - siggy_stor:/var/www
+    depends_on:
+      siggy-migration:
+        condition: service_started
     networks:
       default:
         aliases:
           - siggy-app.dev.local
     
+  siggy-migration:
+    restart: "no"
+    image: siggy:latest
+    environment:
+        APP_NAME: siggy
+        APP_ENV: production
+        APP_KEY: base64:OAYhoAUS4mmioP3TpkX2ZG2huSKRxlDWfBGpflF4XsM=
+        APP_DEBUG: "true"
+        APP_TIMEZONE: "UTC"
+        
+        HASH_ID_SECRET: base64:Qr0C+wCSSDWSSgc8UhlrmCajNZPLwQGydsFg4QAr8Lc=
+        LOG_CHANNEL: stderr
+
+        DB_CONNECTION: mysql
+        DB_HOST: perconadb.dev.local
+        DB_PORT: 3306
+        DB_DATABASE: siggyDB
+        DB_USERNAME: siggyUser
+        DB_PASSWORD: supersecretpassword
+        DB_PERSISTANT: "true"
+    depends_on:
+      perconadb:
+        condition: service_started
+    networks:
+      default:
+    entrypoint: 
+      - "/usr/local/bin/php"
+      - "/var/www/artisan"
+      - "migrate"
+      - "--force"
