@@ -51,9 +51,25 @@ services:
       default:
         aliases:
           - perconadb.dev.local
+    healthcheck:
+      test: "mysql $$MYSQL_DATABASE -u$$MYSQL_USER -p$$MYSQL_PASSWORD -e 'SELECT 1;'"
+      interval: 20s
+      timeout: 10s
+      retries: 5
+
     volumes:
       - personadb_stor:/var/lib/mysql
       - perconadb_log:/var/log/mysql
+
+  # zeromq for siggy
+  zeromq:
+    container_name: zeromq
+    restart: always
+    image: zeromq:latest
+    networks:
+      default:
+        aliases:
+          - zeromq.dev.local
 
   # redis for siggy
   redis:
@@ -130,13 +146,23 @@ services:
         REDIS_PERSISTENT: "true"
         REDIS_ASYNC: "true"
 
+        SCRIBE_CONNECTION_STRING: tcp://zeromq.dev.local:9000
+
         RECAPTCHA_SITE_KEY: 
         RECAPTCHA_SECRET_KEY:
+
+        EVE_SSO_KEY:
+        EVE_SSO_SECRET:
+        EVE_DATASOURCE: 'tranquility'
     volumes:
       - .env.sample:/var/www/.env:ro
       - siggy_stor:/var/www
     depends_on:
       siggy-migration:
+        condition: service_started
+      zeromq:
+        condition: service_started
+      redis:
         condition: service_started
     networks:
       default:
@@ -165,7 +191,7 @@ services:
         DB_PERSISTANT: "true"
     depends_on:
       perconadb:
-        condition: service_started
+        condition: service_healthy
     networks:
       default:
     entrypoint: 
