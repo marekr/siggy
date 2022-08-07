@@ -1,0 +1,73 @@
+ARG PHP_VERSION=7.2.34
+
+FROM php:${PHP_VERSION}-fpm-alpine
+
+LABEL Name=siggy Version=0.0.2
+
+RUN apk add --no-cache \
+    build-base \
+    autoconf \
+    libmemcached-dev \
+    zlib-dev \
+    libmcrypt-dev \
+    imap-dev krb5-dev \
+    imagemagick-dev \
+    freetype \
+    libpng-dev \
+    libjpeg \
+    libwebp-dev \
+    libjpeg-turbo-dev \
+    libxpm-dev \
+    freetype-dev \
+    gettext-dev \
+    libxml2-dev \
+    libxslt-dev \
+    libzip-dev \
+    libgcrypt-dev \
+    libgpg-error-dev \
+    linux-headers \
+    openssl-dev \
+    icu-dev \
+    libtool \
+    gmp \
+    gmp-dev \
+    zstd-dev \
+    zstd-libs \
+    freetype-dev \
+    libjpeg-turbo-dev \
+    openssl-dev \
+    libpng-dev \
+    curl \
+    curl-dev \
+    libcurl \
+    libxml2-dev \
+    libxslt-dev \
+    supervisor \
+    libmcrypt-dev \
+    imap-dev krb5-dev \
+    ca-certificates \
+    libpng-dev \
+    libxpm-dev \
+    libjpeg-turbo-dev \
+    libwebp-dev \
+    gettext-dev \
+    libxslt-dev \
+    libzip-dev \
+    icu-libs \
+    freetype-dev \
+    libmemcached-dev \
+    npm
+
+#################################################
+#PHP SETUP
+#################################################
+
+RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
+
+RUN docker-php-ext-install -j$(nproc) \
+    iconv gd curl ctype json hash sockets mbstring tokenizer \
+    fileinfo pdo pdo_mysql mysqli xml 
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www

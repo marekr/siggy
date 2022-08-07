@@ -134,14 +134,14 @@ class Client
 		}
 	}
 
-	private function request(string $method, string $route, array $queryBits = [], string $datasource = "tranquility", ?string $etag = null)
+	private function request(string $method, string $route, array $queryBits = [], ?string $etag = null)
 	{
 		$resp = null;
 		try
 		{
 			$options =	[
 				'query' => [
-								'datasource' => $datasource
+								'datasource' => env('EVE_DATASOURCE','tranquility')
 							]
 			];
 

@@ -99,7 +99,7 @@ class AccountController extends Controller {
 			'email' => 'required|email|unique:users',
 			'password' => 'required|min:8|confirmed',
 			'password_confirmation' => 'required',
-			recaptchaFieldName() => recaptchaRuleName()
+			#recaptchaFieldName() => recaptchaRuleName()
 		]);
 		
 		if( count( $validator->errors() ) )

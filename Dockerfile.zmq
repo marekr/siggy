@@ -1,0 +1,14 @@
+FROM php:8.0-fpm-alpine
+ENV COMPOSER_ALLOW_SUPERUSER 1
+RUN set -eux && \
+  apk add --update-cache --no-cache libzmq zeromq-dev zeromq && \
+  apk add --update-cache --no-cache --virtual=.build-php-dependencies \
+  autoconf gcc coreutils build-base git && \
+  git clone https://github.com/mkoppanen/php-zmq.git && \
+  cd php-zmq && \
+  phpize && \
+  ./configure && \
+  make && \
+  make install && \
+  docker-php-ext-enable zmq && \
+  apk del .build-php-dependencies
