@@ -37,7 +37,7 @@ services:
     container_name: perconadb
     restart: always
     hostname: perconadb
-    image: percona:5.6
+    image: percona:latest
     environment:
       MYSQL_ROOT_PASSWORD: supersecretpassword
       MYSQL_USER: siggyUser
@@ -87,7 +87,7 @@ services:
     restart: unless-stopped
     image: nginx:latest
     volumes:
-      - .docker/nginx/conf/sites/app.conf:/etc/nginx/conf.d/default.conf
+      - .docker/nginx/conf/sites/docker.conf:/etc/nginx/conf.d/default.conf
       - .docker/nginx/conf/conf.d/gzip.conf:/etc/nginx/conf.d/gzip.conf
       - siggy_stor:/var/www
     networks:
@@ -110,9 +110,6 @@ services:
     container_name: siggy-app
     restart: unless-stopped
     image: siggy:latest
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile.app
     environment:
         APP_NAME: siggy
         APP_ENV: production
@@ -151,8 +148,8 @@ services:
         RECAPTCHA_SITE_KEY: 
         RECAPTCHA_SECRET_KEY:
 
-        EVE_SSO_KEY:
-        EVE_SSO_SECRET:
+        EVE_SSO_KEY: f35b2229b77c4f0685a019b10277ef5a
+        EVE_SSO_SECRET: 8IsQ607c7CypcVraIUrVstj8WpAhhgQqmd3iE7WP
         EVE_DATASOURCE: 'tranquility'
     volumes:
       - .env.sample:/var/www/.env:ro
