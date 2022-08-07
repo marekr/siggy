@@ -148,8 +148,8 @@ services:
         RECAPTCHA_SITE_KEY: 
         RECAPTCHA_SECRET_KEY:
 
-        EVE_SSO_KEY: f35b2229b77c4f0685a019b10277ef5a
-        EVE_SSO_SECRET: 8IsQ607c7CypcVraIUrVstj8WpAhhgQqmd3iE7WP
+        EVE_SSO_KEY: 
+        EVE_SSO_SECRET: 
         EVE_DATASOURCE: 'tranquility'
     volumes:
       - .env.sample:/var/www/.env:ro
